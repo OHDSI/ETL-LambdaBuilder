@@ -1,0 +1,4 @@
+﻿{Source_to_Source}
+SELECT distinct REPLACE(SOURCE_CODE, '.', ''), TARGET_CONCEPT_ID
+FROM CTE_VOCAB_MAP
+WHERE lower(SOURCE_VOCABULARY_ID) = 'opcs4' AND lower(TARGET_VOCABULARY_ID) = 'opcs4'

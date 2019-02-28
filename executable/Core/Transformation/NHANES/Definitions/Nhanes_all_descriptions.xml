@@ -1,0 +1,53 @@
+﻿<QueryDefinition>
+   <Query>
+     SELECT seqn
+     ,table_name
+     ,variable
+     ,value
+     ,1 as fake
+     FROM {sc}.nhanes_all
+     JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND SEQN = ch.PERSON_ID
+     order by seqn
+   </Query>
+  <Persons>
+    <PersonDefinition>
+      <PersonId>seqn</PersonId>
+      <PersonSourceValue>seqn</PersonSourceValue>
+      <AdditionalFields>
+        <string>table_name</string>
+        <string>variable</string>
+        <string>value</string>
+      </AdditionalFields>
+    </PersonDefinition>
+  </Persons>
+  <ConditionOccurrence>
+    <!-- fake definition, only to load lookups  -->
+    <ConditionOccurrenceDefinition>
+      <Condition>{fake} = 0</Condition>
+      <PersonId>seqn</PersonId>
+      <Concepts>
+        <Concept>
+          <ConceptIdMappers>
+            <Mapper>
+              <Lookup>Condition</Lookup>
+            </Mapper>
+          </ConceptIdMappers>
+          <Fields>
+            <Field key="value" defaultTypeId="0"/>
+          </Fields>
+        </Concept>
+        <Concept>
+          <ConceptIdMappers>
+            <Mapper>
+              <Lookup>Drug</Lookup>
+            </Mapper>
+          </ConceptIdMappers>
+          <Fields>
+            <Field key="value" defaultTypeId="0"/>
+          </Fields>
+        </Concept>
+      </Concepts>
+    </ConditionOccurrenceDefinition>
+ 
+  </ConditionOccurrence>
+</QueryDefinition>
