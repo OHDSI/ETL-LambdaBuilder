@@ -2,7 +2,7 @@
 layout: default
 title: Provider
 nav_order: 6
-parent: CPRD_ETL
+parent: CPRD
 description: "Provider mapping from CPRD staff table"
 
 ---
@@ -13,7 +13,7 @@ description: "Provider mapping from CPRD staff table"
 
 Use the staff table to populate the provider table. In CPRD, the staffid field represents the unique identifier given to the practice staff member entering the data, it does not necessarily represent the provider.  
 
-![](image7.png)
+![](images/image7.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |

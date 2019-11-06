@@ -2,7 +2,7 @@
 layout: default
 title: Person
 nav_order: 1
-parent: CPRD_ETL
+parent: CPRD
 description: "Person mapping from CPRD patient table"
 
 ---
@@ -14,7 +14,7 @@ description: "Person mapping from CPRD patient table"
 The patients in the CDM are restricted to the subset of all CPRD patients deemed to have reached certain quality standards as defined by the data providers. Patients whose acceptable patient flag (patient.accept) is not equal to 1 will be removed (1=acceptable, 0=unacceptable). 
 
 
-![](image2.png)
+![](images/image2.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |

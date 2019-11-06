@@ -2,7 +2,7 @@
 layout: default
 title: STEM_table
 nav_order: 8
-parent: CPRD_ETL
+parent: CPRD
 description: "Stem mapping from CPRD event tables"
 
 ---
@@ -13,7 +13,7 @@ description: "Stem mapping from CPRD event tables"
 
 ### Reading from CPRD.Clinical
 
-![](image14.png)
+![](images/image14.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |

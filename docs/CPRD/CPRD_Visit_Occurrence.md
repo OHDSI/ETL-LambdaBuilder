@@ -2,10 +2,12 @@
 layout: default
 title: Visit_Occurrence
 nav_order: 7
-parent: CPRD_ETL
+parent: CPRD
 description: "Visit_Occurrence mapping from CPRD event tables"
 
 ---
+
+{:toc}
 
 ## CDM Table name: VISIT_OCCURRENCE
 
@@ -17,7 +19,7 @@ The 'accept' flag in the patient table should remove records where eventdate < d
 
 Set time to midnight 00:00:00
 
-![](image8.png)
+![](images/image8.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
@@ -47,7 +49,7 @@ The 'accept' flag in the patient table should remove records where eventdate < d
 
 Set time to midnight 00:00:00
 
-![](/docs/CPRD/image9.png)
+![](images/image9.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
@@ -77,7 +79,7 @@ The 'accept' flag in the patient table should remove records where eventdate < d
 
 Set time to midnight 00:00:00
 
-![](/docs/CPRD/image10.png)
+![](images/image10.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
@@ -107,7 +109,7 @@ The 'accept' flag in the patient table should remove records where eventdate < d
 
 Set time to midnight 00:00:00
 
-![](/docs/CPRD/image11.png)
+![](images/image11.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
@@ -137,7 +139,7 @@ The 'accept' flag in the patient table should remove records where eventdate < d
 
 Set time to midnight 00:00:00
 
-![](/docs/CPRD/image12.png)
+![](images/image12.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
@@ -166,7 +168,7 @@ Take all records from tables clinical, immunisation, referral, test, and therapy
 Using the patid and consid, link back to the consultation table to find constype. The above logic will allow for one consultation record to be associated with multiple visits.  
 
 
-![](/docs/CPRD/image13.png)
+![](images/image13.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
