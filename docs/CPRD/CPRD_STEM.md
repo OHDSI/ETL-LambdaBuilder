@@ -8,6 +8,9 @@ description: "Stem mapping from CPRD event tables"
 
 ---
 
+1.TOC
+{:toc}
+
 ## CDM Table name: stem_table
 
 **NEED MORE INFORMATION ABOUT THE STEM TABLE**
