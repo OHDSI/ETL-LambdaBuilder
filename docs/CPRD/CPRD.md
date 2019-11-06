@@ -1,6 +1,6 @@
 ---
 layout: default
-title: CPRD_ETL
+title: CPRD
 nav_order: 2
 description: "Clinical Practice Research Datalink (CPRD) ETL Documentation"
 has_children: true
@@ -8,3 +8,5 @@ permalink: /docs/CPRD
 ---
 
 # CPRD ETL
+
+![](image1.png) 
