@@ -13,7 +13,7 @@ description: "Provider mapping from CPRD staff table"
 
 Use the staff table to populate the provider table. In CPRD, the staffid field represents the unique identifier given to the practice staff member entering the data, it does not necessarily represent the provider.  
 
-![](/docs/CPRD/image7.png)
+![](image7.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |

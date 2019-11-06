@@ -7,8 +7,6 @@ description: "Person mapping from CPRD patient table"
 
 ---
 
-![](image2.png)
-
 ## CDM Table name: PERSON
 
 ### Reading from CPRD.Patient
@@ -16,7 +14,7 @@ description: "Person mapping from CPRD patient table"
 The patients in the CDM are restricted to the subset of all CPRD patients deemed to have reached certain quality standards as defined by the data providers. Patients whose acceptable patient flag (patient.accept) is not equal to 1 will be removed (1=acceptable, 0=unacceptable). 
 
 
-![](/docs/image2.png)
+![](image2.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |

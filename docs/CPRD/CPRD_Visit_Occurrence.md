@@ -17,7 +17,7 @@ The 'accept' flag in the patient table should remove records where eventdate < d
 
 Set time to midnight 00:00:00
 
-![](/docs/CPRD/image8.png)
+![](image8.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |

@@ -13,7 +13,7 @@ description: "Stem mapping from CPRD event tables"
 
 ### Reading from CPRD.Clinical
 
-![](/docs/CPRD/image14.png)
+![](image14.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
