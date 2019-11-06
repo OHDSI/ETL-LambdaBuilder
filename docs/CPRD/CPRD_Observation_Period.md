@@ -2,7 +2,7 @@
 layout: default
 title: Observation_Period
 nav_order: 2
-parent: CPRD_ETL
+parent: CPRD
 description: "Observation_Period mapping from CPRD patient and practice tables"
 
 ---
@@ -13,7 +13,7 @@ description: "Observation_Period mapping from CPRD patient and practice tables"
 
 Remove any patients who do not contribute valid observation time (observation start date is less than observation end date). 
 
-![](image3.png)
+![](images/image3.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
@@ -26,7 +26,7 @@ Remove any patients who do not contribute valid observation time (observation st
 
 ### Reading from CPRD.Practice
 
-![](/docs/CPRD/image4.png)
+![](images/image4.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |

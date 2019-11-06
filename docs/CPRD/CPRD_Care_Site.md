@@ -1,8 +1,8 @@
 ---
 layout: default
 title: Care_Site
-nav_order: 4
-parent: CPRD_ETL
+nav_order: 3
+parent: CPRD
 description: "Care_Site mapping from CPRD practice table"
 
 ---
@@ -11,7 +11,7 @@ description: "Care_Site mapping from CPRD practice table"
 
 ### Reading from CPRD.Practice
 
-![](/docs/CPRD/image5.png)
+![](images/image5.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |

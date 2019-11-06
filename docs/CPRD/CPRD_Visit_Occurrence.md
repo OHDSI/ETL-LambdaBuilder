@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Visit_Occurrence
-nav_order: 7
+nav_order: 6
 parent: CPRD
 description: "Visit_Occurrence mapping from CPRD event tables"
 

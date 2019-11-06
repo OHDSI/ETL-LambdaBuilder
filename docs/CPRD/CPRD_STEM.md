@@ -1,8 +1,9 @@
 ---
 layout: default
-title: STEM_table
+title: STEM
 nav_order: 8
 parent: CPRD
+has_children: true
 description: "Stem mapping from CPRD event tables"
 
 ---
@@ -23,7 +24,7 @@ description: "Stem mapping from CPRD event tables"
 | visit_occurrence_id | consid  patid  eventdate | Look up visit_occurrence_id based on the unique patid, consid, and eventdate. | Use the Visit_occurrence_id assigned in the previous visit definition step |
 | provider_id | staffid | Use the staffid to look up provider_id in the provider table. | ADDITIONAL: Map staffid to provider_id |
 | start_datetime | eventdate |  | TEST: Set time as midnight    ADDITIONAL: Join back to the Clinical table using adid and set the eventdate as the start_datetime and set the time to midnight. |
-| concept_id | medcode | Use the medcode to link to the medical table to find the read code.     Use source to standard query to map the read code to standard concept(s) with the following filters:    Where source_vocabulary_id = 'Read'  and Target_standard_concept = 'S'  and Invalid_concept is NULL    *BE CAREFUL - READ CODES ARE CASE SENSITIVE    If there is no mapping available, set concept_id to zero. | See the query CPRD_Clinical_Medcodes.sql as a high-level look at the domains covered by this table and how the link to the medical table should be made.  TEST:   Using the test_int table, map the read_code to a standard concept using the SOURCE_TO_STANDARD query with the filters:    WHERE source_vocabulary_id = 'Read'  AND standard_concept = 'S'  AND invalid_concept is NULL    ADDITIONAL:  Map the source value (add_int.enttype + '-' + add_int.category + '-' + add_int.description + '-' + add_int.data) to a concept using the SOURCE_TO_STANDARD_QUERY with the filters:    WHERE source_vocabulary_id = 'JNJ_CPRD_ADD_ENTTYPE'  AND standard_concept = 'S'  AND invalid_concept is NULL |
+| concept_id | medcode | Use the medcode to link to the medical table to find the read code.     Use source to standard query to map the read code to standard concept(s) with the following filters:    Where source_vocabulary_id = 'Read'  and Target_standard_concept = 'S'  and Invalid_concept is NULL    *BE CAREFUL - READ CODES ARE CASE SENSITIVE    If there is no mapping available, set concept_id to zero. | See the query [CPRD_Clinical_Medcodes.sql](Queries/CPRD_Clinical_Medcodes.sql) as a high-level look at the domains covered by this table and how the link to the medical table should be made.  TEST:   Using the test_int table, map the read_code to a standard concept using the SOURCE_TO_STANDARD query with the filters:    WHERE source_vocabulary_id = 'Read'  AND standard_concept = 'S'  AND invalid_concept is NULL    ADDITIONAL:  Map the source value (add_int.enttype + '-' + add_int.category + '-' + add_int.description + '-' + add_int.data) to a concept using the SOURCE_TO_STANDARD_QUERY with the filters:    WHERE source_vocabulary_id = 'JNJ_CPRD_ADD_ENTTYPE'  AND standard_concept = 'S'  AND invalid_concept is NULL |
 | source_value | medcode | Use the medcode to link to the medical table to find the read code. Store read code as source_value. | TEST: Concatenate test_int.code + '-' + test_int.description + '-' + test_int.read_code. This will retain the read_code as well as the enttype. Some of the read codes map to conditions so this will help to identify the records coming from the test table. Please refer to appendix 1 which is a table showing the mapping of read codes in the test table to concepts, domains, and counts of each.      ADDITIONAL: Concatenate add_int.enttype + '-' + add_int.category + '-' + add_int.description + '-' + add_int.data. This will retain the information from the entity table about the record and the specific data field being mapped. Please refer to appendix 2 which is a table showing the enttypes and data_field descriptions from the additional table and counts of each. |
 | source_concept_id | medcode | Use the medcode to link to the medical table to find the read code.     Use source to source query to map the read code to a source concept id with the following filters:    Where source_vocabulary_id = 'Read'        *BE CAREFUL - READ CODES ARE CASE SENSITIVE    If there is no mapping available set source_concept_id to zero. | TEST:  Map test_int.read_code to a source_concept_id using the SOURCE_TO_SOURCE query with the filter:    WHERE source_vocabulary_id = 'Read'    ADDITIONAL:  0 |
 | type_concept_id |  |  | Use the following type concepts based on the domain of the concept_id:    Condition - 32020 EHR encounter diagnosis  Observation - 38000280 Observation recorded from EHR  Procedure - 38000275 EHR order list entry  Measurement - 44818702 Lab result  Drug - 38000177 prescription written  Drug and concept vocabulary_id is 'CVX' - 38000179 Physician administered drug (identified as procedure) |
@@ -63,7 +64,7 @@ description: "Stem mapping from CPRD event tables"
 
 ### Reading from CPRD.Referral
 
-![](/docs/CPRD/image15.png)
+![](images/image15.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
@@ -123,7 +124,7 @@ Mapping statistics for all domains are also described in the above publication (
 The days_supply field in the drug_exposure table will hold the original ‘numdays’ value, no imputation will be done for this field.  Numdays values of 0 (93% of data) and >365 (.0004% of data) will be considered invalid.  Drug_exposure_start_date plus imputed days supplied minus one will be the value of drug_exposure_end_date.  One day is being subtracted from the total because we are considering day 1 of drug exposure to be the start date. 
 
 
-![](/docs/CPRD/image16.png)
+![](images/image16.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
@@ -173,7 +174,7 @@ The days_supply field in the drug_exposure table will hold the original ‘numda
 
 ### Reading from CPRD.Immunisation
 
-![](/docs/CPRD/image17.png)
+![](images/image17.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
@@ -227,7 +228,7 @@ Measurement and observation values will also be drawn from the ‘Test’ file. 
 
 Each record in the test table has an associated read code. It was decided that the read codes should be mapped to standard concepts instead of mapping the individual enttypes. The reasoning behind this choice was based on the distribution of the read codes associated with each enttype which can be found in appendix 1. While some of the read codes map to conditions, the majority map to observations or measurements. What this means is that the generic enttype 290 which stands for 'Immunoglobulin' can be made much more specific since the read codes point to IgA, IgG, or IgM. At this point the mapping will be left as-is, meaning that the codes that map to conditions will stay that way for now. When choosing to use records from the test table in an analysis please refer back to appendix 1 to determine how many read codes corresponding to a certain enttype map to a domain other than a measurement or observation. At the point when a use case is determined, those read codes and enttypes can be reexamined and their mapping updated. All records from the test table will retain the pattern 'enttype-description-readcode' in the source_value field of the table they end up in so it is possible to find them and group by enttype if so desired.
 
-![](CPRD_v6_0_Mapping_files/image18.png)
+![](images/image18.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
@@ -284,7 +285,7 @@ To map the values in the additional table to standard concepts concatenate the f
 These concatenated source values will then be mapped to standard concepts using the mapping file created in Usagi. The source_vocabulary_id is 'JNJ_CPRD_ADD_ENTTYPE' and the query used to prepare the data for mapping is CPRD_Additional_Descriptions.sql.
 
 
-![](CPRD_v6_0_Mapping_files/image19.png)
+![](images/image19.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |

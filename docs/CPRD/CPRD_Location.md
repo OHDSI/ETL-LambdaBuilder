@@ -1,8 +1,8 @@
 ---
 layout: default
 title: Location
-nav_order: 5
-parent: CPRD_ETL
+nav_order: 4
+parent: CPRD
 description: "Location mapping from CPRD practice table"
 
 ---
@@ -11,7 +11,7 @@ description: "Location mapping from CPRD practice table"
 
 ### Reading from CPRD.Practice
 
-![](/docs/CPRD/image6.png)
+![](images/image6.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
