@@ -7,7 +7,7 @@ description: "Person mapping from CPRD patient table"
 
 ---
 
-![](/docs/CPRD/image1.png)
+![](/docs/CPRD/image2.png)
 
 ## CDM Table name: PERSON
 
