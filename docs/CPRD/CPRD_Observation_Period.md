@@ -13,7 +13,7 @@ description: "Observation_Period mapping from CPRD patient and practice tables"
 
 Remove any patients who do not contribute valid observation time (observation start date is less than observation end date). 
 
-![](/docs/CPRD/image3.png)
+![](image3.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
