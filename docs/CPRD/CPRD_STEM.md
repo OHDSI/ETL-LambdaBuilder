@@ -5,11 +5,12 @@ nav_order: 8
 parent: CPRD
 has_children: true
 description: "Stem mapping from CPRD event tables"
-
 ---
 
 1.TOC
 {:toc}
+
+---
 
 ## CDM Table name: stem_table
 
