@@ -1,218 +1,19 @@
+---
+layout: default
+title: STEM_table
+nav_order: 8
+parent: CPRD_ETL
+description: "Stem mapping from CPRD event tables"
 
+---
 
+## CDM Table name: stem_table
 
-## Table name: provider
+**NEED MORE INFORMATION ABOUT THE STEM TABLE**
 
-### Reading from staff
+### Reading from CPRD.Clinical
 
-Use the ‘Staff’ table to populate the provider table for GOLD data. In CPRD, the ‘staffid’ field represents the unique identifier given to the practice staff member entering the data, it does not necessarily represent the provider.  
-
-![](CPRD_v6_0_Mapping_files/image7.png)
-
-| Destination Field | Source field | Logic | Comment field |
-| --- | --- | --- | --- |
-| provider_id | staffid |  |  |
-| provider_name |  |  |  |
-| npi |  |  |  |
-| dea |  |  |  |
-| specialty_concept_id | role | Join onto SOURCE_TO_CONCEPT_MAP, lookup the role in the source_code field using the SOURCE_TO_STANDARD_QUERY with the following filter:    WHERE SOURCE_VOCABULARY_ID = 'JNJ_CPRD_PROV_SPEC' | Use the file 'CPRD_Native_Specialties.sql' to find all provider specialities and counts if mapping updates to the source_to_concept_map need to be made. |
-| care_site_id | staffid | right(staffid,3) | Last 3 digits of the staffid are the practice identifier with the leading zeros removed. |
-| year_of_birth |  |  |  |
-| gender_concept_id | gender | Map the CPRD gender code to gender_concept_id using the following logic:    CPRD                Description   Gender 				Description                 concept_id  Code  0	Data Not Entered	                                                                   0  1	Male		M	MALE		8507  2	Female		F	FEMALE		8532  3	Indeterminate	                                                                           	0  4	Unknown                                                                                                 0 |  |
-| provider_source_value | staffid |  |  |
-| specialty_source_value | role | Join the staff table to the ROL lookup table on role = code where lookup_type_id = 76. Put the text from the lookup table as the speciality_source_value. | See the file 'CPRD_Native_Specialties.sql' for more information on how to join the tables. |
-| specialty_source_concept_id |  |  | 0 |
-| gender_source_value | gender |  |  |
-| gender_source_concept_id |  |  | 0 |
-
-## Table name: visit_occurrence
-
-### Reading from clinical
-
-Take all records from tables clinical, immunisation, referral, test, and therapy. Using only the fields patid, consid, and eventdate, stack records sequentially by patid and consid. Each unique combination of the three fields will create a visit. Set visit_start_date as eventdate. If eventdate is blank, remove record. 
-
-The 'accept' flag in the patient table should remove records where eventdate < date of birth. In the case this was not universally applied at the source, if any eventdates are prior to patient date of birth, set eventdate to patient.frd. 
-
-Set time to midnight 00:00:00
-
-![](CPRD_v6_0_Mapping_files/image8.png)
-
-| Destination Field | Source field | Logic | Comment field |
-| --- | --- | --- | --- |
-| visit_occurrence_id |  |  | Autogenerate |
-| person_id | patid |  |  |
-| visit_concept_id |  |  | 9202 - OP |
-| visit_start_date | eventdate | If eventdate is blank, remove record.     Take all records from tables clinical, immunisation, referral, test, and therapy. Using only the fields patid, consid, and evendate, stack records sequentially by patid and consid. Each unique combination of the three fields will create a visit. Set visit_start_date as eventdate.     The 'accept' flag in the patient table should remove records where eventdate < date of birth. In the case this was not universally applied at the source, if any eventdates are prior to patient date of birth, set eventdate to patient.frd. |  |
-| visit_start_datetime | eventdate | If eventdate is blank, remove record.     Take all records from tables clinical, immunisation, referral, test, and therapy. Using only the fields patid, consid, and evendate, stack records sequentially by patid and consid. Each unique combination of the three fields will create a visit. Set visit_start_date as eventdate.     The 'accept' flag in the patient table should remove records where eventdate < date of birth. In the case this was not universally applied at the source, if any eventdates are prior to patient date of birth, set eventdate to patient.frd.     Set time to 00:00:00 |  |
-| visit_end_date |  |  | Set as visit_start_date |
-| visit_end_datetime |  |  | set visit_end_datetime to visit_start_datetime |
-| visit_type_concept_id |  |  | 44818518-Visit derived from EHR record |
-| provider_id | staffid |  |  |
-| care_site_id | patid | Use the last three digits of the patid (removing leading zeros) to look up the care_site_id in the care_site table. |  |
-| visit_source_value | consid | Use the consid to link back to the consultation table. Use the constype from the consultation table as the visit_source_value. If there are two based on how the visit was defined, choose one. |  |
-| visit_source_concept_id |  |  | 0 |
-| admitting_source_concept_id |  |  |  |
-| admitting_source_value |  |  | NULL |
-| discharge_to_concept_id |  |  |  |
-| discharge_to_source_value |  |  | NULL |
-| preceding_visit_occurrence_id |  |  | Put the visit_occurrence_id of the most recent prior visit here. |
-
-### Reading from immunisation
-
-Take all records from tables clinical, immunisation, referral, test, and therapy. Using only the fields patid, consid, and eventdate, stack records sequentially by patid and consid. Each unique combination of the three fields will create a visit. Set visit_start_date as eventdate. If eventdate is blank, remove record. 
-
-The 'accept' flag in the patient table should remove records where eventdate < date of birth. In the case this was not universally applied at the source, if any eventdates are prior to patient date of birth, set eventdate to patient.frd. 
-
-Set time to midnight 00:00:00
-
-![](CPRD_v6_0_Mapping_files/image9.png)
-
-| Destination Field | Source field | Logic | Comment field |
-| --- | --- | --- | --- |
-| visit_occurrence_id |  |  | Autogenerate |
-| person_id | patid |  |  |
-| visit_concept_id |  |  | 9202 - OP |
-| visit_start_date | eventdate | If eventdate is blank, remove record.     Take all records from tables clinical, immunisation, referral, test, and therapy. Using only the fields patid, consid, and evendate, stack records sequentially by patid and consid. Each unique combination of the three fields will create a visit. Set visit_start_date as eventdate.     The 'accept' flag in the patient table should remove records where eventdate < date of birth. In the case this was not universally applied at the source, if any eventdates are prior to patient date of birth, set eventdate to patient.frd. |  |
-| visit_start_datetime | eventdate | If eventdate is blank, remove record.     Take all records from tables clinical, immunisation, referral, test, and therapy. Using only the fields patid, consid, and evendate, stack records sequentially by patid and consid. Each unique combination of the three fields will create a visit. Set visit_start_date as eventdate.     The 'accept' flag in the patient table should remove records where eventdate < date of birth. In the case this was not universally applied at the source, if any eventdates are prior to patient date of birth, set eventdate to patient.frd.     Set time to 00:00:00 |  |
-| visit_end_date |  |  | Set as visit_start_date |
-| visit_end_datetime |  |  | set visit_end_datetime to visit_start_datetime |
-| visit_type_concept_id |  |  | 44818518-Visit derived from EHR record |
-| provider_id | staffid |  |  |
-| care_site_id | patid | Use the last three digits of the patid (removing leading zeros) to look up the care_site_id in the care_site table. |  |
-| visit_source_value | consid | Use the consid to link back to the consultation table. Use the constype from the consultation table as the visit_source_value. If there are two based on how the visit was defined, choose one. |  |
-| visit_source_concept_id |  |  | 0 |
-| admitting_source_concept_id |  |  |  |
-| admitting_source_value |  |  | NULL |
-| discharge_to_concept_id |  |  |  |
-| discharge_to_source_value |  |  | NULL |
-| preceding_visit_occurrence_id |  |  | Put the visit_occurrence_id of the most recent prior visit here. |
-
-### Reading from referral
-
-Take all records from tables clinical, immunisation, referral, test, and therapy. Using only the fields patid, consid, and eventdate, stack records sequentially by patid and consid. Each unique combination of the three fields will create a visit. Set visit_start_date as eventdate. If eventdate is blank, remove record. 
-
-The 'accept' flag in the patient table should remove records where eventdate < date of birth. In the case this was not universally applied at the source, if any eventdates are prior to patient date of birth, set eventdate to patient.frd. 
-
-Set time to midnight 00:00:00
-
-![](CPRD_v6_0_Mapping_files/image10.png)
-
-| Destination Field | Source field | Logic | Comment field |
-| --- | --- | --- | --- |
-| visit_occurrence_id |  |  | Autogenerate |
-| person_id | patid |  |  |
-| visit_concept_id |  |  | 9202 - OP |
-| visit_start_date | eventdate | Take all records from tables clinical, immunisation, referral, test, and therapy. Using only the fields patid, consid, and evendate, stack records sequentially by patid and consid. Each unique combination of the three fields will create a visit. Set visit_start_date as eventdate.     The 'accept' flag in the patient table should remove records where eventdate < date of birth. In the case this was not universally applied at the source, if any eventdates are prior to patient date of birth, set eventdate to patient.frd. |  |
-| visit_start_datetime | eventdate | Take all records from tables clinical, immunisation, referral, test, and therapy. Using only the fields patid, consid, and evendate, stack records sequentially by patid and consid. Each unique combination of the three fields will create a visit. Set visit_start_date as eventdate.     The 'accept' flag in the patient table should remove records where eventdate < date of birth. In the case this was not universally applied at the source, if any eventdates are prior to patient date of birth, set eventdate to patient.frd.     Set time to 00:00:00 |  |
-| visit_end_date |  |  | Set as visit_start_date |
-| visit_end_datetime |  |  | set visit_end_datetime to visit_start_datetime |
-| visit_type_concept_id |  |  | 44818518-Visit derived from EHR record |
-| provider_id | staffid |  |  |
-| care_site_id | patid | Use the last three digits of patid to look up the care_site_id. |  |
-| visit_source_value | consid | Use the consid to link back to the consultation table. Use the constype from the consultation table as the visit_source_value. If there are two based on how the visit was defined, choose one. |  |
-| visit_source_concept_id |  |  | 0 |
-| admitting_source_concept_id |  |  |  |
-| admitting_source_value |  |  | NULL |
-| discharge_to_concept_id |  |  |  |
-| discharge_to_source_value |  |  | NULL |
-| preceding_visit_occurrence_id |  |  | Put the visit_occurrence_id of the most recent prior visit here. |
-
-### Reading from test
-
-Take all records from tables clinical, immunisation, referral, test, and therapy. Using only the fields patid, consid, and eventdate, stack records sequentially by patid and consid. Each unique combination of the three fields will create a visit. Set visit_start_date as eventdate. If eventdate is blank, remove record. 
-
-The 'accept' flag in the patient table should remove records where eventdate < date of birth. In the case this was not universally applied at the source, if any eventdates are prior to patient date of birth, set eventdate to patient.frd. 
-
-Set time to midnight 00:00:00
-
-![](CPRD_v6_0_Mapping_files/image11.png)
-
-| Destination Field | Source field | Logic | Comment field |
-| --- | --- | --- | --- |
-| visit_occurrence_id |  |  | Autogenerate |
-| person_id | patid |  |  |
-| visit_concept_id |  |  | 9202 - OP |
-| visit_start_date | eventdate | If eventdate is blank, remove record.     Take all records from tables clinical, immunisation, referral, test, and therapy. Using only the fields patid, consid, and evendate, stack records sequentially by patid and consid. Each unique combination of the three fields will create a visit. Set visit_start_date as eventdate.     The 'accept' flag in the patient table should remove records where eventdate < date of birth. In the case this was not universally applied at the source, if any eventdates are prior to patient date of birth, set eventdate to patient.frd. |  |
-| visit_start_datetime | eventdate | If eventdate is blank, remove record.     Take all records from tables clinical, immunisation, referral, test, and therapy. Using only the fields patid, consid, and evendate, stack records sequentially by patid and consid. Each unique combination of the three fields will create a visit. Set visit_start_date as eventdate.     The 'accept' flag in the patient table should remove records where eventdate < date of birth. In the case this was not universally applied at the source, if any eventdates are prior to patient date of birth, set eventdate to patient.frd.    Set time as 00:00:00 |  |
-| visit_end_date |  |  | Set as visit_start_date |
-| visit_end_datetime |  |  | set visit_end_datetime to visit_start_datetime |
-| visit_type_concept_id |  |  | 44818518-Visit derived from EHR record |
-| provider_id | staffid |  |  |
-| care_site_id | patid | Use the last three digits of the patid to find the care_site_id. |  |
-| visit_source_value | consid | Use the consid to link back to the consultation table. Use the constype from the consultation table as the visit_source_value. If there are two based on how the visit was defined, choose one. |  |
-| visit_source_concept_id |  |  | 0 |
-| admitting_source_concept_id |  |  |  |
-| admitting_source_value |  |  | NULL |
-| discharge_to_concept_id |  |  |  |
-| discharge_to_source_value |  |  | NULL |
-| preceding_visit_occurrence_id |  |  | Put the visit_occurrence_id of the most recent prior visit here. |
-
-### Reading from therapy
-
-Take all records from tables clinical, immunisation, referral, test, and therapy. Using only the fields patid, consid, and eventdate, stack records sequentially by patid and consid. Each unique combination of the three fields will create a visit. Set visit_start_date as eventdate. If eventdate is blank, remove record. 
-
-The 'accept' flag in the patient table should remove records where eventdate < date of birth. In the case this was not universally applied at the source, if any eventdates are prior to patient date of birth, set eventdate to patient.frd. 
-
-Set time to midnight 00:00:00
-
-![](CPRD_v6_0_Mapping_files/image12.png)
-
-| Destination Field | Source field | Logic | Comment field |
-| --- | --- | --- | --- |
-| visit_occurrence_id |  |  | Autogenerate |
-| person_id | patid |  |  |
-| visit_concept_id |  |  | 9202 - OP |
-| visit_start_date | eventdate | If eventdate is blank, remove record.     Take all records from tables clinical, immunisation, referral, test, and therapy. Using only the fields patid, consid, and evendate, stack records sequentially by patid and consid. Each unique combination of the three fields will create a visit. Set visit_start_date as eventdate.     The 'accept' flag in the patient table should remove records where eventdate < date of birth. In the case this was not universally applied at the source, if any eventdates are prior to patient date of birth, set eventdate to patient.frd. |  |
-| visit_start_datetime | eventdate | If eventdate is blank, remove record.     Take all records from tables clinical, immunisation, referral, test, and therapy. Using only the fields patid, consid, and evendate, stack records sequentially by patid and consid. Each unique combination of the three fields will create a visit. Set visit_start_date as eventdate.     The 'accept' flag in the patient table should remove records where eventdate < date of birth. In the case this was not universally applied at the source, if any eventdates are prior to patient date of birth, set eventdate to patient.frd.    Set time to 00:00:00 |  |
-| visit_end_date |  |  | Set as visit_start_date |
-| visit_end_datetime |  |  | set visit_end_datetime to visit_start_datetime |
-| visit_type_concept_id |  |  | 44818518-Visit derived from EHR record |
-| provider_id | staffid |  |  |
-| care_site_id | patid | Use the last three digits of the patid to find the care_site_id. |  |
-| visit_source_value | consid | Use the consid to link back to the consultation table. Use the constype from the consultation table as the visit_source_value. If there are two based on how the visit was defined, choose one. |  |
-| visit_source_concept_id |  |  | 0 |
-| admitting_source_concept_id |  |  |  |
-| admitting_source_value |  |  | NULL |
-| discharge_to_concept_id |  |  |  |
-| discharge_to_source_value |  |  | NULL |
-| preceding_visit_occurrence_id |  |  | Put the visit_occurrence_id of the most recent prior visit here. |
-
-### Reading from consultation
-
-Take all records from tables clinical, immunisation, referral, test, and therapy. Using only the fields patid, consid, and evendate, stack records sequentially by patid and consid. Each unique combination of the three fields will create a visit and unique visit_occurrence_id. 
-
-Using the patid and consid, link back to the consultation table to find constype. The above logic will allow for one consultation record to be associated with multiple visits.  
-
-
-![](CPRD_v6_0_Mapping_files/image13.png)
-
-| Destination Field | Source field | Logic | Comment field |
-| --- | --- | --- | --- |
-| visit_occurrence_id |  |  | Autogenerate |
-| person_id | patid |  |  |
-| visit_concept_id |  |  | 9202 - OP |
-| visit_start_date |  |  |  |
-| visit_start_datetime |  |  |  |
-| visit_end_date |  |  | Set as visit_start_date |
-| visit_end_datetime |  |  | set visit_end_datetime to visit_start_datetime |
-| visit_type_concept_id |  |  | 44818518-Visit derived from EHR record |
-| provider_id | staffid | Right(staffid,3), look up this value in the PROVIDER table to get the PROVIDER_ID |  |
-| care_site_id |  |  |  |
-| visit_source_value | constype | Use the english description of the code found in the look up files. |  |
-| visit_source_concept_id |  |  | 0 |
-| admitting_source_concept_id |  |  |  |
-| admitting_source_value |  |  | NULL |
-| discharge_to_concept_id |  |  |  |
-| discharge_to_source_value |  |  | NULL |
-| preceding_visit_occurrence_id |  |  | Put the visit_occurrence_id of the most recent prior visit here. |
-
-## Table name: visit_detail
-
-## Table name: stem_table
-
-### Reading from clinical
-
-![](CPRD_v6_0_Mapping_files/image14.png)
+![](/docs/CPRD/image14.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
@@ -260,9 +61,9 @@ Using the patid and consid, link back to the consultation table to find constype
 | condition_status_concept_id |  |  |  |
 | condition_status_source_value |  |  |  |
 
-### Reading from referral
+### Reading from CPRD.Referral
 
-![](CPRD_v6_0_Mapping_files/image15.png)
+![](/docs/CPRD/image15.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
@@ -310,7 +111,7 @@ Using the patid and consid, link back to the consultation table to find constype
 | condition_status_concept_id |  |  |  |
 | condition_status_source_value |  |  |  |
 
-### Reading from therapy
+### Reading from CPRD.Therapy
 
 It was necessary to impute drug_exposure_end_date in the drug_exposure table in order to facilitate creation of the CDM Drug_era table. Though it is best in the CDM not to impute data, there is no way to create the drug eras without imputing in this case, as only approximately 7% of records have valid days supplied or duration values (numdays) in the CPRD therapy file. It is difficult to systematically impute duration for drug exposures in CPRD as the ‘numdays’ field is not consistently entered and the quantity divided by numeric daily dose (fields available more frequently than ‘numdays’ in the raw CPRD data) does not consistently create a valid duration for a particular drug exposure. The imputation method below was decided upon, using most common ‘numdays’ for duration for a particular combination of ‘prodcode’, ‘daily_dose’ (available from the commondosages table joining to therapy on dosageid), ‘qty’ and ‘numpacks’ using the ‘daily_dose’ and ‘qty’ fields to validate the imputations.
 The imputing process is as follows: first if the ‘numdays’ field is populated with valid data (>0 and <365), that will become the days supplied.  Then the most common days supplied in the data for each combination of prodcode, daily_dose, qty, and numpack (null values for any of the fields are converted to 0) is used if numdays is 0 or >365 (in table Daysupply_Decodes).  If a combination does not have a valid ‘numdays’ value in the data, then the modal days supplied is used for each prodcode (Daysupply_Modes).  Lastly, if there are not valid days supplied in the data for a particular prodcode, we will use assume the product was used for one day only.  We created a process to validate the drug duration imputations which is described here:
@@ -322,7 +123,7 @@ Mapping statistics for all domains are also described in the above publication (
 The days_supply field in the drug_exposure table will hold the original ‘numdays’ value, no imputation will be done for this field.  Numdays values of 0 (93% of data) and >365 (.0004% of data) will be considered invalid.  Drug_exposure_start_date plus imputed days supplied minus one will be the value of drug_exposure_end_date.  One day is being subtracted from the total because we are considering day 1 of drug exposure to be the start date. 
 
 
-![](CPRD_v6_0_Mapping_files/image16.png)
+![](/docs/CPRD/image16.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
@@ -370,9 +171,9 @@ The days_supply field in the drug_exposure table will hold the original ‘numda
 | condition_status_concept_id |  |  |  |
 | condition_status_source_value |  |  |  |
 
-### Reading from immunisation
+### Reading from CPRD.Immunisation
 
-![](CPRD_v6_0_Mapping_files/image17.png)
+![](/docs/CPRD/image17.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
@@ -530,218 +331,3 @@ These concatenated source values will then be mapped to standard concepts using 
 | disease_status_source_value |  |  |  |
 | condition_status_concept_id |  |  |  |
 | condition_status_source_value |  |  |  |
-
-## Table name: condition_occurrence
-
-### Reading from stem_table
-
-![](CPRD_v6_0_Mapping_files/image20.png)
-
-| Destination Field | Source field | Logic | Comment field |
-| --- | --- | --- | --- |
-| condition_occurrence_id | id |  |  |
-| person_id | person_id |  |  |
-| condition_concept_id | concept_id |  |  |
-| condition_start_date | start_date |  |  |
-| condition_start_datetime | start_datetime |  |  |
-| condition_end_date | end_date |  |  |
-| condition_end_datetime | end_datetime |  |  |
-| condition_type_concept_id | type_concept_id |  |  |
-| stop_reason | stop_reason |  |  |
-| provider_id | provider_id |  |  |
-| visit_occurrence_id | visit_occurrence_id |  |  |
-| visit_detail_id |  |  |  |
-| condition_source_value | source_value |  |  |
-| condition_source_concept_id | source_concept_id |  |  |
-| condition_status_source_value | condition_status_source_value |  |  |
-| condition_status_concept_id | condition_status_concept_id |  |  |
-
-## Table name: device_exposure
-
-### Reading from stem_table
-
-![](CPRD_v6_0_Mapping_files/image21.png)
-
-| Destination Field | Source field | Logic | Comment field |
-| --- | --- | --- | --- |
-| device_exposure_id | id |  |  |
-| person_id | person_id |  |  |
-| device_concept_id | concept_id |  |  |
-| device_exposure_start_date | start_date |  |  |
-| device_exposure_start_datetime | start_datetime |  |  |
-| device_exposure_end_date | end_date |  |  |
-| device_exposure_end_datetime | end_datetime |  |  |
-| device_type_concept_id | type_concept_id |  |  |
-| unique_device_id | unique_device_id |  |  |
-| quantity | quantity |  |  |
-| provider_id | provider_id |  |  |
-| visit_occurrence_id | visit_occurrence_id |  |  |
-| visit_detail_id |  |  |  |
-| device_source_value | source_value |  |  |
-| device_source_concept_id | source_concept_id |  |  |
-
-## Table name: measurement
-
-### Reading from stem_table
-
-![](CPRD_v6_0_Mapping_files/image22.png)
-
-| Destination Field | Source field | Logic | Comment field |
-| --- | --- | --- | --- |
-| measurement_id | id |  | Autogenerate |
-| person_id | person_id |  |  |
-| visit_occurrence_id | visit_occurrence_id |  |  |
-| measurement_concept_id | concept_id |  |  |
-| measurement_date | start_date |  |  |
-| measurement_datetime | start_datetime |  |  |
-| measurement_time |  |  |  |
-| measurement_type_concept_id | type_concept_id |  | 44818702=’Lab Result’ |
-| operator_concept_id | operator_concept_id |  |  |
-| value_as_number | value_as_number |  |  |
-| value_as_concept_id | value_as_concept_id |  |  |
-| range_low | range_low |  |  |
-| range_high | range_high |  |  |
-| unit_concept_id | unit_concept_id |  |  |
-| provider_id | provider_id |  |  |
-| visit_detail_id |  |  |  |
-| measurement_source_value |  |  |  |
-| measurement_source_concept_id | source_concept_id |  |  |
-| unit_source_value | unit_source_value |  |  |
-| value_source_value | value_source_value |  |  |
-
-## Table name: drug_exposure
-
-### Reading from stem_table
-
-![](CPRD_v6_0_Mapping_files/image23.png)
-
-| Destination Field | Source field | Logic | Comment field |
-| --- | --- | --- | --- |
-| drug_exposure_id | id |  |  |
-| person_id | person_id |  |  |
-| drug_concept_id | concept_id |  |  |
-| drug_exposure_start_date | start_date |  |  |
-| drug_exposure_start_datetime | start_datetime |  |  |
-| drug_exposure_end_date | end_date |  |  |
-| drug_exposure_end_datetime | end_datetime |  |  |
-| verbatim_end_date |  |  |  |
-| drug_type_concept_id | type_concept_id |  |  |
-| stop_reason | stop_reason |  |  |
-| refills | refills |  |  |
-| quantity | quantity |  |  |
-| days_supply | days_supply |  |  |
-| sig | sig |  |  |
-| route_concept_id | route_concept_id |  |  |
-| lot_number | lot_number |  |  |
-| provider_id | provider_id |  |  |
-| visit_occurrence_id | visit_occurrence_id |  |  |
-| visit_detail_id |  |  |  |
-| drug_source_value | source_value |  |  |
-| drug_source_concept_id | source_concept_id |  |  |
-| route_source_value | route_source_value |  |  |
-| dose_unit_source_value | dose_unit_source_value |  |  |
-
-## Table name: procedure_occurrence
-
-### Reading from stem_table
-
-![](CPRD_v6_0_Mapping_files/image24.png)
-
-| Destination Field | Source field | Logic | Comment field |
-| --- | --- | --- | --- |
-| procedure_occurrence_id | id |  |  |
-| person_id | person_id |  |  |
-| procedure_concept_id | concept_id |  |  |
-| procedure_date | start_date |  |  |
-| procedure_datetime | start_datetime |  |  |
-| procedure_type_concept_id | type_concept_id |  |  |
-| modifier_concept_id | modifier_concept_id |  |  |
-| quantity | quantity |  |  |
-| provider_id | provider_id |  |  |
-| visit_occurrence_id | visit_occurrence_id |  |  |
-| visit_detail_id |  |  |  |
-| procedure_source_value | source_value |  |  |
-| procedure_source_concept_id | source_concept_id |  |  |
-| modifier_source_value | modifier_source_value |  |  |
-
-## Table name: observation
-
-### Reading from stem_table
-
-![](CPRD_v6_0_Mapping_files/image25.png)
-
-| Destination Field | Source field | Logic | Comment field |
-| --- | --- | --- | --- |
-| observation_id | id |  |  |
-| person_id | person_id |  |  |
-| observation_concept_id | concept_id |  |  |
-| observation_date | start_date |  |  |
-| observation_datetime | start_datetime |  |  |
-| observation_type_concept_id | type_concept_id |  |  |
-| value_as_number | value_as_number |  |  |
-| value_as_string | value_as_string |  |  |
-| value_as_concept_id | value_as_concept_id |  |  |
-| qualifier_concept_id |  |  |  |
-| unit_concept_id | unit_concept_id |  |  |
-| provider_id | provider_id |  |  |
-| visit_occurrence_id | visit_occurrence_id |  |  |
-| visit_detail_id |  |  |  |
-| observation_source_value | source_value |  |  |
-| observation_source_concept_id | source_concept_id |  |  |
-| unit_source_value | unit_source_value |  |  |
-| qualifier_source_value |  |  |  |
-
-## Table name: specimen
-
-### Reading from stem_table
-
-![](CPRD_v6_0_Mapping_files/image26.png)
-
-| Destination Field | Source field | Logic | Comment field |
-| --- | --- | --- | --- |
-| specimen_id | id |  |  |
-| person_id | person_id |  |  |
-| specimen_concept_id | concept_id |  |  |
-| specimen_type_concept_id | type_concept_id |  |  |
-| specimen_date | start_date |  |  |
-| specimen_datetime | start_datetime |  |  |
-| quantity | quantity |  |  |
-| unit_concept_id | unit_concept_id |  |  |
-| anatomic_site_concept_id | anatomic_site_concept_id |  |  |
-| disease_status_concept_id | disease_status_concept_id |  |  |
-| specimen_source_id | specimen_source_id |  |  |
-| specimen_source_value | source_value |  |  |
-| unit_source_value | unit_source_value |  |  |
-| anatomic_site_source_value | anatomic_site_source_value |  |  |
-| disease_status_source_value | disease_status_source_value |  |  |
-
-## Table name: fact_relationship
-
-## Table name: condition_era
-
-## Table name: drug_era
-
-## Table name: metadata
-
-## Table name: cdm_source
-
-## Table name: dose_era
-
-## Table name: cost
-
-## Table name: payer_plan_period
-
-## Table name: note
-
-## Table name: note_nlp
-
-## Table name: death
-
-## Table name: cohort
-
-## Table name: cohort_attribute
-
-## Table name: attribute_definition
-
-## Table name: cohort_definition
-
