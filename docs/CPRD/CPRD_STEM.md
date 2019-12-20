@@ -7,7 +7,10 @@ has_children: true
 description: "Stem mapping from CPRD event tables"
 ---
 
-1.TOC
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
 {:toc}
 
 ---
