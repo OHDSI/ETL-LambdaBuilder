@@ -7,9 +7,9 @@ description: "Location mapping from CPRD practice table"
 
 ---
 
-## CDM Table name: LOCATION
+# CDM Table name: LOCATION
 
-### Reading from CPRD.Practice
+## Reading from CPRD.Practice
 
 ![](images/image6.png)
 

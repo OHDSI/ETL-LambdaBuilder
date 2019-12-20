@@ -20,4 +20,4 @@ search_tokenizer_separator: /[\s/]+/
 heading_anchors: true
 
 # Footer content appears at the bottom of every page's main content
-footer_content: "Please contact [Clair Blacketer](https://github.com/clairblacketer) if you have any questions"
+footer_content: "Please contact Clair Blacketer (https://github.com/clairblacketer) if you have any questions"

@@ -7,9 +7,9 @@ description: "Care_Site mapping from CPRD practice table"
 
 ---
 
-## CDM Table name: CARE_SITE
+# CDM Table name: CARE_SITE
 
-### Reading from CPRD.Practice
+## Reading from CPRD.Practice
 
 ![](images/image5.png)
 

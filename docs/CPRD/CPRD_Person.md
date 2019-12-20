@@ -7,9 +7,9 @@ description: "Person mapping from CPRD patient table"
 
 ---
 
-## CDM Table name: PERSON
+# CDM Table name: PERSON
 
-### Reading from CPRD.Patient
+## Reading from CPRD.Patient
 
 The patients in the CDM are restricted to the subset of all CPRD patients deemed to have reached certain quality standards as defined by the data providers. Patients whose acceptable patient flag (patient.accept) is not equal to 1 will be removed (1=acceptable, 0=unacceptable). 
 
@@ -19,9 +19,9 @@ The patients in the CDM are restricted to the subset of all CPRD patients deemed
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
 | person_id | patid |  |  |
-| gender_concept_id | gender | Map CPRD gender as follows:    CPRD	Description			OMOP	Concept_id  Gender 				Description  Code  0	Data Not Entered	  1	Male		M	MALE	8507  2	Female		F	FEMALE	8532  3	Indeterminate		  4	Unknown | Remove anyone with an unknown gender, CPRD gender code in (0,3,4) |
-| year_of_birth | yob | patient.yob+1800 | Remove any patients that are born before 1900 |
-| month_of_birth | mob |  | Patient.mob only populated for children, if 0, set as NULL |
+| gender_concept_id | gender | Map 1 to 8507, 2 to 8532  | Remove anyone with an unknown gender -> If CPRD gender code in (0,3,4) |
+| year_of_birth | yob | yob+1800 | Remove any patients that are born before 1900 |
+| month_of_birth | mob |  | mob only populated for children, if 0 set as NULL |
 | day_of_birth |  |  |  |
 | birth_datetime |  |  |  |
 | race_concept_id |  |  | 0 |

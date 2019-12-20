@@ -7,9 +7,17 @@ description: "Observation_Period mapping from CPRD patient and practice tables"
 
 ---
 
-## CDM Table name: OBSERVATION_PERIOD
+## Table of contents
+{: .no_toc .text-delta }
 
-### Reading from CPRD.Patient
+1. TOC
+{:toc}
+
+---
+
+# CDM Table name: OBSERVATION_PERIOD
+
+## Reading from CPRD.Patient
 
 Remove any patients who do not contribute valid observation time (observation start date is less than observation end date). 
 
@@ -24,7 +32,7 @@ Remove any patients who do not contribute valid observation time (observation st
 | period_type_concept_id |  |  | 44814725 - Period inferred by algorithm |
 
 
-### Reading from CPRD.Practice
+## Reading from CPRD.Practice
 
 ![](images/image4.png)
 
