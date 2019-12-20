@@ -17,7 +17,7 @@ description: "Stem mapping from CPRD event tables"
 ![](images/image14.png)
 
 | Destination Field | Source field | Logic | Comment field |
-| --- | --- | --- | --- |
+| --- | --- | --- | -------------- |
 | id |  |  | Autogenerate |
 | domain_id |  |  | This should be the domain_id of the standard concept in the concept_id field.     If a read code is mapped to concept_id 0, put the domain_id as Observation. |
 | person_id | patid |  |  |

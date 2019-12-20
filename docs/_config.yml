@@ -1,6 +1,6 @@
 remote_theme: pmarsceill/just-the-docs
-# Enable or disable the site search
-search_enabled: true
+
+title: Janssen CDM Documentation
 
 # Aux links for the upper right navigation
 aux_links:
@@ -9,3 +9,15 @@ aux_links:
 
 # Color scheme currently only supports "dark" or nil (default)
 color_scheme: nil
+
+# Enable or disable the site search
+search_enabled: true
+
+# Set the search token separator for hyphenated-word search:
+search_tokenizer_separator: /[\s/]+/
+
+# Enable or disable heading anchors
+heading_anchors: true
+
+# Footer content appears at the bottom of every page's main content
+footer_content: "Please contact [Clair Blacketer](https://github.com/clairblacketer) if you have any questions"
