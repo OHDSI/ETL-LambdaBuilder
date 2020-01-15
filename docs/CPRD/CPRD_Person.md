@@ -11,7 +11,9 @@ description: "Person mapping from CPRD patient table"
 
 ## Reading from CPRD.Patient
 
-The patients in the CDM are restricted to the subset of all CPRD patients deemed to have reached certain quality standards as defined by the data providers. Patients whose acceptable patient flag (patient.accept) is not equal to 1 will be removed (1=acceptable, 0=unacceptable). 
+The patients in the CDM are restricted to the subset of all CPRD patients deemed to have reached certain quality standards as defined by the data providers. Patients whose acceptable patient flag (patient.accept) is not equal to 1 will be removed (1=acceptable, 0=unacceptable). Also patients whose year of birth is prior to 1875, who have an unknown gender will be removed, or whose deathdate is prior to the field patient.crd.
+
+Store patient.deathdate in person.death_datetime for CDM v6.0.
 
 
 ![](images/image2.png)
@@ -20,7 +22,7 @@ The patients in the CDM are restricted to the subset of all CPRD patients deemed
 | --- | --- | --- | --- |
 | person_id | patid |  |  |
 | gender_concept_id | gender | Map 1 to 8507, 2 to 8532  | Remove anyone with an unknown gender -> If CPRD gender code in (0,3,4) |
-| year_of_birth | yob | yob+1800 | Remove any patients that are born before 1900 |
+| year_of_birth | yob | yob+1800 | Remove any patients that are born before 1875 |
 | month_of_birth | mob |  | mob only populated for children, if 0 set as NULL |
 | day_of_birth |  |  |  |
 | birth_datetime |  |  |  |

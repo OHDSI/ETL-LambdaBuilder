@@ -17,9 +17,9 @@ description: "Observation_Period mapping from CPRD patient and practice tables"
 
 # CDM Table name: OBSERVATION_PERIOD
 
-## Reading from CPRD.Patient
+Remove any patients whose OBSERVATION_PERIOD_START_DATE is prior to their OBSERVATION_PERIOD_END_DATE. An example of a scenario where a patient could have no valid observation time occurs when the patient’s transfer out date is prior to the date the practice is deemed to be of research quality. CPRD verified that about 10% of patients do not contribute any valid observation time to the database. 
 
-Remove any patients who do not contribute valid observation time (observation start date is less than observation end date). 
+## Reading from CPRD.Patient
 
 ![](images/image3.png)
 
