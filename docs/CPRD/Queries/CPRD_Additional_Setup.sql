@@ -45,9 +45,6 @@ from native.additional a
   on p.prodcode = a.data1_value
   and e.data1lkup = 'Product Dictionary'
 where e.data_fields > 0 and a.enttype not in (72,116,372,78) --These are enttypes where data1 is the value and data2 is the unit
-group by e.category, a.enttype, e.description, e.data_fields, e.data1,
-        a.data1_value, lu.text, e.data1lkup, m.read_code, m.description, a.data1_date,
-        p.productname, p.gemscriptcode
 
 UNION
 
@@ -95,9 +92,6 @@ from native.additional a
   on p.prodcode = a.data2_value
   and e.data2lkup = 'Product Dictionary'
 where e.data_fields > 1 and a.enttype not in (72,116,78,60,119,120) 
-group by e.category, a.enttype, e.description, e.data_fields, e.data2,
-        a.data2_value, lu.text, e.data2lkup, m.read_code, m.description, a.data2_date,
-        p.productname, p.gemscriptcode
         
 UNION
 
@@ -141,9 +135,6 @@ from native.additional a
   on p.prodcode = a.data3_value
   and e.data3lkup = 'Product Dictionary'
 where e.data_fields > 2 and a.enttype not in (372,78,126) --For these enttypes data3 and data4 are coupled and handled farther down in the query
-group by e.category, a.enttype, e.description, e.data_fields, e.data3,
-        a.data3_value, lu.text, e.data3lkup, m.read_code, m.description, a.data3_date,
-        p.productname, p.gemscriptcode
 
 UNION
 
@@ -187,9 +178,6 @@ from native.additional a
   on p.prodcode = a.data4_value
   and e.data4lkup = 'Product Dictionary'
 where e.data_fields > 3 and a.enttype not in (372,78,126) --For these enttypes data3 and data4 are coupled and handled farther down in the query
-group by e.category, a.enttype, e.description, e.data_fields, e.data4,
-        a.data4_value, lu.text, e.data4lkup, m.read_code, m.description, a.data4_date,
-        p.productname, p.gemscriptcode
         
 UNION
 
@@ -233,9 +221,6 @@ from native.additional a
   on p.prodcode = a.data5_value
   and e.data5lkup = 'Product Dictionary'
 where e.data_fields > 4 and a.enttype not in (78) --For this enttype data5 and data6 are coupled and handled farther down in the query
-group by e.category, a.enttype, e.description, e.data_fields, e.data5,
-        a.data5_value, lu.text, e.data5lkup, m.read_code, m.description, a.data5_date,
-        p.productname, p.gemscriptcode
         
 UNION
 
@@ -279,9 +264,6 @@ from native.additional a
   on p.prodcode = a.data6_value
   and e.data6lkup = 'Product Dictionary'
 where e.data_fields > 5 and a.enttype not in (78) --For this enttype data5 and data6 are coupled and handled farther down in the query
-group by e.category, a.enttype, e.description, e.data_fields, e.data6,
-        a.data6_value, lu.text, e.data6lkup, m.read_code, m.description, a.data6_date,
-        p.productname, p.gemscriptcode
         
 UNION
 
@@ -325,9 +307,6 @@ from native.additional a
   on p.prodcode = a.data7_value
   and e.data7lkup = 'Product Dictionary'
 where e.data_fields > 6
-group by e.category, a.enttype, e.description, e.data_fields, e.data7,
-        a.data7_value, lu.text, e.data7lkup, m.read_code, m.description, a.data7_date,
-        p.productname, p.gemscriptcode
         
 UNION
 
@@ -376,9 +355,6 @@ from native.additional a
   on p.prodcode = a.data1_value
   and e.data1lkup = 'Product Dictionary'
 where a.enttype in (72,116,78) --For these enttypes data1 is the value and data2 is the unit
-group by e.category, a.enttype, e.description, e.data_fields, e.data1,
-        a.data1_value, lu.text, e.data1lkup, m.read_code, m.description, a.data1_date,
-        p.productname, p.gemscriptcode, lu2.text
         
 UNION
 
@@ -427,9 +403,6 @@ from native.additional a
   on p.prodcode = a.data3_value
   and e.data1lkup = 'Product Dictionary'
 where a.enttype in (126,78) --For these datatypes data3 is the value and data4 is the unit
-group by e.category, a.enttype, e.description, e.data_fields, e.data3,
-        a.data3_value, lu.text, e.data3lkup, m.read_code, m.description, a.data3_date,
-        p.productname, p.gemscriptcode, lu2.text
         
 UNION
 
@@ -478,9 +451,6 @@ from native.additional a
   on p.prodcode = a.data5_value
   and e.data1lkup = 'Product Dictionary'
 where a.enttype in (78) --For this enttype data5 is the value and data6 is the unit
-group by e.category, a.enttype, e.description, e.data_fields, e.data5,
-        a.data5_value, lu.text, e.data5lkup, m.read_code, m.description, a.data5_date,
-        p.productname, p.gemscriptcode, lu2.text
         
 UNION
 
@@ -515,5 +485,3 @@ from native.additional a
   on lt4.lookup_type_id = lu4.lookup_type_id
   and lu4.code = a.data4_value
 where a.enttype in (372) --This enttype is for the results of scores and questionnaires
-group by e.category, a.enttype, e.description, e.data_fields, sm.scoring_method,
-        a.data1_value, lu4.text, e.data4lkup, a.data1_date, e.data1lkup
