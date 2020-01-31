@@ -1,40 +1,29 @@
 ---
 layout: default
-title: STEM
+title: CPRD -> STEM
 nav_order: 8
 parent: CPRD
 has_children: true
-description: "Stem mapping from CPRD event tables"
----
-
-## Table of contents
-{: .no_toc .text-delta }
-
-1. TOC
-{:toc}
-
+description: "Stem table description"
 ---
 
 # CDM Table name: stem_table
 
-The STEM table is a staging area where CPRD source codes like Read codes will first be mapped to concept_ids. The STEM table itself is an amalgamation of the OMOP event tables to facilitate record movement. After a record is mapped and staged, the domain of the concept_id dictates which OMOP table (Condition_occurrence, Drug_exposure, Procedure_occurrence, Measurement, Observation, Device_exposure) the record will move to.
+The STEM table is a staging area where CPRD source codes like Read codes will first be mapped to concept_ids. The STEM table itself is an amalgamation of the OMOP event tables to facilitate record movement. This means that all fields present across the OMOP event tables are present in the STEM table. After a record is mapped and staged, the domain of the concept_id dictates which OMOP table (Condition_occurrence, Drug_exposure, Procedure_occurrence, Measurement, Observation, Device_exposure) the record will move to. Please see the STEM -> CDM mapping files for a description of which STEM fields move to which STEM tables. 
 
-## Reading from CPRD.Clinical
+**Fields in the STEM table**
 
-![](images/image14.png)
-
-| Destination Field | Source field | Logic | Comment field |
-| --- | --- | --- | -------------- |
-| id |  |  | Autogenerate |
-| domain_id |  |  | This should be the domain_id of the standard concept in the concept_id field. If a read code is mapped to concept_id 0, put the domain_id as Observation. |
-| person_id | patid |  |  |
-| visit_occurrence_id | consid  patid  eventdate | Look up visit_occurrence_id based on the unique patid, consid, and eventdate. | Use the Visit_occurrence_id assigned in the previous visit definition step |
-| provider_id | staffid | Use the staffid to look up provider_id in the provider table. | ADDITIONAL: Map staffid to provider_id |
-| start_datetime | eventdate |  | TEST: Set time as midnight    ADDITIONAL: Join back to the Clinical table using adid and set the eventdate as the start_datetime and set the time to midnight. |
-| concept_id | medcode | Use the medcode to link to the medical table to find the read code. Use the [SOURCE_TO_STANDARD](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_STANDARD.sql) query to map the read code to standard concept(s) with the following filters:    Where source_vocabulary_id = 'Read'  and Target_standard_concept = 'S'  and Invalid_concept is NULL    *BE CAREFUL - READ CODES ARE CASE SENSITIVE*    If there is no mapping available, set concept_id to zero. | See the query [CPRD_Clinical_Medcodes.sql](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/CPRD/Queries/CPRD_Clinical_Medcodes.sql) as a high-level look at the domains covered by this table and how the link to the medical table should be made. |
-| source_value | medcode | Use the medcode to link to the medical table to find the read code. Store read code as source_value. | |
-| source_concept_id | medcode | Use the medcode to link to the medical table to find the read code.     Use the [SOURCE_TO_SOURCE](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_SOURCE.sql) query to map the read code to a source concept id with the following filters:    Where source_vocabulary_id = 'Read' *BE CAREFUL - READ CODES ARE CASE SENSITIVE*    If there is no mapping available set source_concept_id to zero. | |
-| type_concept_id |  |  | Use the following type concepts based on the domain of the concept_id:    Condition - 32020 EHR encounter diagnosis.  Observation - 38000280 Observation recorded from EHR.  Procedure - 38000275 EHR order list entry.  Measurement - 44818702 Lab result.  Drug - 38000177 prescription written.  Drug and concept vocabulary_id is 'CVX' - 38000179 Physician administered drug (identified as procedure). |
+| Field | 
+| --- | 
+| id | 
+| domain_id |  
+| person_id | 
+| visit_occurrence_id | 
+| provider_id | 
+| start_datetime | 
+| concept_id | 
+| source_concept_id | 
+| type_concept_id |  
 | operator_concept_id |  |  | |
 | unit_concept_id |  |  |  |
 | unit_source_value |  |  |  |
