@@ -3,6 +3,7 @@ layout: default
 title: Test
 nav_order: 4
 parent: CPRD to STEM
+grand_parent: CPRD
 description: "CPRD Test table mapping to CDM STEM table"
 
 ---

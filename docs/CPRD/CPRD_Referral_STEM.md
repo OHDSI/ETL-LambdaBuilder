@@ -3,6 +3,7 @@ layout: default
 title: Referral
 nav_order: 2
 parent: CPRD to STEM
+grand_parent: CPRD
 description: "CPRD Referral table mapping to CDM STEM table"
 
 ---
