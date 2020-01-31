@@ -24,89 +24,40 @@ The STEM table is a staging area where CPRD source codes like Read codes will fi
 | concept_id | 
 | source_concept_id | 
 | type_concept_id |  
-| operator_concept_id |  |  | |
-| unit_concept_id |  |  |  |
-| unit_source_value |  |  |  |
-| start_date |  |  | |
-| end_date |  |  |  |
-| range_high |  |  | |
-| range_low |  |  |  |
-| value_as_number |  |  | |
-| value_as_string |  |  | |
-| value_as_concept_id |  |  |  |
-| value_source_value |  |  | |
-| end_datetime |  |  |  |
-| verbatim_end_date |  |  |  |
-| days_supply |  |  |  |
-| dose_unit_source_value |  |  |  |
-| lot_number |  |  |  |
-| modifier_concept_id |  |  |  |
-| modifier_concept_id |  |  |  |
-| modifier_source_value |  |  |  |
-| quantity |  |  |  |
-| refills |  |  |  |
-| route_concept_id |  |  |  |
-| route_source_value |  |  |  |
-| sig |  |  |  |
-| stop_reason |  |  |  |
-| unique_device_id |  |  |  |
-| anatomic_site_concept_id |  |  |  |
-| disease_status_concept_id |  |  |  |
-| specimen_source_id |  |  |  |
-| anatomic_site_source_value |  |  |  |
-| disease_status_source_value |  |  |  |
-| condition_status_concept_id |  |  |  |
-| condition_status_source_value |  |  |  |
+| operator_concept_id | 
+| unit_concept_id |  
+| unit_source_value | 
+| start_date |  
+| end_date |  
+| range_high |  
+| range_low | 
+| value_as_number | 
+| value_as_string | 
+| value_as_concept_id | 
+| value_source_value | 
+| end_datetime | 
+| verbatim_end_date |  
+| days_supply | 
+| dose_unit_source_value | 
+| lot_number | 
+| modifier_concept_id |  
+| modifier_concept_id | 
+| modifier_source_value | 
+| quantity | 
+| refills | 
+| route_concept_id | 
+| route_source_value | 
+| sig |  
+| stop_reason | 
+| unique_device_id | 
+| anatomic_site_concept_id | 
+| disease_status_concept_id |  
+| specimen_source_id |
+| anatomic_site_source_value | 
+| disease_status_source_value | 
+| condition_status_concept_id | 
+| condition_status_source_value |  
 
-## Reading from CPRD.Referral
-
-![](images/image15.png)
-
-| Destination Field | Source field | Logic | Comment field |
-| --- | --- | --- | --- |
-| id |  |  | Autogenerate |
-| domain_id |  |  | This should be the domain_id of the standard concept in the concept_id field.     If a read code is mapped to concept_id 0, put the domain_id as Observation. |
-| person_id | patid |  |  |
-| visit_occurrence_id | patid  eventdate  consid | Look up visit_occurrence_id based on the unique patid, consid, and eventdate | Use the Visit_occurrence_id assigned in the previous visit definition step |
-| provider_id | staffid | Use staffid as the lookup to find the provider_id ||
-| start_datetime | eventdate |  | Set time as midnight  |
-| concept_id | medcode | Use the medcode to link to the medical table to find the read code.  Use the [SOURCE_TO_STANDARD](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_STANDARD.sql) query to map the read code to standard concept(s) with the following filters:    Where source_vocabulary_id = 'Read'  and Target_standard_concept = 'S'  and Invalid_concept is NULL    *BE CAREFUL - READ CODES ARE CASE SENSITIVE*    If there is no mapping available, set concept_id to zero. | See [CPRD_Referral_Medcodes.sql](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/CPRD/Queries/CPRD_Referral_Medcodes.sql) for an idea of how the codes in the referral table map to the vocabulary and how the link between the referral table and medical table should be made.  |
-| source_value | medcode | Use the medcode to link to the medical table to find the read code.  Store the read code as the condition_source_value. |  |
-| source_concept_id | medcode | Use the medcode to link to the medical table to find the read code.     Use source to source query to map the read code to a source concept id with the following filters:    Where source_vocabulary_id = 'Read' *BE CAREFUL - READ CODES ARE CASE SENSITIVE*    If there is no mapping available set source_concept_id to zero. | |
-| type_concept_id |  |  | Use the following type concepts based on the domain of the concept_id:    Condition - 32020 EHR encounter diagnosis  Observation - 38000280 Observation recorded from EHR  Procedure - 38000275 EHR order list entry  Measurement - 44818702 Lab result  Drug - 38000177 prescription written  Drug and concept vocabulary_id is 'CVX' - 38000179 Physician administered drug (identified as procedure) |
-| operator_concept_id |  |  | |
-| unit_concept_id |  |  | |
-| unit_source_value |  |  | |
-| start_date |  |  |  |
-| end_date |  |  |  |
-| range_high |  |  |  |
-| range_low |  |  | |
-| value_as_number |  |  | |
-| value_as_string |  |  | |
-| value_as_concept_id |  |  |  |
-| value_source_value |  |  | |
-| end_datetime |  |  |  |
-| verbatim_end_date |  |  |  |
-| days_supply |  |  |  |
-| dose_unit_source_value |  |  |  |
-| lot_number |  |  |  |
-| modifier_concept_id |  |  |  |
-| modifier_concept_id |  |  |  |
-| modifier_source_value |  |  |  |
-| quantity |  |  |  |
-| refills |  |  |  |
-| route_concept_id |  |  |  |
-| route_source_value |  |  |  |
-| sig |  |  |  |
-| stop_reason |  |  |  |
-| unique_device_id |  |  |  |
-| anatomic_site_concept_id |  |  |  |
-| disease_status_concept_id |  |  |  |
-| specimen_source_id |  |  |  |
-| anatomic_site_source_value |  |  |  |
-| disease_status_source_value |  |  |  |
-| condition_status_concept_id |  |  |  |
-| condition_status_source_value |  |  |  |
 
 ## Reading from CPRD.Therapy
 
@@ -168,55 +119,7 @@ The days_supply field in the drug_exposure table will hold the original ‘numda
 | condition_status_concept_id |  |  |  |
 | condition_status_source_value |  |  |  |
 
-## Reading from CPRD.Immunisation
 
-![](images/image17.png)
-
-| Destination Field | Source field | Logic | Comment field |
-| --- | --- | --- | --- |
-| id |  |  | Autogenerate |
-| domain_id |  |  | This should be the domain_id of the standard concept in the concept_id field.     If a read code is mapped to concept_id 0, put the domain_id as Observation. |
-| person_id | patid | Use patid to lookup Person_id |  |
-| visit_occurrence_id | patid  eventdate  consid | Look up visit_occurrence_id based on the unique patid, consid, and eventdate | Use the Visit_occurrence_id assigned in the previous visit definition step |
-| provider_id | staffid | Use staffid to look up provider id in the provider table | |
-| start_datetime | eventdate |  |  |
-| concept_id | medcode | Use the medcode to link to the medical table to find the read code.     Use the [SOURCE_TO_STANDARD](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_STANDARD.sql) query to map the read code to standard concept(s) with the following filters:    Where source_vocabulary_id = 'Read'  and Target_standard_concept = 'S'  and Invalid_concept is NULL    *BE CAREFUL - READ CODES ARE CASE SENSITIVE*    If there is no mapping available, set concept_id to zero. | |
-| source_value | medcode | find the READ code that corresponds with medcode by looking up the READ in the medical table. |  |
-| source_concept_id | medcode | Use the medcode to link to the medical table to find the read code.     Use [SOURCE_TO_SOURCE](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_SOURCE.sql) query to map the read code to a source concept id with the following filters:    Where source_vocabulary_id = 'Read'        *BE CAREFUL - READ CODES ARE CASE SENSITIVE*    If there is no mapping available set source_concept_id to zero. |  |
-| type_concept_id |  |  | Use the following type concepts based on the domain of the concept_id:    Condition - 32020 EHR encounter diagnosis  Observation - 38000280 Observation recorded from EHR  Procedure - 38000275 EHR order list entry  Measurement - 44818702 Lab result  Drug - 38000177 prescription written  Drug and concept vocabulary_id is 'CVX' - 38000179 Physician administered drug (identified as procedure) |
-| operator_concept_id |  |  | |
-| unit_concept_id |  |  | |
-| unit_source_value |  |  |  |
-| start_date |  |  | |
-| end_date |  |  |  |
-| range_high |  |  | |
-| range_low |  |  | |
-| value_as_number |  |  | |
-| value_as_string |  |  | |
-| value_as_concept_id |  |  | |
-| value_source_value |  |  | |
-| end_datetime | eventdate |  |  |
-| verbatim_end_date |  |  |  |
-| days_supply |  |  |  |
-| dose_unit_source_value |  |  |  |
-| lot_number |  |  |  |
-| modifier_concept_id |  |  |  |
-| modifier_concept_id |  |  |  |
-| modifier_source_value |  |  |  |
-| quantity |  |  |  |
-| refills |  |  |  |
-| route_concept_id |  |  |  |
-| route_source_value |  |  |  |
-| sig |  |  |  |
-| stop_reason |  |  |  |
-| unique_device_id |  |  |  |
-| anatomic_site_concept_id |  |  |  |
-| disease_status_concept_id |  |  |  |
-| specimen_source_id |  |  |  |
-| anatomic_site_source_value |  |  |  |
-| disease_status_source_value |  |  |  |
-| condition_status_concept_id |  |  |  |
-| condition_status_source_value |  |  |  |
 
 ### Reading from test
 
@@ -272,59 +175,6 @@ Each record in the test table has an associated read code. It was decided that t
 | condition_status_concept_id |  |  |  |
 | condition_status_source_value |  |  |  |
 
-### Reading from additional
-
-Observation values will also be drawn from the ‘Additional’ file.  This file contains categorical and continuous data values, units, dates, medcodes (conditions), and prodcodes (drugs) pertaining to diseases including allergy, asthma, hypertension, epilepsy and diabetes and lifestyle data (smoking, alcohol use, diet and exercise), as well as child health surveillance, death, elder health care, examination, immunization, maternity, pathology and blood group information.  There is also score/scale data (e.g. The Patient Health Questionnaire (PHQ-9) which measures severity of depression) in the ‘Additional’ file which will be captured. The query ['CPRD_Additional_Setup.sql']() should be used to create an intermediate table and all mapping to the CDM will be done from this table, referred to below as add_int. Each record in the add_int table will become between one and seven records in the measurement table. Please refer to 'CPRD_Additional_Setup.sql' for comments and rationale for how the add_int table is created. 
-
-To map the values in the additional table to standard concepts concatenate the fields add_int.enttype + '-' + add_int.category + '-' + add_int.description + '-' + add_int.data. This will retain the information from the entity table about the record and the specific data field being mapped. Please refer to appendix 2 which is a table showing the enttypes and data_field descriptions from the additional table and counts of each.
-
-These concatenated source values will then be mapped to standard concepts using the mapping file created in Usagi. The source_vocabulary_id is 'JNJ_CPRD_ADD_ENTTYPE' and the query used to prepare the data for mapping is [CPRD_Additional_Descriptions.sql.](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/CPRD/Vocab%20Updates/CPRD_Additional_Descriptions.sql)
 
 
-![](images/image19.png)
 
-| Destination Field | Source field | Logic | Comment field |
-| --- | --- | --- | --- |
-| id |  |  | Autogenerate |
-| domain_id |  |  | This should be the domain_id of the standard concept in the concept_id field.     If a read code is mapped to concept_id 0, put the domain_id as Observation. |
-| person_id | patid |  |  |
-| visit_occurrence_id | patid  adid | Look up visit_occurrence_id based on the unique combination of patid, consid, and eventdate. To find consid and eventdate use adid to link back to the clinical table. | Use the Visit_occurrence_id assigned in the previous visit definition step |
-| provider_id |  |  | ADDITIONAL: Map staffid to provider_id |
-| start_datetime |  |  | TEST: Set time as midnight    ADDITIONAL: Join back to the Clinical table using adid and set the eventdate as the start_datetime and set the time to midnight. |
-| concept_id |  |  | TEST:   Using the test_int table, map the read_code to a standard concept using the SOURCE_TO_STANDARD query with the filters:    WHERE source_vocabulary_id = 'Read'  AND standard_concept = 'S'  AND invalid_concept is NULL    ADDITIONAL:  Map the source value (add_int.enttype + '-' + add_int.category + '-' + add_int.description + '-' + add_int.data) to a concept using the SOURCE_TO_STANDARD_QUERY with the filters:    WHERE source_vocabulary_id = 'JNJ_CPRD_ADD_ENTTYPE'  AND standard_concept = 'S'  AND invalid_concept is NULL |
-| source_value |  |  | TEST: Concatenate test_int.code + '-' + test_int.description + '-' + test_int.read_code. This will retain the read_code as well as the enttype. Some of the read codes map to conditions so this will help to identify the records coming from the test table. Please refer to appendix 1 which is a table showing the mapping of read codes in the test table to concepts, domains, and counts of each.      ADDITIONAL: Concatenate add_int.enttype + '-' + add_int.category + '-' + add_int.description + '-' + add_int.data. This will retain the information from the entity table about the record and the specific data field being mapped. Please refer to appendix 2 which is a table showing the enttypes and data_field descriptions from the additional table and counts of each. |
-| source_concept_id |  |  | TEST:  Map test_int.read_code to a source_concept_id using the SOURCE_TO_SOURCE query with the filter:    WHERE source_vocabulary_id = 'Read'    ADDITIONAL:  0 |
-| type_concept_id |  |  | Use the following type concepts based on the domain of the concept_id:    Condition - 32020 EHR encounter diagnosis  Observation - 38000280 Observation recorded from EHR  Procedure - 38000275 EHR order list entry  Measurement - 44818702 Lab result  Drug - 38000177 prescription written  Drug and concept vocabulary_id is 'CVX' - 38000179 Physician administered drug (identified as procedure) |
-| operator_concept_id |  |  | TEST:  Map test_int.operator to a standard concept_id using the following logic:    <	as  4171756  <= 	as  4171754  =	as  4172703  >	as  4172704  >=	as  4172704    This can also be done by joining to the CONCEPT table where operator = concept_name and domain = 'Meas Value Operator' and standard_concept = 'S' and invalid_reason is NULL.    ADDITIONAL: NULL |
-| unit_concept_id |  |  | TEST:	  Look up test_int.unit in the CONCEPT table where vocabulary_id = 'UCUM' and standard_concept = 'S' and invalid_reason is NULL.    ADDITIONAL:  Look up add_int.unit_source_value in the CONCEPT table where vocabulary_id = 'UCUM' and standard_concept = 'S' and invalid_reason is NULL. |
-| unit_source_value |  |  | TEST:  Set to test_int.unit    ADDITIONAL:  Set to add_int.unit_source_value |
-| start_date |  |  | TEST: test_int.eventdate    ADDITIONAL: add_int.eventdate  For the additional table, the adid is used to link back to the clinical table to get the eventdate. |
-| end_date |  |  |  |
-| range_high |  |  | TEST:  Test_int.range_high |
-| range_low |  |  | TEST:  Test_int.range_low |
-| value_as_number |  |  | TEST:  Test_int.value_as_number    ADDITIONAL:  add_int.value_as_number |
-| value_as_string |  |  | ADDITIONAL:  Set as add_int.value_as_string |
-| value_as_concept_id |  |  | TEST:  Lookup the values in test_int.value_as_concept_id in the CONCEPT table where domain_id=' Meas Value' and vocabulary_id=' LOINC' and standard_concept = 'S' and invalid_concept is NULL.    ADDITIONAL:   If the last part of the source value says 'Read code for condition' then map the code in add_int.value_as_string to a standard concept using the SOURCE_TO_STANDARD query with the filters:    WHERE source_vocabulary_id = 'Read'  AND standard_concept = 'S'  AND invalid_concept is NULL    If the last part of the source value says 'Drug code' then map the code in add_int.value_as_string to a standard concept using the SOURCE_TO_STANDARD query with the filters:    WHERE source_vocabulary_id = 'Gemscript'  AND standard_concept = 'S'  AND invalid_concept is NULL    Otherwise, if the value in add_int.qualifier_source_value is not null then lookup the values in add_int.qualifier_source_value in the CONCEPT table where domain_id=' Meas Value' and vocabulary_id=' LOINC' and standard_concept = 'S' and invalid_concept is NULL. |
-| value_source_value |  |  | TEST:  If not NULL, put test_int.value_as_concept_id here.    ADDITIONAL:  If not NULL, put add_int.qualifier_source_value here. |
-| end_datetime |  |  |  |
-| verbatim_end_date |  |  |  |
-| days_supply |  |  |  |
-| dose_unit_source_value |  |  |  |
-| lot_number |  |  |  |
-| modifier_concept_id |  |  |  |
-| modifier_concept_id |  |  |  |
-| modifier_source_value |  |  |  |
-| quantity |  |  |  |
-| refills |  |  |  |
-| route_concept_id |  |  |  |
-| route_source_value |  |  |  |
-| sig |  |  |  |
-| stop_reason |  |  |  |
-| unique_device_id |  |  |  |
-| anatomic_site_concept_id |  |  |  |
-| disease_status_concept_id |  |  |  |
-| specimen_source_id |  |  |  |
-| anatomic_site_source_value |  |  |  |
-| disease_status_source_value |  |  |  |
-| condition_status_concept_id |  |  |  |
-| condition_status_source_value |  |  |  |
