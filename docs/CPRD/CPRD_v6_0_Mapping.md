@@ -1,9 +1,17 @@
 ---
 layout: default
-title: Additional Mapping
+title: STEM to CPRD
 nav_order: 9
-parent: CPRD_ETL
+parent: CPRD
 description: "Additional mappings"
+
+---
+
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
 
 ---
 
