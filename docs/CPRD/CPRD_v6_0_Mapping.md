@@ -17,8 +17,6 @@ description: "Additional mappings"
 
 ## Table name: condition_occurrence
 
-### Reading from stem_table
-
 ![](CPRD_v6_0_Mapping_files/image20.png)
 
 | Destination Field | Source field | Logic | Comment field |
@@ -42,8 +40,6 @@ description: "Additional mappings"
 
 ## Table name: device_exposure
 
-### Reading from stem_table
-
 ![](CPRD_v6_0_Mapping_files/image21.png)
 
 | Destination Field | Source field | Logic | Comment field |
@@ -65,8 +61,6 @@ description: "Additional mappings"
 | device_source_concept_id | source_concept_id |  |  |
 
 ## Table name: measurement
-
-### Reading from stem_table
 
 ![](CPRD_v6_0_Mapping_files/image22.png)
 
@@ -94,8 +88,6 @@ description: "Additional mappings"
 | value_source_value | value_source_value |  |  |
 
 ## Table name: drug_exposure
-
-### Reading from stem_table
 
 ![](CPRD_v6_0_Mapping_files/image23.png)
 
@@ -127,8 +119,6 @@ description: "Additional mappings"
 
 ## Table name: procedure_occurrence
 
-### Reading from stem_table
-
 ![](CPRD_v6_0_Mapping_files/image24.png)
 
 | Destination Field | Source field | Logic | Comment field |
@@ -149,8 +139,6 @@ description: "Additional mappings"
 | modifier_source_value | modifier_source_value |  |  |
 
 ## Table name: observation
-
-### Reading from stem_table
 
 ![](CPRD_v6_0_Mapping_files/image25.png)
 
@@ -177,8 +165,6 @@ description: "Additional mappings"
 
 ## Table name: specimen
 
-### Reading from stem_table
-
 ![](CPRD_v6_0_Mapping_files/image26.png)
 
 | Destination Field | Source field | Logic | Comment field |
@@ -198,34 +184,3 @@ description: "Additional mappings"
 | unit_source_value | unit_source_value |  |  |
 | anatomic_site_source_value | anatomic_site_source_value |  |  |
 | disease_status_source_value | disease_status_source_value |  |  |
-
-## Table name: fact_relationship
-
-## Table name: condition_era
-
-## Table name: drug_era
-
-## Table name: metadata
-
-## Table name: cdm_source
-
-## Table name: dose_era
-
-## Table name: cost
-
-## Table name: payer_plan_period
-
-## Table name: note
-
-## Table name: note_nlp
-
-## Table name: death
-
-## Table name: cohort
-
-## Table name: cohort_attribute
-
-## Table name: attribute_definition
-
-## Table name: cohort_definition
-
