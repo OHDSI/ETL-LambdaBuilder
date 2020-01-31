@@ -3,6 +3,7 @@ layout: default
 title: Clinical
 nav_order: 1
 parent: CPRD to STEM
+grand_parent: CPRD
 description: "CPRD Clinical table mapping to CDM STEM table"
 
 ---
