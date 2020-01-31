@@ -3,6 +3,7 @@ layout: default
 title: Therapy
 nav_order: 6
 parent: CPRD to STEM
+grand_parent: CPRD
 description: "CPRD Therapy table mapping to CDM STEM table"
 
 ---
