@@ -1,7 +1,7 @@
 ---
 layout: default
 title: IBM CCAE
-nav_order: 1
+nav_order: 2
 description: "IBM Commercial Claims and Encounters ETL to OMOP CDM"
 has_children: true
 permalink: /docs/IBM_CCAE

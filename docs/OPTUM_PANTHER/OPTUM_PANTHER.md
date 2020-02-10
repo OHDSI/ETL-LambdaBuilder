@@ -1,7 +1,7 @@
 ---
 layout: default
 title: OPTUM_PANTHER
-nav_order: 1
+nav_order: 7
 description: "OPTUM PANTHER ETL to OMOP CDM"
 has_children: true
 permalink: /docs/OPTUM_PANTHER

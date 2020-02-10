@@ -1,7 +1,7 @@
 ---
 layout: default
 title: JMDC
-nav_order: 1
+nav_order: 5
 description: "JMDC ETL to OMOP CDM"
 has_children: true
 permalink: /docs/JMDC

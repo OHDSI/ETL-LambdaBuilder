@@ -1,7 +1,7 @@
 ---
 layout: default
 title: OPTUM_EXTENDED
-nav_order: 1
+nav_order: 6
 description: "OPTUM EXTENDED ETL to OMOP CDM"
 has_children: true
 permalink: /docs/OPTUM_EXTENDED

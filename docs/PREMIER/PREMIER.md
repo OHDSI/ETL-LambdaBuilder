@@ -1,7 +1,7 @@
 ---
 layout: default
 title: PREMIER
-nav_order: 1
+nav_order: 8
 description: "PERMIER ETL to OMOP CDM"
 has_children: true
 permalink: /docs/PREMIER

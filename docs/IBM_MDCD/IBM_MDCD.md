@@ -1,7 +1,7 @@
 ---
 layout: default
 title: IBM MDCD
-nav_order: 1
+nav_order: 4
 description: "IBM Medicaid ETL to OMOP CDM"
 has_children: true
 permalink: /docs/IBM_MDCD
