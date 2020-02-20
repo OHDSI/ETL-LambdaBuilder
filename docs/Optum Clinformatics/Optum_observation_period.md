@@ -2,7 +2,7 @@
 layout: default
 title: Observation Period
 nav_order: 2
-parent: Optum_Clinformatics
+parent: Optum Clinformatics
 description: "Observation_Period mapping from Optum member_continuous_enrollment table"
 
 ---
