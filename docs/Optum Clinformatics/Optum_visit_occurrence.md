@@ -11,7 +11,7 @@ description: "Visit_Occurrence mapping from VISIT_DETAIL table"
 The VISIT_OCCURRENCE table contains all person visits to health care providers, including inpatient, outpatient and ER visits. A visit is an encounter for a patient at a point of care for duration of time. There could be several providers involved in the patient's care during the Visit. In the past, Visits were identified directly from the **MEDICAL_CLAIMS** table. Now that there is a hierarchical relationship between Visit concepts we can build Visits off of the **VISIT_DETAIL** similar to how the **DRUG_ERA** table is derived from the **DRUG_EXPOSURE** table. See the [VISIT_OCCURRENCE](#VISIT_OCCURRENCE-Logic) logic for more details.
 
 ## **VISIT_OCCURRENCE** Logic
-- Using the terminal ancestor query `need link` map the VISIT_DETAIL_CONCEPT_IDs to their highest-level ancestor.
+- Using the [terminal ancestor query](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Optum%20Clinformatics/Queries/CMS_PlaceOfService_OMOP_Vocab.sql) map the VISIT_DETAIL_CONCEPT_IDs to their highest-level ancestor.
 - The highest-level ancestor concept_id will become the VISIT_CONCEPT_ID
 
 ### **Inpatient visits**
