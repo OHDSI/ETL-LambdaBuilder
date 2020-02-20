@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Optum_Clinformatics
+title: Optum Clinformatics
 nav_order: 3
 description: "Optum Clinformatics ETL Documentation"
 has_children: true

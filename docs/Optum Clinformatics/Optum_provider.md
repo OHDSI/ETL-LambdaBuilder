@@ -2,7 +2,7 @@
 layout: default
 title: Provider
 nav_order: 6
-parent: Optum_Clinformatics
+parent: Optum Clinformatics
 description: "Provider mapping from Optum Clinformatics provider table"
 
 ---

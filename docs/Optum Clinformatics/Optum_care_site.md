@@ -2,7 +2,7 @@
 layout: default
 title: Care Site
 nav_order: 4
-parent: Optum_Clinformatics
+parent: Optum Clinformatics
 description: "Care_Site mapping from Optum Clinformatics provider table"
 
 ---

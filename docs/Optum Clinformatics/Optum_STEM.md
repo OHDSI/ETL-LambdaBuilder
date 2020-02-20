@@ -2,7 +2,7 @@
 layout: default
 title: Optum Clinformatics to STEM
 nav_order: 9
-parent: Optum
+parent: Optum Clinformatics
 has_children: true
 description: "Stem table description"
 ---

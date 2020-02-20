@@ -2,7 +2,7 @@
 layout: default
 title: Person
 nav_order: 1
-parent: Optum_Clinformatics
+parent: Optum Clinformatics
 description: "Person mapping from Optum member_continuous_enrollment table"
 
 ---
