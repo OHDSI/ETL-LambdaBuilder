@@ -50,7 +50,7 @@ The STEM table is a staging area where source codes like ICD9 codes will first b
 | days_supply | |If record is created using **MEDICAL_CLAIMS**<br/>NDC set days_supply to 1||
 | dose_unit_source_value |**NDC**<br>**MEDICAL_CLAIMS** NDC_UOM |||
 | lot_number | 
-MODIFIER_CONCEPT_ID|**MEDICAL_CLAIMS**<br/>PROCMOD| Use SOURCE_TO_STANDARD query and filter with `WHERE SOURCE_CONCEPT_CLASS_ID IN ('CPT4 Modifier') AND TARGET_CONCEPT_CLASS_ID IN ('CPT4 Modifier')`| Populate only if record is created using  **MEDICAL_CLAIMS**<br/>PROC_CD_
+|MODIFIER_CONCEPT_ID|**MEDICAL_CLAIMS**<br/>PROCMOD| Use SOURCE_TO_STANDARD query and filter with `WHERE SOURCE_CONCEPT_CLASS_ID IN ('CPT4 Modifier') AND TARGET_CONCEPT_CLASS_ID IN ('CPT4 Modifier')`| Populate only if record is created using  **MEDICAL_CLAIMS**<br/>PROC_CD
 | modifier_source_value | **MEDICAL_CLAIMS**<br/>PROCMOD||
 | quantity | **PROC_CD**<br>**MEDICAL_CLAIMS** UNITS<br><br>**NDC**<br>**MEDICAL_CLAIMS** NDC_QTY|||
 | refills | 

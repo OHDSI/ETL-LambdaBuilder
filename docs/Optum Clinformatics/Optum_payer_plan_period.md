@@ -23,16 +23,16 @@ Just like in the source **Member_Enrollment** table, a person will have a new ro
 ### **Mapping of source field values to OMOP Vocabulary concept id**
 
 #### **Mapping BUS**
-BUS|DESCRIPTION|OMOP Concept_Id
-:-----:|:-----:|:-----:
+|BUS|DESCRIPTION|OMOP Concept_Id|
+|:-----:|:-----:|:-----:|
 COM|Commercial|327
 MCR|Medicare|281
 NONE|No Business Line Code|0
 UNK|Unknown|0
 
 #### **Mapping HEALTH_EXCH**
-HEALTH_EXCH|DESCRIPTION|OMOP Concept_Id
-:-----:|:-----:|:-----:
+|HEALTH_EXCH|DESCRIPTION|OMOP Concept_Id|
+|:-----:|:-----:|:-----:|
 0|Non Exchange|
 1|Group Exchange|275
 2|Individual State Exchange|276

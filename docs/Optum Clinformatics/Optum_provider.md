@@ -28,8 +28,8 @@ If Taxonomy1 or Taxonomy2 are not NULL then do the following:
 
 If Taxonomy1 and Taxonomy2 are both NULL then use PROVCAT to map SPECIALITY_CONCEPT_ID using the SOURCE_TO_STANDARD query with the filter: `Where source_vocabulary in 'JNJ_OPTUM_P_SPCLTY' ` and set SPECIALTY_SOURCE_CONCEPT_ID to 0.
 
-**Destination Field**|**Source Field**|**Applied Rule**|**Comment**
-:-----:|:-----:|:-----:|:-----:
+|**Destination Field**|**Source Field**|**Applied Rule**|**Comment**|
+|:-----:|:-----:|:-----:|:-----:|
 PROVIDER_ID|**PROVIDER** Prov_Unique||
 PROVIDER_NAME| |NULL|
 NPI|NULL|**PROVIDER_BRIDGE** NPI is encrypted NPI; it does not pass validity check using NPI check algorithms like [here](https://www.eclaims.com/articles/how-to-calculate-the-npi-check-digit/)
@@ -43,6 +43,7 @@ SPECIALTY_SOURCE_VALUE|**PROVIDER** Taxonomy1,  Taxonomy2, PROVCAT||[See provide
 SPECIALTY_SOURCE_CONCEPT_ID|**PROVIDER** Taxonomy1, Taxonomy2||[See provider specialty logic](#Provider-specialty-mapping)
 GENDER_SOURCE_VALUE|NULL| |
 GENDER_SOURCE_CONCEPT_ID|0||
+
 ---
 *Common Data Model ETL Mapping Specification for Optum Extended SES & Extended DOD*
 <br>*CDM Version = 6.0.0, Clinformatics Version = v8.0*
