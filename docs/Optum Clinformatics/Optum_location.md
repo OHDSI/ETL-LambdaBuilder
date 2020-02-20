@@ -2,7 +2,7 @@
 layout: default
 title: Location
 nav_order: 5
-parent: Optum_Clinformatics
+parent: Optum Clinformatics
 description: "Location mapping from Optum Clinformatics member_enrollment and provider tables"
 
 ---

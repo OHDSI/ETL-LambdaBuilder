@@ -2,7 +2,7 @@
 layout: default
 title: Visit_Occurrence
 nav_order: 8
-parent: CPRD
+parent: Optum Clinformatics
 description: "Visit_Occurrence mapping from VISIT_DETAIL table"
 
 ---
