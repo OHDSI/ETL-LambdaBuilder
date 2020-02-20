@@ -1,8 +1,8 @@
 ---
 layout: default
-title: Observation Period
+title: Payer Plan Period
 nav_order: 3
-parent: Optum_Clinformatics
+parent: Optum Clinformatics
 description: "Payer_Plan_Period mapping from Optum member_continuous_enrollment table"
 
 ---

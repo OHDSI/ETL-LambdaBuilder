@@ -2,7 +2,7 @@
 layout: default
 title: Visit_Detail
 nav_order: 7
-parent: Optum_Clinformatics
+parent: Optum Clinformatics
 description: "Visit_Occurrence mapping from Optum_Clinformatics claims tables"
 
 ---
