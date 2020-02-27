@@ -331,3 +331,6 @@ ASALocalRun/
 
 # Configuration files
 docs/CPRD/Test Cases/inst/csv/config.csv
+
+# Pages files to test changes
+_site
