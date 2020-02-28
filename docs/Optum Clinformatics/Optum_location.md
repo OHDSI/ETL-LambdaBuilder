@@ -75,12 +75,12 @@ This table is built off the Optum **MEMBER_ENROLLMENT** table and **PROVIDER** t
 
 
 |**Destination Field**|**Source Field**|**Applied Rule**|**Comment**|
-|---------------------|----------------|----------------|-----------|
-|LOCATION_ID|Autogenerate | |
+|---------------|-------------|-----------|---------|
+|LOCATION_ID|Autogenerate | ||
 |ADDRESS_1| | | |
 |ADDRESS_2| | | |
 |CITY| | | |
-|STATE|**MEMBER_ENROLLMENT** STATE<br/><br>**PROVIDER** PROV_STATE| | |
+|STATE|**MEMBER_ENROLLMENT** STATE<br><br>**PROVIDER** PROV_STATE| ||
 |ZIP| | | |
 |COUNTY| | | |
 |COUNTRY| | | |

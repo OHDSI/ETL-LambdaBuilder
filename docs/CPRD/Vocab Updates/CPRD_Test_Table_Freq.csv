@@ -1,0 +1,325 @@
+count,source_value,code,description
+46640867,165-Serum creatinine,165,Serum creatinine
+41836060,189-Platelets,189,Platelets
+40100296,190-Potassium,190,Potassium
+39976717,196-Sodium,196,Sodium
+38590581,173-Haemoglobin,173,Haemoglobin
+38398982,194-Red blood cell count,194,Red blood cell count
+37692809,184-Neutrophil count,184,Neutrophil count
+37409360,208-Lymphocyte count,208,Lymphocyte count
+37189667,183-Monocyte count,183,Monocyte count
+37186355,207-Total White Blood cell count,207,Total White Blood cell count
+36999585,168-Eosinophil count,168,Eosinophil count
+36185469,182-Mean corpuscular volume,182,Mean corpuscular volume
+35551669,313-Basophil count,313,Basophil count
+35504099,153-Alkaline phosphatase,153,Alkaline phosphatase
+35142489,152-Albumin,152,Albumin
+34783948,312-Packed cell volume,312,Packed cell volume
+33999446,180-Mean corpuscular haemoglobin,180,Mean corpuscular haemoglobin
+33408857,158-Bilirubin,158,Bilirubin
+30416054,466-Glomerular Filtration Rate,466,Glomerular Filtration Rate
+30027380,204-Urea - blood,204,Urea - blood
+28792204,155-Alanine aminotransferase,155,Alanine aminotransferase
+27881243,163-Serum cholesterol,163,Serum cholesterol
+25370647,"467-""Procedures, specimens and samples""",467,"""Procedures, specimens and samples"""
+24912403,288-Other laboratory tests,288,Other laboratory tests
+23945422,181-MCH Hb Concentration,181,MCH Hb Concentration
+23899241,203-Thyroid stimulating hormone,203,Thyroid stimulating hormone
+23046024,213-Blood glucose,213,Blood glucose
+23006167,240-Urine test,240,Urine test
+22267458,220-Full blood count,220,Full blood count
+21529043,201-Total protein,201,Total protein
+20221133,175-High density lipoprotein,175,High density lipoprotein
+19071188,239-Urea and electrolytes,239,Urea and electrolytes
+18667114,202-Triglycerides,202,Triglycerides
+18289913,338-HDL/LDL ratio,338,HDL/LDL ratio
+18054015,177-Low density lipoprotein,177,Low density lipoprotein
+16953046,225-Liver function tests,225,Liver function tests
+15975531,361-RBC red blood cell size,361,RBC red blood cell size
+15857880,275-HbA1c - diabetic control,275,HbA1c - diabetic control
+13378878,323-INR,323,INR
+12262943,345-Free thyroxine,345,Free thyroxine
+11944634,172-Gamma glutamyl transpeptidase,172,Gamma glutamyl transpeptidase
+11939725,335-Serum globin,335,Serum globin
+11741451,273-Erythrocyte sedimentation rate,273,Erythrocyte sedimentation rate
+11351768,348-Other bacteriology tests,348,Other bacteriology tests
+10503050,159-Calcium,159,Calcium
+9827346,280-C Reactive protein,280,C Reactive protein
+9704327,214-Blood lipids,214,Blood lipids
+9306512,160-Calcium adjusted,160,Calcium adjusted
+9196633,287-Urinalysis - Protein,287,Urinalysis - Protein
+8754658,162-Serum chloride,162,Serum chloride
+8699664,286-Urinalysis - Glucose,286,Urinalysis - Glucose
+8534735,428-Microscopy culture & sensitivities,428,Microscopy culture & sensitivities
+8276428,311-PF current,311,PF current
+8003764,340-Urine biochemistry,340,Urine biochemistry
+7946658,236-Thyroid function,236,Thyroid function
+7189369,156-Aspartate aminotransferase,156,Aspartate aminotransferase
+6461834,169-Serum ferritin,169,Serum ferritin
+6143866,188-Serum inorganic phosphate,188,Serum inorganic phosphate
+5777647,274-Fasting glucose,274,Fasting glucose
+5399190,391-Serum bicarbonate,391,Serum bicarbonate
+5345456,157-B12 levels,157,B12 levels
+4873135,170-Folate level,170,Folate level
+4790212,469-Albumin creatinine ratio,469,Albumin creatinine ratio
+4654359,217-Electrocardiogram,217,Electrocardiogram
+4412416,227-Mid-stream specimen of urine,227,Mid-stream specimen of urine
+4114867,253-Chest x-ray,253,Chest x-ray
+3938616,251-Other diagnostic imaging,251,Other diagnostic imaging
+3818340,315-Chemical function tests,315,Chemical function tests
+3721993,226-Mammogram,226,Mammogram
+3400463,276-Prostate specific antigen,276,Prostate specific antigen
+3051388,435-Urine microalbumin,435,Urine microalbumin
+3007035,355-Bone studies,355,Bone studies
+2891896,402-Temperature,402,Temperature
+2846065,438-Other biochemistry test,438,Other biochemistry test
+2802789,327-Infection titres,327,Infection titres
+2685074,293-Large unstained cells,293,Large unstained cells
+2449618,394-Forced expiration volume in 1 sec,394,Forced expiration volume in 1 sec
+2389916,346-Other autoantibodies,346,Other autoantibodies
+2362554,290-Immunoglobulin,290,Immunoglobulin
+2312359,219-Faecal occult blood,219,Faecal occult blood
+2122591,470-Diabetic retinopathy screening,470,Diabetic retinopathy screening
+2013030,321-Prothrombin time,321,Prothrombin time
+1859951,314-Differential white cell count,314,Differential white cell count
+1838833,215-Clotting tests,215,Clotting tests
+1837787,374-Plasma viscosity,374,Plasma viscosity
+1781826,277-Uric acid blood level,277,Uric acid blood level
+1687459,243-High vaginal swab,243,High vaginal swab
+1666428,164-Creatine phosphokinase level,164,Creatine phosphokinase level
+1660524,171-Follicle stimulating hormone,171,Follicle stimulating hormone
+1518454,336-Blood trace elements / vitamins,336,Blood trace elements / vitamins
+1516097,468-Pulse oximetry,468,Pulse oximetry
+1445068,396-Forced vital capacity,396,Forced vital capacity
+1370577,395-FEV1 / FVC,395,FEV1 / FVC
+1367706,344-Free tri-iodothyronine,344,Free tri-iodothyronine
+1362961,483-Haematology screening tests,483,Haematology screening tests
+1344284,337-Histology,337,Histology
+1325089,433-Urine dipstick for blood,433,Urine dipstick for blood
+1323414,339-General ultra sound scan,339,General ultra sound scan
+1315025,292-Rheumatoid factor,292,Rheumatoid factor
+1274886,178-Luteinising hormone,178,Luteinising hormone
+1272222,299-CAT scan,299,CAT scan
+1194373,300-MRI scan,300,MRI scan
+1141712,289-Film report,289,Film report
+1134192,267-Spine x-ray,267,Spine x-ray
+1126224,431-Urine dipstick for protein,431,Urine dipstick for protein
+1120825,218-Endoscopy,218,Endoscopy
+1074194,229-Pregnancy test,229,Pregnancy test
+1044951,484-Urine Leucocytes,484,Urine Leucocytes
+1007470,480-Other Lab Result Information,480,Other Lab Result Information
+1004468,352-Serum iron tests,352,Serum iron tests
+993811,430-Urine dipstick for glucose,430,Urine dipstick for glucose
+992064,342-Echocardiogram,342,Echocardiogram
+987913,237-Abdominal ultra sound,237,Abdominal ultra sound
+982031,210-B12 & Folate level,210,B12 & Folate level
+958781,260-Knee x-ray,260,Knee x-ray
+931701,473-Urine dipstick for nitrites,473,Urine dipstick for nitrites
+908567,370-Other immunology tests,370,Other immunology tests
+873012,387-Haemoglobin variants,387,Haemoglobin variants
+868129,471-Spirometry,471,Spirometry
+849260,316-Examination of faeces,316,Examination of faeces
+834612,432-Urine dipstick for ketones,432,Urine dipstick for ketones
+822358,436-Tumour markers,436,Tumour markers
+819481,437-Enzymes/specific protein,437,Enzymes/specific protein
+782076,310-PF predicted,310,PF predicted
+774117,238-Pelvic ultra sound,238,Pelvic ultra sound
+771499,198-Thyroxine,198,Thyroxine
+691569,262-Pelvis x-ray,262,Pelvis x-ray
+691190,245-Other swab,245,Other swab
+689886,199-Testosterone,199,Testosterone
+677131,333-Serum electrolytes,333,Serum electrolytes
+671953,192-Prolactin level,192,Prolactin level
+658304,291-Plasma electrophoresis,291,Plasma electrophoresis
+658054,296-Colonoscopy,296,Colonoscopy
+633916,270-Rubella test,270,Rubella test
+628802,221-Glandular fever test,221,Glandular fever test
+615503,185-Oestrodiol level,185,Oestrodiol level
+580558,279-Anti nuclear antibodies,279,Anti nuclear antibodies
+577386,384-Blood gases,384,Blood gases
+560018,256-Foot x-ray,256,Foot x-ray
+554561,472-Immunology screening tests,472,Immunology screening tests
+549210,272-Amylase,272,Amylase
+524062,401-Respiratory rate,401,Respiratory rate
+523408,447-Anion gap,447,Anion gap
+490165,230-Seminal analysis,230,Seminal analysis
+477889,308-Lung Func. after bronchodilation,308,Lung Func. after bronchodilation
+473224,322-Partial thromboplastin time,322,Partial thromboplastin time
+469572,179-Lithium levels,179,Lithium levels
+469275,297-Sigmoidoscopy,297,Sigmoidoscopy
+466241,264-Shoulder x-ray,264,Shoulder x-ray
+463731,332-Cardiac enzymes,332,Cardiac enzymes
+450296,325-SH-antigen (hepatitis b) test,325,SH-antigen (hepatitis b) test
+442771,257-Hand x-ray,257,Hand x-ray
+427527,309-PF best ever,309,PF best ever
+417348,222-Glucose tolerance test,222,Glucose tolerance test
+412856,407-Chlamydia,407,Chlamydia
+409759,353-RBC - folate,353,RBC - folate
+406270,307-Lung Func. before bronchodilation,307,Lung Func. before bronchodilation
+398407,250-Wound swab,250,Wound swab
+397991,191-Progesterone,191,Progesterone
+377966,360-CAP (RAST),360,CAP (RAST)
+364482,235-Stool culture,235,Stool culture
+360139,261-Neck x-ray,261,Neck x-ray
+357932,231-Serology,231,Serology
+354600,392-Ambulatory blood pressure,392,Ambulatory blood pressure
+337842,282-Syphilis test,282,Syphilis test
+331439,380-Pulmonary function tests,380,Pulmonary function tests
+330619,258-Hip x-ray,258,Hip x-ray
+326984,354-Total iron binding capacity,354,Total iron binding capacity
+325688,176-Lactate dehydrogenase,176,Lactate dehydrogenase
+313571,481-Biochemical screening tests,481,Biochemical screening tests
+312688,252-Ankle x-ray,252,Ankle x-ray
+307640,397-Serum fibrinogen level,397,Serum fibrinogen level
+293394,328-Anti smooth muscle autoantibodies,328,Anti smooth muscle autoantibodies
+292866,421-Parietal cell autoantibodes,421,Parietal cell autoantibodes
+286441,284-Maternity ultra sound scan,284,Maternity ultra sound scan
+281878,474-Dexa scan/bone mineral density,474,Dexa scan/bone mineral density
+270875,255-Upper leg x-ray,255,Upper leg x-ray
+261561,269-Wrist x-ray,269,Wrist x-ray
+255269,368-Bone density studies,368,Bone density studies
+250768,410-Cerebro-spinal fluid examination,410,Cerebro-spinal fluid examination
+250296,223-Iron studies,223,Iron studies
+245680,434-Urine dipstick for ph,434,Urine dipstick for ph
+244562,367-Doppler ultrasound peripheral pulse,367,Doppler ultrasound peripheral pulse
+241499,174-Human chorionic gonadotropin,174,Human chorionic gonadotropin
+240839,329-Thyroid autoantibodies,329,Thyroid autoantibodies
+228282,369-Sex hormone binding globulin,369,Sex hormone binding globulin
+226347,211-Barium enema,211,Barium enema
+211751,319-Sputum examination,319,Sputum examination
+206960,487-Ante-natal blood tests,487,Ante-natal blood tests
+206245,331-Liver enzymes,331,Liver enzymes
+205957,248-Throat swab,248,Throat swab
+204668,233-Male sex hormone profile,233,Male sex hormone profile
+196236,247-Skin swab,247,Skin swab
+193842,197-Triodothyronine,197,Triodothyronine
+193805,195-Reticulocytes,195,Reticulocytes
+190410,278-Anti mitochondrial antibodies,278,Anti mitochondrial antibodies
+186251,281-Blood group antibodies,281,Blood group antibodies
+181161,400-Serum parathyroid hormone,400,Serum parathyroid hormone
+181052,363-Lipoprotein electrophoresis,363,Lipoprotein electrophoresis
+174664,304-ECG exercise,304,ECG exercise
+171562,242-Cervical swab,242,Cervical swab
+165700,365-Gonadotrophin,365,Gonadotrophin
+162811,167-Digoxin blood level,167,Digoxin blood level
+162260,228-Nail clippings,228,Nail clippings
+162124,283-Viral studies,283,Viral studies
+154801,154-Alpha fetoprotein,154,Alpha fetoprotein
+154715,234-Sputum culture,234,Sputum culture
+145336,383-Serum amino acids,383,Serum amino acids
+144683,427-Intraocular pressure right,427,Intraocular pressure right
+144596,426-Intraocular pressure left,426,Intraocular pressure left
+141779,212-Barium meal,212,Barium meal
+138880,382-Red blood cell colour,382,Red blood cell colour
+138878,271-Tuberculin test,271,Tuberculin test
+133771,216-Drug levels,216,Drug levels
+130385,341-Abdominal xray,341,Abdominal xray
+124977,379-ECG ambulatory,379,ECG ambulatory
+120602,366-Serum cortisol,366,Serum cortisol
+119118,356-Fructosamine,356,Fructosamine
+118723,254-Elbow x-ray,254,Elbow x-ray
+112393,224-Intravenous pyelogram (IVP),224,Intravenous pyelogram (IVP)
+111980,326-HIV test,326,HIV test
+111784,478-Hepatitis B Antibody,478,Hepatitis B Antibody
+111296,412-Airway reversibility,412,Airway reversibility
+110123,298-Nuclear medicine,298,Nuclear medicine
+103416,404-Electroencephalography,404,Electroencephalography
+91740,422-Complement tests,422,Complement tests
+87415,266-Skull x-ray,266,Skull x-ray
+86951,166-Creatinine clearance,166,Creatinine clearance
+86812,305-Barium swallow,305,Barium swallow
+76092,482-Genetic observations,482,Genetic observations
+75973,232-Female sex hormone profile,232,Female sex hormone profile
+73756,249-Vaginal swab,249,Vaginal swab
+70084,241-Eye swab,241,Eye swab
+69666,161-Carbemazepine,161,Carbemazepine
+65421,187-Phenytoin,187,Phenytoin
+58505,443-Thrombin time,443,Thrombin time
+57953,268-Lower leg x-ray,268,Lower leg x-ray
+56253,302-Coronary angiogram,302,Coronary angiogram
+54776,285-Guthrie test,285,Guthrie test
+54036,294-Bronchoscopy,294,Bronchoscopy
+52659,265-Sinus x-ray,265,Sinus x-ray
+52095,205-Valproate,205,Valproate
+46463,490-Ear swab,490,Ear swab
+43182,349-Microscopy for malarial parasites,349,Microscopy for malarial parasites
+40869,343-Nerve conduction studies,343,Nerve conduction studies
+39006,442-Sickle cell disease screen,442,Sickle cell disease screen
+38282,359-Antostreptolysin o titre,359,Antostreptolysin o titre
+38120,200-Theophylline,200,Theophylline
+36818,330-DNA binding autoantibodies,330,DNA binding autoantibodies
+36590,206-Very low density lipoprotein,206,Very low density lipoprotein
+35520,244-Nose swab,244,Nose swab
+35006,376-Other drug levels,376,Other drug levels
+34431,411-Postural drop in BP,411,Postural drop in BP
+34277,263-Ribs x-ray,263,Ribs x-ray
+32229,403-Urine cytology,403,Urine cytology
+30905,398-Jugular venous pressure,398,Jugular venous pressure
+29614,393-Skin prick test,393,Skin prick test
+27852,386-Calculus examination,386,Calculus examination
+26176,389-Immuno electrophoresis,389,Immuno electrophoresis
+24294,375-Toxicology,375,Toxicology
+23573,259-Upper arm x-ray,259,Upper arm x-ray
+22858,334-Serum osmolality,334,Serum osmolality
+20728,405-HLA tissue typing,405,HLA tissue typing
+19577,347-Hepatitis a test,347,Hepatitis a test
+18141,408-Oesophagoscopy,408,Oesophagoscopy
+15253,390-Feto-placental hormones,390,Feto-placental hormones
+15017,358-Lower arm x-ray,358,Lower arm x-ray
+14097,486-Lung function pre-steroids,486,Lung function pre-steroids
+12812,246-Penile swab,246,Penile swab
+12324,399-Transfer coefficient for CO,399,Transfer coefficient for CO
+12205,425-Sputum cytology,425,Sputum cytology
+11836,324-Colour index,324,Colour index
+11577,477-Lung function post steriods,477,Lung function post steriods
+11491,357-Urethral swab,357,Urethral swab
+10849,378-Venography,378,Venography
+10488,419-Red blood cells enzymes,419,Red blood cells enzymes
+8858,209-Amniocentesis,209,Amniocentesis
+8736,439-Serum paracetamol,439,Serum paracetamol
+8446,424-Serum growth hormone,424,Serum growth hormone
+7789,406-Blood lead level,406,Blood lead level
+7325,306-Barium follow through,306,Barium follow through
+7146,381-Red blood cell shape,381,Red blood cell shape
+7017,414-Blood alcohol level,414,Blood alcohol level
+6977,444-Tomography,444,Tomography
+6923,423-Gastrointestinal hormones,423,Gastrointestinal hormones
+6376,413-Total lung capacity,413,Total lung capacity
+5971,318-Bone marrow examination,318,Bone marrow examination
+5887,186-Phenobarbitone,186,Phenobarbitone
+5860,151-Acid phosphatase,151,Acid phosphatase
+5216,416-Fluoroscopy,416,Fluoroscopy
+4741,362-Iron kinetics,362,Iron kinetics
+4642,440-Serum cyclosporin,440,Serum cyclosporin
+4630,295-Duodenoscopy,295,Duodenoscopy
+4421,385-Vomit examination,385,Vomit examination
+4100,493-Thyroid disorder screening,493,Thyroid disorder screening
+3958,455-Carboxyhaemoglobin,455,Carboxyhaemoglobin
+3930,441-Schilling test - b12 absorption,441,Schilling test - b12 absorption
+3832,317-Synovial fluid examination,317,Synovial fluid examination
+3571,303-Femoral arteriogram,303,Femoral arteriogram
+3474,301-Carotid angiogram,301,Carotid angiogram
+3305,454-Serum renin,454,Serum renin
+3133,450-Serum lactate,450,Serum lactate
+3100,449-Serum aldosterone,449,Serum aldosterone
+2879,320-Amniotic fluid examination,320,Amniotic fluid examination
+2355,456-Serum adrenocorticotrophic hormone,456,Serum adrenocorticotrophic hormone
+2346,429-Serum insulin,429,Serum insulin
+2303,377-E2 prostaglandin,377,E2 prostaglandin
+2164,193-Prostatic acid phosphatase,193,Prostatic acid phosphatase
+1963,388-Legionella antibody test,388,Legionella antibody test
+1497,457-Abdominal aortogram,457,Abdominal aortogram
+1414,409-Renal arteriography,409,Renal arteriography
+1109,458-Serum amiodarone,458,Serum amiodarone
+980,452-Pleural fluid examination,452,Pleural fluid examination
+748,453-Adrenal autoantibodies,453,Adrenal autoantibodies
+720,448-Sialogram,448,Sialogram
+592,418-Red blood cell clumping,418,Red blood cell clumping
+558,420-Ascitic fluid examination,420,Ascitic fluid examination
+463,446-Serum noradrenaline,446,Serum noradrenaline
+462,451-Disaccharidase tolerance test,451,Disaccharidase tolerance test
+372,415-Methotrexate,415,Methotrexate
+346,364-LE cells,364,LE cells
+275,445-Serum adrenaline,445,Serum adrenaline
+220,417-Lymphangiography,417,Lymphangiography
+98,373-Tricyclics,373,Tricyclics

@@ -58,14 +58,14 @@ WHERE CONCEPT_ID IN (
 ### **Mapping of source field values to OMOP Vocabulary concept id**
 
 #### **Mapping Gender**
-GDR_CD|DESCRIPTION|OMOP Concept_Id
-:-----:|:-----:|:-----:
+|GDR_CD|DESCRIPTION|OMOP Concept_Id|
+|:-----:|:-----:|:-----:|
 M|Male|8507
 F|Female|8532
 
 #### **Mapping Race**
-Race|DESCRIPTION|OMOP Concept_Id
-:-----:|:-----:|:-----:
+|Race|DESCRIPTION|OMOP Concept_Id|
+|:-----:|:-----:|:-----:|
 A|Asian|8515
 B|Black|8516
 H|Hispanic|0
@@ -73,8 +73,8 @@ W|White|8527
 U, Blank, or *NULL*|Unknown|0
 
 #### **Mapping Ethnicity**
-Race|DESCRIPTION|OMOP Concept_Id
-:-----:|:-----:|:-----:
+|Race|DESCRIPTION|OMOP Concept_Id|
+|:-----:|:-----:|:-----:|
 A|Asian|38003564
 B|Black|38003564
 H|Hispanic|38003563

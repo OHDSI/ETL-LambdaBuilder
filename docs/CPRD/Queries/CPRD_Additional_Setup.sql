@@ -31,6 +31,7 @@ select a.patid,
 from native.additional a
   left join native.clinical c
   on c.adid = a.adid
+  and c.patid = a.patid
   join native.entity e
   on a.enttype = e.code
   left join native.lookuptype lt
@@ -78,6 +79,7 @@ select a.patid,
 from native.additional a
   left join native.clinical c
   on c.adid = a.adid
+  and c.patid = a.patid
   join native.entity e
   on a.enttype = e.code
   left join native.lookuptype lt
@@ -121,6 +123,7 @@ select a.patid,
 from native.additional a
   left join native.clinical c
   on c.adid = a.adid
+  and c.patid = a.patid
   join native.entity e
   on a.enttype = e.code
   left join native.lookuptype lt
@@ -164,6 +167,7 @@ select a.patid,
 from native.additional a
   left join native.clinical c
   on c.adid = a.adid
+  and c.patid = a.patid
   join native.entity e
   on a.enttype = e.code
   left join native.lookuptype lt
@@ -207,6 +211,7 @@ select a.patid,
 from native.additional a
   left join native.clinical c
   on c.adid = a.adid
+  and c.patid = a.patid
   join native.entity e
   on a.enttype = e.code
   left join native.lookuptype lt
@@ -250,6 +255,7 @@ select a.patid,
 from native.additional a
   left join native.clinical c
   on c.adid = a.adid
+  and c.patid = a.patid
   join native.entity e
   on a.enttype = e.code
   left join native.lookuptype lt
@@ -293,6 +299,7 @@ select a.patid,
 from native.additional a
   left join native.clinical c
   on c.adid = a.adid
+  and c.patid = a.patid
   join native.entity e
   on a.enttype = e.code
   left join native.lookuptype lt
@@ -336,6 +343,7 @@ select a.patid,
 from native.additional a
   left join native.clinical c
   on c.adid = a.adid
+  and c.patid = a.patid
   join native.entity e
   on a.enttype = e.code
   left join native.lookuptype lt
@@ -384,6 +392,7 @@ select a.patid,
 from native.additional a
   left join native.clinical c
   on c.adid = a.adid
+  and c.patid = a.patid
   join native.entity e
   on a.enttype = e.code
   left join native.lookuptype lt
@@ -432,6 +441,7 @@ select a.patid,
 from native.additional a
   left join native.clinical c
   on c.adid = a.adid
+  and c.patid = a.patid
   join native.entity e
   on a.enttype = e.code
   left join native.lookuptype lt
@@ -475,6 +485,7 @@ select a.patid,
 from native.additional a
   left join native.clinical c
   on c.adid = a.adid
+  and c.patid = a.patid
   join native.entity e
   on a.enttype = e.code
   left join native.scoringmethod sm

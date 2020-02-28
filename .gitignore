@@ -328,3 +328,9 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+
+# Configuration files
+docs/CPRD/Test Cases/inst/csv/config.csv
+
+# Pages files to test changes
+_site
