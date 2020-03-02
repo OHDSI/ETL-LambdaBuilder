@@ -24,6 +24,19 @@ The STEM table is a staging area where source codes like ICD9 codes will first b
 
 - NDC codes are date specific so there is an extra filter for the concept id mapping to make sure it falls during the time an NDC is valid.
 
+- Some 11 digit NDC codes are invalid and instead need to mapped to the 9-digit version. To account for this map the 11-digit NDC code to SOURCE_CODE in OMOP vocab first. If no mapping is found, map the first 9 digits of NDC code to SOURCE_CODE.
+
+- In the **RX_CLAIMS** table some values in DAYS_SUP are invalid. Any value < 0 or > 365 should be updated using this logic:
+
+```
+    CASE
+    WHEN DAYS_SUPPLY < 0 THEN 0
+    WHEN DAYS_SUPPLY > 365 THEN 365
+    WHEN DAYS_SUPPLY IS NULL THEN 0
+    ELSE DAYS_SUPPLY
+    END
+```
+
 **Destination Field**|**Source Field**|**Applied Rule**|**Comment**
 | :----: | :----: | :--------: | :------: |
 | id |  |Autogenerate||
