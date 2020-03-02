@@ -51,7 +51,7 @@ The STEM table is a staging area where source codes like ICD9 codes will first b
 | end_datetime | **VISIT_DETAIL** VISIT_DETAIL_END_DATE|||
 | verbatim_end_date |  
 | days_supply | DAYS_SUP|If DAYS_SUP = 0 or is blank, set to 1||
-| dose_unit_source_value |**NDC**<br>**MEDICAL_CLAIMS** NDC_UOM |||
+| dose_unit_source_value ||||
 | lot_number | 
 MODIFIER_CONCEPT_ID|| | 
 | modifier_source_value | ||
