@@ -29,6 +29,13 @@ PROV_TYPE|DESCRIPTION|OMOP Concept_Id
 
 If CARE_SITE_SOURCE_VALUE from **RX_CLAIMS**.Pharm set PLACE_OF_SERVICE_CONCEPT_ID to 38004340 and PLACE_OF_SERVICE_SOURCE_VALUE to Pharmacy.
 
+## **Mapping the CARE_SITE table**
+### From the PROVIDER table
+![](images/image7.png)
+
+### From the RX_CLAIMS table
+![](images/image8.png)
+
 **Destination Field**|**Source Field**|**Applied Rule**|**Comment**
 :-----:|:-----:|:-----:|:-----:
 CARE_SITE_ID|<system generated>|**PROVIDER** Prov_Unique or distinct **RX_CLAIMS** Pharm |

@@ -16,14 +16,15 @@ Just like in the source **Member_Enrollment** table, a person will have a new ro
 ## **PAYER_PLAN_PERIOD Table Logic**
 
 - Delete all records for a person who is not in OMOP *PERSON* table.  
-- - If the earliest ELIGEFF occurs prior to 05/01/2000 revise ELIGEFF to match the start date of data `MAX(ELIGEFF, '05-01-2000')`
+- If the earliest ELIGEFF occurs prior to 05/01/2000 revise ELIGEFF to match the start date of data `MAX(ELIGEFF, '05-01-2000')`
 - If the latest ELIGEND > **Member_Continuous_Enrollment** last date of Extract_Ym, then edit `ELIGEND = MAX(ELIGEND, Extract_Ym)`
 - Delete all records in **Member_Enrollment** with `ELIGEND < '05/01/2000'`
 
 ### **Mapping of source field values to OMOP Vocabulary concept id**
 
 #### **Mapping BUS**
-|BUS|DESCRIPTION|OMOP Concept_Id|
+
+|**BUS**|**DESCRIPTION**|**OMOP Concept_Id**|
 |:-----:|:-----:|:-----:|
 COM|Commercial|327
 MCR|Medicare|281
@@ -31,13 +32,17 @@ NONE|No Business Line Code|0
 UNK|Unknown|0
 
 #### **Mapping HEALTH_EXCH**
-|HEALTH_EXCH|DESCRIPTION|OMOP Concept_Id|
+
+|**HEALTH_EXCH**|**DESCRIPTION**|**OMOP Concept_Id**|
 |:-----:|:-----:|:-----:|
 0|Non Exchange|
 1|Group Exchange|275
 2|Individual State Exchange|276
 3|Individual Federal Exchange|276
 
+## **Mapping the PAYER_PLAN_PERIOD table**
+### From the MEMBER_ENROLLMENT table
+![](images/image6.png)
 
 **Destination Field**|**Source Field**|**Applied Rule**|**Comment**
 :-----:|:-----:|:-----:|:-----:
@@ -46,7 +51,7 @@ PERSON_ID|**Member_Enrollment** PATID| |
 CONTRACT_PERSON_ID|NONE|Cannot be generated in Optum DOD/SES|Optum has FAMILY_ID to person's within family. But, it does not indicate which person in the family is the contract holder. 
 PAYER_PLAN_PERIOD_START_DATE|**Member_Enrollment** ELIGEFF|Minimum start date of enrollment in a plan.|[See Table Logic](#PAYER_PLAN_PERIOD-Table-Logic)
 PAYER_PLAN_PERIOD_END_DATE|**Member_Enrollment** ELIGEND|Maximum end date of a continuous enrollment in a plan.|[See Table Logic](#PAYER_PLAN_PERIOD-Table-Logic)
-PAYER_CONCEPT_ID|**Member_Enrollment** BUS_LINE (BUS) & HEALTH_EXCH|[See mapping for BUS](#mapping-bus) [and HEALTH_EXCH](#mapping-HEALTH_EXCH)|Use multi step process to assign concept_id. <br> Check BUS = 'MCR' Yes: assign concept_id. <br> Else, <br> Check if HEALTH_EXCH in (1,2,3) Yes: assign concept_id. <br>Else, <br> Check if BUS = 'COM' Yes: assign concept_id. <br> Else, assign 0 as concept_id. 
+PAYER_CONCEPT_ID|**Member_Enrollment** BUS_LINE (BUS) & HEALTH_EXCH|[See mapping for BUS](#mapping-bus) [and HEALTH_EXCH](#Mapping-HEALTH_EXCH)|Use multi step process to assign concept_id. <br> Check BUS = 'MCR' Yes: assign concept_id. <br> Else, <br> Check if HEALTH_EXCH in (1,2,3) Yes: assign concept_id. <br>Else, <br> Check if BUS = 'COM' Yes: assign concept_id. <br> Else, assign 0 as concept_id. 
 PAYER_SOURCE_VALUE|Concatenate **Member_Enrollment** BUS_LINE (BUS) & HEALTH_EXCH||
 PAYER_SOURCE_CONCEPT_ID|||
 PLAN_CONCEPT_ID|0||

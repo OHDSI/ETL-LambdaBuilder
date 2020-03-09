@@ -73,21 +73,28 @@ This table is built off the Optum **MEMBER_ENROLLMENT** table and **PROVIDER** t
 |WV|West Virginia|42046311
 |WY|Wyoming|42046313
 
+## **Mapping the LOCATION table**
+### From the MEMBER_ENROLLMENT table
+![](images/image9.png)
+
+### From the PROVIDER table
+![](images/image10.png)
 
 |**Destination Field**|**Source Field**|**Applied Rule**|**Comment**|
-|---------------|-------------|-----------|---------|
-|LOCATION_ID|Autogenerate | ||
+|:------:|:-------:|:-----------:|:---------:|
+|LOCATION_ID|Autogenerate| ||
 |ADDRESS_1| | | |
 |ADDRESS_2| | | |
 |CITY| | | |
-|STATE|**MEMBER_ENROLLMENT** STATE<br><br>**PROVIDER** PROV_STATE| ||
+|STATE|**MEMBER_ENROLLMENT** STATE<br>**PROVIDER** PROV_STATE| | |
 |ZIP| | | |
 |COUNTY| | | |
 |COUNTRY| | | |
-|LOCATION_SOURCE_VALUE| | ||
-|REGION_CONCEPT_ID||||
+|LOCATION_SOURCE_VALUE| | | |
+|REGION_CONCEPT_ID| | | |
 |LATITUDE| | | |
 |LONGITUDE| | | |
+
 ---
 *Common Data Model ETL Mapping Specification for Optum Extended SES & Extended DOD*
 <br>*CDM Version = 6.0.0, Clinformatics Version = v8.0*

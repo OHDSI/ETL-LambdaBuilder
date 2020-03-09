@@ -37,48 +37,48 @@ The STEM table is a staging area where source codes like ICD9 codes will first b
     END
 ```
 
-**Destination Field**|**Source Field**|**Applied Rule**|**Comment**
+|**Destination Field**|**Source Field**|**Applied Rule**|**Comment**|
 | :----: | :----: | :--------: | :------: |
 | id |  |Autogenerate||
 | domain_id ||This should be the domain_id of the standard concept in the CONCEPT_ID field. If a code is mapped to CONCEPT_ID 0, put the domain_id as Observation.||
 | person_id | **VISIT_DETAIL** PERSON_ID|  ||
-| visit_detail_id |**VISIT_DETAIL**<br>VISIT_DETAIL_ID||
+| visit_detail_id |**VISIT_DETAIL**<br>VISIT_DETAIL_ID|||
 | visit_occurrence_id |**VISIT_DETAIL**<br>VISIT_OCCURRENCE_ID|Use the linking to **VISIT_DETAIL** to look up VISIT_OCCURRENCE_ID||
 | provider_id |**VISIT_DETAIL**<br>PROVIDER_ID |||
 | start_datetime |**VISIT_DETAIL** VISIT_DETAIL_START_DATETIME |||
 | concept_id | NDC|Use the SOURCE_TO_STANDARD query with the filter<br/><br/>**NDC**<br> WHERE SOURCE_VOCABULARY_ID IN ('NDC') AND TARGET_STANDARD_CONCEPT ='S' AND TARGET_INVALID_REASON IS NULL AND VISIT_DETAIL_START_DATE BETWEEN SOURCE_VALID_START_DATE AND SOURCE_VALID_END_DATE| If an NDC does not have a mapping, set the concept_id to 0|
 | source_value | NDC|||
-| source_concept_id |NDC|Use the SOURCE_TO_SOURCE query with the filter<br/><br/>**NDC**<br> WHERE SOURCE_VOCABULARY_ID IN ('NDC') AND VISIT_DETAIL_START_DATE BETWEEN SOURCE_VALID_START_DATE AND SOURCE_VALID_END_DATE|
+| source_concept_id |NDC|Use the SOURCE_TO_SOURCE query with the filter<br/><br/>**NDC**<br> WHERE SOURCE_VOCABULARY_ID IN ('NDC') AND VISIT_DETAIL_START_DATE BETWEEN SOURCE_VALID_START_DATE AND SOURCE_VALID_END_DATE||
 | type_concept_id |MAIL_IND|If MAIL_IND = 'Y' then 38000176 (Prescription dispensed through mail order) else 38000175 (Prescription dispensed in pharmacy)||  
-| operator_concept_id | 
-| unit_concept_id |  
-| unit_source_value | 
+| operator_concept_id | |||
+| unit_concept_id | |||
+| unit_source_value | |||
 | start_date | **VISIT_DETAIL** VISIT_DETAIL_START_DATE||| 
 | end_date |  **VISIT_DETAIL** VISIT_DETAIL_END_DATE|||
-| range_high |  
-| range_low | 
-| value_as_number | 
-| value_as_string | 
-| value_as_concept_id | 
-| value_source_value | 
+| range_high | |||
+| range_low | |||
+| value_as_number | |||
+| value_as_string | |||
+| value_as_concept_id | |||
+| value_source_value | |||
 | end_datetime | **VISIT_DETAIL** VISIT_DETAIL_END_DATE|||
-| verbatim_end_date |  
+| verbatim_end_date | |||
 | days_supply | DAYS_SUP|If DAYS_SUP = 0 or is blank, set to 1||
 | dose_unit_source_value ||||
-| lot_number | 
-MODIFIER_CONCEPT_ID|| | 
-| modifier_source_value | ||
+| lot_number | |||
+|MODIFIER_CONCEPT_ID|| | |
+| modifier_source_value | |||
 | quantity | QUANTITY|||
-| refills | RFL_NBR||||
+| refills | RFL_NBR|||
 | route_concept_id | |||
 | route_source_value | |||
 | sig | NULL |||
-| stop_reason | 
-| unique_device_id | 
-| anatomic_site_concept_id | 
-| disease_status_concept_id |  
-| specimen_source_id |
-| anatomic_site_source_value | 
-| disease_status_source_value | 
-| condition_status_concept_id | 
-| condition_status_source_value | 
+| stop_reason | |||
+| unique_device_id | |||
+| anatomic_site_concept_id | |||
+| disease_status_concept_id | |||
+| specimen_source_id ||||
+| anatomic_site_source_value | |||
+| disease_status_source_value | |||
+| condition_status_concept_id | |||
+| condition_status_source_value | |||

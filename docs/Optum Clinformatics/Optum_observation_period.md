@@ -18,6 +18,9 @@ The information in the OBSERVATION_PERIOD table is sourced from the  **Member_Co
 - If the earliest ELIGEFF occurs prior to 05/01/2000 revise ELIGEFF to match the start date of data `MAX(ELIGEFF, '05-01-2000')`
 - If the latest ELIGEND > **Member_Continuous_Enrollment** last date of Extract_Ym, then edit `ELIGEND = MAX(ELIGEND, Extract_Ym)
 
+## **Mapping the OBSERVATION_PERIOD table**
+### From the MEMBER_CONTINUOUS_ENROLLMENT table
+![](images/image4.png)
 
 **Destination Field**|**Source Field**|**Applied Rule**|**Comment**
 :-----:|:-----:|:-----:|:-----:
