@@ -34,6 +34,8 @@ The STEM table is a staging area where source codes like ICD9 codes will first b
 - START_DATE is assigned to VISIT_DETAIL_START_DATE
 - The VISIT_DETAIL.VISIT_OCCURRENCE_ID and VISIT_DETAIL.VISIT_DETAIL_ID are FK in STEM table.
 
+![](images/image17.png)
+
 |**Destination Field**|**Source Field**|**Applied Rule**|**Comment**|
 | :----: | :----: | :--------: | :------: |
 | id | |Autogenerate||

@@ -21,6 +21,8 @@ The STEM table is a staging area where source codes like ICD9 codes will first b
 
 ## **Mapping from INPATIENT_CONFINEMENT**
 
+![](images/image19.png)
+
 |**Destination Field**|**Source Field**|**Applied Rule**|**Comment**|
 | :----: | :----: | :--------: | :------: |
 | id |  |Autogenerate||

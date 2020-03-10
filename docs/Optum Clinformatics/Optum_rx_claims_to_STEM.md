@@ -37,6 +37,8 @@ The STEM table is a staging area where source codes like ICD9 codes will first b
     END
 ```
 
+![](images/image21.png)
+
 |**Destination Field**|**Source Field**|**Applied Rule**|**Comment**|
 | :----: | :----: | :--------: | :------: |
 | id |  |Autogenerate||

@@ -20,6 +20,7 @@ The STEM table is a staging area where source codes like ICD9 codes will first b
     - For every record in **VISIT_DETAIL** there may be 0 to n rows in **STEM**.
 
 ## **Mapping from MEDICAL_CLAIMS**
+![](images/image16.png)
 
 |**Destination Field**|**Source Field**|**Applied Rule**|**Comment**|
 | :----: | :----: | :--------: | :------: |
