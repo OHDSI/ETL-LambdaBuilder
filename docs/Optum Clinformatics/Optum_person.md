@@ -58,32 +58,42 @@ WHERE CONCEPT_ID IN (
 ### **Mapping of source field values to OMOP Vocabulary concept id**
 
 #### **Mapping Gender**
-|GDR_CD|DESCRIPTION|OMOP Concept_Id|
+
+|**GDR_CD**|**DESCRIPTION**|**OMOP Concept_Id**|
 |:-----:|:-----:|:-----:|
-M|Male|8507
-F|Female|8532
+|M|Male|8507|
+|F|Female|8532|
 
 #### **Mapping Race**
-|Race|DESCRIPTION|OMOP Concept_Id|
+
+|**Race**|**DESCRIPTION**|**OMOP Concept_Id**|
 |:-----:|:-----:|:-----:|
-A|Asian|8515
-B|Black|8516
-H|Hispanic|0
-W|White|8527
-U, Blank, or *NULL*|Unknown|0
+|A|Asian|8515|
+|B|Black|8516|
+|H|Hispanic|0|
+|W|White|8527|
+|U, Blank, or *NULL*|Unknown|0|
 
 #### **Mapping Ethnicity**
+
 |Race|DESCRIPTION|OMOP Concept_Id|
 |:-----:|:-----:|:-----:|
-A|Asian|38003564
-B|Black|38003564
-H|Hispanic|38003563
-W|White|38003564
-U, Blank, or *NULL*|Unknown|0
+|A|Asian|38003564|
+|B|Black|38003564|
+|H|Hispanic|38003563|
+|W|White|38003564|
+|U, Blank, or *NULL*|Unknown|0|
 
 
 ------------------
-------------------
+
+## **Mapping the PERSON table**
+
+### From the MEMBER_CONTINUOUS_ENROLLMENT table
+![](images/image2.png)
+
+### From the DEATH table
+![](images/image3.png)
 
 |**Destination Field**|**Source Field**|**Applied Rule**|**Comment**|
 |:-----:|:-----:|:-----:|:-----:|
@@ -105,7 +115,7 @@ U, Blank, or *NULL*|Unknown|0
 |RACE_SOURCE_VALUE|**(SES only) SES** D_RACE_CODE |`If D_RACE_CODE in ('W','A','U','B')`|This data does not exist for DOD so this should be set to NULL for persons in the DOD database.|
 |RACE_SOURCE_CONCEPT_ID||0||
 |ETHNICITY_SOURCE_VALUE|**(SES only)**<br/>**SES** D_RACE_CODE|`If D_RACE_CODE = 'H'`|This data does not exist for DOD so this should be set to NULL for persons in the DOD database.|
-|ETHNICITY_SOURCE_CONCEPT_ID||0|||
+|ETHNICITY_SOURCE_CONCEPT_ID||0||
 
 ---
 *Common Data Model ETL Mapping Specification for Optum Extended SES & Extended DOD*

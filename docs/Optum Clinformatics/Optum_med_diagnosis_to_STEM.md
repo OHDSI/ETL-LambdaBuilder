@@ -34,19 +34,21 @@ The STEM table is a staging area where source codes like ICD9 codes will first b
 - START_DATE is assigned to VISIT_DETAIL_START_DATE
 - The VISIT_DETAIL.VISIT_OCCURRENCE_ID and VISIT_DETAIL.VISIT_DETAIL_ID are FK in STEM table.
 
-**Destination Field**|**Source Field**|**Applied Rule**|**Comment**
+![](images/image17.png)
+
+|**Destination Field**|**Source Field**|**Applied Rule**|**Comment**|
 | :----: | :----: | :--------: | :------: |
 | id | |Autogenerate||
 | domain_id ||This should be the domain_id of the standard concept in the CONCEPT_ID field. If a code is mapped to CONCEPT_ID 0, put the domain_id as Observation.||
 | person_id | patid| Use patid to lookup Person_id ||
-| visit_detail_id |**VISIT_DETAIL**<br>VISIT_DETAIL_ID||
+| visit_detail_id |**VISIT_DETAIL**<br>VISIT_DETAIL_ID|||
 | visit_occurrence_id |**VISIT_DETAIL**<br>VISIT_OCCURRENCE_ID|Use the linking to **VISIT_DETAIL** to look up VISIT_OCCURRENCE_ID||
 | provider_id |**VISIT_DETAIL**<br>PROVIDER_ID |||
 | start_datetime |**VISIT_DETAIL** VISIT_DETAIL_START_DATETIME |||
-| concept_id | **MED_DIAGNOSIS**<br>DIAG|Use the SOURCE_TO_STANDARD query with the filter<br/><br/>WHERE SOURCE_VOCABULARY_ID IN (*'ICD9CM'* OR *'ICD10CM'*) AND TARGET_STANDARD_CONCEPT ='S' AND TARGET_INVALID_REASON IS NULL |If ICD_FLAG = 9 then use 'ICD9CM', else if ICD_FLAG = 10 then use 'ICD10CM'|
+| concept_id | **MED_DIAGNOSIS**<br>DIAG|Use the SOURCE_TO_STANDARD query with the filter<br/><br/>WHERE SOURCE_VOCABULARY_ID IN (*'ICD9CM'* OR *'ICD10CM'*) AND TARGET_STANDARD_CONCEPT ='S' AND TARGET_INVALID_REASON IS NULL |If ICD_FLAG = 9 then use 'ICD9CM', else if ICD_FLAG = 10 then use 'ICD10CM'||
 | source_value | **MED_DIAGNOSIS**<br>DIAG|||
 | source_concept_id |**MED_DIAGNOSIS**<br>DIAG |Use the SOURCE_TO_SOURCE query with the filter<br><br>WHERE SOURCE_VOCABULARY_ID IN (*'ICD9CM'* OR *'ICD10CM'*) |If ICD_FLAG = 9 then use 'ICD9CM', else if ICD_FLAG = 10 then use 'ICD10CM'|
-| type_concept_id |**MED_DIAGNOSIS**<br>DIAG_POSITION| If position = 1 then concept_id = 44786627 (Primary condition). Use 44786629 (Secondary Condition for all others.  |||
+| type_concept_id |**MED_DIAGNOSIS**<br>DIAG_POSITION| If position = 1 then concept_id = 44786627 (Primary condition). Use 44786629 (Secondary Condition for all others.  ||
 | end_datetime | |||
-| condition_status_concept_id | **MED_DIAGNOSIS** POA | Y = 46236988<br>N, U, or W = 0|
+| condition_status_concept_id | **MED_DIAGNOSIS** POA | Y = 46236988<br>N, U, or W = 0||
 | condition_status_source_value | **MED_DIAGNOSIS** POA |||

@@ -28,6 +28,13 @@ If Taxonomy1 or Taxonomy2 are not NULL then do the following:
 
 If Taxonomy1 and Taxonomy2 are both NULL then use PROVCAT to map SPECIALITY_CONCEPT_ID using the SOURCE_TO_STANDARD query with the filter: `Where source_vocabulary in 'JNJ_OPTUM_P_SPCLTY' ` and set SPECIALTY_SOURCE_CONCEPT_ID to 0.
 
+## **Mapping the PROVIDER table**
+### From the PROVIDER table
+![](images/image11.png)
+
+### From the PROVIDER_BRIDGE table
+![](images/image12.png)
+
 |**Destination Field**|**Source Field**|**Applied Rule**|**Comment**|
 |:-----:|:-----:|:-----:|:-----:|
 PROVIDER_ID|**PROVIDER** Prov_Unique||
