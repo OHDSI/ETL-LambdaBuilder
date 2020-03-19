@@ -22,7 +22,7 @@ The STEM table is a staging area where source codes like ICD9 codes will first b
 ### **ICU Indicator**
 In the **INPATIENT_CONFINEMENT** table there is a flag that indicates if the patient was in the ICU during the hospital stay. To map these flags, for each **INPATIENT_CONFINEMENT** record that has **icu_ind** = 'Y' please do the following:
 - Create a record in the **OBSERVATION** table with the **OBSERVATION_CONCEPT_ID** = **4148981**
-- Follow the rules in the mapping description below to assign **VISIT_CONCEPT_ID**, **VISIT_DETAIL_CONCEPT_ID**
+- Follow the rules in the mapping description below to assign **VISIT_OCCURRENCE_ID**, **VISIT_DETAIL_ID**
 - After linking to **VISIT_DETAIL** set **OBSERVATION_DATE** to **VISIT_DETAIL_START_DATE**.
 
 
