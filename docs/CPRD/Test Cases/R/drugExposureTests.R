@@ -6,7 +6,7 @@ createDrugExposureTests <- function()
 
   # 1) 9100
   patient <- createPatient();
-  declareTest(id = patient$person_id, 'testing the lookup for numdays does correct end date start+28 days, id is person_id')
+  declareTest(id = patient$person_id, 'DRUG_EXPOSURE - testing the lookup for numdays does correct end date start+28 days, id is person_id')
   add_daysupply_decodes(prodcode = 2, qty = 1, numpacks = 0, numdays = 29)
   add_commondosages(dosageid = 2, daily_dose = 0.000)
   add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid= patient$pracid)
@@ -21,7 +21,7 @@ createDrugExposureTests <- function()
 
   # 2) 9101
   patient <- createPatient();
-  declareTest(id = patient$person_id, 'testing when there is no lookup available default to start dte, id is person_id' )
+  declareTest(id = patient$person_id, 'DRUG_EXPOSURE - testing when there is no lookup available default to start dte, id is person_id' )
   add_patient(patid =  patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid= patient$pracid)
   add_therapy(patid =  patient$patid, eventdate = '2012-01-01', prodcode = 42, qty = 1, numpacks = 0,
               issueseq = 1, numdays = 0, staffid = 9001)
@@ -33,7 +33,7 @@ createDrugExposureTests <- function()
 
   # 3) 9102
   patient <- createPatient();
-  declareTest(id = patient$person_id, 'The drug records comes in without a valid days supply, no lookup in DAYSSUPPLY_DECODES, no lookups in DAYSSUPPLY_MODES, assume 1 day duration.Id is person_id')
+  declareTest(id = patient$person_id, 'DRUG_EXPOSURE- The drug records comes in without a valid days supply, no lookup in DAYSSUPPLY_DECODES, no lookups in DAYSSUPPLY_MODES, assume 1 day duration.Id is person_id')
   add_patient(patid =  patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid=patient$pracid)
   add_therapy(patid =  patient$patid, eventdate = '2012-01-01', prodcode = 9999, qty = 1, numpacks = 0,
               issueseq = 1, numdays = 0, staffid = 9001)
@@ -45,7 +45,7 @@ createDrugExposureTests <- function()
 
   # 4) 9103
   patient <- createPatient();
-  declareTest(id = patient$person_id, 'testing end date: You have a THERAPY.NUMDAYS = 40. Id is person_id')
+  declareTest(id = patient$person_id, 'DRUG_EXPOSURE - testing end date: You have a THERAPY.NUMDAYS = 40. Id is person_id')
   add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid=patient$pracid)
   add_therapy(patid = patient$patid, eventdate = '2012-01-01', prodcode = 2, qty = 1, numpacks = 0,
               issueseq = 1, numdays = 40, staffid = 9001)
@@ -57,7 +57,7 @@ createDrugExposureTests <- function()
 
   # 5) 9104
   patient <- createPatient();
-  declareTest(id = patient$person_id, 'testing end date: You have a THERAPY.NUMDAYS = 366 - show correct to 29 days using lookup. Id is person_id')
+  declareTest(id = patient$person_id, 'DRUG_EXPOSURE - testing end date: You have a THERAPY.NUMDAYS = 366 - show correct to 29 days using lookup. Id is person_id')
   add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid=patient$pracid)
   add_therapy(patid = patient$patid, eventdate = '2012-01-01', prodcode = 2, qty = 1, numpacks = 0,
               issueseq = 1, numdays = 366, staffid = 9001)
@@ -69,7 +69,7 @@ createDrugExposureTests <- function()
 
   # 6) 9105
   patient <- createPatient();
-  declareTest(id = patient$person_id, 'Test visit_occurrence_id: Drug is written to DRUG_EXPOSURE. Id is person_Id')
+  declareTest(id = patient$person_id, 'DRUG_EXPOSURE - Test visit_occurrence_id: Drug is written to DRUG_EXPOSURE. Id is person_Id')
   add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid=patient$pracid)
   add_therapy(patid = patient$patid, eventdate = '2012-03-12', prodcode = 2, qty = 1, numpacks = 0,
               issueseq = 1, numdays = 366, staffid = 9001)
@@ -92,7 +92,7 @@ createDrugExposureTests <- function()
 
   # 8) 9107
   patient <- createPatient();
-  declareTest(id = patient$person_id, 'Drug date does exist within a valid observation period but does not have a consultation date. Id is person_id')
+  declareTest(id = patient$person_id, 'DRUG_EXPOSURE - Drug date does exist within a valid observation period but does not have a consultation date. Id is person_id')
   add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid=patient$pracid)
   add_therapy(patid = patient$patid, eventdate = '2012-01-01', prodcode = 2, qty = 1, numpacks = 0,
               issueseq = 1, numdays = 366, staffid = 9001)
@@ -103,7 +103,7 @@ createDrugExposureTests <- function()
 
   # 9) 9108 - invalid
   patient <- createPatient();
-  declareTest(id = patient$person_id, 'PRODCODE = -1 - invalid.')
+  declareTest(id = patient$person_id, 'DRUG_EXPOSURE - PRODCODE = -1 - invalid.')
   add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid=patient$pracid)
   add_therapy(patid = patient$patid, eventdate = '2012-01-01', prodcode = -1, qty = 1, numpacks = 0,
               issueseq = 1, numdays = 366, staffid = 9001)
@@ -133,7 +133,7 @@ createDrugExposureTests <- function()
 
   # 11) -- invalid status
   patient <- createPatient();
-  declareTest(id = patient$person_id, 'Invalid status, id = person_Id')
+  declareTest(id = patient$person_id, 'DRUG_EXPOSURE - Invalid status, id = person_Id')
   add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid=patient$pracid)
   add_immunisation(patid = patient$patid, eventdate = '2012-01-01',medcode = 72, staffid = 1001, status=4)
   expect_no_drug_exposure(person_id = patient$person_id)
@@ -142,7 +142,7 @@ createDrugExposureTests <- function()
   add_medical(medcode=1, read_code = '65M2.00')
   # old code 65F5.00 goes to 4179181 procedure domain now
   patient <- createPatient();
-  declareTest(patient$person_id, 'valid immunization with visit, id is person_id')
+  declareTest(patient$person_id, 'DRUG_EXPOSURE - valid immunization with visit, id is person_id')
   add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid=patient$pracid)
   add_immunisation(patid = patient$patid, eventdate = '2012-01-01', medcode = 1, staffid = 1001, status=1)
   add_consultation(patid = patient$patid, eventdate = '2012-01-01', staffid = 9001)
@@ -156,7 +156,7 @@ createDrugExposureTests <- function()
 
   # 13) -- immunization without visit  -- now goes to procedure
   patient <- createPatient();
-  declareTest(id = patient$person_id, 'valid immunization without visit - null visit_occur_id')
+  declareTest(id = patient$person_id, 'DRUG_EXPOSURE - valid immunization without visit - null visit_occur_id')
   add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid=patient$pracid)
   add_immunisation(patid = patient$patid, eventdate = '2012-01-01', medcode = 1, staffid = 1001, status=1)
   expect_drug_exposure(person_id = patient$person_id,
@@ -168,7 +168,7 @@ createDrugExposureTests <- function()
 
   # 14) outside observation period
   patient <- createPatient();
-  declareTest(id = patient$person_id, 'Read  outside observation period, id = person_id')
+  declareTest(id = patient$person_id, 'DRUG_EXPOSURE - Read  outside observation period, id = person_id')
   add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid=patient$pracid)
   add_clinical(patid = patient$patid, eventdate = '2009-03-01', medcode = 1, staffid = 1001)
   expect_drug_exposure(person_id = patient$person_id,
@@ -180,7 +180,7 @@ createDrugExposureTests <- function()
 
   # 14) Read code in immunization goes to condition_occurrence
   patient <- createPatient();
-  declareTest(id = patient$person_id, 'immunization read code condition goes into conditions, id = person_id')
+  declareTest(id = patient$person_id, 'DRUG_EXPOSURE - immunization read code condition goes into conditions, id = person_id')
   add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid=patient$pracid)
   add_immunisation(patid = patient$patid, eventdate = '2009-03-01', medcode = 1058, staffid = 1001, status = 1)
   expect_condition_occurrence(person_id = patient$person_id)
@@ -188,7 +188,7 @@ createDrugExposureTests <- function()
 
   # 15) -- from clinical
   patient <- createPatient();
-  declareTest(id = patient$person_id, 'valid read from clinical, id = patient$person_id')
+  declareTest(id = patient$person_id, 'DRUG_EXPOSURE - valid read from clinical, id = patient$person_id')
   add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid=patient$pracid)
   add_clinical(patid = patient$patid, eventdate = '2010-03-01', medcode = 1, staffid = 1001)
   expect_drug_exposure(person_id = patient$person_id,
@@ -200,7 +200,7 @@ createDrugExposureTests <- function()
 
   # 16) -- referral
   patient <- createPatient();
-  declareTest(id = patient$person_id, 'valid read from referral, id = person_id')
+  declareTest(id = patient$person_id, 'DRUG_EXPOSURE - valid read from referral, id = person_id')
   add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid=patient$pracid)
   add_referral(patid = patient$patid, eventdate = '2010-03-01', medcode = 1, staffid = 1001)
   expect_drug_exposure(person_id = patient$person_id,
@@ -209,23 +209,23 @@ createDrugExposureTests <- function()
                        drug_type_concept_id=38000177)
   expect_count_drug_exposure(person_id = patient$person_id, rowCount = 1)
 
-  # 17) -- test
-  patient <- createPatient();
-  declareTest( id = patient$person_id, 'valid read from test, id is person_id')
-  add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid=patient$pracid)
-  add_test(patid = patient$patid, eventdate = '2010-03-01', medcode = 1, staffid = 1001, enttype = 215, data1 = 9)
+  # 17) -- test #NOT NEEDED AS OF 3/18/2020 - all test entity types were mapped to measurements instead.
+  # patient <- createPatient();
+  # declareTest( id = patient$person_id, 'valid read from test, id is person_id')
+  # add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid=patient$pracid)
+  # add_test(patid = patient$patid, eventdate = '2010-03-01', medcode = 1, staffid = 1001, enttype = 215, data1 = 9)
   # expect_drug_exposure(person_id = patient$person_id,
   #                      drug_concept_id = 19136026,
   #                      drug_source_concept_id = 45432113, drug_source_value = '215--65M2.00',
   #                      drug_type_concept_id=38000177)
-  expect_count_drug_exposure(person_id = patient$person_id, rowCount = 1)
+  # expect_count_drug_exposure(person_id = patient$person_id, rowCount = 1)
 
 
   #===========================================================================
 
   # 19) -- clinical
   patient <- createPatient();
-  declareTest(id = patient$person_id, 'valid entry, id is person_id')
+  declareTest(id = patient$person_id, 'DRUG_EXPOSURE - valid entry, id is person_id')
   add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid=patient$pracid)
   add_clinical(patid = patient$patid, eventdate = '2010-03-01', medcode = 1, staffid = 1001)
   expect_drug_exposure(person_id = patient$person_id,
@@ -238,7 +238,7 @@ createDrugExposureTests <- function()
 
   # 20) -- referral
   patient <- createPatient();
-  declareTest(id = patient$person_id, 'valid entry, id is person_id')
+  declareTest(id = patient$person_id, 'DRUG_EXPOSURE - valid entry, id is person_id')
   add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid=patient$pracid)
   add_clinical(patid = patient$patid, eventdate = '2010-03-01', medcode = 1, staffid = 1001)
   expect_drug_exposure(person_id = patient$person_id,
@@ -250,15 +250,15 @@ createDrugExposureTests <- function()
   # device or drug??
 
   # 21) -- test
-  patient <- createPatient();
-  declareTest(id = patient$person_id, 'valid entry, id is person_id')
-  add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid=patient$pracid)
-  add_test(patid = patient$patid, eventdate = '2010-03-01', medcode = 1, staffid = 1001, enttype = 215, data1= 25)
+  # patient <- createPatient(); #NOT NEEDED AS OF 3/18/2020 - all test entity types were mapped to measurements instead.
+  # declareTest(id = patient$person_id, 'valid entry, id is person_id')
+  # add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid=patient$pracid)
+  # add_test(patid = patient$patid, eventdate = '2010-03-01', medcode = 1, staffid = 1001, enttype = 215, data1= 25)
   # expect_drug_exposure(person_id = patient$person_id,
   #                      drug_concept_id = 19136026,
   #                      drug_source_concept_id = 45432113, drug_source_value = '215--65M2.00',
   #                      drug_type_concept_id=38000177)
-  expect_count_drug_exposure(person_id = patient$person_id, rowCount = 1)
+  # expect_count_drug_exposure(person_id = patient$person_id, rowCount = 1)
 
 
 }

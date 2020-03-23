@@ -10,11 +10,11 @@ createConditionOccurrenceTests <- function()
 
 
   # 1) -- clinical condition with visit
-  patient <- createPatient(pracid='111');
-  declareTest(id = patient$person_id, 'Read clinical condition with visit, id is person_id')
+  patient <- createPatient(pracid='311');
+  declareTest(id = patient$person_id, 'CONDITION_OCCURRENCE - Read clinical condition with visit, id is person_id')
   add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid = patient$pracid)
-  add_clinical(patid = patient$patid, eventdate =  '2012-01-01', medcode = 1058, staffid = 1001)
-  add_consultation(patid = patient$patid, eventdate = '2012-01-01', staffid = 9001)
+  add_clinical(patid = patient$patid, eventdate =  '2012-01-01', medcode = 1058, staffid = 1001, consid = patient$patid)
+  add_consultation(patid = patient$patid, eventdate = '2012-01-01', staffid = 9001, consid = patient$patid)
   expect_condition_occurrence(person_id = patient$person_id, condition_start_date = '2012-01-01', condition_concept_id = 75555,
                               condition_source_concept_id = 45436713, condition_source_value = 'F563500',
                               condition_type_concept_id = 32020, provider_id = 1001
@@ -23,8 +23,8 @@ createConditionOccurrenceTests <- function()
 
 
   # 2) -- clinical condition without visit
-  patient <- createPatient(pracid='111');
-  declareTest(id = patient$person_id, 'Read clinical condition, id is person_id')
+  patient <- createPatient(pracid='311');
+  declareTest(id = patient$person_id, 'CONDITION_OCCURRENCE - Read clinical condition, id is person_id')
   add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid = patient$pracid)
   add_clinical(patid = patient$patid, eventdate =  '2012-03-01', medcode = 898, staffid = 1001)
   add_consultation(patid = patient$patid, eventdate = '2012-01-01', staffid = 9001)
@@ -36,8 +36,8 @@ createConditionOccurrenceTests <- function()
 
 
   # 3) -- Clinical condition outside observation period, condition retained
-  patient <- createPatient(pracid='111');
-  declareTest(id = patient$person_id, 'Read clinical condition outside observation period, id is person_id')
+  patient <- createPatient(pracid='311');
+  declareTest(id = patient$person_id, 'CONDITION_OCCURRENCE - Read clinical condition outside observation period, id is person_id')
   add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid = patient$pracid)
   add_clinical(patid = patient$patid, eventdate =  '2009-03-01', medcode = 898, staffid = 1001, consid = patient$person_id)
   add_consultation(patid = patient$patid, eventdate = '2009-03-01', staffid = 9001, consid = patient$person_id)
@@ -49,8 +49,8 @@ createConditionOccurrenceTests <- function()
 
 
   # 4) ---- clinical condition
-  patient <- createPatient(pracid='111');
-  declareTest(id = patient$person_id, 'Read immunisation condition, id is person_id')
+  patient <- createPatient(pracid='311');
+  declareTest(id = patient$person_id, 'CONDITION_OCCURRENCE - Read immunisation condition, id is person_id')
   add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid = patient$pracid)
   add_clinical(patid = patient$patid, eventdate =  '2011-03-01', medcode = 45999, staffid = 1001)
   expect_condition_occurrence(person_id = patient$person_id, condition_start_date = '2011-03-01', condition_source_value = 'J040.14',
@@ -61,8 +61,8 @@ createConditionOccurrenceTests <- function()
 
 
   # 5) ---- referral condition
-  patient <- createPatient(pracid='111');
-  declareTest(id = patient$person_id, 'Read referral condition, id is person_id')
+  patient <- createPatient(pracid='311');
+  declareTest(id = patient$person_id, 'CONDITION_OCCURRENCE - Read referral condition, id is person_id')
   add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid = patient$pracid)
   add_referral(patid = patient$patid, eventdate =  '2011-03-01', medcode = 11531, staffid = 1001)
   expect_condition_occurrence(person_id = patient$person_id, condition_start_date='2011-03-01', condition_source_value='P00..00',
@@ -71,15 +71,15 @@ createConditionOccurrenceTests <- function()
   expect_count_condition_occurrence(person_id = patient$person_id, rowCount = 1)
 
 
-  # 6) ---- test condition
-  patient <- createPatient(pracid='111');
-  declareTest(id = patient$person_id, 'Read test condition with no visit, id is person_id')
-  add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid = patient$pracid)
-  add_test(patid = patient$patid, eventdate =  '2011-03-01', medcode = 35968, staffid = 1001, enttype = 215, data1=9)
+  # 6) ---- test condition #3/18/2020 this is not needed anymore as all entity types in test mapped to MEASUREMENTS
+  # patient <- createPatient(pracid='311');
+  # declareTest(id = patient$person_id, 'Read test condition with no visit, id is person_id')
+  # add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid = patient$pracid)
+  # add_test(patid = patient$patid, eventdate =  '2011-03-01', medcode = 35968, staffid = 1001, enttype = 215, data1=9)
   # expect_condition_occurrence(person_id = patient$person_id, condition_start_date='2011-03-01', condition_source_value='215--PB2z.00',
   #                             condition_type_concept_id=32020, provider_id=1001,
   #                             condition_source_concept_id=45430565, condition_concept_id=198550)
-  expect_count_condition_occurrence(person_id = patient$person_id, rowCount = 1)
+  # expect_count_condition_occurrence(person_id = patient$person_id, rowCount = 1)
 
 
   }
