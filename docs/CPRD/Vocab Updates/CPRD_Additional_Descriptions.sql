@@ -21,7 +21,7 @@ select count(*),
        e.description, 
        e.data2 as data,       
        e.data_fields,
-       a.enttype||'-'||e.category||'-'||e.description||'-'||e.data1 as source_value         
+       a.enttype||'-'||e.category||'-'||e.description||'-'||e.data2 as source_value         
 from native.additional a
   join native.entity e
   on a.enttype = e.code
@@ -36,7 +36,7 @@ select count(*),
        e.description, 
        e.data3 as data,       
        e.data_fields,
-       a.enttype||'-'||e.category||'-'||e.description||'-'||e.data1 as source_value         
+       a.enttype||'-'||e.category||'-'||e.description||'-'||e.data3 as source_value         
 from native.additional a
   join native.entity e
   on a.enttype = e.code
@@ -51,7 +51,7 @@ select count(*),
        e.description, 
        e.data4 as data,       
        e.data_fields,
-       a.enttype||'-'||e.category||'-'||e.description||'-'||e.data1 as source_value         
+       a.enttype||'-'||e.category||'-'||e.description||'-'||e.data4 as source_value         
 from native.additional a
   join native.entity e
   on a.enttype = e.code
@@ -66,7 +66,7 @@ select count(*),
        e.description, 
        e.data5 as data,       
        e.data_fields,
-       a.enttype||'-'||e.category||'-'||e.description||'-'||e.data1 as source_value         
+       a.enttype||'-'||e.category||'-'||e.description||'-'||e.data5 as source_value         
 from native.additional a
   join native.entity e
   on a.enttype = e.code
@@ -81,7 +81,7 @@ select count(*),
        e.description, 
        e.data6 as data,       
        e.data_fields,
-       a.enttype||'-'||e.category||'-'||e.description||'-'||e.data1 as source_value         
+       a.enttype||'-'||e.category||'-'||e.description||'-'||e.data6 as source_value         
 from native.additional a
   join native.entity e
   on a.enttype = e.code
@@ -96,7 +96,7 @@ select count(*),
        e.description, 
        e.data7 as data,       
        e.data_fields,
-       a.enttype||'-'||e.category||'-'||e.description||'-'||e.data1 as source_value         
+       a.enttype||'-'||e.category||'-'||e.description||'-'||e.data7 as source_value         
 from native.additional a
   join native.entity e
   on a.enttype = e.code
@@ -126,7 +126,7 @@ select count(*),
        e.description, 
        e.data3 as data,
        e.data_fields,
-       a.enttype||'-'||e.category||'-'||e.description||'-'||e.data1 as source_value         
+       a.enttype||'-'||e.category||'-'||e.description||'-'||e.data3 as source_value         
 from native.additional a
   join native.entity e
   on a.enttype = e.code
@@ -141,7 +141,7 @@ select count(*),
        e.description, 
        e.data5 as data,       
        e.data_fields,
-       a.enttype||'-'||e.category||'-'||e.description||'-'||e.data1 as source_value         
+       a.enttype||'-'||e.category||'-'||e.description||'-'||e.data5 as source_value         
 from native.additional a
   join native.entity e
   on a.enttype = e.code
@@ -150,20 +150,6 @@ group by e.category, a.enttype, e.description, e.data_fields, e.data5
 
 UNION
 
-select count(*), 
-       a.enttype, 
-       e.category,
-       e.description, 
-       e.data5 as data,       
-       e.data_fields,
-       a.enttype||'-'||e.category||'-'||e.description||'-'||e.data1 as source_value         
-from native.additional a
-  join native.entity e
-  on a.enttype = e.code
-where a.enttype in (78)
-group by e.category, a.enttype, e.description, e.data_fields, e.data5
-        
-UNION
 
 select count(*), 
        a.enttype, 
@@ -171,7 +157,7 @@ select count(*),
        e.description, 
        sm.scoring_method as data,
        e.data_fields,
-       a.enttype||'-'||e.category||'-'||e.description||'-'||e.data1 as source_value         
+       a.enttype||'-'||e.category||'-'||e.description||'-'||sm.scoring_method as source_value         
 from native.additional a
   join native.entity e
   on a.enttype = e.code
