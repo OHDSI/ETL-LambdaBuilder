@@ -32,7 +32,7 @@ The days_supply field in the drug_exposure table will hold the original ‘numda
 | domain_id |  |This should be the domain_id of the standard concept in the concept_id field. If a read code is mapped to concept_id 0, put the domain_id as Observation.  |  |
 | person_id | patid | Use patid to lookup Person_id |  |
 | visit_occurrence_id | eventdate  patid consid | Look up visit_occurrence_id based on the unique patid, consid, and eventdate. | Use the Visit_occurrence_id assigned in the previous visit definition step |
-| provider_id |  |  |  |
+| provider_id | staffid |  |  |
 | start_datetime | eventdate | Set time as midnight | |
 | concept_id | prodcode | Use the prodcode to find the associated gemscript code in the product table. Find the standard concept_id associated with the gemscript using the [SOURCE_TO_STANDARD](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_STANDARD.sql) query with the filters:  <br><br>  WHERE source_vocabulary_id in ('gemscript')  and eventdate between valid_start_date and valid_end_date  and standard_concept = 'S'  <br><br>  Look for an Rxnorm mapping first, if one does not exist then look in the RxNorm_Extension vocabulary.    If a gemscript does not have a standard map, set this to 0 | Use the query [CPRD_Therapy_Prodcodes.sql](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/CPRD/Queries/CPRD_Therapy_Prodcodes.sql) to get an idea of the domains covered by the prodcodes and how to join to the product table.  |
 | source_value | prodcode | Use the prodcode to find the associated gemscript code in the product table. Use the gemscript as the source_value | |
