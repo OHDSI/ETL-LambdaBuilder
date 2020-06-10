@@ -16,6 +16,15 @@ The STEM table is a staging area where CPRD source codes like Read codes will fi
 
 In the below table, only the relevant STEM fields are shown. Any fields that do not have a mapping from the CPRD Clinical table are not included.
 
+## **COVID Codes**
+
+Any record with one of the SARS-COV-2 read codes listed below should be mapped to the correct MEASUREMENT_CONCEPT_IDs as shown in the table. These two read codes are considered "pre-coordinated" in that both the test and the outcome of the test are contained in the code. For example the read code 4J3R200 (2019-nCoV not detected), indicates both that a test was done for SARS-COV-2 and that the virus was not detected. For records with a pre-coordinated read code the MEASUREMENT_CONCEPT_ID, VALUE_SOURCE_VALUE, *and* VALUE_AS_CONCEPT_ID should be assigned as detailed below.
+
+|Read Code | Read Code Description| MEASUREMENT CONCEPT_ID|VALUE_SOURCE_VALUE| VALUE_AS CONCEPT_ID|
+|----|----|----|----|---|
+|4J3R200|2019-nCoV (novel coronavirus) not detected|756065|Not Detected|9190|
+|4J3R100|2019-nCoV (novel coronavirus) detected|756065|Detected| 4126681|
+
 ![](images/image14.png)
 
 | Destination Field | Source field | Logic | Comment field |
