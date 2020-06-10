@@ -1,0 +1,10 @@
+65PW100	0	Read	Exposure to 2019-nCoV (novel coronavirus) infection	37311059	Observation	20200401	20991231
+8CAO100	0	Read	Advice given about 2019-nCoV (novel coronavirus) by telephone	37310271	Observation	20200401	20991231
+9N31200	0	Read	Telephone consultation for suspected 2019-nCoV (novel coronavirus)	37311060	Observation	20200401	20991231
+4J3R200	0	Read	2019-nCoV (novel coronavirus) not detected	756065	Measurement	20200401	20991231
+1JX1.00	0	Read	Suspected disease caused by 2019-nCoV (novel coronavirus)	37311060	Observation	20200401	20991231
+AyuDC00	0	Read	[X]Coronavirus infection, unspecified	439676	Condition	20200401	20991231
+A795100	0	Read	Disease caused by 2019-nCoV (novel coronavirus)	37311061	Condition	20200401	20991231
+4J3R100	0	Read	2019-nCoV (novel coronavirus) detected	756065	Measurement	20200401	20991231
+4J3R.00	0	Read	2019-nCoV (novel coronavirus) serology	706179	Measurement	20200401	20991231
+9Niq.00	0	Read	Did not attend 2019-nCoV (novel coronavirus) vaccination	37310279	Observation	20200401	20991231
