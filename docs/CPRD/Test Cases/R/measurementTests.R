@@ -64,8 +64,8 @@ createMeasurementTests <- function()
               pracid = patient$pracid)
   add_test(patid = patient$patid, eventdate = '2011-03-01', medcode = 445, staffid = 1001, enttype = 215, data1=9)
   expect_measurement(person_id = patient$person_id,
-                     measurement_concept_id =  4132152,
-                     measurement_source_value =  '215--424Z.00', measurement_source_concept_id =  45508441,
+                     measurement_concept_id =  4199172,
+                     measurement_source_value =  '424Z.00', measurement_source_concept_id =  45508441,
                      measurement_date =  '2011-03-01',
                      provider_id =   1001)
 
@@ -101,7 +101,7 @@ createMeasurementTests <- function()
   expect_measurement(person_id = patient$person_id, measurement_concept_id=4132152,
                      measurement_date='2012-01-01',
                      measurement_type_concept_id=44818702, value_source_value='Normal',
-                     measurement_source_value='220--424Z.00', value_as_concept_id=45884153)
+                     measurement_source_value='424Z.00', value_as_concept_id=45884153)
 
   # TESTING VALUES RANGE LOW (TEST.data2)
   # 18b)
@@ -115,7 +115,7 @@ createMeasurementTests <- function()
   expect_measurement(person_id = patient$person_id, measurement_concept_id=4132152,
                      measurement_date='2012-01-01', range_low = 1.2,
                      measurement_type_concept_id=44818702, value_source_value='Normal',
-                     measurement_source_value='220--424Z.00', value_as_concept_id=45884153)
+                     measurement_source_value='424Z.00', value_as_concept_id=45884153)
 
   # TESTING VALUES RANGE HIGH (TEST.data3)
   # 18b)
@@ -129,7 +129,7 @@ createMeasurementTests <- function()
   expect_measurement(person_id = patient$person_id, measurement_concept_id=4132152,
                      measurement_date='2012-01-01', range_high = 4.3,
                      measurement_type_concept_id=44818702, value_source_value='Normal',
-                     measurement_source_value='220--424Z.00', value_as_concept_id=45884153)
+                     measurement_source_value='424Z.00', value_as_concept_id=45884153)
 
   # 19) -- test observation record 7 fields -- enntype 173 maps to 3000963 --> SHOULD WORK!
   patient <- createPatient();
@@ -159,7 +159,7 @@ createMeasurementTests <- function()
   add_lookup(lookup_id=1147, lookup_type_id=85, code=0, text='Data Not Entered')
   #add_lookuptype(lookup_type_id=83, name='TQU', description='dfbdfb')
 
-  expect_measurement(person_id = patient$person_id, measurement_concept_id=4118981,
+  expect_measurement(person_id = patient$person_id, measurement_concept_id=2212396,
                      measurement_date= '2012-01-01',
                      measurement_type_concept_id=44818702, # Data Not Entered
                      value_as_number=14.30, value_as_concept_id=0, #? value_as_concept_id
@@ -190,7 +190,7 @@ createMeasurementTests <- function()
   ##add_lookuptype(lookup_type_id=55, name='OPR', description='dfdbfdfd')
   add_lookup(lookup_id=916, lookup_type_id=83, code=61, text='IU/L')
   ##add_lookuptype(lookup_type_id=81, name='SUM', description='fdfdf')
-  expect_measurement(person_id = patient$person_id, measurement_concept_id=4118981,
+  expect_measurement(person_id = patient$person_id, measurement_concept_id=3031455,
                      measurement_date='2012-01-01',
                      measurement_type_concept_id=44818702
                      #17-Dec-1998 00:00:00',
@@ -220,9 +220,9 @@ createMeasurementTests <- function()
   add_lookuptype(lookup_type_id =58, name='PFD', description='Peak flow...')
   add_lookup(lookup_id=926, lookup_type_id=83, code=71, text='L/min')
   ##add_lookuptype(lookup_type_id=81, name='SUM', description='Specimen ...')
-  expect_measurement(person_id = patient$person_id, measurement_concept_id=4118981,
-                     measurement_date='2012-01-01',
-                     measurement_type_concept_id=44818702)
+  expect_observation(person_id = patient$person_id, observation_concept_id=0,
+                     observation_date='2012-01-01',
+                     observation_type_concept_id=44818702)
 
   #expect_count_measurement(rowCount = 2, person_id = patient$person_id)
 
@@ -248,7 +248,7 @@ createMeasurementTests <- function()
               )
   add_lookup(lookup_id=855, lookup_type_id = 83, code=0, text='No data Entered')
   ##add_lookuptype(lookup_type_id = 81, name='SUM', description = 'Specimen ...')
-  expect_measurement(person_id = patient$person_id, measurement_concept_id=4118981,
+  expect_measurement(person_id = patient$person_id, measurement_concept_id=4197249,
                      measurement_date='2012-01-01',
                      measurement_type_concept_id=44818702)
 

@@ -72,14 +72,28 @@ createConditionOccurrenceTests <- function()
 
 
   # 6) ---- test condition
-  patient <- createPatient(pracid='111');
+  patient <- createPatient(pracid='111'); #Test records now move to measurement based on JNJ_CPRD_TEST_ENT vocabulary
   declareTest(id = patient$person_id, 'Read test condition with no visit, id is person_id')
   add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid = patient$pracid)
   add_test(patid = patient$patid, eventdate =  '2011-03-01', medcode = 35968, staffid = 1001, enttype = 215, data1=9)
   # expect_condition_occurrence(person_id = patient$person_id, condition_start_date='2011-03-01', condition_source_value='215--PB2z.00',
   #                             condition_type_concept_id=32020, provider_id=1001,
   #                             condition_source_concept_id=45430565, condition_concept_id=198550)
-  expect_count_condition_occurrence(person_id = patient$person_id, rowCount = 1)
+  expect_count_measurement(person_id = patient$person_id, rowCount = 1)
 
+  # 7) ---- Clinical record that occurs in the future
+  patient <- createPatient(pracid='111');
+  declareTest(id = patient$person_id, 'Read clinical condition that occurs in 2099, record removed')
+  add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid = patient$pracid)
+  add_clinical(patid = patient$patid, eventdate =  '2099-01-01', medcode = 1058, staffid = 1001)
+  add_consultation(patid = patient$patid, eventdate = '2099-01-01', staffid = 9001)
+  expect_no_condition_occurrence(person_id = patient$person_id)
+
+  # 8) ---- test condition
+  patient <- createPatient(pracid='111');
+  declareTest(id = patient$person_id, 'Read test condition occurs in 2099, record removed')
+  add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid = patient$pracid)
+  add_test(patid = patient$patid, eventdate =  '2099-03-01', medcode = 35968, staffid = 1001, enttype = 215, data1=9)
+  expect_no_condition_occurrence(person_id = patient$person_id)
 
   }

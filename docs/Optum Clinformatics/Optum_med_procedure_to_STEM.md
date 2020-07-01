@@ -22,7 +22,6 @@ The STEM table is a staging area where source codes like ICD9 codes will first b
 ## **Mapping from MED_PROCEDURE**
 - Take the records from **MEDICAL_CLAIMS** and join them to **MED_PROCEDURE** on 
     - clmid = clmid
-    - loc_cd = loc_cd
     - fst_dt = fst_dt
     - pat_planid = pat_planid
     - This will assign each diagnosis at least one **VISIT_DETAIL** VISIT_DETAIL_ID based on the lookup created during **VISIT_DETAIL** creation. If more than one is assigned, choose one.  

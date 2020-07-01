@@ -61,9 +61,9 @@ createProcedureOccurrenceTests <- function()
   declareTest(id = patient$person_id, "test procedure")
   add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid = patient$pracid)
   add_test(patid = patient$patid, eventdate = '2011-03-01', medcode = 69651, staffid = 1001, consid = 6489, enttype = 215, data1=9)
-  expect_procedure_occurrence(person_id = patient$person_id, procedure_date='2011-03-01', procedure_source_value='215--744C.00',
-                              procedure_type_concept_id=38000275, provider_id=1001,
-                              procedure_source_concept_id=45425639, procedure_concept_id=4192131)
+  expect_measurement(person_id = patient$person_id, measurement_date='2011-03-01', measurement_source_value='744C.00',
+                              measurement_type_concept_id=44818702, provider_id=1001,
+                              measurement_source_concept_id=45425639, measurement_concept_id=4199172)
 
 
 

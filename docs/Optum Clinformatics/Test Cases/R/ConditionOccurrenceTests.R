@@ -110,6 +110,16 @@ createConditionOccurrenceTests <- function()
     concept = c(46236988, 0, 0, 0), stringsAsFactors = FALSE
   )
   
+  patient <- createPatient()
+  claim <- createClaim()
+  declareTest("Creates a record that occurs in the future. Expectation is that it will be deleted.", source_pid = patient$patid, cdm_pid = patient$person_id)
+  add_member_detail(aso = 'N', bus = 'COM', cdhp = 3, eligeff = '2011-05-01', eligend = '2013-10-31',
+                    gdr_cd = 'F', patid = patient$patid, pat_planid = patient$patid, product = 'HMO', yrdob = 1979)
+  add_medical_claims(clmid = claim$clmid, clmseq = '001', lst_dt = '2099-07-01',
+                     pat_planid = patient$patid, patid = patient$patid, fst_dt = '2099-07-01', prov = '111111', provcat = '5678')
+  add_med_diagnosis(patid = patient$patid, pat_planid = patient$patid, icd_flag = "9", diag = '24910', 
+                    clmid = claim$clmid, diag_position = 1)
+  expect_no_condition_occurrence(person_id = patient$person_id, condition_source_value = '24910', condition_concept_id = 443727)
   
   for (i in 1:nrow(poaMappings)) {
     patient <- createPatient()

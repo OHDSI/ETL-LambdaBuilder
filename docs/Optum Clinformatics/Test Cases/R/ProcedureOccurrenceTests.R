@@ -9,16 +9,16 @@ createProcedureOccurrenceTests <- function()
   add_medical_claims(clmid = claim$clmid, clmseq = '001', proc_cd = '92928', lst_dt = '2013-07-01',
                      pat_planid = patient$patid, patid = patient$patid, fst_dt = '2013-07-01', prov = '111111', provcat = '5678')
   
-  add_med_procedure(patid = patient$patid, pat_planid = patient$patid, proc = "70481", clmid = claim$clmid, proc_position = 1)
-  add_med_procedure(patid = patient$patid, pat_planid = patient$patid, proc = "70481", clmid = claim$clmid, proc_position = 2)
-  add_med_procedure(patid = patient$patid, pat_planid = patient$patid, proc = "70481", clmid = claim$clmid, proc_position = 3)
+  add_med_procedure(patid = patient$patid, pat_planid = patient$patid, proc = "70481", clmid = claim$clmid, proc_position = 1, fst_dt = '2013-07-01')
+  add_med_procedure(patid = patient$patid, pat_planid = patient$patid, proc = "70481", clmid = claim$clmid, proc_position = 2, fst_dt = '2013-07-01')
+  add_med_procedure(patid = patient$patid, pat_planid = patient$patid, proc = "70481", clmid = claim$clmid, proc_position = 3, fst_dt = '2013-07-01')
   
   add_medical_claims(clmid = claim$clmid, clmseq = '002', proc_cd = '92928', lst_dt = '2013-07-01',
                      pat_planid = patient$patid, patid = patient$patid, fst_dt = '2013-07-01', prov = '111111', provcat = '5678')
   
-  add_med_procedure(patid = patient$patid, pat_planid = patient$patid, proc = "70481", clmid = claim$clmid, proc_position = 1)
-  add_med_procedure(patid = patient$patid, pat_planid = patient$patid, proc = "70481", clmid = claim$clmid, proc_position = 2)
-  add_med_procedure(patid = patient$patid, pat_planid = patient$patid, proc = "70481", clmid = claim$clmid, proc_position = 3)
+  add_med_procedure(patid = patient$patid, pat_planid = patient$patid, proc = "70481", clmid = claim$clmid, proc_position = 1, fst_dt = '2013-07-01')
+  add_med_procedure(patid = patient$patid, pat_planid = patient$patid, proc = "70481", clmid = claim$clmid, proc_position = 2, fst_dt = '2013-07-01')
+  add_med_procedure(patid = patient$patid, pat_planid = patient$patid, proc = "70481", clmid = claim$clmid, proc_position = 3, fst_dt = '2013-07-01')
   
   expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = 2211331)
   expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = 43527998)
@@ -33,9 +33,9 @@ createProcedureOccurrenceTests <- function()
                     gdr_cd = 'F', patid = patient$patid, yrdob = 1969)
   add_medical_claims(clmid = claim$clmid, clmseq = '001', proc_cd = '92928', lst_dt = '2013-07-01',
                      pat_planid = patient$patid, patid = patient$patid, fst_dt = '2013-07-01', prov = '111111', provcat = '5678')
-  add_med_procedure(patid = patient$patid, pat_planid = patient$patid, proc = "2", clmid = claim$clmid, proc_position = 1)
-  add_med_procedure(patid = patient$patid, pat_planid = patient$patid, proc = "2", clmid = claim$clmid, proc_position = 2)
-  add_med_procedure(patid = patient$patid, pat_planid = patient$patid, proc = "2", clmid = claim$clmid, proc_position = 3)
+  add_med_procedure(patid = patient$patid, pat_planid = patient$patid, proc = "2", clmid = claim$clmid, proc_position = 1, fst_dt = '2013-07-01')
+  add_med_procedure(patid = patient$patid, pat_planid = patient$patid, proc = "2", clmid = claim$clmid, proc_position = 2, fst_dt = '2013-07-01')
+  add_med_procedure(patid = patient$patid, pat_planid = patient$patid, proc = "2", clmid = claim$clmid, proc_position = 3, fst_dt = '2013-07-01')
   expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = 43527998)
   expect_procedure_occurrence(person_id = patient$person_id, procedure_source_value = '2', procedure_concept_id = 0)
 
@@ -48,15 +48,15 @@ createProcedureOccurrenceTests <- function()
                     gdr_cd = 'F', patid = patient$patid, yrdob = 1969)
   add_medical_claims(clmid = claim$clmid, clmseq = '001', proc_cd = '92928', lst_dt = '2013-07-01', rvnu_cd = '0100', pos = '20',
                      pat_planid = patient$patid, patid = patient$patid, fst_dt = '2013-07-01', prov = '111111', provcat = '5678')
-  add_med_procedure(patid = patient$patid, pat_planid = patient$patid, proc = "70481", clmid = claim$clmid, proc_position = 1)
+  add_med_procedure(patid = patient$patid, pat_planid = patient$patid, proc = "70481", clmid = claim$clmid, proc_position = 1, fst_dt = '2013-07-01')
   
   add_medical_claims(clmid = claim$clmid, clmseq = '001', proc_cd = '92928', lst_dt = '2013-07-01', rvnu_cd = '0100', pos = '20',
                      pat_planid = patient$patid, patid = patient$patid, fst_dt = '2013-07-01', prov = '111111', provcat = '5678')
-  add_med_procedure(patid = patient$patid, pat_planid = patient$patid, proc = "70481", clmid = claim$clmid, proc_position = 1)
+  add_med_procedure(patid = patient$patid, pat_planid = patient$patid, proc = "70481", clmid = claim$clmid, proc_position = 1, fst_dt = '2013-07-01')
   
   add_medical_claims(clmid = claim$clmid, clmseq = '001', proc_cd = '92928', lst_dt = '2013-07-01', rvnu_cd = '0100', pos = '20',
                      pat_planid = patient$patid, patid = patient$patid, fst_dt = '2013-07-01', prov = '111111', provcat = '5678')
-  add_med_procedure(patid = patient$patid, pat_planid = patient$patid, proc = "70481", clmid = claim$clmid, proc_position = 1)
+  add_med_procedure(patid = patient$patid, pat_planid = patient$patid, proc = "70481", clmid = claim$clmid, proc_position = 1, fst_dt = '2013-07-01')
   
   expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = 2211331)
   expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = 43527998)
