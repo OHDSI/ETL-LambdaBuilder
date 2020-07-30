@@ -333,9 +333,10 @@ ASALocalRun/
 docs/CPRD/Test Cases/inst/csv/config.csv
 docs/Optum Clinformatics/Test Cases/inst/csv/config.csv
 */config.csv
-*/.Rhistory
-*/Gemfile
-*/Gemfile.lock
+*.Rhistory
+*Gemfile
+*Gemfile.lock
+*errorReport.txt
 
 # Pages files to test changes
 _site
