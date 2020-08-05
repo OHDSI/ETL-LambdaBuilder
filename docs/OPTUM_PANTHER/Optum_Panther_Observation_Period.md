@@ -11,7 +11,7 @@ description: "Description for how to build the Optum Panther Observation Period 
 
 ## Reading from OPTUM_EHR.Encounter
 
-The OBSERVATION_PERIOD table should be built by setting the OBSERVATION_PERIOD_START_DATE as the date of the earliest encounter available in the data and the OBSERVATION_PERIOD_END_DATE should the the date of the lates encouter in the data. 
+The OBSERVATION_PERIOD table should be built by setting the OBSERVATION_PERIOD_START_DATE as the date of the earliest encounter available in the data and the OBSERVATION_PERIOD_END_DATE should the the date of the latest encounter in the data. 
 
 |     Destination Field    |     Source Field    |     Logic    |     Comment    |
 |-|-|-|-|
