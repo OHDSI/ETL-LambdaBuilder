@@ -3,7 +3,7 @@ layout: default
 title: NLP_Measurement
 nav_order: 6
 parent: Optum EHR to STEM
-grand_parent: OPTUM_PANTHER
+grand_parent: Optum EHR
 description: "OPTUM EHR NLP_Measurement table to STEM"
 ---
 

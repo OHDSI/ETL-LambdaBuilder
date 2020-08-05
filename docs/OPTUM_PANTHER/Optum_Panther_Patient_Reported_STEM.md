@@ -3,7 +3,7 @@ layout: default
 title: Patient_Reported_Medications
 nav_order: 8
 parent: Optum EHR to STEM
-grand_parent: OPTUM_PANTHER
+grand_parent: Optum EHR
 description: "OPTUM EHR Patient_Reported_Medications table to STEM"
 ---
 

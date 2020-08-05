@@ -3,7 +3,7 @@ layout: default
 title: Prescriptions_Written
 nav_order: 7
 parent: Optum EHR to STEM
-grand_parent: OPTUM_PANTHER
+grand_parent: Optum EHR
 description: "OPTUM EHR Prescriptions_Written table to STEM"
 ---
 

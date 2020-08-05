@@ -3,7 +3,7 @@ layout: default
 title: Observations
 nav_order: 4
 parent: Optum EHR to STEM
-grand_parent: OPTUM_PANTHER
+grand_parent: Optum EHR
 description: "OPTUM EHR Observations table to STEM"
 ---
 

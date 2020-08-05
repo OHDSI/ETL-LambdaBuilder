@@ -3,7 +3,7 @@ layout: default
 title: Labs
 nav_order: 3
 parent: Optum EHR to STEM
-grand_parent: OPTUM_PANTHER
+grand_parent: Optum EHR
 description: "OPTUM EHR Labs table to STEM"
 ---
 

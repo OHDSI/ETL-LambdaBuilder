@@ -3,7 +3,7 @@ layout: default
 title: Immunizations
 nav_order: 5
 parent: Optum EHR to STEM
-grand_parent: OPTUM_PANTHER
+grand_parent: Optum EHR
 description: "OPTUM EHR Immunzations table to STEM"
 ---
 

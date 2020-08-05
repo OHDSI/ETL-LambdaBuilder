@@ -3,7 +3,7 @@ layout: default
 title: NLP_Drug_Rationale
 nav_order: 9
 parent: Optum EHR to STEM
-grand_parent: OPTUM_PANTHER
+grand_parent: Optum EHR
 description: "OPTUM EHR NLP_Drug_Rationale table to STEM"
 ---
 

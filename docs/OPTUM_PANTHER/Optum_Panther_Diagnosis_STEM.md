@@ -3,7 +3,7 @@ layout: default
 title: Diagnosis
 nav_order: 2
 parent: Optum EHR to STEM
-grand_parent: OPTUM_PANTHER
+grand_parent: Optum EHR
 description: "OPTUM EHR Diagnosis table to STEM"
 ---
 

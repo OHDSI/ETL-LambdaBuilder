@@ -3,7 +3,7 @@ layout: default
 title: Medication_Administration
 nav_order: 7
 parent: Optum EHR to STEM
-grand_parent: OPTUM_PANTHER
+grand_parent: Optum EHR
 description: "OPTUM EHR Medication_Administrations table to STEM"
 ---
 
