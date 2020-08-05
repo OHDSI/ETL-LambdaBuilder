@@ -2,7 +2,7 @@
 layout: default
 title: Optum EHR to STEM
 nav_order: 7
-parent: OPTUM_PANTHER
+parent: Optum EHR
 has_children: true
 description: "Stem table description"
 ---

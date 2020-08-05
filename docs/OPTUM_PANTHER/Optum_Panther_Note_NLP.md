@@ -2,7 +2,7 @@
 layout: default
 title: Optum EHR to Note_NLP
 nav_order: 8
-parent: OPTUM_PANTHER
+parent: Optum EHR
 has_children: false
 description: "Note NLP table description"
 ---

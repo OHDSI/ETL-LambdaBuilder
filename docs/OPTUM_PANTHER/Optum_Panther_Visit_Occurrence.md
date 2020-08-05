@@ -2,7 +2,7 @@
 layout: default
 title: Visit Occurrence
 nav_order: 6
-parent: OPTUM_PANTHER
+parent: Optum EHR
 description: "Mapping the Visit_Occurrence table from the Optum Panther Encounter and Visit tables"
 
 ---

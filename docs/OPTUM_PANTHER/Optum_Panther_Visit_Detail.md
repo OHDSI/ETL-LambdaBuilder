@@ -2,7 +2,7 @@
 layout: default
 title: Visit Detail
 nav_order: 5
-parent: OPTUM_PANTHER
+parent: Optum EHR
 description: "Mapping the Visit_Detail table from the Optum Panther Encounter and CareArea tables"
 
 ---

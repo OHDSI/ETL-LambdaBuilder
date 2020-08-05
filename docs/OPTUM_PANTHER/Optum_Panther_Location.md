@@ -2,7 +2,7 @@
 layout: default
 title: Location
 nav_order: 3
-parent: OPTUM_PANTHER
+parent: Optum EHR
 description: "Mapping the Location table from the Optum Panther patient table"
 
 ---

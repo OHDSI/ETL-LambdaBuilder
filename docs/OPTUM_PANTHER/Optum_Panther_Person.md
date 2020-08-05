@@ -2,7 +2,7 @@
 layout: default
 title: Person
 nav_order: 1
-parent: OPTUM_PANTHER
+parent: Optum EHR
 description: "Person mapping from Optum EHR patient table"
 
 ---

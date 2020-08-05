@@ -2,7 +2,7 @@
 layout: default
 title: Provider
 nav_order: 4
-parent: OPTUM_PANTHER
+parent: Optum EHR
 description: "Mapping the Provider table from the Optum Panther provider table"
 
 ---

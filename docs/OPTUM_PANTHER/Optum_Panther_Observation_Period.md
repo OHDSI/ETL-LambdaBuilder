@@ -2,7 +2,7 @@
 layout: default
 title: Observation Period
 nav_order: 2
-parent: OPTUM_PANTHER
+parent: Optum EHR
 description: "Description for how to build the Optum Panther Observation Period table from the encounter table "
 
 ---
