@@ -3,7 +3,7 @@ layout: default
 title: Condition_Occurrence
 nav_order: 8
 parent: JMDC
-description: "Visit_Occurrence mapping from JMDC diagnosis table"
+description: "Condition_Occurrence mapping from JMDC diagnosis table"
 
 ---
 
