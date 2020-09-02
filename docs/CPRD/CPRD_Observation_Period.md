@@ -21,13 +21,12 @@ Remove any patients whose OBSERVATION_PERIOD_START_DATE is prior to their OBSERV
 
 ## Reading from CPRD.Patient
 
-![](images/image3.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
 | observation_period_id |  |  | Autogenerate |
 | person_id | patid |  |  |
-| observation_period_start_date | frd | Take the latest date between patient.frd and practice.uts.  | max(patient.crd, practice.uts) |
+| observation_period_start_date | frd | Take the latest date between patient.frd and practice.uts.  | max(patient.frd, practice.uts) |
 | observation_period_end_date | tod | Take the earliest date between patient.tod, practice.lcd, and the date data received. | Use min(patient.tod, practice.lcd,date data received). <br><br> THEMIS rule #23 now allows for data to be retained after the OBSERVATION_PERIOD_END_DATE and an option is now available in ATLAS to include that data in an analysis. |
 | period_type_concept_id |  | Use **44814725** - Period inferred by algorithm |  |
 
