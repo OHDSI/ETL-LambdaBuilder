@@ -54,7 +54,7 @@ PERSON_ID|**MEDICAL_CLAIMS** PATID <br> **RX_CLAIMS** PATID <br> **INPATIENT_CON
 VISIT_DETAIL_CONCEPT_ID|**MEDICAL_CLAIMS** Pos <br><br> **RX_CLAIMS** MAIL_IND,Spclt_Ind <br><br> **INPATIENT_CONFINEMENT** Pos|**MEDICAL_CLAIMS** Pos and **INPATIENT_CONFINEMENT** Pos use SOURCE_TO_STANDARD query with the filters: <br> `Where source_vocabulary_id = 'CMS Place of Service' and invalid_reason is NULL and standard_concept = 'S'` <br><br> **RX_CLAIMS** MAIL_IND = 'Y' then concept_id = 38004345 (Mail order pharmacy). <br>else, if Spclt_Ind = 'Y' then 38004348 (Specialty Pharmacy), <br>else concept_id = '581458' (Pharmacy visit) | If pos in **MEDICAL_CLAIMS** is blank, *NULL* or does not have a mapping then set to 9202. <br><br>If pos in **INPATIENT_CONFINEMENT** is blank, *NULL* or does not have a mapping then set to 9201.
 VISIT_DETAIL_START_DATE|**MEDICAL_CLAIMS** FST_DT<br><br>**RX_CLAIMS** FILL_DT<br><br>**INPATIENT_CONFINEMENT** Admit_Date| |
 VISIT_DETAIL_START_DATETIME|**MEDICAL_CLAIMS** FST_DT<br><br>**RX_CLAIMS** FILL_DT<br><br>**INPATIENT_CONFINEMENT** Admit_Date||Set time to 00:00:00 UTC TZ
-VISIT_DETAIL_END_DATE|**MEDICAL_CLAIMS** LST_DT (see *Applied Rule* column for exceptions)<br><br>**RX_CLAIMS** FILL_DT<br><br>**INPATIENT_CONFINEMENT** Disch_Date|If pos in MEDICAL_CLAIMS is blank, NULL, does not have a mapping or is equal to 81, 42, 41, 14, 04, 18, 09, 03 or 16 then set visit_detail_end_date equal to visit_detail_start_date.<br><br>If pos = 23 and lst_dt - fst_dt > 1 then set visit_detail_end_date equal to visit_detail_start_date | 
+VISIT_DETAIL_END_DATE|**MEDICAL_CLAIMS** LST_DT (see *Applied Rule* column for exceptions)<br><br>**RX_CLAIMS** FILL_DT<br><br>**INPATIENT_CONFINEMENT** Disch_Date|If pos in MEDICAL_CLAIMS is blank, NULL, does not have a mapping or is equal to 11, 01, 95, 12, 20, 49, 60, 15, 81, 42, 41, 14, 04, 18, 09, 03 or 16 then set visit_detail_end_date equal to visit_detail_start_date.<br><br>If pos is equal to 23 or 22 and lst_dt - fst_dt > 1 then set visit_detail_end_date equal to visit_detail_start_date | 
 VISIT_DETAIL_END_DATETIME|visit_detail_end_date||Set time to 00:00:00 UTC TZ
 VISIT_DETAIL_TYPE_CONCEPT_ID|If derived from **RX_CLAIMS** use concept 32022 ('Visit derived from encounter on pharmacy claim')<br><br>If derived from **MEDICAL_CLAIMS** then use the fields PAID_STATUS and PROVCAT with the given lookup tables. <br><br>If derived from **INPATIENT_CONFINEMENT** use concept 32023  |For **MEDICAL_CLAIMS**: Using the given **LOOKUP TABLES** PROVCAT has a column called 'CATGY_ROL_UP_4_DESC'. Use this value along with the PAID_STATUS to assign a CONCEPT_ID  | [See Mapping Medical_Claim to concepts for VISIT_TYPE_CONCEPT_ID](#Mapping-Medical_Claim-to-concepts-for-VISIT_TYPE_CONCEPT_ID)
 PROVIDER_ID|**MEDICAL_CLAIMS** PROV -> **PROVIDER_BRIDGE** PROV_UNIQUE<br><br>**INPATIENT_CONFINEMENT** PROV -> **PROVIDER_BRIDGE** PROV_UNIQUE<br><br>**RX_CLAIMS** Prescriber_Prov/ NPI/ DEA -> **Provider_Bridge** PROV_UNIQUE||[See Provider Assignment Logic](#PROVIDER_ID-Assignment-Logic)
@@ -150,7 +150,10 @@ Each record in the **MEDICAL_CLAIMS** table has a value in the fields PROVCAT an
 
 
 ## Change Log
-### September 2020
+### September 21, 2020
+- Added place of service codes where the VISIT_DETAIL_END_DATE should equal the VISIT_DETAIL_START_DATE.
+
+### September 16, 2020
 - Changes to logic on how to assign VISIT_DETAIL_END_DATE. Previously records from RX_CLAIMS had the VISIT_DETAIL_END_DATE set to fill_dt + days_supply-1. This was changed so that the end date is also set to the fill date. 
 - Records where the place of service value from MEDICAL_CLAIMS did not have a mapping still took the LST_DT as the VISIT_DETAIL_END_DATE. Many LST_DT values from the source data are incorrect so in the case that POS is blank or cannot be mapped the VISIT_DETAIL_END_DATE is set to the VISIT_DETAIL_START_DATE
 - Records from MEDICAL_CLAIMS with POS = 23 and where lst_dt - fst_dt > 1, the VISIT_DETAIL_START_DATE and VISIT_DETAIL_END_DATE are both set to fst_dt. 
