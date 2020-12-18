@@ -7,7 +7,7 @@ parent: IBM CCAE & MDCR to STEM
 description: "DRUG_CLAIMS to STEM table description"
 ---
 
-## Table name: stem_table
+## Table name: **STEM_TABLE**
 
 ### Key conventions
 * Keep records with SVCDATE that fall within an OBSERVATION_PERIOD available for this person.

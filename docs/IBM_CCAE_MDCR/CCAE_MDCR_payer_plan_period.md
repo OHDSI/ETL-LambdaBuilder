@@ -2,7 +2,7 @@
 layout: default
 title: Payer Plan Period
 nav_order: 3
-parent: CCAE & MDCR
+parent: IBM CCAE & MDCR
 description: "**PAYER_PLAN_PERIOD** mapping from IBM MarketScan® Commercial Database (CCAE) & IBM MarketScan® Medicare Supplemental Database (MDCR) **ENROLLMENT_DETAIL**."
 
 ---
