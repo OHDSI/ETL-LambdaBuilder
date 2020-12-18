@@ -1,8 +1,8 @@
 ---
 layout: default
 title: Provider
-nav_order: 5
-parent: CCAE MDCR
+nav_order: 6
+parent: CCAE & MDCR
 description: "**PROVIDER** mapping from IBM MarketScan® Commercial Database (CCAE) & IBM MarketScan® Medicare Supplemental Database (MDCR) **FACILITY_HEADER**, **OUTPATIENT_SERVICES**, **INPATIENT_SERVICES**, and **LAB**."
 
 ---

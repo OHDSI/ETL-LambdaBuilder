@@ -1,8 +1,8 @@
 ---
 layout: default
-title: IBM CCAE MDCR Person
+title: Person
 nav_order: 1
-parent:  IBM CCAE MDCR
+parent: IBM CCAE & MDCR
 description: "**PERSON** mapping from IBM MarketScan® Commercial Database (CCAE) & IBM MarketScan® Medicare Supplemental Database (MDCR) **ENROLLMENT_DETAIL**."
 ---
 

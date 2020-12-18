@@ -1,9 +1,9 @@
 ---
 layout: default
 title: FACILITY_HEADER
-nav_order: 1
-parent: CCAE_MDCR_STEM
-grand_parent: CCAE_MDCR
+nav_order: 6
+grand_parent: IBM CCAE & MDCR
+parent: IBM CCAE & MDCR to STEM
 description: "FACILITY_HEADER to STEM table description"
 ---
 

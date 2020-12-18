@@ -1,9 +1,9 @@
 ---
 layout: default
 title: ENROLLMENT_DETAIL
-nav_order: 3
-parent: CCAE_MDCR_STEM
-grand_parent: CCAE_MDCR
+nav_order: 1
+grand_parent: IBM CCAE & MDCR
+parent: IBM CCAE & MDCR to STEM
 description: "ENROLLMENT_DETAIL to STEM table description"
 ---
 

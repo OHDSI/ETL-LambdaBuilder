@@ -2,8 +2,8 @@
 layout: default
 title: STEM Lookup Files
 nav_order: 9
-parent: CCAE_MDCR_STEM
-grandparent: CCAE_MDCR
+grand_parent: IBM CCAE & MDCR
+parent: IBM CCAE & MDCR to STEM
 description: "Lookup Files for tables staged into STEM"
 ---
 

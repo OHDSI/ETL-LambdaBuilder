@@ -1,8 +1,8 @@
 ---
 layout: default
-title: Visit_occurrence
-nav_order: 5
-parent: CCAE MDCR
+title: Visit Occurrence
+nav_order: 8
+parent: CCAE & MDCR
 description: "**VISIT_OCCURRENCE** mapping from IBM MarketScan® Commercial Database (CCAE) & IBM MarketScan® Medicare Supplemental Database (MDCR) **OUTPATIENT_SERVICES** & **INPATIENT_SERVICES**."
 ---
 

@@ -1,3 +1,12 @@
+---
+layout: default
+title: Visit Detail
+nav_order: 7
+parent: CCAE & MDCR
+description: "**VISIT_DETAIL** mapping from IBM MarketScan® Commercial Database (CCAE) & IBM MarketScan® Medicare Supplemental Database (MDCR) **FACILITY_HEADER**, **INPATIENT_ADMISSIONS**, **INPATIENT_SERVICES**, **OUTPATIENT_SERVICES**, **DRUG_CLAIMS**, and **LAB**."
+
+---
+
 ## Table name: **VISIT_DETAIL**
 
 This table will be populated from six source tables, **FACILITY_HEADER**, **INPATIENT_ADMISSIONS**, **INPATIENT_SERVICES**, **OUTPATIENT_SERVICES**, **DRUG_CLAIMS**, and **LAB**.

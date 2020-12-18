@@ -1,8 +1,8 @@
 ---
 layout: default
-title: IBM CCAE MDCR STEM
-nav_order: 8
-parent:  IBM CCAE MDCR
+title: IBM CCAE & MDCR to STEM
+nav_order: 9
+parent: IBM CCAE & MDCR
 has_children: true
 description: "STEM table description"
 ---

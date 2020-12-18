@@ -1,9 +1,9 @@
 ---
 layout: default
-title: IBM CCAE MDCR STEM DRUG_CLAIMS
-nav_order: 1
-grand_parent:  IBM CCAE MDCR
-parent:  IBM CCAE MDCR STEM 
+title: DRUG_CLAIMS
+nav_order: 2
+grand_parent: IBM CCAE & MDCR
+parent: IBM CCAE & MDCR to STEM
 description: "DRUG_CLAIMS to STEM table description"
 ---
 

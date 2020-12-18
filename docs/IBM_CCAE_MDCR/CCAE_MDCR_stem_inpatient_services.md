@@ -1,9 +1,9 @@
 ---
 layout: default
 title: INPATIENT_SERVICES
-nav_order: 3
-parent: CCAE_MDCR_STEM
-grand_parent: CCAE_MDCR
+nav_order: 4
+grand_parent: IBM CCAE & MDCR
+parent: IBM CCAE & MDCR to STEM
 description: "INPATIENT_SERVICES to STEM table description"
 ---
 

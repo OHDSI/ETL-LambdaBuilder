@@ -1,3 +1,11 @@
+---
+layout: default
+title: OUTPATIENT_SERVICES
+nav_order: 3
+grand_parent: IBM CCAE & MDCR
+parent: IBM CCAE & MDCR to STEM
+description: "OUTPATIENT_SERVICES to STEM table description"
+---
 
 ## Table name: **STEM_TABLE**
 

@@ -1,18 +1,21 @@
 ---
 layout: default
-title: IBM CCAE MDCR
+title: IBM CCAE & MDCR
 nav_order: 3
-description: "IBM Commercial Claims and Encounters ETL to OMOP CDM"
+description: "IBM MarketScan® Commercial Database (CCAE) & IBM MarketScan® Medicare Supplemental Database (MDCR) ETL to OMOP CDM"
 has_children: true
 permalink: /docs/IBM_CCAE_MDCR
 ---
 
 ## IBM MARKETSCAN RESEARCH DATABASES OVERVIEW
 
+<br>
+
  | Database | Content | Covered Lives |
  | --- | --- | --- | 
 | Commercial Claims and Encounters (CCAE) | Health care coverage eligibility and service use of individuals in plans or product lines with fee-forservice plans and fully capitated or partially capitated plans | Active employees and dependents, early (nonMedicare) retirees and dependents, COBRA continuees | 
 | Medicare Supplemental and Coordination of Benefits (COB) |Health care coverage eligibility and service use of individuals in plans or product lines with fee-forservice plans and fully capitated or partially capitated plans |Medicare-eligible active and retired employees and their Medicareeligible dependents from employer-sponsored supplemental plans |
+
 <br>
 
 The IBM® MarketScan® Research Databases
