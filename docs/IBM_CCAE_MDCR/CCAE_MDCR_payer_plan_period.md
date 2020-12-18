@@ -4,7 +4,6 @@ title: Payer Plan Period
 nav_order: 3
 parent: IBM CCAE & MDCR
 description: "**PAYER_PLAN_PERIOD** mapping from IBM MarketScan® Commercial Database (CCAE) & IBM MarketScan® Medicare Supplemental Database (MDCR) **ENROLLMENT_DETAIL**."
-
 ---
 
 ## Table name: **PAYER_PLAN_PERIOD**

@@ -4,7 +4,6 @@ title: Cost
 nav_order: 9
 parent: IBM CCAE & MDCR
 description: "**COST** mapping from IBM MarketScan® Commercial Database (CCAE) & IBM MarketScan® Medicare Supplemental Database (MDCR) **INPATIENT_ADMISSIONS**, **INPATIENT_SERVICES**, **OUTPATIENT_SERVICES**, and **DRUG_CLAIMS**"
-
 ---
 
 ## Table name: **COST**

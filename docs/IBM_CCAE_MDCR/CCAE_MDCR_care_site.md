@@ -4,7 +4,6 @@ title: Care Site
 nav_order: 4
 parent: IBM CCAE & MDCR
 description: "**CARE_SITE** mapping for the IBM MarketScan® Commercial Database (CCAE) & IBM MarketScan® Medicare Supplemental Database (MDCR)"
-
 ---
 
 ## Table name: **CARE_SITE**

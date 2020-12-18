@@ -4,7 +4,6 @@ title: Observation Period
 nav_order: 2
 parent: IBM CCAE & MDCR
 description: "**OBSERVATION_PERIOD** mapping from IBM MarketScan® Commercial Database (CCAE) & IBM MarketScan® Medicare Supplemental Database (MDCR) **ENROLLMENT_DETAIL**."
-
 ---
 
 ## Table name: **OBSERVATION_PERIOD**

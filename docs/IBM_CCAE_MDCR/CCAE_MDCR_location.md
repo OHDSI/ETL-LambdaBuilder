@@ -3,8 +3,7 @@ layout: default
 title: Location
 nav_order: 5
 parent: IBM CCAE & MDCR
-description: "**LOCATION** mapping from IBM MarketScan® Commercial Database (CCAE) & IBM MarketScan® Medicare Supplemental Database (MDCR) **ENROLLMENT_DETAIL**."
-
+description: "**LOCATION** mapping from IBM MarketScan® Commercial Database (CCAE) & IBM MarketScan® Medicare Supplemental Database (MDCR) **ENROLLMENT_DETAIL**." 
 ---
 
 ## Table name: **LOCATION**
