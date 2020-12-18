@@ -19,7 +19,7 @@ description: "OUTPATIENT_SERVICES to STEM table description"
 
 ### Reading from **OUTPATIENT_SERVICES**
 
-![](_files/image3.png)
+![](images/image3.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |

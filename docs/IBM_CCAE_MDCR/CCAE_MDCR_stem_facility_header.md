@@ -17,7 +17,7 @@ description: "FACILITY_HEADER to STEM table description"
 
 ### Reading from **FACILITY_HEADER**
 
-![](_files/image1.png)
+![](images/image1.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |

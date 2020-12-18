@@ -16,7 +16,7 @@ description: "ENROLLMENT_DETAIL to STEM table description"
 
 ### Reading from **ENROLLMENT_DETAIL**
 
-![](_files/image7.png)
+![](images/image7.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |

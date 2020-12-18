@@ -23,7 +23,7 @@ The **COST** table captures all cost information.
 
 ### Reading from **DRUG_CLAIMS**
 
-![](_files/image17DrugCost.png)
+![](images/image17DrugCost.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
@@ -54,7 +54,7 @@ The **COST** table captures all cost information.
 
 ### Reading from **OUTPATIENT_SERVICES**
 
-![](_files/image14OPSCost.png)
+![](images/image14OPSCost.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
@@ -85,7 +85,7 @@ The **COST** table captures all cost information.
 
 ### Reading from **INPATIENT_ADMISSIONS**
 
-![](_files/image30IPACOST.png)
+![](images/image30IPACOST.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
@@ -115,7 +115,7 @@ The **COST** table captures all cost information.
 <br><br>
 ### Reading from **INPATIENT_SERVICES**
 
-![](_files/image15IPSCOST.png)
+![](images/image15IPSCOST.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |

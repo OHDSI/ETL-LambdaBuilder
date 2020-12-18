@@ -129,7 +129,7 @@ WORKABS|NULL|Numeric
 
 ### Reading from **HEALTH_RISK_ASSESSMENT**
 
-![](_files/image5.png)
+![](images/image5.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |

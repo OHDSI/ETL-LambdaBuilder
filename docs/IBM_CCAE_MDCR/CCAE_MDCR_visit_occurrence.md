@@ -35,15 +35,15 @@ Even though MarketScan has defined inpatient visits, some inpatient visits still
         * As you are collapsing records take the PROVID and STDPROV from the first claim line of each visit as VISIT_PROVID and VISIT_PROVSTD, this will be used later to assign providers associated to a visit.
     * Two examples for defining **VISIT_OCCURRENCE** can be found here:
 
-![](_files/Defining_VISIT_OCCURRENCE_Example1.JPG)
+![](images/Defining_VISIT_OCCURRENCE_Example1.JPG)
 
-![](_files/Defining_VISIT_OCCURRENCE_Example2.JPG)
+![](images/Defining_VISIT_OCCURRENCE_Example2.JPG)
 
 
 
 ### Reading from **OUTPATIENT_SERVICES**
 
-![](_files/image17.png)
+![](images/image17.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
@@ -67,7 +67,7 @@ Even though MarketScan has defined inpatient visits, some inpatient visits still
 
 ### Reading from **INPATIENT_SERVICES**
 
-![](_files/image18.png)
+![](images/image18.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |

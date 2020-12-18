@@ -35,7 +35,7 @@ description: "**PAYER_PLAN_PERIOD** mapping from IBM MarketScan® Commercial Dat
 
 ### Reading from **ENROLLMENT_DETAIL**
 
-![](_files/image12.png)
+![](images/image12.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |

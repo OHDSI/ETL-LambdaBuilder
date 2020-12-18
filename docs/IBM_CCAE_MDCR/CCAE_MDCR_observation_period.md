@@ -22,7 +22,7 @@ Enrollment entries are consolidated by combining records that indicate continuou
 
 ### Reading from **ENROLLMENT_DETAIL**
 
-![](_files/image11.png)
+![](images/image11.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |

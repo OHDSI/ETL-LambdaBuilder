@@ -20,7 +20,7 @@ description: "INPATIENT_ADMISSIONS to STEM table description"
 
 ### Reading from **INPATIENT_ADMISSIONS**
 
-![](_files/image4.png)
+![](images/image4.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |

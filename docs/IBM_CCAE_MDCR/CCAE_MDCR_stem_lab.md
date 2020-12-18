@@ -24,7 +24,7 @@ description: "LAB to STEM table description"
 
 ### Reading from **LAB**
 
-![](_files/image8.png)
+![](images/image8.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |

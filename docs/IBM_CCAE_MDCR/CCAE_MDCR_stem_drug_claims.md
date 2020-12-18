@@ -18,7 +18,7 @@ description: "DRUG_CLAIMS to STEM table description"
 
 ### Reading from **DRUG_CLAIMS**
 
-![](_files/image6.png)
+![](images/image6.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |

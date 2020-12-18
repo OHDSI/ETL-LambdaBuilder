@@ -15,7 +15,7 @@ description: "INPATIENT_SERVICES to STEM table description"
 
 ### Reading from **INPATIENT_SERVICES**
 
-![](_files/image2.png)
+![](images/image2.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |

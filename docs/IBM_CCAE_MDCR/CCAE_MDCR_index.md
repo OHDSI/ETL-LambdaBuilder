@@ -1,7 +1,7 @@
 
 # Source Data Mapping Approach to CDMV6.0
 
-![](_files/image32.png)
+![](images/image32.png)
 
 ## Contents
 

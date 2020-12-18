@@ -14,7 +14,7 @@ description: "**LOCATION** mapping from IBM MarketScan® Commercial Database (CC
 
 ### Reading from **ENROLLMENT_DETAIL**
 
-![](_files/image9.png)
+![](images/image9.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |

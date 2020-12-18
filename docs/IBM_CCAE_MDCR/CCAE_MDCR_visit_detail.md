@@ -52,7 +52,7 @@ The **VISIT_DETAIL** table will have 1:1 record level referential integrity to *
 
 ### Reading from **OUTPATIENT_SERVICES**
 
-![](_files/image19.png)
+![](images/image19.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
@@ -78,7 +78,7 @@ The **VISIT_DETAIL** table will have 1:1 record level referential integrity to *
 
 ### Reading from **INPATIENT_SERVICES**
 
-![](_files/image20.png)
+![](images/image20.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |

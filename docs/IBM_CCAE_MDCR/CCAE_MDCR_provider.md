@@ -28,7 +28,7 @@ The PROVIDER table contains a list of uniquely identified health care providers 
 
 ### Reading from **FACILITY_HEADER**, **OUTPATIENT_SERVICES**, **INPATIENT_SERVICES**, & **LAB**
 
-![](_files/image13.png)
+![](images/image13.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |

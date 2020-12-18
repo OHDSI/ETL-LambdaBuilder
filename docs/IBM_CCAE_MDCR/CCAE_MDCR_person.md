@@ -20,7 +20,7 @@ description: "**PERSON** mapping from IBM MarketScan® Commercial Database (CCAE
 
 ### Reading from **ENROLLMENT_DETAIL**
 
-![](_files/image10.png)
+![](images/image10.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
