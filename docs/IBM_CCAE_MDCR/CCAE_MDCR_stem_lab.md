@@ -1,6 +1,6 @@
 ---
 layout: default
-title: LAB
+title: Lab
 nav_order: 7
 grand_parent: IBM CCAE & MDCR
 parent: IBM CCAE & MDCR to STEM

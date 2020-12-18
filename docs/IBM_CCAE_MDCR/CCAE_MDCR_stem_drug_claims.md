@@ -1,6 +1,6 @@
 ---
 layout: default
-title: DRUG_CLAIMS
+title: Drug Claims
 nav_order: 2
 grand_parent: IBM CCAE & MDCR
 parent: IBM CCAE & MDCR to STEM

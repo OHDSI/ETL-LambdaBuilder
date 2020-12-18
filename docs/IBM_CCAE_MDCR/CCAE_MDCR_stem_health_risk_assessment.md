@@ -1,6 +1,6 @@
 ---
 layout: default
-title: HEALTH_RISK_ASSESSMENT
+title: Health Risk Assessment
 nav_order: 8
 grand_parent: IBM CCAE & MDCR
 parent: IBM CCAE & MDCR to STEM

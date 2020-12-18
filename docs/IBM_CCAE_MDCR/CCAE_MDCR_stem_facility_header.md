@@ -1,6 +1,6 @@
 ---
 layout: default
-title: FACILITY_HEADER
+title: Facility Header
 nav_order: 6
 grand_parent: IBM CCAE & MDCR
 parent: IBM CCAE & MDCR to STEM

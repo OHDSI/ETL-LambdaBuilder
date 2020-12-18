@@ -1,6 +1,6 @@
 ---
 layout: default
-title: OUTPATIENT_SERVICES
+title: Outpatient Services
 nav_order: 3
 grand_parent: IBM CCAE & MDCR
 parent: IBM CCAE & MDCR to STEM

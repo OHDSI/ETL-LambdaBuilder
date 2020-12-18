@@ -1,6 +1,6 @@
 ---
 layout: default
-title: INPATIENT_ADMISSIONS
+title: Inpatient Admissions
 nav_order: 5
 grand_parent: IBM CCAE & MDCR
 parent: IBM CCAE & MDCR to STEM

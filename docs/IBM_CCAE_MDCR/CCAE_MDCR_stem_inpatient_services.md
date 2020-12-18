@@ -1,6 +1,6 @@
 ---
 layout: default
-title: INPATIENT_SERVICES
+title: Inpatient Services
 nav_order: 4
 grand_parent: IBM CCAE & MDCR
 parent: IBM CCAE & MDCR to STEM
