@@ -133,51 +133,51 @@ WORKABS|NULL|Numeric
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
-| domain_id | - | - | - |
-| person_id | enrolid | - | - |
-| visit_occurrence_id | - | - | - |
-| visit_detail_id | - | - | - |
-| provider_id | - | - | - |
-| id | - | System generated. | - |
-| concept_id | the test name or name of the column | Use the <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html">Source-to-Standard Query</a>.<br><br> `WHERE SOURCE_VOCABULARY_ID IN ('JNJ_TRU_HRA_QUESTION')`<br>`AND TARGET_INVALID_REASON IS NULL` | - |
-| source_value | the test name or name of the column | - | - |
-| source_concept_id | - | 0 | - |
-| type_concept_id | - | `44786633` – numeric HRA values <br>`44786634` – categorical HRA values | Use table above to help know if the value is numeric or categorical. |
-| start_date | survdate | - | - |
-| start_datetime | survdate | start_date + midnight | - |
-| end_date | - | NULL | - |
-| end_datetime | - | NULL | - |
-| verbatim_end_date | - | NULL | - |
-| days_supply | - | NULL | - |
-| dose_unit_source_value | - | NULL | - |
-| lot_number | - | NULL | - |
-| modifier_concept_id | - | 0 | - |
-| modifier_source_value | - | NULL | - |
-| operator_concept_id | - | 0 | - |
-| quantity | - | NULL | - |
-| range_high | - | NULL | - |
-| range_low | - | NULL | - |
-| refills | - | NULL | - |
-| route_concept_id | - | 0 | - |
-| route_source_value | - | NULL | - |
-| sig | - | NULL | - |
-| stop_reason | - | NULL | - |
-| unique_device_id | - | NULL | - |
-| unit_concept_id | - | 0 | - |
-| unit_source_value | - | NULL | - |
-| value_as_concept_id | - | 0 | - |
-| value_as_number |  | If a question has a numeric result, put that answer here. | Use table above to help know if the value is numeric or categorical.|
-| value_as_string |  | If a question has a string response, put that answer here. | Use table above to help know if the value is numeric or categorical. |
-| value_source_value | the test name or name of the column | - | - |
-| anatomic_site_concept_id | - | 0 | - |
-| disease_status_concept_id | - | 0 | - |
-| specimen_source_id | - | NULL | - |
-| anatomic_site_source_value | - | NULL | - |
-| disease_status_source_value | - | NULL | - |
-| condition_status_concept_id | - | 0 | - |
-| condition_status_source_value | - | NULL | - |
-| event_id | - | NULL | - |
-| event_field_concept_id | - | 0 | - |
-| value_as_datetime | - | NULL | - |
-| qualifier_concept_id | - | 0 | - |
-| qualifier_source_value | - | NULL | - |
+| DOMAIN_ID | - | - | - |
+| PERSON_ID | ENROLID | - | - |
+| VISIT_OCCURRENCE_ID | - | - | - |
+| VISIT_DETAIL_ID | - | - | - |
+| PROVIDER_ID | - | - | - |
+| ID | - | System generated. | - |
+| CONCEPT_ID | The test name or name of the column | Use the <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html">Source-to-Standard Query</a>.<br><br> `WHERE SOURCE_VOCABULARY_ID IN ('JNJ_TRU_HRA_QUESTION')`<br>`AND TARGET_INVALID_REASON IS NULL` | - |
+| SOURCE_VALUE | The test name or name of the column | - | - |
+| SOURCE_CONCEPT_ID | - | 0 | - |
+| TYPE_CONCEPT_ID | - | `44786633` – numeric HRA values <br>`44786634` – categorical HRA values | Use table above to help know if the value is numeric or categorical. |
+| START_DATE | SURVDATE | - | - |
+| START_DATETIME | SURVDATE | start_date + midnight | - |
+| END_DATE | - | NULL | - |
+| END_DATETIME | - | NULL | - |
+| VERBATIM_END_DATE | - | NULL | - |
+| DAYS_SUPPLY | - | NULL | - |
+| DOSE_UNIT_SOURCE_VALUE | - | NULL | - |
+| LOT_NUMBER | - | NULL | - |
+| MODIFIER_CONCEPT_ID | - | 0 | - |
+| MODIFIER_SOURCE_VALUE | - | NULL | - |
+| OPERATOR_CONCEPT_ID | - | 0 | - |
+| QUANTITY | - | NULL | - |
+| RANGE_HIGH | - | NULL | - |
+| RANGE_LOW | - | NULL | - |
+| REFILLS | - | NULL | - |
+| ROUTE_CONCEPT_ID | - | 0 | - |
+| ROUTE_SOURCE_VALUE | - | NULL | - |
+| SIG | - | NULL | - |
+| STOP_REASON | - | NULL | - |
+| UNIQUE_DEVICE_ID | - | NULL | - |
+| UNIT_CONCEPT_ID | - | 0 | - |
+| UNIT_SOURCE_VALUE | - | NULL | - |
+| VALUE_AS_CONCEPT_ID | - | 0 | - |
+| VALUE_AS_NUMBER | - | If a question has a numeric result, put that answer here. | Use table above to help know if the value is numeric or categorical.|
+| VALUE_AS_STRING | - | If a question has a string response, put that answer here. | Use table above to help know if the value is numeric or categorical. |
+| value_source_value | The test name or name of the column | - | - |
+| ANATOMIC_SITE_CONCEPT_ID | - | 0 | - |
+| DISEASE_STATUS_CONCEPT_ID | - | 0 | - |
+| SPECIMEN_SOURCE_ID | - | NULL | - |
+| ANATOMIC_SITE_SOURCE_VALUE | - | NULL | - |
+| DISEASE_STATUS_SOURCE_VALUE | - | NULL | - |
+| CONDITION_STATUS_CONCEPT_ID | - | 0 | - |
+| CONDITION_STATUS_SOURCE_VALUE | - | NULL | - |
+| EVENT_ID | - | NULL | - |
+| EVENT_FIELD_CONCEPT_ID | - | 0 | - |
+| VALUE_AS_DATETIME | - | NULL | - |
+| QUALIFIER_CONCEPT_ID | - | 0 | - |
+| QUALIFIER_SOURCE_VALUE | - | NULL | - |

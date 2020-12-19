@@ -33,13 +33,7 @@ Even though MarketScan has defined inpatient visits, some inpatient visits still
         * Sort data in ascending order by ENROLID, START_DATE, PROVID, END_DATE, and STDPROV. 
         * Then by ENROLID and START_DATE, collapse all ‘OP’ claims that have the same PROVID as one OP visit, then take START_DATE as VISIT_START_DATE, MAX (END_DATE) as VISIT_END_DATE, and ‘OP’ as PLACE_OF_SERVICE_SOURCE_VALUE.
         * As you are collapsing records take the PROVID and STDPROV from the first claim line of each visit as VISIT_PROVID and VISIT_PROVSTD, this will be used later to assign providers associated to a visit.
-    * Two examples for defining **VISIT_OCCURRENCE** can be found here:
-
-![](images/Defining_VISIT_OCCURRENCE_Example1.JPG)
-
-![](images/Defining_VISIT_OCCURRENCE_Example2.JPG)
-
-
+    * <a href='https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/IBM_CCAE_MDCR/images/Defining_VISIT_OCCURRENCE_Examples.xlsx'>This MS Excel file</a> provides two examples for defining **VISIT_OCCURRENCE**.
 
 ### Reading from **OUTPATIENT_SERVICES**
 
