@@ -128,7 +128,7 @@ The **COST** table captures all cost information.
 
 <br>
 
-| Destination Field | Source field | Logic | Comment field |
+ Destination Field | Source field | Logic | Comment field 
 | --- | --- | --- | --- |
 | COST_ID | - | A system generated unique identifier for each cost record | - |
 | COST_EVENT_ID | - | This allows the cost to be linked to the associated record. If a PROC1 code maps to a CONCEPT_ID with a domain of 'device', then this will be the DEVICE_EXPOSURE_ID assigned in the **DEVICE_EXPOSURE** table. | - |

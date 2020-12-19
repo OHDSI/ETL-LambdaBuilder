@@ -21,26 +21,28 @@ description: "**PAYER_PLAN_PERIOD** mapping from IBM MarketScan® Commercial Dat
 
 <br>
 
-|DATATYP|DTSTART|DTEND|ENROLID|PLANTYP|
-|---|---|---|---|---|
-|1|	10/1/2006|	10/31/2006|	9687901|6|
-|1|	10/5/2006|	10/31/2006|	9687901|5|
+| DATATYP | DTSTART | DTEND | ENROLID | PLANTYP |
+| --- | --- | --- | --- | --- |
+| 1 | 10/1/2006 | 10/31/2006 | 9687901 | 6 |
+| 1 | 10/5/2006 | 10/31/2006 | 9687901 | 5 |
 
 <br>
 
 Sort ENROLLMENT_DETAIL table by ENROLID, DTSTART and DTEND, and if there is some overlap between two coverage periods, always truncate the first one and discard the first record if DTEND < DSTART after truncation. The example above can be truncated as below:
 
-<br><br>
+<br>
 
-|DATATYP|DTSTART|DTEND|ENROLID|PLANTYP|
+| DATATYP | DTSTART | DTEND | ENROLID | PLANTYP |
 |---|---|---|---|---|
-|1|	10/1/2006|	10/4/2006|	9687901|6|
-|1|	10/5/2006|	10/31/2006|	9687901|5|
+| 1 | 10/1/2006 | 10/4/2006 |	9687901 | 6 |
+| 1 | 10/5/2006 | 10/31/2006 |	9687901 | 5 |
 
 <br>
 
 * Payer plans may break out differently than observation periods, the amount of observation time and payer plan period time may not match for each person.
 * Remove duplicate records before assigning PAYER_PLAN_PERIOD_ID.
+
+<br>
 
 ### Reading from **ENROLLMENT_DETAIL**
 
