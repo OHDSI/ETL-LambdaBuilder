@@ -140,7 +140,7 @@ The **COST** table captures all cost information.
 | COST_ID | - | A system generated unique identifier for each cost record | - |
 | COST_EVENT_ID | - | This allows the cost to be linked to the associated record. If a PROC1 code maps to a CONCEPT_ID with a domain of 'device', then this will be the DEVICE_EXPOSURE_ID assigned in the **DEVICE_EXPOSURE** table. | - |
 | COST_DOMAIN_ID | - | If a PROC1 code maps to a CONCEPT_ID with a domain of 'Device', then this will be 'Device'. | - |
-| COST_TYPE_CONCEPT_ID | - | `32810 | `32810`	Claim |
+| COST_TYPE_CONCEPT_ID | - | `32810` | `32810`	Claim |
 | CURRENCY_CONCEPT_ID | - | `44818668` | This will be `44818668` for all rows since this is a US claims database and paid in US Dollars. |
 | TOTAL_CHARGE | - | NULL | - |
 | TOTAL_COST | - | NULL | - |
