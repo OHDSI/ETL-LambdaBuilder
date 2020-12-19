@@ -127,11 +127,7 @@ The **COST** table captures all cost information.
 
 ### Reading from **INPATIENT_SERVICES**
 
-<br>
-
 ![](images/image15IPSCOST.png)
-
-<br>
 
 <br>
 
