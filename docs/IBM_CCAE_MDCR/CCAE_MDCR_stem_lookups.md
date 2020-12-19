@@ -96,7 +96,7 @@ This page is dedicated to information that leveraged across multiple tables movi
 
 We will use the field DSTATUS in **INPATIENT_ADMISSIONS** and **FACILITY_HEADER** tables that are created during the building of the **VISIT_OCCURRENCE** table to map discharge status.
 
-* For all records the CONCEPT_ID = 4202605 (Discharge Status)
+* For all records the CONCEPT_ID = `4202605`(Discharge Status)
 * Use the below table to map VALUE_AS_STRING
 
 | DSTATUS | VALUE_AS_STRING                                     |
