@@ -120,15 +120,22 @@ The **COST** table captures all cost information.
 | DRG | DRG | Use the <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html">Source-to-Standard Query</a><BR /><br>Filters:<br>`WHERE SOURCE_VOCABULARY_ID IN ('DRG')`<br>`AND SOURCE_CONCEPT_CLASS_ID IN ('MS-DRG')`<br>`AND TARGET_STANDARD_CONCEPT = 'S'`<br>`AND TSVCDAT >= TARGET_VALID_START_DATE`<br>`AND TSVCDAT <= TARGET_VALID_END_DATE`<br>`AND TARGET_STANDARD_CONCEPT IS NOT NULL` | The filter to the left should be used for records coming from the INPATIENT_SERVICES table only. When a cost record comes from the INPATIENT_ADMISSIONS table replace TSVCDAT with DISDATE. |
 | DRG_SOURCE_VALUE | DRG | - | - |
 
-<br><br>
+
+<br>
+
+<br>
 
 ### Reading from **INPATIENT_SERVICES**
+
+<br>
 
 ![](images/image15IPSCOST.png)
 
 <br>
 
- Destination Field | Source field | Logic | Comment field 
+<br>
+
+| Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
 | COST_ID | - | A system generated unique identifier for each cost record | - |
 | COST_EVENT_ID | - | This allows the cost to be linked to the associated record. If a PROC1 code maps to a CONCEPT_ID with a domain of 'device', then this will be the DEVICE_EXPOSURE_ID assigned in the **DEVICE_EXPOSURE** table. | - |
