@@ -25,7 +25,7 @@ description: "**PAYER_PLAN_PERIOD** mapping from IBM MarketScan® Commercial Dat
 
 <br>
 Sort ENROLLMENT_DETAIL table by ENROLID, DTSTART and DTEND, and if there is some overlap between two coverage periods, always truncate the first one and discard the first record if DTEND < DSTART after truncation. The example above can be truncated as below:
-<br>
+<br><br>
 
 |DATATYP|DTSTART|DTEND|ENROLID|PLANTYP|
 |---|---|---|---|---|

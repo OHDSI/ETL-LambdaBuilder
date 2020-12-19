@@ -113,11 +113,13 @@ The **COST** table captures all cost information.
 | DRG_SOURCE_VALUE | DRG | - | - |
 
 <br><br>
+
 ### Reading from **INPATIENT_SERVICES**
 
 ![](images/image15IPSCOST.png)
+
 <br>
-<br>
+
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
 | COST_ID | - | A system generated unique identifier for each cost record | - |
