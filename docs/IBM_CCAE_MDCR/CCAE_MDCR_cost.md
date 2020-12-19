@@ -12,6 +12,7 @@ The **COST** table captures all cost information.
 <br>
 
 ### Key conventions
+
 * Costs will be taken from **INPATIENT_ADMISSIONS**, **INPATIENT_SERVICES**, **OUTPATIENT_SERVICES**, and **DRUG_CLAIMS** and should be loaded after the **VISIT_OCCURRENCE** table since the mapped domains will be needed in order to properly associate the costs with the correct fact table (**CONDITION_OCCURRENCE**, **PROCEDURE_OCCURRENCE**, **DEVICE_EXPOSURE**, **DRUG_EXPOSURE**, **MEASUREMENT**, **OBSERVATION** or **VISIT_OCCURRENCE**).
 * Drug cost information is pulled from the DRUG_CLAIMS table at the same time the DRUG_EXPOSURE is loaded and follows the same pull logic as described for DRUG_EXPOSURE table. 
   * Starts after you have remove duplicate drug records (see Drug Claims to STEM documentation). 
@@ -19,11 +20,14 @@ The **COST** table captures all cost information.
   PAYER_PLAN_PERIOD_END_DATE, set PAYER_PLAN_PERIOD_ID as NULL.
 * When taking cost information from **INPATIENT_ADMISSIONS** we take any **INPATIENT_ADMISSION** that matches up to an ‘IP’ **INPATIENT_SERVICES** record on ENROLID, CASEID, and YEAR.
 * Drug cost information is pulled from the **DRUG_CLAIMS** table at the same time the **DRUG_EXPOSURE** is loaded and follows the same pull logic as described for **DRUG_EXPOSURE** table. 
-<br><br>
+
+<br>
 
 ### Reading from **DRUG_CLAIMS**
 
 ![](images/image17DrugCost.png)
+
+<br>
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
@@ -56,6 +60,8 @@ The **COST** table captures all cost information.
 
 ![](images/image14OPSCost.png)
 
+<br>
+
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
 | COST_ID | - | A system generated unique identifier for each cost record | - |
@@ -86,6 +92,8 @@ The **COST** table captures all cost information.
 ### Reading from **INPATIENT_ADMISSIONS**
 
 ![](images/image30IPACOST.png)
+
+<br>
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
@@ -144,3 +152,5 @@ The **COST** table captures all cost information.
 | REVENUE_CODE_SOURCE_VALUE | revcode | - | - |
 | DRG_CONCEPT_ID | DRG | Use the <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html">Source-to-Standard Query</a><BR /><br>Filters:<br>`WHERE SOURCE_VOCABULARY_ID IN ('DRG')`<br>`AND SOURCE_CONCEPT_CLASS_ID IN ('MS-DRG')`<br>`AND TARGET_STANDARD_CONCEPT = 'S'`<br>`AND TSVCDAT >= TARGET_VALID_START_DATE`<br>`AND TSVCDAT <= TARGET_VALID_END_DATE`<br>`AND TARGET_STANDARD_CONCEPT IS NOT NULL` | The filter to the left should be used for records coming from the **INPATIENT_SERVICES** table only. When a cost record comes from the **INPATIENT_ADMISSIONS** table replace TSVCDAT with DISDATE. |
 | DRG_SOURCE_VALUE | DRG | - | - |
+
+<br>

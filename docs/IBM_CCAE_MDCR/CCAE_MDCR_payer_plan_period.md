@@ -9,6 +9,7 @@ description: "**PAYER_PLAN_PERIOD** mapping from IBM MarketScan® Commercial Dat
 ## Table name: **PAYER_PLAN_PERIOD**
 
 ### Key conventions
+
 * For each person, create a record associating the person to the duration they were on a specific type of benefit plan (defined by DATATYP, and PLANTYP) per the **ENROLLMENT_DETAIL** table. Payer plan entries are consolidated by combining records that indicate continuous enrollment over a period for a specific payer plan.  Consolidation is done through the following steps:
     * Define the PAYER_SOURCE_VALUE (see logic in table below).  
     * **ENROLLMENT_DETAIL** records for each person are sorted in ascending order by DTSTART, DTEND.
@@ -18,19 +19,24 @@ description: "**PAYER_PLAN_PERIOD** mapping from IBM MarketScan® Commercial Dat
     * Use both DATATYP (i.e. DATATYP=2, 4 for identifying capitated plan) and PLANTYP (e.g. HMO, PPO, etc.) to define PAYER_SOURCE_VALUE. 
     * Switch of type of plan enrolled may cause the overlap of enroll periods on two plans:
 
+<br>
+
 |DATATYP|DTSTART|DTEND|ENROLID|PLANTYP|
 |---|---|---|---|---|
 |1|	10/1/2006|	10/31/2006|	9687901|6|
 |1|	10/5/2006|	10/31/2006|	9687901|5|
 
 <br>
+
 Sort ENROLLMENT_DETAIL table by ENROLID, DTSTART and DTEND, and if there is some overlap between two coverage periods, always truncate the first one and discard the first record if DTEND < DSTART after truncation. The example above can be truncated as below:
+
 <br><br>
 
 |DATATYP|DTSTART|DTEND|ENROLID|PLANTYP|
 |---|---|---|---|---|
 |1|	10/1/2006|	10/4/2006|	9687901|6|
 |1|	10/5/2006|	10/31/2006|	9687901|5|
+
 <br>
 
 * Payer plans may break out differently than observation periods, the amount of observation time and payer plan period time may not match for each person.
