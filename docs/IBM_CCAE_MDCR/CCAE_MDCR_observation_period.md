@@ -17,7 +17,8 @@ Enrollment entries are consolidated by combining records that indicate continuou
 ### Key conventions
 * Only use records where the person has prescription benefits (RX=1).
 * The gap between observation periods needs to be 32 days or less (<=32).
-* Remove duplicate records before assigning OBSERVATION_PERIOD_ID.     
+* Remove duplicate records before assigning OBSERVATION_PERIOD_ID.  
+* When a person has a death recorded then we truncate the OBSERVATION_PERIOD_END_DATE to reflect the corresponding DEATH_DATE from the **DEATH** table.   
 
 
 ### Reading from **ENROLLMENT_DETAIL**
