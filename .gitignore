@@ -332,6 +332,7 @@ ASALocalRun/
 # Configuration files
 docs/CPRD/Test Cases/inst/csv/config.csv
 docs/Optum Clinformatics/Test Cases/inst/csv/config.csv
+docs/IBM_CCAE_MDCR/Test Cases/extras/config.csv
 */config.csv
 *.Rhistory
 *Gemfile
