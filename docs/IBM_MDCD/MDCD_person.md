@@ -9,9 +9,9 @@ description: "**PERSON** mapping from IBM MarketScan® Medicaid (MDCD) **ENROLLM
 ## Table name: **PERSON**
 
 ### Key conventions
-* Delete the following members:  Gender changed over different enrollment period or max(DOBYR) &gt; min(DOBYR) +2
-* Only use records where the person has prescription benefits (RX=1).
-* If the person's other information changes (e.g. location), the last known record is used
+* Delete the following members:  Year(GETDATE()) - max(DOBYR)  < 90 AND max(DOBYR) >= min(DOBYR) +2 or gender changed over different enrollment period. 
+* Only use records where the person has prescription benefits (DRUGCOVG =1) or eligible for both Medicaid and Medicare coverage (MEDICARE =1). 
+* If the person's other information changes (e.g. location, race, ethnicity), the last known record is used
 * Delete individuals whose DOBYR &lt; 1900 or &gt; the current year.
 * After defining the patient’s DOBYR (the one on their last record), exclude any individual who was born &gt; 1 year after their first enrollment period.
 * The **ENROLLMENT_DETAIL** table may store multiple records for each person.  However, the CDM will only store one record per person in the **PERSON** table.  
@@ -20,7 +20,7 @@ description: "**PERSON** mapping from IBM MarketScan® Medicaid (MDCD) **ENROLLM
 
 ### Reading from **ENROLLMENT_DETAIL**
 
-![](images/image10.png)
+![]()
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
@@ -30,7 +30,6 @@ description: "**PERSON** mapping from IBM MarketScan® Medicaid (MDCD) **ENROLLM
 | MONTH_OF_BIRTH | - | NULL |  |
 | DAY_OF_BIRTH | - | NULL | - |
 | BIRTH_DATETIME | - | NULL | - |
-| DEATH_DATETIME | - | <<REVISIT FOR CDM 6.0>> | - |
 | RACE_CONCEPT_ID | STDRACE | Map values of STDRACE to  their associated CONCEPT_IDs: <br> `CASE` <br> `WHEN STDRACE ='1' THEN 8527 (White)`<br> `WHEN STDRACE ='2' THEN 8516 (Black)` <br> `ELSE 0 (OTHER)` <br> `END AS RACE_CONCEPT_ID`| Codes from MDCD:  <br> 1: White  <br> 2: Black  <br> 4: Hispanic  <br> 9: Other`|
 | ETHNICITY_CONCEPT_ID | STDRACE | Map values of STDRACE to  their associated CONCEPT_IDs: <br> `CASE` <br>` WHEN STDRACE ='4' THEN 38003563 (Hispanic or Latino)` <br> `ELSE 0 (OTHER)` <br> `END AS ETHNICITY_CONCEPT_ID` | - |
 | LOCATION_ID | - | NULL | - |
@@ -44,3 +43,6 @@ description: "**PERSON** mapping from IBM MarketScan® Medicaid (MDCD) **ENROLLM
 | ETHNICITY_SOURCE_VALUE | STDRACE |  | - |
 | ETHNICITY_SOURCE_CONCEPT_ID | - | 0 | - |
 
+
+## Change Log
+19-Feb-2021: Correct the exclusion based on year of birth to read "Delete the following members:  Year(GETDATE()) - max(DOBYR)  < 90 AND max(DOBYR) >= min(DOBYR) +2". Once a person reaches 90 years of age their birth year is incremented up to protect patient privacy. 

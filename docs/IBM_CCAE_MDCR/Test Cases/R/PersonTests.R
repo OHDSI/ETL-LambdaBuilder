@@ -7,7 +7,7 @@ createPersonTests <- function () {
   expect_no_person(person_id = patient$person_id);
 
   patient<-createPatient()
-  declareTest(id = patient$person_id, "Person with two birth years >2 yrs apart is excluded. Id is PERSON_ID.") 
+  declareTest(id = patient$person_id, "Person with two birth years >2 yrs apart is excluded. Note person is <90 years old for MDCD test. Id is PERSON_ID.") 
   add_enrollment_detail(enrolid=patient$enrolid, dobyr="1970")
   add_enrollment_detail(enrolid=patient$enrolid, dobyr="1980")
   expect_no_person(person_id = patient$person_id)
@@ -81,6 +81,12 @@ createPersonTests <- function () {
   
   if (Sys.getenv("truvenType") == "MDCD")
   {
+    patient<-createPatient()
+    declareTest(id = patient$person_id, "Person with two birth years >2 yrs apart is included because max(DOBYR) > 90. Id is PERSON_ID.") 
+    add_enrollment_detail(enrolid=patient$enrolid, dobyr="1915")
+    add_enrollment_detail(enrolid=patient$enrolid, dobyr="1920")
+    expect_no_person(person_id = patient$person_id)
+    
     patient <- createPatient()
     declareTest(id = patient$person_id, "Person with DRUGCOVG=0 and MEDICARE=0, person is excluded. Id is PERSON_ID.")
     add_enrollment_detail(enrolid=patient$enrolid, drugcovg = '0', medicare = '0')
