@@ -3,6 +3,11 @@
 ## STEP 1: Source the main file and set variable for which Truven database is being tested ("CCAE" for Commercial Claims and Encounters, "MDCR" for Medicare
 ## and "MDCD" for Medicaid)
 
+#DON'T FORGET THE CONFIG FILE CHANGE
+#Sys.setenv(truvenType = "CCAE");
+#Sys.setenv(truvenType = "MDCR");
+Sys.setenv(truvenType = "MDCD");
+
 source('main.R')
 config <- read.csv("extras/config.csv",as.is=TRUE)[1,]
 
@@ -16,10 +21,6 @@ Sys.setenv(raw_schema = config$raw)
 Sys.setenv(cdm_db = config$cdm_db)
 Sys.setenv(cdm_schema = config$cdm)
 
-#DON'T FORGET THE CONFIG FILE CHANGE
-#Sys.setenv(truvenType = "CCAE");
-#Sys.setenv(truvenType = "MDCR");
-Sys.setenv(truvenType = "MDCD");
 
 # STEP 2: Run the getSource function to source the proper framework based on the variable set above and then set defaults
 
