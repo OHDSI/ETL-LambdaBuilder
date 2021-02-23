@@ -9,7 +9,7 @@ description: "**PERSON** mapping from IBM MarketScan® Commercial Database (CCAE
 ## Table name: **PERSON**
 
 ### Key conventions
-* Delete the following members:  Gender changed over different enrollment period or max(DOBYR) &gt; min(DOBYR) +2
+* Delete the following members:  Sex changed over different enrollment period or max(DOBYR) &gt; min(DOBYR) +2
 * Only use records where the person has prescription benefits (RX=1).
 * If the person's other information changes (e.g. location), the last known record is used
 * Delete individuals whose DOBYR &lt; 1900 or &gt; the current year.

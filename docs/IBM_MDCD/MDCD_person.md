@@ -9,7 +9,8 @@ description: "**PERSON** mapping from IBM MarketScan® Medicaid (MDCD) **ENROLLM
 ## Table name: **PERSON**
 
 ### Key conventions
-* Delete the following members:  Year(GETDATE()) - max(DOBYR)  < 90 AND max(DOBYR) >= min(DOBYR) +2 or gender changed over different enrollment period. 
+* Delete the following members:  Year(GETDATE()) - max(DOBYR)  < 90 AND max(DOBYR) >= min(DOBYR) +2 or sex changed over different enrollment period. 
+  * If a person has two valid sex values across different enrollment periods then they are excluded. However, if they have an invalid sex value on their record at some point they will not be excluded and, instead, the sex value on the last, or most recent, enrollment detail is used. 
 * Only use records where the person has prescription benefits (DRUGCOVG =1) or eligible for both Medicaid and Medicare coverage (MEDICARE =1). 
 * If the person's other information changes (e.g. location, race, ethnicity), the last known record is used
 * Delete individuals whose DOBYR &lt; 1900 or &gt; the current year.
