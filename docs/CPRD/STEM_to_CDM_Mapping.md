@@ -1,11 +1,12 @@
 ---
 layout: default
-title: STEM to CPRD
-nav_order: 9
-parent: CPRD
-description: "Additional mappings"
+title: STEM to CDM
+nav_order: 8
+description: "STEM to CDM"
 
 ---
+
+The images below detail how the STEM table is mapped to CDM tables. The STEM table is a staging area where source codes like ICD10, ICD9, and Read codes are first mapped to concept_ids. The STEM table itself is an amalgamation of the OMOP event tables to facilitate record movement. This means that all fields present across the OMOP event tables are present in the STEM table. After a record is mapped and staged, the domain of the concept_id dictates which OMOP table (Condition_occurrence, Drug_exposure, Procedure_occurrence, Measurement, Observation, Device_exposure) the record will move to. 
 
 ## Table of contents
 {: .no_toc .text-delta }
