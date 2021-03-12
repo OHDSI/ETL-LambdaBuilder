@@ -12,9 +12,9 @@ description: "**PAYER_PLAN_PERIOD** mapping from IBM MarketScan® Commercial Dat
 
 * For each person, create a record associating the person to the duration they were on a specific type of benefit plan (defined by DATATYP, and PLANTYP) per the **ENROLLMENT_DETAIL** table. Payer plan entries are consolidated by combining records that indicate continuous enrollment over a period for a specific payer plan.  Consolidation is done through the following steps:
     * Define the PAYER_SOURCE_VALUE (see logic in table below).  
+    * Only use records where the person has prescription benefits (RX=1).
     * **ENROLLMENT_DETAIL** records for each person are sorted in ascending order by DTSTART, DTEND.
     * Periods of continuous enrollment are consolidated by combining monthly records as long as the time between the end of one enrollment period and the start of the next is 32 days or less (<=32) and PAYER_SOURCE_VALUE have not changed.
-    * Only use records where the person has prescription benefits (RX=1).
     * The gap between plan periods needs to be 32 days or less (<=32).  
     * Use both DATATYP (i.e. DATATYP=2, 4 for identifying capitated plan) and PLANTYP (e.g. HMO, PPO, etc.) to define PAYER_SOURCE_VALUE. 
     * Switch of type of plan enrolled may cause the overlap of enroll periods on two plans:
