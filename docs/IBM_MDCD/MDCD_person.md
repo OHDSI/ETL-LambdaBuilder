@@ -9,13 +9,16 @@ description: "**PERSON** mapping from IBM MarketScan® Medicaid (MDCD) **ENROLLM
 ## Table name: **PERSON**
 
 ### Key conventions
-* Delete the following members:  Year(GETDATE()) - max(DOBYR)  < 90 AND max(DOBYR) >= min(DOBYR) +2 or sex changed over different enrollment period. 
-  * If a person has two valid sex values across different enrollment periods then they are excluded. However, if they have an invalid sex value on their record at some point they will not be excluded and, instead, the sex value on the last, or most recent, enrollment detail is used. 
-* Only use records where the person has prescription benefits (DRUGCOVG =1) or eligible for both Medicaid and Medicare coverage (MEDICARE =1). 
-* If the person's other information changes (e.g. location, race, ethnicity), the last known record is used
-* Delete individuals whose DOBYR &lt; 1900 or &gt; the current year.
-* After defining the patient’s DOBYR (the one on their last record), exclude any individual who was born &gt; 1 year after their first enrollment period.
-* The **ENROLLMENT_DETAIL** table may store multiple records for each person.  However, the CDM will only store one record per person in the **PERSON** table.  
+* The **ENROLLMENT_DETAIL** table stores multiple records for each person, one for each month they are enrolled in a health plan.  However, the CDM will only store one record per person in the **PERSON** table.  
+  * Only records where the person has prescription benefits (DRUGCOVG =1) or eligible for both Medicaid and Medicare coverage (MEDICARE =1) are used.
+* Start by evaluating all **ENROLLMENT_DETAIL** records and **remove** the following persons:
+  * Individuals with two different, valid sex values (1 or 2) over different ENROLLMENT_DETAIL records
+  * Individuals with Year(GETDATE()) - max(DOBYR) < 90 AND max(DOBYR) >= min(DOBYR) +2 
+* After defining persons to remove, then use the most recent record in **ENROLLMENT_DETAIL** to define demographic information in the CDM for the remaining persons
+* After finding the latest record per person, delete the following:
+  * Individuals whose DOBYR &lt; 1900 or &gt; the current year.
+  * Individuals born &gt; 1 year after their first enrollment period.
+
 * For MONTH_OF_BIRTH, the **OBSERVATION_PERIOD** table will need to be generated first. Then, the value can be derived from using YEAR_OF_BIRTH and OBSERVATION_PERIOD_START_DATE only if the year of birth is equal to the year of the first OBSERVATION_PERIOD_START_DATE.
 
 
@@ -46,4 +49,4 @@ description: "**PERSON** mapping from IBM MarketScan® Medicaid (MDCD) **ENROLLM
 
 
 ## Change Log
-19-Feb-2021: Correct the exclusion based on year of birth to read "Delete the following members:  Year(GETDATE()) - max(DOBYR)  < 90 AND max(DOBYR) >= min(DOBYR) +2". Once a person reaches 90 years of age their birth year is incremented up to protect patient privacy. 
+**19-Feb-2021**: Correct the exclusion based on year of birth to read "Delete the following members:  Year(GETDATE()) - max(DOBYR)  < 90 AND max(DOBYR) >= min(DOBYR) +2". Once a person reaches 90 years of age their birth year is incremented up to protect patient privacy. 

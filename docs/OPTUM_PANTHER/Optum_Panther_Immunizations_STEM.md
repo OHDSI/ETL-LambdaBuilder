@@ -11,6 +11,8 @@ description: "OPTUM EHR Immunzations table to STEM"
 
 ## Reading from OPTUM_EHR.Immunizations
 
+The immunization table contains NDC codes as well as descriptions of immunizations administered. This logic starts with NDC codes and then if no mappings are found moves to the field immunization_desc to map vaccines. Right now the only ones mapped based on descriptions are COVID-19 vaccines. 
+
 |     Destination Field    |     Source Field    |     Logic    |     Comment    |
 |-|-|-|-|
 | id | autogenerate  | | |
@@ -23,11 +25,11 @@ description: "OPTUM EHR Immunzations table to STEM"
 | end_date | immunization_date | | | 
 | start_datetime | immunization_date | Set time to midnight| |
 | end_datetime | immunization_date | Set time to midnight| |
-| concept_id | ndc |Use the [SOURCE_TO_STANDARD](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_STANDARD.sql) query to map the code to standard concept(s) with the following filters: <br> <br>  Where source_vocabulary_id = 'NDC'  and Target_standard_concept = 'S'  and target_invalid_reason is NULL and immunization date between valid_start_date and valid_end_date<br><br>If there is no mapping available, set concept_id to zero.| |
-|source_value|ndc|||
-| source_concept_id |ndc | | |
-| type_concept_id | 45754907  | Derived Value| | 
-| operator_concept_id |0 |Use the [SOURCE_TO_SOURCE](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_SOURCE.sql) query to map the code to standard concept(s) with the following filters: <br> <br>  Where source_vocabulary_id = 'NDC' | |
+| concept_id | ndc <br><br>immunization_desc|Start by using the [SOURCE_TO_STANDARD](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_STANDARD.sql) query to map the **ndc** code to standard concept(s) with the following filters: <br> <br>  Where source_vocabulary_id = 'NDC'  and Target_standard_concept = 'S'  and target_invalid_reason is NULL and immunization date between valid_start_date and valid_end_date<br><br> Then, if there is no mapping, use the **immunization_desc** with the filters: <br><br> Where source_vocabulary_id = 'JNJ_OPTUM_EHR_VAX'  and Target_standard_concept = 'S'  and target_invalid_reason is NULL<br><br> Then, if no mapping available set to 0| |
+|source_value|ndc immunization_desc|Concatenate the ndc code and immunization_desc with a '-' in between||
+| source_concept_id |ndc <br><br>immunization_desc| Start by using the [SOURCE_TO_SOURCE](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_SOURCE.sql) query to map the **ndc** code to standard concept(s) with the following filters: <br> <br>  Where source_vocabulary_id = 'NDC' <br><br>Then, if there is no mapping, use the **immunization_desc** with the filters:<br><br>Where source_vocabulary_id = 'JNJ_OPTUM_EHR_VAX'| |
+| type_concept_id | 32818  | EHR Administration Record| | 
+| operator_concept_id |0 | | |
 | unit_concept_id |  | | |
 | unit_source_value |  | | |
 | range_high | |  | | 
@@ -57,3 +59,9 @@ description: "OPTUM EHR Immunzations table to STEM"
 | disease_status_source_value |  | | |
 | condition_status_concept_id | | | |
 | condition_status_source_value | | | |
+
+
+----
+## Change Log
+
+**11-Mar-2021**: Added logic to map COVID-19 vaccines in Optum EHR to standard concepts. NDC code was concatenated with immunization desc in the source value field and a new vocabulary was added. Type concept was changed to 'EHR Administration Record'

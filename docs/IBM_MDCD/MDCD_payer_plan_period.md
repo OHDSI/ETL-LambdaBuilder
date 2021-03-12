@@ -14,12 +14,32 @@ description: "**PAYER_PLAN_PERIOD** mapping from IBM MarketScan® Medicaid Datab
     * Define the PAYER_SOURCE_VALUE (see logic in table below).  
     * **ENROLLMENT_DETAIL** records for each person are sorted in ascending order by DTSTART, DTEND.
     * Periods of continuous enrollment are consolidated by combining monthly records as long as the time between the end of one enrollment period and the start of the next is 32 days or less (<=32) and PAYER_SOURCE_VALUE have not changed.
-    * Only use records where the person has prescription benefits (DRUGCOVG=1) or eligible for both Medicaid and Medicare coverage (MEDICARE=1).
+
     * The gap between plan periods needs to be 32 days or less (<=32).  
     * Use MEDICARE (1 means eligible for both Medicaid and Medicare coverage), CAP (1 means capitated plan) and PLANTYP (e.g. HMO, PPO, etc.) to define PAYER_SOURCE_VALUE. 
-    * Switch of type of plan (PAYER_SOURCE_VALUE) enrolled may cause the overlap of enroll periods on two plans: Sort ENROLLMENT_DETAIL table by ENROLID, DTSTART and DTEND, and if there is some overlap between two coverage periods, always truncate the first one and discard the first record if DTEND <DSTART after truncation. 
-    * Payer plans may break out differently than observation periods, the amount of observation time and payer plan period time may not match for each person.
-    * Remove duplicate records before assigning PAYER_PLAN_PERIOD_ID.
+    * Switch of type of plan (PAYER_SOURCE_VALUE) enrolled may cause the overlap of enroll periods on two plans: Sort ENROLLMENT_DETAIL table by ENROLID, DTSTART and DTEND, and if there is some overlap between two coverage periods, always truncate the first one and discard the first record if DTEND < DSTART after truncation. See example below:
+
+<br>
+
+| DATATYP | DTSTART | DTEND | ENROLID | PLANTYP |
+| --- | --- | --- | --- | --- |
+| 1 | 10/1/2006 | 10/31/2006 | 9687901 | 6 |
+| 1 | 10/5/2006 | 10/31/2006 | 9687901 | 5 |
+
+<br>
+
+Sort ENROLLMENT_DETAIL table by ENROLID, DTSTART and DTEND, and if there is some overlap between two coverage periods, always truncate the first one and discard the first record if DTEND < DSTART after truncation. The example above can be truncated as:
+
+
+
+| DATATYP | DTSTART | DTEND | ENROLID | PLANTYP |
+|---|---|---|---|---|
+| 1 | 10/1/2006 | 10/4/2006 |	9687901 | 6 |
+| 1 | 10/5/2006 | 10/31/2006 |	9687901 | 5 |
+
+
+* Payer plans may break out differently than observation periods, the amount of observation time and payer plan period time may not match for each person.
+* Remove duplicate records before assigning PAYER_PLAN_PERIOD_ID.
 
 <br>
 

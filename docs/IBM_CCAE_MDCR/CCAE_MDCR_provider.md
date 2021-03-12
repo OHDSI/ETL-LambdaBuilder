@@ -12,18 +12,22 @@ The PROVIDER table contains a list of uniquely identified health care providers 
 
 ### Key conventions
 * To build this table it is essentially a distinct listing of the entire provider IDs with all their associated specialties. 
-<br>`SELECT DISTINCT PROVID, STDPROV`
-<br>`FROM FACILITY_HEADER`
-<br>`UNION`
-<br>`SELECT DISTINCT PROVID, STDPROV`
-<br>`FROM OUTPATIENT_SERVICES`
-<br>`UNION`
-<br>`SELECT DISTINCT PROVID, STDPROV`
-<br>`FROM INPATIENT_SERVICES`
-<br>`UNION`
-<br>`SELECT DISTINCT PROVID, STDPROV`
-<br>`FROM LAB`
-* Provider Specialty (STDPROV) is available in MarketScan. We add mapping of MarketScan provider specialty to OMOP concept - VOCABULARY_ID = JNJ_TRU_P_SPCLTY. 
+
+```sql
+SELECT DISTINCT PROVID, STDPROV
+FROM FACILITY_HEADER
+UNION
+SELECT DISTINCT PROVID, STDPROV
+FROM OUTPATIENT_SERVICES
+UNION
+SELECT DISTINCT PROVID, STDPROV
+FROM INPATIENT_SERVICES
+UNION
+SELECT DISTINCT PROVID, STDPROV
+FROM LAB
+```
+
+* Provider Specialty (STDPROV) is available in MarketScan. We add mapping of MarketScan provider specialty to OMOP concept - VOCABULARY_ID = JNJ_TRU_P_SPCLTY. Since STDPROV is a 1-3 digit number it must be decoded before it can be mapped to Standard Concepts. Values for STDPROV can be found in the Marketscan data dictionary.
 * Set SPECIALTY_CONCEPT_ID as 38004514 (Unknown Physician Specialty) if STDPROV is missing or can't be mapped.
 
 ### Reading from **FACILITY_HEADER**, **OUTPATIENT_SERVICES**, **INPATIENT_SERVICES**, & **LAB**
@@ -36,7 +40,7 @@ The PROVIDER table contains a list of uniquely identified health care providers 
 | PROVIDER_NAME |  | NULL |  |
 | NPI |  | NULL |  |
 | DEA |  | NULL |  |
-| SPECIALTY_CONCEPT_ID | STDPROV | Use the code in [SOURCE_TO_STANDARD.sql](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_STANDARD.sql). <br><br>Filters: <br>`WHERE SOURCE_VOCABULARY_ID IN ('JNJ_TRU_P_SPCLTY')` <br>`AND TARGET_STANDARD_CONCEPT IS NOT NULL` <br>`AND TARGET_INVALID_REASON IS NULL` | Set SPECIALTY_CONCEPT_ID as 38004514 (Unknown Physician Specialty) if STDPROV is missing or cannot be mapped.<br> |
+| SPECIALTY_CONCEPT_ID | STDPROV | Use the code in [SOURCE_TO_STANDARD.sql](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_STANDARD.sql). <br><br>Filters: ```WHERE SOURCE_VOCABULARY_ID IN ('JNJ_TRU_P_SPCLTY') AND TARGET_STANDARD_CONCEPT IS NOT NULL AND TARGET_INVALID_REASON IS NULL``` | Set SPECIALTY_CONCEPT_ID as 38004514 (Unknown Physician Specialty) if STDPROV is missing or cannot be mapped.<br> |
 | CARE_SITE_ID | - | 0 | - |
 | YEAR_OF_BIRTH | - | NULL | - |
 | GENDER_CONCEPT_ID | - | 0 | - |

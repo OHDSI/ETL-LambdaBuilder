@@ -9,12 +9,16 @@ description: "**PERSON** mapping from IBM MarketScan® Commercial Database (CCAE
 ## Table name: **PERSON**
 
 ### Key conventions
-* Delete the following members:  Sex changed over different enrollment period or max(DOBYR) &gt; min(DOBYR) +2
-* Only use records where the person has prescription benefits (RX=1).
-* If the person's other information changes (e.g. location), the last known record is used
-* Delete individuals whose DOBYR &lt; 1900 or &gt; the current year.
-* After defining the patient’s DOBYR (the one on their last record), exclude any individual who was born &gt; 1 year after their first enrollment period.
-* The **ENROLLMENT_DETAIL** table may store multiple records for each person.  However, the CDM will only store one record per person in the **PERSON** table.  
+* The **ENROLLMENT_DETAIL** table stores multiple records for each person, one for each month they are enrolled in a health plan.  However, the CDM will only store one record per person in the **PERSON** table.  
+  * Only records where the person has prescription benefits (RX=1) are used.
+* Start by evaluating all **ENROLLMENT_DETAIL** records and **remove** the following persons:
+  * Individuals with two different, valid sex values (1 or 2) over different ENROLLMENT_DETAIL records
+  * Individuals with max(DOBYR) &gt; min(DOBYR) +2 
+* After defining persons to remove, then use the most recent record in **ENROLLMENT_DETAIL** to define demographic information in the CDM for the remaining persons
+* After finding the latest record per person, delete the following:
+  * Individuals whose DOBYR &lt; 1900 or &gt; the current year.
+  * Individuals born &gt; 1 year after their first enrollment period.
+
 * For MONTH_OF_BIRTH, the **OBSERVATION_PERIOD** table will need to be generated first. Then, the value can be derived from using YEAR_OF_BIRTH and OBSERVATION_PERIOD_START_DATE only if the year of birth is equal to the year of the first OBSERVATION_PERIOD_START_DATE.
 
 
@@ -30,7 +34,6 @@ description: "**PERSON** mapping from IBM MarketScan® Commercial Database (CCAE
 | MONTH_OF_BIRTH | DOBYR | If **PERSON**.YEAR_OF_BIRTH = MIN(YEAR(OBSERVATION_PERIOD_START_DATE)), then **PERSON**.MONTH_OF_BIRTH = MONTH(OBSERVATION_PERIOD_START_DATE) ) | Make sure to have Observation Periods generated before coming to this.<br> |
 | DAY_OF_BIRTH | - | NULL | - |
 | BIRTH_DATETIME | - | NULL | - |
-| DEATH_DATETIME | - | <<REVISIT FOR CDM 6.0>> | - |
 | RACE_CONCEPT_ID | - | 0 | - |
 | ETHNICITY_CONCEPT_ID | - | 0 | - |
 | LOCATION_ID | EGEOLOC | Map EGEOLOC to LOCATION_SOURCE_VALUE in **LOCATION** table, then extract its associated LOCATION_ID |  |
