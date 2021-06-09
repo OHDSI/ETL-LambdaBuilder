@@ -68,7 +68,7 @@ IF RESULT NE 0 AND RESULT > -999999.99999 THEN DO;
 | VISIT_DETAIL_ID | **VISIT_DETAIL**<br>VISIT_DETAIL_ID | - | - |
 | PROVIDER_ID | **VISIT_DETAIL**<br>PROVIDER_ID | - | - |
 | ID | - | System generated. | - |
-| CONCEPT_ID | LOINCCD | Use the <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html">Source-to-Standard Query</a>.<br><br> `WHERE SOURCE_VOCABULARY_ID IN ('LOINC')`<br>`AND TARGET_STANDARD_CONCEPT IS NOT NULL` | - |
+| CONCEPT_ID | LOINCCD | Use the <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html">Source-to-Standard Query</a>.<br><br> `WHERE SOURCE_VOCABULARY_ID IN ('LOINC')`<br>`AND TARGET_STANDARD_CONCEPT = 'S'`<br>`AND TARGET_INVALID_REASON IS NULL` | - |
 | SOURCE_VALUE | LOINCCD | The LOINCCD as it appears in the **LAB** table | - |
 | SOURCE_CONCEPT_ID | LOINCCD | Use the <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html">Source-to-Source Query</a>.<br><br> `WHERE SOURCE_VOCABULARY_ID IN (‘LOINC’)`<br>`AND TARGET_VOCABULARY_ID IN (‘LOINC’)` | - |
 | TYPE_CONCEPT_ID | - | All rows will have CONCEPT_ID `32856` | `32856` = 'Lab' |

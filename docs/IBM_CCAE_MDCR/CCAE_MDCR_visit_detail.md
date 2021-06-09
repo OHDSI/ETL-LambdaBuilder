@@ -30,7 +30,7 @@ The **VISIT_DETAIL** table will have 1:1 record level referential integrity to *
 ### **VISIT_DETAIL** Logic
 1. Remove persons not in **PERSON** table
 2. Create a primary key to identify each record in the **FACILITY_HEADER**, **INPATIENT_ADMISSIONS**, **INPATIENT_SERVICES**, **OUTPATIENT_SERVICES**, **DRUG_CLAIMS**, and **LAB** tables. This primary key will become the VISIT_DETAIL_ID. Retain this information as a lookup table for later linkage of diagnoses and procedures. This system generated key may also be used to lookup records in source table i.e. maintain a lookup table that is able to link visit_detail_id to the records of **FACILITY_HEADER**, **INPATIENT_ADMISSIONS**, **INPATIENT_SERVICES**, **OUTPATIENT_SERVICES**, **DRUG_CLAIMS**, and **LAB**. tables (record level referential integerity).
-3. "Patient with visit that starts before the observation period, start date trimmed to beginning of observation period.
+3. If a VISIT_DETAIL record starts before the observation period, trim the start date to beginning of observation period.
 <br><br>
 <a href='https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/IBM_CCAE_MDCR/images/Defining_VISIT_DETAIL_Examples.xlsx'>This MS Excel file</a> provides two examples for defining **VISIT_DETAIL**.
 <br><br>

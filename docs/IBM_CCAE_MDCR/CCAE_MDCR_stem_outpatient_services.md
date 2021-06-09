@@ -18,6 +18,12 @@ For every record in STEM there should be 1 row record in VISIT_DETAIL (n:1 join)
 
 * For every record in VISIT_DETAIL there may be 0 to n rows in STEM.
 
+### Revenue Code Mappings
+Records will be written from the INPATIENT_SERVICES table mapping the field REVCODE to STEM.CONCEPT_ID. Please see the table below for how this logic will be handled.
+
+**NOTE** the revenue codes are mapped to concepts with the vocabulary_id “Revenue Code”. All these concepts have the domain of “Revenue Code” as well. Since there is no revenue table, all records coming from the REVCODE field should go to the OBSERVATION table.
+
+
 ### Reading from **OUTPATIENT_SERVICES**
 
 ![](images/image3.png)
@@ -30,7 +36,7 @@ For every record in STEM there should be 1 row record in VISIT_DETAIL (n:1 join)
 | VISIT_DETAIL_ID | **VISIT_DETAIL**<br>VISIT_DETAIL_ID  | Refer to logic in building VISIT_DETAIL table for linking with VISIT_DETAIL_ID. | - |
 | PROVIDER_ID | **VISIT_DETAIL**<br>PROVIDER_ID  | - | -|
 | ID | - | System generated. | - |
-| CONCEPT_ID | DX1-5<br>PROC1 | Use the <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html">Source-to-Standard Query</a>.<br><br>  If DXVER does not have a value, review to the "Key Conventions" under the "STEM Key Conventions and Lookup Files" page.  If no map is made, assign CONCEPT_ID to 0 and DOMAIN_ID to OBSERVATION.<br/><br/>**[DX1-5]**<br/>If DXVER=9 use the filter:<br/> `WHERE SOURCE_VOCABULARY_ID IN (‘ICD9CM’)`<br>`AND TARGET_STANDARD_CONCEPT = 'S'`<br/><br/>If DXVER=0 use the filter:<br/>`WHERE SOURCE_VOCABULARY_ID IN (’ICD10CM’)`<br>`AND TARGET_STANDARD_CONCEPT = 'S'` <br /><br />**[PROC1]**<br/>When PROCTYP <> 0:<br />  `WHERE SOURCE_VOCABULARY_ID IN ('ICD9Proc','HCPCS','CPT4',’ICD10PCS’)`<br>`AND TARGET_STANDARD_CONCEPT = 'S'` | - |
+| CONCEPT_ID | DX1-5<br>PROC1 | Use the <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html">Source-to-Standard Query</a>.<br><br>  If DXVER does not have a value, review to the "Key Conventions" under the "STEM Key Conventions and Lookup Files" page.  If no map is made, assign CONCEPT_ID to 0 and DOMAIN_ID to OBSERVATION.<br/><br/>**[DX1-5]**<br/>If DXVER=9 use the filter:<br/> `WHERE SOURCE_VOCABULARY_ID IN (‘ICD9CM’)`<br>`AND TARGET_STANDARD_CONCEPT = 'S'`<br>`AND TARGET_INVALID_REASON IS NULL`<br/><br/>If DXVER=0 use the filter:<br/>`WHERE SOURCE_VOCABULARY_ID IN (’ICD10CM’)`<br>`AND TARGET_STANDARD_CONCEPT = 'S'`<br>`AND TARGET_INVALID_REASON IS NULL` <br /><br />**[PROC1]**<br/>When PROCTYP <> 0:<br />  `WHERE SOURCE_VOCABULARY_ID IN ('ICD9Proc','HCPCS','CPT4',’ICD10PCS’)`<br>`AND TARGET_STANDARD_CONCEPT = 'S'`<br>`AND TARGET_INVALID_REASON IS NULL` <br /><br />**[REVCODE]**<br/>  `WHERE SOURCE_VOCABULARY_ID IN ('Revenue Code’)`<br>`AND TARGET_STANDARD_CONCEPT = 'S'`<br>`AND TARGET_INVALID_REASON IS NULL`  | The concepts in the Revenue Code vocabulary all have the domain “Revenue Code”. These should go to the OBSERVATION table.	  |
 | SOURCE_VALUE | DX1-5<br>PROC1 | - | - |
 | SOURCE_CONCEPT_ID | DX1-5<br>PROC1 | Use the <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html">Source-to-Source Query</a>.<br><br>  If DXVER does not have a value, review to the "Key Conventions" under the "STEM Key Conventions and Lookup Files" page.  If no map is made, assign to 0.<br/><br/>**[DX1-5]**<br/>If DXVER=9 use the filter:<br/> `WHERE SOURCE_VOCABULARY_ID IN (‘ICD9CM’)`<br>`AND TARGET_VOCABULARY_ID IN (‘ICD9CM’)`<br/><br/>If DXVER=0 use the filter:<br/>`WHERE SOURCE_VOCABULARY_ID IN (’ICD10CM’)`<br>`AND TARGET_VOCABULARY_ID IN (’ICD10CM’)` <br /><br />**[PROC1]**<br/>When PROCTYP <> 0:<br />  `WHERE SOURCE_VOCABULARY_ID IN ('ICD9Proc','HCPCS','CPT4',’ICD10PCS’)`<br>`AND TARGET_VOCABULARY_ID IN ('ICD9Proc','HCPCS','CPT4',’ICD10PCS’)`| - |
 | TYPE_CONCEPT_ID | - | Set all to `32860` (Outpatient claim detail)| - |
@@ -79,3 +85,5 @@ For every record in STEM there should be 1 row record in VISIT_DETAIL (n:1 join)
 * Update type concept
 
 * Added CONDITION_STATUS_CONCEPT_ID information
+
+* Added logic to map revenue codes
