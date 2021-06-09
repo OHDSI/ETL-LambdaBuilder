@@ -44,7 +44,7 @@ createConditionOccurrenceTests <- function () {
   encounter <- createEncounter()
   declareTest(id = patient$person_id, "Patient has diagnosis in a dx field that has domain=procedure, condition record moved to procedure_occurrence. Id is PERSON_ID")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
-  add_inpatient_services(enrolid=patient$enrolid, svcdate = '2012-10-15', tsvcdat = '2012-10-17', pdx = 'V755', dxver='9')
+  add_inpatient_services(enrolid=patient$enrolid, svcdate = '2012-10-15', tsvcdat = '2012-10-17', pdx = 'V5302', dxver='9')
   expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '4064909')
   
   patient <- createPatient()

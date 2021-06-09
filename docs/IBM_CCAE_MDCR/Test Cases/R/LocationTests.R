@@ -16,7 +16,7 @@ if (Sys.getenv("truvenType") != "MDCD")  {
   declareTest(id = patient$person_id, "Only one location record generated for 38. Id is PERSON_ID")
   add_enrollment_detail(enrolid=patient$enrolid, egeoloc = "38", dtend="2012-07-31", dtstart="2012-07-01")
   add_enrollment_detail(enrolid=patient$enrolid, egeoloc = "38", dtend="2012-06-30", dtstart="2012-06-01")
-  expect_location(state="VA",location_source_value="38")
+  expect_count_location(state="VA",location_source_value="38", rowCount = 1)
   
   }
 }

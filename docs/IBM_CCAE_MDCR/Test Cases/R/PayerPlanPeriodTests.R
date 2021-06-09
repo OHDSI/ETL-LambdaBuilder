@@ -17,6 +17,13 @@ createPayerPlanPeriodTests <- function () {
     add_enrollment_detail(enrolid=patient$enrolid, dtstart="2013-05-01", dtend="2013-05-31", datatyp="1", plantyp="6")
     expect_payer_plan_period(person_id=patient$person_id, payer_plan_period_start_date="2013-01-01", payer_plan_period_end_date="2013-01-31", payer_source_value="N Commercial PPO")
     expect_payer_plan_period(person_id=patient$person_id, payer_plan_period_start_date="2013-05-01", payer_plan_period_end_date="2013-05-31", payer_source_value="N Commercial PPO")
+    
+    patient<-createPatient()
+    declareTest(id = patient$person_id, "Person has a gap of <32 days between enrollment periods with the same payer_source_value; person has ONE records. Id is PERSON_ID.")
+    add_enrollment_detail(enrolid=patient$enrolid, dtstart="2013-01-01", dtend="2013-01-31", datatyp="1", plantyp="6")
+    add_enrollment_detail(enrolid=patient$enrolid, dtstart="2013-02-05", dtend="2013-02-28", datatyp="1", plantyp="6")
+    expect_payer_plan_period(person_id=patient$person_id, payer_plan_period_start_date="2013-01-01", payer_plan_period_end_date="2013-02-28", payer_source_value="N Commercial PPO")
+    expect_count_payer_plan_period(person_id=patient$person_id, rowCount=1)
   
     patient<-createPatient()
     declareTest(id = patient$person_id, "Person switches plans in the middle of an enrollment period; person has two records with the first truncated. Id is PERSON_ID.")
@@ -26,10 +33,15 @@ createPayerPlanPeriodTests <- function () {
     expect_payer_plan_period(person_id=patient$person_id, payer_plan_period_start_date="2012-04-07", payer_plan_period_end_date="2012-04-30", payer_source_value="C Commercial POS")  
     
     patient<-createPatient()
-    declareTest(id = patient$person_id, "Person has duplicate records, only one is brought into the cdm. Id is PERSON_ID.")
+    declareTest(id = patient$person_id, "Family source value derived from ENROLID. Id is PERSON_ID.")
     add_enrollment_detail(enrolid=patient$enrolid, dtstart="2012-04-01", dtend="2012-04-30", datatyp="2", plantyp="6")
-    add_enrollment_detail(enrolid=patient$enrolid, dtstart="2012-04-01", dtend="2012-04-30", datatyp="2", plantyp="6")
-    expect_payer_plan_period(person_id=patient$person_id, payer_plan_period_start_date="2012-04-01", payer_plan_period_end_date="2012-04-30", payer_source_value="C Commercial PPO")
+    expect_payer_plan_period(person_id=patient$person_id, payer_plan_period_start_date="2012-04-01", payer_plan_period_end_date="2012-04-30", payer_source_value="C Commercial PPO", family_source_value=SUBSTRING(RIGHT('00000000000' + CONVERT(VARCHAR,patient$enrolid), 11), 1,9))
+    
+    patient<-createPatient()
+    declareTest(id = patient$person_id, "Person does not have prescription benefits and is excluded. Id is PERSON_ID.")
+    add_enrollment_detail(enrolid=patient$enrolid, dtstart="2013-01-01", dtend="2013-01-31", datatyp="1", plantyp="6", rx="0")
+    expect_no_payer_plan_period(person_id = patient$person_id)
+    
   }
   
   if (Sys.getenv("truvenType") == "MDCR") {
