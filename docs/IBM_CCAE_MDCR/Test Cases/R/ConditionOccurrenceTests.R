@@ -2,11 +2,12 @@ createConditionOccurrenceTests <- function () {
 
   patient <- createPatient()
   encounter <- createEncounter()
-  declareTest(id = patient$person_id, "Patient has two different primary diagnoses between inpatient_services and inpatient_admissions, the inpatient_admissions PDX is used. Id is PERSON_ID")
+  declareTest(id = patient$person_id, "Patient has two different primary diagnoses between inpatient_services and inpatient_admissions, two records created with condition_status of primary. Id is PERSON_ID")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_inpatient_services(enrolid = patient$enrolid, pdx = '2500', svcdate = '2012-08-09', tsvcdat = '2012-08-12', dxver = '9', caseid = encounter$caseid, year = '2012')
   add_inpatient_admissions(enrolid=patient$enrolid, pdx = '0092', caseid = encounter$caseid, dxver = '9', year = '2012')
-  expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '198337', condition_type_concept_id = '38000199')
+  expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '4008576', condition_status_concept_id = '32902')
+  expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '198337', condition_status_concept_id = '32902')
     
   patient <- createPatient()
   encounter <- createEncounter()

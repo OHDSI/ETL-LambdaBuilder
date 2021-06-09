@@ -4,9 +4,9 @@
 ## and "MDCD" for Medicaid)
 
 #DON'T FORGET THE CONFIG FILE CHANGE
-#Sys.setenv(truvenType = "CCAE");
+Sys.setenv(truvenType = "CCAE");
 #Sys.setenv(truvenType = "MDCR");
-Sys.setenv(truvenType = "MDCD");
+#Sys.setenv(truvenType = "MDCD");
 
 source('main.R')
 config <- read.csv("extras/config.csv",as.is=TRUE)[1,]
