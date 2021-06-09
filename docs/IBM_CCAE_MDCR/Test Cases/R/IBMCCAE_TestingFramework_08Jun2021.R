@@ -9,7 +9,6 @@ initFramework <- function() {
   frameworkContext$defaultValues <- new.env(parent = frameworkContext)
 
   defaults <- list()
-  defaults$flag <- '0'
   defaults$admdate <- '2012-06-11'
   defaults$admtyp <- '1'
   defaults$age <- '0'
@@ -77,13 +76,9 @@ initFramework <- function() {
   defaults$units <- ''
   defaults$npi <- ''
   defaults$msclmid <- ''
-  defaults$svcdate <- '2012-06-11'
-  defaults$tsvcdat <- '2013-12-31'
-  defaults$visittype <- 'INP'
   assign('inpatient_services', defaults, envir = frameworkContext$defaultValues)
 
   defaults <- list()
-  defaults$flag <- '0'
   defaults$age <- '59'
   defaults$agegrp <- '5'
   defaults$awp <- '0.0'
@@ -138,7 +133,6 @@ initFramework <- function() {
   defaults$version <- '10'
   defaults$wgtkey <- ''
   defaults$year <- '2011'
-  defaults$gpi <- '03400010000320'
   assign('drug_claims', defaults, envir = frameworkContext$defaultValues)
 
   defaults <- list()
@@ -153,7 +147,6 @@ initFramework <- function() {
   assign('hra_question_ref', defaults, envir = frameworkContext$defaultValues)
 
   defaults <- list()
-  defaults$flag <- '0'
   defaults$age <- '0'
   defaults$agegrp <- '2'
   defaults$dattyp1 <- '1'
@@ -241,7 +234,6 @@ initFramework <- function() {
   assign('enrollment_summary', defaults, envir = frameworkContext$defaultValues)
 
   defaults <- list()
-  defaults$flag <- '0'
   defaults$admdate <- '2012-04-23'
   defaults$admtyp <- '2'
   defaults$age <- '0'
@@ -340,7 +332,6 @@ initFramework <- function() {
   assign('inpatient_admissions', defaults, envir = frameworkContext$defaultValues)
 
   defaults <- list()
-  defaults$flag <- ''
   defaults$alc_amt <- '-'
   defaults$alcdyamt <- ' '
   defaults$alcweek <- '9'
@@ -464,7 +455,6 @@ initFramework <- function() {
   assign('health_risk_assessment', defaults, envir = frameworkContext$defaultValues)
 
   defaults <- list()
-  defaults$flag <- '0'
   defaults$age <- '59'
   defaults$agegrp <- '5'
   defaults$billtyp <- '131'
@@ -540,7 +530,6 @@ initFramework <- function() {
   assign('facility_header', defaults, envir = frameworkContext$defaultValues)
 
   defaults <- list()
-  defaults$flag <- '0'
   defaults$deaclas <- '6'
   defaults$deaclds <- 'All other Rx'
   defaults$desidrg <- 'N'
@@ -630,7 +619,6 @@ initFramework <- function() {
   assign('lab', defaults, envir = frameworkContext$defaultValues)
 
   defaults <- list()
-  defaults$flag <- '0'
   defaults$age <- '48'
   defaults$agegrp <- '1'
   defaults$datatyp <- '1'
@@ -735,7 +723,6 @@ initFramework <- function() {
   assign('hra_variable_ref', defaults, envir = frameworkContext$defaultValues)
 
   defaults <- list()
-  defaults$flag <- '0'
   defaults$age <- '60'
   defaults$agegrp <- '5'
   defaults$cap_svc <- 'N'
@@ -796,9 +783,6 @@ initFramework <- function() {
   defaults$units <- ''
   defaults$npi <- ''
   defaults$msclmid <- ''
-  defaults$svcdate <- '2012-03-05'
-  defaults$tsvcdat <- '2012-03-05'
-  defaults$visittype <- 'OP'
   assign('outpatient_services', defaults, envir = frameworkContext$defaultValues)
 
   defaults <- list()
@@ -823,11 +807,8 @@ initFramework <- function() {
 
 initFramework()
 
-set_defaults_inpatient_services <- function(flag, admdate, admtyp, age, agegrp, cap_svc, caseid, cob, coins, copay, datatyp, deduct, disdate, dobyr, drg, dstatus, dx1, dx2, dx3, dx4, dx5, dxver, eeclass, eestatu, efamid, egeoloc, eidflag, emprel, enrflag, enrolid, fachdid, facprof, hlthplan, indstry, mdc, mhsacovg, msa, netpay, ntwkprov, paidntwk, pay, pddate, pdx, phyflag, plankey, plantyp, pproc, proc1, procmod, proctyp, provid, qty, region, revcode, rx, seqnum, sex, stdplac, stdprov, svcdate, svcscat, tsvcdat, version, wgtkey, year, units, npi, msclmid, svcdate, tsvcdat, visittype) {
+set_defaults_inpatient_services <- function(admdate, admtyp, age, agegrp, cap_svc, caseid, cob, coins, copay, datatyp, deduct, disdate, dobyr, drg, dstatus, dx1, dx2, dx3, dx4, dx5, dxver, eeclass, eestatu, efamid, egeoloc, eidflag, emprel, enrflag, enrolid, fachdid, facprof, hlthplan, indstry, mdc, mhsacovg, msa, netpay, ntwkprov, paidntwk, pay, pddate, pdx, phyflag, plankey, plantyp, pproc, proc1, procmod, proctyp, provid, qty, region, revcode, rx, seqnum, sex, stdplac, stdprov, svcdate, svcscat, tsvcdat, version, wgtkey, year, units, npi, msclmid) {
   defaults <- get('inpatient_services', envir = frameworkContext$defaultValues)
-  if (!missing(flag)) {
-    defaults$flag <- flag
-  }
   if (!missing(admdate)) {
     defaults$admdate <- admdate
   }
@@ -1029,24 +1010,12 @@ set_defaults_inpatient_services <- function(flag, admdate, admtyp, age, agegrp, 
   if (!missing(msclmid)) {
     defaults$msclmid <- msclmid
   }
-  if (!missing(svcdate)) {
-    defaults$svcdate <- svcdate
-  }
-  if (!missing(tsvcdat)) {
-    defaults$tsvcdat <- tsvcdat
-  }
-  if (!missing(visittype)) {
-    defaults$visittype <- visittype
-  }
   assign('inpatient_services', defaults, envir = frameworkContext$defaultValues)
   invisible(defaults)
 }
 
-set_defaults_drug_claims <- function(flag, age, agegrp, awp, cap_svc, cob, coins, copay, datatyp, dawind, daysupp, deaclas, deduct, dispfee, dobyr, eeclass, eestatu, efamid, egeoloc, eidflag, emprel, enrflag, enrolid, generid, genind, hlthplan, indstry, ingcost, maintin, metqty, mhsacovg, msa, ndcnum, netpay, ntwkprov, paidntwk, pay, pddate, pharmid, phyflag, plankey, plantyp, qty, refill, region, rxmr, saletax, seqnum, sex, svcdate, thercls, thergrp, version, wgtkey, year, gpi) {
+set_defaults_drug_claims <- function(age, agegrp, awp, cap_svc, cob, coins, copay, datatyp, dawind, daysupp, deaclas, deduct, dispfee, dobyr, eeclass, eestatu, efamid, egeoloc, eidflag, emprel, enrflag, enrolid, generid, genind, hlthplan, indstry, ingcost, maintin, metqty, mhsacovg, msa, ndcnum, netpay, ntwkprov, paidntwk, pay, pddate, pharmid, phyflag, plankey, plantyp, qty, refill, region, rxmr, saletax, seqnum, sex, svcdate, thercls, thergrp, version, wgtkey, year) {
   defaults <- get('drug_claims', envir = frameworkContext$defaultValues)
-  if (!missing(flag)) {
-    defaults$flag <- flag
-  }
   if (!missing(age)) {
     defaults$age <- age
   }
@@ -1209,9 +1178,6 @@ set_defaults_drug_claims <- function(flag, age, agegrp, awp, cap_svc, cob, coins
   if (!missing(year)) {
     defaults$year <- year
   }
-  if (!missing(gpi)) {
-    defaults$gpi <- gpi
-  }
   assign('drug_claims', defaults, envir = frameworkContext$defaultValues)
   invisible(defaults)
 }
@@ -1243,11 +1209,8 @@ set_defaults_hra_question_ref <- function(question_type_id, category_value, cate
   invisible(defaults)
 }
 
-set_defaults_enrollment_summary <- function(flag, age, agegrp, dattyp1, dattyp10, dattyp11, dattyp12, dattyp2, dattyp3, dattyp4, dattyp5, dattyp6, dattyp7, dattyp8, dattyp9, dobyr, eeclass, eestatu, efamid, egeoloc, emprel, enrind1, enrind10, enrind11, enrind12, enrind2, enrind3, enrind4, enrind5, enrind6, enrind7, enrind8, enrind9, enrmon, enrolid, hlthplan, indstry, memday1, memday10, memday11, memday12, memday2, memday3, memday4, memday5, memday6, memday7, memday8, memday9, memdays, mhsacovg, msa, phyflag, plnkey1, plnkey10, plnkey11, plnkey12, plnkey2, plnkey3, plnkey4, plnkey5, plnkey6, plnkey7, plnkey8, plnkey9, plntyp1, plntyp10, plntyp11, plntyp12, plntyp2, plntyp3, plntyp4, plntyp5, plntyp6, plntyp7, plntyp8, plntyp9, region, rx, seqnum, sex, version, wgtkey, year, mswgtkey) {
+set_defaults_enrollment_summary <- function(age, agegrp, dattyp1, dattyp10, dattyp11, dattyp12, dattyp2, dattyp3, dattyp4, dattyp5, dattyp6, dattyp7, dattyp8, dattyp9, dobyr, eeclass, eestatu, efamid, egeoloc, emprel, enrind1, enrind10, enrind11, enrind12, enrind2, enrind3, enrind4, enrind5, enrind6, enrind7, enrind8, enrind9, enrmon, enrolid, hlthplan, indstry, memday1, memday10, memday11, memday12, memday2, memday3, memday4, memday5, memday6, memday7, memday8, memday9, memdays, mhsacovg, msa, phyflag, plnkey1, plnkey10, plnkey11, plnkey12, plnkey2, plnkey3, plnkey4, plnkey5, plnkey6, plnkey7, plnkey8, plnkey9, plntyp1, plntyp10, plntyp11, plntyp12, plntyp2, plntyp3, plntyp4, plntyp5, plntyp6, plntyp7, plntyp8, plntyp9, region, rx, seqnum, sex, version, wgtkey, year, mswgtkey) {
   defaults <- get('enrollment_summary', envir = frameworkContext$defaultValues)
-  if (!missing(flag)) {
-    defaults$flag <- flag
-  }
   if (!missing(age)) {
     defaults$age <- age
   }
@@ -1504,11 +1467,8 @@ set_defaults_enrollment_summary <- function(flag, age, agegrp, dattyp1, dattyp10
   invisible(defaults)
 }
 
-set_defaults_inpatient_admissions <- function(flag, admdate, admtyp, age, agegrp, caseid, datatyp, days, disdate, dobyr, drg, dstatus, dx1, dx10, dx11, dx12, dx13, dx14, dx15, dx2, dx3, dx4, dx5, dx6, dx7, dx8, dx9, dxver, eeclass, eestatu, efamid, egeoloc, eidflag, emprel, enrflag, enrolid, hlthplan, hospnet, hosppay, indstry, mdc, mhsacovg, msa, pdx, phyflag, physid, physnet, physpay, plankey, plantyp, poapdx, poadx1, poadx2, poadx3, poadx4, poadx5, poadx6, poadx7, poadx8, poadx9, poadx10, poadx11, poadx12, poadx13, poadx14, poadx15, pproc, proc1, proc10, proc11, proc12, proc13, proc14, proc15, proc2, proc3, proc4, proc5, proc6, proc7, proc8, proc9, region, rx, seqnum, sex, state, totcob, totcoins, totcopay, totded, totnet, totpay, version, wgtkey, year) {
+set_defaults_inpatient_admissions <- function(admdate, admtyp, age, agegrp, caseid, datatyp, days, disdate, dobyr, drg, dstatus, dx1, dx10, dx11, dx12, dx13, dx14, dx15, dx2, dx3, dx4, dx5, dx6, dx7, dx8, dx9, dxver, eeclass, eestatu, efamid, egeoloc, eidflag, emprel, enrflag, enrolid, hlthplan, hospnet, hosppay, indstry, mdc, mhsacovg, msa, pdx, phyflag, physid, physnet, physpay, plankey, plantyp, poapdx, poadx1, poadx2, poadx3, poadx4, poadx5, poadx6, poadx7, poadx8, poadx9, poadx10, poadx11, poadx12, poadx13, poadx14, poadx15, pproc, proc1, proc10, proc11, proc12, proc13, proc14, proc15, proc2, proc3, proc4, proc5, proc6, proc7, proc8, proc9, region, rx, seqnum, sex, state, totcob, totcoins, totcopay, totded, totnet, totpay, version, wgtkey, year) {
   defaults <- get('inpatient_admissions', envir = frameworkContext$defaultValues)
-  if (!missing(flag)) {
-    defaults$flag <- flag
-  }
   if (!missing(admdate)) {
     defaults$admdate <- admdate
   }
@@ -1798,11 +1758,8 @@ set_defaults_inpatient_admissions <- function(flag, admdate, admtyp, age, agegrp
   invisible(defaults)
 }
 
-set_defaults_health_risk_assessment <- function(flag, alc_amt, alcdyamt, alcweek, bmi, cc_allergy, cc_arthritis, cc_asthma, cc_backpain, cc_chf, cc_depress, cc_diab, cc_heartdis, cc_highbp, cc_highcol, cc_hrtburn, cc_lungdis, cc_migraine, cc_nonskincan, cc_osteopo, cc_skincan, cgramt, cgrcurr, cgrdur, cgrprev, cgrqtyr, cgrquit, cgtamt, cgtcurr, cgtdur, cgtpkamt, cgtprev, cgtqtcat, cgtqtyr, cgtquit, chewamt, chewcurr, chewdur, chewprev, chewqtyr, chewquit, cholestr, copestrs, diast_bp, dietfrt, dietfrvg, dietveg, dobyr, drnkdrv, educ_lvl, efamid, enrolid, exermo, exerweek, famabscat12, fireext, flu_shot, glucose, gluc_fast, hdl, height, hlthplan, hltimpct, job_sat, ldl, life_sat, liftwgt, mh_freq, mh_prob, pipeamt, pipecurr, pipedur, pipeprev, pipeqtyr, pipequit, planalc, plandiet, plandrad, planexer, planslp, planstrs, plantob, planwgt, prev_mammo, prev_paptest, prev_prostex, prev_sigmoid, prodabscat, risk_alc, risk_bp, risk_chol, risk_depr, risk_exer, risk_gluc, risk_mh, risk_nutr, risk_safe, risk_sleep, risk_smok, risk_stress, risk_wgt, seatbelt, selfhlth, seqnum, sex, sleep_hr, slpapnea, slpprob, smkdetect, stretch, survdate, systo_bp, tobcurr, tobprev, triglycd, version, weight, workabs, wrkabscat, wrkabscat12, year) {
+set_defaults_health_risk_assessment <- function(alc_amt, alcdyamt, alcweek, bmi, cc_allergy, cc_arthritis, cc_asthma, cc_backpain, cc_chf, cc_depress, cc_diab, cc_heartdis, cc_highbp, cc_highcol, cc_hrtburn, cc_lungdis, cc_migraine, cc_nonskincan, cc_osteopo, cc_skincan, cgramt, cgrcurr, cgrdur, cgrprev, cgrqtyr, cgrquit, cgtamt, cgtcurr, cgtdur, cgtpkamt, cgtprev, cgtqtcat, cgtqtyr, cgtquit, chewamt, chewcurr, chewdur, chewprev, chewqtyr, chewquit, cholestr, copestrs, diast_bp, dietfrt, dietfrvg, dietveg, dobyr, drnkdrv, educ_lvl, efamid, enrolid, exermo, exerweek, famabscat12, fireext, flu_shot, glucose, gluc_fast, hdl, height, hlthplan, hltimpct, job_sat, ldl, life_sat, liftwgt, mh_freq, mh_prob, pipeamt, pipecurr, pipedur, pipeprev, pipeqtyr, pipequit, planalc, plandiet, plandrad, planexer, planslp, planstrs, plantob, planwgt, prev_mammo, prev_paptest, prev_prostex, prev_sigmoid, prodabscat, risk_alc, risk_bp, risk_chol, risk_depr, risk_exer, risk_gluc, risk_mh, risk_nutr, risk_safe, risk_sleep, risk_smok, risk_stress, risk_wgt, seatbelt, selfhlth, seqnum, sex, sleep_hr, slpapnea, slpprob, smkdetect, stretch, survdate, systo_bp, tobcurr, tobprev, triglycd, version, weight, workabs, wrkabscat, wrkabscat12, year) {
   defaults <- get('health_risk_assessment', envir = frameworkContext$defaultValues)
-  if (!missing(flag)) {
-    defaults$flag <- flag
-  }
   if (!missing(alc_amt)) {
     defaults$alc_amt <- alc_amt
   }
@@ -2167,11 +2124,8 @@ set_defaults_health_risk_assessment <- function(flag, alc_amt, alcdyamt, alcweek
   invisible(defaults)
 }
 
-set_defaults_facility_header <- function(flag, age, agegrp, billtyp, cap_svc, caseid, cob, coins, copay, datatyp, deduct, dobyr, dstatus, dx1, dx2, dx3, dx4, dx5, dx6, dx7, dx8, dx9, dxver, eeclass, eestatu, efamid, egeoloc, eidflag, emprel, enrflag, enrolid, fachdid, hlthplan, indstry, mdc, mhsacovg, msa, netpay, ntwkprov, paidntwk, pddate, phyflag, plankey, plantyp, poadx1, poadx2, poadx3, poadx4, poadx5, poadx6, poadx7, poadx8, poadx9, proc1, proc2, proc3, proc4, proc5, proc6, provid, region, rx, seqnum, sex, stdplac, stdprov, svcdate, tsvcdat, version, wgtkey, year, msclmid, npi) {
+set_defaults_facility_header <- function(age, agegrp, billtyp, cap_svc, caseid, cob, coins, copay, datatyp, deduct, dobyr, dstatus, dx1, dx2, dx3, dx4, dx5, dx6, dx7, dx8, dx9, dxver, eeclass, eestatu, efamid, egeoloc, eidflag, emprel, enrflag, enrolid, fachdid, hlthplan, indstry, mdc, mhsacovg, msa, netpay, ntwkprov, paidntwk, pddate, phyflag, plankey, plantyp, poadx1, poadx2, poadx3, poadx4, poadx5, poadx6, poadx7, poadx8, poadx9, proc1, proc2, proc3, proc4, proc5, proc6, provid, region, rx, seqnum, sex, stdplac, stdprov, svcdate, tsvcdat, version, wgtkey, year, msclmid, npi) {
   defaults <- get('facility_header', envir = frameworkContext$defaultValues)
-  if (!missing(flag)) {
-    defaults$flag <- flag
-  }
   if (!missing(age)) {
     defaults$age <- age
   }
@@ -2392,11 +2346,8 @@ set_defaults_facility_header <- function(flag, age, agegrp, billtyp, cap_svc, ca
   invisible(defaults)
 }
 
-set_defaults_red_book <- function(flag, deaclas, deaclds, desidrg, excdgds, excldrg, generid, genind, gennme, gnindds, maintds, maintin, manfnme, mastfrm, metsize, mstfmds, ndcnum, orgbkcd, orgbkds, orgbkfg, pkqtycd, pksize, prdctds, prodcat, prodnme, siglsrc, strngth, roacd, roads, thercls, therdtl, thergrp, thrclds, thrdtds, thrgrds, year, deactdt, reactdt, actind) {
+set_defaults_red_book <- function(deaclas, deaclds, desidrg, excdgds, excldrg, generid, genind, gennme, gnindds, maintds, maintin, manfnme, mastfrm, metsize, mstfmds, ndcnum, orgbkcd, orgbkds, orgbkfg, pkqtycd, pksize, prdctds, prodcat, prodnme, siglsrc, strngth, roacd, roads, thercls, therdtl, thergrp, thrclds, thrdtds, thrgrds, year, deactdt, reactdt, actind) {
   defaults <- get('red_book', envir = frameworkContext$defaultValues)
-  if (!missing(flag)) {
-    defaults$flag <- flag
-  }
   if (!missing(deaclas)) {
     defaults$deaclas <- deaclas
   }
@@ -2656,11 +2607,8 @@ set_defaults_lab <- function(enrolid, seqnum, abnormal, agegrp, eeclass, eestatu
   invisible(defaults)
 }
 
-set_defaults_enrollment_detail <- function(flag, age, agegrp, datatyp, dobyr, dtend, dtstart, eeclass, eestatu, efamid, egeoloc, emprel, enrolid, hlthplan, indstry, memdays, mhsacovg, msa, phyflag, plankey, plantyp, region, rx, seqnum, sex, version, wgtkey, year) {
+set_defaults_enrollment_detail <- function(age, agegrp, datatyp, dobyr, dtend, dtstart, eeclass, eestatu, efamid, egeoloc, emprel, enrolid, hlthplan, indstry, memdays, mhsacovg, msa, phyflag, plankey, plantyp, region, rx, seqnum, sex, version, wgtkey, year) {
   defaults <- get('enrollment_detail', envir = frameworkContext$defaultValues)
-  if (!missing(flag)) {
-    defaults$flag <- flag
-  }
   if (!missing(age)) {
     defaults$age <- age
   }
@@ -2959,11 +2907,8 @@ set_defaults_hra_variable_ref <- function(variable_name, variable_longname, vari
   invisible(defaults)
 }
 
-set_defaults_outpatient_services <- function(flag, age, agegrp, cap_svc, cob, coins, copay, datatyp, deduct, dobyr, dx1, dx2, dx3, dx4, dx5, dxver, eeclass, eestatu, efamid, egeoloc, eidflag, emprel, enrflag, enrolid, fachdid, facprof, hlthplan, indstry, mdc, mhsacovg, msa, netpay, ntwkprov, paidntwk, pay, pddate, phyflag, plankey, plantyp, proc1, procgrp, procmod, proctyp, provid, qty, region, revcode, rx, seqnum, sex, stdplac, stdprov, svcdate, svcscat, tsvcdat, version, wgtkey, year, units, npi, msclmid, svcdate, tsvcdat, visittype) {
+set_defaults_outpatient_services <- function(age, agegrp, cap_svc, cob, coins, copay, datatyp, deduct, dobyr, dx1, dx2, dx3, dx4, dx5, dxver, eeclass, eestatu, efamid, egeoloc, eidflag, emprel, enrflag, enrolid, fachdid, facprof, hlthplan, indstry, mdc, mhsacovg, msa, netpay, ntwkprov, paidntwk, pay, pddate, phyflag, plankey, plantyp, proc1, procgrp, procmod, proctyp, provid, qty, region, revcode, rx, seqnum, sex, stdplac, stdprov, svcdate, svcscat, tsvcdat, version, wgtkey, year, units, npi, msclmid) {
   defaults <- get('outpatient_services', envir = frameworkContext$defaultValues)
-  if (!missing(flag)) {
-    defaults$flag <- flag
-  }
   if (!missing(age)) {
     defaults$age <- age
   }
@@ -3144,15 +3089,6 @@ set_defaults_outpatient_services <- function(flag, age, agegrp, cap_svc, cob, co
   if (!missing(msclmid)) {
     defaults$msclmid <- msclmid
   }
-  if (!missing(svcdate)) {
-    defaults$svcdate <- svcdate
-  }
-  if (!missing(tsvcdat)) {
-    defaults$tsvcdat <- tsvcdat
-  }
-  if (!missing(visittype)) {
-    defaults$visittype <- visittype
-  }
   assign('outpatient_services', defaults, envir = frameworkContext$defaultValues)
   invisible(defaults)
 }
@@ -3269,18 +3205,10 @@ declareTest <- function(id, description) {
   frameworkContext$testDescription <- description
 }
 
-add_inpatient_services <- function(flag, admdate, admtyp, age, agegrp, cap_svc, caseid, cob, coins, copay, datatyp, deduct, disdate, dobyr, drg, dstatus, dx1, dx2, dx3, dx4, dx5, dxver, eeclass, eestatu, efamid, egeoloc, eidflag, emprel, enrflag, enrolid, fachdid, facprof, hlthplan, indstry, mdc, mhsacovg, msa, netpay, ntwkprov, paidntwk, pay, pddate, pdx, phyflag, plankey, plantyp, pproc, proc1, procmod, proctyp, provid, qty, region, revcode, rx, seqnum, sex, stdplac, stdprov, svcdate, svcscat, tsvcdat, version, wgtkey, year, units, npi, msclmid, svcdate, tsvcdat, visittype) {
+add_inpatient_services <- function(admdate, admtyp, age, agegrp, cap_svc, caseid, cob, coins, copay, datatyp, deduct, disdate, dobyr, drg, dstatus, dx1, dx2, dx3, dx4, dx5, dxver, eeclass, eestatu, efamid, egeoloc, eidflag, emprel, enrflag, enrolid, fachdid, facprof, hlthplan, indstry, mdc, mhsacovg, msa, netpay, ntwkprov, paidntwk, pay, pddate, pdx, phyflag, plankey, plantyp, pproc, proc1, procmod, proctyp, provid, qty, region, revcode, rx, seqnum, sex, stdplac, stdprov, svcdate, svcscat, tsvcdat, version, wgtkey, year, units, npi, msclmid) {
   defaults <- get('inpatient_services', envir = frameworkContext$defaultValues)
   fields <- c()
   values <- c()
-  if (missing(flag)) {
-    flag <- defaults$flag
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'inpatient_services.flag')
-  }
-  fields <- c(fields, "_flag")
-  values <- c(values, if (is.null(flag)) "NULL" else if (is(flag, "subQuery")) paste0("(", as.character(flag), ")") else paste0("'", as.character(flag), "'"))
-
   if (missing(admdate)) {
     admdate <- defaults$admdate
   } else {
@@ -3817,47 +3745,15 @@ add_inpatient_services <- function(flag, admdate, admtyp, age, agegrp, cap_svc, 
   fields <- c(fields, "msclmid")
   values <- c(values, if (is.null(msclmid)) "NULL" else if (is(msclmid, "subQuery")) paste0("(", as.character(msclmid), ")") else paste0("'", as.character(msclmid), "'"))
 
-  if (missing(svcdate)) {
-    svcdate <- defaults$svcdate
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'inpatient_services.svcdate')
-  }
-  fields <- c(fields, "_svcdate")
-  values <- c(values, if (is.null(svcdate)) "NULL" else if (is(svcdate, "subQuery")) paste0("(", as.character(svcdate), ")") else paste0("'", as.character(svcdate), "'"))
-
-  if (missing(tsvcdat)) {
-    tsvcdat <- defaults$tsvcdat
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'inpatient_services.tsvcdat')
-  }
-  fields <- c(fields, "_tsvcdat")
-  values <- c(values, if (is.null(tsvcdat)) "NULL" else if (is(tsvcdat, "subQuery")) paste0("(", as.character(tsvcdat), ")") else paste0("'", as.character(tsvcdat), "'"))
-
-  if (missing(visittype)) {
-    visittype <- defaults$visittype
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'inpatient_services.visittype')
-  }
-  fields <- c(fields, "_visittype")
-  values <- c(values, if (is.null(visittype)) "NULL" else if (is(visittype, "subQuery")) paste0("(", as.character(visittype), ")") else paste0("'", as.character(visittype), "'"))
-
   inserts <- list(testId = frameworkContext$testId, testDescription = frameworkContext$testDescription, table = "inpatient_services", fields = fields, values = values)
   frameworkContext$inserts[[length(frameworkContext$inserts) + 1]] <- inserts
   invisible(NULL)
 }
 
-add_drug_claims <- function(flag, age, agegrp, awp, cap_svc, cob, coins, copay, datatyp, dawind, daysupp, deaclas, deduct, dispfee, dobyr, eeclass, eestatu, efamid, egeoloc, eidflag, emprel, enrflag, enrolid, generid, genind, hlthplan, indstry, ingcost, maintin, metqty, mhsacovg, msa, ndcnum, netpay, ntwkprov, paidntwk, pay, pddate, pharmid, phyflag, plankey, plantyp, qty, refill, region, rxmr, saletax, seqnum, sex, svcdate, thercls, thergrp, version, wgtkey, year, gpi) {
+add_drug_claims <- function(age, agegrp, awp, cap_svc, cob, coins, copay, datatyp, dawind, daysupp, deaclas, deduct, dispfee, dobyr, eeclass, eestatu, efamid, egeoloc, eidflag, emprel, enrflag, enrolid, generid, genind, hlthplan, indstry, ingcost, maintin, metqty, mhsacovg, msa, ndcnum, netpay, ntwkprov, paidntwk, pay, pddate, pharmid, phyflag, plankey, plantyp, qty, refill, region, rxmr, saletax, seqnum, sex, svcdate, thercls, thergrp, version, wgtkey, year) {
   defaults <- get('drug_claims', envir = frameworkContext$defaultValues)
   fields <- c()
   values <- c()
-  if (missing(flag)) {
-    flag <- defaults$flag
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug_claims.flag')
-  }
-  fields <- c(fields, "_flag")
-  values <- c(values, if (is.null(flag)) "NULL" else if (is(flag, "subQuery")) paste0("(", as.character(flag), ")") else paste0("'", as.character(flag), "'"))
-
   if (missing(age)) {
     age <- defaults$age
   } else {
@@ -4290,14 +4186,6 @@ add_drug_claims <- function(flag, age, agegrp, awp, cap_svc, cob, coins, copay, 
   fields <- c(fields, "year")
   values <- c(values, if (is.null(year)) "NULL" else if (is(year, "subQuery")) paste0("(", as.character(year), ")") else paste0("'", as.character(year), "'"))
 
-  if (missing(gpi)) {
-    gpi <- defaults$gpi
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug_claims.gpi')
-  }
-  fields <- c(fields, "_gpi")
-  values <- c(values, if (is.null(gpi)) "NULL" else if (is(gpi, "subQuery")) paste0("(", as.character(gpi), ")") else paste0("'", as.character(gpi), "'"))
-
   inserts <- list(testId = frameworkContext$testId, testDescription = frameworkContext$testDescription, table = "drug_claims", fields = fields, values = values)
   frameworkContext$inserts[[length(frameworkContext$inserts) + 1]] <- inserts
   invisible(NULL)
@@ -4361,18 +4249,10 @@ add_hra_question_ref <- function(question_type_id, category_value, category_name
   invisible(NULL)
 }
 
-add_enrollment_summary <- function(flag, age, agegrp, dattyp1, dattyp10, dattyp11, dattyp12, dattyp2, dattyp3, dattyp4, dattyp5, dattyp6, dattyp7, dattyp8, dattyp9, dobyr, eeclass, eestatu, efamid, egeoloc, emprel, enrind1, enrind10, enrind11, enrind12, enrind2, enrind3, enrind4, enrind5, enrind6, enrind7, enrind8, enrind9, enrmon, enrolid, hlthplan, indstry, memday1, memday10, memday11, memday12, memday2, memday3, memday4, memday5, memday6, memday7, memday8, memday9, memdays, mhsacovg, msa, phyflag, plnkey1, plnkey10, plnkey11, plnkey12, plnkey2, plnkey3, plnkey4, plnkey5, plnkey6, plnkey7, plnkey8, plnkey9, plntyp1, plntyp10, plntyp11, plntyp12, plntyp2, plntyp3, plntyp4, plntyp5, plntyp6, plntyp7, plntyp8, plntyp9, region, rx, seqnum, sex, version, wgtkey, year, mswgtkey) {
+add_enrollment_summary <- function(age, agegrp, dattyp1, dattyp10, dattyp11, dattyp12, dattyp2, dattyp3, dattyp4, dattyp5, dattyp6, dattyp7, dattyp8, dattyp9, dobyr, eeclass, eestatu, efamid, egeoloc, emprel, enrind1, enrind10, enrind11, enrind12, enrind2, enrind3, enrind4, enrind5, enrind6, enrind7, enrind8, enrind9, enrmon, enrolid, hlthplan, indstry, memday1, memday10, memday11, memday12, memday2, memday3, memday4, memday5, memday6, memday7, memday8, memday9, memdays, mhsacovg, msa, phyflag, plnkey1, plnkey10, plnkey11, plnkey12, plnkey2, plnkey3, plnkey4, plnkey5, plnkey6, plnkey7, plnkey8, plnkey9, plntyp1, plntyp10, plntyp11, plntyp12, plntyp2, plntyp3, plntyp4, plntyp5, plntyp6, plntyp7, plntyp8, plntyp9, region, rx, seqnum, sex, version, wgtkey, year, mswgtkey) {
   defaults <- get('enrollment_summary', envir = frameworkContext$defaultValues)
   fields <- c()
   values <- c()
-  if (missing(flag)) {
-    flag <- defaults$flag
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'enrollment_summary.flag')
-  }
-  fields <- c(fields, "_flag")
-  values <- c(values, if (is.null(flag)) "NULL" else if (is(flag, "subQuery")) paste0("(", as.character(flag), ")") else paste0("'", as.character(flag), "'"))
-
   if (missing(age)) {
     age <- defaults$age
   } else {
@@ -5050,18 +4930,10 @@ add_enrollment_summary <- function(flag, age, agegrp, dattyp1, dattyp10, dattyp1
   invisible(NULL)
 }
 
-add_inpatient_admissions <- function(flag, admdate, admtyp, age, agegrp, caseid, datatyp, days, disdate, dobyr, drg, dstatus, dx1, dx10, dx11, dx12, dx13, dx14, dx15, dx2, dx3, dx4, dx5, dx6, dx7, dx8, dx9, dxver, eeclass, eestatu, efamid, egeoloc, eidflag, emprel, enrflag, enrolid, hlthplan, hospnet, hosppay, indstry, mdc, mhsacovg, msa, pdx, phyflag, physid, physnet, physpay, plankey, plantyp, poapdx, poadx1, poadx2, poadx3, poadx4, poadx5, poadx6, poadx7, poadx8, poadx9, poadx10, poadx11, poadx12, poadx13, poadx14, poadx15, pproc, proc1, proc10, proc11, proc12, proc13, proc14, proc15, proc2, proc3, proc4, proc5, proc6, proc7, proc8, proc9, region, rx, seqnum, sex, state, totcob, totcoins, totcopay, totded, totnet, totpay, version, wgtkey, year) {
+add_inpatient_admissions <- function(admdate, admtyp, age, agegrp, caseid, datatyp, days, disdate, dobyr, drg, dstatus, dx1, dx10, dx11, dx12, dx13, dx14, dx15, dx2, dx3, dx4, dx5, dx6, dx7, dx8, dx9, dxver, eeclass, eestatu, efamid, egeoloc, eidflag, emprel, enrflag, enrolid, hlthplan, hospnet, hosppay, indstry, mdc, mhsacovg, msa, pdx, phyflag, physid, physnet, physpay, plankey, plantyp, poapdx, poadx1, poadx2, poadx3, poadx4, poadx5, poadx6, poadx7, poadx8, poadx9, poadx10, poadx11, poadx12, poadx13, poadx14, poadx15, pproc, proc1, proc10, proc11, proc12, proc13, proc14, proc15, proc2, proc3, proc4, proc5, proc6, proc7, proc8, proc9, region, rx, seqnum, sex, state, totcob, totcoins, totcopay, totded, totnet, totpay, version, wgtkey, year) {
   defaults <- get('inpatient_admissions', envir = frameworkContext$defaultValues)
   fields <- c()
   values <- c()
-  if (missing(flag)) {
-    flag <- defaults$flag
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'inpatient_admissions.flag')
-  }
-  fields <- c(fields, "_flag")
-  values <- c(values, if (is.null(flag)) "NULL" else if (is(flag, "subQuery")) paste0("(", as.character(flag), ")") else paste0("'", as.character(flag), "'"))
-
   if (missing(admdate)) {
     admdate <- defaults$admdate
   } else {
@@ -5827,18 +5699,10 @@ add_inpatient_admissions <- function(flag, admdate, admtyp, age, agegrp, caseid,
   invisible(NULL)
 }
 
-add_health_risk_assessment <- function(flag, alc_amt, alcdyamt, alcweek, bmi, cc_allergy, cc_arthritis, cc_asthma, cc_backpain, cc_chf, cc_depress, cc_diab, cc_heartdis, cc_highbp, cc_highcol, cc_hrtburn, cc_lungdis, cc_migraine, cc_nonskincan, cc_osteopo, cc_skincan, cgramt, cgrcurr, cgrdur, cgrprev, cgrqtyr, cgrquit, cgtamt, cgtcurr, cgtdur, cgtpkamt, cgtprev, cgtqtcat, cgtqtyr, cgtquit, chewamt, chewcurr, chewdur, chewprev, chewqtyr, chewquit, cholestr, copestrs, diast_bp, dietfrt, dietfrvg, dietveg, dobyr, drnkdrv, educ_lvl, efamid, enrolid, exermo, exerweek, famabscat12, fireext, flu_shot, glucose, gluc_fast, hdl, height, hlthplan, hltimpct, job_sat, ldl, life_sat, liftwgt, mh_freq, mh_prob, pipeamt, pipecurr, pipedur, pipeprev, pipeqtyr, pipequit, planalc, plandiet, plandrad, planexer, planslp, planstrs, plantob, planwgt, prev_mammo, prev_paptest, prev_prostex, prev_sigmoid, prodabscat, risk_alc, risk_bp, risk_chol, risk_depr, risk_exer, risk_gluc, risk_mh, risk_nutr, risk_safe, risk_sleep, risk_smok, risk_stress, risk_wgt, seatbelt, selfhlth, seqnum, sex, sleep_hr, slpapnea, slpprob, smkdetect, stretch, survdate, systo_bp, tobcurr, tobprev, triglycd, version, weight, workabs, wrkabscat, wrkabscat12, year) {
+add_health_risk_assessment <- function(alc_amt, alcdyamt, alcweek, bmi, cc_allergy, cc_arthritis, cc_asthma, cc_backpain, cc_chf, cc_depress, cc_diab, cc_heartdis, cc_highbp, cc_highcol, cc_hrtburn, cc_lungdis, cc_migraine, cc_nonskincan, cc_osteopo, cc_skincan, cgramt, cgrcurr, cgrdur, cgrprev, cgrqtyr, cgrquit, cgtamt, cgtcurr, cgtdur, cgtpkamt, cgtprev, cgtqtcat, cgtqtyr, cgtquit, chewamt, chewcurr, chewdur, chewprev, chewqtyr, chewquit, cholestr, copestrs, diast_bp, dietfrt, dietfrvg, dietveg, dobyr, drnkdrv, educ_lvl, efamid, enrolid, exermo, exerweek, famabscat12, fireext, flu_shot, glucose, gluc_fast, hdl, height, hlthplan, hltimpct, job_sat, ldl, life_sat, liftwgt, mh_freq, mh_prob, pipeamt, pipecurr, pipedur, pipeprev, pipeqtyr, pipequit, planalc, plandiet, plandrad, planexer, planslp, planstrs, plantob, planwgt, prev_mammo, prev_paptest, prev_prostex, prev_sigmoid, prodabscat, risk_alc, risk_bp, risk_chol, risk_depr, risk_exer, risk_gluc, risk_mh, risk_nutr, risk_safe, risk_sleep, risk_smok, risk_stress, risk_wgt, seatbelt, selfhlth, seqnum, sex, sleep_hr, slpapnea, slpprob, smkdetect, stretch, survdate, systo_bp, tobcurr, tobprev, triglycd, version, weight, workabs, wrkabscat, wrkabscat12, year) {
   defaults <- get('health_risk_assessment', envir = frameworkContext$defaultValues)
   fields <- c()
   values <- c()
-  if (missing(flag)) {
-    flag <- defaults$flag
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'health_risk_assessment.flag')
-  }
-  fields <- c(fields, "_flag")
-  values <- c(values, if (is.null(flag)) "NULL" else if (is(flag, "subQuery")) paste0("(", as.character(flag), ")") else paste0("'", as.character(flag), "'"))
-
   if (missing(alc_amt)) {
     alc_amt <- defaults$alc_amt
   } else {
@@ -6804,18 +6668,10 @@ add_health_risk_assessment <- function(flag, alc_amt, alcdyamt, alcweek, bmi, cc
   invisible(NULL)
 }
 
-add_facility_header <- function(flag, age, agegrp, billtyp, cap_svc, caseid, cob, coins, copay, datatyp, deduct, dobyr, dstatus, dx1, dx2, dx3, dx4, dx5, dx6, dx7, dx8, dx9, dxver, eeclass, eestatu, efamid, egeoloc, eidflag, emprel, enrflag, enrolid, fachdid, hlthplan, indstry, mdc, mhsacovg, msa, netpay, ntwkprov, paidntwk, pddate, phyflag, plankey, plantyp, poadx1, poadx2, poadx3, poadx4, poadx5, poadx6, poadx7, poadx8, poadx9, proc1, proc2, proc3, proc4, proc5, proc6, provid, region, rx, seqnum, sex, stdplac, stdprov, svcdate, tsvcdat, version, wgtkey, year, msclmid, npi) {
+add_facility_header <- function(age, agegrp, billtyp, cap_svc, caseid, cob, coins, copay, datatyp, deduct, dobyr, dstatus, dx1, dx2, dx3, dx4, dx5, dx6, dx7, dx8, dx9, dxver, eeclass, eestatu, efamid, egeoloc, eidflag, emprel, enrflag, enrolid, fachdid, hlthplan, indstry, mdc, mhsacovg, msa, netpay, ntwkprov, paidntwk, pddate, phyflag, plankey, plantyp, poadx1, poadx2, poadx3, poadx4, poadx5, poadx6, poadx7, poadx8, poadx9, proc1, proc2, proc3, proc4, proc5, proc6, provid, region, rx, seqnum, sex, stdplac, stdprov, svcdate, tsvcdat, version, wgtkey, year, msclmid, npi) {
   defaults <- get('facility_header', envir = frameworkContext$defaultValues)
   fields <- c()
   values <- c()
-  if (missing(flag)) {
-    flag <- defaults$flag
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'facility_header.flag')
-  }
-  fields <- c(fields, "_flag")
-  values <- c(values, if (is.null(flag)) "NULL" else if (is(flag, "subQuery")) paste0("(", as.character(flag), ")") else paste0("'", as.character(flag), "'"))
-
   if (missing(age)) {
     age <- defaults$age
   } else {
@@ -7397,18 +7253,10 @@ add_facility_header <- function(flag, age, agegrp, billtyp, cap_svc, caseid, cob
   invisible(NULL)
 }
 
-add_red_book <- function(flag, deaclas, deaclds, desidrg, excdgds, excldrg, generid, genind, gennme, gnindds, maintds, maintin, manfnme, mastfrm, metsize, mstfmds, ndcnum, orgbkcd, orgbkds, orgbkfg, pkqtycd, pksize, prdctds, prodcat, prodnme, siglsrc, strngth, roacd, roads, thercls, therdtl, thergrp, thrclds, thrdtds, thrgrds, year, deactdt, reactdt, actind) {
+add_red_book <- function(deaclas, deaclds, desidrg, excdgds, excldrg, generid, genind, gennme, gnindds, maintds, maintin, manfnme, mastfrm, metsize, mstfmds, ndcnum, orgbkcd, orgbkds, orgbkfg, pkqtycd, pksize, prdctds, prodcat, prodnme, siglsrc, strngth, roacd, roads, thercls, therdtl, thergrp, thrclds, thrdtds, thrgrds, year, deactdt, reactdt, actind) {
   defaults <- get('red_book', envir = frameworkContext$defaultValues)
   fields <- c()
   values <- c()
-  if (missing(flag)) {
-    flag <- defaults$flag
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'red_book.flag')
-  }
-  fields <- c(fields, "_flag")
-  values <- c(values, if (is.null(flag)) "NULL" else if (is(flag, "subQuery")) paste0("(", as.character(flag), ")") else paste0("'", as.character(flag), "'"))
-
   if (missing(deaclas)) {
     deaclas <- defaults$deaclas
   } else {
@@ -8087,18 +7935,10 @@ add_lab <- function(enrolid, seqnum, abnormal, agegrp, eeclass, eestatu, eidflag
   invisible(NULL)
 }
 
-add_enrollment_detail <- function(flag, age, agegrp, datatyp, dobyr, dtend, dtstart, eeclass, eestatu, efamid, egeoloc, emprel, enrolid, hlthplan, indstry, memdays, mhsacovg, msa, phyflag, plankey, plantyp, region, rx, seqnum, sex, version, wgtkey, year) {
+add_enrollment_detail <- function(age, agegrp, datatyp, dobyr, dtend, dtstart, eeclass, eestatu, efamid, egeoloc, emprel, enrolid, hlthplan, indstry, memdays, mhsacovg, msa, phyflag, plankey, plantyp, region, rx, seqnum, sex, version, wgtkey, year) {
   defaults <- get('enrollment_detail', envir = frameworkContext$defaultValues)
   fields <- c()
   values <- c()
-  if (missing(flag)) {
-    flag <- defaults$flag
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'enrollment_detail.flag')
-  }
-  fields <- c(fields, "_flag")
-  values <- c(values, if (is.null(flag)) "NULL" else if (is(flag, "subQuery")) paste0("(", as.character(flag), ")") else paste0("'", as.character(flag), "'"))
-
   if (missing(age)) {
     age <- defaults$age
   } else {
@@ -8867,18 +8707,10 @@ add_hra_variable_ref <- function(variable_name, variable_longname, variable_desc
   invisible(NULL)
 }
 
-add_outpatient_services <- function(flag, age, agegrp, cap_svc, cob, coins, copay, datatyp, deduct, dobyr, dx1, dx2, dx3, dx4, dx5, dxver, eeclass, eestatu, efamid, egeoloc, eidflag, emprel, enrflag, enrolid, fachdid, facprof, hlthplan, indstry, mdc, mhsacovg, msa, netpay, ntwkprov, paidntwk, pay, pddate, phyflag, plankey, plantyp, proc1, procgrp, procmod, proctyp, provid, qty, region, revcode, rx, seqnum, sex, stdplac, stdprov, svcdate, svcscat, tsvcdat, version, wgtkey, year, units, npi, msclmid, svcdate, tsvcdat, visittype) {
+add_outpatient_services <- function(age, agegrp, cap_svc, cob, coins, copay, datatyp, deduct, dobyr, dx1, dx2, dx3, dx4, dx5, dxver, eeclass, eestatu, efamid, egeoloc, eidflag, emprel, enrflag, enrolid, fachdid, facprof, hlthplan, indstry, mdc, mhsacovg, msa, netpay, ntwkprov, paidntwk, pay, pddate, phyflag, plankey, plantyp, proc1, procgrp, procmod, proctyp, provid, qty, region, revcode, rx, seqnum, sex, stdplac, stdprov, svcdate, svcscat, tsvcdat, version, wgtkey, year, units, npi, msclmid) {
   defaults <- get('outpatient_services', envir = frameworkContext$defaultValues)
   fields <- c()
   values <- c()
-  if (missing(flag)) {
-    flag <- defaults$flag
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'outpatient_services.flag')
-  }
-  fields <- c(fields, "_flag")
-  values <- c(values, if (is.null(flag)) "NULL" else if (is(flag, "subQuery")) paste0("(", as.character(flag), ")") else paste0("'", as.character(flag), "'"))
-
   if (missing(age)) {
     age <- defaults$age
   } else {
@@ -9358,30 +9190,6 @@ add_outpatient_services <- function(flag, age, agegrp, cap_svc, cob, coins, copa
   }
   fields <- c(fields, "msclmid")
   values <- c(values, if (is.null(msclmid)) "NULL" else if (is(msclmid, "subQuery")) paste0("(", as.character(msclmid), ")") else paste0("'", as.character(msclmid), "'"))
-
-  if (missing(svcdate)) {
-    svcdate <- defaults$svcdate
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'outpatient_services.svcdate')
-  }
-  fields <- c(fields, "_svcdate")
-  values <- c(values, if (is.null(svcdate)) "NULL" else if (is(svcdate, "subQuery")) paste0("(", as.character(svcdate), ")") else paste0("'", as.character(svcdate), "'"))
-
-  if (missing(tsvcdat)) {
-    tsvcdat <- defaults$tsvcdat
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'outpatient_services.tsvcdat')
-  }
-  fields <- c(fields, "_tsvcdat")
-  values <- c(values, if (is.null(tsvcdat)) "NULL" else if (is(tsvcdat, "subQuery")) paste0("(", as.character(tsvcdat), ")") else paste0("'", as.character(tsvcdat), "'"))
-
-  if (missing(visittype)) {
-    visittype <- defaults$visittype
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'outpatient_services.visittype')
-  }
-  fields <- c(fields, "_visittype")
-  values <- c(values, if (is.null(visittype)) "NULL" else if (is(visittype, "subQuery")) paste0("(", as.character(visittype), ")") else paste0("'", as.character(visittype), "'"))
 
   inserts <- list(testId = frameworkContext$testId, testDescription = frameworkContext$testDescription, table = "outpatient_services", fields = fields, values = values)
   frameworkContext$inserts[[length(frameworkContext$inserts) + 1]] <- inserts
