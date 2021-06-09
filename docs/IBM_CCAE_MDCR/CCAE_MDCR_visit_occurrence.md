@@ -3,82 +3,86 @@ layout: default
 title: Visit Occurrence
 nav_order: 8
 parent: IBM CCAE & MDCR
-description: "**VISIT_OCCURRENCE** mapping from IBM MarketScan® Commercial Database (CCAE) & IBM MarketScan® Medicare Supplemental Database (MDCR) **OUTPATIENT_SERVICES** & **INPATIENT_SERVICES**."
+description: "**VISIT_OCCURRENCE** mapping from IBM MarketScan® Commercial Database (CCAE) & IBM MarketScan® Medicare Supplemental Database (MDCR) **VISIT_DETAIL**."
 ---
 
-## Table name: **VISIT_OCCURRENCE**
+# CDM Table: VISIT_OCCURRENCE
 
-Even though MarketScan has defined inpatient visits, some inpatient visits still exist in **OUTPATIENT_SERVICES** table.  We kept those inpatient visits defined by MarketScan, and also applied the logic derived to define inpatient visits versus emergency room visits from the following reference: 
-*Scerbo, M., C. Dickstein, and A. Wilson, Health Care Data and SAS. 2001, Cary, NC: SAS Institute Inc.*
+The VISIT_OCCURRENCE table contains all person visits to health care providers, including inpatient, outpatient and ER visits. A visit is an encounter for a patient at a point of care for duration of time. There could be several providers involved in the patient's care during the Visit. In the past, Visits were identified directly from the **INPATIENT_SERVICES** and **OUTPATIENT_SERVICES** tables. Now that there is a hierarchical relationship between Visit concepts we can build Visits off of the **VISIT_DETAIL** similar to how the **DRUG_ERA** table is derived from the **DRUG_EXPOSURE** table. See the [VISIT_OCCURRENCE](#VISIT_OCCURRENCE-Logic) logic for more details.
 
-### Key conventions
-* Visits are only generated off the **OUTPATIENT_SERVICES** and **INPATIENT_SERVICES** tables, **FACILITY_HEADER** and **INPATIENT_ADMISSIONS** tables are not used. 
-* Extract records within observation periods where a person has both prescription benefits and medical benefits from **INPATIENT_SERVICES** and **OUTPATIENT_SERVICES** tables.
-* Set Source Flag: To retain the knowledge for later, set this flag to ‘I’ for all **INPATIENT_SERVICES** records and ‘O’ to all **OUTPATIENT_SERVICES** records.
-* Generate **VISIT_OCCURRENCE**:
-    * For claim type = ‘IP’
-        * Sort data in ascending order by ENROLID, START_DATE, END_DATE, PROVID, and STDPROV.
-        * Then by ENROLID, collapse lines of claim as long as the time between the END_DATE of one line and the START_DATE of the next is <=1.
-        * Then each consolidated inpatient claim is considered as one inpatient visit, set 
-            * MIN(START_DATE) as VISIT_START_DATE
-            * MAX(END_DATE) as VISIT_END_DATE
-            * ‘IP’ as PLACE_OF_SERVICE_SOURCE_VALUE
-        * As you are collapsing records take the PROVID and STDPROV from the first claim line of each visit as VISIT_PROVID and VISIT_PROVSTD, this will be used later to assign providers associated to a visit.
-    * See if any ‘OP’ or ‘ER’ records occur during an ‘IP’ visit.  These should be consolidated into that ‘IP’ visit, unless it is an ‘ER’ visit that starts and ends on the first day of the ‘IP’ visit.
-    * For claim type = ‘ER’
-        * Sort data in ascending order by ENROLID, START_DATE, END_DATE, PROVID, and STDPROV.
-        * Then by ENROLID, collapse all ‘ER’ claims that start on the same day as one ER visit, then take START_DATE as VISIT_START_DATE, MAX (END_DATE) as VISIT_END_DATE, and ‘ER’ as PLACE_OF_SERVICE_SOURCE_VALUE.
-        * As you are collapsing records take the PROVID and STDPROV from the first claim line of each visit as VISIT_PROVID and VISIT_PROVSTD, this will be used later to assign providers associated to a visit.
-    * For claim type = ‘OP’
-        * Sort data in ascending order by ENROLID, START_DATE, PROVID, END_DATE, and STDPROV. 
-        * Then by ENROLID and START_DATE, collapse all ‘OP’ claims that have the same PROVID as one OP visit, then take START_DATE as VISIT_START_DATE, MAX (END_DATE) as VISIT_END_DATE, and ‘OP’ as PLACE_OF_SERVICE_SOURCE_VALUE.
-        * As you are collapsing records take the PROVID and STDPROV from the first claim line of each visit as VISIT_PROVID and VISIT_PROVSTD, this will be used later to assign providers associated to a visit.
-    * <a href='https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/IBM_CCAE_MDCR/images/Defining_VISIT_OCCURRENCE_Examples.xlsx'>This MS Excel file</a> provides two examples for defining **VISIT_OCCURRENCE**.
+## **VISIT_OCCURRENCE** Logic
+- Using the [terminal ancestor query](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Optum%20Clinformatics/Queries/CMS_PlaceOfService_OMOP_Vocab.sql) map the VISIT_DETAIL_CONCEPT_IDs to their highest-level ancestor.
+- The highest-level ancestor concept_id will become the VISIT_CONCEPT_ID
 
-### Reading from **OUTPATIENT_SERVICES**
+### **Inpatient visits**
+- Using the results of step 1, find all records in the **VISIT_DETAIL** table that roll up to the CONCEPT_ID 9201 (Inpatient Visit).
+- Sort the resulting **VISIT_DETAIL** records by PERSON_ID, VISIT_START_DATETIME, and VISIT_END_DATETIME.
+- Collapse records that have <= 1 day between them into one Visit and assign an autogenerated VISIT_OCCURRENCE_ID. This VISIT_OCCURRENCE_ID should be the primary key in the **VISIT_OCCURRENCE** table and the foreign key in the **VISIT_DETAIL** table (and several domain tables) for the records that were collapsed. 
+    - Give these Visits VISIT_CONCEPT_ID = 9201. 
+    - Set VISIT_START_DATETIME to min(VISIT_DETAIL_START_DATETIME)
+    - Set VISIT_END_DATETIME to max(VISIT_DETAIL_END_DATETIME)
 
-![](images/image17.png)
+### **Emergency Room visits**
+- After defining inpatient visits, find all **VISIT_DETAIL** records that roll up to the CONCEPT_ID 9203 (Emergency Room Visit)
+- Collapse records that have the same VISIT_DETAIL_START_DATETIME into one Visit. 
+    - If an emergency room visit starts on the first day of an Inpatient visit (defined in the step above), then 
+        - Assign the emergency room visit the autogenerated VISIT_OCCURRENCE_ID of the Inpatient visit.
+        - Set VISIT_CONCEPT_ID = 262 (it would previously have been 9201). 
+        - Set VISIT_START_DATETIME = min(VISIT_DETAIL_START_DATETIME)
+        - Set VISIT_END_DATETIME = max(VISIT_DETAIL_END_DATETIME)
+    - If an emergency room visit occurs at any other point during an inpatient stay then assign the VISIT_OCCURRENCE_ID of the inpatient visit to the emergency room **VISIT_DETAIL** records and no **VISIT_OCCURRENCE** record should be generated. 
+    - Otherwise:
+        - Assign the emergency room visit an autogenerated VISIT_OCCURRENCE_ID and create a **VISIT_OCCURRENCE** record.
+        - Set VISIT_CONCEPT_ID = 9203. 
+        - Set VISIT_START_DATETIME = min(VISIT_DETAIL_START_DATETIME)
+        - Set VISIT_END_DATETIME = max(VISIT_DETAIL_END_DATETIME)
 
-| Destination Field | Source field | Logic | Comment field |
-| --- | --- | --- | --- |
-| VISIT_OCCURRENCE_ID | - | System generated. | - |
-| PERSON_ID | ENROLID | - | - |
-| VISIT_CONCEPT_ID | - | These CONCEPT_IDs fall under VOCABULARY_ID = Visit in **CONCEPT** table. Map VISIT_SOURCE_VALUE to their associated CONCEPT_IDs | `9201` = 'IP'  <br>`9202` = 'OP'  <br>`9203` = 'ER' |
-| VISIT_START_DATE | SVCDATE | Min(SVCDATE) |  |
-| VISIT_START_DATETIME | SVCDATE | Min(SVCDATE) + Midnight | - |
-| VISIT_END_DATE | SVCDATE | Max(SVCDATE) | - |
-| VISIT_END_DATETIME | SVCDATE | Max(SVCDATE) + Midnight | - |
-| VISIT_TYPE_CONCEPT_ID | - | All rows will have the CONCEPT_ID `44818517` | `44818517` = ‘Visit derived from encounter on claim’ |
-| PROVIDER_ID | - | Refer to logic above for assigning VISIT_PROVID and VISIT_PROVSTD, and map them to PROVIDER_SOURCE_VALUE and   SPECIALTY_SOURCE_VALUE in **PROVIDER** table to extract Provider ID. <br><br>If there is no associated PROVIDER_ID this should be NULL, not 0.| - |
-| CARE_SITE_ID | - | NULL | - |
-| VISIT_SOURCE_VALUE | - | Use the logic mentioned above to define visit types, and value can be ‘IP’,’ER’,’OP’. | - |
-| VISIT_SOURCE_CONCEPT_ID | - | 0 | - |
-| ADMITTED_FROM_CONCEPT_ID | - | 0 | - |
-| ADMITTED_FROM_SOURCE_VALUE | - | NULL | - |
-| DISCHARGE_TO_CONCEPT_ID | - | 0 | - |
-| DISCHARGE_TO_SOURCE_VALUE | - | NULL |  |
-| PRECEDING_VISIT_OCCURRENCE_ID | - | For a given person, find the previous visit and reference.    A foreign key to the **VISIT_OCCURRENCE** table of the visit immediately preceding this visit. | - |
+- The assigned VISIT_OCCURRENCE_IDS should be the primary key in the **VISIT_OCCURRENCE** table and the foreign key in the **VISIT_DETAIL** table for the records that were collapsed. 
 
-### Reading from **INPATIENT_SERVICES**
+### **Rolling additional visit detail into Inpatient**
+- For all other **VISIT_DETAIL** records, first look to see if they occur at any point within a previously defined inpatient visit. If so, assign the VISIT_OCCURRENCE_ID of the inpatient visit to the VISIT_DETAIL record. 
 
-![](images/image18.png)
+## Non-hospital institution visits
+- Using the remaining **VISIT_DETAIL** records and the results of step 1, find all records the CONCEPT_ID 42898160 (Non-hospital institution visit).
+- Sort the resulting **VISIT_DETAIL** records by PERSON_ID, VISIT_START_DATETIME, and VISIT_END_DATETIME.
+- Collapse records that have <= 1 day between them into one Visit and assign an autogenerated VISIT_OCCURRENCE_ID. This VISIT_OCCURRENCE_ID should be the primary key in the **VISIT_OCCURRENCE** table and the foreign key in the **VISIT_DETAIL** table (and several domain tables) for the records that were collapsed. 
+    - Give these Visits VISIT_CONCEPT_ID = 42898160. 
+    - Set VISIT_START_DATETIME to min(VISIT_DETAIL_START_DATETIME)
+    - Set VISIT_END_DATETIME to max(VISIT_DETAIL_END_DATETIME)
+### **Rolling additional visit detail into Non-hospital institution visit**
+- For all other **VISIT_DETAIL** records, look to see if they occur at any point within a previously defined non-hospital institution visit. If so, assign the VISIT_OCCURRENCE_ID of the non-hospital institution visit to the VISIT_DETAIL record. 
 
-| Destination Field | Source field | Logic | Comment field |
-| --- | --- | --- | --- |
-| VISIT_OCCURRENCE_ID | - | System generated. | - |
-| PERSON_ID | ENROLID | - | - |
-| VISIT_CONCEPT_ID | - | These CONCEPT_IDs fall under VOCABULARY_ID = Visit in **CONCEPT** table. Map VISIT_SOURCE_VALUE to their associated CONCEPT_IDs| `9201` = 'IP'  <br>`9202` = 'OP'  <br>`9203` = 'ER' |
-| VISIT_START_DATE | SVCDATE | Min(SVCDATE) | - |
-| VISIT_START_DATETIME | SVCDATE | Min(SVCDATE) + Midnight | - |
-| VISIT_END_DATE | TSVCDAT | Max(TSVCDAT) | - |
-| VISIT_END_DATETIME | TSVCDAT | Max(TSVCDAT) + Midnight |  |
-| VISIT_TYPE_CONCEPT_ID | - |All rows will have the CONCEPT_ID `44818517` | `44818517` = ‘Visit derived from encounter on claim’ |
-| PROVIDER_ID | - | Refer to logic above for assigning VISIT_PROVID and VISIT_PROVSTD, and map them to PROVIDER_SOURCE_VALUE and   SPECIALTY_SOURCE_VALUE in **PROVIDER** table to extract Provider ID. <BR><BR>If there is no associated PROVIDER_ID this should be NULL, not 0. |
-| CARE_SITE_ID | - | NULL | - |
-| VISIT_SOURCE_VALUE | - | Use the logic mentioned above to define visit types, and value can be ‘IP’,’ER’,’OP’. | - |
-| VISIT_SOURCE_CONCEPT_ID | - | 0 | - |
-| ADMITTED_FROM_CONCEPT_ID | - | 0 | - |
-| ADMITTED_FROM_SOURCE_VALUE | - | NULL | - |
-| DISCHARGE_TO_CONCEPT_ID | DSTATUS | Use the <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html">Source-to-Standard Query</a>.<br><br> Filters:  <br>`WHERE SOURCE_VOCABULARY_ID IN ('JNJ_TRU_DPOS')`<br>`AND TARGET_STANDARD_CONCEPT IS NOT NULL`<br>`AND TARGET_INVALID_REASON IS NULL`<br><br>Else set to 0. | - |
-| DISCHARGE_TO_SOURCE_VALUE | DSTATUS | - | - |
-| PRECEDING_VISIT_OCCURRENCE_ID | - | For a given person, find the previous visit and reference. A foreign key to the **VISIT_OCCURRENCE** table of the visit immediately preceding this visit | - |
+## All other **VISIT_DETAIL** records
+- For VISIT_DETAIL records that do not occur within an inpatient or non-hospital institution visit:
+    - Sort records by PERSON_ID, VISIT_DETAIL_START_DATETIME, VISIT_DETAIL_END_DATETIME, and CARE_SITE_ID.
+    - Collapse all records for the same person that have the same VISIT_DETAIL_START_DATETIME, VISIT_DETAIL_END_DATETIME, and CARE_SITE_ID.
+    - Assign the visits an autogenerated VISIT_OCCURRENCE_ID and create a **VISIT_OCCURRENCE** record.
+    - Set VISIT_CONCEPT_ID = terminal ancestor concept_id as defined above. 
+    - Set VISIT_START_DATETIME = min(VISIT_DETAIL_START_DATETIME)
+    - Set VISIT_END_DATETIME = max(VISIT_DETAIL_END_DATETIME)
+    - The assigned VISIT_OCCURRENCE_IDS should be the primary key in the **VISIT_OCCURRENCE** table and the foreign key in the **VISIT_DETAIL** table for the records that were collapsed. 
+
+**Destination Field**|**Source Field**|**Applied Rule**|**Comment**
+:-----:|:-----:|:-----:|:-----:
+VISIT_OCCURRENCE_ID| |System generated.|
+PERSON_ID|**VISIT_DETAIL** PERSON_ID||
+VISIT_CONCEPT_ID|See the logic above for rolling up **VISIT_DETAIL** VISIT_DETAIL_CONCEPT_ID the the terminal ancestor concept_id.|
+VISIT_START_DATE|**VISIT_DETAIL** VISIT_DETAIL_START_DATE| Use min(VISIT_DETAIL_START_DATE) |
+VISIT_START_DATETIME|Set time to 00:00:00 UTC tz<br/><br/>**VISIT_DETAIL** VISIT_DETAIL_START_DATETIME| Use min(VISIT_DETAIL_START_DATETIME)  |
+VISIT_END_DATE|**VISIT_DETAIL**<br/>VISIT_DETAIL_END_DATE| Use max(VISIT_DETAIL_END_DATE) |
+VISIT_END_DATETIME|Set time to 00:00:00 UTC tz<br/><br/>**VISIT_DETAIL**<br/>VISIT_DETAIL_END_DATETIME| Use max(VISIT_DETAIL_END_DATETIME)|
+VISIT_TYPE_CONCEPT_ID| |Use concept [32810 (Claim)](http://www.ohdsi.org/web/atlas/#/concept/32810)|
+PROVIDER_ID||Use the VISIT_DETAIL records to find provider associated with a visit. If there are more than one provider_id, then sort by inpatient>emergency room>outpatient and pick the first occurrrence by date.|
+CARE_SITE_ID|**VISIT_DETAIL** CARE_SITE_ID |  |
+VISIT_SOURCE_VALUE|  | This will be blank though the VISIT_OCCURRENCE_ID can be linked back to VISIT_DETAIL which can then be linked to the source through the VISIT_DETAIL_SOURCE_VALUE|
+VISIT_SOURCE_CONCEPT_ID| | 0 |
+ADMITTING_SOURCE_CONCEPT_ID| | 0 |
+ADMITTING_SOURCE_VALUE| | NULL |
+DISCHARGE_TO_CONCEPT_ID|**VISIT_DETAIL**<br/>DISCHARGE_TO_CONCEPT_ID|Use the VISIT_DETAIL records to find DISCHARGE_TO_CONCEPT_ID associated with a visit. If there are more than one then sort by inpatient>emergency room>outpatient and pick the first occurrrence by date. |
+DISCHARGE_TO_SOURCE_VALUE|**VISIT_DETAIL**<br/>DISCHARGE_TO_SOURCE_VALUE| | Use the VISIT_DETAIL records to find DISCHARGE_TO_SOURCE_VALUE associated with a visit. If there are more than one then sort by inpatient>emergency room>outpatient and pick the first occurrrence by date.|
+PRECEDING_VISIT_OCCURRENCE_ID|**VISIT_OCCURRENCE** | For a given person, find the previous visit and reference it. | A foreign key to the **VISIT_OCCURRENCE** table of the visit immediately preceding. 
+
+## Change Log
+
+### June 8, 2021
+* Updated VISIT_OCCURRENCE logic to comply with logic in other CDMs. It now uses the information in VISIT_DETAIL to build Visits.

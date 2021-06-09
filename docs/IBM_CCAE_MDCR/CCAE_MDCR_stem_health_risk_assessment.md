@@ -12,9 +12,13 @@ description: "HEALTH_RISK_ASSESSMENT to STEM table description"
 
 #### Key conventions
  * Medicare does not have HEALTH_RISK_ASSESSMENT (HRA) data
+  
  * This data is in a wide format, meaning for a given patient and given date there are multiple column that represent conditions and obervations.  We pivot that data so that one row of HRA data can become many rows within the appropriate CDM tables.  The poster <a href='https://www.ohdsi.org/web/wiki/lib/exe/fetch.php?media=resources:using_the_omop_cdm_with_survey_and_registry_data_v6.0.pdf'>"Applying the OMOP Common Data Model to Survey Data"</a> provides an illustration of how we pivot and work with the data.
+  
  * Keep all records with valid values no matter whether SURVDATE is within observation period or not.  
+  
  * Keep all records even if some data moves to other domains, the OBSERVATION_CONCEPT_ID will be 0 for the records that moved elsewhere.
+
  * The following are list of HRA data variables, with character or numeric value.  However, the data for all surveys can be converted into numeric value. 
 
 **Test\_Name**|**Missing\_Value**|**Value\_Type**
@@ -142,7 +146,7 @@ WORKABS|NULL|Numeric
 | CONCEPT_ID | The test name or name of the column | Use the <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html">Source-to-Standard Query</a>.<br><br> `WHERE SOURCE_VOCABULARY_ID IN ('JNJ_TRU_HRA_QUESTION')`<br>`AND TARGET_INVALID_REASON IS NULL` | - |
 | SOURCE_VALUE | The test name or name of the column | - | - |
 | SOURCE_CONCEPT_ID | - | 0 | - |
-| TYPE_CONCEPT_ID | - | `44786633` – numeric HRA values <br>`44786634` – categorical HRA values | Use table above to help know if the value is numeric or categorical. |
+| TYPE_CONCEPT_ID | - | `32850` (Health Risk Assessment) |
 | START_DATE | SURVDATE | - | - |
 | START_DATETIME | SURVDATE | start_date + midnight | - |
 | END_DATE | - | NULL | - |
@@ -181,3 +185,8 @@ WORKABS|NULL|Numeric
 | VALUE_AS_DATETIME | - | NULL | - |
 | QUALIFIER_CONCEPT_ID | - | 0 | - |
 | QUALIFIER_SOURCE_VALUE | - | NULL | - |
+
+## Change Log
+
+### June 8, 2021
+* Changed the type concepts for HRA data
