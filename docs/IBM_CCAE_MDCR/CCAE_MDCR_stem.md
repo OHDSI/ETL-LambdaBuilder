@@ -11,6 +11,19 @@ description: "STEM table description"
 
 The STEM table is a staging area where source codes like ICD9 codes will first be mapped to concept_ids. The STEM table itself is an amalgamation of the OMOP event tables to facilitate record movement. This means that all fields present across the OMOP event tables are present in the STEM table. After a record is mapped and staged, the domain of the concept_id dictates which OMOP table (CONDITION_OCCURRENCE, DRUG_EXPOSURE, PROCEDURE_OCCURRENCE, MEASUREMENT, OBSERVATION, DEVICE_EXPOSURE) the record will move to. Please see the STEM &rarr; CDM mapping files for a description of which STEM fields move to which STEM tables.
 
+## Key Conventions
+
+* IBM removes decimal points from ICD diagnosis.  When mapping to the OMOP Vocabulary the decimal points need to also be removed from the Vocabulary concept code in order to map between the source and the vocabulary.  
+
+* Only keep records with valid ICD9CM or ICD10CM diagnoses, the DXVER variable in all tables indicates the ICD version to map to. If DXVER=9 then use ICD9CM; if DXVER=0 then use ICD10CM otherwise if DXVER is null then use a date filter:
+  + If before October 1, 2015 use ICD9CM
+  + If after October 1, 2015 use ICD10CM (**OUTPATIENT_SERVICES** use SVCDATE, **INPATIENT_SERVICES** use ADMDATE, **FACILITY_HEADER** use SVCDATE, and **INPATIENT_ADMISSIONS** use ADMDATE).
+
+* Valid Codes
+  1)	ICD9CM must start with 0-9, V or E, and non-numeric character is not allowed in other positions.
+  2)	If ICD9CM starts with 0-9 or V, length should be between 3 and 5; if starts with E, length should be between 4 and 5. 
+  3)	ICD10CM must be between 3 and 7 digits
+
 ### Fields in the STEM table
 
 | Field | 
@@ -64,7 +77,4 @@ The STEM table is a staging area where source codes like ICD9 codes will first b
 | SOURCE_VALUE |
 | VALUE_AS_DATETIME |
 | VISIT_DETAIL_ID |
-
-
-### Lookups Leveraged Across Tables
 

@@ -70,6 +70,16 @@ VISIT_DETAIL_PARENT_ID|**INPATIENT_CONFINEMENT**Conf_id, **MEDICAL_CLAIMS** Conf
 VISIT_OCCURRENCE_ID|**VISIT_OCCURRENCE** VISIT_OCCURRENCE_ID | **VISIT_OCCURRENCE** is constructed/derived from **VISIT_DETAIL**. |**VISIT_OCCURRENCE** VISIT_OCCURRENCE_ID is a FK for **VISIT_DETAIL** and can be used to identify **VISIT_DETAIL** records constructing one **VISIT_OCCURRENCE** record.
 
 
+## Change Log
+### September 21, 2020
+- Added place of service codes where the VISIT_DETAIL_END_DATE should equal the VISIT_DETAIL_START_DATE.
+
+### September 16, 2020
+* Changes to logic on how to assign VISIT_DETAIL_END_DATE. Previously records from RX_CLAIMS had the VISIT_DETAIL_END_DATE set to fill_dt + days_supply-1. This was changed so that the end date is also set to the fill date. 
+* Records where the place of service value from MEDICAL_CLAIMS did not have a mapping still took the LST_DT as the VISIT_DETAIL_END_DATE. Many LST_DT values from the source data are incorrect so in the case that POS is blank or cannot be mapped the VISIT_DETAIL_END_DATE is set to the VISIT_DETAIL_START_DATE
+* Records from MEDICAL_CLAIMS with POS = 23 and where lst_dt - fst_dt > 1, the VISIT_DETAIL_START_DATE and VISIT_DETAIL_END_DATE are both set to fst_dt. 
+* Records from MEDICAL_CLAIMS with POS is equal to 81, 42, 41, 14, 04, 18, 09, 03, 16, the VISIT_DETAIL_START_DATE and VISIT_DETAIL_END_DATE are both set to fst_dt. 
+
 ----------------------------------------------------------------------
 <br>
 <br>
@@ -148,16 +158,6 @@ Each record in the **MEDICAL_CLAIMS** table has a value in the fields PROVCAT an
 5|TRAUMA CENTER  |7|EMERGENCY ROOM|Transfer from emergency room
 5|TRAUMA CENTER  |A|TRANSFER FROM A  RURAL PRIMARY CARE HOSPITAL|Transfer from another hospital
 
-
-## Change Log
-### September 21, 2020
-- Added place of service codes where the VISIT_DETAIL_END_DATE should equal the VISIT_DETAIL_START_DATE.
-
-### September 16, 2020
-- Changes to logic on how to assign VISIT_DETAIL_END_DATE. Previously records from RX_CLAIMS had the VISIT_DETAIL_END_DATE set to fill_dt + days_supply-1. This was changed so that the end date is also set to the fill date. 
-- Records where the place of service value from MEDICAL_CLAIMS did not have a mapping still took the LST_DT as the VISIT_DETAIL_END_DATE. Many LST_DT values from the source data are incorrect so in the case that POS is blank or cannot be mapped the VISIT_DETAIL_END_DATE is set to the VISIT_DETAIL_START_DATE
-- Records from MEDICAL_CLAIMS with POS = 23 and where lst_dt - fst_dt > 1, the VISIT_DETAIL_START_DATE and VISIT_DETAIL_END_DATE are both set to fst_dt. 
-- Records from MEDICAL_CLAIMS with POS is equal to 81, 42, 41, 14, 04, 18, 09, 03, 16, the VISIT_DETAIL_START_DATE and VISIT_DETAIL_END_DATE are both set to fst_dt. 
 ---
 *Common Data Model ETL Mapping Specification for Optum Extended SES & Extended DOD*
 <br>*CDM Version = 6.0.0, Clinformatics Version = v8.0*

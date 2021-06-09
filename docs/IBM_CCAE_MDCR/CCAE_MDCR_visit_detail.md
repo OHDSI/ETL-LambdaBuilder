@@ -30,6 +30,7 @@ The **VISIT_DETAIL** table will have 1:1 record level referential integrity to *
 ### **VISIT_DETAIL** Logic
 1. Remove persons not in **PERSON** table
 2. Create a primary key to identify each record in the **FACILITY_HEADER**, **INPATIENT_ADMISSIONS**, **INPATIENT_SERVICES**, **OUTPATIENT_SERVICES**, **DRUG_CLAIMS**, and **LAB** tables. This primary key will become the VISIT_DETAIL_ID. Retain this information as a lookup table for later linkage of diagnoses and procedures. This system generated key may also be used to lookup records in source table i.e. maintain a lookup table that is able to link visit_detail_id to the records of **FACILITY_HEADER**, **INPATIENT_ADMISSIONS**, **INPATIENT_SERVICES**, **OUTPATIENT_SERVICES**, **DRUG_CLAIMS**, and **LAB**. tables (record level referential integerity).
+3. "Patient with visit that starts before the observation period, start date trimmed to beginning of observation period.
 <br><br>
 <a href='https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/IBM_CCAE_MDCR/images/Defining_VISIT_DETAIL_Examples.xlsx'>This MS Excel file</a> provides two examples for defining **VISIT_DETAIL**.
 <br><br>
@@ -48,12 +49,12 @@ The **VISIT_DETAIL** table will have 1:1 record level referential integrity to *
 | --- | --- | --- | --- |
 | VISIT_DETAIL_ID | - | System generated. | - |
 | PERSON_ID | ENROLID | - |  |
-| VISIT_DETAIL_CONCEPT_ID | - | Use the <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html">Source-to-Standard Query</a> with the filter<br><br>   `WHERE SOURCE_VOCABULARY_ID IN ('CMS Place of Service’)`<br>`AND TARGET_STANDARD_CONCEPT = 'S'`<br/><br/>If no map is made, assign to 0.|**NOTE:** The STDPLAC value in OUTPATIENT_SERVICES is only one digit for the numbers 1-9. In the OMOP Vocabulary these are two digits, presented as 01, 02, etc. Please add a leading zero prior to mapping to make sure they are not erroneously set to zero.|
+| VISIT_DETAIL_CONCEPT_ID | STDPLAC | Use the <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html">Source-to-Standard Query</a> with the filter<br><br>   `WHERE SOURCE_VOCABULARY_ID IN ('CMS Place of Service’)`<br>`AND TARGET_STANDARD_CONCEPT = 'S'`<br/><br/>If no map is made, assign to 0.|**NOTE:** The STDPLAC value in OUTPATIENT_SERVICES is only one digit for the numbers 1-9. In the OMOP Vocabulary these are two digits, presented as 01, 02, etc. Please add a leading zero prior to mapping to make sure they are not erroneously set to zero.|
 | VISIT_DETAIL_START_DATE | SVCDATE | NULL | - |
 | VISIT_DETAIL_START_DATETIME | SVCDATE | - | Set time to 00:00:00. |
-| VISIT_DETAIL_END_DATE | TSVCDAT | NULL | - |
-| VISIT_DETAIL_END_DATETIME | TSVCDAT | - | Set time to 00:00:00. |
-| VISIT_DETAIL_TYPE_CONCEPT_ID | - | All rows will have the CONCEPT_ID `32810` | `32810` = 'Claim' |
+| VISIT_DETAIL_END_DATE | TSVCDAT (See *Logic* column for exceptions)| If STDPLAC is blank, NULL, does not have a mapping or is equal to 11, 01, 95, 12, 20, 49, 60, 15, 81, 42, 41, 14, 04, 18, 09, 03 or 16 then set visit_detail_end_date equal to visit_detail_start_date. <br><br>If STDPLAC is equal to 23 or 22 and lst_dt - fst_dt > 1 then set visit_detail_end_date equal to visit_detail_start_date | - |
+| VISIT_DETAIL_END_DATETIME | VISIT_DETAIL_END_DATE | - | Set time to 00:00:00. |
+| VISIT_DETAIL_TYPE_CONCEPT_ID | - | Set all to `32860` (Outpatient claim detail) | - |
 | PROVIDER_ID | PROVID | Map PROVID PROVIDER_SOURCE_VALUE in **PROVIDER** table to extract Provider ID. | If there is no associated PROVIDER_ID this should be NULL, not 0 |
 | CARE_SITE_ID | - | NULL | - |
 | VISIT_DETAIL_SOURCE_VALUE | STPLAC | | - |
@@ -74,12 +75,12 @@ The **VISIT_DETAIL** table will have 1:1 record level referential integrity to *
 | --- | --- | --- | --- |
 | VISIT_DETAIL_ID | - |  System generated. | - |
 | PERSON_ID | ENROLID | - | - |
-| VISIT_DETAIL_CONCEPT_ID | - | Use the <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html">Source-to-Standard Query</a> with the filter<br><br>   `WHERE SOURCE_VOCABULARY_ID IN ('CMS Place of Service’)`<br>`AND TARGET_STANDARD_CONCEPT = 'S'`<br/><br/>If no map is made, assign to 0.|**NOTE:** The STDPLAC value in INPATIENT_SERVICES is only one digit for the numbers 1-9. In the OMOP Vocabulary these are two digits, presented as 01, 02, etc. Please add a leading zero prior to mapping to make sure they are not erroneously set to zero.|
+| VISIT_DETAIL_CONCEPT_ID | STDPLAC | Use the <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html">Source-to-Standard Query</a> with the filter<br><br>   `WHERE SOURCE_VOCABULARY_ID IN ('CMS Place of Service’)`<br>`AND TARGET_STANDARD_CONCEPT = 'S'`<br/><br/>If no map is made, assign to 0.|**NOTE:** The STDPLAC value in INPATIENT_SERVICES is only one digit for the numbers 1-9. In the OMOP Vocabulary these are two digits, presented as 01, 02, etc. Please add a leading zero prior to mapping to make sure they are not erroneously set to zero.|
 | VISIT_DETAIL_START_DATE | SVCDATE | NULL | - |
 | VISIT_DETAIL_START_DATETIME | SVCDATE | - | Set time to 00:00:00. |
-| VISIT_DETAIL_END_DATE | TSVCDAT | NULL | - |
-| VISIT_DETAIL_END_DATETIME | TSVCDAT | - | Set time to 00:00:00. |
-| VISIT_DETAIL_TYPE_CONCEPT_ID | - | All rows will have the CONCEPT_ID `32810` | `32810` = ‘Claim’ |
+| VISIT_DETAIL_END_DATE | TSVCDAT (See *Logic* column for exceptions)| If STDPLAC is blank, NULL, does not have a mapping or is equal to 11, 01, 95, 12, 20, 49, 60, 15, 81, 42, 41, 14, 04, 18, 09, 03 or 16 then set visit_detail_end_date equal to visit_detail_start_date. <br><br>If STDPLAC is equal to 23 or 22 and lst_dt - fst_dt > 1 then set visit_detail_end_date equal to visit_detail_start_date | - |
+| VISIT_DETAIL_END_DATETIME | VISIT_DETAIL_END_DATE | - | Set time to 00:00:00. |
+| VISIT_DETAIL_TYPE_CONCEPT_ID | - | Set all to `32854` (Inpatient claim detail) | - |
 | PROVIDER_ID | PROVID | Map PROVID PROVIDER_SOURCE_VALUE in Provider table to extract Provider ID. | If there is no associated PROVIDER_ID this should be NULL, not 0 |
 | CARE_SITE_ID | - | NULL | - |
 | VISIT_DETAIL_SOURCE_VALUE | STDPLAC |  | - |
@@ -100,12 +101,12 @@ The **VISIT_DETAIL** table will have 1:1 record level referential integrity to *
 | --- | --- | --- | --- |
 | VISIT_DETAIL_ID | - | System generated. | - |
 | PERSON_ID | ENROLID | - |  |
-| VISIT_DETAIL_CONCEPT_ID | - | Use the <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html">Source-to-Standard Query</a> with the filter<br><br>   `WHERE SOURCE_VOCABULARY_ID IN ('CMS Place of Service’)`<br>`AND TARGET_STANDARD_CONCEPT = 'S'`<br/><br/>If no map is made, assign to 0.|**NOTE:** The STDPLAC value in OUTPATIENT_SERVICES is only one digit for the numbers 1-9. In the OMOP Vocabulary these are two digits, presented as 01, 02, etc. Please add a leading zero prior to mapping to make sure they are not erroneously set to zero.|
+| VISIT_DETAIL_CONCEPT_ID | STDPLAC | Use the <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html">Source-to-Standard Query</a> with the filter<br><br>   `WHERE SOURCE_VOCABULARY_ID IN ('CMS Place of Service’)`<br>`AND TARGET_STANDARD_CONCEPT = 'S'`<br/><br/>If no map is made, assign to 0.|**NOTE:** The STDPLAC value in OUTPATIENT_SERVICES is only one digit for the numbers 1-9. In the OMOP Vocabulary these are two digits, presented as 01, 02, etc. Please add a leading zero prior to mapping to make sure they are not erroneously set to zero.|
 | VISIT_DETAIL_START_DATE | SVCDATE | NULL | - |
 | VISIT_DETAIL_START_DATETIME | SVCDATE | - | Set time to 00:00:00. |
-| VISIT_DETAIL_END_DATE | TSVCDAT | NULL | - |
-| VISIT_DETAIL_END_DATETIME | TSVCDAT | - | Set time to 00:00:00. |
-| VISIT_DETAIL_TYPE_CONCEPT_ID | - | All rows will have the CONCEPT_ID `32810` | `32810` = 'Claim' |
+| VISIT_DETAIL_END_DATE | TSVCDAT (See *Logic* column for exceptions)| If STDPLAC is blank, NULL, does not have a mapping or is equal to 11, 01, 95, 12, 20, 49, 60, 15, 81, 42, 41, 14, 04, 18, 09, 03 or 16 then set visit_detail_end_date equal to visit_detail_start_date. <br><br>If STDPLAC is equal to 23 or 22 and lst_dt - fst_dt > 1 then set visit_detail_end_date equal to visit_detail_start_date  | - |
+| VISIT_DETAIL_END_DATETIME | VISIT_DETAIL_END_DATE | - | Set time to 00:00:00. |
+| VISIT_DETAIL_TYPE_CONCEPT_ID | - | Set all to `32846` (Facility Claim Header) | - |
 | PROVIDER_ID | PROVID | Map PROVID PROVIDER_SOURCE_VALUE in **PROVIDER** table to extract Provider ID. | If there is no associated PROVIDER_ID this should be NULL, not 0 |
 | CARE_SITE_ID | - | NULL | - |
 | VISIT_DETAIL_SOURCE_VALUE | STPLAC | | - |
@@ -131,7 +132,7 @@ The **VISIT_DETAIL** table will have 1:1 record level referential integrity to *
 | VISIT_DETAIL_START_DATETIME | ADMDATE | - | Set time to 00:00:00. |
 | VISIT_DETAIL_END_DATE | DISDATE | NULL | - |
 | VISIT_DETAIL_END_DATETIME | DISDATE | - | Set time to 00:00:00. |
-| VISIT_DETAIL_TYPE_CONCEPT_ID | - | All rows will have the CONCEPT_ID `32810` | `32810` = ‘Claim’ |
+| VISIT_DETAIL_TYPE_CONCEPT_ID | - | Set all to `32855` (Inpatient claim header) | - |
 | PROVIDER_ID | NULL | - |
 | CARE_SITE_ID | - | NULL | - |
 | VISIT_DETAIL_SOURCE_VALUE | - | Set all to 'IP' | - |
@@ -157,7 +158,7 @@ The **VISIT_DETAIL** table will have 1:1 record level referential integrity to *
 | VISIT_DETAIL_START_DATETIME | SVCDATE | - | Set time to 00:00:00. |
 | VISIT_DETAIL_END_DATE | SVCDATE | NULL | - |
 | VISIT_DETAIL_END_DATETIME | SVCDATE | - | Set time to 00:00:00. |
-| VISIT_DETAIL_TYPE_CONCEPT_ID | - | All rows will have the CONCEPT_ID `32810` | `32810` = ‘Claim’ |
+| VISIT_DETAIL_TYPE_CONCEPT_ID | - | Set all to `32869` (Pharmacy claim) | - |
 | PROVIDER_ID | NULL | - |
 | CARE_SITE_ID | - | NULL | - |
 | VISIT_DETAIL_SOURCE_VALUE | - | Set all to 'Pharmacy' | - |
@@ -183,7 +184,7 @@ The **VISIT_DETAIL** table will have 1:1 record level referential integrity to *
 | VISIT_DETAIL_START_DATETIME | SVCDATE | - | Set time to 00:00:00. |
 | VISIT_DETAIL_END_DATE | SVCDATE | NULL | - |
 | VISIT_DETAIL_END_DATETIME | SVCDATE | - | Set time to 00:00:00. |
-| VISIT_DETAIL_TYPE_CONCEPT_ID | - | All rows will have the CONCEPT_ID `32810` | `32810` = ‘Claim’ |
+| VISIT_DETAIL_TYPE_CONCEPT_ID | - | All rows will have CONCEPT_ID `32856` (Lab) | - |
 | PROVIDER_ID | PROVID | Map PROVID PROVIDER_SOURCE_VALUE in **PROVIDER** table to extract Provider ID. | If there is no associated PROVIDER_ID this should be NULL, not 0 |
 | CARE_SITE_ID | - | NULL | - |
 | VISIT_DETAIL_SOURCE_VALUE | - | Set all to 'Pharmacy' | - |
@@ -200,3 +201,7 @@ The **VISIT_DETAIL** table will have 1:1 record level referential integrity to *
 
 ### June 8, 2021
 * Fully updated the VISIT_DETAIL logic to include all claim lines from all pertinent tables. 
+
+* Fixed all type concepts
+
+* Added VISIT_DETAIL_END_DATE logic to get rid of Outpatient visits > 1 day

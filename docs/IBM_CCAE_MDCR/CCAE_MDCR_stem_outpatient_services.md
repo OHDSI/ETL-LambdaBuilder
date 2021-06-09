@@ -10,12 +10,13 @@ description: "OUTPATIENT_SERVICES to STEM table description"
 ## Table name: **STEM_TABLE**
 
 ### Key conventions
-* Even though MarketScan defines inpatient visits, some inpatient visits still exist in **OUTPATIENT_SERVICES** table.  We kept those inpatient visits defined in MarketScan, and also applied the logic derived to define inpatient visits versus emergency room visits from the following reference: 
-    * *Scerbo, M., C. Dickstein, and A. Wilson, Health Care Data and SAS. 2001, Cary, NC: SAS Institute Inc.*
-    * Visits are only generated off the **OUTPATIENT_SERVICES** and **INPATIENT_SERVICES** tables, **FACILITY_HEADER** and **INPATIENT_ADMISSIONS** tables are not used. 
-    * Within observation periods where a person has both prescription benefits and medical benefits extract records from **INPATIENT_SERVICES** and **OUTPATIENT_SERVICES** tables.  This data is stored in a table called **TEMP_MEDICAL** that will be used to populate all future tables.
-        * Set Source Flag: To retain the knowledge for later, set this flag to ‘I’ for all **INPATIENT_SERVICES** records and ‘O’ to all **OUTPATIENT_SERVICES** records.
 
+* VISIT_DETAIL must be built before STEM (refer to [VISIT_DETAIL file](https://ohdsi.github.io/ETL-LambdaBuilder/IBM_CCAE_MDCR/CCAE_MDCR_visit_detail.html))
+  
+* Referential integrity is maintained with VISIT_DETAIL.
+For every record in STEM there should be 1 row record in VISIT_DETAIL (n:1 join).
+
+* For every record in VISIT_DETAIL there may be 0 to n rows in STEM.
 
 ### Reading from **OUTPATIENT_SERVICES**
 
@@ -23,18 +24,18 @@ description: "OUTPATIENT_SERVICES to STEM table description"
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
-| DOMAIN_ID | - | NULL | - |
+| DOMAIN_ID | - | - | This should be the domain_id of the standard concept in the CONCEPT_ID field. If a code is mapped to CONCEPT_ID 0, put the domain_id as Observation |
 | PERSON_ID | ENROLID | - | - |
-| VISIT_OCCURRENCE_ID | - | Refer to logic in building VISIT_OCCURRENCE table for linking with VISIT_OCCURRENCE_ID. | - |
-| VISIT_DETAIL_ID | - | Refer to logic in building VISIT_DETAIL table for linking with VISIT_DETAIL_ID. | - |
-| PROVIDER_ID | - | Refer to logic in building VISIT_OCCURRENCE table for assigning VISIT_PROVID and VISIT_PROVSTD, and map them to PROVIDER_SOURCE_VALUE and   SPECIALTY_SOURCE_VALUE in Provider table to extract associated Provider ID. | -|
+| VISIT_OCCURRENCE_ID | **VISIT_DETAIL**<br>VISIT_OCCURRENCE_ID  | Refer to logic in building VISIT_OCCURRENCE table for linking with VISIT_OCCURRENCE_ID. | - |
+| VISIT_DETAIL_ID | **VISIT_DETAIL**<br>VISIT_DETAIL_ID  | Refer to logic in building VISIT_DETAIL table for linking with VISIT_DETAIL_ID. | - |
+| PROVIDER_ID | **VISIT_DETAIL**<br>PROVIDER_ID  | - | -|
 | ID | - | System generated. | - |
-| CONCEPT_ID | DX1-5<br>PROC1 | Use the <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html">Source-to-Standard Query</a>.<br><br>  If DXVER does not have a value, review to the "Key Conventions" under the "STEM Key Conventions and Lookup Files" page.  If no map is made, assign to 0.<br/><br/>**[DX1-5]**<br/>If DXVER=9 use the filter:<br/> `WHERE SOURCE_VOCABULARY_ID IN (‘ICD9CM’)`<br>`AND TARGET_STANDARD_CONCEPT = 'S'`<br/><br/>If DXVER=0 use the filter:<br/>`WHERE SOURCE_VOCABULARY_ID IN (’ICD10CM’)`<br>`AND TARGET_STANDARD_CONCEPT = 'S'` <br /><br />**[PROC1]**<br/>When PROCTYP <> 0:<br />  `WHERE SOURCE_VOCABULARY_ID IN ('ICD9Proc','HCPCS','CPT4',’ICD10PCS’)`<br>`AND TARGET_STANDARD_CONCEPT = 'S'` | - |
+| CONCEPT_ID | DX1-5<br>PROC1 | Use the <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html">Source-to-Standard Query</a>.<br><br>  If DXVER does not have a value, review to the "Key Conventions" under the "STEM Key Conventions and Lookup Files" page.  If no map is made, assign CONCEPT_ID to 0 and DOMAIN_ID to OBSERVATION.<br/><br/>**[DX1-5]**<br/>If DXVER=9 use the filter:<br/> `WHERE SOURCE_VOCABULARY_ID IN (‘ICD9CM’)`<br>`AND TARGET_STANDARD_CONCEPT = 'S'`<br/><br/>If DXVER=0 use the filter:<br/>`WHERE SOURCE_VOCABULARY_ID IN (’ICD10CM’)`<br>`AND TARGET_STANDARD_CONCEPT = 'S'` <br /><br />**[PROC1]**<br/>When PROCTYP <> 0:<br />  `WHERE SOURCE_VOCABULARY_ID IN ('ICD9Proc','HCPCS','CPT4',’ICD10PCS’)`<br>`AND TARGET_STANDARD_CONCEPT = 'S'` | - |
 | SOURCE_VALUE | DX1-5<br>PROC1 | - | - |
 | SOURCE_CONCEPT_ID | DX1-5<br>PROC1 | Use the <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html">Source-to-Source Query</a>.<br><br>  If DXVER does not have a value, review to the "Key Conventions" under the "STEM Key Conventions and Lookup Files" page.  If no map is made, assign to 0.<br/><br/>**[DX1-5]**<br/>If DXVER=9 use the filter:<br/> `WHERE SOURCE_VOCABULARY_ID IN (‘ICD9CM’)`<br>`AND TARGET_VOCABULARY_ID IN (‘ICD9CM’)`<br/><br/>If DXVER=0 use the filter:<br/>`WHERE SOURCE_VOCABULARY_ID IN (’ICD10CM’)`<br>`AND TARGET_VOCABULARY_ID IN (’ICD10CM’)` <br /><br />**[PROC1]**<br/>When PROCTYP <> 0:<br />  `WHERE SOURCE_VOCABULARY_ID IN ('ICD9Proc','HCPCS','CPT4',’ICD10PCS’)`<br>`AND TARGET_VOCABULARY_ID IN ('ICD9Proc','HCPCS','CPT4',’ICD10PCS’)`| - |
-| TYPE_CONCEPT_ID | - | Refer to "Condition Type Concept ID Lookup" and "Procedure Type Concept ID Lookup" on the "STEM Key Conventions and Lookup Files" page. | - |
-| START_DATE | SVCDATE | If a date is not defined, use VISIT_START_DATE. | - |
-| START_DATETIME | SVCDATE | START_DATE + midnight | - |
+| TYPE_CONCEPT_ID | - | Set all to `32860` (Outpatient claim detail)| - |
+| START_DATE | **VISIT_DETAIL**<br>VISIT_DETAIL_START_DATE | - | - |
+| START_DATETIME | - | START_DATE + midnight | - |
 | END_DATE | - | NULL | - |
 | END_DATETIME | - | NULL | - |
 | VERBATIM_END_DATE | - | NULL | - |
@@ -64,10 +65,17 @@ description: "OUTPATIENT_SERVICES to STEM table description"
 | SPECIMEN_SOURCE_ID | - | NULL | - |
 | ANATOMIC_SITE_SOURCE_VALUE | - | NULL | - |
 | DISEASE STATUS_SOURCE_VALUE | - | NULL | - |
-| CONDITION_STATUS_CONCEPT_ID | - | 0 | - |
-| CONDITION_STATUS_SOURCE_VALUE | - | NULL | - |
+| CONDITION_STATUS_CONCEPT_ID | DX1-DX9 | If the record is generated based on DX1 set to `32902` else if the record is based on DX2-DX9 set to `32908` | - | - |
+| CONDITION_STATUS_SOURCE_VALUE | Use the name of the DX field. For example, if the record is generated based on DX1 put 'DX1' here | NULL | - |
 | EVENT_ID | - | NULL | - |
 | EVENT_FIELD_CONCEPT_ID | - | 0 | - |
 | VALUE_AS_DATETIME | - | NULL | - |
 | QUALIFIER_CONCEPT_ID | - | 0 | - |
 | QUALIFIER_SOURCE_VALUE | - | NULL | - |
+
+## Change Log
+
+### June 9, 2021
+* Update type concept
+
+* Added CONDITION_STATUS_CONCEPT_ID information

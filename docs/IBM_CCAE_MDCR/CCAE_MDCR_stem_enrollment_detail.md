@@ -10,8 +10,8 @@ description: "ENROLLMENT_DETAIL to STEM table description"
 ## Table name: **STEM_TABLE**
 
 ### Key conventions
-* Records written to the **OBSERVATION** table to capture health insurance coverage types should not eliminate death records (i.e. **ENROLLMENT_DETAIL**.MHSACOVG)
-* Additionally we add a Mental Health and Substance Abuse flags to the **OBSERVATION** table.  In the **ENROLLMENT_DETAIL** table there is information about when an individual will have this type of coverage.  We will add a 1 to VALUE_AS_NUMBER when the coverage exists and else a 0.  Make sure to take distinct records per ENROLID, DTEND, MHSACOVG.  
+
+* We add a Mental Health and Substance Abuse flag to the **OBSERVATION** table.  In the **ENROLLMENT_DETAIL** table there is information about when an individual will have this type of coverage.  We will add a 1 to VALUE_AS_NUMBER when the coverage exists and else a 0.  Make sure to take distinct records per ENROLID, DTEND, MHSACOVG.  
 
 
 ### Reading from **ENROLLMENT_DETAIL**

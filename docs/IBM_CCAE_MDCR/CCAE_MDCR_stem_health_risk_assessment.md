@@ -17,8 +17,6 @@ description: "HEALTH_RISK_ASSESSMENT to STEM table description"
   
  * Keep all records with valid values no matter whether SURVDATE is within observation period or not.  
   
- * Keep all records even if some data moves to other domains, the OBSERVATION_CONCEPT_ID will be 0 for the records that moved elsewhere.
-
  * The following are list of HRA data variables, with character or numeric value.  However, the data for all surveys can be converted into numeric value. 
 
 **Test\_Name**|**Missing\_Value**|**Value\_Type**
@@ -172,7 +170,7 @@ WORKABS|NULL|Numeric
 | VALUE_AS_CONCEPT_ID | - | 0 | - |
 | VALUE_AS_NUMBER | - | If a question has a numeric result, put that answer here. | Use table above to help know if the value is numeric or categorical.|
 | VALUE_AS_STRING | - | If a question has a string response, put that answer here. | Use table above to help know if the value is numeric or categorical. |
-| value_source_value | The test name or name of the column | - | - |
+| VALUE_SOURCE_VALUE | The test name or name of the column | - | - |
 | ANATOMIC_SITE_CONCEPT_ID | - | 0 | - |
 | DISEASE_STATUS_CONCEPT_ID | - | 0 | - |
 | SPECIMEN_SOURCE_ID | - | NULL | - |
@@ -190,3 +188,6 @@ WORKABS|NULL|Numeric
 
 ### June 8, 2021
 * Changed the type concepts for HRA data
+  
+* Removed the following logic:
+  * Keep all records even if some data moves to other domains, the OBSERVATION_CONCEPT_ID will be 0 for the records that moved elsewhere.

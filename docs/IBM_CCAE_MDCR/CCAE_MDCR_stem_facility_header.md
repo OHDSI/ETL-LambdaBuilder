@@ -13,7 +13,7 @@ The STEM table is a staging area where source codes like ICD9 codes will first b
 
 ### Key conventions
 
-* VISIT_DETAIL must be built before STEM ((refer to [VISIT_DETAIL file](https://ohdsi.github.io/ETL-LambdaBuilder/IBM_CCAE_MDCR/CCAE_MDCR_visit_detail.html))
+* VISIT_DETAIL must be built before STEM (refer to [VISIT_DETAIL file](https://ohdsi.github.io/ETL-LambdaBuilder/IBM_CCAE_MDCR/CCAE_MDCR_visit_detail.html))
   
 * Referential integrity is maintained with VISIT_DETAIL.
 For every record in STEM there should be 1 row record in VISIT_DETAIL (n:1 join).
@@ -66,7 +66,7 @@ For every record in STEM there should be 1 row record in VISIT_DETAIL (n:1 join)
 | SPECIMEN_SOURCE_ID | - | NULL | - |
 | ANATOMIC_SITE_SOURCE_VALUE | - | NULL | - |
 | DISEASE_STATUS_SOURCE_VALUE | - | NULL | - |
-| CONDITION_STATUS_CONCEPT_ID |   | If the record is generated based on DX1 set to `32902` else if the record is based on DX2-DX9 set to `32908`| - |
+| CONDITION_STATUS_CONCEPT_ID |  DX1-DX9 | If the record is generated based on DX1 set to `32902` else if the record is based on DX2-DX9 set to `32908`| - |
 | CONDITION_STATUS_SOURCE_VALUE | Use the name of the DX field. For example, if the record is generated based on DX1 put 'DX1' here | - | - |
 | EVENT_ID | - | NULL | - |
 | EVENT_FIELD_CONCEPT_ID | - | 0 | - |
@@ -78,3 +78,7 @@ For every record in STEM there should be 1 row record in VISIT_DETAIL (n:1 join)
 
 ### June 8, 2021
 * Removed logic that described taking only FACILITY_HEADER records that match up with an INPATIENT_SERVICES or OUTPATIENT_SERVICES claim. Instead we take all FACILITY_HEADER records.
+
+* Update type concept
+
+* Added CONDITION_STATUS_CONCEPT_ID information
