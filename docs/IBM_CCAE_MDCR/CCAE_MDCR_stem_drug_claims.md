@@ -13,11 +13,7 @@ description: "DRUG_CLAIMS to STEM table description"
 
 * VISIT_DETAIL must be built before STEM (refer to [VISIT_DETAIL file](https://ohdsi.github.io/ETL-LambdaBuilder/IBM_CCAE_MDCR/CCAE_MDCR_visit_detail.html))
 
-* For every record in STEM there should be 1 row record in VISIT_DETAIL (n:1 join).
-  
-* For every record in VISIT_DETAIL there may be 0 to n rows in STEM.
-
-* Take the records from DRUG_CLAIMS and join them to VISIT_DETAIL based on the VISIT_DETAIL_ID that was assigned.
+* DRUG_CLAIMS records for mail-in pharmacy (RXMR = 2) do not create visits so those STEM records will not have VISIT_DETAIL or VISIT_OCCURRENCE foreign key links
 
 * NDC codes are date specific so there is an extra filter for the concept id mapping to make sure it falls during the time an NDC is valid.
 
@@ -90,6 +86,9 @@ description: "DRUG_CLAIMS to STEM table description"
 | QUALIFIER_SOURCE_VALUE | - | NULL | - |
 
 ## Change Log
+
+### June 10, 2021
+* Mail order pharmacy records will not create visits so logic was removed and updated to reflect the change.
 
 ### June 8, 2021
 * Removed aggregates from the mapping. Prior logic attempted to remove duplicates by finding distinct values and then adding quantities by NDC and date. This logic was removed to preserve record-level referential integrity with the source and to aid in cost analyses later.

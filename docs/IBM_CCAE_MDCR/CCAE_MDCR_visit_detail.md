@@ -8,7 +8,7 @@ description: "**VISIT_DETAIL** mapping from IBM MarketScan® Commercial Database
 
 ## Table name: **VISIT_DETAIL**
 
-This table will be populated from six source tables, **FACILITY_HEADER**, **INPATIENT_ADMISSIONS**, **INPATIENT_SERVICES**, **OUTPATIENT_SERVICES**, and **DRUG_CLAIMS***.
+This table will be populated from six source tables, **FACILITY_HEADER**, **INPATIENT_ADMISSIONS**, **INPATIENT_SERVICES**, **OUTPATIENT_SERVICES**, and **DRUG_CLAIMS**.
 <br><br>
 
 ![](images/visit_detail.png)
@@ -175,6 +175,9 @@ Only use records where RXMR <> 2 as we do not want mail-in pharmacy records crea
 | VISIT_OCCURRENCE_ID | - | **VISIT_OCCURRENCE**.VISIT_OCCURRENCE_ID    This is the VISIT_OCCURRENCE_ID for the VISIT_OCCURRENCE record that is the parent for the VISIT_DETAIL record | - |
 
 ## Change Log
+
+### June 10, 2021
+* Reverted logic that included lab results as visits and mail-in order pharmacy records as visits.
 
 ### June 8, 2021
 * Fully updated the VISIT_DETAIL logic to include all claim lines from all pertinent tables. 

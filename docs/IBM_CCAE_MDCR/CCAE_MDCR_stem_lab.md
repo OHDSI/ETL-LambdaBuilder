@@ -106,6 +106,9 @@ IF RESULT NE 0 AND RESULT > -999999.99999 THEN DO;
 
 ## Change Log
 
+### June 10, 2021
+* Labs will not create visits on their own so that logic was removed.
+
 ### June 9, 2021
 * Updated type concept
 
