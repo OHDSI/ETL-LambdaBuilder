@@ -13,14 +13,7 @@ The STEM table is a staging area where source codes like ICD9 codes will first b
 
 ### Key conventions
 
-* VISIT_DETAIL must be built before STEM (refer to [VISIT_DETAIL file](https://ohdsi.github.io/ETL-LambdaBuilder/IBM_CCAE_MDCR/CCAE_MDCR_visit_detail.html))
-  
-* Referential integrity is maintained with VISIT_DETAIL.
-For every record in STEM there should be 1 row record in VISIT_DETAIL (n:1 join).
-
-* For every record in VISIT_DETAIL there may be 0 to n rows in STEM.
-
-* Units are mapped to UNIT_CONCEPT_IDs in the OMOP **VOCABULARY** (VOCABULARY_ID = UCUM - Unified Code for Units of Measure).  Please note that mapping a UNIT_SOURCE_VALUE to a UNIT_CONCEPT_ID is both case sensitive and accent sensitive.
+* Labs records are not considered visits so therefore all VISIT_DETAIL_ID and VISIT_OCCURRENCE_ID fields are NULL.
 
 * Lab result in **LAB** is stored in three fields: ABNORMAL, RESULT (numeric) and RESLTCAT (character). Numeric results can be in both RESULT and RESLTCAT. RESULT usually has the following values if the lab result is string: 0 or large negative value (<-999999.99999).  ABNORMAL is the abnormal indicator set by the lab vendors: ‘A’ means “abnormal”, ‘N’ means “normal”, ‘H’ means “Above the normal range”, ‘L’ means “Below the normal range”, ‘+’ means “Positive” and ‘-’ means “Negative”.  
 * Use the following to set VALUE_AS_STRING and VALUE_AS_CONCEPT_ID:<br>
@@ -64,15 +57,15 @@ IF RESULT NE 0 AND RESULT > -999999.99999 THEN DO;
 | --- | --- | --- | --- |
 | DOMAIN_ID | - | - | This should be the domain_id of the standard concept in the CONCEPT_ID field. If a code is mapped to CONCEPT_ID 0, put the domain_id as Observation |
 | PERSON_ID | ENROLID | - | - |
-| VISIT_OCCURRENCE_ID | **VISIT_DETAIL**<br>VISIT_OCCURRENCE_ID | - | - |
-| VISIT_DETAIL_ID | **VISIT_DETAIL**<br>VISIT_DETAIL_ID | - | - |
-| PROVIDER_ID | **VISIT_DETAIL**<br>PROVIDER_ID | - | - |
+| VISIT_OCCURRENCE_ID | NULL | - | - |
+| VISIT_DETAIL_ID | NULL | - | - |
+| PROVIDER_ID | PROVID | - | - |
 | ID | - | System generated. | - |
 | CONCEPT_ID | LOINCCD | Use the <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html">Source-to-Standard Query</a>.<br><br> `WHERE SOURCE_VOCABULARY_ID IN ('LOINC')`<br>`AND TARGET_STANDARD_CONCEPT = 'S'`<br>`AND TARGET_INVALID_REASON IS NULL` | - |
 | SOURCE_VALUE | LOINCCD | The LOINCCD as it appears in the **LAB** table | - |
 | SOURCE_CONCEPT_ID | LOINCCD | Use the <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html">Source-to-Source Query</a>.<br><br> `WHERE SOURCE_VOCABULARY_ID IN (‘LOINC’)`<br>`AND TARGET_VOCABULARY_ID IN (‘LOINC’)` | - |
 | TYPE_CONCEPT_ID | - | All rows will have CONCEPT_ID `32856` | `32856` = 'Lab' |
-| START_DATE | **VISIT_DETAIL**<br>VISIT_DETAIL_START_DATE | - | - |
+| START_DATE | SVCDATE | - | - |
 | START_DATETIME | - | START_DATE + Midnight | - |
 | END_DATE | - | NULL | - |
 | END_DATETIME | - | NULL | - |

@@ -8,7 +8,7 @@ description: "**VISIT_DETAIL** mapping from IBM MarketScan® Commercial Database
 
 ## Table name: **VISIT_DETAIL**
 
-This table will be populated from six source tables, **FACILITY_HEADER**, **INPATIENT_ADMISSIONS**, **INPATIENT_SERVICES**, **OUTPATIENT_SERVICES**, **DRUG_CLAIMS**, and **LAB**.
+This table will be populated from six source tables, **FACILITY_HEADER**, **INPATIENT_ADMISSIONS**, **INPATIENT_SERVICES**, **OUTPATIENT_SERVICES**, and **DRUG_CLAIMS***.
 <br><br>
 
 ![](images/visit_detail.png)
@@ -18,7 +18,7 @@ Record level referential integrity is important for drug utilization and health 
 
 While creating records in the **VISIT_DETAIL** table the duplicate claim lines will not be consolidated. Any duplicate procedures or diagnoses resulting from the duplicated claim lines will not affect analysis. See the **PROCEDURE_OCCURRENCE** table for how to use procedure units. The charges and costs will be preserved in the COST table, creating a 1:many relationship between the COST table and the VISIT_DETAIL table. See logic below for details.
 
-The **VISIT_DETAIL** table will have 1:1 record level referential integrity to **FACILITY_HEADER**, **INPATIENT_ADMISSIONS**, **INPATIENT_SERVICES**, **OUTPATIENT_SERVICES**, **DRUG_CLAIMS**, and **LAB** - except as noted below.
+The **VISIT_DETAIL** table will have 1:1 record level referential integrity to **FACILITY_HEADER**, **INPATIENT_ADMISSIONS**, **INPATIENT_SERVICES**, **OUTPATIENT_SERVICES**, and **DRUG_CLAIMS** - except as noted below.
 <br><br>
 
 ### Special notes
@@ -29,15 +29,16 @@ The **VISIT_DETAIL** table will have 1:1 record level referential integrity to *
 
 ### **VISIT_DETAIL** Logic
 1. Remove persons not in **PERSON** table
-2. Create a primary key to identify each record in the **FACILITY_HEADER**, **INPATIENT_ADMISSIONS**, **INPATIENT_SERVICES**, **OUTPATIENT_SERVICES**, **DRUG_CLAIMS**, and **LAB** tables. This primary key will become the VISIT_DETAIL_ID. Retain this information as a lookup table for later linkage of diagnoses and procedures. This system generated key may also be used to lookup records in source table i.e. maintain a lookup table that is able to link visit_detail_id to the records of **FACILITY_HEADER**, **INPATIENT_ADMISSIONS**, **INPATIENT_SERVICES**, **OUTPATIENT_SERVICES**, **DRUG_CLAIMS**, and **LAB**. tables (record level referential integerity).
+2. Create a primary key to identify each record in the **FACILITY_HEADER**, **INPATIENT_ADMISSIONS**, **INPATIENT_SERVICES**, **OUTPATIENT_SERVICES**, and **DRUG_CLAIMS** tables. This primary key will become the VISIT_DETAIL_ID. Retain this information as a lookup table for later linkage of diagnoses and procedures. This system generated key may also be used to lookup records in source table i.e. maintain a lookup table that is able to link visit_detail_id to the records of **FACILITY_HEADER**, **INPATIENT_ADMISSIONS**, **INPATIENT_SERVICES**, **OUTPATIENT_SERVICES**, and **DRUG_CLAIMS** tables (record level referential integerity).
 3. If a VISIT_DETAIL record starts before the observation period, trim the start date to beginning of observation period.
+4. Only create VISIT_DETAIL records for **DRUG_CLAIMS** records that are not mail-in pharmacy (RXMR <> 2)
 <br><br>
 <a href='https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/IBM_CCAE_MDCR/images/Defining_VISIT_DETAIL_Examples.xlsx'>This MS Excel file</a> provides two examples for defining **VISIT_DETAIL**.
 <br><br>
 
 ### PROVIDER_ID Assignment Logic
-* For records from **FACILITY_HEADER**, **INPATIENT_ADMISSIONS**, **INPATIENT_SERVICES**, **OUTPATIENT_SERVICES**, and **LAB**:
-    * Each record has a provider value in the STDPROV field. Use this to look up the PROVIDER_ID from the PROVIDER table using STDPROV as the PROVIDER_SOURCE_VALUE.
+* For records from **FACILITY_HEADER**, **INPATIENT_ADMISSIONS**, **INPATIENT_SERVICES**, and **OUTPATIENT_SERVICES**:
+    * Each record has a provider value in the PROVID field. Use this to look up the PROVIDER_ID from the PROVIDER table using PROVID as the PROVIDER_SOURCE_VALUE.
     <br><br>
 
 
@@ -147,45 +148,21 @@ The **VISIT_DETAIL** table will have 1:1 record level referential integrity to *
 
 ## Reading from **DRUG_CLAIMS**
 
+Only use records where RXMR <> 2 as we do not want mail-in pharmacy records creating visits. 
+
 ![](images/dc_visit_detail.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
 | VISIT_DETAIL_ID | - |  System generated. | - |
 | PERSON_ID | ENROLID | - | - |
-| VISIT_DETAIL_CONCEPT_ID | RXMR | When 1 (Retail) Or NULL Or ‘ ’ set to `581458` (Pharmacy)<br><br>When 2 then `32857` (Mail order record)| |
+| VISIT_DETAIL_CONCEPT_ID | RXMR | When 1 (Retail) Or NULL Or ‘ ’ set to `581458` (Pharmacy)| |
 | VISIT_DETAIL_START_DATE | SVCDATE | NULL | - |
 | VISIT_DETAIL_START_DATETIME | SVCDATE | - | Set time to 00:00:00. |
 | VISIT_DETAIL_END_DATE | SVCDATE | NULL | - |
 | VISIT_DETAIL_END_DATETIME | SVCDATE | - | Set time to 00:00:00. |
 | VISIT_DETAIL_TYPE_CONCEPT_ID | - | Set all to `32869` (Pharmacy claim) | - |
 | PROVIDER_ID | NULL | - |
-| CARE_SITE_ID | - | NULL | - |
-| VISIT_DETAIL_SOURCE_VALUE | - | Set all to 'Pharmacy' | - |
-| VISIT_DETAIL_SOURCE_CONCEPT_ID | - | Set all to 0| - |
-| ADMITTING_SOURCE_VALUE | - | NULL | - |
-| ADMITTING_SOURCE_CONCEPT_ID | - | 0 | - |
-| DISCHARGE_TO_SOURCE_VALUE | - | NULL | - |
-| DISCHARGE_TO_CONCEPT_ID | - | 0 | - |
-| PRECEDING_VISIT_DETAIL_ID | - | NULL | - |
-| VISIT_DETAIL_PARENT_ID | - | NULL | - |
-| VISIT_OCCURRENCE_ID | - | **VISIT_OCCURRENCE**.VISIT_OCCURRENCE_ID    This is the VISIT_OCCURRENCE_ID for the VISIT_OCCURRENCE record that is the parent for the VISIT_DETAIL record | - |
-
-## Reading from **LAB**
-
-![](images/l_visit_detail.png)
-
-| Destination Field | Source field | Logic | Comment field |
-| --- | --- | --- | --- |
-| VISIT_DETAIL_ID | - |  System generated. | - |
-| PERSON_ID | ENROLID | - | - |
-| VISIT_DETAIL_CONCEPT_ID | - | Set to `32036` (Laboratory Visit) for all records| |
-| VISIT_DETAIL_START_DATE | SVCDATE | NULL | - |
-| VISIT_DETAIL_START_DATETIME | SVCDATE | - | Set time to 00:00:00. |
-| VISIT_DETAIL_END_DATE | SVCDATE | NULL | - |
-| VISIT_DETAIL_END_DATETIME | SVCDATE | - | Set time to 00:00:00. |
-| VISIT_DETAIL_TYPE_CONCEPT_ID | - | All rows will have CONCEPT_ID `32856` (Lab) | - |
-| PROVIDER_ID | PROVID | Map PROVID PROVIDER_SOURCE_VALUE in **PROVIDER** table to extract Provider ID. | If there is no associated PROVIDER_ID this should be NULL, not 0 |
 | CARE_SITE_ID | - | NULL | - |
 | VISIT_DETAIL_SOURCE_VALUE | - | Set all to 'Pharmacy' | - |
 | VISIT_DETAIL_SOURCE_CONCEPT_ID | - | Set all to 0| - |

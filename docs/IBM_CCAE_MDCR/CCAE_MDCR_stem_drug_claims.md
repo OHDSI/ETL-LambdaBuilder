@@ -42,14 +42,14 @@ description: "DRUG_CLAIMS to STEM table description"
 | --- | --- | --- | --- |
 | DOMAIN_ID | - | This should be the domain_id of the standard concept in the CONCEPT_ID field. If a code is mapped to CONCEPT_ID 0, put the domain_id as Observation | - |
 | PERSON_ID | ENROLID | - | - |
-| VISIT_OCCURRENCE_ID | **VISIT_DETAIL**<br>VISIT_OCCURRENCE_ID | NULL | - |
-| VISIT_DETAIL_ID | **VISIT_DETAIL**<br>VISIT_DETAIL_ID | NULL | - |
-| PROVIDER_ID | **VISIT_DETAIL**<br>PROVIDER_ID | NULL | - |
+| VISIT_OCCURRENCE_ID | **VISIT_DETAIL**<br>VISIT_OCCURRENCE_ID | NULL | The mail order records will not have a VISIT_DETAIL to link back to. In that case set to NULL |
+| VISIT_DETAIL_ID | **VISIT_DETAIL**<br>VISIT_DETAIL_ID | NULL | The mail order records will not have a VISIT_DETAIL to link back to. In that case set to NULL |
+| PROVIDER_ID | **VISIT_DETAIL**<br>PROVIDER_ID<br><br>**DRUG_CLAIMS**<br>PROVID | NULL | The mail order records will not have a VISIT_DETAIL to link back to. In that case take PROVID from **DRUG_CLAIMS** and look up PROVIDER_ID from the PROVIDER table. |
 | ID | - | System generated. | - |
 | CONCEPT_ID | NDCNUM | Use the <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html">Source-to-Standard Query</a><BR />Use the filter:<BR />`WHERE SOURCE_VOCABULARY_ID IN ('NDC')`<br />`AND TARGET_STANDARD_CONCEPT = 'S'`<br />`AND TARGET_INVALID_REASON IS NULL`<br />`AND SVCDATE BETWEEN SOURCE_VALID_START_DATE AND SOURCE_VALID_END_DATE`<BR /><BR />NDCs are a date centric vocabulary, so we need to check that we are using the NDC from the right time. | - |
 | SOURCE_VALUE | NDCNUM | - | - |
 | SOURCE_CONCEPT_ID | NDCNUM | Use the <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html">Source-to-Source Query</a><BR />Use the filter:<BR />`WHERE SOURCE_VOCABULARY_ID IN ('NDC')`<br />`AND TARGET_VOCABULARY_ID IN ('NDC')`<br />`AND SVCDATE BETWEEN SOURCE_VALID_START_DATE AND SOURCE_VALID_END_DATE` | - |
-| TYPE_CONCEPT_ID | - | Set all to `32869` (Pharmacy claim) | - |
+| TYPE_CONCEPT_ID | RXMR | When RXMR = 2 then `32857` (Mail order record) else set to `32869` (Pharmacy claim) | - |
 | START_DATE | SVCDATE | - | - |
 | START_DATETIME | SVCDATE | SVCDATE + Midnight  | - |
 | END_DATE | SVCDATE<br>DAYSUPP | DRUG_EXPOSURE_END_DATE = SVCDATE + SUM(DAYSUPP) - 1 <br><br> If DAYSUPP is NULL set to DRUG_EXPOSURE_START_DATE | - |
