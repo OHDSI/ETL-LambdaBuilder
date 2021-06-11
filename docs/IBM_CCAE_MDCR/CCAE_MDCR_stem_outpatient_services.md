@@ -19,7 +19,7 @@ For every record in STEM there should be 1 row record in VISIT_DETAIL (n:1 join)
 * For every record in VISIT_DETAIL there may be 0 to n rows in STEM.
 
 ### Revenue Code Mappings
-Records will be written from the INPATIENT_SERVICES table mapping the field REVCODE to STEM.CONCEPT_ID. Please see the table below for how this logic will be handled.
+Records will be written from the OUTPATIENT_SERVICES table mapping the field REVCODE to STEM.CONCEPT_ID. Please see the table below for how this logic will be handled.
 
 **NOTE** the revenue codes are mapped to concepts with the vocabulary_id “Revenue Code”. All these concepts have the domain of “Revenue Code” as well. Since there is no revenue table, all records coming from the REVCODE field should go to the OBSERVATION table.
 
@@ -51,7 +51,7 @@ Records will be written from the INPATIENT_SERVICES table mapping the field REVC
 | MODIFIER_CONCEPT_ID | PROCMOD | Use the <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html">Source-to-Standard Query</a>.<br><br>`WHERE SOURCE_CONCEPT_CLASS_ID IN ('CPT4 Modifier')`<br/> `AND TARGET_CONCEPT_CLASS_ID IN ('CPT4 Modifier')` | If PROCMOD is blank then leave this field blank as well |
 | MODIFIER_SOURCE_VALUE | PROCMOD | - | - |
 | OPERATOR_CONCEPT_ID | - | 0 | - |
-| QUANTITY | - | NULL | - |
+| QUANTITY | QTY | NULL | - |
 | RANGE_HIGH | - | NULL | - |
 | RANGE_LOW | - | NULL | - |
 | REFILLS | - | NULL | - |
@@ -80,6 +80,9 @@ Records will be written from the INPATIENT_SERVICES table mapping the field REVC
 | QUALIFIER_SOURCE_VALUE | - | NULL | - |
 
 ## Change Log
+
+### June 11, 2021
+* Added QTY to table
 
 ### June 9, 2021
 * Update type concept

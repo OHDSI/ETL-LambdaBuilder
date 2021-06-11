@@ -18,7 +18,6 @@ Enrollment entries are consolidated by combining records that indicate continuou
 * Only records where the person has prescription benefits (DRUGCOVG =1) or eligible for both Medicaid and Medicare coverage (MEDICARE =1) are used.
 * The gap between observation periods needs to be 32 days or less (<=32).
 * Remove duplicate records before assigning OBSERVATION_PERIOD_ID.  
-* When a person has a death recorded then we truncate the OBSERVATION_PERIOD_END_DATE to reflect the corresponding DEATH_DATE from the **DEATH** table.   
 
 
 ### Reading from **ENROLLMENT_DETAIL**
@@ -32,4 +31,10 @@ Enrollment entries are consolidated by combining records that indicate continuou
 | OBSERVATION_PERIOD_START_DATE | DTSTART | Minimum start date of a contiguous enrollment period. | - |
 | OBSERVATION_PERIOD_END_DATE | DTEND | Maximum end date of a contiguous enrollment period. |  |
 | PERIOD_TYPE_CONCEPT_ID | - | - | `44814722` - Period while enrolled in insurance |
+
+## Change Log
+
+### June 11, 2021
+* Removed the logic: When a person has a death recorded then we truncate the OBSERVATION_PERIOD_END_DATE to reflect the corresponding DEATH_DATE from the **DEATH** table.   
+  * We want to keep records that occur after death
 
