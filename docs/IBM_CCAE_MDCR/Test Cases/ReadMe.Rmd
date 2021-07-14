@@ -2,12 +2,12 @@
 output:
   html_document: default
 ---
-# Truven Unit Tests
+# IBM Unit Tests
 ***
 
 Release date: April 27, 2017
 
-This package is intended to test the conversion of the Truven Marketscan® Commercial Claims and Encounters (CCAE), Medicare (MDCR), and Medicaid (MDCD) databases to the OMOP Common Data Model version 5.0.1 according to the ETL document available [here](https://github.com/OHDSI/ETL-CDMBuilder/tree/master/man/TRUVEN_CCAE_MDCR).
+This package is intended to test the conversion of the IBM Marketscan® Commercial Claims and Encounters (CCAE), Medicare (MDCR), and Medicaid (MDCD) databases to the OMOP Common Data Model version 5.3 according to the ETL document available [here](https://ohdsi.github.io/ETL-LambdaBuilder/docs/Optum_Clinformatics).
 
 ## Steps for how to correctly use this R project
 
@@ -26,9 +26,9 @@ main.R
 which will source the necessary functions and test framework based on database you are testing. In order to make sure the correct test framework is loaded you should set the **truvenType** variable to either CCAE, MDCR or MDCD. For example, if you are testing CCAE it would look like this:
 
 ```{r, eval=FALSE}
-Sys.setenv(truvenType = "CCAE");
-#Sys.setenv(truvenType = "MDCR");
-#Sys.setenv(truvenType = "MDCD");
+truvenType <- "CCAE"
+# truvenType <- "MDCR"
+# truvenType <- "MDCD";
 ```
 
 After sourcing **main.R** and setting the **truvenType** variable, run the code 

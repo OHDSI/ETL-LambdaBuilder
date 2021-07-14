@@ -1,3 +1,4 @@
+#' @export
 createDrugExposureTests <- function () {
   
   patient <- createPatient()
@@ -27,14 +28,14 @@ createDrugExposureTests <- function () {
   declareTest(id = patient$person_id, "CPT4 drug code in inpatient record moves to drug_exposure. Id is PERSON_ID.")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_inpatient_services(enrolid = patient$enrolid, proc1 = '90376', svcdate = '2012-08-09', tsvcdat = '2012-08-12', caseid = encounter$caseid, year = '2012')
-  expect_drug_exposure(person_id = patient$person_id, drug_concept_id = '2213404', drug_exposure_start_date = '2012-08-09')
+  expect_drug_exposure(person_id = patient$person_id, drug_concept_id = '46233994', drug_exposure_start_date = '2012-08-09')
   
   patient <- createPatient()
   encounter <- createEncounter()
   declareTest(id = patient$person_id, "Days supply is NULL but DRUG_EXPOSURE_END_DATE is set to DRUG_EXPOSURE_START_DATE (HIX-1430). Id is PERSON_ID.")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_inpatient_services(enrolid = patient$enrolid, proc1 = '90376', svcdate = '2012-08-09', tsvcdat = '2012-08-12', caseid = encounter$caseid, year = '2012')
-  expect_drug_exposure(person_id = patient$person_id, drug_concept_id = '2213404', drug_exposure_start_date = '2012-08-09', drug_exposure_end_date = '2012-08-09')
+  expect_drug_exposure(person_id = patient$person_id, drug_concept_id = '46233994', drug_exposure_start_date = '2012-08-09', drug_exposure_end_date = '2012-08-09')
   
   patient <- createPatient()
   encounter <- createEncounter()

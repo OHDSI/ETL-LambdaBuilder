@@ -1,14 +1,7 @@
+#' @export
 createObservationTests <- function () {
   
-  patient <- createPatient()
-  encounter <- createEncounter()  
-  declareTest(id = patient$person_id, "Store Discharge Status. Id is PERSON_ID.")
-  add_enrollment_detail(enrolid=patient$enrolid, dtend = '2013-12-31', dtstart = '2012-01-01')
-  add_inpatient_services(enrolid = patient$enrolid, svcdate = '2012-07-23', tsvcdat = '2012-07-23', dx1='57411', dxver='9', dstatus = '51')
-  expect_observation(person_id = patient$person_id, observation_concept_id = '4202605', observation_source_value = '51')
-  
-  
-  if (Sys.getenv("truvenType") == "CCAE")
+  if (truvenType == "CCAE")
   {
     
   patient <- createPatient()

@@ -1,7 +1,8 @@
 # might not need this
+#' @export
 createPayerPlanPeriodTests <- function () {
 
-  if (Sys.getenv("truvenType") != "MDCD") {
+  if (truvenType != "MDCD") {
   
   patient<-createPatient()
   declareTest(id = patient$person_id, "Person does not have prescription benefits and is excluded. Id is PERSON_ID.")
@@ -10,7 +11,7 @@ createPayerPlanPeriodTests <- function () {
 
   }
   
-  if (Sys.getenv("truvenType") == "CCAE") {
+  if (truvenType == "CCAE") {
     patient<-createPatient()
     declareTest(id = patient$person_id, "Person has a gap of >32 days between enrollment periods with the same payer_source_value; person has two records. Id is PERSON_ID.")
     add_enrollment_detail(enrolid=patient$enrolid, dtstart="2013-01-01", dtend="2013-01-31", datatyp="1", plantyp="6")
@@ -35,7 +36,7 @@ createPayerPlanPeriodTests <- function () {
     patient<-createPatient()
     declareTest(id = patient$person_id, "Family source value derived from ENROLID. Id is PERSON_ID.")
     add_enrollment_detail(enrolid=patient$enrolid, dtstart="2012-04-01", dtend="2012-04-30", datatyp="2", plantyp="6")
-    expect_payer_plan_period(person_id=patient$person_id, payer_plan_period_start_date="2012-04-01", payer_plan_period_end_date="2012-04-30", payer_source_value="C Commercial PPO", family_source_value=SUBSTRING(RIGHT('00000000000' + CONVERT(VARCHAR,patient$enrolid), 11), 1,9))
+    expect_payer_plan_period(person_id=patient$person_id, payer_plan_period_start_date="2012-04-01", payer_plan_period_end_date="2012-04-30", payer_source_value="C Commercial PPO", family_source_value="SUBSTRING(RIGHT('00000000000' + CONVERT(VARCHAR,patient$enrolid), 11), 1,9)")
     
     patient<-createPatient()
     declareTest(id = patient$person_id, "Person does not have prescription benefits and is excluded. Id is PERSON_ID.")
@@ -44,7 +45,7 @@ createPayerPlanPeriodTests <- function () {
     
   }
   
-  if (Sys.getenv("truvenType") == "MDCR") {
+  if (truvenType == "MDCR") {
     patient<-createPatient()
     declareTest(id = patient$person_id, "Person has a gap of >32 days between enrollment periods with the same payer_source_value; person has two records. Id is PERSON_ID.")
     add_enrollment_detail(enrolid=patient$enrolid, dtstart="2013-01-01", dtend="2013-01-31", datatyp="1", plantyp="6")
@@ -66,7 +67,7 @@ createPayerPlanPeriodTests <- function () {
     expect_payer_plan_period(person_id=patient$person_id, payer_plan_period_start_date="2012-04-01", payer_plan_period_end_date="2012-04-30", payer_source_value="C Medicare PPO")  
   }
   
-  if (Sys.getenv("truvenType") == "MDCD") {
+  if (truvenType == "MDCD") {
     
     patient<-createPatient()
     declareTest(id = patient$person_id, "Person has a gap of >32 days between enrollment periods with the same payer_source_value; person has two records. Id is PERSON_ID.")

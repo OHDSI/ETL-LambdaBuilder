@@ -1,10 +1,11 @@
+#' @export
 createConditionEraTests <- function () {
 
   patient <- createPatient()
   encounter <- createEncounter()  
   declareTest(id = patient$person_id, "Patient condition_concept_id of 0, no condition_era record created. Id is PERSON_ID.")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
-  add_inpatient_services(enrolid=patient$enrolid, pdx = '71978', dx1 = '71978', dxver = '9', svcdate = '2012-04-21', tsvcdat = '2012-04-22')
+  add_inpatient_services(enrolid=patient$enrolid, pdx = '71978', dx1 = '71978', dxver = '0', svcdate = '2012-04-21', tsvcdat = '2012-04-22')
   expect_no_condition_era(person_id = patient$person_id)
 
   patient <- createPatient()

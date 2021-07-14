@@ -1,29 +1,38 @@
+#' @export
 createConditionOccurrenceTests <- function () {
 
+  #6/24/2021 We haven't yet made the condition_status/type switch so the commented out test cases will be implemented at that point
+  
   patient <- createPatient()
   encounter <- createEncounter()
   declareTest(id = patient$person_id, "Patient has two different primary diagnoses between inpatient_services and inpatient_admissions, two records created with condition_status of primary. Id is PERSON_ID")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_inpatient_services(enrolid = patient$enrolid, pdx = '2500', svcdate = '2012-08-09', tsvcdat = '2012-08-12', dxver = '9', caseid = encounter$caseid, year = '2012')
   add_inpatient_admissions(enrolid=patient$enrolid, pdx = '0092', caseid = encounter$caseid, dxver = '9', year = '2012')
-  expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '4008576', condition_status_concept_id = '32902', condition_type_concept_id = '32854')
-  expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '198337', condition_status_concept_id = '32902', condition_type_concept_id = '32855' )
-    
+  #expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '4008576', condition_status_concept_id = '32902', condition_type_concept_id = '32854')
+  #expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '198337', condition_status_concept_id = '32902', condition_type_concept_id = '32855' )
+  expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '4008576', condition_type_concept_id = '38000183')
+  expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '198337', condition_type_concept_id = '38000199' )
+  
   patient <- createPatient()
   encounter <- createEncounter()
   declareTest(id = patient$person_id, "Patient has the same diagnosis code in outpatient_services and facility_header. Id is PERSON_ID")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_outpatient_services(enrolid=patient$enrolid, svcdate = '2012-10-16', tsvcdat = '2012-10-16', dx1 = '1024', fachdid = encounter$caseid, dxver = '9')
   add_facility_header(enrolid=patient$enrolid, svcdate = '2012-10-16', tsvcdat = '2012-10-16', dx9 = '1024', fachdid = encounter$caseid, dxver='9')
-  expect_condition_occurrence(person_id = patient$person_id, condition_concept_id='433706', condition_status_concept_id = '32902', condition_type_concept_id = '32860')
-  expect_condition_occurrence(person_id = patient$person_id, condition_concept_id='433706', condition_status_concept_id = '32902', condition_type_concept_id = '32846')
+  #expect_condition_occurrence(person_id = patient$person_id, condition_concept_id='433706', condition_status_concept_id = '32902', condition_type_concept_id = '32860')
+  #expect_condition_occurrence(person_id = patient$person_id, condition_concept_id='433706', condition_status_concept_id = '32902', condition_type_concept_id = '32846')
+  expect_condition_occurrence(person_id = patient$person_id, condition_concept_id='433706', condition_type_concept_id = '38000215')
+  expect_condition_occurrence(person_id = patient$person_id, condition_concept_id='433706', condition_type_concept_id = '38000238')
+  
   
   patient <- createPatient()
   encounter <- createEncounter()
   declareTest(id = patient$person_id, "Patient has diagnosis in dx4 field in inpatient_services. Id is PERSON_ID")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_inpatient_services(enrolid = patient$enrolid, svcdate = '2012-07-23', tsvcdat = '2012-07-23', dx4='57411', dxver='9')
-  expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '195587', condition_status_concept_id = '32908', condition_type_concept_id = '32854')
+  #expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '195587', condition_status_concept_id = '32908', condition_type_concept_id = '32854')
+  expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '195587', condition_type_concept_id = '38000187')
   
   patient <- createPatient()
   encounter <- createEncounter()
@@ -31,51 +40,63 @@ createConditionOccurrenceTests <- function () {
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_inpatient_services(enrolid=patient$enrolid, fachdid = encounter$caseid, admdate = '2012-07-23',  svcdate = '2012-07-23', tsvcdat = '2012-07-23', year = '2012')
   add_facility_header(enrolid=patient$enrolid, fachdid = encounter$caseid, svcdate = '2012-07-23', tsvcdat = '2012-07-23', dx9 = '4760', dxver = '9', year = '2012')
-  expect_condition_occurrence(person_id=patient$person_id, condition_concept_id = '24970', condition_status_concept_id = '32908', condition_type_concept_id = '32846')
+  #expect_condition_occurrence(person_id=patient$person_id, condition_concept_id = '24970', condition_status_concept_id = '32908', condition_type_concept_id = '32846')
+  expect_condition_occurrence(person_id=patient$person_id, condition_concept_id = '24970', condition_type_concept_id = '38000208')
   
   patient <- createPatient()
   encounter <- createEncounter()
-  declareTest(id = patient$person_id, "Patient has revcode 0450 and diagnosis codes in the pdx and dx1 fields, ER record created. Id is PERSON_ID")
+  declareTest(id = patient$person_id, "Patient has stdplac = 23 and diagnosis codes in the pdx and dx1 fields, ER record created. Id is PERSON_ID")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
-  add_inpatient_services(enrolid = patient$enrolid, svcdate = '2012-04-14', tsvcdat = '2012-04-14', dx1='57411', pdx='4760', revcode = '0450', dxver = '9')
+  add_inpatient_services(enrolid = patient$enrolid, svcdate = '2012-04-14', tsvcdat = '2012-04-14', dx1='57411', pdx='4760', revcode = '0450', dxver = '9', stdplac = '23')
   expect_visit_occurrence(person_id = patient$person_id, visit_concept_id = '9203')
-  expect_condition_occurrence(person_id=patient$person_id, condition_concept_id = '195587', condition_status_concept_id = '32902', condition_type_concept_id = '32854')
-  expect_condition_occurrence(person_id=patient$person_id, condition_concept_id = '24970', condition_status_concept_id = '32902', condition_type_concept_id = '32854')
+  # expect_condition_occurrence(person_id=patient$person_id, condition_concept_id = '195587', condition_status_concept_id = '32902', condition_type_concept_id = '32854')
+  # expect_condition_occurrence(person_id=patient$person_id, condition_concept_id = '24970', condition_status_concept_id = '32902', condition_type_concept_id = '32854')
+  expect_condition_occurrence(person_id=patient$person_id, condition_concept_id = '195587', condition_type_concept_id = '38000184')
+  expect_condition_occurrence(person_id=patient$person_id, condition_concept_id = '24970', condition_type_concept_id = '38000183')
   
   patient <- createPatient()
   encounter <- createEncounter()
   declareTest(id = patient$person_id, "Patient has diagnosis in a dx field that has domain=procedure, condition record moved to procedure_occurrence. Id is PERSON_ID")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_inpatient_services(enrolid=patient$enrolid, svcdate = '2012-10-15', tsvcdat = '2012-10-17', pdx = 'V5302', dxver='9')
-  expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '4047347', procedure_type_concept_id = '32854')
+  # expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '4047347', procedure_type_concept_id = '32854')
+  # expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '46272569', procedure_type_concept_id = '32854')
+  expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '4047347', procedure_type_concept_id = '38000183')
+  expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '46272569', procedure_type_concept_id = '38000183')
+  
   
   patient <- createPatient()
   encounter <- createEncounter()
   declareTest(id = patient$person_id, "Patient has diagnosis in a dx field that has domain=observation, condition record moved to observation. Id is PERSON_ID")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_inpatient_services(enrolid=patient$enrolid, pdx = 'E0152', svcdate = '2012-02-04', tsvcdat = '2012-02-08', dxver = '9')
-  expect_observation(person_id = patient$person_id, observation_concept_id = '4117957', observation_type_concept_id = '32854')
+  # expect_observation(person_id = patient$person_id, observation_concept_id = '4117957', observation_type_concept_id = '32854')
+  expect_observation(person_id = patient$person_id, observation_concept_id = '4117957', observation_type_concept_id = '38000183')
   
   patient <- createPatient()
   encounter <- createEncounter()
   declareTest(id = patient$person_id, "Patient has diagnosis in a dx field that has domain=measurement, condition record moved to measurement. Id is PERSON_ID")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_inpatient_services(enrolid=patient$enrolid, svcdate = '2012-08-21', tsvcdat = '2012-08-25', pdx = 'V726', dxver='9')
-  expect_measurement(person_id = patient$enrolid, measurement_concept_id = '4034850', measurement_type_concept_id = '32854')
+  # expect_measurement(person_id = patient$enrolid, measurement_concept_id = '4034850', measurement_type_concept_id = '32854')
+  expect_measurement(person_id = patient$enrolid, measurement_concept_id = '4034850', measurement_type_concept_id = '38000183')
   
   patient <- createPatient()
   encounter <- createEncounter()
   declareTest(id = patient$person_id, "Patient has icd10 diagnosis in a dx field with dxver=0, condition record created with icd10 mapped to snomed. Id is PERSON_ID")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_inpatient_services(enrolid=patient$enrolid, svcdate = '2012-08-09', tsvcdat = '2012-08-12', dx1='S42241S', dxver='0')
-  expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '438021', condition_status_concept_id = '32902', condition_type_concept_id = '32854')
+  # expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '438021', condition_status_concept_id = '32902', condition_type_concept_id = '32854')
+  expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '438021', condition_type_concept_id = '38000184')
   
   patient <- createPatient()
   encounter <- createEncounter()
   declareTest(id = patient$person_id, "patient has icd10cm diagnosis in a dx field that overlaps with an icd10 diagnosis, observation record created with icd10cm mapped to snomed. Id is PERSON_ID")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_inpatient_services(enrolid=patient$enrolid, svcdate = '2012-08-09', tsvcdat = '2012-08-12', dx1='V9001', dxver='0')
-  expect_observation(person_id = patient$person_id, observation_concept_id = '4155106', observation_type_concept_id = '32854')
+  # expect_observation(person_id = patient$person_id, observation_concept_id = '4155106', observation_type_concept_id = '32854')
+  # expect_no_condition_occurrence(person_id = patient$person_id, condition_concept_id = '46270117')
+  expect_observation(person_id = patient$person_id, observation_concept_id = '4155106', observation_type_concept_id = '38000184')
   expect_no_condition_occurrence(person_id = patient$person_id, condition_concept_id = '46270117')
   
   patient <- createPatient()
@@ -83,15 +104,17 @@ createConditionOccurrenceTests <- function () {
   declareTest(id = patient$person_id, "Patient has icd10 diagnosis after 10/1/2015 in a dx field with dxver=null, condition record created with icd10 mapped to snomed. Id is PERSON_ID")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2015-12-31', dtstart = '2015-01-01')
   add_inpatient_services(enrolid=patient$enrolid, admdate= '2015-11-09', svcdate = '2015-11-09', tsvcdat = '2015-11-12', dx1='S42241S', dxver='')
-  expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '438021', condition_source_concept_id = '45602528', condition_status_concept_id = '32902', condition_type_concept_id = '32854')
+  # expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '438021', condition_source_concept_id = '45602528', condition_status_concept_id = '32902', condition_type_concept_id = '32854')
+  expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '438021', condition_source_concept_id = '45602528', condition_type_concept_id = '38000184')
   
   patient <- createPatient()
   encounter <- createEncounter()
   declareTest(id = patient$person_id, "Patient has icd9 diagnosis before 10/1/2015 in a dx field with dxver=null, used ICD9. Id is PERSON_ID")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_inpatient_services(enrolid=patient$enrolid, admdate = '2012-08-09', svcdate = '2012-08-09', tsvcdat = '2012-08-12', dx1='V9001', dxver='')
-  expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '46270117', condition_source_concept_id = '44821630', condition_status_concept_id = '32902', condition_type_concept_id = '32854' )
- 
+  # expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '46270117', condition_source_concept_id = '44821630', condition_status_concept_id = '32902', condition_type_concept_id = '32854' )
+  expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '46270117', condition_source_concept_id = '44821630', condition_type_concept_id = '38000184' )
+  
   #This will test HIX-1274
   patient <- createPatient()
   encounter <- createEncounter()
@@ -99,10 +122,12 @@ createConditionOccurrenceTests <- function () {
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_inpatient_services(enrolid = patient$enrolid, svcdate = '2012-07-01', tsvcdat = '2012-07-01', dx4='57411', dxver='9')
   add_inpatient_services(enrolid = patient$enrolid, svcdate = '2012-08-02', tsvcdat = '2012-08-02', dx4='57411', dxver='9')
-  expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '195587', condition_status_concept_id = '32908', condition_start_date = '2012-07-01', condition_type_concept_id = '32854')
-  expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '195587', condition_status_concept_id = '32908', condition_start_date = '2012-08-02', condition_type_concept_id = '32854')
+  # expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '195587', condition_status_concept_id = '32908', condition_start_date = '2012-07-01', condition_type_concept_id = '32854')
+  # expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '195587', condition_status_concept_id = '32908', condition_start_date = '2012-08-02', condition_type_concept_id = '32854')
+  expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '195587', condition_start_date = '2012-07-01', condition_type_concept_id = '38000187')
+  expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '195587', condition_start_date = '2012-08-02', condition_type_concept_id = '38000187')
   
-  if (Sys.getenv("truvenType") == "MDCD")
+  if (truvenType == "MDCD")
   {
     patient <- createPatient()
     encounter <- createEncounter()
@@ -112,21 +137,21 @@ createConditionOccurrenceTests <- function () {
     expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '4053838', condition_type_concept_id = '38000215')
   }
   
-  if (Sys.getenv("truvenType") == "CCAE")
+  if (truvenType == "CCAE")
   {
     patient <- createPatient()
     encounter <- createEncounter()
     declareTest(id = patient$person_id, "HRA mapped to condition/drug the END_DATE is NULL. Id is PERSON_ID")
     add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
     add_health_risk_assessment(enrolid = patient$enrolid, survdate = '2012-03-12', cc_backpain = "1")
-    expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '134736', condition_status_concept_id = 0, condition_start_date = '2012-03-12', condition_end_date = NULL, condition_type_concept_id = '32850')
+    expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '134736', condition_status_concept_id = 0, condition_start_date = '2012-03-12', condition_end_date = NULL)#, condition_type_concept_id = '32850')
     
     patient <- createPatient()
     encounter <- createEncounter()  
     declareTest(id = patient$person_id, "Patient has 1 in CC_ASTHMA column, condition_source_value=Self-reported Asthma. Id is PERSON_ID")
     add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
     add_health_risk_assessment(enrolid = patient$enrolid, survdate = '2012-09-13', cc_asthma = '1')
-    expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '317009', condition_source_value = 'CC_ASTHMA', condition_status_concept_id = 0, condition_start_date = '2012-09-13', condition_type_concept_id = '32850')
+    expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '317009', condition_source_value = 'CC_ASTHMA', condition_status_concept_id = 0, condition_start_date = '2012-09-13')#, condition_type_concept_id = '32850')
     
   }
 }

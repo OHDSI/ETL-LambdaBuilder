@@ -1,6 +1,7 @@
+#' @export
 createLocationTests <- function () {
 
-if (Sys.getenv("truvenType") != "MDCD")  {
+if (truvenType != "MDCD")  {
   
   patient<-createPatient()
   declareTest(id = patient$person_id, "Location record generated for egeoloc 11. Id is PERSON_ID")

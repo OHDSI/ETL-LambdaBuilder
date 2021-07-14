@@ -1,3 +1,4 @@
+#' @export
 createDeathTests <- function () {
   
   set_defaults_enrollment_detail(mhsacovg = '0')

@@ -1,3 +1,4 @@
+#' @export
 createCostTests <- function () {
   
   #This will test HIX-1319

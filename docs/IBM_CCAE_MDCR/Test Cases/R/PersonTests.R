@@ -1,15 +1,16 @@
+#' @export
 createPersonTests <- function () {
 
   patient<-createPatient();
   declareTest(id = patient$person_id, "Person with two genders is excluded. Id is PERSON_ID.")
-  add_enrollment_detail(enrolid=patient$enrolid, sex="1");
-  add_enrollment_detail(enrolid=patient$enrolid, sex="2");
+  add_enrollment_detail(enrolid=patient$enrolid, sex="1", dtend="2012-01-31", dtstart="2012-01-01");
+  add_enrollment_detail(enrolid=patient$enrolid, sex="2", dtend="2012-02-28", dtstart="2012-02-01");
   expect_no_person(person_id = patient$person_id);
 
   patient<-createPatient()
   declareTest(id = patient$person_id, "Person with two birth years >2 yrs apart is excluded. Note person is <90 years old for MDCD test. Id is PERSON_ID.") 
-  add_enrollment_detail(enrolid=patient$enrolid, dobyr="1970")
-  add_enrollment_detail(enrolid=patient$enrolid, dobyr="1980")
+  add_enrollment_detail(enrolid=patient$enrolid, dobyr="1970", dtend="2012-01-31", dtstart="2012-01-01")
+  add_enrollment_detail(enrolid=patient$enrolid, dobyr="1980", dtend="2012-02-28", dtstart="2012-02-01")
   expect_no_person(person_id = patient$person_id)
 
   patient<-createPatient()
@@ -66,7 +67,7 @@ createPersonTests <- function () {
   add_enrollment_detail(enrolid=patient$enrolid, dtend="2012-04-30", dtstart="2012-04-01", dobyr="2012")
   expect_person(person_id=patient$person_id, year_of_birth="2012", month_of_birth="4", day_of_birth="1")
   
-  if (Sys.getenv("truvenType") != "MDCD")
+  if (truvenType != "MDCD")
   {
     patient<-createPatient()
     declareTest(id = patient$person_id, "Person with Rx benefits is kept. Id is PERSON_ID.")
@@ -85,12 +86,12 @@ createPersonTests <- function () {
     expect_person(person_id=patient$person_id)
   }
   
-  if (Sys.getenv("truvenType") == "MDCD")
+  if (truvenType == "MDCD")
   {
     patient<-createPatient()
     declareTest(id = patient$person_id, "Person with two birth years >2 yrs apart is included because max(DOBYR) > 90. Id is PERSON_ID.") 
-    add_enrollment_detail(enrolid=patient$enrolid, dobyr="1915")
-    add_enrollment_detail(enrolid=patient$enrolid, dobyr="1920")
+    add_enrollment_detail(enrolid=patient$enrolid, dobyr="1915", dtend="2020-01-31", dtstart="2020-01-01")
+    add_enrollment_detail(enrolid=patient$enrolid, dobyr="1920", dtend="2020-02-28", dtstart="2020-02-01")
     expect_person(person_id = patient$person_id)
     expect_count_person(person_id = patient$person_id, rowCount=1)
     
