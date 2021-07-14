@@ -52,7 +52,7 @@ Records will be written from the INPATIENT_SERVICES table mapping the field REVC
 | MODIFIER_CONCEPT_ID | PROCMOD | Use the <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html">Source-to-Standard Query</a>.<br><br>`WHERE SOURCE_CONCEPT_CLASS_ID IN ('CPT4 Modifier')`<br/> `AND TARGET_CONCEPT_CLASS_ID IN ('CPT4 Modifier')` | If PROCMOD is blank then leave this field blank as well |
 | MODIFIER_SOURCE_VALUE | PROCMOD | - | - |
 | OPERATOR_CONCEPT_ID | - | 0 | - |
-| QUANTITY | - | NULL | - |
+| QUANTITY | QTY | NULL | - |
 | RANGE_HIGH | - | NULL | - |
 | RANGE_LOW | - | NULL | - |
 | REFILLS | - | NULL | - |
@@ -81,6 +81,9 @@ Records will be written from the INPATIENT_SERVICES table mapping the field REVC
 | QUALIFIER_SOURCE_VALUE | - | NULL | - |
 
 ## Change Log
+
+### June 11, 2021
+* Added QTY to the table
 
 ### June 9, 2021
 * Update type concept

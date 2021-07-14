@@ -16,7 +16,7 @@ The STEM table is a staging area where source codes like ICD9 codes will first b
 * Labs records are not considered visits so therefore all VISIT_DETAIL_ID and VISIT_OCCURRENCE_ID fields are NULL.
 
 * Lab result in **LAB** is stored in three fields: ABNORMAL, RESULT (numeric) and RESLTCAT (character). Numeric results can be in both RESULT and RESLTCAT. RESULT usually has the following values if the lab result is string: 0 or large negative value (<-999999.99999).  ABNORMAL is the abnormal indicator set by the lab vendors: ‘A’ means “abnormal”, ‘N’ means “normal”, ‘H’ means “Above the normal range”, ‘L’ means “Below the normal range”, ‘+’ means “Positive” and ‘-’ means “Negative”.  
-* Use the following to set VALUE_AS_STRING and VALUE_AS_CONCEPT_ID:<br>
+* Use the following to set VALUE_SOURCE_VALUE and VALUE_AS_CONCEPT_ID:<br>
 ```sql
 /*Result as string*/
 VALUE_AS_STRING = CATS(RESLTCAT);
@@ -43,7 +43,7 @@ ELSE IF UPCASE(VALUE_AS_STRING) ='NON'
     THEN VALUE_AS_CONCEPT_ID =9190;
 ELSE IF UPCASE(VALUE_AS_STRING) ='TRA' 
     THEN VALUE_AS_CONCEPT_ID = 9192;
-IF RESULT NE 0 AND RESULT > -999999.99999 THEN DO;
+IF RESULT > -999999.99999 THEN DO;
 /*Result as number*/
     VALUE_AS_NUMBER = RESULT;END;
 ```
@@ -87,10 +87,10 @@ IF RESULT NE 0 AND RESULT > -999999.99999 THEN DO;
 | UNIQUE_DEVICE_ID | - | NULL | - |
 | UNIT_CONCEPT_ID | RESUNIT | Use the <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html">Source-to-Standard Query</a>.<br><br> Filters:<br>`WHERE SOURCE_VOCABULARY_ID IN ('UCUM')`<br>  `AND TARGET_VOCABULARY_ID IN ('UCUM')`<br>`AND TARGET_INVALID_REASON IS NULL`<br><br>If you do not get a map from UCUM use the JNJ_UNIT vocabulary. | - |
 | UNIT_SOURCE_VALUE | RESUNIT | RESUNIT as it appears in the **LAB** table | - |
-| VALUE_AS_CONCEPT_ID | RESLTCAT | Refer to logic above for defining this field. | - |
-| VALUE_AS_NUMBER | RESULT<br>RESLTCAT | Refer to logic above for defining this field. <br><br>For the following LOINCs (3142-7, 29463-7, 3141-9) if the RESULT > 100000 and the last digits are 0000 and RESUNIT = ‘LBS’, trim the last for digits 0000. | - |
+| VALUE_AS_CONCEPT_ID | RESLTCAT <br> ABNORMAL | Refer to logic above for defining this field. | - |
+| VALUE_AS_NUMBER | RESULT | Put any numerical values in the RESULT field here. All values in the RESULT field as they show up in the native will be present in VALUE_SOURCE_VALUE field of the CDM.<br><br>For the following LOINCs (3142-7, 29463-7, 3141-9) if the RESULT > 100000 and the last digits are 0000 and RESUNIT = ‘LBS’, trim the last four digits 0000. | - |
 | VALUE_AS_STRING | RESULT<br>RESLTCAT | Refer to logic above for defining this field. | - |
-| VALUE_SOURCE_VALUE | RESLTCAT | RESLTCAT as it appears in the **LAB** table. | - |
+| VALUE_SOURCE_VALUE | RESULT_RESLTCAT | If RESLTCAT is not NULL then concatenate RESULT and RESLTCAT with '_' between. If RESLTCAT is NULL then just put the value from RESULT as it appears in the **LAB** table. | - |
 | ANATOMIC_SITE_CONCEPT_ID | - | 0 | - |
 | DISEASE_STATUS_CONCEPT_ID | - | 0 | - |
 | SPECIMIN_SOURCE_ID | - | NULL | - |
@@ -106,6 +106,11 @@ IF RESULT NE 0 AND RESULT > -999999.99999 THEN DO;
 
 ## Change Log
 
+### July 13, 2021
+* Changed logic referring to how lab result source values should be represented in the CDM:
+  * Removed decision to not show a RESULT of 0 in VALUE_AS_NUMBER. This was originally embedded in the sql statement showing how to assign VALUE_AS_CONCEPT_ID. The final line was `IF RESULT NE to 0 or RESULT > -999999.99999 THEN DO; VALUE_AS_NUMBER = RESULT;END;`. Instead, it now reads `IF RESULT > -999999.99999 THEN DO; VALUE_AS_NUMBER = RESULT;END;`
+  * Introduced concatenation in **VALUE_SOURCE_VALUE**. The instructions now read: If RESLTCAT is not NULL then concatenate RESULT and RESLTCAT with '_' between. If RESLTCAT is NULL then just put the value from RESULT as it appears in the **LAB** table.
+ 
 ### June 10, 2021
 * Labs will not create visits on their own so that logic was removed.
 
