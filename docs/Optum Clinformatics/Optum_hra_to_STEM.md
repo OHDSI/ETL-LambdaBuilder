@@ -85,7 +85,7 @@ ISA9063|Observation|46235936|44786634|NULL|ISA5010|0|NULL|(9063) Have you made a
 | range_low |  ||| 
 | value_as_number | See the above table. If VALUE_AS_NUMBER is the name of the column, then the the column will have a numeric value that should be put here. |||
 | value_as_string | |||
-| value_as_concept_id | Map the values in VALUE_SOURCE_VALUE | Use the SOURCE_TO_STANDARD query with the filter<br/><br/>**LOINC_CD**<br> WHERE SOURCE_VOCABULARY_ID IN ('LOINC') AND TARGET_STANDARD_CONCEPT ='S' AND TARGET_INVALID_REASON IS NULL||
+| value_as_concept_id | Map the values in VALUE_SOURCE_VALUE | Use the SOURCE_TO_STANDARD query with the filter<br/><br/>**LOINC_CD**<br> WHERE SOURCE_VOCABULARY_ID IN ('LOINC') AND TARGET_STANDARD_CONCEPT ='S' AND TARGET_INVALID_REASON IS NULL, mapping to SOURCE_CODE_DESCRIPTION instead of SOURCE_CODE||
 | value_source_value | See the above table. If VALUE_AS_STRING is listed as the name of the column then put the value found in that column here. Otherwise, write out the definitions of the values as given.  |||
 | end_datetime | |||
 | verbatim_end_date |  |||

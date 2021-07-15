@@ -72,7 +72,7 @@ The STEM table is a staging area where source codes like ICD9 codes will first b
 | range_low | **LAB_RESULTS** LOW_NRML ||| 
 | value_as_number | **LAB_RESULTS** RSLT_NBR |||
 | value_as_string | |||
-| value_as_concept_id | **LAB_RESULTS** RSLT_TXT | Use the SOURCE_TO_STANDARD query with the filter<br/><br/>**LOINC_CD**<br> WHERE SOURCE_VOCABULARY_ID IN ('LOINC') AND TARGET_STANDARD_CONCEPT ='S' AND TARGET_INVALID_REASON IS NULL||
+| value_as_concept_id | **LAB_RESULTS** RSLT_TXT | Use the SOURCE_TO_STANDARD query with the filter<br/><br/>**LOINC_CD**<br> WHERE SOURCE_VOCABULARY_ID IN ('LOINC') AND TARGET_STANDARD_CONCEPT ='S' AND TARGET_INVALID_REASON IS NULL, mapping to SOURCE_CODE_DESCRIPTION instead of SOURCE_CODE||
 | value_source_value | **LAB_RESULTS** RSLT_TXT |||
 | end_datetime | |||
 | verbatim_end_date |  |||
