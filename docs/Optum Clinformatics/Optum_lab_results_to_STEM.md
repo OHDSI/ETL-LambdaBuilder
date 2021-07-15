@@ -26,6 +26,24 @@ The STEM table is a staging area where source codes like ICD9 codes will first b
         - labclmid = clmid
     - This will assign each lab result at least one **VISIT_DETAIL** VISIT_DETAIL_ID based on the lookup created during VISIT_DETAIL creation. If more than one is assigned, choose one.  
         - Some records in **LAB_RESULTS** do not have a labclmid. If this is the case **PROCEDURE_OCCURRENCE** VISIT_DETAIL_ID and VISIT_OCCURRENCE_ID should be left blank.
+- RSLT_NBR will go to VALUE_AS_NUMBER and RSLT_TXT will go to the VALUE_SOURCE_VALUE field. 
+  - VALUE_SOURCE_VALUE should then be mapped to a concept by looking up the result value in the LOINC vocabulary
+  - The RSLT_TXT field tends to have operators (<, >, =, ≤, >=) included in the first 2 characters of the string. Use the following logic to assign the OPERATOR_CONCEPT_ID in such cases:
+    ```sql
+    case substring(rslt_txt, 0, 2)
+
+    when '<' then operator_concept_id = 4172704
+
+    when '>' then operator_concept_id = 4171756
+
+    when '=' then operator_concept_id = 4172703
+
+    when '>=' then operator_concept_id = 4171755
+
+    when '<=' then operator_concept_id = 4171754
+
+    end
+    ```
 
 - START_DATE is assigned to VISIT_DETAIL_START_DATE 
 - The VISIT_DETAIL.VISIT_OCCURRENCE_ID and VISIT_DETAIL.VISIT_DETAIL_ID are FK in STEM table.
@@ -45,7 +63,7 @@ The STEM table is a staging area where source codes like ICD9 codes will first b
 | source_value |LOINC_CD, PROC_CD|||
 | source_concept_id |LOINC_CD, PROC_CD|Use the SOURCE_TO_SOURCE query with the filter<br/><br/>**LOINC_CD**<br> WHERE SOURCE_VOCABULARY_ID IN ('LOINC') <br/><br/>**PROC_CD**<br> WHERE SOURCE_VOCABULARY_ID IN ('HCPCS','CPT4') |Put the SOURCE_CONCEPT_ID of the either the LOINC_CD or PROC_CD that was used to map the standard concept_id.|
 | type_concept_id |Set to 44818702 (Lab Result)|||  
-| operator_concept_id | |||
+| operator_concept_id | See the above logic to assign this value based on the first to characters of the RSLT_TXT field. |||
 | unit_concept_id | **LAB_RESULTS** RSLT_UNIT_NM |Use the SOURCE_TO_STANDARD query with the filter <br><br>Where SOURCE_VOCABULARY_ID = 'UCUM' AND TARGET_STANDARD_CONCEPT = 'S' AND TARGET_INVALID_REASON IS NULL|If there is no mapping to a standard concept then set to 0||
 | unit_source_value |**LAB_RESULTS** RSLT_UNIT_NM |||
 | start_date | **VISIT_DETAIL** VISIT_DETAIL_START_DATE||| 
@@ -53,9 +71,9 @@ The STEM table is a staging area where source codes like ICD9 codes will first b
 | range_high |**LAB_RESULTS** HI_NRML ||| 
 | range_low | **LAB_RESULTS** LOW_NRML ||| 
 | value_as_number | **LAB_RESULTS** RSLT_NBR |||
-| value_as_string | **LAB_RESULTS** RSLT_TXT |||
-| value_as_concept_id | |||
-| value_source_value | |||
+| value_as_string | |||
+| value_as_concept_id | **LAB_RESULTS** RSLT_TXT | Use the SOURCE_TO_STANDARD query with the filter<br/><br/>**LOINC_CD**<br> WHERE SOURCE_VOCABULARY_ID IN ('LOINC') AND TARGET_STANDARD_CONCEPT ='S' AND TARGET_INVALID_REASON IS NULL||
+| value_source_value | **LAB_RESULTS** RSLT_TXT |||
 | end_datetime | |||
 | verbatim_end_date |  |||
 | days_supply | |||
@@ -77,3 +95,9 @@ The STEM table is a staging area where source codes like ICD9 codes will first b
 | disease_status_source_value | |||
 | condition_status_concept_id | |||
 | condition_status_source_value | |||
+
+## Change Log
+### July 14, 2021
+- Changed RSLT_TXT from going to VALUE_AS_STRING to VALUE_SOURCE_VALUE
+- Added a mapping for VALUE_AS_CONCEPT_ID
+- Added logic to map OPERATOR_CONCEPT_ID
