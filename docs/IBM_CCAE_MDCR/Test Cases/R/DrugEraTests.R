@@ -1,3 +1,4 @@
+#' @export
 createDrugEraTests <- function () {
   
   patient <- createPatient()
@@ -44,10 +45,10 @@ createDrugEraTests <- function () {
   
   patient <- createPatient()
   encounter <- createEncounter()
-  declareTest(id = patient$person_id, "No drug era created from procedure drugs since they are not related to ingredients. Id is PERSON_ID.")
+  declareTest(id = patient$person_id, "Drug era created from procedure drug. Id is PERSON_ID.")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_inpatient_services(enrolid = patient$enrolid, proc1 = '90376', svcdate = '2012-03-26', tsvcdat = '2012-03-30', caseid = encounter$caseid, year = '2012')
-  expect_no_drug_era(person_id = patient$person_id)
+  expect_drug_era(person_id = patient$person_id, drug_concept_id = '19135830', drug_era_start_date = '2012-03-26')
   
   patient <- createPatient()
   encounter <- createEncounter()

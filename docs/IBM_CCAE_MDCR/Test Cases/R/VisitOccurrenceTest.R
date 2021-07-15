@@ -1,46 +1,34 @@
-createVisitDetailTests <- function () {
+#' @export
+createVisitOccurrenceTests <- function () {
   
   patient <- createPatient()
   encounter <- createEncounter()
   declareTest(id = patient$person_id, "Patient with visit detail that starts before the observation period, start date trimmed to beginning of observation period. Id is PERSON_ID.")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_inpatient_services(enrolid=patient$enrolid, caseid = encounter$caseid, svcdate='2011-12-05', tsvcdat='2012-01-06')
-  expect_visit_detail(person_id=patient$person_id, visit_detail_start_date = '2012-01-01', visit_detail_end_date = '2012-01-06')
+  expect_visit_detail(person_id=patient$person_id, visit_detail_start_date = '2012-01-01')
   
   patient <- createPatient()
   encounter <- createEncounter()
   declareTest(id = patient$person_id, "svcdate>tsvcdate, visit_end_date is svcdate. Id is PERSON_ID.")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_inpatient_services(enrolid=patient$enrolid, svcdate = '2012-03-21', tsvcdat = '2012-03-19')
+  #expect_visit_detail(enrolid= patient$enrolid)
   expect_visit_occurrence(person_id=patient$person_id, visit_start_date = '2012-03-21', visit_end_date = '2012-03-21')
   
   patient <- createPatient()
   encounter <- createEncounter()
-  declareTest(id = patient$person_id, "Service falls during observation period but ends after the period ends, visit_end_date is the observation_period_end_date. Id is PERSON_ID.")
+  declareTest(id = patient$person_id, "Service falls during observation period but ends after the period ends, visit_end_date is not trimmed to the observation_period_end_date. Id is PERSON_ID.")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_inpatient_services(enrolid=patient$enrolid, svcdate = '2012-12-30', tsvcdat = '2013-01-08')
-  expect_visit_occurrence(person_id=patient$person_id, visit_start_date = '2012-12-30', visit_end_date = '2012-12-31')
+  expect_visit_occurrence(person_id=patient$person_id, visit_start_date = '2012-12-30', visit_end_date = '2013-01-08')
   
   patient <- createPatient()
   encounter <- createEncounter()
   declareTest(id = patient$person_id, "service in inpatient_services with stdplac of 23, visit classified as ER. Id is PERSON_ID.")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_inpatient_services(enrolid = patient$enrolid, svcdate='2012-04-12', tsvcdat = '2012-04-12', stdplac = '23')
-  expect_visit_detail(person_id = patient$person_id, visit_detail_start_date = '2012-04-12', visit_detail_end_date = '2012-04-12', visit_concept_id = '8870')
-  
-  patient <- createPatient()
-  encounter <- createEncounter()
-  declareTest(id = patient$person_id, "service in outpatient_services with revcode of 0450, visit classified as ER. Id is PERSON_ID.")
-  add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
-  add_outpatient_services(enrolid = patient$enrolid, svcdate = '2012-05-01', tsvcdat = '2012-05-01', revcode='0450')
-  expect_visit_occurrence(person_id = patient$person_id, visit_start_date='2012-05-01', visit_end_date='2012-05-01', visit_concept_id='9203')
-  
-  patient <- createPatient()
-  encounter <- createEncounter()
-  declareTest(id = patient$person_id, "service in outpatient_services with revcode of 0100, visit classified as IP. Id is PERSON_ID.")
-  add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
-  add_outpatient_services(enrolid=patient$enrolid, svcdate = '2012-10-17', tsvcdat = '2012-10-20', revcode='0100')
-  expect_visit_occurrence(person_id = patient$person_id, visit_start_date='2012-10-17', visit_end_date='2012-10-20', visit_concept_id='9201')
+  expect_visit_detail(person_id = patient$person_id, visit_detail_start_date = '2012-04-12', visit_detail_concept_id = '8870')
   
   patient <- createPatient()
   encounter <- createEncounter()
@@ -64,7 +52,7 @@ createVisitDetailTests <- function () {
   encounter <- createEncounter()
   declareTest(id = patient$person_id, "Patient has an ER record that starts and ends on the first day of the IP visit, separate ER visit created. Id is PERSON_ID.")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
-  add_inpatient_services(enrolid=patient$enrolid, svcdate = '2012-09-03', tsvcdat = '2012-09-03', revcode = '0450')
+  add_inpatient_services(enrolid=patient$enrolid, svcdate = '2012-09-03', tsvcdat = '2012-09-03', stdplac = '23')
   add_inpatient_services(enrolid=patient$enrolid, svcdate = '2012-09-03', tsvcdat = '2012-09-10', revcode = '0100')
   expect_visit_occurrence(person_id = patient$person_id, visit_start_date = '2012-09-03', visit_end_date = '2012-09-03', visit_concept_id = '9203')
   expect_visit_occurrence(person_id = patient$person_id, visit_start_date = '2012-09-03', visit_end_date = '2012-09-10', visit_concept_id = '9201')
@@ -75,7 +63,7 @@ createVisitDetailTests <- function () {
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_inpatient_services(enrolid = patient$enrolid, svcdate = '2012-05-15', tsvcdat = '2012-05-16')
   add_inpatient_services(enrolid = patient$enrolid, svcdate = '2012-05-16', tsvcdat = '2012-05-17')
-  expect_visit_occurrence(person_id = patient$person_id, visit_start_date = )
+  expect_visit_occurrence(person_id = patient$person_id, visit_start_date = '2012-05-15', visit_end_date = '2012-05-17')
   
   patient <- createPatient()
   encounter <- createEncounter()
@@ -84,7 +72,7 @@ createVisitDetailTests <- function () {
   add_inpatient_services(enrolid=patient$enrolid, svcdate = '2012-03-21', tsvcdat = '2012-03-19',dstatus = '01')
   expect_visit_occurrence(person_id=patient$person_id, visit_start_date = '2012-03-21', visit_end_date = '2012-03-21',discharge_to_concept_id = '8536' )
   
-  if (Sys.getenv("truvenType") != "MDCD")
+  if (truvenType != "MDCD")
   {
     patient <- createPatient()
     encounter <- createEncounter()
@@ -104,7 +92,7 @@ createVisitDetailTests <- function () {
     expect_visit_occurrence(person_id = patient$person_id, visit_start_date = '2012-08-08', visit_end_date = '2012-08-12')
   }
 
-  if (Sys.getenv("truvenType") == "MDCD")
+  if (truvenType == "MDCD")
   {
     patient <- createPatient()
     encounter <- createEncounter()

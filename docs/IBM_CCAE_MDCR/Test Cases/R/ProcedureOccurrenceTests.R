@@ -1,3 +1,4 @@
+#' @export
 createProcedureOccurrenceTests <- function () {
 
   patient <- createPatient()
@@ -5,38 +6,43 @@ createProcedureOccurrenceTests <- function () {
   declareTest(id = patient$person_id, "Patient has a value in PPROC and PROC1 within inpatient_services. Two records should be created. Id is PERSON_ID.")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2000-12-31', dtstart = '2000-01-01')
   add_inpatient_services(caseid = encounter$caseid, enrolid = patient$enrolid, pproc = '99238', proc1 = '99221', svcdate = '2000-01-01', tsvcdat = '2000-01-02', year = '2000')
-  expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '2514413', procedure_date = '2000-01-02', procedure_type_concept_id = '32854')
-  expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '2514404', procedure_date = '2000-01-02', procedure_type_concept_id = '32854') 
-
+  # expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '2514413', procedure_date = '2000-01-02', procedure_type_concept_id = '32854')
+  # expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '2514404', procedure_date = '2000-01-02', procedure_type_concept_id = '32854') 
+  expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '2514413', procedure_date = '2000-01-01')
+  expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '2514404', procedure_date = '2000-01-01') 
+  
   patient <- createPatient()
   encounter <- createEncounter()
   declareTest(id = patient$person_id, "Patient has two PPROC values, two are created, one with inpatient claim detail and the other with inpatient claim header as the procedure_type_concept. Id is PERSON_ID.")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_inpatient_services(caseid = encounter$caseid, enrolid = patient$enrolid, pproc = '65779', svcdate = '2012-06-11', tsvcdat = '2012-06-12', year = '2012')
-  add_inpatient_admissions(caseid = encounter$caseid, enrolid = patient$enrolid, pproc = '29914', year = '2012')
-  expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '40757105', procedure_date = '2012-06-12', procedure_type_concept_id = '32854')
-  expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '40757126', procedure_date = '2012-06-12', procedure_type_concept_id = '32855')
+  add_inpatient_admissions(caseid = encounter$caseid, admdate = '2012-06-11', enrolid = patient$enrolid, pproc = '29914', year = '2012')
+  # expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '40757105', procedure_date = '2012-06-12', procedure_type_concept_id = '32854')
+  # expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '40757126', procedure_date = '2012-06-12', procedure_type_concept_id = '32855')
+  expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '40757105', procedure_date = '2012-06-11')
+  expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '40757126', procedure_date = '2012-06-11')
   
-  if (Sys.getenv("truvenType") != "MDCD") {
+  if (truvenType != "MDCD") {
     patient <- createPatient()
     encounter <- createEncounter()
     declareTest(id = patient$person_id, "Patient has two different providers for the same procedure, two records should be created. Id is PERSON_ID.")
     add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
-    add_inpatient_admissions(enrolid = patient$enrolid, caseid = encounter$caseid, year = '2012')
+    add_inpatient_admissions(enrolid = patient$enrolid, admdate = '2012-10-20', caseid = encounter$caseid, year = '2012')
     add_inpatient_services(enrolid = patient$enrolid, caseid = encounter$caseid, svcdate = '2012-10-20', tsvcdat = '2012-10-22', provid = '3456789', proc1 = '50760', stdprov = '220', year = '2012')
     add_inpatient_services(enrolid = patient$enrolid, caseid = encounter$caseid, svcdate = '2012-10-20', tsvcdat = '2012-10-22', provid = '1234567', proc1 = '50760', stdprov = '540', year = '2012')
-    expect_count_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '2109659', procedure_date = '2012-10-20', procedure_type_concept_id = '32854', rowCount = 2)
+    # expect_count_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '2109659', procedure_date = '2012-10-20', procedure_type_concept_id = '32854', rowCount = 2)
+    expect_count_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '2109659', procedure_date = '2012-10-20', rowCount = 2)
     
     patient <- createPatient()
     encounter <- createEncounter()
-    declareTest(id = patient$person_id, "Patient has HCPCS procedure code with value in PROCMOD, only HCPCS comes across in record since PROCMOD associated with CPT4 only. Id is PERSON_ID.")
+    declareTest(id = patient$person_id, "Patient has HCPCS procedure code with value in PROCMOD. Id is PERSON_ID.")
     add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
     add_outpatient_services(enrolid = patient$enrolid, proc1 = 'C9727', procmod = 'P1',svcdate = '2012-05-12', tsvcdat = '2012-05-12')
-    expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '2616464', procedure_date = '2012-05-12', modifier_concept_id = '0')
+    expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '2616464', procedure_date = '2012-05-12', modifier_concept_id = '4320556')
     
   } 
   
-  if (Sys.getenv("truvenType") == "MDCD") {
+  if (truvenType == "MDCD") {
     patient <- createPatient()
     encounter <- createEncounter()
     declareTest(id = patient$person_id, "Patient has two different providers for the same procedure, the provider on the first line (ascending) is chosen. Id is PERSON_ID.")

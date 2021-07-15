@@ -287,6 +287,39 @@ createDrugExposureTests <- function () {
   add_immunizations(ptid = patient$ptid, immunization_date="2011-10-12", ndc="66521011710", pt_reported="N")
   expect_drug_exposure(person_id = patient$person_id, drug_type_concept_id="43542358")
 
+  ##### COVID Vaccine Tests
+
+  patient <- createPatient();
+  encounter1 <- createEncounter();
+  encounter2 <- createEncounter();
+  declareTest(description = "Patient has covid vaccine with immunization_desc = 'COVID-19 VACCINE, PFIZER' ", cdm_pid = patient$ptid)
+  add_patient(ptid = patient$ptid, first_month_active = '201005', last_month_active = '201212')
+  add_encounter(ptid = patient$ptid, encid = encounter1$encid, interaction_date = "05-01-2010")
+  add_encounter(ptid = patient$ptid, encid = encounter2$encid,  interaction_date = "12-31-2012")
+  add_immunizations(ptid = patient$ptid, immunization_date="2011-10-12", immunization_desc = "COVID-19 VACCINE, PFIZER")
+  expect_drug_exposure(person_id = patient$person_id, drug_type_concept_id="32818", drug_concept_id = "37003436")
+
+  patient <- createPatient();
+  encounter1 <- createEncounter();
+  encounter2 <- createEncounter();
+  declareTest(description = "Patient has covid vaccine with immunization_desc = 'COVID-19 VACCINE, MODERNA' ", cdm_pid = patient$ptid)
+  add_patient(ptid = patient$ptid, first_month_active = '201005', last_month_active = '201212')
+  add_encounter(ptid = patient$ptid, encid = encounter1$encid, interaction_date = "05-01-2010")
+  add_encounter(ptid = patient$ptid, encid = encounter2$encid,  interaction_date = "12-31-2012")
+  add_immunizations(ptid = patient$ptid, immunization_date="2011-10-12", immunization_desc = "COVID-19 VACCINE, MODERNA")
+  expect_drug_exposure(person_id = patient$person_id, drug_type_concept_id="32818", drug_concept_id = "37003518")
+
+  patient <- createPatient();
+  encounter1 <- createEncounter();
+  encounter2 <- createEncounter();
+  declareTest(description = "Patient has covid vaccine with immunization_desc = 'SARS-COV-2 (COVID-19) vaccine, UNSPECIFIED' ", cdm_pid = patient$ptid)
+  add_patient(ptid = patient$ptid, first_month_active = '201005', last_month_active = '201212')
+  add_encounter(ptid = patient$ptid, encid = encounter1$encid, interaction_date = "05-01-2010")
+  add_encounter(ptid = patient$ptid, encid = encounter2$encid,  interaction_date = "12-31-2012")
+  add_immunizations(ptid = patient$ptid, immunization_date="2011-10-12", immunization_desc = "SARS-COV-2 (COVID-19) vaccine, UNSPECIFIED")
+  expect_drug_exposure(person_id = patient$person_id, drug_type_concept_id="32818", drug_concept_id = "724904")
+
+
   ######################################
   # PROCEDURE
   ######################################

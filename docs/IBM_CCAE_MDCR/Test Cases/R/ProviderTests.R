@@ -1,6 +1,7 @@
+#' @export
 createProviderTests <- function () {
   
-  if (Sys.getenv("truvenType") != "MDCD")
+  if (truvenType != "MDCD")
   {
     provider<-createProvider();
     declareTest(id = provider$provid, description = "Provider in facility header table with stdprov=220, specialty = emergency medicine. Id is PROVIDER_SOURCE_VALUE")
@@ -11,7 +12,7 @@ createProviderTests <- function () {
     provider<-createProvider();
     declareTest(id = provider$provid, description = "Provider in facility header table with stdprov=''. Id is PROVIDER_SOURCE_VALUE")
     patient<-createPatient();
-    add_facility_header(enrolid=patient$enrolid, provid=provider$provid, stdprov="")
+    add_facility_header(enrolid=patient$enrolid, provid=provider$provid, stdprov=NULL)
     expect_provider(specialty_concept_id="38004514")
   
     provider<-createProvider();
@@ -39,7 +40,7 @@ createProviderTests <- function () {
     expect_provider(provider_source_value =NULL, specialty_source_value="220")
   }
   
-  if (Sys.getenv("truvenType") == "MDCD")
+  if (truvenType == "MDCD")
   {
     provider<-createProvider();
     declareTest(id = provider$provid, description = "Provider in facility header table with stdprov=220, specialty = emergency medicine. Id is PROVIDER_SOURCE_VALUE")

@@ -1,7 +1,8 @@
+#' @export
 createMeasurementTests <- function () {
 
   
-  if (Sys.getenv("truvenType") != "MDCD")
+  if (truvenType != "MDCD")
   {
   
   patient <- createPatient()
@@ -13,7 +14,7 @@ createMeasurementTests <- function () {
   
   patient <- createPatient()
   encounter <- createEncounter()
-  declareTest(id = patient$person_id, "Svcdate is outside of observation period, record is dropped. Id is PERSON_ID.")
+  declareTest(id = patient$person_id, "Svcdate is outside of observation period, record is kept. Id is PERSON_ID.")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_lab(enrolid = patient$enrolid, year='2012', svcdate = '2013-07-09', loinccd = '56773-5')
   expect_measurement(person_id = patient$person_id)
@@ -89,7 +90,7 @@ createMeasurementTests <- function () {
   declareTest(id = patient$person_id, "Patient has REFHIGH and REFLOW mapping correctly. Check to ensure floats convert correctly. Id is PERSON_ID.")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_lab(enrolid = patient$enrolid, year='2012', svcdate = '2012-12-20', loinccd = '56784-2', refhigh = 10.8, reflow = 1)
-  expect_measurement(person_id = patient$person_id, value_as_concept_id = '9191', range_high = 10.8, range_low = 1)
+  expect_measurement(person_id = patient$person_id, range_high = 10.8, range_low = 1)
   
   patient <- createPatient()
   encounter <- createEncounter()
@@ -98,17 +99,10 @@ createMeasurementTests <- function () {
   add_lab(enrolid = patient$enrolid, year='2012', svcdate = '2012-04-06', loinccd = '29463-7', result = '1950000', resunit = 'LBS')
   expect_measurement(person_id = patient$person_id, value_as_number = '195', unit_concept_id = '8739')
   
-  patient <- createPatient()
-  encounter <- createEncounter()
-  declareTest(id = patient$person_id, "Patient has a LOINC of 3142-7, 29463-7, 3141-9 and RESULT > 100000 and RESUNIT = 'LBS'.  No dropping of zeros")
-  add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
-  add_lab(enrolid = patient$enrolid, year='2012', svcdate = '2012-04-06', loinccd = '29463-7', result = '195000', resunit = 'LBS')
-  expect_measurement(person_id = patient$person_id, value_as_number = '195000', unit_concept_id = '8739')
-  
   }
   
   
-  if (Sys.getenv("truvenType") == "CCAE")
+  if (truvenType == "CCAE")
   {
   
     patient <- createPatient()

@@ -1,3 +1,4 @@
+#' @export
 createTests <- function() {
   #declareTestGroup("Condition Occurrence", 1)
   createConditionOccurrenceTests();
@@ -8,7 +9,7 @@ createTests <- function() {
   #declareTestGroup("Death", 4)
   createDeathTests();
   #declareTestGroup("Device Exposure", 5)
-  createDeviceExposureTests();
+  #createDeviceExposureTests();
   #declareTestGroup("Drug Exposure", 6)
   createDrugExposureTests();
   #declareTestGroup("Drug Era", 7)
