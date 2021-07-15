@@ -167,7 +167,7 @@ WORKABS|NULL|Numeric
 | UNIQUE_DEVICE_ID | - | NULL | - |
 | UNIT_CONCEPT_ID | - | 0 | - |
 | UNIT_SOURCE_VALUE | - | NULL | - |
-| VALUE_AS_CONCEPT_ID | - | 0 | - |
+| VALUE_AS_CONCEPT_ID | VALUE_AS_STRING | Use the SOURCE_TO_STANDARD query with the filter<br/><br/>**LOINC_CD**<br> WHERE SOURCE_VOCABULARY_ID IN ('LOINC') AND TARGET_STANDARD_CONCEPT ='S' AND TARGET_INVALID_REASON IS NULL | - |
 | VALUE_AS_NUMBER | - | If a question has a numeric result, put that answer here. | Use table above to help know if the value is numeric or categorical.|
 | VALUE_AS_STRING | - | If a question has a string response, put that answer here. | Use table above to help know if the value is numeric or categorical. |
 | VALUE_SOURCE_VALUE | The test name or name of the column | - | - |
@@ -185,6 +185,8 @@ WORKABS|NULL|Numeric
 | QUALIFIER_SOURCE_VALUE | - | NULL | - |
 
 ## Change Log
+### July 15, 2021
+* Added mapping from VALUE_AS_STRING to Standard Concepts in VALUE_AS_CONCEPT_ID
 
 ### June 8, 2021
 * Changed the type concepts for HRA data
