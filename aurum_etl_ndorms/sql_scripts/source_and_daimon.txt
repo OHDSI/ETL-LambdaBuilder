@@ -1,0 +1,27 @@
+INSERT INTO webapi.source (source_id, source_name, source_key, source_connection, source_dialect, password) 
+SELECT 2, 'p20_059_cdm_aurum', 'p20_059_cdm_aurum', ' jdbc:postgresql://localhost:5432/p20_059_cdm_aurum?user=webapi_sa&password=ohdsi', 'postgresql', 'PASSWORD';
+
+
+INSERT INTO webapi.source_daimon (source_daimon_id, source_id, daimon_type, table_qualifier, priority) 
+SELECT 5, source_id, 0, 'public', 0
+FROM webapi.source
+WHERE source_key = 'p20_059_cdm_aurum'
+;
+
+INSERT INTO webapi.source_daimon (source_daimon_id, source_id, daimon_type, table_qualifier, priority) 
+SELECT 6, source_id, 1, 'vocabulary', 1
+FROM webapi.source
+WHERE source_key = 'p20_059_cdm_aurum'
+;
+
+INSERT INTO webapi.source_daimon (source_daimon_id, source_id, daimon_type, table_qualifier, priority) 
+SELECT 7, source_id, 2, 'results', 1
+FROM webapi.source
+WHERE source_key = 'p20_059_cdm_aurum'
+;
+
+INSERT INTO webapi.source_daimon (source_daimon_id, source_id, daimon_type, table_qualifier, priority) 
+SELECT 8, source_id, 5, 'temp', 0
+FROM webapi.source
+WHERE source_key = 'p20_059_cdm_aurum'
+;

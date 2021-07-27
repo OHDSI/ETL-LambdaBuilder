@@ -1,0 +1,72 @@
+﻿measurement_source_value,concept_id,value_as_concept_id
+1321291000000100-SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2) species detection test,756055,45877986
+1324871000000102-SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2) RNA (ribonucleic acid) detection result indeterminate,705001,45877986
+1240591000000102-COVID-19 not detected,756055,45878583
+1321341000000103-SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2) IgG arbitrary concentration in serum,37310258,45877986
+1240591000000102-Severe acute respiratory syndrome coronavirus 2 not detected,756055,45878583
+1321351000000100-SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2) IgM arbitrary concentration in serum,37310258,45877986
+1321631000000103-2019-nCoV (novel coronavirus) IgM detection result equivocal,37310258,45877986
+1240591000000102-SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2) detection result negative,756055,45878583
+1321571000000102-SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2) IgG detection result negative,37310258,45878583
+1240591000000102-SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2) not detected,756055,45878583
+1240591000000102-2019-nCoV (novel coronavirus) not detected,756055,45878583
+1324581000000102-SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2) RNA (ribonucleic acid) detection result negative,705001,45878583
+1321791000000109-SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2) IgA detection result negative,37310258,45878583
+1321561000000109-SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2) IgM detection result negative,37310258,45878583
+1321721000000106-Central laboratory SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2) species detection test,756055,45877986
+1321681000000104-SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2) RNA (ribonucleic acid) detection result equivocal,705001,45877986
+1240591000000102-Wuhan 2019-nCoV (novel coronavirus) not detected,756055,45878583
+1321331000000107-SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2) total immunoglobulin arbitrary concentration in serum,37310258,45878583
+1321791000000109-2019-nCoV (novel coronavirus) IgA not detected,37310258,45878583
+1321721000000106-Central laboratory 2019-nCoV (novel coronavirus) species detection test,756055,45877986
+1321681000000104-2019-nCoV (novel coronavirus) detection result equivocal,756055,45877986
+1321681000000104-SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2) detection result equivocal,756055,45877986
+1240581000000104-SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2) detection result positive,756055,45884084
+1321541000000108-SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2) IgG detection result positive,37310258,45884084
+1324601000000106-SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2) RNA (ribonucleic acid) detection result positive,705001,45884084
+1240581000000104-2019-nCoV (novel coronavirus) detected,756055,45884084
+1240581000000104-SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2) detected,756055,45884084
+1321761000000103-SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2) IgA detection result positive,37310258,45884084
+1240581000000104-COVID-19 detected,756055,45884084
+1321551000000106-SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2) IgM detection result positive,37310258,45884084
+1324881000000100-SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2) RNA (ribonucleic acid) detection result positive at the limit of detection,705001,45884084
+1240581000000104-Severe acute respiratory syndrome coronavirus 2 detected,756055,45884084
+1240581000000104-Wuhan 2019-nCoV (novel coronavirus) detected,756055,45884084
+1321541000000108-2019-nCoV (novel coronavirus) IgG detected,37310258,45884084
+1321761000000103-2019-nCoV (novel coronavirus) IgA detected,37310258,45884084
+1324601000000106-2019-nCoV (novel coronavirus) ribonucleic acid detected,705001,45884084
+1321301000000101-SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2) RNA (ribonucleic acid) qualitative existence in specimen,705001,45884084
+1324881000000100-2019-nCoV (novel coronavirus) detection result positive at the limit of detection,756055,45884084
+1321321000000105-SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2) IgG qualitative existence in specimen,37310258,45884084
+1321711000000100-Point-of-care SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2) species detection test,756055,45877986
+1240591000000102-SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2) RNA (ribonucleic acid) detection result negative,705001,45878583
+1240581000000104-SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2) RNA (ribonucleic acid) detection result positive,705001,45884084
+1322781000000102-SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2) antigen detection result positive,37310257,45884084
+1321741000000104-Central laboratory SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2) antibody detection test,37310258,45877986
+1322871000000109-SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2) antibody detection result positive,37310258,45884084
+1240461000000109-Measurement of SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2) antibody,37310258,45877986
+1240741000000103-SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2) serology,37310258,45877986
+1322791000000100-SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2) antigen detection result negative,37310257,45878583
+1322891000000108-SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2) antibody detection result negative,37310258,45878583
+1321731000000108-Point-of-care SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2) antibody detection test,37310258,45877986
+1240461000000109-Measurement of 2019-nCoV (novel coronavirus) antibody,37310258,45877986
+1240461000000109-Measurement of Severe acute respiratory syndrome coronavirus 2 antibody,37310258,45877986
+1322781000000102-2019-nCoV (novel coronavirus) antigen detection result positive,37310257,45884084
+1321731000000108-Point of care 2019-nCoV (novel coronavirus) antibody detection test,37310258,45877986
+1322791000000100-2019-nCoV (novel coronavirus) antigen detection result negative,37310257,45878583
+1240741000000103-2019-nCoV (novel coronavirus) serology,37310258,45877986
+1240471000000102-Measurement of SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2) antigen,37310257,45877986
+1322871000000109-2019-nCoV (novel coronavirus) antibody detection result positive,37310258,45884084
+1240471000000102-Measurement of 2019-nCoV (novel coronavirus) antigen,37310257,45877986
+1240461000000109-Measurement of COVID-19 antibody,37310258,45877986
+1321741000000104-Central laboratory 2019-nCoV (novel coronavirus) antibody detection test,37310258,45877986
+1322891000000108-2019-nCoV (novel coronavirus) antibody detection result negative,37310258,45878583
+1322801000000101-SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2) antigen detection result indeterminate,37310257,45877986
+1321731000000108-POC (point of care) SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2) antibody detection test,37310258,45877986
+1324561000000106-Measurement of SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2) antibody,37310258,45877986
+1240471000000102-Measurement of COVID-19 antigen,37310257,45877986
+1321701000000102-Does not have immunity to SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2),,45878583
+1321661000000108-Has immunity to SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2),,45884084
+1321361000000102-SARS-CoV-2 (severe acute respiratory syndrome coronavirus 2) immunity status,,45877986
+43jn.00-SARS (severe acute respiratory syndrome) virus nucleic acid detection assay,,45877986
+43jn100-SARS (severe acute respiratory syndrome) virus RNA (ribonucleic acid) detection assay,,45877986

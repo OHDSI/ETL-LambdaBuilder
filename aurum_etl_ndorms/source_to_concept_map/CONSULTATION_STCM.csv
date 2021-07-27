@@ -1,0 +1,9 @@
+source_code,source_concept_id,source_vocabulary_id,source_code_description,target_concept_id,target_vocabulary_id,valid_start_date,valid_end_date,invalid_reason
+1672871000006105,0,SNOMED,GP Surgery,764687,SNOMED,2018-01-31,2099-12-31,
+1672851000006100,0,SNOMED,Face to face consultation,4014829,SNOMED,1970-01-01,2099-12-31,
+1809171000006105,0,SNOMED,Routine consultation,4014829,SNOMED,1970-01-01,2099-12-31,
+1764461000006108,0,SNOMED,Outbound referral,4144684,SNOMED,1970-01-01,2099-12-31,
+1958701000006105,0,SNOMED,Online communication,42690710,SNOMED,2017-04-01,2099-12-31,
+1672891000006106,0,SNOMED,Telephone call to relative/carer,764131,SNOMED,2018-01-31,2099-12-31,
+1672861000006103,0,SNOMED,Group consultation,44812266,SNOMED,2014-04-01,2099-12-31,
+1672901000006105,0,SNOMED,Telephone call from relative/carer,764131,SNOMED,2018-01-31,2099-12-31,
