@@ -29,7 +29,7 @@ For datetime fields, set time to midnight 00:00:00.
 | visit_detail_start_datetime | eventdate | Use the same logic used to set visit_detail_start_date. Set time to 00:00:00 |  |
 | visit_detail_end_date |  | Set as visit_detail_start_date  | |
 | visit_detail_end_datetime |  | Set as visit_detail_start_datetime |  |
-| visit_detail_type_concept_id |  | Use **44818518** - Visit derived from EHR record |  |
+| visit_detail_type_concept_id |  | Use **32827** - EHR encounter record |  |
 | provider_id | staffid |  |  |
 | care_site_id | patid | Use the last three digits of the patid (removing leading zeros) to look up the care_site_id in the care_site table. |  |
 | visit_detail_source_value | constype | Use the consid to link back to the consultation table. Use the constype from the consultation table as the visit_detail_source_value. If there are two based on how the visit detail was defined, choose one. |  |
