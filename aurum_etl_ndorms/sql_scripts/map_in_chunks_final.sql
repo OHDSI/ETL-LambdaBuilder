@@ -136,6 +136,43 @@ join {TARGET_SCHEMA}.visit_occurrence v
     on s.visit_occurrence_id = v.visit_occurrence_id
 where s.domain_id = 'Drug';
 
+
+--insert vaccinations that don't have a visit_occurrence_id
+insert into {TARGET_SCHEMA}.drug_exposure(drug_exposure_id, person_id, drug_concept_id, drug_exposure_start_date,
+                                           drug_exposure_start_datetime, drug_exposure_end_date, drug_exposure_end_datetime,
+                                           verbatim_end_date, drug_type_concept_id, stop_reason, refills, quantity, days_supply,
+                                           sig, route_concept_id, lot_number, provider_id, visit_occurrence_id, visit_detail_id,
+                                           drug_source_value, drug_source_concept_id, route_source_value, dose_unit_source_value)
+select s.id,
+       s.person_id,
+       s.concept_id,
+       s.start_date,
+       s.start_date,
+       s.end_date,
+       s.end_date,
+       NULL,
+       s.type_concept_id,
+       s.stop_reason,
+       s.refills,
+       s.quantity,
+       s.days_supply,
+       s.sig,
+       s.route_concept_id,
+       s.lot_number,
+       s.provider_id,
+       s.visit_occurrence_id,
+       s.visit_detail_id,
+       s.source_value,
+       s.source_concept_id,
+       s.route_source_value,
+       s.dose_unit_source_value
+from {TARGET_SCHEMA}.stem s
+where source_concept_id in (
+    35891522, --AstraZeneca vaccine
+    35891709  --Pfizer vaccine
+) and visit_occurrence_id is null
+
+
 --insert into device_exposure from stem
 insert into {TARGET_SCHEMA}.device_exposure(device_exposure_id, person_id, device_concept_id, device_exposure_start_date,
                                              device_exposure_start_datetime, device_exposure_end_date, device_exposure_end_datetime,
@@ -165,36 +202,6 @@ join {TARGET_SCHEMA}.visit_occurrence v
     on s.visit_occurrence_id = v.visit_occurrence_id
 where s.domain_id = 'Device';
 
---insert vaccinations that don't have a visit_occurrence_id
-insert into {TARGET_SCHEMA}.device_exposure(device_exposure_id, person_id, device_concept_id, device_exposure_start_date,
-                                             device_exposure_start_datetime, device_exposure_end_date, device_exposure_end_datetime,
-                                             device_type_concept_id, unique_device_id, quantity, provider_id, visit_occurrence_id,
-                                             visit_detail_id, device_source_value, device_source_concept_id)
-select s.id,
-       s.person_id,
-       s.concept_id,
-       case when s.start_date is NULL
-           then v.visit_start_date
-        else s.start_date end,
-       case when s.start_date is NULL
-           then v.visit_start_date
-        else s.start_date end,
-       s.end_date,
-       s.end_date,
-       s.type_concept_id,
-       s.unique_device_id,
-       s.quantity,
-       s.provider_id,
-       s.visit_occurrence_id,
-       s.visit_detail_id,
-       s.source_value,
-       s.source_concept_id
-from {TARGET_SCHEMA}.stem s
-where source_concept_id in (
-    35891522, --AstraZeneca vaccine
-    35891709  --Pfizer vaccine
-) and visit_occurrence_id is null
-;
 
 --insert into procedure_occurrence from stem
 insert into {TARGET_SCHEMA}.procedure_occurrence(procedure_occurrence_id, person_id, procedure_concept_id, procedure_date,
