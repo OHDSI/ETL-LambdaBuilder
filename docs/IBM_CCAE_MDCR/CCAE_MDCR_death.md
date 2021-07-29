@@ -24,7 +24,7 @@ description: "**DEATH** mapping from IBM MarketScan® Commercial Database (CCAE)
 | PERSON_ID | ENROLID | - | - |
 | DEATH_DATE | VISIT_END_DATE | - | - |
 | DEATH_DATETIME | - | - | - |
-| DEATH_TYPE_CONCEPT_ID | DSTATUS | When dstatus is in (20,40,41,42) then death_type_concept_id = `38003566` for death captured by discharge status | - |
+| DEATH_TYPE_CONCEPT_ID | DSTATUS | When dstatus is in (20,40,41,42) then death_type_concept_id = `32812` for death captured by discharge status | - |
 | CAUSE_CONCEPT_ID | - | 0 | - |
 | CAUSE_SOURCE_VALUE | - | NULL | - |
 | CAUSE_SOURCE_CONCEPT_ID | - | 0 | - |
@@ -40,7 +40,7 @@ description: "**DEATH** mapping from IBM MarketScan® Commercial Database (CCAE)
 | PERSON_ID | ENROLID | - | - |
 | DEATH_DATE | VISIT_END_DATE | - | - |
 | DEATH_DATETIME | - | - | - |
-| DEATH_TYPE_CONCEPT_ID | DSTATUS | When dstatus is in (20,40,41,42) then death_type_concept_id = `38003566` for death captured by discharge status | - |
+| DEATH_TYPE_CONCEPT_ID | DSTATUS | When dstatus is in (20,40,41,42) then death_type_concept_id = `32812` for death captured by discharge status | - |
 | CAUSE_CONCEPT_ID | - | 0 | - |
 | CAUSE_SOURCE_VALUE | - | NULL | - |
 | CAUSE_SOURCE_CONCEPT_ID | - | 0 | - |
@@ -56,7 +56,7 @@ description: "**DEATH** mapping from IBM MarketScan® Commercial Database (CCAE)
 | PERSON_ID | ENROLID | - | - |
 | DEATH_DATE | VISIT_END_DATE | - | - |
 | DEATH_DATETIME | - | - | - |
-| DEATH_TYPE_CONCEPT_ID | DSTATUS | When dstatus is in (20,40,41,42) then death_type_concept_id = `38003566` for death captured by discharge status | - |
+| DEATH_TYPE_CONCEPT_ID | DSTATUS | When dstatus is in (20,40,41,42) then death_type_concept_id = `32812` for death captured by discharge status | - |
 | CAUSE_CONCEPT_ID | - | 0 | - |
 | CAUSE_SOURCE_VALUE | - | NULL | - |
 | CAUSE_SOURCE_CONCEPT_ID | - | 0 | - |

@@ -30,7 +30,7 @@ Enrollment entries are consolidated by combining records that indicate continuou
 | PERSON_ID | ENROLID | - | - |
 | OBSERVATION_PERIOD_START_DATE | DTSTART | Minimum start date of a contiguous enrollment period. | - |
 | OBSERVATION_PERIOD_END_DATE | DTEND | Maximum end date of a contiguous enrollment period. |  |
-| PERIOD_TYPE_CONCEPT_ID | - | - | `44814722` - Period while enrolled in insurance |
+| PERIOD_TYPE_CONCEPT_ID | - | - | `32813` - Claim enrolment record |
 
 ## Change Log
 
