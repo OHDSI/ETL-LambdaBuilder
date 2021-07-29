@@ -72,7 +72,7 @@ VISIT_START_DATE|**VISIT_DETAIL** VISIT_DETAIL_START_DATE| Use min(VISIT_DETAIL_
 VISIT_START_DATETIME|Set time to 00:00:00 UTC tz<br/><br/>**VISIT_DETAIL** VISIT_DETAIL_START_DATETIME| Use min(VISIT_DETAIL_START_DATETIME)  |
 VISIT_END_DATE|**VISIT_DETAIL**<br/>VISIT_DETAIL_END_DATE| Use max(VISIT_DETAIL_END_DATE) |
 VISIT_END_DATETIME|Set time to 00:00:00 UTC tz<br/><br/>**VISIT_DETAIL**<br/>VISIT_DETAIL_END_DATETIME| Use max(VISIT_DETAIL_END_DATETIME)|
-VISIT_TYPE_CONCEPT_ID| |Use concept [44818517 (Visit derived from encounter on claim)](http://www.ohdsi.org/web/atlas/#/concept/44818517)|
+VISIT_TYPE_CONCEPT_ID| |Use concept [32827 (EHR encounter record)](http://www.ohdsi.org/web/atlas/#/concept/32827)|
 PROVIDER_ID||Use the VISIT_DETAIL records to find provider associated with a visit. If there are more than one provider_id, then sort by inpatient>emergency room>outpatient and pick the first occurrrence by date.|
 CARE_SITE_ID|**VISIT_DETAIL** CARE_SITE_ID |  |
 VISIT_SOURCE_VALUE|  | This will be blank though the VISIT_OCCURRENCE_ID can be linked back to VISIT_DETAIL which can then be linked to the source through the VISIT_DETAIL_SOURCE_VALUE|

@@ -28,7 +28,7 @@ Only map records where drug_action in in ( ‘TAKE’, ‘START’, ‘ADMINISTE
 | concept_id |drug_name |Use the [SOURCE_TO_STANDARD](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_STANDARD.sql) query to map the code to standard concept(s) with the following filters: <br> <br>  Where source_vocabulary_id = 'JNJ_OPTUM_NLP_DRUG'  and Target_standard_concept = 'S'  and target_invalid_reason is NULL <br><br>If there is no mapping available, set concept_id to zero.| |
 |source_value| drug_name |||
 | source_concept_id | 0 | | |
-| type_concept_id | 38000281  | Observation recorded from EHR with text result| | 
+| type_concept_id | 32831  | EHR note | | 
 | operator_concept_id | 0 | | |
 | unit_concept_id | | | |
 | unit_source_value |  | | |

@@ -26,7 +26,7 @@ description: "OPTUM EHR Patient_Reported_Medications table to STEM"
 | concept_id |ndc |Use the [SOURCE_TO_STANDARD](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_STANDARD.sql) query to map the code to standard concept(s) with the following filters: <br> <br>  Where source_vocabulary_id = 'NDC'  and Target_standard_concept = 'S'  and target_invalid_reason is NULL and admin_date between valid_start_date and valid_end_date<br><br>If there is no mapping available, set concept_id to zero.| |
 |source_value| ndc |||
 | source_concept_id | ndc | Use the [SOURCE_TO_SOURCE](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_SOURCE.sql) query to map the code to standard concept(s) with the following filters: <br> <br>  Where source_vocabulary_id = 'NDC'<br><br>If there is no mapping available, set concept_id to zero.| |
-| type_concept_id | 44787730  | Patient Self-Reported Medication | | 
+| type_concept_id | 32865  | Patient Self-Report | | 
 | operator_concept_id | 0 | | |
 | unit_concept_id | | | |
 | unit_source_value |  | | |
