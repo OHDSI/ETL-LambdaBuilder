@@ -26,7 +26,7 @@ Each unique claim id for a patient will be assigned to a visit, except for pharm
 |     care_site_id    |     medical_facility_id    |          |          |
 |     visit_start_datetime    |          |          |          |
 |     visit_end_datetime    |          |          |          |
-|     visit_type_concept_id    |          |          |          |
+|     visit_type_concept_id    |          |          | `32810` Claim         |
 |     provider_id    |          |          |          |
 |     visit_source_concept_id    |          |          |          |
 |     admitting_source_concept_id    |          |          |          |

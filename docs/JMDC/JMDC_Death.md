@@ -20,7 +20,7 @@ There are two sources of death status: enrollment and the diagnosis table. Death
 |     person_id    |     member_id    |     Remove 'M' prefix    |          |
 |     death_date    |     observation_end    |          |          |
 |     death_datetime    |          |          |          |
-|     death_type_concept_id    |          |          |     From enrollment: 38003565 (Payer enrollment status   "Deceased") From diagnosis: 38003567 (Medical claim diagnostic code   indicating death)    |
+|     death_type_concept_id    |          |          |     From enrollment: `32815` (Death certificate) From diagnosis: `32812` (Claim discharge record)    |
 |     cause_concept_id    |          |          |          |
 |     cause_source_value    |          |          |          |
 |     cause_source_concept_id    |          |          |          |
@@ -34,7 +34,7 @@ There are two sources of death status: enrollment and the diagnosis table. Death
 |     person_id    |     member_id    |     Remove 'M' prefix    |          |
 |     death_date    |     month_and_year_of_medical_care    |     Use end of visit/claim date    |          |
 |     death_datetime    |          |          |          |
-|     death_type_concept_id    |          |          |     From enrollment: 38003565 (Payer enrollment status   "Deceased") From diagnosis: 38003567 (Medical claim diagnostic code   indicating death)    |
+|     death_type_concept_id    |          |          |     From enrollment: `32815` (Death certificate) From diagnosis: `32812` (Claim discharge record)    |
 |     cause_concept_id    |          |          |          |
 |     cause_source_value    |          |          |          |
 |     cause_source_concept_id    |          |          |          |

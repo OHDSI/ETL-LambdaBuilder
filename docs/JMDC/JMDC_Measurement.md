@@ -20,7 +20,7 @@ When an ICD10 code in the diagnosis table maps to a concept in the Measurement d
 |     measurement_id    |          |          |          |
 |     visit_occurrence_id    |     claim_id    |     Remove ‘C’ prefix    |          |
 |     person_id    |     member_id    |     Remove 'M' prefix    |          |
-|     measurement_type_concept_id    |     type_of_claim    |     Outpatient: 38000215 (Outpatient detail - 1st   position)    Inpatient or DPC: 38000184   (Inpatient detail - 1st position)    |     38000277 (Lab observation with numeric result) for   continuous fields 38000279 (Lab observation concept code result) for ECG   900000004 (Observation text) for ophthalmoscopies '44814721'    |
+|     measurement_type_concept_id    |     type_of_claim    |     Outpatient: **32859** (Outpatient claim)    InPatient or DPC: **32853** (Inpatient claim)     |     Coming from the **annual_health_checkup** table set to 32836 (EHR physical examination)    |
 |     measurement_date    |     month_and_year_of_medical_care    |     Use derived visit_start_date    |          |
 |     measurement_concept_id    |     standard_disease_code    |          |     Lookup icd10_level4_code in diagnosis_master table, and   use vocab to map to standard concept.    |
 |     measurement_source_value    |     standard_disease_code    |          |     Lookup icd10_level4_code in diagnosis_master table    |

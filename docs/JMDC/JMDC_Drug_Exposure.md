@@ -18,7 +18,7 @@ description: "Drug_Exposure mapping from JMDC drug table"
 |     drug_exposure_id    |          |          |          |
 |     visit_occurrence_id    |     claim_id    |     Remove ‘C’ prefix    |          |
 |     person_id    |     member_id    |     Remove 'M' prefix    |          |
-|     drug_type_concept_id    |     type_of_claim    |     Pharmacy, Outpatient: 38000175 (Prescription dispensed in   pharmacy)  Inpatient or DPC: 38000180   (Inpatient administration)    |          |
+|     drug_type_concept_id    |     type_of_claim    |     Pharmacy, Outpatient: 32869 (Pharmacy claim)  Inpatient or DPC: 32818   (EHR administration record)    |          |
 |     drug_exposure_start_date    |     date_of_prescription     month_and_year_of_medical_care    |     Use date of prescription if available, otherwise set to   start of visit.    |          |
 |     drug_exposure_end_date    |     month_and_year_of_medical_care     date_of_prescription     administered_days    |     Drug_exposure_end_date = drug_exposure_start_date +   min(administered_days,180)    |          |
 |     days_supply    |     administered_days    |     If value > 180, set to 180 (occurs in 74 prescriptions)    |          |
