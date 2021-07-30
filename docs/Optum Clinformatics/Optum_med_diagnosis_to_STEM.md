@@ -48,7 +48,7 @@ The STEM table is a staging area where source codes like ICD9 codes will first b
 | concept_id | **MED_DIAGNOSIS**<br>DIAG|Use the SOURCE_TO_STANDARD query with the filter<br/><br/>WHERE SOURCE_VOCABULARY_ID IN (*'ICD9CM'* OR *'ICD10CM'*) AND TARGET_STANDARD_CONCEPT ='S' AND TARGET_INVALID_REASON IS NULL |If ICD_FLAG = 9 then use 'ICD9CM', else if ICD_FLAG = 10 then use 'ICD10CM'||
 | source_value | **MED_DIAGNOSIS**<br>DIAG|||
 | source_concept_id |**MED_DIAGNOSIS**<br>DIAG |Use the SOURCE_TO_SOURCE query with the filter<br><br>WHERE SOURCE_VOCABULARY_ID IN (*'ICD9CM'* OR *'ICD10CM'*) |If ICD_FLAG = 9 then use 'ICD9CM', else if ICD_FLAG = 10 then use 'ICD10CM'|
-| type_concept_id |**MED_DIAGNOSIS**<br>DIAG_POSITION| If position = 1 then concept_id = 44786627 (Primary condition). Use 44786629 (Secondary Condition for all others.  ||
+| type_concept_id | 32810 (Claim)|  ||
 | end_datetime | |||
 | condition_status_concept_id | **MED_DIAGNOSIS** POA | Y = 46236988<br>N, U, or W = 0||
 | condition_status_source_value | **MED_DIAGNOSIS** POA |||

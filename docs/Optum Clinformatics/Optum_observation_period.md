@@ -28,7 +28,7 @@ OBSERVATION_PERIOD_ID| |System generated.|
 PERSON_ID|**Member_Continuous_Enrollment** PATID| |
 OBSERVATION_PERIOD_START_DATE|**Member_Continuous_Enrollment** ELIGEFF|[See logic](#OBSERVATION_PERIOD_Table_Logic)|
 OBSERVATION_PERIOD_END_DATE|**Member_Continuous_Enrollment** ELIGEND|[See logic](#OBSERVATION_PERIOD_Table_Logic)
-PERIOD_TYPE_CONCEPT_ID|Use concept_id 44814722 ('Period while enrolled in insurance')| |
+PERIOD_TYPE_CONCEPT_ID|Use concept_id 32813 ('Claim enrolment record')| |
 
 
 ---
