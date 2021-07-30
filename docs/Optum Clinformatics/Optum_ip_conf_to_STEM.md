@@ -66,5 +66,5 @@ The STEM table is a staging area where source codes like ICD9 codes will first b
 | specimen_source_id ||||
 | anatomic_site_source_value | |||
 | disease_status_source_value | |||
-| condition_status_concept_id | |||
-| condition_status_source_value | |||
+| condition_status_concept_id | DIAG1-DIAG5 | If the record is generated based on DIAG1 set to `32902` else if the record is based on DIAG2-DIAG5 set to `32908`||
+| condition_status_source_value | Use the name of the DIAG field. For example, if the record is generated based on DX1 put 'DX1' here |||
