@@ -88,7 +88,7 @@ group by p.medrec_key, p.pat_key, p.adm_mon, p.adm_date, p.disc_mon, p.disc_date
 
 numberOfVisits <- nrow(visitRecordsRaw)
 
-# Reshuffles order of visits for a person if the order sorted by disc_mon and disc_mon_seq do not align with days_from_index.
+#Reshuffles order of visits for a person if the order sorted by disc_mon and disc_mon_seq do not align with days_from_index.
 checkPass <- 1
 daysFromIndexCounter <- numberOfVisits
 while(checkPass == 1){
@@ -116,7 +116,7 @@ while(estimatedMostRecentDiscDate > as.Date("2004-08-30",origin="yyyy-mm-dd")){
   
   visitRecordsRaw$est_disc_date[numberOfVisits] <- as.Date(estimatedMostRecentDiscDate,origin="yyyy-mm-dd")
   
-  # This IF statement account for a max serve day of 0.  If we don't adjust for this, we end up with admission dates that are after discharge dates.
+  #This IF statement account for a max serve day of 0.  If we don't adjust for this, we end up with admission dates that are after discharge dates.
   if(visitRecordsRaw$max_serv_day[numberOfVisits] == 0){
     estimatedMostRecentAdmDate <- estimatedMostRecentDiscDate - visitRecordsRaw$max_serv_day[numberOfVisits]
   }else{
@@ -143,14 +143,14 @@ while(estimatedMostRecentDiscDate > as.Date("2004-08-30",origin="yyyy-mm-dd")){
     
     estimatedAdmDate <- estimatedDiscDate - visitRecordsRaw$max_serv_day[visitPos] + 1
     
-    # This IF statement account for a max serve day of 0.  If we don't adjust for this, we end up with admission dates that are after discharge dates.
+    #This IF statement account for a max serve day of 0.  If we don't adjust for this, we end up with admission dates that are after discharge dates.
     if(visitRecordsRaw$max_serv_day[visitPos] == 0){
       estimatedAdmDate <- estimatedDiscDate - visitRecordsRaw$max_serv_day[visitPos]
     }else{
       estimatedAdmDate <- estimatedDiscDate - visitRecordsRaw$max_serv_day[visitPos] + 1
     }
     
-    # Tests to ensure estimated date is within 1 months of adm_date provided
+    #Tests to ensure estimated date is within 1 months of adm_date provided
     if(estimatedAdmDate >= visitRecordsRaw$adm_date[visitPos] + 32 || estimatedAdmDate <= visitRecordsRaw$adm_date[visitPos] - 32){
       estimatedAdmDate <- as.Date(paste0(year(visitRecordsRaw$adm_date[visitPos]),"-",month(visitRecordsRaw$adm_date[visitPos]),"-15"),origin="yyyy-mm-dd")
       visitRecordsRaw$est_adm_date[visitPos] <- estimatedAdmDate
@@ -162,7 +162,7 @@ while(estimatedMostRecentDiscDate > as.Date("2004-08-30",origin="yyyy-mm-dd")){
     visitPos = visitPos - 1
   }
   
-  # Creates scoring rubric
+  #Creates scoring rubric
   for(i in 1:nrow(visitRecordsRaw)){
     
     if(exists("monthCount") == FALSE){
@@ -183,7 +183,7 @@ while(estimatedMostRecentDiscDate > as.Date("2004-08-30",origin="yyyy-mm-dd")){
   
   dateScore <- sum(monthCount) + sum(yearCount*2) #Totals score
   
-  # Records Score
+  #Records Score
   if(exists("scoringFrame") == FALSE){
     scoringFrame <- data.frame(as.Date(visitRecordsRaw$est_disc_date[numberOfVisits],origin="yyyy-mm-dd"), dateScore)
   }else{
