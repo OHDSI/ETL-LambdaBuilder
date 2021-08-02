@@ -65,7 +65,7 @@ TODO: The READMIT table includes the field READMIT.DAYS_FROM_PRIOR, which report
 
 The code below creates a date fit scoring rubric in which the logic above is deployed, each discharge date possibility is then tested and the results are then scored on a weighted scale.  1 point for getting the month correct and 2 points for getting the year correct.  The most recent discharge date with the highest score is then selected and all prior visit dates are calculated based on that date.
 
-```{r, eval=FALSE, echo=TRUE}
+```r
 library(DatabaseConnector)
 library(lubridate)
 
@@ -201,5 +201,4 @@ while(estimatedMostRecentDiscDate > as.Date("2004-08-30",origin="yyyy-mm-dd")){
 colnames(scoringFrame) <- c("est_disc_date","dateScore")
 bestScore <- scoringFrame[which.max(scoringFrame$dateScore),]
 print(bestScore$est_disc_date)
-
 ```
