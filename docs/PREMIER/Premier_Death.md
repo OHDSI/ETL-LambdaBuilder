@@ -2,7 +2,7 @@
 title: "Death"
 author: "Andryc, A; Fortin, S"
 parent: Premier
-nav_order: 6
+nav_order: 5
 layout: default
 ---
 

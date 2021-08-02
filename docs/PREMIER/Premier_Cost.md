@@ -2,7 +2,7 @@
 title: "Cost"
 author: "Andryc, A; Fortin, S"
 parent: Premier
-nav_order: 14
+nav_order: 4
 layout: default
 ---
 

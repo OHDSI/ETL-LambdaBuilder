@@ -2,6 +2,7 @@
 title: "Condition Era"
 author: "Andryc, A; Fortin, S"
 parent: Premier
+nav_order: 2
 layout: default
 ---
 

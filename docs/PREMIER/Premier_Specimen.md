@@ -2,7 +2,7 @@
 title: "Specimen"
 author: "Andryc, A; Fortin, S"
 parent: Premier
-nav_order: 8
+nav_order: 18
 layout: default
 ---
 

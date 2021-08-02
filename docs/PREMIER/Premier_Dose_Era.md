@@ -2,7 +2,7 @@
 title: "Dose Era"
 author: "Andryc, A; Fortin, S"
 parent: Premier
-nav_order: 17
+nav_order: 7
 layout: default
 ---
 
