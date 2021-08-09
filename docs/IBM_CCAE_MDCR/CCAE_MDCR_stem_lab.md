@@ -90,7 +90,7 @@ IF RESULT > -999999.99999 THEN DO;
 | VALUE_AS_CONCEPT_ID | RESLTCAT <br> ABNORMAL | Refer to logic above for defining this field. After assigning the above logic, then map RESLTCAT to a Standard Concept using the SOURCE_TO_STANDARD query with the filter<br/><br/>**LOINC_CD**<br> WHERE SOURCE_VOCABULARY_ID IN ('LOINC') AND TARGET_STANDARD_CONCEPT ='S' AND TARGET_INVALID_REASON IS NULL, mapping to SOURCE_CODE_DESCRIPTION instead of SOURCE_CODE| - |
 | VALUE_AS_NUMBER | RESULT | Put any numerical values in the RESULT field here. All values in the RESULT field as they show up in the native will be present in VALUE_SOURCE_VALUE field of the CDM.<br><br>For the following LOINCs (3142-7, 29463-7, 3141-9) if the RESULT > 100000 and the last digits are 0000 and RESUNIT = ‘LBS’, trim the last four digits 0000. | - |
 | VALUE_AS_STRING | RESULT<br>RESLTCAT | Refer to logic above for defining this field. | - |
-| VALUE_SOURCE_VALUE | RESULT_RESLTCAT | If RESLTCAT is not NULL then concatenate RESULT and RESLTCAT with '_' between. If RESLTCAT is NULL then just put the value from RESULT as it appears in the **LAB** table. | - |
+| VALUE_SOURCE_VALUE | RESULT_RESLTCAT | Concatenate RESULT, RESLTCAT, and ABNORMAL with ';' between. | - |
 | ANATOMIC_SITE_CONCEPT_ID | - | 0 | - |
 | DISEASE_STATUS_CONCEPT_ID | - | 0 | - |
 | SPECIMIN_SOURCE_ID | - | NULL | - |
@@ -107,6 +107,9 @@ IF RESULT > -999999.99999 THEN DO;
 ## Change Log
 ### July 15, 2021
 * Mapping added to VALUE_AS_CONCEPT_ID
+
+### August 9, 2021
+  * VALUE_SOURCE_VALUE is now created by concatenating result, resultcat, and abnormal
 
 ### July 13, 2021
 * Changed logic referring to how lab result source values should be represented in the CDM:
