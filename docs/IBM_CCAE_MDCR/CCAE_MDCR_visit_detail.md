@@ -50,10 +50,10 @@ The **VISIT_DETAIL** table will have 1:1 record level referential integrity to *
 | --- | --- | --- | --- |
 | VISIT_DETAIL_ID | - | System generated. | - |
 | PERSON_ID | ENROLID | - |  |
-| VISIT_DETAIL_CONCEPT_ID | STDPLAC | Use the <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html">Source-to-Standard Query</a> with the filter<br><br>   `WHERE SOURCE_VOCABULARY_ID IN ('CMS Place of Service’)`<br>`AND TARGET_STANDARD_CONCEPT = 'S'`<br/><br/>If no map is made, assign to 0.|**NOTE:** The STDPLAC value in OUTPATIENT_SERVICES is only one digit for the numbers 1-9. In the OMOP Vocabulary these are two digits, presented as 01, 02, etc. Please add a leading zero prior to mapping to make sure they are not erroneously set to zero.|
+| VISIT_DETAIL_CONCEPT_ID | STDPLAC | Use the <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html">Source-to-Standard Query</a> with the filter<br><br>   `WHERE SOURCE_VOCABULARY_ID IN ('CMS Place of Service’)`<br>`AND TARGET_STANDARD_CONCEPT = 'S'`<br/><br/>If no map is made, assign to 0.|**NOTE:** The STDPLAC value in OUTPATIENT_SERVICES is only one digit for the numbers 1-9. In the OMOP Vocabulary these are two digits, presented as 01, 02, etc. Please add a leading zero prior to mapping to make sure they are not erroneously set to zero.<br><br>If STDPLAC = 22 and TSVCDAT - SVCDATE > 1 then set VISIT_DETAIL_CONCEPT_ID to 9201|
 | VISIT_DETAIL_START_DATE | SVCDATE | NULL | - |
 | VISIT_DETAIL_START_DATETIME | SVCDATE | - | Set time to 00:00:00. |
-| VISIT_DETAIL_END_DATE | TSVCDAT (See *Logic* column for exceptions)| If STDPLAC is blank, NULL, does not have a mapping or is equal to 11, 01, 95, 12, 20, 49, 60, 15, 81, 42, 41, 14, 04, 18, 09, 03 or 16 then set visit_detail_end_date equal to visit_detail_start_date. <br><br>If STDPLAC is equal to 23 or 22 and lst_dt - fst_dt > 1 then set visit_detail_end_date equal to visit_detail_start_date | - |
+| VISIT_DETAIL_END_DATE | TSVCDAT (See *Logic* column for exceptions)| If STDPLAC is blank, NULL, does not have a mapping or is equal to 02, 08, 17, 53, 57, 71, 72, 11, 01, 95, 12, 20, 49, 60, 15, 81, 42, 41, 14, 04, 18, 09, 03, 65 or 16 then set visit_detail_end_date equal to visit_detail_start_date. <br><br>If STDPLAC is equal to 23, 24, 19, 25, 50, 62 and TSVCDAT - SVCDATE > 1 then set visit_detail_end_date equal to visit_detail_start_date <br><br>If STDPLAC = 22 and TSVCDAT - SVCDATE > 1 then set VISIT_DETAIL_CONCEPT_ID to 9201| - |
 | VISIT_DETAIL_END_DATETIME | VISIT_DETAIL_END_DATE | - | Set time to 00:00:00. |
 | VISIT_DETAIL_TYPE_CONCEPT_ID | - | Set all to `32860` (Outpatient claim detail) | - |
 | PROVIDER_ID | PROVID<br>STDPROV | Look up the PROVIDER_ID from the PROVIDER table using PROVID as the PROVIDER_SOURCE_VALUE and STDPROV as the SPECIALITY_SOURCE_VALUE | If there is no associated PROVIDER_ID this should be NULL, not 0 |
@@ -76,10 +76,10 @@ The **VISIT_DETAIL** table will have 1:1 record level referential integrity to *
 | --- | --- | --- | --- |
 | VISIT_DETAIL_ID | - |  System generated. | - |
 | PERSON_ID | ENROLID | - | - |
-| VISIT_DETAIL_CONCEPT_ID | STDPLAC | Use the <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html">Source-to-Standard Query</a> with the filter<br><br>   `WHERE SOURCE_VOCABULARY_ID IN ('CMS Place of Service’)`<br>`AND TARGET_STANDARD_CONCEPT = 'S'`<br/><br/>If no map is made, assign to 0.|**NOTE:** The STDPLAC value in INPATIENT_SERVICES is only one digit for the numbers 1-9. In the OMOP Vocabulary these are two digits, presented as 01, 02, etc. Please add a leading zero prior to mapping to make sure they are not erroneously set to zero.|
+| VISIT_DETAIL_CONCEPT_ID | STDPLAC | Use the <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html">Source-to-Standard Query</a> with the filter<br><br>   `WHERE SOURCE_VOCABULARY_ID IN ('CMS Place of Service’)`<br>`AND TARGET_STANDARD_CONCEPT = 'S'`<br/><br/>If no map is made, assign to 0.|**NOTE:** The STDPLAC value in INPATIENT_SERVICES is only one digit for the numbers 1-9. In the OMOP Vocabulary these are two digits, presented as 01, 02, etc. Please add a leading zero prior to mapping to make sure they are not erroneously set to zero.<br><br>If STDPLAC = 22 and TSVCDAT - SVCDATE > 1 then set VISIT_DETAIL_CONCEPT_ID to 9201|
 | VISIT_DETAIL_START_DATE | SVCDATE | NULL | - |
 | VISIT_DETAIL_START_DATETIME | SVCDATE | - | Set time to 00:00:00. |
-| VISIT_DETAIL_END_DATE | TSVCDAT (See *Logic* column for exceptions)| If STDPLAC is blank, NULL, does not have a mapping or is equal to 11, 01, 95, 12, 20, 49, 60, 15, 81, 42, 41, 14, 04, 18, 09, 03 or 16 then set visit_detail_end_date equal to visit_detail_start_date. <br><br>If STDPLAC is equal to 23 or 22 and lst_dt - fst_dt > 1 then set visit_detail_end_date equal to visit_detail_start_date | - |
+| VISIT_DETAIL_END_DATE | TSVCDAT (See *Logic* column for exceptions)| If STDPLAC is blank, NULL, does not have a mapping or is equal to 02, 08, 17, 53, 57, 71, 72, 11, 01, 95, 12, 20, 49, 60, 15, 81, 42, 41, 14, 04, 18, 09, 03, 65 or 16 then set visit_detail_end_date equal to visit_detail_start_date. <br><br>If STDPLAC is equal to 23, 24, 19, 25, 50, 62 and TSVCDAT - SVCDATE > 1 then set visit_detail_end_date equal to visit_detail_start_date <br><br>If STDPLAC = 65 or 22 and TSVCDAT - SVCDATE > 1 then set VISIT_DETAIL_CONCEPT_ID to 9201| - |
 | VISIT_DETAIL_END_DATETIME | VISIT_DETAIL_END_DATE | - | Set time to 00:00:00. |
 | VISIT_DETAIL_TYPE_CONCEPT_ID | - | Set all to `32854` (Inpatient claim detail) | - |
 | PROVIDER_ID | PROVID<br>STDPROV | Look up the PROVIDER_ID from the PROVIDER table using PROVID as the PROVIDER_SOURCE_VALUE and STDPROV as the SPECIALITY_SOURCE_VALUE | If there is no associated PROVIDER_ID this should be NULL, not 0 |
@@ -102,10 +102,10 @@ The **VISIT_DETAIL** table will have 1:1 record level referential integrity to *
 | --- | --- | --- | --- |
 | VISIT_DETAIL_ID | - | System generated. | - |
 | PERSON_ID | ENROLID | - |  |
-| VISIT_DETAIL_CONCEPT_ID | STDPLAC | Use the <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html">Source-to-Standard Query</a> with the filter<br><br>   `WHERE SOURCE_VOCABULARY_ID IN ('CMS Place of Service’)`<br>`AND TARGET_STANDARD_CONCEPT = 'S'`<br/><br/>If no map is made, assign to 0.|**NOTE:** The STDPLAC value in FACILITY_HEADER is only one digit for the numbers 1-9. In the OMOP Vocabulary these are two digits, presented as 01, 02, etc. Please add a leading zero prior to mapping to make sure they are not erroneously set to zero.|
+| VISIT_DETAIL_CONCEPT_ID | STDPLAC | Use the <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html">Source-to-Standard Query</a> with the filter<br><br>   `WHERE SOURCE_VOCABULARY_ID IN ('CMS Place of Service’)`<br>`AND TARGET_STANDARD_CONCEPT = 'S'`<br/><br/>If no map is made, assign to 0.|**NOTE:** The STDPLAC value in FACILITY_HEADER is only one digit for the numbers 1-9. In the OMOP Vocabulary these are two digits, presented as 01, 02, etc. Please add a leading zero prior to mapping to make sure they are not erroneously set to zero.<br><br>If STDPLAC = 22 and TSVCDAT - SVCDATE > 1 then set VISIT_DETAIL_CONCEPT_ID to 9201|
 | VISIT_DETAIL_START_DATE | SVCDATE | NULL | - |
 | VISIT_DETAIL_START_DATETIME | SVCDATE | - | Set time to 00:00:00. |
-| VISIT_DETAIL_END_DATE | TSVCDAT (See *Logic* column for exceptions)| If STDPLAC is blank, NULL, does not have a mapping or is equal to 11, 01, 95, 12, 20, 49, 60, 15, 81, 42, 41, 14, 04, 18, 09, 03 or 16 then set visit_detail_end_date equal to visit_detail_start_date. <br><br>If STDPLAC is equal to 23 or 22 and lst_dt - fst_dt > 1 then set visit_detail_end_date equal to visit_detail_start_date  | - |
+| VISIT_DETAIL_END_DATE | TSVCDAT (See *Logic* column for exceptions)| If STDPLAC is blank, NULL, does not have a mapping or is equal to 02, 08, 17, 53, 57, 71, 72, 11, 01, 95, 12, 20, 49, 60, 15, 81, 42, 41, 14, 04, 18, 09, 03, 65 or 16 then set visit_detail_end_date equal to visit_detail_start_date. <br><br>If STDPLAC is equal to 23, 24, 19, 25, 50, 62 and TSVCDAT - SVCDATE > 1 then set visit_detail_end_date equal to visit_detail_start_date <br><br>If STDPLAC = 65 or 22 and TSVCDAT - SVCDATE > 1 then set VISIT_DETAIL_CONCEPT_ID to 9201 | - |
 | VISIT_DETAIL_END_DATETIME | VISIT_DETAIL_END_DATE | - | Set time to 00:00:00. |
 | VISIT_DETAIL_TYPE_CONCEPT_ID | - | Set all to `32846` (Facility Claim Header) | - |
 | PROVIDER_ID | PROVID<br>STDPROV | Look up the PROVIDER_ID from the PROVIDER table using PROVID as the PROVIDER_SOURCE_VALUE and STDPROV as the SPECIALITY_SOURCE_VALUE | If there is no associated PROVIDER_ID this should be NULL, not 0 |
@@ -175,6 +175,11 @@ Only use records where RXMR <> 2 as we do not want mail-in pharmacy records crea
 | VISIT_OCCURRENCE_ID | - | **VISIT_OCCURRENCE**.VISIT_OCCURRENCE_ID    This is the VISIT_OCCURRENCE_ID for the VISIT_OCCURRENCE record that is the parent for the VISIT_DETAIL record | - |
 
 ## Change Log
+
+### August 9, 2021
+* Added 02, 08, 17, 53, 57, 71, 72, 65 to the list of STDPLAC where the visit_detail_end_date should be equal to the visit_detail_start_date
+* Added 24, 19, 25, 50, 62 to the list of STDPLAC where if TSVCDAT - SVCDATE > 1 then set visit_detail_end_date equal to visit_detail_start_date
+* Added logic stating if a record with STDPLAC 22 has TSVCDAT - SVCDATE > 1 then set VISIT_DETAIL_CONCEPT_ID to 9201
 
 ### June 10, 2021
 * Reverted logic that included lab results as visits and mail-in order pharmacy records as visits.

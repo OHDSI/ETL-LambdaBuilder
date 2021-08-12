@@ -26,7 +26,7 @@ description: "OPTUM EHR NLP_Measurement table to STEM"
 | concept_id |measurement_type |Use the [SOURCE_TO_STANDARD](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_STANDARD.sql) query to map the code to standard concept(s) with the following filters: <br> <br>  Where source_vocabulary_id = 'JNJ_OPTUM_EHR_NLPM'  and Target_standard_concept = 'S'  and target_invalid_reason is NULL<br><br>If there is no mapping available, set concept_id to zero.| |
 |source_value|measurement_type|||
 | source_concept_id |0 || |
-| type_concept_id | 32831  | EHR Note| | 
+| type_concept_id | 32858  | NLP| | 
 | operator_concept_id |0 | | |
 | unit_concept_id | measurement_detail | If the inbound record maps to measurement_concept_id = (Body mass index), then set the unit_concept_id to 9531 (kilogram per square meter). Otherwise, follow these rules: Map to UCUM vocabulary using a CASE-SENSITIVE matching; if no match if found, match to the JNJ_UNITS STCM. If no match is found in either vocabulary, set this field to 0.| |
 | unit_source_value | measurement_detail | | |

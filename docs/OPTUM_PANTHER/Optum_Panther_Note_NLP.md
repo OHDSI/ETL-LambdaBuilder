@@ -19,7 +19,7 @@ This section describes how the multiple NLP tables in Optum EHR should be mapped
 |     person_id    |     ptid    |          |          |
 |     note_date    |     note_date    |          |          |
 |     Note_datetime    |   note_date       |  Set time to midnight        |          |
-|     Note_type_concept_id    |     44814642    |     Pathology report    |          |
+|     Note_type_concept_id    |     32858    |     NLP    |          |
 |     Note_class_concept_id    |     44817649    |     Plan of care and summary note    |          |
 |     Note_title    |     ‘NLP_BIOMARKERS’    |      Store the name of the table of origin    |          |
 |     Note_text    |     biomarker_status     variation_detail     biomarker    |     Format as a single string by   concatenating as a set of name value pairs. The resulting text should look   like:     Concatenate biomarker:<biomarker>; variation_detail :<variation_detail>;   biomarker_status:<biomarker_status>     This may require truncation of   the string on MPP platforms since the resulting string could be quite long.    |          |
@@ -37,7 +37,7 @@ This section describes how the multiple NLP tables in Optum EHR should be mapped
 |     person_id    |     ptid    |          |          |
 |     note_date    |     note_date    |          |          |
 |     Note_datetime    |    note_date      |   Set time to midnight   |          |
-|     Note_type_concept_id    |     44814642    |     Note – note type concept    |          |
+|     Note_type_concept_id    |     32858    |     NLP    |          |
 |     Note_class_concept_id    |     44817649    |     Plan of care and summary note    |          |
 |     Note_title    |     ‘NLP_CUSTOM’    |      Store the name of the table of origin    |          |
 |     Note_text    |     Nlp_term     Nlp_term_attribute_1     Nlp_term_attribute_2     Nlp_term_qualifier    |     Format as a single string by   concatenating as a set of name value pairs. The resulting text should look   like:     Concatenate term:<nlp_term>; term_attribute_1:<nlp_term_attribute_1>;term_attribute_2:<nlp_term_attribute_2>;nlp_term_qualifier:<nlp_term_qualifier>     This may require truncation of   the string on MPP platforms since the resulting string could be quite long.    |          |
@@ -55,7 +55,7 @@ This section describes how the multiple NLP tables in Optum EHR should be mapped
 |     person_id    |     ptid    |          |          |
 |     note_date    |     note_date    |          |          |
 |     Note_datetime    |    note_date      |   Set time as midnight   |          |
-|     Note_type_concept_id    |     44814645    |     Note – note type concept    |          |
+|     Note_type_concept_id    |     32831   |     EHR Note    |          |
 |     Note_class_concept_id    |     44817649    |     Plan of care and summary note    |          |
 |     Note_title    |     ‘NLP_DRUG_RATIONALE’    |      Store the name of the table of origin    |          |
 |     Note_text    |     Drug_name     drug_action     drug_action_preposition     reason_general     sentiment     sentiment_who    |     Format as a single string by   concatenating as a set of name value pairs. The resulting text should look   like:           drug_name:<drug_name>;drug_Action:   <drug_action>; drug_action_preposition:<drug_action_preposition>;   reason_general:< reason_general>;sentiment:<sentiment>; sentiment_who:<sentiment_who>              This may require truncation of   the string on MPP platforms since the resulting string could be quite long.    |          |
@@ -73,7 +73,7 @@ This section describes how the multiple NLP tables in Optum EHR should be mapped
 |     person_id    |     ptid    |          |          |
 |     note_date    |     note_date    |          |          |
 |     Note_datetime    |    note_date   |   Set time as midnight    |          |
-|     Note_type_concept_id    |     44814645    |     Note – note type concept    |          |
+|     Note_type_concept_id    |     32858    |     NLP    |          |
 |     Note_class_concept_id    |     44817649    |     Plan of care and summary note    |          |
 |     Note_title    |     ‘NLP_MEASUREMENT’    |      Store the name of the table of origin    |          |
 |     Note_text    |     measurement_type,     measurement_value,     measurement_detail,     measurement_year,     measurement_monthyear,     measurement_date    |     Format as a single string by   concatenating as a set of name value pairs. The resulting text should look   like:           type:<measurement_type>;value:   <measurement_value>; detail:<measurement_detail>; year:<measurement_year>;monthyear:<monthyear>;   date:<measurement_date>            This may require truncation of   the string on MPP platforms since the resulting string could be quite long.    |          |
@@ -91,7 +91,7 @@ This section describes how the multiple NLP tables in Optum EHR should be mapped
 |     person_id    |     ptid    |          |          |
 |     note_date    |     note_date    |          |          |
 |     Note_datetime    |     note_date     |   Set time to midnight   |          |
-|     Note_type_concept_id    |     44814645    |     Note – note type concept    |          |
+|     Note_type_concept_id    |     32858    |     NLP    |          |
 |     Note_class_concept_id    |     44817649    |     Plan of care and summary note    |          |
 |     Note_title    |     ‘NLP_SDS’    |      Store the name of the table of origin    |          |
 |     Note_text    |     sds_term sds_location     sds_attribute     sds_sentiment    |     Format as a single string by   concatenating as a set of name value pairs. The resulting text should look   like:           term:<sds_term>;location:   <sds_location>; attribute:<sds_attribute>;   sentiment:<sds_sentiment>            This may require truncation of   the string on MPP platforms since the resulting string could be quite long.    |          |
@@ -109,7 +109,7 @@ This section describes how the multiple NLP tables in Optum EHR should be mapped
 |     person_id    |     ptid    |          |          |
 |     note_date    |     note_date    |          |          |
 |     Note_datetime    |   note_date       |   Set time to midnight  |          |
-|     Note_type_concept_id    |     44814645    |     Note – note type concept    |          |
+|     Note_type_concept_id    |     32858    |     NLP    |          |
 |     Note_class_concept_id    |     44817649    |     Plan of care and summary note    |          |
 |     Note_title    |     ‘NLP_SDS_FAMILY’    |      Store the name of the table of origin    |          |
 |     Note_text    |     sds_term     sds_location sds_family_member     sds_sentiment    |     Format as a single string by   concatenating as a set of name value pairs. The resulting text should look   like:           term:<sds_term>;location:   <sds_location>; family_member:<sds_family_member>;   sentiment:<sds_sentiment>            This may require truncation of   the string on MPP platforms since the resulting string could be quite long.    |          |

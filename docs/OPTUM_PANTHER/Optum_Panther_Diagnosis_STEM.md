@@ -18,6 +18,9 @@ The **Diagnosis** table has multiple columns we use to assign CONDITION_STATUS_C
 1|	0	|1	|any value|	32903| 
 0	|0	|0|	History of|	4188893|
 0|	0	|0|	Possible diagnosis of|	32899|
+0|1|any value|any value|32830|
+0|0|1|any value|32896|
+0|0|0|any value | 0
 
 
 ## Reading from OPTUM_EHR.Diagnosis
