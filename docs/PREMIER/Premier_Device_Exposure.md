@@ -30,9 +30,12 @@ The field mapping is as follows:
 | DEVICE_EXPOSURE_START_DATETIME  | -  | NULL  |  |
 | DEVICE_EXPOSURE_END_DATE  |    |  |  |
 | DEVICE_EXPOSURE_END_DATETIME  | -  | NULL  |  |
-| DEVICE_TYPE_CONCEPT_ID  | -  | 44818705Inferred from procedure claim  |  |
+| DEVICE_TYPE_CONCEPT_ID | -  | All records within the device_exposure table should have a device_type_concept_id = 32875 (Provider financial system) |  |
 | UNIQUE_DEVICE_ID  | -  | NULL  |  |
 | PROVIDER_ID  | PAT.ADMPHY  |  |  |
 | VISIT_OCCURRENCE_ID  | PAT.PAT_KEY  |  |  |
 | DEVICE_SOURCE_VALUE  | PATCPT.CPT_CODE For all other procedures: CHGMSTR.STD_CHG_CODE_DESC/ HOSP_CHG.HOSP_CHG_DESC   | SELECT SOURCE_VALUE FROM  ( SELECT CONCAT(STD_CHG_DESC, ' / ', HOSP_CHG_DESC) AS SOURCE_VALUE FROM PATBILL A JOIN CHGMSTR B ON A.STD_CHG_CODE=B.STD_CHG_CODE JOIN hospchg C ON A.hosp_chg_id=C.hosp_chg_id  ) A UNION ( SELECT CPT_CODE AS SOURCE_VALUE FROM PATCPT )  | To preserve the most detailed description of procedures, if hospital charge descriptions are available, they are to be used, otherwise standard charge code description is displayed  |
 | DEVICE_SOURCE_CONCEPT_ID  | -  | NULL  |  |
+
+## Change Log:
+* 2021.08.12:  Updated DEVICE_TYPE_CONCEPT_ID to leverage standard concept id.

@@ -29,7 +29,7 @@ The field mapping is performed as follows:
 | MEASUREMENT_CONCEPT_ID | PATCPT.CPT_CODE<br>PATBILL.STD_CHG_CODE<br>PATICD_DIAG.ICD_CODE<br>PATBILL.STD_CHG_DESC | QUERY: SOURCE TO STANDARDSELECT TARGET_CONCEPT_IDFROM CTE_VOCAB_MAP WHERE SOURCE_VOCABULARY_ID IN ('CPT4', 'HCPCS', 'ICD10CM', 'ICD9CM', 'JNJ_PMR_PROC_CHRG_CD')AND TARGET_DOMAIN_ID = 'Measurement'When operation time measurement values then 3016562  | Only capture those records that have a domain map to Measurement. |
 | MEASUREMENT_DATE | VISIT_OCCURRENCE.VISIT_START_DATEPATBILL.SERV_DAY <br>Or<br>VISIT_OCCURRENCE.VISIT_END_DATE <br>Or<br> VISIT_OCCURRENCE.VISIT_START_DATEPATICD_PROC.PROC_DAY |  | If measurement is from PATBILL use a combination of service day and visit start date unless the service day is greater than the end of the monthIf measurement comes from PATCPT then use visit end dateFor operation time measurement, a combination of procedure day and visit start date unless the procedure day is greater than the end of the month |
 | MEASUREMENT_DATETIME | - | NULL |  |
-| MEASUREMENT_TYPE_CONCEPT_ID | - | For operation time records 45754907-Derived valueelse44818701-From physical examination |  |
+| MEASUREMENT_TYPE_CONCEPT_ID | - | All records within the measurement table should have a measurement_type_concept_id = 32875 (Provider financial system) |  |
 | OPERATOR_CONCEPT_ID | - | NULL |  |
 | VALUE_AS_NUMBER | - | See query below |  |
 | VALUE_AS_CONCEPT_ID | - | NULL |  |
@@ -42,3 +42,6 @@ The field mapping is performed as follows:
 | MEASUREMENT_SOURCE_CONCEPT_ID | - | QUERY: SOURCE TO SOURCESELECT SOURCE_CONCEPT_IDFROM CTE_VOCAB_MAPWHERE SOURCE_VOCABULARY_ID IN ('CPT4', 'HCPCS')AND TARGET_VOCABULARY_ID IN ('CPT4', 'HCPCS') AND DOMAIN_ID='Measurement' | Only populated for standard coding CPT4, and HCPCS codes |
 | UNIT_SOURCE_VALUE | - | NULL |  |
 | VALUE_SOURCE_VALUE | - | NULL |  |
+
+## Change Log:
+* 2021.08.11:  Updated MEASUREMENT_TYPE_CONCEPT_ID to leverage standard concept id.

@@ -30,7 +30,7 @@ The field mapping is performed as follows:
 | DRUG_EXPOSURE_END_DATE | DRUG_EXPOSURE.DRUG_EXPOSURE_START_DATE | DRUG_EXPOSURE.DRUG_EXPOSURE_START_DATE | Now a required field. No info on days supply, so set same date as drug_exposure_start_date |
 | DRUG_EXPSURE_END_DATETIME | - | NULL |  |
 | VERBATIM_END_DATE | - | NULL |  |
-| DRUG_TYPE_CONCEPT_ID |  | 38000180- Inpatient administration |  |
+| DRUG_TYPE_CONCEPT_ID |  | All records within the drug_exposure table should have a drug_type_concept_id = 32875 (Provider financial system) |  |
 | STOP_REASON | - | NULL |  |
 | REFILLS | - | NULL |  |
 | QUANTITY | PATBILL.STD_QTY |  | Value is applied only to records that come from PATBILL, else records from PATCPT or PATICD are NULL |
@@ -44,3 +44,6 @@ The field mapping is performed as follows:
 | DRUG_SOURCE_CONCEPT_ID | - | NULL |  |
 | ROUTE_SOURCE_VALUE | - | NULL |  |
 | DOSE_UNIT_SOURCE_VALUE | - | NULL |  |
+
+## Change Log:
+* 2021.08.11:  Updated DRUG_TYPE_CONCEPT_ID to leverage standard concept id.

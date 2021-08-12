@@ -20,4 +20,4 @@ The field mapping is as follows:
 | PERSON_ID | PAT.MEDREC_KEY |  |  |
 | OBSERVATION_PERIOD_START_DATE | VISIT_OCCURRENCE.VISIT_START_DATE |  |  |
 | OBSERVATION_PERIOD_END_DATE | VISIT_OCCURRENCE.VISIT_END_DATE |  |  |
-| PERIOD_TYPE_CONCEPT_ID | - | 44814725= Period inferred by algorithm |  |
+| PERIOD_TYPE_CONCEPT_ID | - | All records within the observation_period table should have a period_type_concept_id = 32875 (Provider financial system) |  |

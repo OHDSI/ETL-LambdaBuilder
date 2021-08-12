@@ -1,8 +1,8 @@
 ---
 title: "Condition Occurrence"
 author: "Andryc, A; Fortin, S"
-parent: Premier
 nav_order: 3
+parent: Premier
 layout: default
 ---
 
@@ -23,11 +23,17 @@ The field mapping is performed as follows:
 | CONDITION_START_DATETIME | - | NULL |  |
 | CONDITION_END_DATE | - | NULL |  |
 | CONDITION_END_DATETIME | - | NULL |  |
-| CONDITION_TYPE_CONCEPT_ID | - | For records from PATICD_DIAG.ICD_CODE:when PAT.I_O_IND =’I’ and ICD.PRI_SEC =’P’ then 38000183when PAT.I_O_IND=’I’ and  PATICD_DIAG.ICD_PRI_SEC =’S’ then 38000185when PAT.I_O_IND=’O’ and  PATICD_DIAG.ICD_PRI_SEC =’P’ then 38000215when PAT.I_O_IND=’O’ and  PATICD_DIAG.ICD_PRI_SEC =’S’ then 38000216when PAT.I_O_IND in (’I’ , “O”) and PATICD_DIAG.ICD_PRI_SEC =’A’ then 4203942For records from PATBILL.STD_CHG_CODE:when PAT.I_O_IND =’I’ then 38000186when PAT.I_O_IND=’O’ then 38000217 |  |
+| CONDITION_TYPE_CONCEPT_ID | | Records coming from the PATICD_DIAG table should be given a condition_type_concept_id = 32818 (EHR Administration Record) <BR> Records coming from the PATBILL.STD_CHG_CODE table should be given a condition_type_concept_id = 32852 (Hospital Cost)|  |
 | STOP_REASON | - | NULL |  |
 | PROVIDER_ID | PAT.ADMPHY | NULL |  |
 | VISIT_OCCURRENCE_ID | PAT.PAT_KEY |  |  |
 | CONDITION_SOURCE_VALUE | PATICD_DIAG.ICD_CODE |  |  |
 | CONDITION_SOURCE_CONCEPT_ID |  | QUERY: SOURCE TO SOURCESELECT SOURCE_CONCEPT_IDFROM CTE_VOCAB_MAPWHERE SOURCE_VOCABULARY_ID IN ('ICD9CM', 'ICD10', 'ICD10CM')AND TARGET_VOCABULARY_ID IN ('ICD9CM', 'ICD10', 'ICD10CM') AND DOMAIN_ID='CONDITION' |  |
-| CONDITION_STATUS_SOURCE_VALUE | PATICD_DIAG.ICD_POA |  |  |
-| CONDITION_STATUS_CONCEPT_ID | PATICD_DIAG.ICD_POA | When PATICD_DIAG.ICD_POA in (‘W’, ‘Y’) then 46236988Else 0 |  |
+| CONDITION_STATUS_SOURCE_VALUE | PATICD_DIAG.ICD_PRI_SEC <br> PATBILL |  | Records coming from PATICD_DIAG will have condition_status_source_value = 'A', 'P' or 'S'.<br><br>  Records coming from PATBIL will have a condition_status_source_value = 'From PATBILL - No information provided' |
+| CONDITION_STATUS_CONCEPT_ID | PATICD_DIAG.ICD_PRI_SEC | Records from PATICD_DIAG: <br> ICD_PRI_SEC = A, then 32890 (admission diagnosis) <br> ICD_PRI_SEC = P, then 32902 (primary diagnosis) <br> ICD_PRI_SEC = S, then 32908 (secondary diagnosis) <br><br> Records from PATBILL: <br> Assign 32908 (secondary diagnosis)| |
+
+## Change log:
+ * 2021.08.11:  
+     + Updated CONDITION_STATUS_CONCEPT_ID to leverage icd_pir_sec and the standard status concepts. This replaced previous logic leveraging ICD_POA.  
+     + Added comments to CONDITION_SOURCE_VALUE.
+     + Updated CONDITION_TYPE_CONCEPT_ID so that it leveraged standard type concepts moving forward.

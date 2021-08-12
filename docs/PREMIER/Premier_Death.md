@@ -17,7 +17,10 @@ The field mapping is as follows:
 | PERSON_ID | PAT.MEDREC_KEY |||
 | DEATH_DATE | VISIT_OCCURRENCE.VISIT_END_DATE || The exact date of death cannot be determined thus the VISIT_END date is used. |
 | DEATH_DATETIME || NULL ||
-| DEATH_TYPE_CONCEPT_ID | PAT.DISC_STATUS <br>OR<br> PATICD.ICD_CODE | Logic based on discharge status or ICD9 diagnosis code. If discharge code is present then assign 38003566, a discharge status of PAT.DISC_STATUS in (20, 40, 41, 42) indicates death.  Otherwise search PATICD.ICD_CODE records for ICD codes and assign 38003567.To identify death ICD codes, use the following.  QUERY: SOURCE TO STANDARD SELECT SOURCE_CODEFROM CTE_VOCAB_MAP WHERE SOURCE_VOCABULARY_ID = ‘JNJ_DEATH’ ||
+| DEATH_TYPE_CONCEPT_ID | PAT.DISC_STATUS <br> PATICD.ICD_CODE | Logic based on discharge status or ICD9 diagnosis code. A discharge status of PAT.DISC_STATUS in (20, 40, 41, 42) indicates death.  If discharge status is present then assign 32812 (claim discharge record).  Otherwise search PATICD.ICD_CODE records for ICD codes and assign 32875 (provider financial system).  <br><br>To identify death ICD codes, use the following.  QUERY: SOURCE TO STANDARD SELECT SOURCE_CODEFROM CTE_VOCAB_MAP WHERE SOURCE_VOCABULARY_ID = ‘JNJ_DEATH’ ||
 | CAUSE_CONCEPT_ID || NULL ||
 | CAUSE_SOURCE_VALUE || NULL ||
 | CAUSE_SOURCE_CONCEPT_ID || NULL ||
+
+## Change log:
+ * 2021.08.12: DEATH_TYPE_CONCEPT_ID so that it leveraged standard type concepts moving forward.
