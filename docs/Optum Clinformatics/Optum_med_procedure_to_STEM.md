@@ -46,5 +46,5 @@ The STEM table is a staging area where source codes like ICD9 codes will first b
 | concept_id | **MED_PROCEDURE**<br>PROC|Use the SOURCE_TO_STANDARD query with the filter<br/><br/>Use the SOURCE_TO_STANDARD query<br/><br/> WHERE SOURCE_VOCABULARY_ID IN (*'ICD9Proc'* OR *'ICD10PCS'*, 'HCPCS','CPT4') AND TARGET_STANDARD_CONCEPT ='S' AND TARGET_INVALID_REASON IS NULL AND TARGET_CONCEPT_CLASS_ID NOT IN ('HCPCS Modifier','CPT4 Modifier') |If ICD_FLAG = 9 then use 'ICD9Proc', else if ICD_FLAG = 10 then use 'ICD10PCS'|
 | source_value | **MED_PROCEDURE**<br>PROC|||
 | source_concept_id |**MED_PROCEDURE**<br>PROC |Use the SOURCE_TO_SOURCE query with the filter<br><br>WHERE SOURCE_VOCABULARY_ID IN (*'ICD9Proc'* OR *'ICD10PCS'*) |If ICD_FLAG = 9 then use 'ICD9Proc', else if ICD_FLAG = 10 then use 'ICD10PCS'|
-| type_concept_id |**MED_PROCEDURE**<br>PROC_POSITION |If PROC_POSITION = 01 then use concept_id = 44786630 (Primary condition). Use 44786631 (Secondary Procedure) for all others.  ||
+| type_concept_id | 32810 (Claim)|  ||
 | end_datetime | |||

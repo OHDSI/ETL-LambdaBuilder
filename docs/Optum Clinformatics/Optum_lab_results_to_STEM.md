@@ -62,7 +62,7 @@ The STEM table is a staging area where source codes like ICD9 codes will first b
 | concept_id | LOINC_CD, PROC_CD|Use the SOURCE_TO_STANDARD query with the filter<br/><br/>**LOINC_CD**<br> WHERE SOURCE_VOCABULARY_ID IN ('LOINC') AND TARGET_STANDARD_CONCEPT ='S' AND TARGET_INVALID_REASON IS NULL <br/><br/>**PROC_CD**<br> WHERE SOURCE_VOCABULARY_ID IN ('HCPCS','CPT4') AND TARGET_STANDARD_CONCEPT ='S' AND TARGET_INVALID_REASON IS NULL AND TARGET_CONCEPT_CLASS_ID NOT IN ('HCPCS Modifier','CPT4 Modifier')| Start with LOINC_CD, if it does not have a mapping then try to map the PROC_CD. If the PROC_CD does not have a mapping then set concept_id to 0|
 | source_value |LOINC_CD, PROC_CD|||
 | source_concept_id |LOINC_CD, PROC_CD|Use the SOURCE_TO_SOURCE query with the filter<br/><br/>**LOINC_CD**<br> WHERE SOURCE_VOCABULARY_ID IN ('LOINC') <br/><br/>**PROC_CD**<br> WHERE SOURCE_VOCABULARY_ID IN ('HCPCS','CPT4') |Put the SOURCE_CONCEPT_ID of the either the LOINC_CD or PROC_CD that was used to map the standard concept_id.|
-| type_concept_id |Set to 44818702 (Lab Result)|||  
+| type_concept_id |Set to 32856 (Lab)|||  
 | operator_concept_id | See the above logic to assign this value based on the first to characters of the RSLT_TXT field. |||
 | unit_concept_id | **LAB_RESULTS** RSLT_UNIT_NM |Use the SOURCE_TO_STANDARD query with the filter <br><br>Where SOURCE_VOCABULARY_ID = 'UCUM' AND TARGET_STANDARD_CONCEPT = 'S' AND TARGET_INVALID_REASON IS NULL|If there is no mapping to a standard concept then set to 0||
 | unit_source_value |**LAB_RESULTS** RSLT_UNIT_NM |||

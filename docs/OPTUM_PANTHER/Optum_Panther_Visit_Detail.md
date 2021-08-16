@@ -26,7 +26,7 @@ To find a provider associated with a VISIT_DETAIL record, join to the encounter_
 | visit_detail_start_datetime | Interaction_time | Combine interaction_date and interaction_time into a datetime value |   |
 | visit_detail_end_date | Interaction_date  |   |   |
 | visit_detail_end_datetime |  Interaction_time | Combine interaction_date and interaction_time into a datetime value  |   |
-| visit_detail_type_concept_id |   | 44818518 | Visit derived from EHR record |
+| visit_detail_type_concept_id |   | 32827 | EHR encounter |
 | provider_id | encounter_provider.provid|  | Use the logic detailed above to choose a provider for the VISIT_DETAIL record. |
 | care_site_id |   |   |   |
 | visit_detail_source_value | interaction_type |   |   |
@@ -54,7 +54,7 @@ To find a provider associated with a VISIT_DETAIL record, join to the encounter_
 | visit_detail_start_datetime | carearea_time | Combine carearea_date and carearea_time into a datetime value |   |
 | visit_detail_end_date | carearea_date  |   |   |
 | visit_detail_end_datetime |  carearea_time | Combine carearea_date and carearea_time into a datetime value  |   |
-| visit_detail_type_concept_id |   | 44818518 | Visit derived from EHR record |
+| visit_detail_type_concept_id |   | 32828 | EHR episode record |
 | provider_id | encounter_provider.provid|  | Use the logic detailed above to choose a provider for the VISIT_DETAIL record. |
 | care_site_id |   |   |   |
 | visit_detail_source_value | carearea |   |   |

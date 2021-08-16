@@ -75,7 +75,7 @@ ISA9063|Observation|46235936|44786634|NULL|ISA5010|0|NULL|(9063) Have you made a
 | concept_id | See the above table to assign HRA questions to standard concept ids||
 | source_value | See the above table to assign source values|||
 | source_concept_id |0| ||
-| type_concept_id |Use concept 44786634|||  
+| type_concept_id |Use concept 32850|||  
 | operator_concept_id | |||
 | unit_concept_id | See the above table for assigning this value for each question|||
 | unit_source_value | See the above table for assigning this value for each question|||

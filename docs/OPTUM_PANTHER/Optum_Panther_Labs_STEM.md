@@ -26,7 +26,7 @@ description: "OPTUM EHR Labs table to STEM"
 | concept_id | test_name |Use the [SOURCE_TO_STANDARD](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_STANDARD.sql) query to map the code to standard concept(s) with the following filters: <br> <br>  Where source_vocabulary_id = 'JNJ_OPTUM_EHR_LABNAM'  and Target_standard_concept = 'S'  and target_invalid_reason is NULL<br><br>If there is no mapping available, set concept_id to zero.| |
 |source_value|test_name|||
 | source_concept_id |0 || |
-| type_concept_id | 44818702  | Lab result| | 
+| type_concept_id | 32856  | Lab result| | 
 | operator_concept_id |relative_indicator | When relative_indicator is NULL/empty, leave the value as NULL. Otherwise do as follows:<br><br>CASE WHEN relative_incicator == ‘<=’ THEN 4171754<br>CASE WHEN relative_incicator == ‘>=’ THEN 4171755<br>CASE WHEN relative_incicator == ‘<’ THEN 4171756 <br>CASE WHEN relative_incicator == ‘=’ THEN 4172703 <br>CASE WHEN relative_incicator == ‘>’ THEN 4172704<br>ELSE 0| |
 | unit_concept_id | result_unit  | Map to UCUM vocabulary using a CASE-SENSITIVE matching; if no match if found, match to the JNJ_UNITS STCM. If no match is found in either vocabulary, set this field to 0.| |
 | unit_source_value | result_unit | | |
