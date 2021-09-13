@@ -23,6 +23,49 @@ Records will be written from the OUTPATIENT_SERVICES table mapping the field REV
 
 **NOTE** the revenue codes are mapped to concepts with the vocabulary_id “Revenue Code”. All these concepts have the domain of “Revenue Code” as well. Since there is no revenue table, all records coming from the REVCODE field should go to the OBSERVATION table.
 
+## OHDSI Reproducibility Challenge
+
+For the reproduciblity challenge you should use **IBM CCAE v1676**. This version of the database uses type concepts instead of the CONDITION_STATUS_CONCEPT_ID to denote primary diagnoses. Please use the below table to choose the correct CONDITION_TYPE_CONCEPT_ID.
+
+|      Claim Type     |      Source                                              |      Position     |      CONDITION_TYPE     _CONCEPT_ID     |      CONCEPT_NAME                       |
+|---------------------|----------------------------------------------------------|-------------------|-----------------------------------------|-----------------------------------------|
+|     IP              |     INPATIENT_SERVICES and OUTPATIENT_SERVICES TABLES    |     1 (PDX)       |     38000183                            |     Inpatient detail – primary          |
+|                     |                                                          |     2 (DX1)       |     38000184                            |     Inpatient detail – 1st position     |
+|                     |                                                          |     3 (DX2)       |     38000185                            |     Inpatient detail - 2rd position     |
+|                     |                                                          |     4 (DX3)       |     38000186                            |     Inpatient detail - 3th position     |
+|                     |                                                          |     5 (DX4)       |     38000187                            |     Inpatient detail - 4th position     |
+|                     |                                                          |     6 (DX5)       |     38000188                            |     Inpatient detail - 5th position     |
+|                     |     INPATIENT_ADMISSIONS and FACILITY_HEADER TABLES      |     1 (PDX)       |     38000199                            |     Inpatient header - primary          |
+|                     |                                                          |     2 (DX1)       |     38000200                            |     Inpatient header - 1st position     |
+|                     |                                                          |     3 (DX2)       |     38000201                            |     Inpatient header - 2nd position     |
+|                     |                                                          |     4 (DX3)       |     38000202                            |     Inpatient header - 3rd position     |
+|                     |                                                          |     5 (DX4)       |     38000203                            |     Inpatient header - 4th position     |
+|                     |                                                          |     6 (DX5)       |     38000204                            |     Inpatient header - 5th position     |
+|                     |                                                          |     7 (DX6)       |     38000205                            |     Inpatient header - 6th position     |
+|                     |                                                          |     8 (DX7)       |     38000206                            |     Inpatient header - 7th position     |
+|                     |                                                          |     9 (DX8)       |     38000207                            |     Inpatient header - 8th position     |
+|                     |                                                          |     10 (DX9)      |     38000208                            |     Inpatient header - 9th position     |
+|                     |                                                          |     11 (DX10)     |     38000209                            |     Inpatient header - 10th position    |
+|                     |                                                          |     12 (DX11)     |     38000210                            |     Inpatient header - 11th position    |
+|                     |                                                          |     13 (DX12)     |     38000211                            |     Inpatient header - 12th position    |
+|                     |                                                          |     14 (DX13)     |     38000212                            |     Inpatient header - 13th position    |
+|                     |                                                          |     15 (DX14)     |     38000213                            |     Inpatient header - 14th position    |
+|     ER or OP        |     INPATIENT_SERVICES and OUTPATIENT_SERVICES TABLES    |     1 (PDX)       |     38000215                            |     Outpatient detail - 1st position    |
+|                     |                                                          |     2 (DX1)       |     38000215                            |     Outpatient detail - 1st position    |
+|                     |                                                          |     3 (DX2)       |     38000216                            |     Outpatient detail - 2nd position    |
+|                     |                                                          |     4 (DX3)       |     38000217                            |     Outpatient detail - 3rd position    |
+|                     |                                                          |     5 (DX4)       |     38000218                            |     Outpatient detail - 4th position    |
+|                     |                                                          |     6 (DX5)       |     38000219                            |     Outpatient detail - 5th position    |
+|                     |     FACILITY_HEADER TABLES                               |     2 (DX1)       |     38000230                            |     Outpatient header - 1st position    |
+|                     |                                                          |     3 (DX2)       |     38000231                            |     Outpatient header - 2nd position    |
+|                     |                                                          |     4 (DX3)       |     38000232                            |     Outpatient header - 3rd position    |
+|                     |                                                          |     5 (DX4)       |     38000233                            |     Outpatient header - 4th position    |
+|                     |                                                          |     6 (DX5)       |     38000234                            |     Outpatient header - 5th position    |
+|                     |                                                          |     7 (DX6)       |     38000235                            |     Outpatient header - 6th position    |
+|                     |                                                          |     8 (DX7)       |     38000236                            |     Outpatient header - 7th position    |
+|                     |                                                          |     9 (DX8)       |     38000237                            |     Outpatient header - 8th position    |
+|                     |                                                          |     10 (DX9)      |     38000238                            |     Outpatient header - 9th position    |
+
 
 ### Reading from **OUTPATIENT_SERVICES**
 
