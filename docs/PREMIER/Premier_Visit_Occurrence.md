@@ -17,11 +17,11 @@ VISIT_OCCURRENCE logic was revised in September 2020 to utilize READMIT.DAYS_FRO
  - DISC_MON:  Identifies, the year, quarter and month at which the discharge took place.
  - DISC_MON_SEQ:  For individuals whom have more >1 discharge in a single DISC_MON, this attribute provides the sequence in which those discharges occurred.
  - DAYS_FROM_PRIOR:  This attribute defines the number of days between discharges.
- - MAX(SERV_DAY) – 1 – This is the maximum number of service days for all services received ruing an inpatient stay.
+ - MAX(SERV_DAY) – 1:  This is the maximum number of service days for all services received ruing an inpatient stay.
 
-Records should be filtered by MEDREC_KEY and then ordered by DISC_MON and DISC_MON_SEQ in Descending order.  Beginning with the most recent VISIT_END_DATE should be set to the last day of the month for which the DISC_MON refers.  This will serve as an anchor point for the rest of the visits, ensuring that the temporality of the data is kept.
+Records should be filtered by MEDREC_KEY and then ordered by DISC_MON and DISC_MON_SEQ in Descending order.  The most recent VISIT_END_DATE should be set to the last day of the month for which the DISC_MON refers.  This will serve as an anchor point for the rest of the visits, ensuring that the temporality of the data is kept.
 
-VISIT_START_DATE for that same record should be the DISCHARGE_DATE – ( MAX(SERV_DAY) – 1).
+VISIT_START_DATE for that same record should be the DISCHARGE_DATE – (MAX(SERV_DAY) – 1).
 
 To calculate the VISIT_END_DATE for the preceding record, take the (VISIT_START_DATE - DAYS_FROM_PRIOR).
 
@@ -49,7 +49,7 @@ TODO: The READMIT table includes the field READMIT.DAYS_FROM_PRIOR, which report
 |VISIT_START_DATETIME||||
 |VISIT_END_DATE|PAT.DISC_DATE<br>PATBILL.SERV_DAY<br>PAT.DISC_MON_SEQ|||
 |VISIT_END_DATETIME||||
-|VISIT_TYPE_CONCEPT_ID||44818517- Visit derived from encounter on claim||
+|VISIT_TYPE_CONCEPT_ID| - | All records within the visit_occurence table should have a visit_type_concept_id = 32875 (Provider financial system) | |
 |PROVIDER_ID|PAT.ADM_PHY|||
 |CARE_SITE_ID|PAT.PROV_ID|||
 |VISIT_SOURCE_VALUE|PAT.I_O_IND|||
@@ -202,3 +202,6 @@ colnames(scoringFrame) <- c("est_disc_date","dateScore")
 bestScore <- scoringFrame[which.max(scoringFrame$dateScore),]
 print(bestScore$est_disc_date)
 ```
+
+## Change Log:
+* 2021.08.11:  Updated VISIT_TYPE_CONCEPT_ID to leverage standard concept id.

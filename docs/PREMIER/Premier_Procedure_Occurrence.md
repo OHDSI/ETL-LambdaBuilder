@@ -43,7 +43,7 @@ The field mapping is performed as follows:
 | PROCEDURE_CONCEPT_ID | PATBILL.STD_CHG_CODE \ PATICD_PROC.ICD_CODE \ PATCPT.CPT_CODE | QUERY SOURCE TO STANDARD:SELECT TARGET_CONCEPT_IDWHERE SOURCE_VOCABULARY_ID IN ('JNJ_PMR_PROC_CHRG_CD', 'CPT4', 'HCPCS', 'ICD10CM', 'ICD10PCS', 'ICD9CM', 'ICD9Proc') AND TARGET_DOMAIN_ID ='Procedure'AND SOURCE_CONCEPT_CLASS_ID NOT IN ('CPT4 Modifier', 'ICD10PCS Hierarchy')SELECT TARGET_CONCEPT_ID FROM CTE_VOCAB_MAPWHERE SOURCE_VOCABULARY_ID IN ('JNJ_PMR_PROC_CHRG_CD' AND TARGET_CONCEPT_ID=0 |  |
 | PROCEDURE_DATE | VISIT_OCCURRENCE.VISIT_END_DATE or VISIT_OCCURRENCE.VISIT_START_DATE  PATBILL.SERV_DAYorVISIT_OCCURRENCE.VISIT_START_DATEPATICD_PROC.PROC_DAY  |  | If the procedure is a CPT code then discharge date is used as procedure date because the exact date is unknown. If the row is coming from PATBILL then a combination or admit date and service date is used. If the record comes from PATICD_PROC then a combination of admit date and service date is used. |
 | PROCEDURE_DATETIME | - | NULL |  |
-| PROCEDURE_TYPE_CONCEPT_ID | PATICD_PROC.ICD_PRI_SEC | When PATICD_PROC.ICD_PRI_SEC =’P’ then 44786630 \ When PATICD_PROC.ICD_PRI_SEC =’S’ then 44786631 | All CHGMSTR procedures will be assigned a PROCEDURE_TYPE_CONCEPT_ID indicating 1st position.  |
+| PROCEDURE_TYPE_CONCEPT_ID | | All records within the procedure_occurrence table should have a procedure_type_concept_id = 32875 (Provider financial system) ||
 | MODIFIER_CONCEPT_ID | - | NULL |  |
 | QUANTITY | PATBILL.STD_QTY | Quantities are populated for all records obtained from the billing record. |  |
 | PROVIDER_ID | PATICD_PROC.PROC_PHY |  |  |
@@ -52,8 +52,9 @@ The field mapping is performed as follows:
 | PROCEDURE_SOURCE_CONCEPT_ID | - | SELECT SOURCE_CONCEPT_IDFROM CTE_VOCAB_MAPWHERE SOURCE_VOCABULARY_ID IN ('ICD9Proc', 'CPT4', 'HCPCS')AND TARGET_VOCABULARY_ID IN ('ICD9Proc', 'CPT4', 'HCPCS') AND DOMAIN_ID='Procedure 'SELECT SOURCE_VALUE FROM (SELECT CONCAT(STD_CHG_DESC, ' / ', HOSP_CHG_DESC) AS SOURCE_VALUE FROM PATBILL AJOIN CHGMSTR B ON A.STD_CHG_CODE=B.STD_CHG_CODEJOIN hospchg C ON A.hosp_chg_id=C.hosp_chg_id ) A |  |
 | QUALIFER_SOURCE_VALUE | - | NULL |  |
 
-### Supplementary Code:
+## Supplementary Code:
 
+````{SQL echo=FALSE}
 WITH CTE_CPT4 AS ( 
 
   SELECT CONCEPT_CODE AS FIXED_CONCEPT_CODE, CONCEPT_NAME, CONCEPT_ID, DOMAIN_ID, CONCEPT_CODE, VOCABULARY_ID 
@@ -243,3 +244,7 @@ FROM CTE_CODE_PULL cp
    ) z 
 
     ON z.STD_CHG_CODE = cp.STD_CHG_CODE 
+```
+    
+## Change Log:
+* 2021.08.11:  Updated PROCEDURE_TYPE_CONCEPT_ID to leverage standard concept id.

@@ -15,7 +15,7 @@ chunk_size = db_conf['chunk_size']
 chunk_limit = db_conf['chunk_limit']
 # fresh start will truncate target tables and recreate temp tables etc and run the initial queries.
 fresh_start = input('Would you like to run the initial queries that build tables such as patient and visit detail before starting on the chunks? (y/n):') 
-while lower(fresh_start) not in ['y', 'n', 'yes', 'no']:
+while fresh_start.lower() not in ['y', 'n', 'yes', 'no']:
     fresh_start = input('I did not understand that. Would you like to run the initial queries before starting on the chunks? (y/n):') 
 debug_queries = False # gives the execution time of each query during the chunked process.
 
@@ -50,7 +50,7 @@ try:
     # create target tables if they don't exist
     execute_multiple_queries('OMOP CDM postgresql v5_3_1 ddl.sql', '', cnx, False, False)
     cnx.commit()
-    if lower(fresh_start) in ['y', 'yes']:
+    if fresh_start.lower() in ['y', 'yes']:
         # create source_to_concept_map tables
         os.system(f'python prepare_source_vocab_map.py {target_schema}')
         # execute initial queries including the patient data
@@ -64,7 +64,7 @@ try:
         cur.execute(f'ALTER TABLE {source_schema}.chunk ADD CONSTRAINT pk_chunk PRIMARY KEY (chunk_id, person_id);')
         cnx.commit()
     # select all incomplete chunk ids
-    cur.execute(f'SELECT chunk_id FROM {source_schema}.chunk where completed = 0;')
+    cur.execute(f'SELECT chunk_id FROM {source_schema}.chunk where completed = 0 group by chunk_id;')
     chunk_id_array = cur.fetchall()
     chunk_id_array = list(map(lambda x: x[0], chunk_id_array))
     # if the user has put a limit on the number of chunks to be processed, then the chunk_id_array get sliced
@@ -72,7 +72,7 @@ try:
         chunk_id_array = chunk_id_array[:chunk_limit]
     # loop through the chunks executing map_in_chunks_main.sql each time
     for chunk_id in chunk_id_array:
-        log.log_message(f'Executing chunk {str(chunk_id)} / {str(max_chunk_id)}')
+        log.log_message(f'Executing chunk {str(chunk_id)} / {str(chunk_id_array[-1])}')
         tic=timeit.default_timer()
         execute_multiple_queries('map_in_chunks_main.sql', str(chunk_id), cnx, False, debug_queries)
         cnx.commit()
@@ -112,7 +112,6 @@ try:
         log.log_message(cdm_table_count_string)
 except:
     cnx.rollback()
-    pdb.ste_trace()
     log.log_message(str(sys.exc_info()[1]))
 finally:
     cnx.close()
