@@ -97,6 +97,9 @@ The STEM table is a staging area where source codes like ICD9 codes will first b
 | condition_status_source_value | |||
 
 ## Change Log
+### October 15, 2021
+- Added JNJ_UNITS as a vocabulary to use when mapping UNIT_CONCEPT_ID
+
 ### July 14, 2021
 - Changed RSLT_TXT from going to VALUE_AS_STRING to VALUE_SOURCE_VALUE
 - Added a mapping for VALUE_AS_CONCEPT_ID
