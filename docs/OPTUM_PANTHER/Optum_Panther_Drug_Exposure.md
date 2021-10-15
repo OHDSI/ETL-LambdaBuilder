@@ -9,14 +9,15 @@ description: "Drug Exposure End Date Imputation"
 
 # Optum EHR Drug Exposure End Date Imputation
 
-Due to the nature of EHR data most days_supply fields are input as zero. Martijn developed a method during the LEGEND-Hypertension study that will impute the value.
+Due to the nature of EHR data most days_supply fields are input as zero. Martijn developed a method during the LEGEND-Hypertension study that will impute the value and updated the DRUG_EXPOSURE_END_DATE.
 
-1. Take the most frequent non-zero exposure length per drug_concept_id as the default, if that frequency is greater than 10. 
-2. For all drug_exposure with zero length use the default length defined in step 1
+- Take the most frequent non-zero exposure length per drug_concept_id as the default, if that frequency is greater than 10. 
+- For all drug exposures with zero length use the default length defined in step 1 and update the DRUG_EXPOSURE_END_DATE using the formula DRUG_EXPOSURE_END_DATE = DRUG_EXPOSURE_START_DATE + *imputed DAYS_SUPPLY* - 1
+  - This is true unless the DAYS_SUPPLY is greater than 365 days. In that case, the DRUG_EXPOSURE_END_DATE is reverted back to equal the DRUG_EXPOSURE_START_DATE to handle implausible values and prevent them from making the DRUG_ERAs too long.
 
 Code he uses to do this: https://github.com/schuemie/MethodsLibraryPleEvaluation/blob/master/inst/sql/sql_server/ExposureLengthImputation.sql 
 
-We apply this imputation strategy after data has been moved to the DRUG_EXPOSURE table from the STEM table as detailed below:
+We apply this imputation strategy after data has been moved to the DRUG_EXPOSURE table from the STEM table as detailed below. Once completed the DRUG_ERA logic is run to create DRUG_ERAs using the imputed dates.
 
 ## Table name: drug_exposure
 
