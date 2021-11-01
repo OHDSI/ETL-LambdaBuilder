@@ -11,50 +11,6 @@ description: "INPATIENT_ADMISSIONS to STEM table description"
 
 The STEM table is a staging area where source codes like ICD9 codes will first be mapped to concept_ids. The STEM table itself is an amalgamation of the OMOP event tables to facilitate record movement. This means that all fields present across the OMOP event tables are present in the STEM table. After a record is mapped and staged, the domain of the concept_id dictates which OMOP table (Condition_occurrence, Drug_exposure, Procedure_occurrence, Measurement, Observation, Device_exposure) the record will move to. Please see the STEM -> CDM mapping files for a description of which STEM fields move to which STEM tables.
 
-## OHDSI Reproducibility Challenge
-
-For the reproduciblity challenge you should use **IBM CCAE v1676**. This version of the database uses type concepts instead of the CONDITION_STATUS_CONCEPT_ID to denote primary diagnoses. Please use the below table to choose the correct CONDITION_TYPE_CONCEPT_ID.
-
-|      Claim Type     |      Source                                              |      Position     |      CONDITION_TYPE     _CONCEPT_ID     |      CONCEPT_NAME                       |
-|---------------------|----------------------------------------------------------|-------------------|-----------------------------------------|-----------------------------------------|
-|     IP              |     INPATIENT_SERVICES and OUTPATIENT_SERVICES TABLES    |     1 (PDX)       |     38000183                            |     Inpatient detail – primary          |
-|                     |                                                          |     2 (DX1)       |     38000184                            |     Inpatient detail – 1st position     |
-|                     |                                                          |     3 (DX2)       |     38000185                            |     Inpatient detail - 2rd position     |
-|                     |                                                          |     4 (DX3)       |     38000186                            |     Inpatient detail - 3th position     |
-|                     |                                                          |     5 (DX4)       |     38000187                            |     Inpatient detail - 4th position     |
-|                     |                                                          |     6 (DX5)       |     38000188                            |     Inpatient detail - 5th position     |
-|                     |     INPATIENT_ADMISSIONS and FACILITY_HEADER TABLES      |     1 (PDX)       |     38000199                            |     Inpatient header - primary          |
-|                     |                                                          |     2 (DX1)       |     38000200                            |     Inpatient header - 1st position     |
-|                     |                                                          |     3 (DX2)       |     38000201                            |     Inpatient header - 2nd position     |
-|                     |                                                          |     4 (DX3)       |     38000202                            |     Inpatient header - 3rd position     |
-|                     |                                                          |     5 (DX4)       |     38000203                            |     Inpatient header - 4th position     |
-|                     |                                                          |     6 (DX5)       |     38000204                            |     Inpatient header - 5th position     |
-|                     |                                                          |     7 (DX6)       |     38000205                            |     Inpatient header - 6th position     |
-|                     |                                                          |     8 (DX7)       |     38000206                            |     Inpatient header - 7th position     |
-|                     |                                                          |     9 (DX8)       |     38000207                            |     Inpatient header - 8th position     |
-|                     |                                                          |     10 (DX9)      |     38000208                            |     Inpatient header - 9th position     |
-|                     |                                                          |     11 (DX10)     |     38000209                            |     Inpatient header - 10th position    |
-|                     |                                                          |     12 (DX11)     |     38000210                            |     Inpatient header - 11th position    |
-|                     |                                                          |     13 (DX12)     |     38000211                            |     Inpatient header - 12th position    |
-|                     |                                                          |     14 (DX13)     |     38000212                            |     Inpatient header - 13th position    |
-|                     |                                                          |     15 (DX14)     |     38000213                            |     Inpatient header - 14th position    |
-|     ER or OP        |     INPATIENT_SERVICES and OUTPATIENT_SERVICES TABLES    |     1 (PDX)       |     38000215                            |     Outpatient detail - 1st position    |
-|                     |                                                          |     2 (DX1)       |     38000215                            |     Outpatient detail - 1st position    |
-|                     |                                                          |     3 (DX2)       |     38000216                            |     Outpatient detail - 2nd position    |
-|                     |                                                          |     4 (DX3)       |     38000217                            |     Outpatient detail - 3rd position    |
-|                     |                                                          |     5 (DX4)       |     38000218                            |     Outpatient detail - 4th position    |
-|                     |                                                          |     6 (DX5)       |     38000219                            |     Outpatient detail - 5th position    |
-|                     |     FACILITY_HEADER TABLES                               |     2 (DX1)       |     38000230                            |     Outpatient header - 1st position    |
-|                     |                                                          |     3 (DX2)       |     38000231                            |     Outpatient header - 2nd position    |
-|                     |                                                          |     4 (DX3)       |     38000232                            |     Outpatient header - 3rd position    |
-|                     |                                                          |     5 (DX4)       |     38000233                            |     Outpatient header - 4th position    |
-|                     |                                                          |     6 (DX5)       |     38000234                            |     Outpatient header - 5th position    |
-|                     |                                                          |     7 (DX6)       |     38000235                            |     Outpatient header - 6th position    |
-|                     |                                                          |     8 (DX7)       |     38000236                            |     Outpatient header - 7th position    |
-|                     |                                                          |     9 (DX8)       |     38000237                            |     Outpatient header - 8th position    |
-|                     |                                                          |     10 (DX9)      |     38000238                            |     Outpatient header - 9th position    |
-
-
 ### Key conventions
 
 * VISIT_DETAIL must be built before STEM (refer to [VISIT_DETAIL file](https://ohdsi.github.io/ETL-LambdaBuilder/IBM_CCAE_MDCR/CCAE_MDCR_visit_detail.html))
@@ -111,7 +67,7 @@ For every record in STEM there should be 1 row record in VISIT_DETAIL (n:1 join)
 | SPECIMEN_SOURCE_ID | - | NULL | - |
 | ANATOMIC_SITE_SOURCE_VALUE | - | NULL | - |
 | DISEASE_STATUS_SOURCE_VALUE | - | NULL | - |
-| CONDITION_STATUS_CONCEPT_ID | PDX, DX1-DX9 | If the record is generated based on PDX or DX1 set to `32902` else if the record is based on DX2-DX9 set to `32908` | - | - |
+| CONDITION_STATUS_CONCEPT_ID | PDX, DX1-DX9 | If the record is generated based on PDX `32902` else if the record is based on DX1-DX9 set to `32908` | - | - |
 | CONDITION_STATUS_SOURCE_VALUE | Use the name of the DX field. For example, if the record is generated based on DX1 put 'DX1' here | NULL | - |
 | EVENT_ID | - | NULL | - |
 | EVENT_FIELD_CONCEPT_ID | - | 0 | - |
@@ -120,6 +76,9 @@ For every record in STEM there should be 1 row record in VISIT_DETAIL (n:1 join)
 | QUALIFIER_SOURCE_VALUE | - | NULL | - |
 
 ## Change Log
+
+### November 1, 2021
+* Updated CONDITION_STATUS_CONCEPT_ID so that only primary diagnoses are set to `32902`
 
 ### June 9, 2021
 * Updated type concepts and CONDITION_STATUS_CONCEPT_ID
