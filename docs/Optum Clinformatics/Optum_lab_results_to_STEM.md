@@ -48,6 +48,23 @@ The STEM table is a staging area where source codes like ICD9 codes will first b
 - START_DATE is assigned to VISIT_DETAIL_START_DATE 
 - The VISIT_DETAIL.VISIT_OCCURRENCE_ID and VISIT_DETAIL.VISIT_DETAIL_ID are FK in STEM table.
 
+### **Mapping COVID-19 test result text values**
+Certain COVID-19 tests have specific text results that need to be mapped manually to Standard Concepts in the VALUE_AS_CONCEPT field. If any of the below values show up in the RSLT_TXT field, map them to concepts using the below table. 
+
+|**RSTL_TXT Value**|**VALUE_AS_CONCEPT_ID**|
+|:---:|:---:|
+|LDTNOT|9190|
+|NEG|9190|
+|Not-Detected|9190|
+|NOTDET|9190|
+|Not Detected^Not D|9190|
+|Negative for COVID|9190|
+|LDTDET|4126681|
+|POS|4126681|
+|Positive for 2019-|4126681|
+|Positive for COVID|4126681|
+
+
 ![](images/image20.png)
 
 |**Destination Field**|**Source Field**|**Applied Rule**|**Comment**|
