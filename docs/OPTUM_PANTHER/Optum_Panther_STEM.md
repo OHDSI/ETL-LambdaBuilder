@@ -11,6 +11,10 @@ description: "Stem table description"
 
 The STEM table is a staging area where Optum EHR source codes like ICD10CM codes will first be mapped to concept_ids. The STEM table itself is an amalgamation of the OMOP event tables to facilitate record movement. This means that all fields present across the OMOP event tables are present in the STEM table. After a record is mapped and staged, the domain of the concept_id dictates which OMOP table (Condition_occurrence, Drug_exposure, Procedure_occurrence, Measurement, Observation, Device_exposure) the record will move to. Please see the STEM -> CDM mapping files for a description of which STEM fields move to which STEM tables. 
 
+This logic is reiterated from the PERSON table page but is put here as well for clarity:
+
+The Optum EHR Patient table contains an indicator that denotes whether the paient is part of an integrated delivery network, which means that there is a higher likelihood of complete capture of medical events. An integrated delivery network is an organization or group of hospitals and health care providers that aligns local facilities, managing them as one. To keep track of this, for each person in the Patient table with **idn_indicator** = 1, create a record in the OBSERVATION table where OBSERVATION_DATE = OBSERVATION_PERIOD_START_DATE, OBSERVATION_CONCEPT_ID = 44804235 and VALUE_AS_NUMBER = 1, OBSERVATION_SOURCE_VALUE = 'IDN' and OBSERVATION_TYPE_CONCEPT_ID = 32817 (EHR). 
+
 **Fields in the STEM table**
 
 | Field | 

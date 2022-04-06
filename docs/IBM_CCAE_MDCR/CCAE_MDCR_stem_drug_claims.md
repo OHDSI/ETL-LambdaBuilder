@@ -48,7 +48,7 @@ description: "DRUG_CLAIMS to STEM table description"
 | TYPE_CONCEPT_ID | RXMR | When RXMR = 2 then `32857` (Mail order record) else set to `32869` (Pharmacy claim) | - |
 | START_DATE | SVCDATE | - | - |
 | START_DATETIME | SVCDATE | SVCDATE + Midnight  | - |
-| END_DATE | SVCDATE<br>DAYSUPP | DRUG_EXPOSURE_END_DATE = SVCDATE + SUM(DAYSUPP) - 1 <br><br> If DAYSUPP is NULL set to DRUG_EXPOSURE_START_DATE | - |
+| END_DATE | SVCDATE<br>DAYSUPP | DRUG_EXPOSURE_END_DATE = SVCDATE + SUM(DAYSUPP) - 1 <br><br> If DAYSUPP is NULL or a negative value set to DRUG_EXPOSURE_START_DATE | - |
 | END_DATETIME | DAYSUPP<br>SVCDATE | Date calculated for END_DATE + Midnight | - |
 | VERBATIM_END_DATE | - | NULL | - |
 | DAYS_SUPPLY | DAYSUPP | DAYSUPP | - |
