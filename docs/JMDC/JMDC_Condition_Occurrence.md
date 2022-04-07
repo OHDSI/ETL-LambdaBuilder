@@ -38,7 +38,7 @@ When an ICD10 code in the diagnosis table maps to a concept in the Condition dom
 |     stop_reason    |          |          |          |
 |     visit_detail_id    |          |          |          |
 |     condition_status_source_value    |  main_disease_flag    |     |          |
-|     condition_status_concept_id    |  main_disease_flag  | If main_disease_flag = 1 set to `32902` (primary condition)         |          |
+|     condition_status_concept_id    |  main_disease_flag  | If main_disease_flag = 1 set to `32902` (primary condition) , else set to `32908` (secondary condition)        |          |
 |     preceding_visit_occurrence_id    |          |          |          |
 
 
