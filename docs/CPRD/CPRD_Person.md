@@ -11,7 +11,7 @@ description: "Person mapping from CPRD patient table"
 
 ## Reading from CPRD.Patient
 
-The patients in the CDM are restricted to the subset of all CPRD patients deemed to have reached certain quality standards as defined by the data providers. **Patients whose acceptable patient flag (patient.accept) is not equal to 1 will be removed (1=acceptable, 0=unacceptable)**. Also patients whose year of birth is prior to 1875, who have an unknown gender, or whose patient.deathdate occurs prior to patient.crd will be removed.
+The patients in the CDM are restricted to the subset of all CPRD patients deemed to have reached certain quality standards as defined by the data providers. **Patients whose acceptable patient flag (patient.accept) is not equal to 1 will be removed (1=acceptable, 0=unacceptable)**. Also patients whose year of birth is prior to 1875, who have an unknown gender, or whose patient.deathdate occurs prior to patient.frd will be removed.
 
 *Store patient.deathdate in person.death_datetime for CDM v6.0.*
 
