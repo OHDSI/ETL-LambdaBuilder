@@ -16,7 +16,7 @@ description: "Care_Site mapping from CPRD practice table"
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
 | care_site_id | pracid |  |  |
-| care_site_name |  |  |  |
+| care_site_name |  |  | NULL |
 | place_of_service_concept_id |  | Use **8977** - Public Health Clinic |  |
 | location_id | region |  |  |
 | care_site_source_value | pracid |  |  |
