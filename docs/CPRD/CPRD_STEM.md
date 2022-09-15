@@ -2,7 +2,7 @@
 layout: default
 title: CPRD to STEM
 nav_order: 8
-parent: CPRD
+parent: CPRD GOLD
 has_children: true
 description: "Stem table description"
 ---

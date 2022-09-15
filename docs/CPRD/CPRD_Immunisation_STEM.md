@@ -3,8 +3,8 @@ layout: default
 title: Immunisation
 nav_order: 3
 parent: CPRD to STEM
-grand_parent: CPRD
-description: "CPRD Immunisation table mapping to CDM STEM table"
+grand_parent: CPRD GOLD
+description: "CPRD GOLD Immunisation table mapping to CDM STEM table"
 
 ---
 

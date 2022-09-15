@@ -2,8 +2,8 @@
 layout: default
 title: Visit_Occurrence
 nav_order: 7
-parent: CPRD
-description: "Visit_Occurrence mapping from CPRD event tables"
+parent: CPRD GOLD
+description: "Visit_Occurrence mapping from CPRD GOLD event tables"
 
 ---
 

@@ -2,8 +2,8 @@
 layout: default
 title: Location
 nav_order: 4
-parent: CPRD
-description: "Location mapping from CPRD practice table"
+parent: CPRD GOLD
+description: "Location mapping from CPRD GOLD practice table"
 
 ---
 

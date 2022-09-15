@@ -2,8 +2,8 @@
 layout: default
 title: Visit_Detail
 nav_order: 6
-parent: CPRD
-description: "Visit_Detil mapping from CPRD event tables"
+parent: CPRD GOLD
+description: "Visit_Detil mapping from CPRD GOLD event tables"
 
 ---
 

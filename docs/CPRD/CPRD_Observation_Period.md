@@ -2,8 +2,8 @@
 layout: default
 title: Observation Period
 nav_order: 2
-parent: CPRD
-description: "Observation_Period mapping from CPRD patient and practice tables"
+parent: CPRD GOLD
+description: "Observation_Period mapping from CPRD GOLD patient and practice tables"
 
 ---
 

@@ -2,8 +2,8 @@
 layout: default
 title: Person
 nav_order: 1
-parent: CPRD
-description: "Person mapping from CPRD patient table"
+parent: CPRD GOLD
+description: "Person mapping from CPRD GOLD patient table"
 
 ---
 

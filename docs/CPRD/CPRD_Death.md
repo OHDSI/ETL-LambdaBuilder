@@ -2,7 +2,7 @@
 layout: default
 title: Death
 nav_order: 10
-parent: CPRD
+parent: CPRD GOLD
 description: "Death Logic"
 
 ---

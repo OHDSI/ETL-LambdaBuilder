@@ -2,7 +2,7 @@
 layout: default
 title: CPRD GOLD
 nav_order: 2
-description: "Clinical Practice Research Datalink GOLD (CPRD) ETL Documentation"
+description: "Clinical Practice Research Datalink (CPRD) GOLD ETL Documentation"
 has_children: true
 permalink: /docs/CPRD
 ---

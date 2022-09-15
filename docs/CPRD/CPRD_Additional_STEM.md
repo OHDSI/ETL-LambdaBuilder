@@ -3,8 +3,8 @@ layout: default
 title: Additional
 nav_order: 5
 parent: CPRD to STEM
-grand_parent: CPRD
-description: "CPRD Additional table mapping to CDM STEM table"
+grand_parent: CPRD GOLD
+description: "CPRD GOLD Additional table mapping to CDM STEM table"
 
 ---
 
