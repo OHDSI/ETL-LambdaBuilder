@@ -1,7 +1,7 @@
 ---
 layout: default
 title: CPRD Aurum
-nav_order: 10
+nav_order: 3
 description: "Clinical Practice Research Datalink Aurum (CPRD) ETL Documentation"
 has_children: true
 permalink: /docs/CPRD_Aurum

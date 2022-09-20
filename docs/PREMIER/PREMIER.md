@@ -1,9 +1,10 @@
 ---
-title: "Premier"
-has_children: yes
 layout: default
+title: Premier
+nav_order: 9
+description: "Premier"
+has_children: yes
 permalink: /docs/PREMIER
-description: Premier
 ---
 
 # Premier Hospitalization Database (PHD) ETL Documentation
