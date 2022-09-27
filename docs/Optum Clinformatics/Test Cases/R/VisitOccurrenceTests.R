@@ -5,8 +5,8 @@ createVisitOccurrenceTests <- function() {
   declareTest("VISIT_OCCURRENCE - Multiple IP admission claims on the same day with different pat_planids, should get a single IP visit occurrence.", #PASS v2.0.0.19
               id = patient$person_id)
   add_member_continuous_enrollment(eligeff = '2010-05-01', eligend = '2013-10-31',
-                    gdr_cd = 'F', patid = patient$patid, yrdob = 1969)
-  
+                    gdr_cd = 'F', patid = patient$patid, yrdob = 1969)  
+
   add_medical_claims(clmid = claim$clmid, clmseq = '001', lst_dt = '2013-07-01', rvnu_cd = '0100', pos = '21',
                      pat_planid = patient$patid, patid = patient$patid, fst_dt = '2013-07-01', prov = '111111', provcat = '5678')
   add_med_diagnosis(patid = patient$patid, pat_planid = patient$patid, icd_flag = "9", diag = "7061", diag_position = 1, clmid = claim$clmid)
@@ -78,7 +78,7 @@ createVisitOccurrenceTests <- function() {
               id = patient$person_id)
   add_member_continuous_enrollment(eligeff = '2010-05-01', eligend = '2013-10-31',
                     gdr_cd = 'F', patid = patient$patid, yrdob = 1969)
-  add_medical_claims(clmid = claim$clmid, clmseq = '001', lst_dt = '2009-07-01',
+  add_medical_claims(clmid = claim$clmid, clmseq = '001', lst_dt = '2009-07-01', pos = '22',
                      pat_planid = patient$patid, patid = patient$patid, fst_dt = '2009-07-01', prov = '111111', provcat = '5678')
   add_med_diagnosis(patid = patient$patid, pat_planid = patient$patid, icd_flag = "9", diag = "7061", diag_position = 1, clmid = claim$clmid)
   expect_visit_occurrence(person_id = patient$person_id, visit_concept_id = 9202, visit_start_date = '2009-07-01', visit_end_date = '2009-07-01')
@@ -154,3 +154,4 @@ createVisitOccurrenceTests <- function() {
   expect_visit_occurrence(person_id = patient$person_id, visit_concept_id = 262, visit_start_date = '2013-09-01', visit_end_date = '2013-09-22')
   expect_visit_detail(person_id = patient$person_id, visit_detail_concept_id = 8870)
 }
+

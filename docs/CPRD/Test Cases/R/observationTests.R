@@ -63,17 +63,17 @@ createObservationTests <- function()
   patient <- createPatient();
   declareTest(id = patient$person_id, 'test procedure')
   add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid = patient$pracid)
-  add_test(patid = patient$patid, eventdate = '2011-03-01', medcode = 1137, staffid = 1001, consid = 4244, enttype=215, data1=9)
+  add_test(patid = patient$patid, eventdate = '2011-03-01', medcode = 1137, staffid = 1001, consid = 4244, enttype=216, data1=9)
   expect_observation(person_id = patient$person_id, observation_date='2011-03-01', observation_type_concept_id=38000280,
-                     observation_source_value='215--R100.00', observation_concept_id=4044812,#44801932,
+                     observation_source_value='R100.00', observation_concept_id=0,
                      observation_source_concept_id=45474099)
 
   # 7) --- observation not mapped
   patient <- createPatient();
   declareTest(id = patient$person_id, 'observation not mapped')
   add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid = patient$pracid)
-  add_test(patid = patient$patid, eventdate = '2011-03-01', medcode = 70038, staffid = 1001, consid = 4245, enttype= 215, data1=9)
-  expect_observation(person_id = patient$person_id, observation_date='2011-03-01', observation_source_value='215--Z5A6200',
+  add_test(patid = patient$patid, eventdate = '2011-03-01', medcode = 70038, staffid = 1001, consid = 4245, enttype= 216, data1=9)
+  expect_observation(person_id = patient$person_id, observation_date='2011-03-01', observation_source_value='Z5A6200',
                      observation_concept_id=0, observation_source_concept_id=0)
 
   #============================================================
@@ -133,8 +133,8 @@ createObservationTests <- function()
   declareTest(id = patient$person_id, 'Read clinical medical history condition non-mapped')
   add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid = patient$pracid)
   add_clinical(patid = patient$patid, eventdate = '2011-01-01', medcode = 70038, staffid = 1001)
-  expect_observation(person_id = patient$person_id, observation_date='2011-01-01', observation_source_value='Z5A6200',
-                              observation_concept_id=0, observation_source_concept_id=0)
+  expect_condition_occurrence(person_id = patient$person_id, condition_start_date='2011-01-01', condition_source_value='Z5A6200',
+                              condition_concept_id=0, condition_source_concept_id=0)
 
 
   # 14) --Read referral medical history condition non-mapped
@@ -152,8 +152,8 @@ createObservationTests <- function()
   declareTest(id = patient$person_id, 'Read test medical history condition non-mapped')
   add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid = patient$pracid)
   add_test(patid = patient$patid, eventdate = '2011-01-01', medcode = 70038, staffid = 1001, enttype = 215, data1=9)
-  expect_observation(person_id = patient$person_id, observation_date='2011-01-01', observation_source_value='215--Z5A6200',
-                              observation_concept_id=0, observation_source_concept_id=0)
+  expect_measurement(person_id = patient$person_id, measurement_date='2011-01-01', measurement_source_value='Z5A6200',
+                              measurement_concept_id=4199172, measurement_source_concept_id=0)
 
   # 16) --Read immunisatoin medical history condition non-mapped
   patient <- createPatient();
@@ -184,10 +184,10 @@ createObservationTests <- function()
              data3 = 'Normal range to', data3lkup = NULL,
              data4 = 'Normal range basis', data4lkup = NULL)
   add_lookup(lookup_id = 1156,lookup_type_id = 85, code = 9, text = 'Normal')
-  expect_observation(person_id=patient$person_id, observation_concept_id=40479404,
-                     observation_date='2012-01-01',
-                     observation_type_concept_id=38000280, value_as_string='Normal',
-                     observation_source_value='215--65PT.11')
+  expect_measurement(person_id=patient$person_id, measurement_concept_id=4199172,
+                     measurement_date='2012-01-01',
+                     measurement_type_concept_id=44818702,
+                     measurement_source_value='65PT.11')
 
   # 25) -- test observation record 7 fields
   patient <- createPatient();
@@ -210,10 +210,10 @@ createObservationTests <- function()
   add_lookup(lookup_id = 1155, lookup_type_id = 83, code = 8, text = '%')
   add_lookup(lookup_id = 1407, lookup_type_id = 85, code = 1, text = 'High')
 
-  expect_observation(person_id=patient$person_id, observation_concept_id=4187457,
+  expect_observation(person_id=patient$person_id, observation_concept_id=0,
                      observation_date='2012-01-01',
                      observation_type_concept_id=38000280,
-                     value_as_number=3.7, observation_source_value='412-Airway ...-66Ya.00', qualifier_concept_id=4172703,
+                     value_as_number=3.7, observation_source_value='66Ya.00', qualifier_concept_id=4172703,
                      unit_source_value='%')
   expect_count_observation(rowCount = 1, person_id = patient$person_id)
 
@@ -283,10 +283,10 @@ createObservationTests <- function()
   expect_observation(person_id=patient$person_id, observation_date='2010-01-01',
                      observation_source_value='461-Miscellaneous-Repeat Medication Review-Due Date',
                      observation_type_concept_id=38000280, value_as_string='2007-07-08',
-                     observation_concept_id=0, observation_source_concept_id=0)
+                     observation_concept_id=44807096, observation_source_concept_id=0)
 
   declareTest(id = patient$person_id, '2) dates')
-  expect_observation(person_id=patient$person_id, observation_concept_id=0, observation_date='2010-01-01',
+  expect_observation(person_id=patient$person_id, observation_concept_id=44807096, observation_date='2010-01-01',
                      observation_source_value='461-Miscellaneous-Repeat Medication Review-Seen By', observation_type_concept_id=38000280,
                      value_as_string='2007-01-08', observation_source_concept_id=0 )
 

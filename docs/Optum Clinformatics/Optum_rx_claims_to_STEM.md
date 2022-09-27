@@ -51,7 +51,7 @@ The STEM table is a staging area where source codes like ICD9 codes will first b
 | concept_id | NDC|Use the SOURCE_TO_STANDARD query with the filter<br/><br/>**NDC**<br> WHERE SOURCE_VOCABULARY_ID IN ('NDC') AND TARGET_STANDARD_CONCEPT ='S' AND TARGET_INVALID_REASON IS NULL AND VISIT_DETAIL_START_DATE BETWEEN SOURCE_VALID_START_DATE AND SOURCE_VALID_END_DATE| If an NDC does not have a mapping, set the concept_id to 0|
 | source_value | NDC|||
 | source_concept_id |NDC|Use the SOURCE_TO_SOURCE query with the filter<br/><br/>**NDC**<br> WHERE SOURCE_VOCABULARY_ID IN ('NDC') AND VISIT_DETAIL_START_DATE BETWEEN SOURCE_VALID_START_DATE AND SOURCE_VALID_END_DATE||
-| type_concept_id |MAIL_IND|If MAIL_IND = 'Y' then 38000176 (Prescription dispensed through mail order) else 38000175 (Prescription dispensed in pharmacy)||  
+| type_concept_id |MAIL_IND|If MAIL_IND = 'Y' then 32857 (Mail order record) else 32869 (Pharmacy claim)||  
 | operator_concept_id | |||
 | unit_concept_id | |||
 | unit_source_value | |||

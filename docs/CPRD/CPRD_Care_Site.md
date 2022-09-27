@@ -2,8 +2,8 @@
 layout: default
 title: Care Site
 nav_order: 3
-parent: CPRD
-description: "Care_Site mapping from CPRD practice table"
+parent: CPRD GOLD
+description: "Care_Site mapping from CPRD GOLD practice table"
 
 ---
 

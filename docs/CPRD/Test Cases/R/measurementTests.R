@@ -77,6 +77,7 @@ createMeasurementTests <- function()
   expect_measurement(person_id = patient$person_id,
                      measurement_concept_id =  4199172,
                      measurement_source_value =  '215-Clotting tests',
+
                      measurement_date =  '2011-03-01',
                      provider_id =   1001)
 
@@ -115,6 +116,7 @@ createMeasurementTests <- function()
                      value_source_value='Normal',
                      measurement_source_value='220-Full blood count', value_as_concept_id=45884153)
 
+
   # TESTING VALUES RANGE LOW (TEST.data2)
   # 18b)
   patient <- createPatient();
@@ -129,6 +131,7 @@ createMeasurementTests <- function()
                      measurement_type_concept_id=44818702, value_source_value='Normal',
                      value_as_concept_id=45884153)
 
+
   # TESTING VALUES RANGE HIGH (TEST.data3)
   # 18b)
   patient <- createPatient();
@@ -142,6 +145,7 @@ createMeasurementTests <- function()
                      measurement_date='2012-01-01', range_high = 4.3,
                      measurement_type_concept_id=44818702, value_source_value='Normal',
                      value_as_concept_id=45884153)
+
 
   # 19) -- test observation record 7 fields -- enntype 173 maps to 3000963 --> SHOULD WORK!
   patient <- createPatient();
@@ -235,6 +239,7 @@ createMeasurementTests <- function()
   expect_measurement(person_id = patient$person_id, measurement_concept_id=0,
                      measurement_date='2012-01-01',
                      measurement_type_concept_id=44818702)
+
 
   #expect_count_measurement(rowCount = 2, person_id = patient$person_id)
 

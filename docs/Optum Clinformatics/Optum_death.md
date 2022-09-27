@@ -23,26 +23,26 @@
 
 ### **Mapping DEATH_TYPE_CONCEPT_ID**
 
-If a person in the **DOD** database has a death record sourced from the **DEATH** table use **DEATH_TYPE_CONCEPT_ID = 32519**
+If a person in the **DOD** database has a death record sourced from the **DEATH** table use **DEATH_TYPE_CONCEPT_ID = 32885**
 
 #### Using **MEDICAL_CLAIMS** DSTATUS
 
 | Source Field       | Source Code | Source Code Description               | DEATH_TYPE_CONCEPT_ID |
 |------------------|--------------|-----------------------------------------|--------------------------|
-| **MEDICAL_CLAIMS** DSTATUS | 20           | EXPIRED                                 | 32507        |
-| **MEDICAL_CLAIMS** DSTATUS | 21           | EXPIRED TO BE DEFINED AT STATE LEVEL    | 32507        |
-| **MEDICAL_CLAIMS** DSTATUS | 22           | EXPIRED TO BE DEFINED AT STATE LEVEL    | 32507        |
-| **MEDICAL_CLAIMS** DSTATUS | 23           | EXPIRED TO BE DEFINED AT STATE LEVEL    | 32507        |
-| **MEDICAL_CLAIMS** DSTATUS | 24           | EXPIRED TO BE DEFINED AT STATE LEVEL    | 32507        |
-| **MEDICAL_CLAIMS** DSTATUS | 25           | EXPIRED TO BE DEFINED AT STATE LEVEL    | 32507        |
-| **MEDICAL_CLAIMS** DSTATUS | 26           | EXPIRED TO BE DEFINED AT STATE LEVEL    | 32507        |
-| **MEDICAL_CLAIMS** DSTATUS | 27           | EXPIRED TO BE DEFINED AT STATE LEVEL    | 32507        |
-| **MEDICAL_CLAIMS** DSTATUS | 27           | EXPIRED TO BE DEFINED AT STATE LEVEL    | 32507        |
-| **MEDICAL_CLAIMS** DSTATUS | 28           | EXPIRED TO BE DEFINED AT STATE LEVEL    | 32507        |
-| **MEDICAL_CLAIMS** DSTATUS | 29           | EXPIRED TO BE DEFINED AT STATE LEVEL    | 32507        |
-| **MEDICAL_CLAIMS** DSTATUS | 40           | EXPIRED AT HOME (HOSPICE)               | 32507        |
-| **MEDICAL_CLAIMS** DSTATUS | 41           | EXPIRED IN A MEDICAL FACILITY (HOSPICE) | 32507        |
-| **MEDICAL_CLAIMS** DSTATUS | 42           | EXPIRED – PLACE UNKNOWN (HOSPICE)       | 32507        |
+| **MEDICAL_CLAIMS** DSTATUS | 20           | EXPIRED                                 | 32812        |
+| **MEDICAL_CLAIMS** DSTATUS | 21           | EXPIRED TO BE DEFINED AT STATE LEVEL    | 32812        |
+| **MEDICAL_CLAIMS** DSTATUS | 22           | EXPIRED TO BE DEFINED AT STATE LEVEL    | 32812        |
+| **MEDICAL_CLAIMS** DSTATUS | 23           | EXPIRED TO BE DEFINED AT STATE LEVEL    | 32812        |
+| **MEDICAL_CLAIMS** DSTATUS | 24           | EXPIRED TO BE DEFINED AT STATE LEVEL    | 32812        |
+| **MEDICAL_CLAIMS** DSTATUS | 25           | EXPIRED TO BE DEFINED AT STATE LEVEL    | 32812        |
+| **MEDICAL_CLAIMS** DSTATUS | 26           | EXPIRED TO BE DEFINED AT STATE LEVEL    | 32812        |
+| **MEDICAL_CLAIMS** DSTATUS | 27           | EXPIRED TO BE DEFINED AT STATE LEVEL    | 32812        |
+| **MEDICAL_CLAIMS** DSTATUS | 27           | EXPIRED TO BE DEFINED AT STATE LEVEL    | 32812        |
+| **MEDICAL_CLAIMS** DSTATUS | 28           | EXPIRED TO BE DEFINED AT STATE LEVEL    | 32812        |
+| **MEDICAL_CLAIMS** DSTATUS | 29           | EXPIRED TO BE DEFINED AT STATE LEVEL    | 32812        |
+| **MEDICAL_CLAIMS** DSTATUS | 40           | EXPIRED AT HOME (HOSPICE)               | 32812        |
+| **MEDICAL_CLAIMS** DSTATUS | 41           | EXPIRED IN A MEDICAL FACILITY (HOSPICE) | 32812        |
+| **MEDICAL_CLAIMS** DSTATUS | 42           | EXPIRED – PLACE UNKNOWN (HOSPICE)       | 32812        |
 
 
 #### Using ICD9CM and ICD10CM from **MED_DIAGNOSIS** DIAG   

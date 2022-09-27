@@ -1,12 +1,12 @@
 ---
 layout: default
-title: OPTUM_PANTHER
-nav_order: 7
-description: "OPTUM PANTHER ETL to OMOP CDM"
+title: Optum EHR
+nav_order: 8
+description: "Optum EHR ETL Documentation"
 has_children: true
 permalink: /docs/OPTUM_PANTHER
 ---
 
-# OPTUM PANTHER ETL
+# OPTUM EHR ETL Documentation
 
-This ETL documentation is in the process of being updated. Here is the [link](https://github.com/OHDSI/ETL-CDMBuilder/blob/master/man/OPTUM_PANTHER/v5.3.1/ETL/OptumPantherEHR_CDM_V5.3.1.docx) to the current document. 
+Optum EHR is a dataset comprised of EHR records from multi-specialty practices, small group practices, physician offices, integrated delivery networks, and hospitals. It includes demographics, data on hospitalizations, lab results, medications, procedures, diagnoses, as well as most information collected during a patient journey provided the care site contributes EHR data to the database. 

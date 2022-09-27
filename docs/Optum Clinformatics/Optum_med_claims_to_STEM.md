@@ -19,6 +19,10 @@ The STEM table is a staging area where source codes like ICD9 codes will first b
     - For every record in **STEM** there should be 1 row record in VISIT_DETAIL (n:1 join). 
     - For every record in **VISIT_DETAIL** there may be 0 to n rows in **STEM**.
 
+### **Revenue Code Mappings** 
+Records will be written from the **MEDICAL_CLAIMS** table mapping the field **RVNU_CD** to **STEM.CONCEPT_ID**. Please see the table below for how this logic will be handled. 
+- **NOTE** the revenue codes are mapped to concepts with the vocabulary_id "Revenue Code". All these concepts have the domain of "Revenue Code" as well. Since there is no revenue table, all records coming from the **RVNU_CD** field should go to the **OBSERVATION** table.
+
 ## **Mapping from MEDICAL_CLAIMS**
 ![](images/image16.png)
 
@@ -31,10 +35,10 @@ The STEM table is a staging area where source codes like ICD9 codes will first b
 | visit_occurrence_id |**VISIT_DETAIL**<br>VISIT_OCCURRENCE_ID|Use the linking to **VISIT_DETAIL** to look up VISIT_OCCURRENCE_ID|||
 | provider_id |**VISIT_DETAIL**<br>PROVIDER_ID |||
 | start_datetime |**VISIT_DETAIL** VISIT_DETAIL_START_DATETIME |||
-| concept_id | **MEDICAL_CLAIMS** PROC_CD<br><br>**MEDICAL_CLAIMS** NDC|Use the SOURCE_TO_STANDARD query with the filter<br/><br/>**PROC_CD**<br> WHERE SOURCE_VOCABULARY_ID IN (*'ICD9Proc'* OR *'ICD10PCS'*, 'HCPCS','CPT4') AND TARGET_STANDARD_CONCEPT ='S' AND TARGET_INVALID_REASON IS NULL AND TARGET_CONCEPT_CLASS_ID NOT IN ('HCPCS Modifier','CPT4 Modifier')<br/><br/>**NDC**<br> WHERE SOURCE_VOCABULARY_ID IN ('NDC') AND TARGET_STANDARD_CONCEPT ='S' AND TARGET_INVALID_REASON IS NULL AND VISIT_DETAIL_START_DATE BETWEEN SOURCE_VALID_START_DATE AND SOURCE_VALID_END_DATE| **PROC_CD** <br>If ICD_FLAG = 9 then use 'ICD9Proc', else if ICD_FLAG = 10 then use 'ICD10PCS'<br>If a PROC or NDC does not have a mapping, set the concept_id to 0||
-| source_value |**MEDICAL_CLAIMS** PROC_CD<br><br>**MEDICAL_CLAIMS** NDC|||
-| source_concept_id |**MEDICAL_CLAIMS** PROC_CD<br><br>**MEDICAL_CLAIMS** NDC|Use the SOURCE_TO_SOURCE query with the filter<br/><br/>**PROC_CD** WHERE SOURCE_VOCABULARY_ID IN (*'ICD9Proc'* OR *'ICD10PCS'*)<br/><br/>**NDC**<br> WHERE SOURCE_VOCABULARY_ID IN ('NDC') AND VISIT_DETAIL_START_DATE BETWEEN SOURCE_VALID_START_DATE AND SOURCE_VALID_END_DATE|**PROC_CD** If ICD_FLAG = 9 then use 'ICD9Proc', else if ICD_FLAG = 10 then use 'ICD10PCS'|
-| type_concept_id |Set to 32468 (inferred from claim)|||  
+| concept_id | **MEDICAL_CLAIMS** PROC_CD<br><br>**MEDICAL_CLAIMS** NDC<br><br>**MEDICAL_CLAIMS** RVNU_CD|Use the SOURCE_TO_STANDARD query with the filter<br><br>**PROC_CD**<br> WHERE SOURCE_VOCABULARY_ID IN (*'ICD9Proc'* OR *'ICD10PCS'*, 'HCPCS','CPT4') AND TARGET_STANDARD_CONCEPT ='S' AND TARGET_INVALID_REASON IS NULL AND TARGET_CONCEPT_CLASS_ID NOT IN ('HCPCS Modifier','CPT4 Modifier')<br/><br/>**NDC**<br> WHERE SOURCE_VOCABULARY_ID IN ('NDC') AND TARGET_STANDARD_CONCEPT ='S' AND TARGET_INVALID_REASON IS NULL AND VISIT_DETAIL_START_DATE BETWEEN SOURCE_VALID_START_DATE AND SOURCE_VALID_END_DATE<br><br>**RVNU_CD**<br> WHERE SOURCE_VOCABULARY_ID IN (*'Revenue Code'*) AND TARGET_STANDARD_CONCEPT ='S' AND TARGET_INVALID_REASON IS NULL| **PROC_CD** <br>If ICD_FLAG = 9 then use 'ICD9Proc', else if ICD_FLAG = 10 then use 'ICD10PCS'<br>If a PROC or NDC does not have a mapping, set the concept_id to 0<br><br> **RVNU_CD**<br>The concepts in the **Revenue Code** vocabulary all have the domain "Revenue Code". These should go to the **OBSERVATION** table.||
+| source_value |**MEDICAL_CLAIMS** PROC_CD<br><br>**MEDICAL_CLAIMS** NDC<br><br>**MEDICAL_CLAIMS** RVNU_CD|||
+| source_concept_id |**MEDICAL_CLAIMS** PROC_CD<br><br>**MEDICAL_CLAIMS** NDC<br><br>**MEDICAL_CLAIMS** RVNU_CD|Use the SOURCE_TO_SOURCE query with the filter<br/><br/>**PROC_CD** WHERE SOURCE_VOCABULARY_ID IN (*'ICD9Proc'* OR *'ICD10PCS'*)<br/><br/>**NDC**<br> WHERE SOURCE_VOCABULARY_ID IN ('NDC') AND VISIT_DETAIL_START_DATE BETWEEN SOURCE_VALID_START_DATE AND SOURCE_VALID_END_DATE<br><br>**RVNU_CD**<br> WHERE SOURCE_VOCABULARY_ID IN ('Revenue Code') |**PROC_CD** If ICD_FLAG = 9 then use 'ICD9Proc', else if ICD_FLAG = 10 then use 'ICD10PCS'|
+| type_concept_id |32810 (Claim)|||  
 | operator_concept_id | |||
 | unit_concept_id | |||
 | unit_source_value | |||

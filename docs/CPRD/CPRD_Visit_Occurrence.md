@@ -2,8 +2,8 @@
 layout: default
 title: Visit_Occurrence
 nav_order: 7
-parent: CPRD
-description: "Visit_Occurrence mapping from CPRD event tables"
+parent: CPRD GOLD
+description: "Visit_Occurrence mapping from CPRD GOLD event tables"
 
 ---
 
@@ -25,7 +25,7 @@ For datetime fields, set time to midnight 00:00:00.
 | visit_start_datetime | visit_detail_start_datetime | |  |
 | visit_end_date | visit_detail_end_date | | |
 | visit_end_datetime | visit_detail_end_datetime ||  |
-| visit_type_concept_id |  | Use **44818518** - Visit derived from EHR record |  |
+| visit_type_concept_id |  | Use **32827** - EHR encounter record |  |
 | provider_id | visit_detail.provider_id | Choose one provider_id if a patient saw more than one provider on the same day. |  |
 | care_site_id | visit_detail.care_site_id| |  |
 | visit_source_value | visit_detail_source_value | Choose one visit_detail_source_value for this field if a patient had more than one visit_detail_source_value on the same day. |  |

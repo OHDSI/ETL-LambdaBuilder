@@ -22,21 +22,10 @@ The **VISIT_DETAIL** table will have 1:1 record level referential integrity to *
 - **VISIT_OCCURRENCE** will be generated from **VISIT_DETAIL** table through an 'era' logic where inpatient records will be grouped together into continous non-overlapping periods, and all visit_detail records (inpatient, outpatient, other) that are in that temporal non overlapping continous period will be considered one visit_occurrence_id record. For records outside this non-overlapping inpatient period, we will take all outpatient records and identify unique person-date combinations. For each unique person-date combination a visit_occurrence_id will be assigned and all visit_detail_id records temporally assocciated with that person-date combination will be assigned that visit_occurrence_id. (See documentation for **VISIT_OCCURRENCE**.visit_occurrence_id)
 - Linkages across source tables should use the combination of PATID and PAT_PLANID.
 
-## **Mapping from RX_CLAIMS**
-- In the **RX_CLAIMS** table some values in DAYS_SUP are invalid. Any value < 0 or > 365 should be updated using this logic:
-```
-    CASE
-    WHEN DAYS_SUPPLY < 0 THEN 0
-    WHEN DAYS_SUPPLY > 365 THEN 365
-    WHEN DAYS_SUPPLY IS NULL THEN 0
-    ELSE DAYS_SUPPLY
-    END
-```
-- After updating DAYS_SUP using the script above, to assign VISIT_DETAIL_END_DATE use the logic **RX_CLAIMS** FILL_DT+DAYS_SUP-1. If DAYS_SUP is 0 or empty then do **RX_CLAIMS** FILL_DT.
-
 ## **VISIT_DETAIL Logic**
 1. Remove persons not in person table
 2. Create a primary key to identify each record in the **MEDICAL_CLAIMS**, **INPATIENT_CONFINEMENT** and **RX_CLAIMS** tables. This primary key will become the **VISIT_DETAIL_ID**. Retain this information as a lookup table for later linkage of diagnoses and procedures. This system generated key may also be used to lookup records in source table i.e. maintain a lookup table that is able to link visit_detail_id to the records of **MEDICAL_CLAIMS**, **INPATIENT_CONFINEMENT** and **RX_CLAIMS** tables (record level referential integerity).
+3. Only use records from **RX_CLAIMS** where mail_ind <> 'Y'. We don't want mail-in pharmacy records to create visits as there is no interaction with a health care provider.
 
 
 ## **PROVIDER_ID Assignment Logic**
@@ -63,15 +52,15 @@ The **VISIT_DETAIL** table will have 1:1 record level referential integrity to *
 :-----:|:-----:|:-----:|:-----:
 VISIT_DETAIL_ID| |System generated.|Has to have 1:1 record level referential integrity to source tables **MEDICAL_CLAIMS**, **RX_CLAIMS** and **INPATIENT_CONFINEMENT**. A lookup table is maintained.
 PERSON_ID|**MEDICAL_CLAIMS** PATID <br> **RX_CLAIMS** PATID <br> **INPATIENT_CONFINEMENT** PATID|||
-VISIT_DETAIL_CONCEPT_ID|**MEDICAL_CLAIMS** Pos <br><br> **RX_CLAIMS** MAIL_IND,Spclt_Ind <br><br> **INPATIENT_CONFINEMENT** Pos|**MEDICAL_CLAIMS** Pos and **INPATIENT_CONFINEMENT** Pos use SOURCE_TO_STANDARD query with the filters: <br> `Where source_vocabulary_id = 'CMS Place of Service' and invalid_reason is NULL and standard_concept = 'S'` <br><br> **RX_CLAIMS** MAIL_IND = 'Y' then concept_id = 38004345 (Mail order pharmacy). <br>else, if Spclt_Ind = 'Y' then 38004348 (Specialty Pharmacy), <br>else concept_id = '581458' (Pharmacy visit) | If pos in **MEDICAL_CLAIMS** is blank, *NULL* or does not have a mapping then set to 9202. <br><br>If pos in **INPATIENT_CONFINEMENT** is blank, *NULL* or does not have a mapping then set to 9201.
+VISIT_DETAIL_CONCEPT_ID|**MEDICAL_CLAIMS** Pos <br><br> **RX_CLAIMS** Spclt_Ind <br><br> **INPATIENT_CONFINEMENT** Pos|**MEDICAL_CLAIMS** Pos and **INPATIENT_CONFINEMENT** Pos use SOURCE_TO_STANDARD query with the filters: <br> `Where source_vocabulary_id = 'CMS Place of Service' and invalid_reason is NULL and standard_concept = 'S'` <br><br> **RX_CLAIMS** If Spclt_Ind = 'Y' then 38004348 (Specialty Pharmacy), <br>else concept_id = '581458' (Pharmacy visit) | If pos in **MEDICAL_CLAIMS** is blank, *NULL* or does not have a mapping then set to 9202. <br><br>If pos in **INPATIENT_CONFINEMENT** is blank, *NULL* or does not have a mapping then set to 9201.<br><br>If pos is equal to 65 and lst_dt - fst_dt > 1 the set visit_detail_concept_id to 9201
 VISIT_DETAIL_START_DATE|**MEDICAL_CLAIMS** FST_DT<br><br>**RX_CLAIMS** FILL_DT<br><br>**INPATIENT_CONFINEMENT** Admit_Date| |
 VISIT_DETAIL_START_DATETIME|**MEDICAL_CLAIMS** FST_DT<br><br>**RX_CLAIMS** FILL_DT<br><br>**INPATIENT_CONFINEMENT** Admit_Date||Set time to 00:00:00 UTC TZ
-VISIT_DETAIL_END_DATE|**MEDICAL_CLAIMS** LST_DT<br><br>**RX_CLAIMS** FILL_DT+DAYS_SUP-1.<br> If DAYS_SUP is 0 or empty then do **RX_CLAIMS** FILL_DT<br><br>**INPATIENT_CONFINEMENT** Disch_Date| [See mapping from RX_CLAIMS](#Mapping-from-RX_CLAIMS)|
-VISIT_DETAIL_END_DATETIME|**MEDICAL_CLAIMS** LST_DT<br><br>**RX_CLAIMS** FILL_DT+DAYS_SUP<br>If DAYS_SUP is 0 or empty then do **RX_CLAIMS** FILL_DT+1<br><br>**INPATIENT_CONFINEMENT** Disch_Date||Set time to 00:00:00 UTC TZ
+VISIT_DETAIL_END_DATE|**MEDICAL_CLAIMS** LST_DT (see *Applied Rule* column for exceptions)<br><br>**RX_CLAIMS** FILL_DT<br><br>**INPATIENT_CONFINEMENT** Disch_Date|If pos in MEDICAL_CLAIMS is blank, NULL, does not have a mapping or is equal to 11, 01, 95, 12, 20, 49, 60, 15, 81, 42, 41, 14, 04, 18, 09, 03, 02, 08, 17, 53, 57, 71, 72, 65 or 16 then set visit_detail_end_date equal to visit_detail_start_date.<br><br>If pos is equal to 23 24, 19, 25, 50 or 62 and lst_dt - fst_dt > 1 then set visit_detail_end_date equal to visit_detail_start_date<br><br> If pos is equal to 65 and lst_dt - fst_dt > 1 the set visit_detail_concept_id to 9201 | 
+VISIT_DETAIL_END_DATETIME|visit_detail_end_date||Set time to 00:00:00 UTC TZ
 VISIT_DETAIL_TYPE_CONCEPT_ID|If derived from **RX_CLAIMS** use concept 32022 ('Visit derived from encounter on pharmacy claim')<br><br>If derived from **MEDICAL_CLAIMS** then use the fields PAID_STATUS and PROVCAT with the given lookup tables. <br><br>If derived from **INPATIENT_CONFINEMENT** use concept 32023  |For **MEDICAL_CLAIMS**: Using the given **LOOKUP TABLES** PROVCAT has a column called 'CATGY_ROL_UP_4_DESC'. Use this value along with the PAID_STATUS to assign a CONCEPT_ID  | [See Mapping Medical_Claim to concepts for VISIT_TYPE_CONCEPT_ID](#Mapping-Medical_Claim-to-concepts-for-VISIT_TYPE_CONCEPT_ID)
 PROVIDER_ID|**MEDICAL_CLAIMS** PROV -> **PROVIDER_BRIDGE** PROV_UNIQUE<br><br>**INPATIENT_CONFINEMENT** PROV -> **PROVIDER_BRIDGE** PROV_UNIQUE<br><br>**RX_CLAIMS** Prescriber_Prov/ NPI/ DEA -> **Provider_Bridge** PROV_UNIQUE||[See Provider Assignment Logic](#PROVIDER_ID-Assignment-Logic)
 CARE_SITE_ID|**MEDICAL_CLAIMS** BILL_PROV<br><br>**INPATIENT_CONFINEMENT** leave blank<br><br>**RX_CLAIMS** Pharm. Use corresponding CARE_SITE_ID for field Pharm| |[See Care Site Assignment Logic](#CARE_SITE_ID-Assignment-Logic)
-VISIT_DETAIL_SOURCE_VALUE|**MEDICAL_CLAIMS** clmid+'-'+clmseq<br><br>**INPATIENT_CONFINEMENT** conf_id <br><br>**RX_CLAIMS** clmid |
+VISIT_DETAIL_SOURCE_VALUE|**MEDICAL_CLAIMS** Pos <br><br> **RX_CLAIMS** Spclt_Ind <br><br> **INPATIENT_CONFINEMENT** Pos |If the record comes from **RX_CLAIMS** and Spclt_Ind = 'Y' then put 'Specialty Pharmacy' otherwise put 'Pharmacy'. Only use **RX_CLAIMS** records where mail_ind <> 'Y' |
 VISIT_DETAIL_SOURCE_CONCEPT_ID|0||
 ADMITTED_FROM_SOURCE_VALUE||  |
 ADMITTED_FROM_CONCEPT_ID|0||
@@ -81,6 +70,26 @@ PRECEDING_VISIT_DETAIL_ID|**VISIT_DETAIL**VISIT_DETAIL_ID|**MEDICAL_CLAIMS** Clm
 VISIT_DETAIL_PARENT_ID|**INPATIENT_CONFINEMENT**Conf_id, **MEDICAL_CLAIMS** Conf_id|If the VISIT_DETAIL row record was sourced from **INPATIENT_CONFINEMENT** then VISIT_DETAIL_PARENT_ID = VISIT_DETAIL_ID. <br><br>If the VISIT_DETAIL row record was sourced from **MEDICAL_CLAIMS** then VISIT_DETAIL_PARENT_ID = VISIT_DETAIL_ID of the row record in **VISIT_DETAIL** where **INPATIENT_CONFINEMENT** conf_id = **MEDICAL_CLAIMS** conf_id.<br><br>If record from sourced from **RX_CLAIMS** then leave blank. | This is a self referencing row record in VISIT_DETAIL used to point to the parent visit_detail record of current visit_detail record. It is useful to identify the relationship between individual medical claims related to an inpatient confinement record.
 VISIT_OCCURRENCE_ID|**VISIT_OCCURRENCE** VISIT_OCCURRENCE_ID | **VISIT_OCCURRENCE** is constructed/derived from **VISIT_DETAIL**. |**VISIT_OCCURRENCE** VISIT_OCCURRENCE_ID is a FK for **VISIT_DETAIL** and can be used to identify **VISIT_DETAIL** records constructing one **VISIT_OCCURRENCE** record.
 
+
+## Change Log
+
+### August 9, 2021
+* Added 02, 08, 17, 53, 57, 71, 72, 65 to the list of place of service codes where the visit_detail_end_date should be equal to the visit_detail_start_date
+* Added 24, 19, 25, 50, 62 to the list of place of service codes where if lst_dt - fst_dt > 1 then set visit_detail_end_date equal to visit_detail_start_date
+* Added logic stating if a record with place of service code 22 has lst_dt - fst_dt > 1 then set VISIT_DETAIL_CONCEPT_ID to 9201
+
+### July 14, 2021
+- Removed the claim ids from the VISIT_DETAIL_SOURCE_VALUE. POS value will be used instead. If the record comes from the RX_CLAIMS table then the VISIT_DETAIL_SOURCE_VALUE will be set to either 'Specialty Pharmacy' or 'Pharmacy' based on Spclt_Ind. 
+- Removed mail order pharmacy records from creating visits
+
+### September 21, 2020
+- Added place of service codes where the VISIT_DETAIL_END_DATE should equal the VISIT_DETAIL_START_DATE.
+
+### September 16, 2020
+* Changes to logic on how to assign VISIT_DETAIL_END_DATE. Previously records from RX_CLAIMS had the VISIT_DETAIL_END_DATE set to fill_dt + days_supply-1. This was changed so that the end date is also set to the fill date. 
+* Records where the place of service value from MEDICAL_CLAIMS did not have a mapping still took the LST_DT as the VISIT_DETAIL_END_DATE. Many LST_DT values from the source data are incorrect so in the case that POS is blank or cannot be mapped the VISIT_DETAIL_END_DATE is set to the VISIT_DETAIL_START_DATE
+* Records from MEDICAL_CLAIMS with POS = 23 and where lst_dt - fst_dt > 1, the VISIT_DETAIL_START_DATE and VISIT_DETAIL_END_DATE are both set to fst_dt. 
+* Records from MEDICAL_CLAIMS with POS is equal to 81, 42, 41, 14, 04, 18, 09, 03, 16, the VISIT_DETAIL_START_DATE and VISIT_DETAIL_END_DATE are both set to fst_dt. 
 
 ----------------------------------------------------------------------
 <br>

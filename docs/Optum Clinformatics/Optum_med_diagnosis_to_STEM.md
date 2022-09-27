@@ -34,6 +34,18 @@ The STEM table is a staging area where source codes like ICD9 codes will first b
 - START_DATE is assigned to VISIT_DETAIL_START_DATE
 - The VISIT_DETAIL.VISIT_OCCURRENCE_ID and VISIT_DETAIL.VISIT_DETAIL_ID are FK in STEM table.
 
+### **CONDITION_STATUS_CONCEPT_ID**
+
+CONDITION_STATUS_CONCEPT_ID is based on the POA and DIAG_POSITION fields. The table below details how to assign the concepts. 
+
+**POA**|	**Diag_position**|	**CONDITION_STATUS_CONCEPT_ID**
+--|--|--
+0, N, U, W|	01	|32902
+0, N, U, W	|any value other than 01|	32908
+1, Y|	01|	32901|
+1, Y|	any value other than 01|	32890
+
+
 ![](images/image17.png)
 
 |**Destination Field**|**Source Field**|**Applied Rule**|**Comment**|
@@ -48,7 +60,7 @@ The STEM table is a staging area where source codes like ICD9 codes will first b
 | concept_id | **MED_DIAGNOSIS**<br>DIAG|Use the SOURCE_TO_STANDARD query with the filter<br/><br/>WHERE SOURCE_VOCABULARY_ID IN (*'ICD9CM'* OR *'ICD10CM'*) AND TARGET_STANDARD_CONCEPT ='S' AND TARGET_INVALID_REASON IS NULL |If ICD_FLAG = 9 then use 'ICD9CM', else if ICD_FLAG = 10 then use 'ICD10CM'||
 | source_value | **MED_DIAGNOSIS**<br>DIAG|||
 | source_concept_id |**MED_DIAGNOSIS**<br>DIAG |Use the SOURCE_TO_SOURCE query with the filter<br><br>WHERE SOURCE_VOCABULARY_ID IN (*'ICD9CM'* OR *'ICD10CM'*) |If ICD_FLAG = 9 then use 'ICD9CM', else if ICD_FLAG = 10 then use 'ICD10CM'|
-| type_concept_id |**MED_DIAGNOSIS**<br>DIAG_POSITION| If position = 1 then concept_id = 44786627 (Primary condition). Use 44786629 (Secondary Condition for all others.  ||
+| type_concept_id | 32810 (Claim)|  ||
 | end_datetime | |||
-| condition_status_concept_id | **MED_DIAGNOSIS** POA | Y = 46236988<br>N, U, or W = 0||
-| condition_status_source_value | **MED_DIAGNOSIS** POA |||
+| condition_status_concept_id | **MED_DIAGNOSIS** POA, DIAG_POSITION| See the table above for how to assign this||
+| condition_status_source_value | **MED_DIAGNOSIS** POA, DIAG_POSITION | Concatenate the values in these two fields together with a semi-colon inbetween||

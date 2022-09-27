@@ -7,6 +7,7 @@ createProcedureOccurrenceTests <- function()
   add_member_continuous_enrollment(eligeff = '2010-05-01', eligend = '2013-10-31',
                     gdr_cd = 'F', patid = patient$patid, yrdob = 1969)
   add_medical_claims(clmid = claim$clmid, clmseq = '001', proc_cd = '92928', lst_dt = '2013-07-01', loc_cd = '2',
+
                      pat_planid = patient$patid, patid = patient$patid, fst_dt = '2013-07-01', prov = '111111', provcat = '5678')
   
   add_med_procedure(patid = patient$patid, pat_planid = patient$patid, proc = "70481", clmid = claim$clmid, proc_position = 1, fst_dt = '2013-07-01')
@@ -22,7 +23,8 @@ createProcedureOccurrenceTests <- function()
   
   expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = 2211331)
   expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = 43527998)
-  
+
+ 
 
   patient <- createPatient()
   claim <- createClaim()

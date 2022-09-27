@@ -91,10 +91,13 @@ createPayerPlanPeriodTests <- function() #Failures related to incorrect mapping 
   expect_payer_plan_period(person_id = patient$person_id, plan_source_value = 'POS3')
 
 
+
   patient <- createPatient()
   declareTest("PAYER_PLAN_PERIOD - Patient has multiple payer plan periods that should be collapsed based on PAYER_SOURCE_VALUE and PLAN_SOURCE_VALUE", 
               id = patient$person_id)
+
   add_member_continuous_enrollment(patid = patient$patid, eligeff = '2000-05-01', eligend = '2004-10-31', gdr_cd = 'M', yrdob = 1969)
+
   add_member_enrollment(aso = 'N', bus = 'COM', cdhp = 3, eligeff = '2000-05-01', eligend = '2000-10-31',
                     gdr_cd = 'F', patid = patient$patid, pat_planid = patient$patid, product = 'HMO', yrdob = 1969)
   add_member_enrollment(aso = 'N', bus = 'COM', cdhp = 3, eligeff = '2000-12-01', eligend = '2004-08-31',

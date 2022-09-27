@@ -1,40 +1,32 @@
 /*Visit Concept Roll-up Logic*/
 
 /*Find terminal ancestors in the Visit domain*/
-with cteAncestors as (
-    select concept_id, concept_name, count(*) 
-    from concept c
-    join concept_ancestor ca
-      on c.concept_id = ca.descendant_concept_id
-    where lower(domain_id) = 'visit' and standard_concept = 'S'
-    group by concept_id, concept_name
-    having count(*) = 1
- ),
-/*Find all CMS place of service codes, their mappings, and their terminal ancestors*/
-
-ctePosMaps as (
-SELECT c.concept_id, 
-       c.concept_name, 
-       c.concept_code, 
-       c.vocabulary_id,
-       case when c2.concept_id is NULL then 9202 else c2.concept_id end as maps_to_concept, 
-       c2.concept_name as maps_to_concept_name
-FROM concept c
-LEFT JOIN concept_relationship cr
-  on c.concept_id = cr.concept_id_1
-  and lower(cr.relationship_id) = 'maps to'
-LEFT JOIN concept c2
-  on cr.concept_id_2 = c2.concept_id
-  and c2.invalid_reason is NULL
-  and c2.standard_concept = 'S'
-WHERE c.vocabulary_id = 'CMS Place of Service'
+WITH top_level
+AS
+(SELECT concept_id, concept_name
+  FROM concept 
+  LEFT JOIN concept_ancestor 
+ 	ON concept_id=descendant_concept_id 
+    AND ancestor_concept_id!=descendant_concept_id
+  WHERE domain_id='Visit' 
+ 	AND standard_concept='S'
+    AND ancestor_concept_id IS NULL
 )
 
-select pm.*, an.concept_id as terminal_ancestor, an.concept_name as terminal_ancestor_name
-from ctePosMaps pm
-join concept_ancestor ca
-  on pm.maps_to_concept = ca.descendant_concept_id
-join cteAncestors an
-  on ca.ancestor_concept_id = an.concept_id
-  
- /*This creates a table with the source codes and concepts representing the CMS place of service codes, the concepts they map to, and the terminal ancestors of those concepts.*/
+/*Find all descendants of those ancestors*/
+SELECT top_level.concept_id as terminal_ancestor_concept_id, 
+	   top_level.concept_name as terminal_ancestor_concept_name, 
+	   descendant.concept_id as descendant_concept_id, 
+	   descendant.concept_name as descendant_concept_name
+FROM concept_ancestor
+JOIN top_level  
+	ON top_level.concept_id = ancestor_concept_id
+JOIN concept descendant 
+	ON descendant.concept_id = descendant_concept_id
+WHERE descendant.domain_id = 'Visit';
+
+/*This can be used in conjunction with the source_to_standard query. Source_to_standard
+is used to find the visit concepts that the CMS place of service codes map to. From there,
+those standard concepts can be joined to the above table on TARGET_STANDARD_CONCEPT = DESCENDANT_CONCEPT_ID
+to find the high-level terminal ancestor of each standard Visit concept. The high-level ancestors should then
+become the VISIT_CONCEPT_IDs in the VISIT_OCCURRENCE table. 
