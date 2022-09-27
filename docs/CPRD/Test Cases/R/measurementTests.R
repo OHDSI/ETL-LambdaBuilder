@@ -63,11 +63,24 @@ createMeasurementTests <- function()
   add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01',
               pracid = patient$pracid)
   add_test(patid = patient$patid, eventdate = '2011-03-01', medcode = 445, staffid = 1001, enttype = 215, data1=9)
+  add_entity(code=215, description = 'Clotting Tests', filetype = 'Test', category = 'Haematology',
+             data_fields = 4,
+             data1 = 'Qualifier', data1lkup = 'TQU',
+             data2 = 'Normal range from', data2lkup = NULL,
+             data3 = 'Normal range to', data3lkup = NULL,
+             data4 = 'Normal range basis', data4lkup = NULL,
+             data5 = NULL, data5lkup = NULL,
+             data6 =  NULL, data6lkup = NULL,
+             data7 = NULL, data7lkup = NULL,
+             data8 = NULL, data8lkup = NULL)
+
   expect_measurement(person_id = patient$person_id,
                      measurement_concept_id =  4199172,
-                     measurement_source_value =  '424Z.00', measurement_source_concept_id =  45508441,
+                     measurement_source_value =  '215-Clotting tests',
+
                      measurement_date =  '2011-03-01',
                      provider_id =   1001)
+
 
 
   #================================================================
@@ -100,8 +113,9 @@ createMeasurementTests <- function()
   #add_lookup()
   expect_measurement(person_id = patient$person_id, measurement_concept_id=4132152,
                      measurement_date='2012-01-01',
-                     measurement_type_concept_id=44818702, value_source_value='Normal',
-                     measurement_source_value='424Z.00', value_as_concept_id=45884153)
+                     value_source_value='Normal',
+                     measurement_source_value='220-Full blood count', value_as_concept_id=45884153)
+
 
   # TESTING VALUES RANGE LOW (TEST.data2)
   # 18b)
@@ -115,7 +129,8 @@ createMeasurementTests <- function()
   expect_measurement(person_id = patient$person_id, measurement_concept_id=4132152,
                      measurement_date='2012-01-01', range_low = 1.2,
                      measurement_type_concept_id=44818702, value_source_value='Normal',
-                     measurement_source_value='424Z.00', value_as_concept_id=45884153)
+                     value_as_concept_id=45884153)
+
 
   # TESTING VALUES RANGE HIGH (TEST.data3)
   # 18b)
@@ -129,7 +144,8 @@ createMeasurementTests <- function()
   expect_measurement(person_id = patient$person_id, measurement_concept_id=4132152,
                      measurement_date='2012-01-01', range_high = 4.3,
                      measurement_type_concept_id=44818702, value_source_value='Normal',
-                     measurement_source_value='424Z.00', value_as_concept_id=45884153)
+                     value_as_concept_id=45884153)
+
 
   # 19) -- test observation record 7 fields -- enntype 173 maps to 3000963 --> SHOULD WORK!
   patient <- createPatient();
@@ -220,9 +236,10 @@ createMeasurementTests <- function()
   add_lookuptype(lookup_type_id =58, name='PFD', description='Peak flow...')
   add_lookup(lookup_id=926, lookup_type_id=83, code=71, text='L/min')
   ##add_lookuptype(lookup_type_id=81, name='SUM', description='Specimen ...')
-  expect_observation(person_id = patient$person_id, observation_concept_id=0,
-                     observation_date='2012-01-01',
-                     observation_type_concept_id=44818702)
+  expect_measurement(person_id = patient$person_id, measurement_concept_id=0,
+                     measurement_date='2012-01-01',
+                     measurement_type_concept_id=44818702)
+
 
   #expect_count_measurement(rowCount = 2, person_id = patient$person_id)
 
