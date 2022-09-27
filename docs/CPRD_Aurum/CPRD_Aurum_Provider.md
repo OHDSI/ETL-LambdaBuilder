@@ -2,7 +2,7 @@
 layout: default
 title: Provider
 nav_order: 5
-parent: CPRD
+parent: CPRD Aurum
 description: "Provider mapping from CPRD staff table"
 
 ---

@@ -14,7 +14,7 @@ The STEM table is a staging area where CPRD source codes like Read codes will fi
 
 ## Reading from CPRD.Problem
 
-This table is used to give the enddate of a condition observed in the observation table. Join on obsid to find the probenddate, if there is one. In the below table, only the relevant STEM fields are shown. 
+This table is used to give the enddate of a condition observed in the problem table. Join on obsid to find the probenddate, if there is one. In the below table, only the relevant STEM fields are shown. 
 
 ![](images/aurum_stem_problem.png)
 
