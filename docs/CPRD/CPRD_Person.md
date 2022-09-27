@@ -21,7 +21,7 @@ The patients in the CDM are restricted to the subset of all CPRD patients deemed
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | :---: | --- |
 | person_id | patid |  |  |
-| gender_concept_id | gender | Map:<br> 1 = 8507<br>2 = 8532  | Remove anyone with an unknown gender, meaning anyone with a CPRD gender code in (0,3,4) |
+| gender_concept_id | gender | Map:<br> 1 = 8507<br>2 = 8532  | Remove anyone with an unknown gender, meaning anyone with a CPRD gender code in (0,3,4) or is NULL |
 | year_of_birth | yob | yob+1800 | Remove any patients that are born before 1875 |
 | month_of_birth | mob |  | Mob is only populated for children, if 0 set as NULL |
 | day_of_birth |  |  |  |
@@ -32,7 +32,7 @@ The patients in the CDM are restricted to the subset of all CPRD patients deemed
 | provider_id |  |  |  |
 | care_site_id | patid | Last 3 digits of patient.patid is the practice identifier and can be used in the CARE_SITE table to lookup the care_site_id. |  |
 | person_source_value | patid |  |  |
-| gender_source_value | gender |  |  |
+| gender_source_value | gender |  | 'M' if gender = 1, 'F' if gender = 2 |
 | gender_source_concept_id |  | 0 |  |
 | race_source_value |  |  |  |
 | race_source_concept_id |  | 0 |  |

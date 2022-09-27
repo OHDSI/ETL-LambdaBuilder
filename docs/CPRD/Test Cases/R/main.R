@@ -25,7 +25,7 @@ getSequence <- function (startValue = 1) {
   return (counterInstance);
 }
 
-createPatient <- function(pracid='111') {
+createPatient <- function(pracid='311') {
   personId = paste0(sequencer$nextSequence(), pracid);
   return (list(patid = personId, person_id = personId, pracid=pracid));
 }
@@ -41,7 +41,6 @@ createProvider <- function(providerId=NULL) {
     providerId = sequencer$nextSequence();
   return (list(staffid = providerId, provider_id = providerId));
 }
-
 
 # Use this function to test build errors
 # It's challenging to debug errors when a package loads, so disable onLoad

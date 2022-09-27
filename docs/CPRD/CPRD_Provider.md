@@ -28,5 +28,5 @@ Use the staff table to populate the provider table. In CPRD, the staffid field r
 | provider_source_value | staffid |  |  |
 | specialty_source_value | role | Join the staff table to the ROL lookup table on role = code where lookup_type_id = 76. Put the text from the lookup table as the SPECIALTY_SOURCE_VALUE. | See the file [CPRD_Native_Specialties.sql](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/CPRD/Vocab%20Updates/CPRD_Native_Specialties.sql) for more information on how to join the tables. |
 | specialty_source_concept_id |  |  | 0 |
-| gender_source_value | gender |  |  |
+| gender_source_value | gender | logic: <br>1 = M<br>2 = F |  |
 | gender_source_concept_id |  |  | 0 |
