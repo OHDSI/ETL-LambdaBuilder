@@ -28,5 +28,5 @@ Use the staff table to populate the provider table. In CPRD Aurum, the staffid f
 | provider_source_value | staffid |  |  |
 | specialty_source_value | jobcatid | Left Join to lkpJobCategory on `staff.jobcatid = lkpJobCategory.jobcatid` and set specialty_source_value as lkpJobCategory.description. | If a staffed has a jobcatid without a description in the lkpJobCategory table, keep them and set specialty_source_value to NULL|
 | specialty_source_concept_id |  |  | 0 |
-| gender_source_value | gender |  |  |
+| gender_source_value |  |  | NULL |
 | gender_source_concept_id |  |  | 0 |
