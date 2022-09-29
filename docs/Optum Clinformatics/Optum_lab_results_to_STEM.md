@@ -81,7 +81,7 @@ Certain COVID-19 tests have specific text results that need to be mapped manuall
 | source_concept_id |LOINC_CD, PROC_CD|Use the SOURCE_TO_SOURCE query with the filter<br/><br/>**LOINC_CD**<br> WHERE SOURCE_VOCABULARY_ID IN ('LOINC') <br/><br/>**PROC_CD**<br> WHERE SOURCE_VOCABULARY_ID IN ('HCPCS','CPT4') |Put the SOURCE_CONCEPT_ID of the either the LOINC_CD or PROC_CD that was used to map the standard concept_id.|
 | type_concept_id |Set to 32856 (Lab)|||  
 | operator_concept_id | See the above logic to assign this value based on the first to characters of the RSLT_TXT field. |||
-| unit_concept_id | **LAB_RESULTS** RSLT_UNIT_NM |Use the SOURCE_TO_STANDARD query with the filter <br><br>Where SOURCE_VOCABULARY_ID in ('UCUM', 'JNJ_UNITS') AND TARGET_STANDARD_CONCEPT = 'S' AND TARGET_INVALID_REASON IS NULL|If there is no mapping to a standard concept then set to 0||
+| unit_concept_id | **LAB_RESULTS** RSLT_UNIT_NM |Use the SOURCE_TO_STANDARD query with the filter <br><br>Where SOURCE_VOCABULARY_ID in ('UCUM', 'JNJ_UNITS') AND TARGET_STANDARD_CONCEPT = 'S' AND TARGET_INVALID_REASON IS NULL|If there is no mapping to a standard concept then set to 0<br><br> Set UNIT_CONCEPT_ID = NULL when the source unit value is NULL|||
 | unit_source_value |**LAB_RESULTS** RSLT_UNIT_NM |||
 | start_date | **VISIT_DETAIL** VISIT_DETAIL_START_DATE||| 
 | end_date |  |||
