@@ -36,7 +36,7 @@ The field mapping is performed as follows:
 | VALUE_AS_STRING | PAT.MART_STATUSPAT.POINT_OF_ORIGINPAT.DISC_STATUSPAT.PAT_TYPE | Value_as_string only populated for Premier-specific fields mart_status, point_of_origin, disc_status, and pat_typeMarital status values populated directly from PAT.MART_STATUS as ‘M’, ‘S’, ‘O’, or ‘U’select point_of_origin_desc from poorgin pojoin pat p on p.mart_status=po.point_of_originselect disc_status from poorgin pojoin pat p on p.mart_status=po.point_of_originselect pat_type_desc from pattype pjoin pat p1 on p1.pat_type=p.pat_type | Use look up values in the text fields.  |
 | VALUE_AS_CONCEPT_ID | - | NULL |  |
 | QUALIFER_CONCEPT_ID | - | NULL |  |
-| UNIT_CONCEPT_ID | - | NULL |  |
+| UNIT_CONCEPT_ID | - | NULL | Set UNIT_CONCEPT_ID = NULL when the source unit value is NULL;<br>Set UNIT_CONCEPT_ID = 0 when source unit value is not NULL but doesn't have a mapping |
 | PROVIDER_CONCEPT_ID | PAT.ADMPHY |  |  |
 | VISIT_OCCURRENCE_ID | PAT.PAT_KEY |  |  |
 | OBSERVATION_SOURCE_VALUE | PAT.DRG\PATICD.ICD_CODE\PATCPT.CPT_CODE\CHARGE CODE | Standard charge code value:SELECT CONCAT(STD_CHG_DESC, ' / ', HOSP_CHG_DESC) AS SOURCE_VALUE FROM PATBILL AJOIN CHGMSTR B ON A.STD_CHG_CODE=B.STD_CHG_CODEJOIN hospchg C ON A.hosp_chg_id=C.hosp_chg_id |  |

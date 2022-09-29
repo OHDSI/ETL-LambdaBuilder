@@ -28,7 +28,7 @@ description: "OPTUM EHR Labs table to STEM"
 | source_concept_id |0 || |
 | type_concept_id | 32856  | Lab result| | 
 | operator_concept_id |relative_indicator | When relative_indicator is NULL/empty, leave the value as NULL. Otherwise do as follows:<br><br>CASE WHEN relative_incicator == ‘<=’ THEN 4171754<br>CASE WHEN relative_incicator == ‘>=’ THEN 4171755<br>CASE WHEN relative_incicator == ‘<’ THEN 4171756 <br>CASE WHEN relative_incicator == ‘=’ THEN 4172703 <br>CASE WHEN relative_incicator == ‘>’ THEN 4172704<br>ELSE 0| |
-| unit_concept_id | result_unit  | Map to UCUM vocabulary using a CASE-SENSITIVE matching; if no match if found, match to the JNJ_UNITS STCM. If no match is found in either vocabulary, set this field to 0.| |
+| unit_concept_id | result_unit  | Map to UCUM vocabulary using a CASE-SENSITIVE matching; if no match if found, match to the JNJ_UNITS STCM. If no match is found in either vocabulary, set this field to 0.<br> Set UNIT_CONCEPT_ID = NULL when the source unit value is NULL| |
 | unit_source_value | result_unit | | |
 | range_high | normal_range | Parse lower bound (split on hyphen), first piece | | 
 | range_low | normal_range |Parse upper bound (split on hyphen), second piece | |
