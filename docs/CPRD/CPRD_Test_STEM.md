@@ -47,7 +47,7 @@ As discussed above, the lab tests in the CPRD Test table are given both an entit
 | source_concept_id | test_int.read_code |Map the read code to a concept id using the [SOURCE_TO_SOURCE](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_SOURCE.sql) query to map the read code to a source concept id with the following filters:<br><br> Where source_vocabulary_id = 'Read' <br><br>*BE CAREFUL - READ CODES ARE CASE SENSITIVE*. If there is no mapping available set source_concept_id to zero.| This maps the read code on the record to a concept id so that both the test (enttype) and read codes are mapped.|
 | type_concept_id |  | Use **32856** - Lab  | |
 | operator_concept_id |  | Map test_int.operator to a standard concept_id using the following logic:   <br><br> <	 as  4171756 <br> <= 	as  4171754 <br> =	as  4172703 <br> >	as  4172704 <br> >=	as  4172704  <br><br>  This can also be done by joining to the CONCEPT table where operator = concept_name and domain = 'Meas Value Operator' and standard_concept = 'S' and invalid_reason is NULL.  | |
-| unit_concept_id |  | Look up test_int.unit in the CONCEPT table where vocabulary_id = 'UCUM' and standard_concept = 'S' and invalid_reason is NULL.  |  |
+| unit_concept_id |  | Look up test_int.unit in the CONCEPT table where vocabulary_id = 'UCUM' and standard_concept = 'S' and invalid_reason is NULL.  | Set UNIT_CONCEPT_ID = NULL when the source unit value is NULL;<br>Set UNIT_CONCEPT_ID = 0 when source unit value is not NULL but doesn't have a mapping |
 | unit_source_value | test_int.unit |  |  |
 | start_date | test_int.eventdate |  |    |
 | end_date |  |  |  |
