@@ -30,7 +30,7 @@ When an ICD10 code in the **diagnosis** table maps to a concept in the Measureme
 |     operator_concept_id    |          |          |          |
 |     value_as_number    |          |          |          |
 |     value_as_concept_id    |          |          |     From Health checkups: from mapping table. Else 4181412   (Present)    |
-|     unit_concept_id    |          |          |     From mapping table    |
+|     unit_concept_id    |          |     Set UNIT_CONCEPT_ID = NULL when the source unit value is NULL;<br>Set UNIT_CONCEPT_ID = 0 when source unit value is not NULL but doesn't have a mapping     |     From mapping table    |
 |     range_low    |          |          |     From Health checkups: take from reference file    |
 |     range_high    |          |          |     From Health checkups: take from reference file    |
 |     visit_detail_id    |          |          |          |
@@ -57,7 +57,7 @@ The **annual_health_checkup** table is a wide table with one row per date and ma
 |     operator_concept_id    |          |          |          |
 |     value_as_number    |          | Put the numeric values from the columns here         |          |
 |     value_as_concept_id    |    See mapping table for mapping the categorical answers    |          |         |
-|     unit_concept_id    |          |          |     See mapping table for the correct units  |
+|     unit_concept_id    |          |     Set UNIT_CONCEPT_ID = NULL when the source unit value is NULL;<br>Set UNIT_CONCEPT_ID = 0 when source unit value is not NULL but doesn't have a mapping     |     From mapping table    |
 |     range_low    |          |          |         |
 |     range_high    |          |          |        |
 |     visit_detail_id    |          |          |          |
