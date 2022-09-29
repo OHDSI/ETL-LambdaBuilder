@@ -33,7 +33,7 @@ The field mapping is performed as follows:
 | OPERATOR_CONCEPT_ID | - | NULL |  |
 | VALUE_AS_NUMBER | - | See query below |  |
 | VALUE_AS_CONCEPT_ID | - | NULL |  |
-| UNIT_CONCEPT_ID | - | For operation time records 8550Else NULL |  |
+| UNIT_CONCEPT_ID | - | For operation time records 8550Else NULL |Set UNIT_CONCEPT_ID = NULL when the source unit value is NULL;<br>Set UNIT_CONCEPT_ID = 0 when source unit value is not NULL but doesn't have a mapping  |
 | RANGE_LOW | - | NULL |  |
 | RANGE_HIGH | - | NULL |  |
 | PROVIDER_ID | PATICD_PROC.PROC_PHYPAT.ADMPHY | When operation time PATICD_PROC.PROC_PHYElsePAT.ADMPHY |  |
