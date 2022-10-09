@@ -57,7 +57,7 @@ The **annual_health_checkup** table is a wide table with one row per date and ma
 |     observation_datetime    |          |          |          |
 |     value_as_number    |   Put the numeric value of the column here.        |          |          |
 |     value_as_string    |          |          |          |
-|     value_as_concept_id    |        |    | See the mapping file [here](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/JMDC/Vocab%20Updates/Annual_Health_Checkup_Mapping.xlsx) for how to map the categorical values to concept ids.        |
+|     value_as_concept_id    |        | If the source categorical value is null, set  value_as_concept_id  to NULL  | See the mapping file [here](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/JMDC/Vocab%20Updates/Annual_Health_Checkup_Mapping.xlsx) for how to map the categorical values to concept ids.        |
 |     qualifier_concept_id    |          |          |          |
 |     unit_concept_id    |          |   See the mapping file [here](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/JMDC/Vocab%20Updates/Annual_Health_Checkup_Mapping.xlsx) for what the correct unit_concept_id should be.   |          |
 |     visit_detail_id    |          |          |          |

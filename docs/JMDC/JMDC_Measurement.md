@@ -27,7 +27,7 @@ When an ICD10 code in the **diagnosis** table maps to a concept in the Measureme
 |     measurement_source_concept_id    |     standard_disease_code    |          |     Lookup icd10_level4_code in diagnosis_master table, and   use vocab to map to source concept.    |
 |     provider_id    |     medical_facility_id    |     Use dummy provider corresponding to the institute    |     Use dummy provider corresponding to the institute    |
 |     measurement_datetime    |          |          |          |
-|     operator_concept_id    |          |          |          |
+|     operator_concept_id    |          |    NULL      |          |
 |     value_as_number    |          |          |          |
 |     value_as_concept_id    |          |          |     From Health checkups: from mapping table. Else 4181412   (Present)    |
 |     unit_concept_id    |          |     Set UNIT_CONCEPT_ID = NULL when the source unit value is NULL;<br>Set UNIT_CONCEPT_ID = 0 when source unit value is not NULL but doesn't have a mapping     |     From mapping table    |

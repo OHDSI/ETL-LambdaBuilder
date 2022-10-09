@@ -27,14 +27,14 @@ description: "OPTUM EHR Observations table to STEM"
 |source_value|obs_type|||
 | source_concept_id |0 || |
 | type_concept_id | 32831  | EHR Note| | 
-| operator_concept_id |0 | | |
-| unit_concept_id | obs_unit  | Map to UCUM vocabulary using a CASE-SENSITIVE matching; if no match if found, match to the JNJ_UNITS STCM. If no match is found in either vocabulary, set this field to 0.| |
+| operator_concept_id |NULL | | |
+| unit_concept_id | obs_unit  | Map to UCUM vocabulary using a CASE-SENSITIVE matching; if no match if found, match to the JNJ_UNITS STCM. If no match is found in either vocabulary, set this field to 0. If there'so source unit, set unit_concept_id to NULL| |
 | unit_source_value | obs_unit | | |
 | range_high | |  | | 
 | range_low |  | | |
 | value_as_number | obs_result | If value of obs_result is numeric put in value_as_number| |
 | value_as_string | obs_result | If value of obs_result is NOT numeric put in value_as_string | |
-| value_as_concept_id | obs_result |If value of obs_result is NOT numeric use the [SOURCE_TO_STANDARD](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_STANDARD.sql) query to map the code to standard concept(s) with the following filters: <br> <br>  Where source_vocabulary_id = 'JNJ_OPTUM_EHR_LABRES'  and Target_standard_concept = 'S'  and target_invalid_reason is NULL<br><br>If there is no mapping available, set concept_id to zero. | |
+| value_as_concept_id | obs_result |If value of obs_result is NOT numeric use the [SOURCE_TO_STANDARD](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_STANDARD.sql) query to map the code to standard concept(s) with the following filters: <br> <br>  Where source_vocabulary_id = 'JNJ_OPTUM_EHR_LABRES'  and Target_standard_concept = 'S'  and target_invalid_reason is NULL<br><br>If there is no mapping available, set value_as_concept_id to zero. If value of obs_result is numeric OR NULL, set value_as_concept_id to NULL  | |
 | value_source_value | obs_type | | |
 | verbatim_end_date |   | | |
 | days_supply |  | | |

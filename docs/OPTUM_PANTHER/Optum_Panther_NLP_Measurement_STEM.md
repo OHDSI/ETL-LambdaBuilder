@@ -27,14 +27,14 @@ description: "OPTUM EHR NLP_Measurement table to STEM"
 |source_value|measurement_type|||
 | source_concept_id |0 || |
 | type_concept_id | 32858  | NLP| | 
-| operator_concept_id |0 | | |
+| operator_concept_id |NULL | | |
 | unit_concept_id | measurement_detail | If the inbound record maps to measurement_concept_id = (Body mass index), then set the unit_concept_id to 9531 (kilogram per square meter). Otherwise, follow these rules: Map to UCUM vocabulary using a CASE-SENSITIVE matching; if no match if found, match to the JNJ_UNITS STCM. If no match is found in either vocabulary, set this field to 0.| |
 | unit_source_value | measurement_detail | | |
 | range_high | |  | | 
 | range_low |  | | |
 | value_as_number | measurement_value | If value of measurement_value is numeric put in value_as_number| |
 | value_as_string | measurement_value | If value of measurement_value is NOT numeric put in value_as_string | |
-| value_as_concept_id | measurement_value |If value of obs_result is NOT numeric use the [SOURCE_TO_STANDARD](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_STANDARD.sql) query to map the code to standard concept(s) with the following filters: <br> <br>  Where source_vocabulary_id = 'JNJ_OPTUM_EHR_LABRES'  and Target_standard_concept = 'S'  and target_invalid_reason is NULL<br><br>If there is no mapping available, set concept_id to zero. | |
+| value_as_concept_id | measurement_value |If value of obs_result is NOT numeric use the [SOURCE_TO_STANDARD](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_STANDARD.sql) query to map the code to standard concept(s) with the following filters: <br> <br>  Where source_vocabulary_id = 'JNJ_OPTUM_EHR_LABRES'  and Target_standard_concept = 'S'  and target_invalid_reason is NULL<br><br>If there is no mapping available, set value_as_concept_id to zero.<br>If  value of obs_result is numeric OR null, set value_as_concept_id to null  | |
 | value_source_value | measurement_value | | |
 | verbatim_end_date |   | | |
 | days_supply |  | | |
