@@ -29,10 +29,10 @@ When an ICD10 code in the **diagnosis** table maps to a concept in the Measureme
 |     measurement_datetime    |          |          |          |
 |     operator_concept_id    |          |          |          |
 |     value_as_number    |          |          |          |
-|     value_as_concept_id    |          |          |     From Health checkups: from mapping table. Else 4181412   (Present)    |
-|     unit_concept_id    |          |     Set UNIT_CONCEPT_ID = NULL when the source unit value is NULL;<br>Set UNIT_CONCEPT_ID = 0 when source unit value is not NULL but doesn't have a mapping     |     From mapping table    |
-|     range_low    |          |          |     From Health checkups: take from reference file    |
-|     range_high    |          |          |     From Health checkups: take from reference file    |
+|     value_as_concept_id    |          |          |     Lookup icd10_level4_code in diagnosis_master table, and use 'Maps to value' vocabulary relationship to map to standard concept. If such relationship is absent set to NULL  |
+|     unit_concept_id    |          |         |        |
+|     range_low    |          |          |         |
+|     range_high    |          |          |         |
 |     visit_detail_id    |          |          |          |
 |     unit_source_value    |          |          |     From mapping table    |
 
@@ -58,8 +58,8 @@ The **annual_health_checkup** table is a wide table with one row per date and ma
 |     value_as_number    |          | Put the numeric values from the columns here         |          |
 |     value_as_concept_id    |    See mapping table for mapping the categorical answers    |          |         |
 |     unit_concept_id    |          |     Set UNIT_CONCEPT_ID = NULL when the source unit value is NULL;<br>Set UNIT_CONCEPT_ID = 0 when source unit value is not NULL but doesn't have a mapping     |     From mapping table    |
-|     range_low    |          |          |         |
-|     range_high    |          |          |        |
+|     range_low    |          |          |       take from reference file  |
+|     range_high    |          |          |     take from reference file   |
 |     visit_detail_id    |          |          |          |
 |     unit_source_value    |          |          |     From mapping table    |
 
@@ -67,3 +67,5 @@ The **annual_health_checkup** table is a wide table with one row per date and ma
 
 ### April 6, 2022
 - Added more text around how to handle records from the annual_health_checkup table.
+### July 31, 2023
+- Added Maps to value logic, removed confusion between the Diagnosis and annual_health_checkup logic

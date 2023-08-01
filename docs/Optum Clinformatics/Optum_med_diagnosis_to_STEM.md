@@ -64,3 +64,9 @@ CONDITION_STATUS_CONCEPT_ID is based on the POA and DIAG_POSITION fields. The ta
 | end_datetime | |||
 | condition_status_concept_id | **MED_DIAGNOSIS** POA, DIAG_POSITION| See the table above for how to assign this||
 | condition_status_source_value | **MED_DIAGNOSIS** POA, DIAG_POSITION | Concatenate the values in these two fields together with a semi-colon inbetween||
+| value_as_concept_id |**MED_DIAGNOSIS** POA, DIAG_POSITION | Use the SOURCE_TO_STANDARD query with the filter WHERE SOURCE_VOCABULARY_ID IN ('ICD9CM' OR 'ICD10CM') AND relationship_id = 'Maps to value' | If ICD_FLAG = 9 then use 'ICD9CM', else if ICD_FLAG = 10 then use 'ICD10CM'||
+
+## Change log
+
+### Aug-01-2023
+Added 'Maps to value' logic
