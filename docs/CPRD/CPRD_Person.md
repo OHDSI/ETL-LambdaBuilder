@@ -26,8 +26,8 @@ The patients in the CDM are restricted to the subset of all CPRD patients deemed
 | month_of_birth | mob |  | Mob is only populated for children, if 0 set as NULL |
 | day_of_birth |  |  |  |
 | birth_datetime |  |  |  |
-| race_concept_id |  | 0 |  |
-| ethnicity_concept_id |  | 0 |  It could be possible to write an algorithm in the future using the Read codes that are available for a patient. |
+| race_concept_id |  | STEM.concept_id | populate if STEM.concept_id has domain 'Race'  |
+| ethnicity_concept_id |  | 0 |   |
 | location_id |  |  |  |
 | provider_id |  |  |  |
 | care_site_id | patid | Last 3 digits of patient.patid is the practice identifier and can be used in the CARE_SITE table to lookup the care_site_id. |  |
@@ -35,6 +35,11 @@ The patients in the CDM are restricted to the subset of all CPRD patients deemed
 | gender_source_value | gender |  | 'M' if gender = 1, 'F' if gender = 2 |
 | gender_source_concept_id |  | 0 |  |
 | race_source_value |  |  |  |
-| race_source_concept_id |  | 0 |  |
-| ethnicity_source_value |  |  |  |
+| race_source_concept_id |  | STEM.value_as_concept_id | populate if STEM.concept_id has domain 'Race' |
+| ethnicity_source_value |  | STEM.source_value | if STEM.concept_id has domain 'Race'  |
 | ethnicity_source_concept_id |  | 0 |  |
+
+## Change log
+
+### 08-Aug-2023
+- added rule: populate Race from the STEM table
