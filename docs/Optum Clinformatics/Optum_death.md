@@ -1,19 +1,29 @@
-#DEPRECATED IN CDM V6.0 +. Below documentation only applies for V5+ < V6
+---
+layout: default
+title: Person
+nav_order: 15
+parent: Optum Clinformatics
+description: "Person mapping from Optum member_continuous_enrollment table"
+
+---
 
 # CDM Table: DEATH
 
-- DOD: this table will be sourced from the table **Death** - except for persons not in person table and based on logic below. 
+- DOD: this table will be sourced from the table **Death** - except for persons not in person table. If person is absent in **Death** table, but the fact of death is confirmed by the SES logic (see below), populate the DEATH table as well.
 - SES: this table will be algorithmically derived from observations in claims data. 
 - Cause of death is not present in source data.
 
 ## **DEATH Table Logic**
 - Delete person if not in PERSON table.
-- For DOD only,
-    - If there are outpatient or pharmacy visits (VISIT_CONCEPT_ID in 9202, 581458) with visit start date after 30 days of death date, delete the visit record. 
-    - If there are inpatient or ER visits (VISIT_CONCEPT_ID in 9202, 9203) with visit start date after 30 days of death date, delete the death record. 
-    - If the death date occurs before the patient's date of birth, then delete the death record.
 
-## **Deriving date of death in SES**
+### **Deriving date of death in DOD**
+
+- If there are outpatient or pharmacy visits (VISIT_CONCEPT_ID in 9202, 581458) with visit start date after 30 days of death date, delete the visit record. 
+- If there are inpatient or ER visits (VISIT_CONCEPT_ID in 9202, 9203) with visit start date after 30 days of death date, delete the death record. 
+- If the death date occurs before the patient's date of birth, then delete the death record.
+- If person is absent in **Death** table, but the fact of death is confirmed by the SES logic (see below), populate the DEATH table as well.
+
+### **Deriving date of death in SES**
 - In SES data only, date of death will be derived from claims as follows.
 - The date of death will be associated to the VISIT_END_DATE.
 - These fields will be scanned for death information:
@@ -21,11 +31,10 @@
   1. **MED_DIAGNOSIS** DIAG (ICD10CM or ICD9CM diagnosis codes)
   1. **MEDICAL_CLAIMS** DRG
 
-### **Mapping DEATH_TYPE_CONCEPT_ID**
-
-If a person in the **DOD** database has a death record sourced from the **DEATH** table use **DEATH_TYPE_CONCEPT_ID = 32885**
-
 #### Using **MEDICAL_CLAIMS** DSTATUS
+
+DEATH = TRUE where DSTATUS in (21,22,23,24,25,26,27,28,29,40,41,42),
+see the descriptions below for the reference:
 
 | Source Field       | Source Code | Source Code Description               | DEATH_TYPE_CONCEPT_ID |
 |------------------|--------------|-----------------------------------------|--------------------------|
@@ -48,9 +57,9 @@ If a person in the **DOD** database has a death record sourced from the **DEATH*
 #### Using ICD9CM and ICD10CM from **MED_DIAGNOSIS** DIAG   
 
 Use [Source to Source](code_snippets.md#source-to-source) and filter with
-```WHERE SOURCE_VOCABULARY_ID IN ('JNJ_DEATH')``` to find DEATH records using the diagnosis codes. Give these records **DEATH_TYPE_CONCEPT_ID = 32508**
+```WHERE SOURCE_VOCABULARY_ID IN ('JNJ_DEATH')``` to find DEATH records using the diagnosis codes. 
 
-#### Using ICD9CM and ICD10CM from **MEDICAL_CLAIMS** DRG 
+#### Using **MEDICAL_CLAIMS** DRG 
 
 For DRGs, use the following query.  DRGs are date-sensitve so we need to only pick up DRGs that fall within the valid start and end dates.
 
@@ -61,23 +70,26 @@ WHERE CONCEPT_ID IN (
   38000421,38001111,38001112,38001113
 )
 ```
-Any records that have a DRG indicating the person is deceased should use the **DEATH_TYPE_CONCEPT_ID = 32509**
-
-The **DEATH_TYPE_CONCEPT_ID**s should be treated hierarchically, where **MEDICAL_CLAIMS** DSTATUS > **MED_DIAGNOSIS** DIAG > **MEDICAL_CLAIMS** DRG
-
-
-***
-
 
 **Destination Field**|**Source Field**|**Applied Rule**|**Comment**
 :-----:|:-----:|:-----:|:-----:
 PERSON_ID|PATID||
-DEATH_DATE|**SES: VISIT_OCCURRENCE** VISIT_END_DATE <br><br> **DOD: DEATH**<br/> ymdod|**(DOD only) DEATH**<br/> Use the last day of the month|
+DEATH_DATE|**SES: VISIT_OCCURRENCE** VISIT_END_DATE <br><br> **DOD: DEATH**<br/> ymdod or visit_end_date if SES logic is aplied|**(DOD only) DEATH**<br/> Use the last day of the month|
 DEATH_DATETIME|Set time to 00:00:00 UTC Tz||
-DEATH_TYPE_CONCEPT_ID|Derived field|[See mapping logic](#Mapping-DEATH_TYPE_CONCEPT_ID) |These CONCEPT_IDs fall under VOCABULARY_ID = 'Death Type' in CONCEPT table.
+DEATH_TYPE_CONCEPT_ID|Derived field|if death acquired from DOD DEATH - 32885, in the other cases - 32812 |
 CAUSE_OF_DEATH_CONCEPT_ID|0||
 CAUSE_OF_DEATH_SOURCE_VALUE|0||
 CAUSE_SOURCE_CONCEPT_ID|0||
 ---
 *Common Data Model ETL Mapping Specification for Optum Extended SES & Extended DOD*
-<br>*CDM Version = 6.0.0, Clinformatics Version = v8.0*
+<br>*CDM Version = 5.4
+
+## Change log
+
+### 11-Aug-2023
+
+- table is revived since in CDM v5.4 the death table is present (the file was retired in intent of migration to CDM v6)
+- Type concepts are up-to-date
+- in DOD usage of SES logic if entry is absent in DEATH table
+
+
