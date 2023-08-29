@@ -3,7 +3,7 @@ layout: default
 title: Person
 nav_order: 15
 parent: Optum Clinformatics
-description: "Person mapping from Optum member_continuous_enrollment table"
+description: "DEATH table mapping from DOD DEATH table, MEDICAL_CLAIMS and MED_DIAGNOSIS in DOD as well as in SES "
 
 ---
 

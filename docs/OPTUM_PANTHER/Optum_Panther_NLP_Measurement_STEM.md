@@ -11,6 +11,8 @@ description: "OPTUM EHR NLP_Measurement table to STEM"
 
 ## Reading from OPTUM_EHR.NLP_Measurement
 
+**Note:** If note_date is more than 1 year before patient birth, omit this data entry. Do not put this entry in CDM
+
 |     Destination Field    |     Source Field    |     Logic    |     Comment    |
 |-|-|-|-|
 | id | autogenerate  | | |
@@ -57,3 +59,8 @@ description: "OPTUM EHR NLP_Measurement table to STEM"
 | disease_status_source_value |  | | |
 | condition_status_concept_id | | | |
 | condition_status_source_value | | | |
+
+## Change log
+
+### 11-Aug-2023
+- Added Note "If note_date is more than 1 year before patient birth, omit this data entry. Do not put this entry in CDM"
