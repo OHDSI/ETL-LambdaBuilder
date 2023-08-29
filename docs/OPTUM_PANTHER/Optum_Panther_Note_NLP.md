@@ -29,24 +29,6 @@ This section describes how the multiple NLP tables in Optum EHR should be mapped
 |     Note_source_value    |     NULL     |          |          |
 |     Visit_occurrence_id    |     encid    |   If encid is blank then leave VISIT_OCCURRENCE_ID blank|          |
 
-## Reading from OPTUM_EHR.NLP_CUSTOM
-
-|     Destination   Field    |     Source   Field    |     Logic    |     Comment    |
-|-|-|-|-|
-|     Note_id    |          |      Auto-increment    |          |
-|     person_id    |     ptid    |          |          |
-|     note_date    |     note_date    |          |          |
-|     Note_datetime    |    note_date      |   Set time to midnight   |          |
-|     Note_type_concept_id    |     32858    |     NLP    |          |
-|     Note_class_concept_id    |     44817649    |     Plan of care and summary note    |          |
-|     Note_title    |     ‘NLP_CUSTOM’    |      Store the name of the table of origin    |          |
-|     Note_text    |     Nlp_term     Nlp_term_attribute_1     Nlp_term_attribute_2     Nlp_term_qualifier    |     Format as a single string by   concatenating as a set of name value pairs. The resulting text should look   like:     Concatenate term:<nlp_term>; term_attribute_1:<nlp_term_attribute_1>;term_attribute_2:<nlp_term_attribute_2>;nlp_term_qualifier:<nlp_term_qualifier>     This may require truncation of   the string on MPP platforms since the resulting string could be quite long.    |          |
-|     Encoding_concept_id    |     0    |          |          |
-|     Language_concept_id    |     40639387    |     US English    |          |
-|     Provider_id    |     encid    |     Look up the PROVIDER_ID by linking the encid to a VISIT_DETAIL_ID and taking the PROVIDER_ID from the VISIT_DETAIL record.    |     If encid is blank then leave PROVIDER_ID blank    |
-|     Note_source_value    |     Note_section    |          |          |
-|     Visit_occurrence_id    |     encid    |    Use the encid to lookup the VISIT_OCCURRENCE_ID   |    If encid is blank then leave VISIT_OCCURRENCE_ID blank.     |
-
 ## Reading from OPTUM_EHR.NLP_DRUG_RATIONALE
 
 |     Destination   Field    |     Source   Field    |     Logic    |     Comment    |
@@ -118,3 +100,8 @@ This section describes how the multiple NLP tables in Optum EHR should be mapped
 |     Provider_id    |     encid    |     Use the encid to lookup the PROVIDER_ID from the associated VISIT_DETAIL record   |  If encid is blank then leave PROVIDER_ID blank     |
 |     Note_source_value    |     Note_section     |          |          |
 |     Visit_occurrence_id    |     encid    |       Use encid to lookup the VISIT_OCCURRENCE_ID   |   If encid is blank then leave VISIT_OCCURRENCE_ID blank   |          |
+
+## Change Log
+
+### 29-Aug-2023
+- Reading from NLP_CUSTOM section removed, since this table doesn't exist in native data anymore

@@ -22,8 +22,8 @@ The OBSERVATION_PERIOD table should be built by setting the OBSERVATION_PERIOD_S
 |     observation_period_end_date    |     max(interaction_date), interaction_date can be event_start_date or event_end_date  |       |  if date<01-Jan-2007, do not create an entry        |
 |     period_type_concept_id    |     32827    |          |     EHR encounter record    |
 
-### Change Log
+## Change Log
 - Removed the use of *first_month_active* and *last_month_active* and changed to using the encounter dates instead
 
-## 07-Aug-2023
+### 07-Aug-2023
 - Cut of dates before 01-Jan-2007 rule added

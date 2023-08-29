@@ -21,16 +21,16 @@ description: "OPTUM EHR NLP_Measurement table to STEM"
 | visit_occurrence_id | encid | Lookup the VISIT_OCCURRENCE_ID based on the encid |If encid is blank then use note_date to determine which VISIT_OCCURRENCE_ID the diagnosis should be associated to|
 | visit_detail_id| encid | Lookup the VISIT_DETAIL_ID based on the encid|If encid is blank then leave VISIT_DETAIL_ID blank|
 | provider_id |  encid | Lookup the PROVIDER_ID from the VISIT_DETAIL table using the encid|If encid is blank then leave PROVIDER_ID blank|
-| start_date | note_date  | | |
-| end_date | note_date | | | 
-| start_datetime | note_date | Set time to midnight| |
-| end_datetime | note_date| Set time to midnight| |
+| start_date | coalesce(measurement_date, note_date)  | | |
+| end_date | coalesce(measurement_date, note_date) | | | 
+| start_datetime | coalesce(measurement_date, note_date) | Set time to midnight| |
+| end_datetime | coalesce(measurement_date, note_date)| Set time to midnight| |
 | concept_id |measurement_type |Use the [SOURCE_TO_STANDARD](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_STANDARD.sql) query to map the code to standard concept(s) with the following filters: <br> <br>  Where source_vocabulary_id = 'JNJ_OPTUM_EHR_NLPM'  and Target_standard_concept = 'S'  and target_invalid_reason is NULL<br><br>If there is no mapping available, set concept_id to zero.| |
 |source_value|measurement_type|||
 | source_concept_id |0 || |
 | type_concept_id | 32858  | NLP| | 
 | operator_concept_id |0 | | |
-| unit_concept_id | measurement_detail | If the inbound record maps to measurement_concept_id = (Body mass index), then set the unit_concept_id to 9531 (kilogram per square meter). Otherwise, follow these rules: Map to UCUM vocabulary using a CASE-SENSITIVE matching; if no match if found, match to the JNJ_UNITS STCM. If no match is found in either vocabulary, set this field to 0.| |
+| unit_concept_id | measurement_detail | If the inbound record maps to measurement_concept_id = (Body mass index), then set the unit_concept_id to 9531 (kilogram per square meter). Otherwise, match to the JNJ_UNITS STCM. If no match is found, set this field to 0.| |
 | unit_source_value | measurement_detail | | |
 | range_high | |  | | 
 | range_low |  | | |
@@ -64,3 +64,5 @@ description: "OPTUM EHR NLP_Measurement table to STEM"
 
 ### 11-Aug-2023
 - Added Note "If note_date is more than 1 year before patient birth, omit this data entry. Do not put this entry in CDM"
+- start or end date <- coalesce(measurement_date, note_date)
+- unit mapping uses only jnj_units
