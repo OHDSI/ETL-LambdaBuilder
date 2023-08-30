@@ -86,7 +86,7 @@ This table is built off the Optum **MEMBER_ENROLLMENT** table and **PROVIDER** t
 |ADDRESS_1| | | |
 |ADDRESS_2| | | |
 |CITY| | | |
-|STATE|**MEMBER_ENROLLMENT** STATE<br>**PROVIDER** PROV_STATE| | |
+|STATE|**MEMBER_ENROLLMENT** DIVISION<br>**PROVIDER** PROV_STATE| | |
 |ZIP| | | |
 |COUNTY| | | |
 |COUNTRY| | | |
@@ -97,4 +97,10 @@ This table is built off the Optum **MEMBER_ENROLLMENT** table and **PROVIDER** t
 
 ---
 *Common Data Model ETL Mapping Specification for Optum Extended SES & Extended DOD*
-<br>*CDM Version = 6.0.0, Clinformatics Version = v8.0*
+<br>*CDM Version = 5.4, Clinformatics Version = v8.0*
+
+## Change log
+
+### 30-Aug-2023
+- member_enrollment.division -> Location.State
+- CDM v6.0 -> V5.4
