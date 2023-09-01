@@ -20,7 +20,7 @@ When an ICD10 code in the **diagnosis** table maps to a concept in the Measureme
 |     measurement_id    |          |          |          |
 |     visit_occurrence_id    |     claim_id    |     Remove ‘C’ prefix    |          |
 |     person_id    |     member_id    |     Remove 'M' prefix    |          |
-|     measurement_type_concept_id    |     type_of_claim    |     Outpatient: **32859** (Outpatient claim)    InPatient or DPC: **32853** (Inpatient claim)     |     Coming from the **annual_health_checkup** table set to 32836 (EHR physical examination)    |
+|     measurement_type_concept_id    |     type_of_claim    |     Outpatient: **32859** (Outpatient claim)    InPatient or DPC: **32853** (Inpatient claim)     |      |
 |     measurement_date    |     month_and_year_of_medical_care    |     Use derived visit_start_date    |          |
 |     measurement_concept_id    |     standard_disease_code    |          |     Lookup icd10_level4_code in diagnosis_master table, and   use vocab to map to standard concept.    |
 |     measurement_source_value    |     standard_disease_code    |          |     Lookup icd10_level4_code in diagnosis_master table    |
@@ -47,10 +47,10 @@ The **annual_health_checkup** table is a wide table with one row per date and ma
 |     measurement_id    |          |          |          |
 |     visit_occurrence_id    |     claim_id    |     Remove ‘C’ prefix    |          |
 |     person_id    |     member_id    |     Remove 'M' prefix    |          |
-|     measurement_type_concept_id    |     type_of_claim    |      |     Coming from the **annual_health_checkup** table set to 32836 (EHR physical examination)    |
+|     measurement_type_concept_id    |     -    |  32836 (EHR physical examination)   |     |
 |     measurement_date    |     date_of_health_checkup    |         |          |
 |     measurement_concept_id    | bmi <br>abdominal_circumference<br>systolic_bp<br>diastolic_bp<br>triglyceride<br>hdl_cholesterol<br>ldl_cholesterol<br>ast<br>alt<br>g_gt<br>fasting_blood_sugar<br>casual_blood_sugar<br>hba1c<br>urinary_sugar<br>uric_protein_qualitative<br>hct<br>hemoglobin_content<br>rbc_count<br>serum_creatinine<br>serum_uric_acid<br>total_cholesterol<br>ecg    |          |     See the mappings for these columns in the manual mapping file [here](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/JMDC/Vocab%20Updates/Annual_Health_Checkup_Mapping.xlsx)   |
-|     measurement_source_value    |     column name from **annual_health_checkup**    |          |     Lookup icd10_level4_code in diagnosis_master table    |
+|     measurement_source_value    |     column name from **annual_health_checkup**    |          |       |
 |     measurement_source_concept_id    |       |          |       |
 |     provider_id    |         |         |         |
 |     measurement_datetime    |          |          |          |

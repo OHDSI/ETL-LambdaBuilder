@@ -34,10 +34,9 @@ The patients in the CDM are restricted to the subset of all CPRD patients deemed
 | person_source_value | patid |  |  |
 | gender_source_value | gender |  | 'M' if gender = 1, 'F' if gender = 2 |
 | gender_source_concept_id |  | 0 |  |
-| race_source_value |  |  |  |
-| race_source_concept_id |  | STEM.value_as_concept_id | populate if STEM.concept_id has domain 'Race' |
-| ethnicity_source_value |  | STEM.source_value | if STEM.concept_id has domain 'Race'  |
-| ethnicity_source_concept_id |  | 0 |  |
+| race_source_value |  | STEM.source_value | populate if STEM.concept_id has domain 'Race'  |
+| race_source_concept_id |  | STEM.source_concept_id | populate if STEM.concept_id has domain 'Race' |
+| ethnicity_source_value |  |  |  | 
 
 ## Change log
 

@@ -29,7 +29,7 @@ When an ICD10 code in the diagnosis table maps to a concept in the Observation d
 |     observation_datetime    |          |          |          |
 |     value_as_number    |          |          |          |
 |     value_as_string    |          |          |          |
-|     value_as_concept_id    |          |          |     From diagnoses: concept_id_2 from “Maps to value” relationship or   else NULL    |
+|     value_as_concept_id    |          |          |     TARGET_VALUE_AS_CONCEPT_ID from the Source_to_Standard Query (resulting from  **'Maps to value'** relationsip);<br> See SOURCE_CONCEPT_ID field logic of how to define SOURCE_CONCEPT_ID being mapped|
 |     qualifier_concept_id    |          |          |          |
 |     unit_concept_id    |          |          |          |
 |     visit_detail_id    |          |          |          |

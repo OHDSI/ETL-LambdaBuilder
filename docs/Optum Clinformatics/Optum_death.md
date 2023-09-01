@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Person
+title: Death
 nav_order: 15
 parent: Optum Clinformatics
 description: "DEATH table mapping from DOD DEATH table, MEDICAL_CLAIMS and MED_DIAGNOSIS in DOD as well as in SES "

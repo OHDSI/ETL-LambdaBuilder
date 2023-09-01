@@ -63,7 +63,7 @@ Records will be written from the INPATIENT_SERVICES table mapping the field REVC
 | UNIQUE_DEVICE_ID | - | NULL | - |
 | UNIT_CONCEPT_ID | - | 0 | - |
 | UNIT_SOURCE_VALUE | - | NULL | - |
-| VALUE_AS_CONCEPT_ID | PDX, DX1-5 | Use the Source-to-Standard Query, but with **'Maps to value'** relationsip, how to define SOURCE_CONCEPT_ID the Source-to-Standard Query is applied to see in SOURCE_CONCEPT_ID field  | - |
+| VALUE_AS_CONCEPT_ID | PDX<br>DX1-5<br>PPROC<br>PROC1 | TARGET_VALUE_AS_CONCEPT_ID from the Source_to_Standard Query (resulting from  **'Maps to value'** relationsip);<br> See SOURCE_CONCEPT_ID field logic of how to define SOURCE_CONCEPT_ID being mapped  | - |
 | VALUE_AS_NUMBER | - | NULL | - |
 | VALUE_AS_STRING | - | NULL | - |
 | VALUE_SOURCE_VALUE | - | NULL | - |
