@@ -19,7 +19,7 @@ The OBSERVATION_PERIOD table should be built by setting the OBSERVATION_PERIOD_S
 |     observation_period_id    |          |          |          |
 |     person_id    |     ptid    |          |          |
 |     observation_period_start_date    |   min(interaction_date)    |      |  if date<01-Jan-2007, set to '01-Jan-2007'       |
-|     observation_period_end_date    |     max(interaction_date)<br><br> interaction_date can be event_start_date or event_end_date, whatever is later  |       |  if date<01-Jan-2007, do not create an entry        |
+|     observation_period_end_date    |     max(interaction_date)<br><br> interaction_date is an event_start_date or event_end_date, except of drug_exposure.drug_exposure_end_date  |       |  if date<01-Jan-2007, do not create an entry        |
 |     period_type_concept_id    |     32827    |          |     EHR encounter record    |
 
 ## Change Log
