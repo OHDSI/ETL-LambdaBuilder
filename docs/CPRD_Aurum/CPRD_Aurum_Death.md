@@ -9,6 +9,8 @@ description: "CPRD Aurum Death Logic"
 
 # CDM Table: DEATH
 
+![](images/death.png)
+
 ## Reading from CPRD_Aurum.Patient
 
 If deathdate is populated with a date in the Patient table then the patient will be included in the Death table.  

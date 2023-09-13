@@ -40,7 +40,7 @@ These concatenated source values will then be mapped to standard concepts using 
 | unit_concept_id |  | Look up add_int.unit_source_value in the CONCEPT table where vocabulary_id = 'UCUM' and standard_concept = 'S' and invalid_reason is NULL. |  |
 | unit_source_value | add_int.unit_source_value |  | |
 | start_date | add_int.eventdate |  | For the additional table, the adid is used to link back to the clinical table to get the eventdate. |
-| end_date | start_date |  |  |
+| end_date | NULL |  |  |
 | value_as_number | add_int.value_as_number |   | |
 | value_as_string | add_int.value_as_string  | |  |
 | value_as_concept_id |  |  | If the last part of the source value says 'Read code for condition' then map the code in add_int.value_as_string to a standard concept using the SOURCE_TO_STANDARD query with the filters:<br><br>    WHERE source_vocabulary_id = 'Read'  AND standard_concept = 'S'  AND invalid_concept is NULL  <br><br>   If the last part of the source value says 'Drug code' then map the code in add_int.value_as_string to a standard concept using the SOURCE_TO_STANDARD query with the filters:  <br><br>   WHERE source_vocabulary_id = 'Gemscript'  AND standard_concept = 'S'  AND invalid_concept is NULL  <br><br>   Otherwise, if the value in add_int.qualifier_source_value is not null then lookup the values in add_int.qualifier_source_value in the CONCEPT table where domain_id=' Meas Value' and vocabulary_id=' LOINC' and standard_concept = 'S' and invalid_concept is NULL. |

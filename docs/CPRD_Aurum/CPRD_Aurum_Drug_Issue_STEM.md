@@ -29,7 +29,7 @@ In the below table, only the relevant STEM fields are shown.
 | concept_id | prodcodeid | Lookup the prodcodeid in the productdictionary. Use the [SOURCE_TO_STANDARD](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_STANDARD.sql) query to map the dm+d code to standard concept(s) with the following filters: <br> <br>  Where source_vocabulary_id = 'dm+d'  and target_standard_concept = 'S'  and target_invalid_reason is NULL<br><br> If there is no mapping available, set concept_id to zero.  |  |
 | source_value | prodcodeid | Lookup prodcodeid and put the dm+d code here|  |
 | source_concept_id | prodcodeid | Lookup the prodcodeid in the productdictionary.     Use the [SOURCE_TO_SOURCE](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_SOURCE.sql) query to map the dm+d code to a source concept id with the following filters:<br><br> Where source_vocabulary_id = 'dm+d' <br><br> If there is no mapping available set source_concept_id to zero. | |
-| type_concept_id |  | Set all from drug issue as **38000177** - prescription written.  |  |
+| type_concept_id |  | Set all from drug issue as **32838** - EHR prescription. |  |
 | dose_unit_source_value | quantunitid | Lookup in quantunit and put english version of unit here.|
 | quantity | quantity | |
 

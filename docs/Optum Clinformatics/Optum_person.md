@@ -26,35 +26,7 @@ The information in the PERSON table is sourced from the  **Member_Continuous_Enr
 - How to determine MONTH_OF_BIRTH and DAY_OF_BIRTH. 
     - if person has enrollment in the year of birth, then MONTH_OF_BIRTH = MONTH(MIN(ELIGEFF)) and DAY_OF_BIRTH = 1st day of the month. 
     - For datetime values, when time is not available, default to UTC timezone mid-night 00:00:00
-
-## Death logic
-
-Death datetime is now in the PERSON table instead of a separate DEATH table. Here is how the field DEATH_DATETIME should be determined:
-
-- DOD: DEATH_DATETIME will be sourced from the table **Death** - except for persons not in person table and based on logic below. 
-- SES: this table will be algorithmically derived from observations in claims data. 
-
-For **DOD** only,
-- If there are outpatient or pharmacy visits (VISIT_CONCEPT_ID in 9202, 581458) with visit start date after 30 days of death date, delete the visit record. 
-- If there are inpatient or ER visits (VISIT_CONCEPT_ID in 9202, 9203) with visit start date after 30 days of death date, delete the death record. 
-- If the death date occurs before the patient's date of birth, then delete the death record. **Deriving date of death in SES**
-
-In **SES** data only, 
-- These fields will be scanned for death information:
-    1. **MEDICAL_CLAIMS** DSTATUS (Discharge Status) - where DSTATUS in (21,22,23,24,25,26,27,28,29,40,41,42)
-    1. **MED_DIAGNOSIS** DIAG (ICD10CM or ICD9CM diagnosis codes) - use the SOURCE_TO_SOURCE query with the filter ```WHERE SOURCE_VOCABULARY_ID IN ('JNJ_DEATH')```
-     1. **MEDICAL_CLAIMS** DRG using the query: 
-        
-``` 
-SELECT CONCEPT_ID, CONCEPT_NAME, CONCEPT_CODE, valid_start_date, valid_end_date
-FROM concept
-WHERE CONCEPT_ID IN (
-  38000421,38001111,38001112,38001113)
-```   
-
-- The date of death will be associated to the VISIT_END_DATE.
  
-    
 ### **Mapping of source field values to OMOP Vocabulary concept id**
 
 #### **Mapping Gender**
@@ -119,4 +91,10 @@ WHERE CONCEPT_ID IN (
 
 ---
 *Common Data Model ETL Mapping Specification for Optum Extended SES & Extended DOD*
-<br>*CDM Version = 6.0.0, Clinformatics Version = v8.0*
+<br>CDM Version = 5.4
+
+## Change log
+
+### 11-Aug-2023
+
+- Death logic is removed since in CDM v5.4 the death table is present itself (not in person table)

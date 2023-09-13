@@ -38,8 +38,8 @@ Records will be written from the INPATIENT_SERVICES table mapping the field REVC
 | PROVIDER_ID | **VISIT_DETAIL**<br>PROVIDER_ID | - | - |
 | ID | - | System generated. | - |
 | CONCEPT_ID | PDX<br>DX1-5<br>PPROC<br>PROC1<br>REVCODE |  Use the <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html">Source-to-Standard Query</a>.<br><br>  If DXVER does not have a value, review to the "Key Conventions" under the "STEM Key Conventions and Lookup Files" page.  If no map is made, assign CONCEPT_ID to 0 and set DOMAIN_ID as OBSERVATION.<br/><br/>**[PDX, DX1-5]**<br/>If DXVER=9 use the filter:<br/> `WHERE SOURCE_VOCABULARY_ID IN (‘ICD9CM’)`<br>`AND TARGET_STANDARD_CONCEPT = 'S'`<br>`AND TARGET_INVALID_REASON IS NULL`<br/><br/>If DXVER=0 use the filter:<br/>`WHERE SOURCE_VOCABULARY_ID IN (’ICD10CM’)`<br>`AND TARGET_STANDARD_CONCEPT = 'S'`<br>`AND TARGET_INVALID_REASON IS NULL` <br /><br />**[PPROC, PROC1]**<br/>When PROCTYP <> 0:<br />  `WHERE SOURCE_VOCABULARY_ID IN ('ICD9Proc','HCPCS','CPT4',’ICD10PCS’)`<br>`AND TARGET_STANDARD_CONCEPT = 'S'`<br>`AND TARGET_INVALID_REASON IS NULL`<br /><br />**[REVCODE]**<br/>  `WHERE SOURCE_VOCABULARY_ID IN ('Revenue Code’)`<br>`AND TARGET_STANDARD_CONCEPT = 'S'`<br>`AND TARGET_INVALID_REASON IS NULL`  | The concepts in the Revenue Code vocabulary all have the domain “Revenue Code”. These should go to the OBSERVATION table.	  |
-| SOURCE_VALUE | PDX<br>DX1-5<br>PPROC<br>PROC1 | - | - |
-| SOURCE_CONCEPT_ID | PDX<br>DX1-5<br>PPROC<br>PROC1 |  Use the <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html">Source-to-Source Query</a>.<br><br>  If DXVER does not have a value, review to the "Key Conventions" under the "STEM Key Conventions and Lookup Files" page.  If no map is made, assign to 0.<br/><br/>**[PDX, DX1-5]**<br/>If DXVER=9 use the filter:<br/> `WHERE SOURCE_VOCABULARY_ID IN (‘ICD9CM’)`<br>`AND TARGET_VOCABULARY_ID IN (‘ICD9CM’)`<br/><br/>If DXVER=0 use the filter:<br/>`WHERE SOURCE_VOCABULARY_ID IN (’ICD10CM’)`<br>`AND TARGET_VOCABULARY_ID IN (‘ICD10CM’)` <br /><br />**[PPROC, PROC1]**<br/>When PROCTYP <> 0:<br />  `WHERE SOURCE_VOCABULARY_ID IN ('ICD9Proc','HCPCS','CPT4',’ICD10PCS’)`<br>`AND TARGET_VOCABULARY_ID IN ('ICD9Proc','HCPCS','CPT4',’ICD10PCS’)` | - |
+| SOURCE_VALUE | PDX<br>DX1-5<br>PPROC<br>PROC1<br>REVCODE | - | - |
+| SOURCE_CONCEPT_ID | PDX<br>DX1-5<br>PPROC<br>PROC1<br>REVCODE |  Use the <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html">Source-to-Source Query</a>.<br><br>  If DXVER does not have a value, review to the "Key Conventions" under the "STEM Key Conventions and Lookup Files" page.  If no map is made, assign to 0.<br/><br/>**[PDX, DX1-5]**<br/>If DXVER=9 use the filter:<br/> `WHERE SOURCE_VOCABULARY_ID IN (‘ICD9CM’)`<br>`AND TARGET_VOCABULARY_ID IN (‘ICD9CM’)`<br/><br/>If DXVER=0 use the filter:<br/>`WHERE SOURCE_VOCABULARY_ID IN (’ICD10CM’)`<br>`AND TARGET_VOCABULARY_ID IN (‘ICD10CM’)` <br /><br />**[PPROC, PROC1]**<br/>When PROCTYP <> 0:<br />  `WHERE SOURCE_VOCABULARY_ID IN ('ICD9Proc','HCPCS','CPT4',’ICD10PCS’)`<br>`AND TARGET_VOCABULARY_ID IN ('ICD9Proc','HCPCS','CPT4',’ICD10PCS’)`<br /><br />**[REVCODE]**<br/>When PROCTYP <> 0:<br />  `WHERE SOURCE_VOCABULARY_ID IN ('Revenue Code’)`<br>`AND TARGET_VOCABULARY_ID IN ('Revenue Code’)` | - |
 | TYPE_CONCEPT_ID | - | Set all to `32854` (Inpatient claim detail) | - |
 | START_DATE | **VISIT_DETAIL**<br>VISIT_DETAIL_START_DATE | - | - |
 | START_DATETIME | - | START_DATE + midnight | - |
@@ -63,7 +63,7 @@ Records will be written from the INPATIENT_SERVICES table mapping the field REVC
 | UNIQUE_DEVICE_ID | - | NULL | - |
 | UNIT_CONCEPT_ID | - | 0 | - |
 | UNIT_SOURCE_VALUE | - | NULL | - |
-| VALUE_AS_CONCEPT_ID | - | 0 | - |
+| VALUE_AS_CONCEPT_ID | PDX<br>DX1-5<br>PPROC<br>PROC1 | TARGET_VALUE_AS_CONCEPT_ID from the Source_to_Standard Query (resulting from  **'Maps to value'** relationsip);<br> See SOURCE_CONCEPT_ID field logic of how to define SOURCE_CONCEPT_ID being mapped| - |
 | VALUE_AS_NUMBER | - | NULL | - |
 | VALUE_AS_STRING | - | NULL | - |
 | VALUE_SOURCE_VALUE | - | NULL | - |
@@ -82,6 +82,9 @@ Records will be written from the INPATIENT_SERVICES table mapping the field REVC
 
 ## Change Log
 
+### January 18, 2023
+* Updated revenue code logic
+
 ### November 1, 2021
 * Update CONDITION_STATUS_CONCEPT_ID so that only primary diagnoses and not DX1 are set to `32902`
 
@@ -94,3 +97,6 @@ Records will be written from the INPATIENT_SERVICES table mapping the field REVC
 * Added CONDITION_STATUS_CONCEPT_ID information
 
 * Added information on how to map revenue codes
+
+ ### Aug-01-2023
+ - Added 'Maps to value' logic

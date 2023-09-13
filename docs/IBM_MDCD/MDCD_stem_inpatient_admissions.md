@@ -58,7 +58,7 @@ For every record in STEM there should be 1 row record in VISIT_DETAIL (n:1 join)
 | UNIQUE_DEVICE_ID | - | NULL | - |
 | UNIT_CONCEPT_ID | - | 0 | - |
 | UNIT_SOURCE_VALUE | - | NULL | - |
-| VALUE_AS_CONCEPT_ID | - | 0 | - |
+| VALUE_AS_CONCEPT_ID | PDX<br>DX1-15<br>PPROC<br>PROC1-15 | TARGET_VALUE_AS_CONCEPT_ID from the Source_to_Standard Query (resulting from  **'Maps to value'** relationsip);<br> See SOURCE_CONCEPT_ID field logic of how to define SOURCE_CONCEPT_ID being mapped  | - |
 | VALUE_AS_NUMBER | - | NULL | - |
 | VALUE_AS_STRING | - | NULL | - |
 | VALUE_SOURCE_VALUE | - | NULL | - |
@@ -92,3 +92,6 @@ For every record in STEM there should be 1 row record in VISIT_DETAIL (n:1 join)
     * Set VISIT_PROVID and VISIT_PROVSTD as PPROV and PROVCAT
   * As data is being assigned a CONCEPT_ID check the domain, this tells you what domain table the data should land.<br><br>If the CONCEPT = 0 the PDX, DX1-15 rows should land in **CONDITION_OCCURRENCE** and the PPROC, PROC1-15 should land in the **PROCEDURE_OCCURRENCE** table. 
     * Instead any code without a mapping is assigned a CONCEPT_ID of zero and a DOMAIN_ID of OBSERVATION.
+
+ ### Aug-01-2023
+ - Added 'Maps to value' logic

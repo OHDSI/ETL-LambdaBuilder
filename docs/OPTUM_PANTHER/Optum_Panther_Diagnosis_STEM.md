@@ -50,7 +50,7 @@ The **Diagnosis** table has multiple columns we use to assign CONDITION_STATUS_C
 | range_low |  | | |
 | value_as_number |  | | |
 | value_as_string |  | | |
-| value_as_concept_id |  | | |
+| value_as_concept_id | diagnosis_cd_type diagnosis_cd | same rules as for concept_id and source_concept_id, but use **'Maps to value'** relationship| |
 | value_source_value |  | | |
 | verbatim_end_date |   | | |
 | days_supply |  | | |
@@ -81,3 +81,6 @@ The **Diagnosis** table has multiple columns we use to assign CONDITION_STATUS_C
 ### 8/17/2020
 - Changes logic so that all diagnoses are brought into the CDM, regardless of diagnosis_status in the native.
 - Updates condition_status accordingly so diagnosi_status is concatenated along with poa, admitting_diagnosis, discharge_diagnosis, and primary_diagnosis
+
+### 01-Aug-2023
+- Added Maps to value logic

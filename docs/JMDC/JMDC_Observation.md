@@ -29,7 +29,7 @@ When an ICD10 code in the diagnosis table maps to a concept in the Observation d
 |     observation_datetime    |          |          |          |
 |     value_as_number    |          |          |          |
 |     value_as_string    |          |          |          |
-|     value_as_concept_id    |          |          |     From diagnoses:value from “Maps to value” relationship or   else 4181412 (present)    |
+|     value_as_concept_id    |          |          |     TARGET_VALUE_AS_CONCEPT_ID from the Source_to_Standard Query (resulting from  **'Maps to value'** relationsip);<br> See SOURCE_CONCEPT_ID field logic of how to define SOURCE_CONCEPT_ID being mapped|
 |     qualifier_concept_id    |          |          |          |
 |     unit_concept_id    |          |          |          |
 |     visit_detail_id    |          |          |          |
@@ -68,3 +68,5 @@ The **annual_health_checkup** table is a wide table with one row per date and ma
 
 ### April 6, 2022
 - Added more text around how to handle records from the annual_health_checkup table.
+### July 30, 2023
+- fixed Maps to value logic
