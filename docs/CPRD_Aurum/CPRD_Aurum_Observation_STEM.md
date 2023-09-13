@@ -33,7 +33,7 @@ In the below table, only the relevant STEM fields are shown.
 | type_concept_id |  | Set all from observation as **32840** - observation recorded from EHR |  |
 | range_high | numrangehigh | |
 | range_low | numrangelow | |
-| unit_concept_id | numunitid | Lookup up the unitid in the lookup tables and use the [SOURCE_TO_STANDARD](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_STANDARD.sql) query to map either the numunitid to standard concept(s) with the following filters: <br> <br>  Where source_vocabulary_id in ('UCUM', 'CPRD_Units')  and target_standard_concept = 'S'  and target_invalid_reason is NULL |
+| unit_concept_id | numunitid | Lookup up the unitid in the lookup tables and use the [SOURCE_TO_STANDARD](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_STANDARD.sql) query to map either the numunitid to standard concept(s) with the following filters: <br> <br>  Where source_vocabulary_id in ('UCUM', 'CPRD_Units')  and target_standard_concept = 'S'  and target_invalid_reason is NULL<br>When numinitid is NULL, set unit_concept_id = NULL |
 | unit_source_value | numunitid | Lookup the unitid in the lookup tables and put the english version of the unit here |
 | value_as_number | value | |
 | value_source_value | value | |

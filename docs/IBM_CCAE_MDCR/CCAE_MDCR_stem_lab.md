@@ -75,7 +75,7 @@ IF RESULT > -999999.99999 THEN DO;
 | LOT_NUMBER | - | NULL | - |
 | MODIFIER_CONCEPT_ID | - | NULL | - |
 | MODIFIER_SOURCE_VALUE | - | NULL | - |
-| OPERATOR_CONCEPT_ID | - | 0 | - |
+| OPERATOR_CONCEPT_ID | - | NULL | - |
 | QUANTITY | - | NULL | - |
 | RANGE_HIGH | REFHIGH | - | - |
 | RANGE_LOW | REFLOW | - | - |

@@ -36,7 +36,7 @@ description: "OPTUM EHR NLP_Measurement table to STEM"
 | range_low |  | | |
 | value_as_number | measurement_value | If value of measurement_value is numeric put in value_as_number| |
 | value_as_string | measurement_value | If value of measurement_value is NOT numeric put in value_as_string | |
-| value_as_concept_id | measurement_value |If value of obs_result is NOT numeric use the [SOURCE_TO_STANDARD](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_STANDARD.sql) query to map the code to standard concept(s) with the following filters: <br> <br>  Where source_vocabulary_id = 'JNJ_OPTUM_EHR_LABRES'  and Target_standard_concept = 'S'  and target_invalid_reason is NULL<br><br>If there is no mapping available, set concept_id to zero. | |
+| value_as_concept_id | measurement_value |If value of obs_result is NOT numeric use the [SOURCE_TO_STANDARD](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_STANDARD.sql) query to map the code to standard concept(s) with the following filters: <br> <br>  Where source_vocabulary_id = 'JNJ_OPTUM_EHR_LABRES'  and Target_standard_concept = 'S'  and target_invalid_reason is NULL<br><br>If there is no mapping available, set value_as_concept_id to zero.<br>If  value of obs_result is numeric OR null, set value_as_concept_id to null  | |
 | value_source_value | measurement_value | | |
 | verbatim_end_date |   | | |
 | days_supply |  | | |
