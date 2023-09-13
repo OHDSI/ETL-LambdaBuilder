@@ -25,8 +25,6 @@ CAUSE_SOURCE_CONCEPT_ID|0|||
 
 ### November 2, 2021
 - Changed DEATH_TYPE_CONCEPT_ID to 32519
-
-
 ---
 *Common Data Model ETL Mapping Specification for Optum Extended SES & Extended DOD*
-<br>*CDM Version = 6.0.0, Clinformatics Version = v8.0*
+<br>*CDM Version = 5.4 Clinformatics Version = v8.0*

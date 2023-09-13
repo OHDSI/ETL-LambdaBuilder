@@ -41,8 +41,34 @@ When an ICD10 code in the diagnosis table maps to a concept in the Condition dom
 |     condition_status_concept_id    |  main_disease_flag  | If main_disease_flag = 1 set to `32902` (primary condition) , else set to `32908` (secondary condition)        |          |
 |     preceding_visit_occurrence_id    |          |          |          |
 
+## Reading from Annual_Health_Checkup
+
+The **annual_health_checkup** table is a wide table with one row per date and many columns representing individual values like BMI, fasting blood sugar, and sleep quality. These columns are mapped to standard concepts as detailed in the mapping file [here](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/JMDC/Vocab%20Updates/Annual_Health_Checkup_Mapping.xlsx). Some variable-value pairs are mapped to condition concept
+
+|     Destination Field    |     Source   Field    |     Logic    |     Comment   Field    |
+|-|-|-|-|
+|     condition_occurrence_id    |          |          |          |
+|     person_id    |     member_id    |     Remove 'M' prefix    |          |
+|     visit_occurrence_id    |     claim_id    |     Remove ‘C’ prefix    |          |
+|     condition_type_concept_id    |     type_of_claim    |     32836 (EHR physical examination)   |          |
+|     condition_start_date    |     date_of_health_checkup    |        |          |
+|     condition_end_date    |     NULL    |        |          |
+|     condition_concept_id    |     mapped concept    |          |     See the mappings for these columns in the manual mapping file   |
+|     condition_source_value    |     column name from annual_health_checkup    |          |      |
+|     condition_source_concept_id    |   0     |          |        |
+|     provider_id    |        |          |   |
+|     condition_start_datetime    |          |          |          |
+|     condition_end_datetime    |          |          |          |
+|     stop_reason    |          |          |          |
+|     visit_detail_id    |          |          |          |
+|     condition_status_source_value    |      |     |          |
+|     condition_status_concept_id    |    |        |          |
+|     preceding_visit_occurrence_id    |   
 
 ## Change Log
 
 ### April 6, 2022
 - Added logic to map CONDITION_STATUS_CONCEPT_ID from **main_disease_flag** in diagnosis
+
+### Aug 10, 2023
+- Added reading from Annual_Health_Checkup

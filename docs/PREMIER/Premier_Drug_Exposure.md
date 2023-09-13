@@ -24,8 +24,9 @@ The field mapping is performed as follows:
 | --- | --- | --- | --- |
 | DRUG_EXPOSURE_ID | - | System generated |  |
 | PERSON_ID | PAT.MEDREC_KEY |  |  |
-| DRUG_CONCEPT_ID | PATCPT.CPT_CODEPATBILL.STD_CHG_CODE | QUERY: SOURCE TO STANDARDSELECT TARGET_CONCEPT_IDFROM CTE_VOCAB_MAP WHERE SOURCE_VOCABULARY_ID IN ('CPT4', 'HCPCS', 'JNJ_PMR_DRUG_CHRG_CD')AND TARGET_DOMAIN_ID = 'Drug'  | Include all concepts that map to a concept id of zero. |
-| DRUG_EXPOSURE_START_DATE | PATBILL.SERV_DAY VISIT_OCCURRENCE.VISIT_START_DATEOrVISIT_OCCURRENCE.VISIT_END_DATE | If drug is from PATBILL use a combination of service day and visit start date unless the service day is greater than the end of the monthIf drug comes from PATCPT then use visit end date |  |
+| DRUG_CONCEPT_ID | PATCPT.CPT_CODE <br>  PATBILL.STD_CHG_CODE | QUERY for PATCPT:  SOURCE TO STANDARD: SELECT TARGET_CONCEPT_ID FROM CTE_VOCAB_MAP WHERE SOURCE_VOCABULARY_ID IN ('CPT4', 'HCPCS') AND TARGET_DOMAIN_ID = 'Drug' <br><br> QUERY for PATBILL: SOURCE TO STANDARD: SELECT TARGET_CONCEPT_ID FROM CTE_VOCAB_MAP WHERE SOURCE_VOCABULARY_ID IN ('JNJ_PMR_DRUG_CHRG_CD') AND TARGET_DOMAIN_ID = 'Drug' 
+ | Include all concepts that map to a concept id of zero. |
+| DRUG_EXPOSURE_START_DATE | PATBILL.SERV_DAY VISIT_OCCURRENCE.VISIT_START_DATE Or VISIT_OCCURRENCE.VISIT_END_DATE | If drug is from PATBILL use a combination of service day and visit start date unless the service day is greater than the end of the monthIf drug comes from PATCPT then use visit end date |  |
 | DRUG_EXPOSURE_START_DATETIME | - | NULL |  |
 | DRUG_EXPOSURE_END_DATE | DRUG_EXPOSURE.DRUG_EXPOSURE_START_DATE | DRUG_EXPOSURE.DRUG_EXPOSURE_START_DATE | Now a required field. No info on days supply, so set same date as drug_exposure_start_date |
 | DRUG_EXPSURE_END_DATETIME | - | NULL |  |
@@ -40,10 +41,11 @@ The field mapping is performed as follows:
 | LOT_NUMBER | - | NULL |  |
 | PROVIDER_ID | PAT.ADMPHY | NULL |  |
 | VISIT_OCCURRENCE_ID | PAT.PAT_KEY |  |  |
-| DRUG_SOURCE_VALUE |  | SELECT SOURCE_VALUE FROM (SELECT CONCAT(STD_CHG_DESC, ' / ', HOSP_CHG_DESC) AS SOURCE_VALUE FROM PATBILL AJOIN CHGMSTR B ON A.STD_CHG_CODE=B.STD_CHG_CODEJOIN hospchg C ON A.hosp_chg_id=C.hosp_chg_id ) A |  |
+| DRUG_SOURCE_VALUE |  | For PATBILL table: <br> SELECT SOURCE_VALUE FROM (SELECT CONCAT(STD_CHG_DESC, ' / ', HOSP_CHG_DESC) AS SOURCE_VALUE FROM PATBILL A <br> JOIN CHGMSTR B ON A.STD_CHG_CODE=B.STD_CHG_CODE <br> JOIN hospchg C ON A.hosp_chg_id=C.hosp_chg_id ) A <br><br> for PATCPT table: <br> PATCPT.CPT_CODE|  |
 | DRUG_SOURCE_CONCEPT_ID | - | NULL |  |
 | ROUTE_SOURCE_VALUE | - | NULL |  |
 | DOSE_UNIT_SOURCE_VALUE | - | NULL |  |
 
 ## Change Log:
 * 2021.08.11:  Updated DRUG_TYPE_CONCEPT_ID to leverage standard concept id.
+* 2023.08.29: PATCPT uses ('cpt4', 'hcpcs') as source codes, PATBILL uses 'JNJ_PMR_DRUG_CHRG_CD' as source codes, NO MIXING UP, since there's intersection between ('cpt4', 'hcpcs') and 'JNJ_PMR_DRUG_CHRG_CD' codes. Added PATCPT.CPT_CODE as drug_source_value
