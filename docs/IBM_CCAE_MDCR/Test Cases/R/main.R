@@ -6,10 +6,10 @@ getSource <- function() {
     source('extras/IBMCCAE_TestingFramework.R')
   }
   if (truvenType == "MDCR") {
-    source('extras/IBMMDCR_TestingFramework.R') 
+    source('extras/IBMMDCR_TestingFramework.R')
   }
   else if (truvenType == "MDCD") {
-    source('extras/IBMMDCD_TestingFramework.R') 
+    source('extras/IBMMDCD_TestingFramework.R')
   }
 }
 
@@ -64,55 +64,55 @@ createProvider <- function() {
   # source('R/ProcedureOccurrenceTests.R')
   # source('R/ProviderTests.R')
   # #source('R/VisitOccurrenceTest.R')
-  # } 
-  # 
+  # }
+  #
   # source('R/UnitTests.R')
-  
-  
+
+
 ## Function to get insertsql statement
 #' @export
   getInsertSql <- function(connectionDetails) {
     return(frameworkContext$insertSql);
   }
-  
+
   ## Function to get testsql statement
 #' @export
   getTestSql <- function(connectionDetails) {
     return(frameworkContext$testSql);
   }
-  
-#' @export 
+
+#' @export
 InsertsToCsv <- function(scanLocation){
-    
+
     overview <- readxl::read_xlsx(scanLocation, sheet = "Overview")
-    
+
     tables <- c()
-    
+
     for (i in 1:length(frameworkContext$inserts)){
       tables <- c(tables, frameworkContext$inserts[[i]]$table)
     }
     ## get list of tables to create a csv for
     tables <- unique(tables)
-    
+
     for (i in 1:length(tables)){
       ddl <-subset(overview, Table == tables[i], select = c("Field"))
       ddl <- data.table::transpose(ddl)
-      
+
       csv <- data.frame(matrix(ncol=ncol(ddl),nrow=1))
       colnames(csv) <- as.character(ddl[1,])
-      
+
       for (j in 1:length(frameworkContext$inserts)){
         list <- frameworkContext$inserts[[j]]
         table <- list$table
         fields <- list$fields
-        
+
         if(tables[i]==table){
-          
+
           values <- list(gsub("'", '', list$values))
-          
+
           df <- do.call(rbind.data.frame, values)
           colnames(df) <- fields
-          
+
           csv <- dplyr::bind_rows(csv, df)
         }
       }
@@ -120,5 +120,43 @@ InsertsToCsv <- function(scanLocation){
       write.csv(csv,paste0("inst/csv/",tables[i],".csv"))
     }
   }
-  
-  
+
+#' @export
+writeSourceCsv <- function(directory = NULL, separator = ',') {
+  clean_value <- function(x) {
+    if (x == 'NULL') {
+      return('')
+    }
+    value <- substring(x, 2, nchar(x)-1)
+    value <- gsub('"', '""', value)
+    if (grepl(separator, value)) {
+      return(paste0('"', value, '"'))
+    }
+    return(value)
+  }
+
+  clean_fields <- function(x) {
+    if (grepl("^\\[.+?\\]$", x)) {
+      return(substring(x, 2, nchar(x)-1))
+    }
+    return(x)
+  }
+  dir.create(directory, showWarnings = F)
+
+  seen_tables <- c()
+  for (insert in frameworkContext$inserts) {
+    filename <- file.path(directory, paste0(insert$table, '.csv'))
+    if (!(insert$table %in% seen_tables)) {
+      write(paste(sapply(insert$fields, clean_fields), collapse = separator), filename, append=F)
+      seen_tables <- c(seen_tables, insert$table)
+    }
+    write(paste(sapply(insert$values, clean_value), collapse = separator), filename, append=T)
+  }
+
+  for (table_name in names(frameworkContext$defaultValues)) {
+    if (!(table_name %in% seen_tables)) {
+      filename <- file.path(directory, paste0(table_name, '.csv'))
+      write(paste(names(frameworkContext$defaultValues[[table_name]]), collapse = separator), filename, append=F)
+    }
+  }
+}
