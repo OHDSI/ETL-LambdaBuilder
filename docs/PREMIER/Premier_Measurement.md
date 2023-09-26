@@ -52,7 +52,7 @@ The field mapping is performed as follows:
 
 
 <table>
-   <th>Destination Field
+   <tbody><tr><th>Destination Field
    </th>
    <th>Source Field
    </th>
@@ -89,20 +89,18 @@ The field mapping is performed as follows:
    <td>when lab_test_loinc_code !=’’, map to LOINC using lab_test_loinc_code = concept.concept_code and vocabulary_id =’LOINC’:
 <p>
 Use the Source-to-Standard Query.
-<p>
+</p><p>
 WHERE SOURCE_VOCABULARY_ID IN ('LOINC')
-<p>
+</p><p>
 AND TARGET_STANDARD_CONCEPT = 'S'
-<p>
+</p><p>
 AND TARGET_INVALID_REASON IS NULL
-<p>
- 
-<p>
+</p><p>
+</p><p>
 when lab_test_loinc_code = ‘’, then map to SNOMED using <strong><code>regexp_replace(lab_test, '\\(.*\\)', '') = c.concept_name and c. standard_concept ='S' and c.vocabulary_id ='SNOMED'</code></strong>
- 
-<p>
+</p><p>
 if there’s still no standard concept, set to 0
-   </td>
+   </p></td>
    <td> 
    </td>
   </tr>
@@ -124,13 +122,12 @@ if there’s still no standard concept, set to 0
    <td>When <code>lab_test_loinc_code!=''</code>
 <p>
 <code>Then lab_test_loinc_code</code>
-<p>
+</p><p>
 <code>When lab_test_loinc_code =''</code>
-<p>
+</p><p>
 <code>Then lab_test</code>
-<p>
- 
-   </td>
+</p><p>
+   </p></td>
    <td> 
    </td>
   </tr>
@@ -194,11 +191,9 @@ if there’s still no standard concept, set to 0
 <strong><code>select concept_id from VITALS</code></strong>
 <code> <strong>join</strong> concept c <strong>on</strong> lab_test_loinc_code = c.concept_code <strong>and</strong> c.vocabulary_id ='LOINC'</code>
 <code> <strong>where</strong> lab_test_loinc_code !=''</code>
- 
-<p>
+</p><p>
 when lab_test_loinc_code = ‘’, then map to SNOMED using <strong><code>regexp_replace(lab_test, '\\(.*\\)', '') = c.concept_name and c.vocabulary_id ='SNOMED'</code></strong>
- 
-   </td>
+   </p></td>
    <td> 
    </td>
   </tr>
@@ -208,11 +203,11 @@ when lab_test_loinc_code = ‘’, then map to SNOMED using <strong><code>regexp
    <td><code>observation_day_number,</code>
 <p>
 observation_time_of_day
-   </td>
+   </p></td>
    <td>DATEADD(DAY, [COLLECTION_DAY_NUMBER]-1, VISIT_START_DATE)
 <p>
 And add “observation_time_of_day” as datatime
-   </td>
+   </p></td>
    <td> 
    </td>
   </tr>
@@ -243,16 +238,16 @@ And add “observation_time_of_day” as datatime
    </td>
    <td>The following mappings should be leveraged:
 <p>
-> map to 4172704
-<p>
+&gt; map to 4172704
+</p><p>
 &lt; map to 4171756
-<p>
+</p><p>
 + map to 0
-<p>
-=> map to 4171755
-<p>
+</p><p>
+=&gt; map to 4171755
+</p><p>
 &lt;= map to 4171754
-   </td>
+   </p></td>
    <td> 
    </td>
   </tr>
@@ -336,15 +331,14 @@ And add “observation_time_of_day” as datatime
    <td> 
    </td>
   </tr>
-</table>
+</tbody></table>
 
 
 
 ## Reading from GENLAB:
 
 <table>
-  <tr>
-   <th>Destination Field
+   <tbody><tr><th>Destination Field
    </th>
    <th>Source Field
    </th>
@@ -360,35 +354,17 @@ And add “observation_time_of_day” as datatime
    </td>
    <td> 
    </td>
-   <td>System Generated - Consisten with current schema design.
-   </td>
-  </tr>
-  <tr>
-   <td>value_source_value
-   </td>
-   <td>lab_test_result
-   </td>
    <td> 
-   </td>
-   <td>Values to be mapped directly.
    </td>
   </tr>
   <tr>
    <td>person_id
    </td>
-   <td>pat_key
+   <td>PAT.MEDREC_KEY
    </td>
    <td> 
    </td>
-   <td>Lookup of PAT.MEDREC_KEY leveraging the PAT_KEY.
-<p>
- 
-<p>
-SELECT PAT.MEDREC_KEY
-<p>
-FROM PAT, GEN_LAB
-<p>
-WHERE PAT.PAT_KEY = GEN_LAB.PAT_KEY
+   <td> 
    </td>
   </tr>
   <tr>
@@ -396,87 +372,149 @@ WHERE PAT.PAT_KEY = GEN_LAB.PAT_KEY
    </td>
    <td>lab_test_loinc_code
    </td>
+   <td>when lab_test_loinc_code !=’’, map to LOINC using lab_test_loinc_code = concept.concept_code and vocabulary_id =’LOINC’:
+<p>
+Use the Source-to-Standard Query.
+</p><p>
+WHERE SOURCE_VOCABULARY_ID IN ('LOINC')
+</p><p>
+AND TARGET_STANDARD_CONCEPT = 'S'
+</p><p>
+AND TARGET_INVALID_REASON IS NULL
+</p><p>
+</p><p>
+when lab_test_loinc_code = ‘’, then map to SNOMED using <strong><code>regexp_replace(lab_test, '\\(.*\\)', '') = c.concept_name and c. standard_concept ='S' and c.vocabulary_id ='SNOMED'</code></strong>
+</p><p>
+if there’s still no standard concept, set to 0
+   </p></td>
    <td> 
-   </td>
-   <td>Leveraged the Source-to-Standard query with the following filters:
-<p>
-SOURCE_VOCABULARY:  LOINC
-<p>
-STANDARD_CODE:  S
-<p>
-Invalid Reason:  NULL
    </td>
   </tr>
   <tr>
    <td>measurement_date
    </td>
-   <td>collection_day_number
+   <td><code>observation_day_number</code>
+   </td>
+   <td>DATEADD(DAY, [COLLECTION_DAY_NUMBER]-1, VISIT_START_DATE)
    </td>
    <td> 
    </td>
-   <td>Calculated based of the COLLECTION_DAY_NUMBER and the corresponding value identified in the VISIT_OCCURRENCE table.
+  </tr>
+  <tr>
+   <td>measurement_source_value
+   </td>
+   <td><code>lab_test, lab_test_loinc_code</code>
+   </td>
+   <td>When <code>lab_test_loinc_code!=''</code>
 <p>
- 
+<code>Then lab_test_loinc_code</code>
+</p><p>
+<code>When lab_test_loinc_code =''</code>
+</p><p>
+<code>Then lab_test</code>
+</p><p>
+   </p></td>
+   <td> 
+   </td>
+  </tr>
+  <tr>
+   <td>value_as_number
+   </td>
+   <td><code>test_result_numeric_value</code>
+   </td>
+   <td> 
+   </td>
+   <td> 
+   </td>
+  </tr>
+  <tr>
+   <td>unit_concept_id
+   </td>
+   <td>lab_test_result_unit
+   </td>
+   <td>map using STCM with the source_vocabulary_id =’JNJ UNITS’
+   </td>
+   <td> 
+   </td>
+  </tr>
+  <tr>
+   <td>value_as_concept_id
+   </td>
+   <td> 
+   </td>
+   <td> 
+   </td>
+   <td> 
+   </td>
+  </tr>
+  <tr>
+   <td>meas_event_field_concept_id
+   </td>
+   <td> 
+   </td>
+   <td> 
+   </td>
+   <td> 
+   </td>
+  </tr>
+  <tr>
+   <td>measurement_event_id
+   </td>
+   <td> 
+   </td>
+   <td> 
+   </td>
+   <td> 
+   </td>
+  </tr>
+  <tr>
+   <td>measurement_source_concept_id
+   </td>
+   <td><code>lab_test, lab_test_loinc_code</code>
+   </td>
+   <td>when lab_test_loinc_code !=’’, map to LOINC using lab_test_loinc_code = concept.concept_code and vocabulary_id =’LOINC’:
 <p>
-SELECT DATEADD(DAY, [GEN_LAB.COLLECTION_DAY_NUMBER]-1, VISIT_START_DATE) AS MEASUREMENT_DATE
-<p>
-FROM CDM_PREMIER_V1196.DBO.VISIT_OCCURRENCE
-<p>
-WHERE VISIT_OCCURRENCE_ID = [GEN_LAB.PAT_KEY];
+<strong><code>select concept_id from VITALS</code></strong>
+<code> <strong>join</strong> concept c <strong>on</strong> lab_test_loinc_code = c.concept_code <strong>and</strong> c.vocabulary_id ='LOINC'</code>
+<code> <strong>where</strong> lab_test_loinc_code !=''</code>
+</p><p>
+when lab_test_loinc_code = ‘’, then map to SNOMED using <strong><code>regexp_replace(lab_test, '\\(.*\\)', '') = c.concept_name and c.vocabulary_id ='SNOMED'</code></strong>
+   </p></td>
+   <td> 
    </td>
   </tr>
   <tr>
    <td>measurement_datetime
    </td>
-   <td>collection_time_of_day
+   <td><code>observation_day_number,</code>
 <p>
-collection_day_number
-   </td>
+observation_time_of_day
+   </p></td>
+   <td>DATEADD(DAY, [COLLECTION_DAY_NUMBER]-1, VISIT_START_DATE)
+<p>
+And add “observation_time_of_day” as datatime
+   </p></td>
    <td> 
-   </td>
-   <td>GENLAB Transformation:
-<p>
-Calculated based of the COLLECTION_DAY_NUMBER, the COLLECTION_TIME_OF_DAY and the corresponding value identified in the VISIT_OCCURRENCE table.  One was added to the calculation to account for records that occurred on the day of admission.
-<p>
- 
-<p>
-SELECT CAST(CAST(DATEADD(DAY, [GEN_LAB.COLLECTION_DAY_NUMBER]-1, VISIT_START_DATE) AS VARCHAR) + ' ' + '10:15:20' AS DATETIME) AS MEASUREMENT_DATETIME
-<p>
-FROM CDM_PREMIER_V1196.DBO.VISIT_OCCURRENCE
-<p>
-WHERE VISIT_OCCURRENCE_ID = [GEN_LAB.PAT_KEY];
    </td>
   </tr>
   <tr>
    <td>measurement_time
    </td>
-   <td>collection_time_of_day
+   <td>observation_time_of_day
    </td>
    <td> 
    </td>
-   <td>Mapped directly.
-   </td>
-  </tr>
-  <tr>
-   <td>unit_source_value
-   </td>
-   <td>result_unit
-   </td>
    <td> 
-   </td>
-   <td>LAB_RESULT Transformation:
-<p>
-This hold the source codes inferred by Usagi for the LAB_RESULT.TEST attribute which Premier identifies as LOINC for source data with a DATA_SOURCE_IND of '4'.
    </td>
   </tr>
   <tr>
    <td>measurement_type_concept_id
    </td>
-   <td> 
+   <td>32836
    </td>
    <td> 
    </td>
-   <td> 
+   <td>EHR physical examination
    </td>
   </tr>
   <tr>
@@ -484,65 +522,19 @@ This hold the source codes inferred by Usagi for the LAB_RESULT.TEST attribute w
    </td>
    <td>numeric_value_operator
    </td>
-   <td> 
-   </td>
    <td>The following mappings should be leveraged:
 <p>
-> map to 4172704
-<p>
+&gt; map to 4172704
+</p><p>
 &lt; map to 4171756
-<p>
+</p><p>
 + map to 0
-<p>
-=> map to 4171755
-<p>
+</p><p>
+=&gt; map to 4171755
+</p><p>
 &lt;= map to 4171754
-   </td>
-  </tr>
-  <tr>
-   <td>value_as_number
-   </td>
-   <td>numeric_value
-   </td>
+   </p></td>
    <td> 
-   </td>
-   <td>Mapped directly.
-   </td>
-  </tr>
-  <tr>
-   <td>value_as_concept_id
-   </td>
-   <td>lab_test_result
-   </td>
-   <td> 
-   </td>
-   <td>The 3 items should be mapped:
-<p>
-45878583 - Negative
-<p>
-46237248 - Positive
-<p>
-45880296 - Not Detected
-<p>
-Everything else should map to 0.
-   </td>
-  </tr>
-  <tr>
-   <td>unit_concept_id
-   </td>
-   <td>result_unit
-   </td>
-   <td> 
-   </td>
-   <td>Map to UCUM source vocabulary:
-<p>
- 
-<p>
-Where SOURCE_VOCABULARY_ID = ‘UCUM’
-<p>
-AND TARGET_STANDARD_CONCEPT = ‘S’
-<p>
-AND TARGET_INVALID_REASON IS NULL
    </td>
   </tr>
   <tr>
@@ -552,7 +544,7 @@ AND TARGET_INVALID_REASON IS NULL
    </td>
    <td> 
    </td>
-   <td>NULL
+   <td> 
    </td>
   </tr>
   <tr>
@@ -562,7 +554,7 @@ AND TARGET_INVALID_REASON IS NULL
    </td>
    <td> 
    </td>
-   <td>NIULL
+   <td> 
    </td>
   </tr>
   <tr>
@@ -572,17 +564,7 @@ AND TARGET_INVALID_REASON IS NULL
    </td>
    <td> 
    </td>
-   <td>GENLAB; LAB_RESULT Transformation:
-<p>
-Lookup PAT.ADM_PHY leveraging PAT_KEY.
-<p>
- 
-<p>
-SELECT PAT.ADM_PHY
-<p>
-FROM PAT
-<p>
-WHERE PAT.PAT_KEY = GEN_LAB.PAT_KEY
+   <td> 
    </td>
   </tr>
   <tr>
@@ -590,9 +572,9 @@ WHERE PAT.PAT_KEY = GEN_LAB.PAT_KEY
    </td>
    <td>pat_key
    </td>
-   <td> 
-   </td>
    <td>Referncing visit that exists in VISIT_OCCURRENCE, a combindation of medrec_key and pat_key create a unique visit for a specific patient.
+   </td>
+   <td> 
    </td>
   </tr>
   <tr>
@@ -602,34 +584,40 @@ WHERE PAT.PAT_KEY = GEN_LAB.PAT_KEY
    </td>
    <td> 
    </td>
-   <td>NULL
+   <td> 
    </td>
   </tr>
   <tr>
-   <td>measurement_source_value
+   <td>unit_source_value
    </td>
-   <td>lab_test_loinc_code
+   <td>lab_test_result_unit
    </td>
    <td> 
    </td>
-   <td>Direct mapping.
+   <td> 
    </td>
   </tr>
   <tr>
-   <td>measurement_source_concept_id
+   <td>unit_source_concept_id
    </td>
-   <td>lab_test_loinc_code
+   <td>0
+   </td>
+   <td>0
    </td>
    <td> 
    </td>
-   <td>Leverage Source-to-Source Query
-<p>
-Vocabulary:  LOINC
-<p>
-Leveraged standard Source-to-Concept lookup.
+  </tr>
+  <tr>
+   <td>value_source_value
+   </td>
+   <td><code>lab_test_result</code>
+   </td>
+   <td> 
+   </td>
+   <td> 
    </td>
   </tr>
-</table>
+</tbody></table>
 
 
  
@@ -641,7 +629,7 @@ Leveraged standard Source-to-Concept lookup.
 
 
 <table>
-  <tr>
+  <tbody><tr>
   <th>Destination Field
    </th>
    <th>Source Field
@@ -657,19 +645,17 @@ Leveraged standard Source-to-Concept lookup.
    <td>pat_key
 <p>
 specimen_id
-<p>
+</p><p>
 observation
-   </td>
+   </p></td>
    <td> 
    </td>
    <td>System generated.  Consistent with the measurement_id attribute creation.
 <p>
- 
-<p>
- 
-<p>
+</p><p>
+</p><p>
 System Generated - Consisten with current schema design.
-   </td>
+   </p></td>
   </tr>
   <tr>
    <td>value_source_value
@@ -690,14 +676,13 @@ System Generated - Consisten with current schema design.
    </td>
    <td>Lookup of PAT.MEDREC_KEY leveraging the PAT_KEY.
 <p>
- 
-<p>
+</p><p>
 SELECT PAT.MEDREC_KEY
-<p>
+</p><p>
 FROM PAT, LAB_RES
-<p>
+</p><p>
 WHERE PAT.PAT_KEY = LAB_RES.PAT_KEY
-   </td>
+   </p></td>
   </tr>
   <tr>
    <td>measurement_concept_id
@@ -708,10 +693,9 @@ WHERE PAT.PAT_KEY = LAB_RES.PAT_KEY
    </td>
    <td>The LAB_RES table provides a LOINC formatted description but does not provide the actual LOINC code utilized in this table.  Usagi was leveraged to infer standard concept codes based on the LOINC formatted descriptions.
 <p>
- 
-<p>
+</p><p>
 Leverage source to concept mappings (+80% mapped).
-   </td>
+   </p></td>
   </tr>
   <tr>
    <td>measurement_date
@@ -722,14 +706,13 @@ Leverage source to concept mappings (+80% mapped).
    </td>
    <td>The LAB_RESULT.SPEC_DAY_NUMBER in addition to the VISIT_OCCURRENCE table are leveraged for the transformation of MEASUREMENT_DATE.
 <p>
- 
-<p>
+</p><p>
 SELECT DATEADD(DAY, [LAB_RES.SPEC_DAY_NUMBER]-1, VISIT_START_DATE) AS MEASUREMENT_DATE
-<p>
+</p><p>
 FROM CDM_PREMIER_V1196.DBO.VISIT_OCCURRENCE
-<p>
+</p><p>
 WHERE VISIT_OCCURRENCE_ID = [LAB_RES.PAT_KEY];
-   </td>
+   </p></td>
   </tr>
   <tr>
    <td>measurement_datetime
@@ -737,21 +720,20 @@ WHERE VISIT_OCCURRENCE_ID = [LAB_RES.PAT_KEY];
    <td>spec_day_number
 <p>
 spec_time_of_day
-   </td>
+   </p></td>
    <td> 
    </td>
    <td>LAB_RESULT Transformation:
 <p>
 LAB_RESULT.SPEC_DAY_NUMBER, LAB_RESULT.SPEC_TIME_OF_DAY in combination with the CDM VISIT_OCCURRENCE table leveraged to create MEASUREMENT_DATETIME.  One was added to the calculation to account for records that occurred on the day of admission.
-<p>
- 
-<p>
+</p><p>
+</p><p>
 SELECT CAST(CAST(DATEADD(DAY, [LAB_RES.COLLECTION_DAY_NUMBER]-1, VISIT_START_DATE) AS VARCHAR) + ' ' + [LAB_RES.SPEC_TIME_OF_DAY] AS DATETIME) AS MEASUREMENT_DATETIME
-<p>
+</p><p>
 FROM CDM_PREMIER_V1196.DBO.VISIT_OCCURRENCE
-<p>
+</p><p>
 WHERE VISIT_OCCURRENCE_ID = [LAB_RES.PAT_KEY];
-   </td>
+   </p></td>
   </tr>
   <tr>
    <td>measurement_time
@@ -773,7 +755,7 @@ WHERE VISIT_OCCURRENCE_ID = [LAB_RES.PAT_KEY];
    <td>LAB_RESULT Transformation:
 <p>
 This hold the source codes inferred by Usagi for the LAB_RESULT.TEST attribute which Premier identifies as LOINC for source data with a DATA_SOURCE_IND of '4'.
-   </td>
+   </p></td>
   </tr>
   <tr>
    <td>measurement_type_concept_id
@@ -785,7 +767,7 @@ This hold the source codes inferred by Usagi for the LAB_RESULT.TEST attribute w
    <td>GENLAB; LAB_RESULT Transformation:
 <p>
 Values mapped to Concept ID 5001, 'Test ordered through EHR'
-   </td>
+   </p></td>
   </tr>
   <tr>
    <td>operator_concept_id
@@ -857,15 +839,14 @@ Values mapped to Concept ID 5001, 'Test ordered through EHR'
    <td>GENLAB; LAB_RESULT Transformation:
 <p>
 Lookup PAT.ADM_PHY leveraging PAT_KEY.
-<p>
- 
-<p>
+</p><p>
+</p><p>
 SELECT PAT.ADM_PHY
-<p>
+</p><p>
 FROM PAT
-<p>
+</p><p>
 WHERE PAT.PAT_KEY = GEN_LAB.PAT_KEY
-   </td>
+   </p></td>
   </tr>
   <tr>
    <td>visit_occurrence_id
@@ -907,8 +888,7 @@ WHERE PAT.PAT_KEY = GEN_LAB.PAT_KEY
    <td>Leveraged standard Source-to-Concept lookup.
    </td>
   </tr>
-</table>
-
+</tbody></table>
 
 
 ## Change Log:
