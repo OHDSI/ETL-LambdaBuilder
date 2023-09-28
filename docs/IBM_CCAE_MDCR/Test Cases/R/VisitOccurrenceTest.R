@@ -50,12 +50,11 @@ createVisitOccurrenceTests <- function () {
   
   patient <- createPatient()
   encounter <- createEncounter()
-  declareTest(id = patient$person_id, "Patient has an ER record that starts and ends on the first day of the IP visit, separate ER visit created. Id is PERSON_ID.")
+  declareTest(id = patient$person_id, "Patient has an ER record that starts and ends on the first day of the IP visit, one ER visit created. Id is PERSON_ID.")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_inpatient_services(enrolid=patient$enrolid, svcdate = '2012-09-03', tsvcdat = '2012-09-03', stdplac = '23')
   add_inpatient_services(enrolid=patient$enrolid, svcdate = '2012-09-03', tsvcdat = '2012-09-10', revcode = '0100')
-  expect_visit_occurrence(person_id = patient$person_id, visit_start_date = '2012-09-03', visit_end_date = '2012-09-03', visit_concept_id = '9203')
-  expect_visit_occurrence(person_id = patient$person_id, visit_start_date = '2012-09-03', visit_end_date = '2012-09-10', visit_concept_id = '9201')
+  expect_visit_occurrence(person_id = patient$person_id, visit_start_date = '2012-09-03', visit_end_date = '2012-09-10', visit_concept_id = '262')
   
   patient <- createPatient()
   encounter <- createEncounter()
@@ -67,10 +66,10 @@ createVisitOccurrenceTests <- function () {
   
   patient <- createPatient()
   encounter <- createEncounter()
-  declareTest(id = patient$person_id, "Setting Discharge_to_Concept_id for IP Record (HIX-1429). Id is PERSON_ID.")
+  declareTest(id = patient$person_id, "Setting discharged_to_concept_id for IP Record (HIX-1429). Id is PERSON_ID.")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_inpatient_services(enrolid=patient$enrolid, svcdate = '2012-03-21', tsvcdat = '2012-03-19',dstatus = '01')
-  expect_visit_occurrence(person_id=patient$person_id, visit_start_date = '2012-03-21', visit_end_date = '2012-03-21',discharge_to_concept_id = '8536' )
+  expect_visit_occurrence(person_id=patient$person_id, visit_start_date = '2012-03-21', visit_end_date = '2012-03-21',discharged_to_concept_id = '581476' )
   
   if (truvenType != "MDCD")
   {

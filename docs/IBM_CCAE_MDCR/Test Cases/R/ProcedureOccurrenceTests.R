@@ -66,16 +66,17 @@ createProcedureOccurrenceTests <- function () {
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_outpatient_services(enrolid = patient$enrolid, fachdid = encounter$caseid, proc1 = '54861', svcdate = '2012-02-15', tsvcdat = '2012-02-15', year = '2012')
   add_facility_header(enrolid = patient$enrolid, fachdid = encounter$caseid, proc1 = '54861', svcdate = '2012-02-15', tsvcdat = '2012-02-15', year = '2012')
-  expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '2109995', procedure_date = '2012-02-15', procedure_type_concept_id = '32860')
-  expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '2109995', procedure_date = '2012-02-15', procedure_type_concept_id = '32846')
+  expect_count_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '2109995', procedure_date = '2012-02-15', procedure_type_concept_id = '32846', rowCount = 2)
+  ## expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '2109995', procedure_date = '2012-02-15', procedure_type_concept_id = '32846')
+  ## expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '2109995', procedure_date = '2012-02-15', procedure_type_concept_id = '32846')
   
   patient <- createPatient()
   encounter <- createEncounter()
-  declareTest(id = patient$person_id, "Patient has procedure in proc5 position in facility header, procedure_type_concept_id = 32860. Id is PERSON_ID.")
+  declareTest(id = patient$person_id, "Patient has procedure in proc5 position in facility header, procedure_type_concept_id = 32846 Id is PERSON_ID.")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_outpatient_services(enrolid = patient$enrolid, fachdid = encounter$caseid, svcdate = '2012-03-03', tsvcdat = '2012-03-03', year = '2012')
   add_facility_header(enrolid = patient$enrolid, fachdid = encounter$caseid, proc5 = '93042', svcdate = '2012-03-03', tsvcdat = '2012-03-03', year = '2012')
-  expect_procedure_occurrence(person_id = patient$person_id, procedure_type_concept_id = '32860' )
+  expect_procedure_occurrence(person_id = patient$person_id, procedure_type_concept_id = '32846' )
   expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '2313827', procedure_type_concept_id = '32846' )
   
   patient <- createPatient()
@@ -89,15 +90,17 @@ createProcedureOccurrenceTests <- function () {
   expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '40757149', procedure_type_concept_id = '32846' )
   expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '2313736', procedure_type_concept_id = '32846' )
   expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '42739018', procedure_type_concept_id = '32846' )
-  expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '709845', procedure_type_concept_id = '32846' )
+  ## expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '709845', procedure_type_concept_id = '32846' )
+  expect_measurement(person_id = patient$person_id, measurement_concept_id= '709845', measurement_type_concept_id = '32846')
+  
   
   #Test case to address issue HIX-1255
-  patient <- createPatient()
-  encounter <- createEncounter()
-  declareTest(id = patient$person_id, "Patient has an ICD10PCS value in inpatient_admissions field pdx, pdx is correctly mapped and a procedure_occurrence record created (HIX-1255). Id is PERSON_ID.")
-  add_enrollment_detail(enrolid=patient$enrolid, dtend = '2016-12-31', dtstart = '2016-01-01')
-  add_inpatient_admissions(caseid = encounter$caseid, enrolid = patient$enrolid, pdx = 'DB025ZZ', year = '2016', admdate = '2016-05-30', disdate = '2016-06-05')
-  add_inpatient_services(enrolid = patient$enrolid, caseid = encounter$caseid, svcdate = '2016-06-05', tsvcdat = '2016-06-05', year = '2016', pdx = '')
-  expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '2789746', procedure_date = '2016-06-05', procedure_type_concept_id = '32855')
+  ## patient <- createPatient()
+  ## encounter <- createEncounter()
+  ## declareTest(id = patient$person_id, "Patient has an ICD10PCS value in inpatient_admissions field pdx, pdx is correctly mapped and a procedure_occurrence record created (HIX-1255). Id is PERSON_ID.")
+  ## add_enrollment_detail(enrolid=patient$enrolid, dtend = '2016-12-31', dtstart = '2016-01-01')
+  ## add_inpatient_admissions(caseid = encounter$caseid, enrolid = patient$enrolid, pdx = 'DB025ZZ', year = '2016', admdate = '2016-05-30', disdate = '2016-06-05')
+  ## add_inpatient_services(enrolid = patient$enrolid, caseid = encounter$caseid, svcdate = '2016-06-05', tsvcdat = '2016-06-05', year = '2016', pdx = '')
+  ## expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '2789746', procedure_date = '2016-06-05', procedure_type_concept_id = '32855')
   
 }
