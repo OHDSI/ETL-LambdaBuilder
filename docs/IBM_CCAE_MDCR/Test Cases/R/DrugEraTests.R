@@ -1,69 +1,69 @@
 #' @export
 createDrugEraTests <- function () {
-  
+
   patient <- createPatient()
   encounter <- createEncounter()
   declareTest(id = patient$person_id, "Two drugs with same ingredient within 30 days, should be one drug era. Id is PERSON_ID.")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
-  add_drug_claims(enrolid = patient$enrolid, ndcnum = '00463303410', year = '2012', svcdate = '02-04-2012', daysupp = 30)
-  add_drug_claims(enrolid = patient$enrolid, ndcnum = '00463303410', year = '2012', svcdate = '02-22-2012', daysupp = 30)
-  expect_drug_era(person_id = patient$person_id, drug_concept_id = '1134439', drug_era_start_date ='02-04-2012', gap_days = 0)
-  
+  add_drug_claims(enrolid = patient$enrolid, ndcnum = '00463303410', year = '2012', svcdate = '2012-02-04', daysupp = 30)
+  add_drug_claims(enrolid = patient$enrolid, ndcnum = '00463303410', year = '2012', svcdate = '2012-02-04', daysupp = 30)
+  expect_drug_era(person_id = patient$person_id, drug_concept_id = '1134439', drug_era_start_date ='2012-02-04', gap_days = 0)
+
   patient <- createPatient()
   encounter <- createEncounter()
   declareTest(id = patient$person_id, "Two drugs with same ingredient within 30 days, but 10 gap days. Id is PERSON_ID.")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
-  add_drug_claims(enrolid = patient$enrolid, ndcnum = '00463303410', year = '2012', svcdate = '02-04-2012', daysupp = 8)
-  add_drug_claims(enrolid = patient$enrolid, ndcnum = '00463303410', year = '2012', svcdate = '02-22-2012', daysupp = 30)
-  expect_drug_era(person_id = patient$person_id, drug_concept_id = '1134439', drug_era_start_date ='02-04-2012', gap_days = 10)
-  
+  add_drug_claims(enrolid = patient$enrolid, ndcnum = '00463303410', year = '2012', svcdate = '2012-02-04', daysupp = 8)
+  add_drug_claims(enrolid = patient$enrolid, ndcnum = '00463303410', year = '2012', svcdate = '2012-02-22', daysupp = 30)
+  expect_drug_era(person_id = patient$person_id, drug_concept_id = '1134439', drug_era_start_date ='2012-02-04', gap_days = 10)
+
   patient <- createPatient()
   encounter <- createEncounter()
   declareTest(id = patient$person_id, "Three drugs with same ingredient within 30 days, but 10 gap days total (5 between each). Id is PERSON_ID.")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
-  add_drug_claims(enrolid = patient$enrolid, ndcnum = '00463303410', year = '2012', svcdate = '02-04-2012', daysupp = 13)
-  add_drug_claims(enrolid = patient$enrolid, ndcnum = '00463303410', year = '2012', svcdate = '02-22-2012', daysupp = 14)
-  add_drug_claims(enrolid = patient$enrolid, ndcnum = '00463303410', year = '2012', svcdate = '03-12-2012', daysupp = 30)
-  expect_drug_era(person_id = patient$person_id, drug_concept_id = '1134439', drug_era_start_date ='02-04-2012', gap_days = 10)
+  add_drug_claims(enrolid = patient$enrolid, ndcnum = '00463303410', year = '2012', svcdate = '2012-02-04', daysupp = 13)
+  add_drug_claims(enrolid = patient$enrolid, ndcnum = '00463303410', year = '2012', svcdate = '2012-02-22', daysupp = 14)
+  add_drug_claims(enrolid = patient$enrolid, ndcnum = '00463303410', year = '2012', svcdate = '2012-03-12', daysupp = 30)
+  expect_drug_era(person_id = patient$person_id, drug_concept_id = '1134439', drug_era_start_date ='2012-02-04', gap_days = 10)
   expect_count_drug_era(rowCount = 1, person_id = patient$person_id)
-  
+
   patient <- createPatient()
   encounter <- createEncounter()
   declareTest(id = patient$person_id, "Two drugs with same ingredient > 30 days apart, should be two drug eras. Id is PERSON_ID.")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
-  add_drug_claims(enrolid = patient$enrolid, ndcnum = '00463303410', year = '2012', svcdate = '09-21-2012')
-  add_drug_claims(enrolid = patient$enrolid, ndcnum = '00463303410', year = '2012', svcdate = '12-08-2012')
-  expect_drug_era(person_id = patient$person_id, drug_concept_id = '1134439', drug_era_start_date ='09-21-2012', gap_days = 0)
-  expect_drug_era(person_id = patient$person_id, drug_concept_id = '1134439', drug_era_start_date ='12-08-2012', gap_days = 0)
-  
+  add_drug_claims(enrolid = patient$enrolid, ndcnum = '00463303410', year = '2012', svcdate = '2012-09-21')
+  add_drug_claims(enrolid = patient$enrolid, ndcnum = '00463303410', year = '2012', svcdate = '2012-12-08')
+  expect_drug_era(person_id = patient$person_id, drug_concept_id = '1134439', drug_era_start_date ='2012-09-21', gap_days = 0)
+  expect_drug_era(person_id = patient$person_id, drug_concept_id = '1134439', drug_era_start_date ='2012-12-08', gap_days = 0)
+
   patient <- createPatient()
   encounter <- createEncounter()
   declareTest(id = patient$person_id, "Drug_era_end_date should be drug start date + days supply. Id is PERSON_ID.")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2010-01-01')
-  add_drug_claims(enrolid = patient$enrolid, ndcnum = '00349835305', year = '2012', svcdate = '12-08-2010', daysupp = '14')
-  expect_drug_era(person_id = patient$person_id, drug_concept_id = '956874', drug_era_start_date ='12-08-2010', drug_era_end_date = '12-22-2010')
-  
+  add_drug_claims(enrolid = patient$enrolid, ndcnum = '00349835305', year = '2012', svcdate = '2010-12-08', daysupp = '14')
+  expect_drug_era(person_id = patient$person_id, drug_concept_id = '956874', drug_era_start_date ='2010-12-08', drug_era_end_date = '2010-12-22')
+
   patient <- createPatient()
   encounter <- createEncounter()
   declareTest(id = patient$person_id, "Drug era created from procedure drug. Id is PERSON_ID.")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_inpatient_services(enrolid = patient$enrolid, proc1 = '90376', svcdate = '2012-03-26', tsvcdat = '2012-03-30', caseid = encounter$caseid, year = '2012')
   expect_drug_era(person_id = patient$person_id, drug_concept_id = '19135830', drug_era_start_date = '2012-03-26')
-  
+
   patient <- createPatient()
   encounter <- createEncounter()
   declareTest(id = patient$person_id, "Drug with two ingredients should have two drug eras. Id is PERSON_ID.")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2010-01-01')
-  add_drug_claims(enrolid = patient$enrolid, ndcnum = '00008419001', year = '2012', svcdate = '05-01-2010')
-  expect_drug_era(person_id = patient$person_id, drug_concept_id = '1134439', drug_era_start_date ='05-01-2010')
-  expect_drug_era(person_id = patient$person_id, drug_concept_id = '1112807', drug_era_start_date ='05-01-2010')
-  
+  add_drug_claims(enrolid = patient$enrolid, ndcnum = '00008419001', year = '2012', svcdate = '2010-05-01')
+  expect_drug_era(person_id = patient$person_id, drug_concept_id = '1134439', drug_era_start_date ='2010-05-01')
+  expect_drug_era(person_id = patient$person_id, drug_concept_id = '1112807', drug_era_start_date ='2010-05-01')
+
   patient <- createPatient()
   encounter <- createEncounter()
   declareTest(id = patient$person_id, "Two drugs with same ingredient within 30 days, one occurs outside of observation_period. Drug era should only include drug inside observation_period. Id is PERSON_ID.")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
-  add_drug_claims(enrolid = patient$enrolid, ndcnum = '00463303410', year = '2012', svcdate = '12-12-2011', daysupp = 30)
-  add_drug_claims(enrolid = patient$enrolid, ndcnum = '00463303410', year = '2012', svcdate = '01-08-2012', daysupp = 30)
-  expect_drug_era(person_id = patient$person_id, drug_concept_id = '1134439', drug_era_start_date ='01-08-2012', gap_days = 0)
-  
+  add_drug_claims(enrolid = patient$enrolid, ndcnum = '00463303410', year = '2012', svcdate = '2011-12-12', daysupp = 30)
+  add_drug_claims(enrolid = patient$enrolid, ndcnum = '00463303410', year = '2012', svcdate = '2012-01-08', daysupp = 30)
+  expect_drug_era(person_id = patient$person_id, drug_concept_id = '1134439', drug_era_start_date ='2012-01-08', gap_days = 0)
+
 }

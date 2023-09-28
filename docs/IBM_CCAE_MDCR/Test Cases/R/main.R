@@ -82,9 +82,13 @@ createProvider <- function() {
   }
 
 #' @export
-InsertsToCsv <- function(scanLocation){
+InsertsToCsv <- function(scanLocation, outputDir = NULL) {
 
-    overview <- readxl::read_xlsx(scanLocation, sheet = "Overview")
+    if (is.null(outputDir)) {
+      outputDir <- paste0("inst/csv/", truvenType)
+    }
+
+    overview <- readxl::read_xlsx(scanLocation, sheet = "Field Overview")
 
     tables <- c()
 
@@ -99,7 +103,13 @@ InsertsToCsv <- function(scanLocation){
       ddl <- data.table::transpose(ddl)
 
       csv <- data.frame(matrix(ncol=ncol(ddl),nrow=1))
-      colnames(csv) <- as.character(ddl[1,])
+
+      ## copy column names from scan report
+      ## and make all columns to be character
+      fieldNames <- as.character(ddl[1, ])
+      colnames(csv) <- fieldNames
+      csv[fieldNames] <- NA_character_
+      csv <- csv[FALSE, ]
 
       for (j in 1:length(frameworkContext$inserts)){
         list <- frameworkContext$inserts[[j]]
@@ -117,46 +127,13 @@ InsertsToCsv <- function(scanLocation){
         }
       }
       assign(paste(tables[i]), csv)
-      write.csv(csv,paste0("inst/csv/",tables[i],".csv"))
+      write.csv(
+        x = csv,
+        file = file.path(
+          outputDir,
+          paste0(tables[i], ".csv")
+        ),
+        row.names = FALSE
+      )
     }
   }
-
-#' @export
-writeSourceCsv <- function(directory = NULL, separator = ',') {
-  clean_value <- function(x) {
-    if (x == 'NULL') {
-      return('')
-    }
-    value <- substring(x, 2, nchar(x)-1)
-    value <- gsub('"', '""', value)
-    if (grepl(separator, value)) {
-      return(paste0('"', value, '"'))
-    }
-    return(value)
-  }
-
-  clean_fields <- function(x) {
-    if (grepl("^\\[.+?\\]$", x)) {
-      return(substring(x, 2, nchar(x)-1))
-    }
-    return(x)
-  }
-  dir.create(directory, showWarnings = F)
-
-  seen_tables <- c()
-  for (insert in frameworkContext$inserts) {
-    filename <- file.path(directory, paste0(insert$table, '.csv'))
-    if (!(insert$table %in% seen_tables)) {
-      write(paste(sapply(insert$fields, clean_fields), collapse = separator), filename, append=F)
-      seen_tables <- c(seen_tables, insert$table)
-    }
-    write(paste(sapply(insert$values, clean_value), collapse = separator), filename, append=T)
-  }
-
-  for (table_name in names(frameworkContext$defaultValues)) {
-    if (!(table_name %in% seen_tables)) {
-      filename <- file.path(directory, paste0(table_name, '.csv'))
-      write(paste(names(frameworkContext$defaultValues[[table_name]]), collapse = separator), filename, append=F)
-    }
-  }
-}
