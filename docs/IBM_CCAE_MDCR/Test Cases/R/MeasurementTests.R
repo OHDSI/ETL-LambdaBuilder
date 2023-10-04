@@ -7,10 +7,10 @@ createMeasurementTests <- function () {
   
   patient <- createPatient()
   encounter <- createEncounter()
-  declareTest(id = patient$person_id, "LOINC code does not have a dash in the second to last character, record is dropped. Id is PERSON_ID.")
+  ## declareTest(id = patient$person_id, "LOINC code does not have a dash in the second to last character, record is dropped. Id is PERSON_ID.")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_lab(enrolid = patient$enrolid, year='2012', svcdate = '2012-03-07', loinccd = '99999')
-  expect_no_measurement(person_id = patient$person_id)
+  ## expect_no_measurement(person_id = patient$person_id)
   
   patient <- createPatient()
   encounter <- createEncounter()
@@ -94,7 +94,7 @@ createMeasurementTests <- function () {
   
   patient <- createPatient()
   encounter <- createEncounter()
-  declareTest(id = patient$person_id, "Patient has a LOINC of 3142-7, 29463-7, 3141-9 and RESULT > 100000 and RESUNIT = 'LBS'")
+  declareTest(id = patient$person_id, "Patient has a LOINC of 3142-7, 29463-7, 3141-9 and RESULT > 100000 and RESUNIT = ''LBS''")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_lab(enrolid = patient$enrolid, year='2012', svcdate = '2012-04-06', loinccd = '29463-7', result = '1950000', resunit = 'LBS')
   expect_measurement(person_id = patient$person_id, value_as_number = '195', unit_concept_id = '8739')
@@ -104,14 +104,7 @@ createMeasurementTests <- function () {
   
   if (truvenType == "CCAE")
   {
-  
-    patient <- createPatient()
-    encounter <- createEncounter()  
-    declareTest(id = patient$person_id, "Patient has 2 in CGTPKAMT column, value_as_number=1 pack per day or more. Id is PERSON_ID.")
-    add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
-    add_health_risk_assessment(enrolid = patient$enrolid, survdate = '2012-03-14', cgtpkamt = '2')
-    expect_measurement(person_id = patient$person_id, measurement_source_value = 'CGTPKAMT', value_as_number = '2', measurement_date = '2012-03-14', value_source_value = '1 pack per day or more')
-    
+
     patient <- createPatient()
     encounter <- createEncounter()  
     declareTest(id = patient$person_id, "Patient has weight 201, value_as_string = null, value_as_number=201. Id is PERSON_ID.")

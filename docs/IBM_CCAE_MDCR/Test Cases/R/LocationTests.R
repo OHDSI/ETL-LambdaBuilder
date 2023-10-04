@@ -9,9 +9,9 @@ if (truvenType != "MDCD")  {
   expect_location(state="NJ",location_source_value="11")
 
   patient<-createPatient()
-  declareTest(id = patient$person_id, "No location record generated for egeoloc 89. Id is PERSON_ID")
+  declareTest(id = patient$person_id, "Only one location record generated for 89. Id is PERSON_ID")
   add_enrollment_detail(enrolid=patient$enrolid, egeoloc = "89")
-  expect_count_location(location_source_value = "89", rowCount = 0)
+  expect_count_location(location_source_value = "89", state = "UN", rowCount = 1)
 
   patient<-createPatient()
   declareTest(id = patient$person_id, "Only one location record generated for 38. Id is PERSON_ID")
