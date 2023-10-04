@@ -17081,7 +17081,7 @@ generateInsertSql <- function(databaseSchema = NULL) {
                      "(",
                      paste(insert$fields, collapse = ", "),
                      ") VALUES (",
-                     paste(insert$values, collapse = ", "), 
+                     paste(insert$values, collapse = ", "),
                      ");"))
     return(s)
   }
@@ -17111,7 +17111,7 @@ generateTestSql <- function(databaseSchema = NULL) {
     s <- c(s, paste0("UNION SELECT ",
                      expect$testId,
                      " AS id, '",
-                     expect$testDescription,
+                     gsub("'", "''", expect$testDescription, fixed = TRUE),
                      "' AS description, 'Expect ",
                      expect$table,
                      "' AS test, CASE WHEN (SELECT COUNT(*) FROM @cdm_database_schema.",
