@@ -6,10 +6,10 @@ getSource <- function() {
     source('extras/IBMCCAE_TestingFramework.R')
   }
   if (truvenType == "MDCR") {
-    source('extras/IBMMDCR_TestingFramework.R') 
+    source('extras/IBMMDCR_TestingFramework.R')
   }
   else if (truvenType == "MDCD") {
-    source('extras/IBMMDCD_TestingFramework.R') 
+    source('extras/IBMMDCD_TestingFramework.R')
   }
 }
 
@@ -64,61 +64,76 @@ createProvider <- function() {
   # source('R/ProcedureOccurrenceTests.R')
   # source('R/ProviderTests.R')
   # #source('R/VisitOccurrenceTest.R')
-  # } 
-  # 
+  # }
+  #
   # source('R/UnitTests.R')
-  
-  
+
+
 ## Function to get insertsql statement
 #' @export
   getInsertSql <- function(connectionDetails) {
     return(frameworkContext$insertSql);
   }
-  
+
   ## Function to get testsql statement
 #' @export
   getTestSql <- function(connectionDetails) {
     return(frameworkContext$testSql);
   }
-  
-#' @export 
-InsertsToCsv <- function(scanLocation){
-    
-    overview <- readxl::read_xlsx(scanLocation, sheet = "Overview")
-    
+
+#' @export
+InsertsToCsv <- function(scanLocation, outputDir = NULL) {
+
+    if (is.null(outputDir)) {
+      outputDir <- paste0("inst/csv/", truvenType)
+    }
+
+    overview <- readxl::read_xlsx(scanLocation, sheet = "Field Overview")
+
     tables <- c()
-    
+
     for (i in 1:length(frameworkContext$inserts)){
       tables <- c(tables, frameworkContext$inserts[[i]]$table)
     }
     ## get list of tables to create a csv for
     tables <- unique(tables)
-    
+
     for (i in 1:length(tables)){
       ddl <-subset(overview, Table == tables[i], select = c("Field"))
       ddl <- data.table::transpose(ddl)
-      
+
       csv <- data.frame(matrix(ncol=ncol(ddl),nrow=1))
-      colnames(csv) <- as.character(ddl[1,])
-      
+
+      ## copy column names from scan report
+      ## and make all columns to be character
+      fieldNames <- as.character(ddl[1, ])
+      colnames(csv) <- fieldNames
+      csv[fieldNames] <- NA_character_
+      csv <- csv[FALSE, ]
+
       for (j in 1:length(frameworkContext$inserts)){
         list <- frameworkContext$inserts[[j]]
         table <- list$table
         fields <- list$fields
-        
+
         if(tables[i]==table){
-          
+
           values <- list(gsub("'", '', list$values))
-          
+
           df <- do.call(rbind.data.frame, values)
           colnames(df) <- fields
-          
+
           csv <- dplyr::bind_rows(csv, df)
         }
       }
       assign(paste(tables[i]), csv)
-      write.csv(csv,paste0("inst/csv/",tables[i],".csv"))
+      write.csv(
+        x = csv,
+        file = file.path(
+          outputDir,
+          paste0(tables[i], ".csv")
+        ),
+        row.names = FALSE
+      )
     }
   }
-  
-  
