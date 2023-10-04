@@ -17,14 +17,20 @@ createObservationTests <- function () {
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_health_risk_assessment(enrolid = patient$enrolid, survdate = '2012-05-25', exerweek = '3')
   expect_observation(person_id = patient$person_id, observation_source_value = 'EXERWEEK', value_as_number = '3', observation_date = '2012-05-25')
-  
-  #This will test HIX-1299
+
   patient <- createPatient()
   encounter <- createEncounter()  
-  declareTest(id = patient$person_id, "Patient answered 1 for question FLU_SHOT, drug_exposure record created (HIX-1299). Id is PERSON_ID.")
+  declareTest(id = patient$person_id, "Patient has 2 in CGTPKAMT column, value_as_number=1 pack per day or more. Id is PERSON_ID.")
+  add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
+  add_health_risk_assessment(enrolid = patient$enrolid, survdate = '2012-03-14', cgtpkamt = '2')
+  expect_observation(person_id = patient$person_id, observation_source_value = 'CGTPKAMT', value_as_number = '2.00', observation_date = '2012-03-14')
+  
+  patient <- createPatient()
+  encounter <- createEncounter()  
+  declareTest(id = patient$person_id, "Patient answered 1 for question FLU_SHOT, observation record created. Id is PERSON_ID.")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_health_risk_assessment(enrolid = patient$enrolid, survdate = '2012-05-25', flu_shot = '1')
-  expect_drug_exposure(person_id = patient$person_id, drug_concept_id = '4214838')
+  expect_observation(person_id = patient$person_id, observation_source_value = 'FLU_SHOT')
   
   }
 }
