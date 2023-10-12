@@ -1941,325 +1941,277 @@ We omit rows with a NULL temporal_status since they also have a NULL system_name
 
 
 <table>
-  <tbody><tr>
-   <td>Destination Field
-   </td>
-   <td>Source Field
-   </td>
-   <td>Comment
-   </td>
-  </tr>
-  <tr>
-   <td>measurement_id
-   </td>
-   <td>
-   </td>
-   <td>
-   </td>
-   <td>
-   </td>
-  </tr>
-  <tr>
-   <td>person_id
-   </td>
-   <td>ptid
-   </td>
-   <td>
-   </td>
-   <td>
-   </td>
-  </tr>
-  <tr>
-   <td>measurement_concept_id
-   </td>
-   <td><code>concept obtained using the rules:</code>
-<p>
-<code>Rules 1 – 3 note: do not populate if the result (column name in red) is null</code>
-</p><ol>
-<li><code>when system_name like 'Nottingham%'</code>
-<p>
-<code>then system_name and related columns make new concepts:</code>
-</p><p>
-<code>system_name ||' grade tubular '|| grade_tubular
+   <tbody>
+      <tr>
+         <td>Destination Field</td>
+         <td>Source Field</td>
+         <td>Comment</td>
+      </tr>
+      <tr>
+         <td>measurement_id</td>
+         <td></td>
+         <td></td>
+         <td></td>
+      </tr>
+      <tr>
+         <td>person_id</td>
+         <td>ptid</td>
+         <td></td>
+         <td></td>
+      </tr>
+      <tr>
+         <td>measurement_concept_id</td>
+         <td>
+            <code>concept obtained using the rules:</code>
+            <p>
+               <code>Rules 1 – 3 note: do not populate if the result (column name in red) is null</code>
+            </p>
+            <ol>
+               <li>
+                  <code>when system_name like 'Nottingham%'</code>
+                  <p>
+                     <code>then system_name and related columns make new concepts:</code>
+                  </p>
+                  <p>
+                     <code>system_name ||' grade tubular '|| grade_tubular
 system_name ||' grade nuclear '|| grade_nuclear
 system_name ||' grade mitotic '|| grade_mitotic</code>
-</p><p>
-For example, “Nottingham Score grade tubular 3”
-</p><ol>
-<li><strong><code>when system_name like 'Gleason%'</code></strong>
-<p><strong><code>then</code></strong>
-<code>system_name and related columns make new concepts:</code></p>
-<p>
-<code>system_name ||' grade primary '|| grade_primary
+                  </p>
+                  <p>For example, “Nottingham Score grade tubular 3”</p>
+               </li>
+               <li>
+                  <strong>
+                     <code>when system_name like 'Gleason%'</code>
+                  </strong>
+                  <p>
+                     <strong>
+                        <code>then</code>
+                     </strong>
+                     <code>system_name and related columns make new concepts:</code>
+                  </p>
+                  <p>
+                     <code>system_name ||' grade primary '|| grade_primary
 system_name ||' grade secondary '|| grade_secondary
 system_name ||' grade tertiary '|| grade_tertiary
 system_name ||' result numeric '|| result_numeric</code>
-</p><p>
-For example,<code> </code>“Gleason score grade primary 2”
-</p><ol>
-<li><code>When system_name in (</code>
-<p>
-<code>'FIGO grade',</code>
-</p><p>
-<code>'Durie/Salmon Stage',</code>
-</p><p>
-<code>'International Staging System Stage',</code>
-</p><p>
-<code>'RISS Stage',</code>
-</p><p>
-<code>'Rai Stage',</code>
-</p><p>
-<code>'FIGO Stage',</code>
-</p><p>
-<code>'Binet Stage')</code>
-</p><p>
-<code>Then system_name||' ' ||result_numeric</code>
-</p><p>
-Rule 4 note: do not populate when result_numeric is null
-</p><ol>
-<li><code>when system_name in ('ECOG performance status',</code>
-<p>
-<code>'Karnofsky Performance Status',</code>
-</p><p>
-<code>'Oncotype DX recurrence score',
+                  </p>
+                  <p>For example,
+                     <code></code>“Gleason score grade primary 2”
+                  </p>
+               </li>
+               <li>
+                  <code>When system_name in (</code>
+                  <p>
+                     <code>'FIGO grade',</code>
+                  </p>
+                  <p>
+                     <code>'Durie/Salmon Stage',</code>
+                  </p>
+                  <p>
+                     <code>'International Staging System Stage',</code>
+                  </p>
+                  <p>
+                     <code>'RISS Stage',</code>
+                  </p>
+                  <p>
+                     <code>'Rai Stage',</code>
+                  </p>
+                  <p>
+                     <code>'FIGO Stage',</code>
+                  </p>
+                  <p>
+                     <code>'Binet Stage')</code>
+                  </p>
+                  <p>
+                     <code>Then system_name||' ' ||result_numeric</code>
+                  </p>
+                  <p>Rule 4 note: do not populate when result_numeric is null</p>
+               </li>
+               <li>
+                  <code>when system_name in ('ECOG performance status',</code>
+                  <p>
+                     <code>'Karnofsky Performance Status',</code>
+                  </p>
+                  <p>
+                     <code>'Oncotype DX recurrence score',
 'Recurrence score'
 )</code>
-</p><p>
-<code>Then system_name
-</code>In the other cases do not populate CDM, for example entries with system =<code> 'Performance Status' </code>are excluded because we don’t know what type of 'Performance Status it is.
-</p></li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-   </td>
-   <td>
-   </td>
-   <td>Use the&nbsp;<a href="https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_STANDARD.sql">SOURCE_TO_STANDARD</a>&nbsp;query to map the code to standard concept(s) with the following filters: \
+                  </p>
+                  <p>
+                     <code>Then system_name</code>
+                  </p>
+               </li>
+            </ol>
+                  <p>In the other cases do not populate CDM, for example entries with system =
+                     <code>'Performance Status'</code>are excluded because we don’t know what type of 'Performance Status it is.
+                  </p>
+         </td>
+         <td></td>
+         <td>Use the&nbsp;
+            <a href="https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_STANDARD.sql">SOURCE_TO_STANDARD</a>&nbsp;query to map the code to standard concept(s) with the following filters: \
  \
 Where source_vocabulary_id = ‘JNJ_OPTUM_EHR_ONCEVS’ and Target_standard_concept = ‘S’ and target_invalid_reason is NULL \
  \
 If there is no mapping available, set concept_id to zero.
-   </td>
-  </tr>
-  <tr>
-   <td>measurement_date
-   </td>
-   <td>note_date
-   </td>
-   <td>
-   </td>
-   <td>
-   </td>
-  </tr>
-  <tr>
-   <td>measurement_source_value
-   </td>
-   <td>See the rules in measurement_concept_id
-   </td>
-   <td>
-   </td>
-   <td>
-   </td>
-  </tr>
-  <tr>
-   <td>value_as_number
-   </td>
-   <td><code>result_numeric</code>
-   </td>
-   <td>Values like 0/5, 1/5 – 5/5 are parsed to respective 0, 1, 5
-<p>
-Those stand for ECOG score out of 5
-   </p></td>
-   <td>Populate when<code> system_name in ('ECOG performance status',</code>
-<p>
-<code>'Performance Status',</code>
-</p><p>
-<code>'Karnofsky Performance Status',</code>
-</p><p>
-<code>'Oncotype DX recurrence score',</code>
-</p><p>
-<code>'Recurrence score')</code>
-</p><p>
-In the other cases result_numeric precoordinates with the other fields and maps to measurement_concept_id
-   </p></td>
-  </tr>
-  <tr>
-   <td>unit_concept_id
-   </td>
-   <td>
-   </td>
-   <td>
-   </td>
-   <td>
-   </td>
-  </tr>
-  <tr>
-   <td>value_as_concept_id
-   </td>
-   <td><code>result_narrative</code>
-   </td>
-   <td>
-   </td>
-   <td>Use the&nbsp;<a href="https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_STANDARD.sql">SOURCE_TO_STANDARD</a>&nbsp;query with case insensitive match to map the code to standard concept(s) with the following filters :
-<p>Where source_vocabulary_id = ‘JNJ_OPTUM_EHR_LABRES’ and Target_standard_concept = ‘S’ and target_invalid_reason is NULL</p>
-<p>If there is no mapping available, set concept_id to zero.</p>
-   </td>
-  </tr>
-  <tr>
-   <td>meas_event_field_concept_id
-   </td>
-   <td><code>1147127</code>
-   </td>
-   <td>
-   </td>
-   <td><code>condition_occurrence.condition_occurrence_id</code>
-   </td>
-  </tr>
-  <tr>
-   <td>measurement_event_id
-   </td>
-   <td><code>condition_occurrence.condition_occurrence_id</code>
-   </td>
-   <td>
-   </td>
-   <td>Connect with the Condition table through onc_neopls_histology using (neoplasm_histology_key) or using (ptid, note_date)
-   </td>
-  </tr>
-  <tr>
-   <td>measurement_source_concept_id
-   </td>
-   <td>0
-   </td>
-   <td>
-   </td>
-   <td>
-   </td>
-  </tr>
-  <tr>
-   <td>measurement_datetime
-   </td>
-   <td>
-   </td>
-   <td>
-   </td>
-   <td>
-   </td>
-  </tr>
-  <tr>
-   <td>measurement_time
-   </td>
-   <td>
-   </td>
-   <td>
-   </td>
-   <td>
-   </td>
-  </tr>
-  <tr>
-   <td>measurement_type_concept_id
-   </td>
-   <td>32882
-   </td>
-   <td>
-   </td>
-   <td><a href="https://athena.ohdsi.org/search-terms/terms/32882">Standard algorithm from EHR</a>
-   </td>
-  </tr>
-  <tr>
-   <td>operator_concept_id
-   </td>
-   <td>
-   </td>
-   <td>
-   </td>
-   <td>
-   </td>
-  </tr>
-  <tr>
-   <td>range_low
-   </td>
-   <td>
-   </td>
-   <td>
-   </td>
-   <td>
-   </td>
-  </tr>
-  <tr>
-   <td>range_high
-   </td>
-   <td>
-   </td>
-   <td>
-   </td>
-   <td>
-   </td>
-  </tr>
-  <tr>
-   <td>provider_id
-   </td>
-   <td>
-   </td>
-   <td>
-   </td>
-   <td>
-   </td>
-  </tr>
-  <tr>
-   <td>visit_occurrence_id
-   </td>
-   <td>
-   </td>
-   <td>
-   </td>
-   <td>
-   </td>
-  </tr>
-  <tr>
-   <td>visit_detail_id
-   </td>
-   <td>
-   </td>
-   <td>
-   </td>
-   <td>
-   </td>
-  </tr>
-  <tr>
-   <td>unit_source_value
-   </td>
-   <td>
-   </td>
-   <td>
-   </td>
-   <td>
-   </td>
-  </tr>
-  <tr>
-   <td>unit_source_concept_id
-   </td>
-   <td>
-   </td>
-   <td>
-   </td>
-   <td>
-   </td>
-  </tr>
-  <tr>
-   <td>value_source_value
-   </td>
-   <td><code>result_narrative</code>
-   </td>
-   <td>
-   </td>
-   <td>
-   </td>
-  </tr>
-</tbody></table>
+         </td>
+      </tr>
+      <tr>
+         <td>measurement_date</td>
+         <td>note_date</td>
+         <td></td>
+         <td></td>
+      </tr>
+      <tr>
+         <td>measurement_source_value</td>
+         <td>See the rules in measurement_concept_id</td>
+         <td></td>
+         <td></td>
+      </tr>
+      <tr>
+         <td>value_as_number</td>
+         <td>
+            <code>result_numeric</code>
+         </td>
+         <td>Values like 0/5, 1/5 – 5/5 are parsed to respective 0, 1, 5
+            <p>Those stand for ECOG score out of 5</p>
+         </td>
+         <td>Populate when
+            <code>system_name in ('ECOG performance status',</code>
+            <p>
+               <code>'Performance Status',</code>
+            </p>
+            <p>
+               <code>'Karnofsky Performance Status',</code>
+            </p>
+            <p>
+               <code>'Oncotype DX recurrence score',</code>
+            </p>
+            <p>
+               <code>'Recurrence score')</code>
+            </p>
+            <p>In the other cases result_numeric precoordinates with the other fields and maps to measurement_concept_id</p>
+         </td>
+      </tr>
+      <tr>
+         <td>unit_concept_id</td>
+         <td></td>
+         <td></td>
+         <td></td>
+      </tr>
+      <tr>
+         <td>value_as_concept_id</td>
+         <td>
+            <code>result_narrative</code>
+         </td>
+         <td></td>
+         <td>Use the&nbsp;
+            <a href="https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_STANDARD.sql">SOURCE_TO_STANDARD</a>&nbsp;query with case insensitive match to map the code to standard concept(s) with the following filters :
+            <p>Where source_vocabulary_id = ‘JNJ_OPTUM_EHR_LABRES’ and Target_standard_concept = ‘S’ and target_invalid_reason is NULL</p>
+            <p>If there is no mapping available, set concept_id to zero.</p>
+         </td>
+      </tr>
+      <tr>
+         <td>meas_event_field_concept_id</td>
+         <td>
+            <code>1147127</code>
+         </td>
+         <td></td>
+         <td>
+            <code>condition_occurrence.condition_occurrence_id</code>
+         </td>
+      </tr>
+      <tr>
+         <td>measurement_event_id</td>
+         <td>
+            <code>condition_occurrence.condition_occurrence_id</code>
+         </td>
+         <td></td>
+         <td>Connect with the Condition table through onc_neopls_histology using (neoplasm_histology_key) or using (ptid, note_date)</td>
+      </tr>
+      <tr>
+         <td>measurement_source_concept_id</td>
+         <td>0</td>
+         <td></td>
+         <td></td>
+      </tr>
+      <tr>
+         <td>measurement_datetime</td>
+         <td></td>
+         <td></td>
+         <td></td>
+      </tr>
+      <tr>
+         <td>measurement_time</td>
+         <td></td>
+         <td></td>
+         <td></td>
+      </tr>
+      <tr>
+         <td>measurement_type_concept_id</td>
+         <td>32882</td>
+         <td></td>
+         <td>
+            <a href="https://athena.ohdsi.org/search-terms/terms/32882">Standard algorithm from EHR</a>
+         </td>
+      </tr>
+      <tr>
+         <td>operator_concept_id</td>
+         <td></td>
+         <td></td>
+         <td></td>
+      </tr>
+      <tr>
+         <td>range_low</td>
+         <td></td>
+         <td></td>
+         <td></td>
+      </tr>
+      <tr>
+         <td>range_high</td>
+         <td></td>
+         <td></td>
+         <td></td>
+      </tr>
+      <tr>
+         <td>provider_id</td>
+         <td></td>
+         <td></td>
+         <td></td>
+      </tr>
+      <tr>
+         <td>visit_occurrence_id</td>
+         <td></td>
+         <td></td>
+         <td></td>
+      </tr>
+      <tr>
+         <td>visit_detail_id</td>
+         <td></td>
+         <td></td>
+         <td></td>
+      </tr>
+      <tr>
+         <td>unit_source_value</td>
+         <td></td>
+         <td></td>
+         <td></td>
+      </tr>
+      <tr>
+         <td>unit_source_concept_id</td>
+         <td></td>
+         <td></td>
+         <td></td>
+      </tr>
+      <tr>
+         <td>value_source_value</td>
+         <td>
+            <code>result_narrative</code>
+         </td>
+         <td></td>
+         <td></td>
+      </tr>
+   </tbody>
+</table>
 
 
 
