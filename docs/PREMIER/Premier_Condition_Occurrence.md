@@ -19,7 +19,7 @@ The field mapping is performed as follows:
 | CONDITION_OCCURRENCE_ID | - | System-generated |  |
 | PERSON_ID | PAT.MEDREC_KEY |  |  |
 | CONDITION_CONCEPT_ID | PATICD_DIAG.ICD_CODE <br /> PATBILL.STD_CHG_CODE | For records from PATBILL.STD_CHG_CODE: <br /> QUERY: SOURCE TO STANDARD SELECT TARGET_VOCABULARY_ID FROM CTE_VOCAB_MAP WHERE SOURCE_VOCABULARY_ID IN ('JNJ_PMR_PROC_CHRG_CD') AND TARGET_DOMAIN_ID = 'Condition' <br /> <br /> For records from PATICD_DIAG.ICD_CODE: where ICD_VERSION=9 QUERY: SOURCE TO STANDARD SELECT TARGET_CONCEPT_IDFROM CTE_VOCAB_MAP WHERE SOURCE_VOCABULARY_ID IN ('ICD9CM') AND TARGET_DOMAIN_ID = 'Condition' <br /> <br />For records from PATICD_DIAG.ICD_CODE: where ICD_VERSION=10 <br /> QUERY: SOURCE TO STANDARD SELECT TARGET_CONCEPT_IDFROM CTE_VOCAB_MAP WHERE SOURCE_VOCABULARY_ID IN ('ICD10CM') AND TARGET_DOMAIN_ID = 'Condition' | ICD9 diagnosis codes are mapped to SNOMED concepts  |
-| CONDITION_START_DATE | PATBILL.SERV_DAY VISIT_OCCURRENCE.VISIT_START_DATE OR VISIT_OCCURRENCE.VISIT_START_DATE  | If condition is from PATBILL use a combination of service day and visit start date unless the service day is greater than the end of the monthIf observation comes from PATICD_DIAG.ICD_CODE then use visit start date | If condition is from PATBILL use a combination of service day and visit start date unless the service day is greater than the end of the monthIf observation comes from PATICD_DIAG.ICD_CODE then use visit start date |
+| CONDITION_START_DATE | PATBILL.SERV_DATE VISIT_OCCURRENCE.VISIT_START_DATE OR VISIT_OCCURRENCE.VISIT_START_DATE  | If observation comes from PATICD_DIAG.ICD_CODE or PATBILL then use visit start date |  |
 | CONDITION_START_DATETIME | - | NULL |  |
 | CONDITION_END_DATE | - | NULL |  |
 | CONDITION_END_DATETIME | - | NULL |  |
@@ -33,6 +33,8 @@ The field mapping is performed as follows:
 | CONDITION_STATUS_CONCEPT_ID | PATICD_DIAG.ICD_PRI_SEC | Records from PATICD_DIAG: <br> ICD_PRI_SEC = A, then 32890 (admission diagnosis) <br> ICD_PRI_SEC = P, then 32902 (primary diagnosis) <br> ICD_PRI_SEC = S, then 32908 (secondary diagnosis) <br><br> Records from PATBILL: <br> Assign 32908 (secondary diagnosis)| |
 
 ## Change log:
+ * 2023.10.23:
+     + SERV_DAY changed to SERV_DATE
  * 2021.08.11:  
      + Updated CONDITION_STATUS_CONCEPT_ID to leverage icd_pir_sec and the standard status concepts. This replaced previous logic leveraging ICD_POA.  
      + Added comments to CONDITION_SOURCE_VALUE.

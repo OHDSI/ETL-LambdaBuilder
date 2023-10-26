@@ -37,5 +37,4 @@ The field mapping is as follows:
 |DRUG_CONCEPT_ID|DRUG_CONCEPT_ID|Do no create DRUG_ERAs where the DRUG_EXPOSURE.DRUG_CONCEPT_ID is 0. Use the map above to map DRUG_EXPOSURE.DRUG_CONCEPT_ID to the ingredient level DRUG_CONCEPT_ID used in the DRUG_ERA.||
 |DRUG_ERA_START_DATE|DRUG_EXPOSURE_START_DATE||The start date for the drug era constructed from the individual instances of drug exposures. It is the start date of the very first chronologically recorded instance of utilization of a drug.|
 |DRUG_ERA_END_DATE|DRUG_EXPOSURE.START_DATE|||
-|DRUG_TYPE_CONCEPT_ID|-|Apply a 30-day persistence window and label as CONCEPT_ID 38000182 (Drug era - 30 days persistence window).|Falls under CONCEPT_VOCABULARY_ID = "Drug Type" as a Drug Exposure Type.|
 |DRUG_EXPOSURE_COUNT|-|Sum up the number of DRUG_EXPOSURES for this PERSON_ID and this CONCEPT_ID during the exposure window being built.||

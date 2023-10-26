@@ -10,9 +10,9 @@ layout: default
 
 The MEASUREMENT table will house records from PATBILL, PATCPT, VITALS, GENLAB, LAB_RESULT and PATICD_DIAG that have been mapped to the measurement domain. Additionally, procedures that occur on the same day as billing records for operation time will have operation time calculated and recorded in the measurement table. 
 
-Measurements are recorded in the PATBILL table as standard charges.  Premier captures the day the measurement is made in the SERV_DAY field thus, the MEASUREMENT_DATE is determined from the VISIT_START_DATE from VISIT_OCCURRENCE and PATBILL.SERV_DAY unless the start date is greater than the end of the month, then it’s truncated to the end of month. For measurements recorded in the PATCPT table, the day the measurement was made is unknown so MEASUREMENT_DATE is recorded as VISIT_END_DATE. 
+Measurements are recorded in the PATBILL table as standard charges.  Premier captures the date the measurement is made in the SERV_DATE field thus, the MEASUREMENT_DATE is determined from the VISIT_START_DATE from VISIT_OCCURRENCE and PATBILL.SERV_DATE unless the start date is greater than the end of the month, then it’s truncated to the end of month. For measurements recorded in the PATCPT table, the date the measurement was made is unknown so MEASUREMENT_DATE is recorded as VISIT_END_DATE. 
 
-In Premier, many procedures are recorded in the PATICD_PROC table, which includes the day the procedure was performed as PATICD_PROC.PROC_DAY. Certain billing records in PATBILL include information on surgical operation time. The sample code below the field mapping table returns surgical operation time values in minutes for procedures where operation time billing record(s) happen on the same day. It is assumed that if a procedure and an operating time bill happen on the same day, then the operating time is associated with the procedure. These operation time values move to the MEASUREMENT table and the MEASUREMENT_DATE equals the corresponding PROCEDURE_DATE (which is VISIT_OCCURRENCE + PROC_DAY). To associate a surgical operation time with a procedure: MEASUREMENT.VISIT_OCCURRENCE_ID=PROCEDURE_OCCURRENCE.VISIT_OCCURRENCE_ID AND MEASUREMENT.MEASUREMENT_DATE=PROCEDURE_OCCURRENCE.PROCEDURE_DATE.
+In Premier, many procedures are recorded in the PATICD_PROC table, which includes the date the procedure was performed as PATICD_PROC.PROC_DATE. Certain billing records in PATBILL include information on surgical operation time. The sample code below the field mapping table returns surgical operation time values in minutes for procedures where operation time billing record(s) happen on the same day. It is assumed that if a procedure and an operating time bill happen on the same day, then the operating time is associated with the procedure. These operation time values move to the MEASUREMENT table and the MEASUREMENT_DATE equals the corresponding PROCEDURE_DATE (which is PROC_DATE). To associate a surgical operation time with a procedure: MEASUREMENT.VISIT_OCCURRENCE_ID=PROCEDURE_OCCURRENCE.VISIT_OCCURRENCE_ID AND MEASUREMENT.MEASUREMENT_DATE=PROCEDURE_OCCURRENCE.PROCEDURE_DATE.
 There are three providers that exist in Premier, the admitting, attending, and procedure. This ETL makes the decision to use admitting physician for all measurements except operation time because it is unknown whether the admitting provider, attending provider or another person obtained the measurement. 
 
 ##TODO: 
@@ -27,20 +27,20 @@ The field mapping is performed as follows:
 | --- | --- | --- | --- |
 | MEASUREMENT_ID | - | System generated |  |
 | PERSON_ID | PAT.MEDREC_KEY |  |  |
-| MEASUREMENT_CONCEPT_ID | PATCPT.CPT_CODE<br>PATBILL.STD_CHG_CODE<br>PATICD_DIAG.ICD_CODE<br>PATBILL.STD_CHG_DESC | QUERY: SOURCE TO STANDARDSELECT TARGET_CONCEPT_IDFROM CTE_VOCAB_MAP WHERE SOURCE_VOCABULARY_ID IN ('CPT4', 'HCPCS', 'ICD10CM', 'ICD9CM', 'JNJ_PMR_PROC_CHRG_CD')AND TARGET_DOMAIN_ID = 'Measurement'When operation time measurement values then 3016562  | Only capture those records that have a domain map to Measurement. |
-| MEASUREMENT_DATE | VISIT_OCCURRENCE.VISIT_START_DATEPATBILL.SERV_DAY <br>Or<br>VISIT_OCCURRENCE.VISIT_END_DATE <br>Or<br> VISIT_OCCURRENCE.VISIT_START_DATEPATICD_PROC.PROC_DAY |  | If measurement is from PATBILL use a combination of service day and visit start date unless the service day is greater than the end of the monthIf measurement comes from PATCPT then use visit end dateFor operation time measurement, a combination of procedure day and visit start date unless the procedure day is greater than the end of the month |
+| MEASUREMENT_CONCEPT_ID | PATCPT.CPT_CODE<br>PATBILL.STD_CHG_CODE<br>PATICD_DIAG.ICD_CODE<br>PATBILL.STD_CHG_DESC | QUERY: SOURCE TO STANDARD <br> <code>SELECT TARGET_CONCEPT_ID FROM CTE_VOCAB_MAP WHERE SOURCE_VOCABULARY_ID IN ('CPT4', 'HCPCS', 'ICD10CM', 'ICD9CM', 'JNJ_PMR_PROC_CHRG_CD') AND TARGET_DOMAIN_ID = 'Measurement'</code> <br>When operation time measurement values then 3016562  | Only capture those records that have a domain map to Measurement. |
+| MEASUREMENT_DATE | VISIT_OCCURRENCE.VISIT_START_DATEPATBILL.SERV_DATE <br>Or<br>VISIT_OCCURRENCE.VISIT_END_DATE <br>Or<br> VISIT_OCCURRENCE.VISIT_START_DATEPATICD_PROC.PROC_DAY |  | If measurement is from PATBILL use service date and visit start date unless the service date is greater than the end of the month <br> If measurement comes from PATCPT then use visit end date <br> For operation time measurement, a combination of procedure date and visit start date unless the procedure date is greater than the end of the month |
 | MEASUREMENT_DATETIME | - | NULL |  |
 | MEASUREMENT_TYPE_CONCEPT_ID | - | All records within the measurement table should have a measurement_type_concept_id = 32875 (Provider financial system) |  |
 | OPERATOR_CONCEPT_ID | - | NULL |  |
 | VALUE_AS_NUMBER | - | See query below |  |
 | VALUE_AS_CONCEPT_ID | - | NULL |  |
-| UNIT_CONCEPT_ID | - | For operation time records 8550Else NULL |Set UNIT_CONCEPT_ID = NULL when the source unit value is NULL;<br>Set UNIT_CONCEPT_ID = 0 when source unit value is not NULL but doesn't have a mapping  |
+| UNIT_CONCEPT_ID | - | For operation time records 8550 Else NULL |Set UNIT_CONCEPT_ID = NULL when the source unit value is NULL;<br>Set UNIT_CONCEPT_ID = 0 when source unit value is not NULL but doesn't have a mapping  |
 | RANGE_LOW | - | NULL |  |
 | RANGE_HIGH | - | NULL |  |
-| PROVIDER_ID | PATICD_PROC.PROC_PHYPAT.ADMPHY | When operation time PATICD_PROC.PROC_PHYElsePAT.ADMPHY |  |
+| PROVIDER_ID | PATICD_PROC.PROC_PHY<br>PAT.ADMPHY | When operation time PATICD_PROC.PROC_PHY Else PAT.ADMPHY |  |
 | VISIT_OCCURRENCE_ID | PAT.PAT_KEY |  |  |
-| MEASUREMENT_SOURCE_VALUE |  | SELECT SOURCE_VALUE FROM (SELECT CONCAT(STD_CHG_DESC, ' / ', HOSP_CHG_DESC) AS SOURCE_VALUE FROM PATBILL AJOIN CHGMSTR B ON A.STD_CHG_CODE=B.STD_CHG_CODEJOIN hospchg C ON A.hosp_chg_id=C.hosp_chg_id ) AUNION(SELECT CPT_CODE AS SOURCE_VALUE FROM PATCPT)For operation time records, NULL for now |  |
-| MEASUREMENT_SOURCE_CONCEPT_ID | - | QUERY: SOURCE TO SOURCESELECT SOURCE_CONCEPT_IDFROM CTE_VOCAB_MAPWHERE SOURCE_VOCABULARY_ID IN ('CPT4', 'HCPCS')AND TARGET_VOCABULARY_ID IN ('CPT4', 'HCPCS') AND DOMAIN_ID='Measurement' | Only populated for standard coding CPT4, and HCPCS codes |
+| MEASUREMENT_SOURCE_VALUE |  | <code>SELECT SOURCE_VALUE FROM (SELECT CONCAT(STD_CHG_DESC, ' / ', HOSP_CHG_DESC) AS SOURCE_VALUE FROM PATBILL A JOIN CHGMSTR B ON A.STD_CHG_CODE=B.STD_CHG_CODE JOIN hospchg C ON A.hosp_chg_id=C.hosp_chg_id ) A UNION(SELECT CPT_CODE AS SOURCE_VALUE FROM PATCPT)</code> <br>For operation time records, NULL for now |  |
+| MEASUREMENT_SOURCE_CONCEPT_ID | - | QUERY: SOURCE TO SOURCE <br> <code>SELECT SOURCE_CONCEPT_ID FROM CTE_VOCAB_MAP WHERE SOURCE_VOCABULARY_ID IN ('CPT4', 'HCPCS') AND TARGET_VOCABULARY_ID IN ('CPT4', 'HCPCS') AND DOMAIN_ID='Measurement'</code> | Only populated for standard coding CPT4, and HCPCS codes |
 | UNIT_SOURCE_VALUE | - | NULL |  |
 | VALUE_SOURCE_VALUE | - | NULL |  |
 
@@ -86,16 +86,15 @@ The field mapping is performed as follows:
    </td>
    <td>lab_test_loinc_code
    </td>
-   <td>when lab_test_loinc_code !=’’, map to LOINC using lab_test_loinc_code = concept.concept_code and vocabulary_id =’LOINC’:
+   <td><code>when lab_test_loinc_code !=’’, map to LOINC using lab_test_loinc_code = concept.concept_code and vocabulary_id =’LOINC’</code> :
 <p>
 Use the Source-to-Standard Query.
 </p><p>
+<code>
 WHERE SOURCE_VOCABULARY_ID IN ('LOINC')
-</p><p>
 AND TARGET_STANDARD_CONCEPT = 'S'
-</p><p>
 AND TARGET_INVALID_REASON IS NULL
-</p><p>
+</code>
 </p><p>
 when lab_test_loinc_code = ‘’, then map to SNOMED using <strong><code>regexp_replace(lab_test, '\\(.*\\)', '') = c.concept_name and c. standard_concept ='S' and c.vocabulary_id ='SNOMED'</code></strong>
 </p><p>
@@ -107,9 +106,9 @@ if there’s still no standard concept, set to 0
   <tr>
    <td>measurement_date
    </td>
-   <td><code>observation_day_number</code>
+   <td>observation_datetime
    </td>
-   <td>DATEADD(DAY, [COLLECTION_DAY_NUMBER]-1, VISIT_START_DATE)
+   <td>
    </td>
    <td> 
    </td>
@@ -117,14 +116,13 @@ if there’s still no standard concept, set to 0
   <tr>
    <td>measurement_source_value
    </td>
-   <td><code>lab_test, lab_test_loinc_code</code>
+   <td>lab_test, lab_test_loinc_code
    </td>
    <td>When <code>lab_test_loinc_code!=''</code>
 <p>
 <code>Then lab_test_loinc_code</code>
 </p><p>
 <code>When lab_test_loinc_code =''</code>
-</p><p>
 <code>Then lab_test</code>
 </p><p>
    </p></td>
@@ -134,7 +132,7 @@ if there’s still no standard concept, set to 0
   <tr>
    <td>value_as_number
    </td>
-   <td><code>test_result_numeric_value</code>
+   <td>test_result_numeric_value
    </td>
    <td> 
    </td>
@@ -184,7 +182,7 @@ if there’s still no standard concept, set to 0
   <tr>
    <td>measurement_source_concept_id
    </td>
-   <td><code>lab_test, lab_test_loinc_code</code>
+   <td>lab_test, lab_test_loinc_code
    </td>
    <td>when lab_test_loinc_code !=’’, map to LOINC using lab_test_loinc_code = concept.concept_code and vocabulary_id =’LOINC’:
 <p>
@@ -200,13 +198,10 @@ when lab_test_loinc_code = ‘’, then map to SNOMED using <strong><code>regexp
   <tr>
    <td>measurement_datetime
    </td>
-   <td><code>observation_day_number,</code>
+   <td>observation_datetime
+   </td>
+   <td>
 <p>
-observation_time_of_day
-   </p></td>
-   <td>DATEADD(DAY, [COLLECTION_DAY_NUMBER]-1, VISIT_START_DATE)
-<p>
-And add “observation_time_of_day” as datatime
    </p></td>
    <td> 
    </td>
@@ -324,7 +319,7 @@ And add “observation_time_of_day” as datatime
   <tr>
    <td>value_source_value
    </td>
-   <td><code>lab_test_result</code>
+   <td>lab_test_result
    </td>
    <td> 
    </td>
@@ -393,9 +388,9 @@ if there’s still no standard concept, set to 0
   <tr>
    <td>measurement_date
    </td>
-   <td><code>observation_day_number</code>
+   <td>collection_datetime
    </td>
-   <td>DATEADD(DAY, [COLLECTION_DAY_NUMBER]-1, VISIT_START_DATE)
+   <td>
    </td>
    <td> 
    </td>
@@ -403,7 +398,7 @@ if there’s still no standard concept, set to 0
   <tr>
    <td>measurement_source_value
    </td>
-   <td><code>lab_test, lab_test_loinc_code</code>
+   <td>lab_test, lab_test_loinc_code
    </td>
    <td>When <code>lab_test_loinc_code!=''</code>
 <p>
@@ -420,7 +415,7 @@ if there’s still no standard concept, set to 0
   <tr>
    <td>value_as_number
    </td>
-   <td><code>test_result_numeric_value</code>
+   <td>test_result_numeric_value
    </td>
    <td> 
    </td>
@@ -470,7 +465,7 @@ if there’s still no standard concept, set to 0
   <tr>
    <td>measurement_source_concept_id
    </td>
-   <td><code>lab_test, lab_test_loinc_code</code>
+   <td>lab_test, lab_test_loinc_code
    </td>
    <td>when lab_test_loinc_code !=’’, map to LOINC using lab_test_loinc_code = concept.concept_code and vocabulary_id =’LOINC’:
 <p>
@@ -486,21 +481,17 @@ when lab_test_loinc_code = ‘’, then map to SNOMED using <strong><code>regexp
   <tr>
    <td>measurement_datetime
    </td>
-   <td><code>observation_day_number,</code>
+   <td>collection_datetime</td>
+   <td>
 <p>
-observation_time_of_day
-   </p></td>
-   <td>DATEADD(DAY, [COLLECTION_DAY_NUMBER]-1, VISIT_START_DATE)
-<p>
-And add “observation_time_of_day” as datatime
-   </p></td>
+</p></td>
    <td> 
    </td>
   </tr>
   <tr>
    <td>measurement_time
    </td>
-   <td>observation_time_of_day
+   <td>collection_datetime
    </td>
    <td> 
    </td>
@@ -610,7 +601,7 @@ And add “observation_time_of_day” as datatime
   <tr>
    <td>value_source_value
    </td>
-   <td><code>lab_test_result</code>
+   <td>lab_test_result
    </td>
    <td> 
    </td>
@@ -700,45 +691,25 @@ Leverage source to concept mappings (+80% mapped).
   <tr>
    <td>measurement_date
    </td>
-   <td>spec_day_number
+   <td>collection_datetime
    </td>
    <td> 
    </td>
-   <td>The LAB_RESULT.SPEC_DAY_NUMBER in addition to the VISIT_OCCURRENCE table are leveraged for the transformation of MEASUREMENT_DATE.
-<p>
-</p><p>
-SELECT DATEADD(DAY, [LAB_RES.SPEC_DAY_NUMBER]-1, VISIT_START_DATE) AS MEASUREMENT_DATE
-</p><p>
-FROM CDM_PREMIER_V1196.DBO.VISIT_OCCURRENCE
-</p><p>
-WHERE VISIT_OCCURRENCE_ID = [LAB_RES.PAT_KEY];
-   </p></td>
+   <td>Direct mapping</td>
   </tr>
   <tr>
    <td>measurement_datetime
    </td>
-   <td>spec_day_number
-<p>
-spec_time_of_day
-   </p></td>
+   <td>collection_datetime
+</td>
    <td> 
    </td>
-   <td>LAB_RESULT Transformation:
-<p>
-LAB_RESULT.SPEC_DAY_NUMBER, LAB_RESULT.SPEC_TIME_OF_DAY in combination with the CDM VISIT_OCCURRENCE table leveraged to create MEASUREMENT_DATETIME.  One was added to the calculation to account for records that occurred on the day of admission.
-</p><p>
-</p><p>
-SELECT CAST(CAST(DATEADD(DAY, [LAB_RES.COLLECTION_DAY_NUMBER]-1, VISIT_START_DATE) AS VARCHAR) + ' ' + [LAB_RES.SPEC_TIME_OF_DAY] AS DATETIME) AS MEASUREMENT_DATETIME
-</p><p>
-FROM CDM_PREMIER_V1196.DBO.VISIT_OCCURRENCE
-</p><p>
-WHERE VISIT_OCCURRENCE_ID = [LAB_RES.PAT_KEY];
-   </p></td>
+   <td>Direct mapping</td>
   </tr>
   <tr>
    <td>measurement_time
    </td>
-   <td>spec_time_of_day
+   <td>collection_datetime
    </td>
    <td> 
    </td>

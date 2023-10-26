@@ -20,6 +20,6 @@ The CDM_SOURCE table houses metadata about the version of the CDM that is popula
 | CDM_ETL_REFERENCE |  |  |  |
 | SOURCE_RELEASE_DATE |  | SELECT VERSION_DATE FROM [_Version] | Get from the raw source tables. |
 | CDM_RELEASE_DATE |  | SELECT CONVERT(VARCHAR(10), GETDATE(),102) | Get the date the run completes. |
-| CDM_VERSION |  | V5.3.1 |  |
+| CDM_VERSION |  | V5.4 |  |
 | VOCABULARY_VERSION |  | SELECT VOCABULARY_VERSION FROM VOCABULARY WHERE VOCABULARY_ID = 'None' | Taken from the Vocabulary loaded into the CDM. |
 
