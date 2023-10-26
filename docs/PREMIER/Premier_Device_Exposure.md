@@ -26,7 +26,7 @@ The field mapping is as follows:
 |  | PATICD_PROC.ICD_CODE  |  |  |
 |  | PATICD_DIAG.ICD_CODE  | SELECT TARGET_CONCEPT_ID FROM CTE_VOCAB_MAP WHERE SOURCE_VOCABULARY_ID IN ('HCPCS', 'ICD10CM', 'JNJ_PMR_PROC_CHRG_CD') AND TARGET_DOMAIN_ID IN ('Device')  |  |
 |  | PATCPT.CPT_CODE   |  |  |
-| DEVICE_EXPOSURE_START_DATE  | VISIT_OCCURRENCE.VISIT_END_DATE  or  VISIT_OCCURRENCE.VISIT_START_DATE   PATBILL.SERV_DAY  |  | If the device is a CPT code or HCPCS code then discharge date is used as device date because the exact date is unknown. If the row is coming from PATBILL then a combination or admit date and service date is used.  |
+| DEVICE_EXPOSURE_START_DATE  | VISIT_OCCURRENCE.VISIT_END_DATE  or  VISIT_OCCURRENCE.VISIT_START_DATE   PATBILL.SERV_DATE  |  | If the device is a CPT code or HCPCS code then discharge date is used as device date because the exact date is unknown. If the row is coming from PATBILL then a combination or admit date and service date is used.  |
 | DEVICE_EXPOSURE_START_DATETIME  | -  | NULL  |  |
 | DEVICE_EXPOSURE_END_DATE  |    |  |  |
 | DEVICE_EXPOSURE_END_DATETIME  | -  | NULL  |  |

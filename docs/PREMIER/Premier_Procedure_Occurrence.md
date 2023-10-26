@@ -10,27 +10,17 @@ layout: default
 
 The PROCEDURE_OCCURRENCE table will house records from PATBILL, PATCPT, and PATICD_PROC. Procedure records from PATBILL are mapped to the procedure domain; procedure records from PATCPT and procedure records from PATICD_PROC are mapped to the SNOMED vocabulary.
 
-The PATBILL table holds all charges that were consumed within a visit. For our CDM, the drugs are separated and inserted into the DRUG_EXPOSURE table, and all other billing records are entered into the PROCEDURE_OCCURRENCE table. For records that are obtained through PATBILL, the start date is determined from the service day in PATBILL and VISIT_START_DATE. If the combination of start date and service day records result in a date greater than the end of the month, the VISIT_END_DATE is assigned.
+The PATBILL table holds all charges that were consumed within a visit. For our CDM, the drugs are separated and inserted into the DRUG_EXPOSURE table, and all other billing records are entered into the PROCEDURE_OCCURRENCE table. For records that are obtained through PATBILL, the start date is determined from the service date in PATBILL.
 
 PATCPT houses the HCPCS and CPT codes by visit, and it is unknown when the procedure was performed. Procedure drugs are recorded as procedure drugs and move to the DRUG_EXPOSURE table. The procedure start date is identified as the VISIT_END_DATE from VISIT_OCCURRENCE.  Procedure type is determined by the indicator of whether it was an inpatient stay or outpatient stay. 
 
-PATICD_PROC holds procedure codes that move to the PROCEDURE_OCCURRENCE table. The day the procedure was performed during the visit is recorded as PATICD_PROC.PROC_DAY. The PROCEDURE_DATE is determined by VISIT_START_DATE + PROC_DAY. If the combination of start date and procedure day records result in a date greater than the end of the month, the VISIT_END_DATE is assigned.  
+PATICD_PROC holds procedure codes that move to the PROCEDURE_OCCURRENCE table. The day the procedure was performed during the visit is recorded as PATICD_PROC.PROC_DATE.  
 
 In order to map each drug to an appropriate concept, USAGI was used on the STD_CHG_DESC to map the value to a concept; all concepts that map into the procedure domain are included in this table. The STD_CHG_CODE is mapped to a HOSP_CHG using HOSPCHG, and each HOSP_CHG has a description that is displayed in the CDM along with the standard change code descriptions. Billing records that do not map to a target concept are moved to PROCEDURE_OCCURRENCE with CONCEPT_ID = 0.
 
 Many CPT-4, CPT-4 Category III, and “C” HCPCS codes are embedded in Premier STD_CHG_CODES.  Most CPT-4 codes do have a corresponding Premier standard charge item(s). If a CPT-4 code is embedded in a Premier standard charge item, then it will be in positions 7-11. Not every item on a hospital’s charge master, however, can be represented by a CPT-4 code. Examples would be items billed for pharmacy, room charges, central supplies, etc. Many “C” HCPCS codes (unique temporary pricing codes established by CMS for hospital outpatient department services and procedures) and CPT-4 Category III codes (temporary codes for emerging technology, services and procedures) are also embedded in the Premier standard charge code. For C codes, the C is dropped and replaced with a 0. For example, positions 7 – 11 of the standard charge code for embedded C code, C8921, is 08921. For temporary codes, the trailing T is dropped and the year it was created is tacked to the end. For example, for standard charge code 360360000192002, the CPT code is 0019T, and the year it was added is 2002. The CPT code, less the trailing T, is in positions 8 – 11, and the year is in positions 12 – 15 of the standard charge code. See the query below for extracting embedded codes from STD_CHG_CODE. 
 
-To account for COVID19 and Ventilator specific hospital charge codes that have related standard charge codes of UNKNOWN or are mapped to zero the team leverages chgmstr_no_std_chg_desc_freq.csv (https://jnj-my.sharepoint.com/:x:/r/personal/mblacke_its_jnj_com/Documents/JNJ%20CDM%20Process/CDM%20Updates%202020/Private/Premier/Vocab%20Updates/chgmstr_no_std_chg_desc_freq.xlsx?d=wd99069f245a44b94beef585c8c683d78&csf=1&web=1&e=DDZ5W8).  This logic was originally patched and as of June 26, 2020 is being built into the standard COVID PREMIER ETL builder. 
-
-##REGULAR MAINTENANCE: 
-
-To account for regular updates to the Premier Standard Charge codes it is recommended that the following script be run on the most recent data and N-1 to assess whether any additional codes have been added to the data set but not previously accounted for (https://jnj-my.sharepoint.com/:u:/r/personal/mblacke_its_jnj_com/Documents/JNJ%20CDM%20Process/CDM%20Updates%202020/Private/Premier/Vocab%20Updates/Premier_new_covid_chg_codes.sql?csf=1&web=1&e=EF9bND). 
-
-##TODO: 
-
-- Alan/Stephen:  Consider adding HOSPCHG.HOSP_CHG_ID to the PROCEDURE_OCCURRENCE.PROCEDURE_SOURCE_VALUE to make tracking codes across CDM and NATIVE data sets easier.  This field is currently a concatenation of standard charge description and hospital charge description. 
-
-- Rupa/Jamie:  Procedure providers, PATICD_PROC.PROC_PHY, are associated with procedure records from PATICD_PROC. Procedure providers will be associated with PROCEDURE_OCCURRENCE records only. Procedure providers will also move to the PROVIDER table with an associated PROCPHY_SPEC. Often, the procedure physician and admitting physician are the same person (ADM_PHY = PROC_PHY). 
+To account for COVID19 and Ventilator specific hospital charge codes that have related standard charge codes of UNKNOWN or are mapped to zero the team leverages custom mapping table.
 
 Records that have a valid OBSERVATION_PERIOD for each patient are included.
 
@@ -40,21 +30,22 @@ The field mapping is performed as follows:
 | --- | --- | --- | --- |
 | PROCEDURE_OCCURRENCE_ID | - | System-generated |  |
 | PERSON_ID | PAT.MEDREC_KEY |  |  |
-| PROCEDURE_CONCEPT_ID | PATBILL.STD_CHG_CODE \ PATICD_PROC.ICD_CODE \ PATCPT.CPT_CODE | QUERY SOURCE TO STANDARD:SELECT TARGET_CONCEPT_IDWHERE SOURCE_VOCABULARY_ID IN ('JNJ_PMR_PROC_CHRG_CD', 'CPT4', 'HCPCS', 'ICD10CM', 'ICD10PCS', 'ICD9CM', 'ICD9Proc') AND TARGET_DOMAIN_ID ='Procedure'AND SOURCE_CONCEPT_CLASS_ID NOT IN ('CPT4 Modifier', 'ICD10PCS Hierarchy')SELECT TARGET_CONCEPT_ID FROM CTE_VOCAB_MAPWHERE SOURCE_VOCABULARY_ID IN ('JNJ_PMR_PROC_CHRG_CD' AND TARGET_CONCEPT_ID=0 |  |
-| PROCEDURE_DATE | VISIT_OCCURRENCE.VISIT_END_DATE or VISIT_OCCURRENCE.VISIT_START_DATE  PATBILL.SERV_DAYorVISIT_OCCURRENCE.VISIT_START_DATEPATICD_PROC.PROC_DAY  |  | If the procedure is a CPT code then discharge date is used as procedure date because the exact date is unknown. If the row is coming from PATBILL then a combination or admit date and service date is used. If the record comes from PATICD_PROC then a combination of admit date and service date is used. |
+| PROCEDURE_CONCEPT_ID | 
+PATBILL.STD_CHG_CODE <br /> PATICD_PROC.ICD_CODE <br /> PATCPT.CPT_CODE <br /> PATBILL.HOSP_CHG_ID | QUERY SOURCE TO STANDARD: <br /> SELECT TARGET_CONCEPT_ID WHERE SOURCE_VOCABULARY_ID IN ('JNJ_PMR_PROC_CHRG_CD', 'CPT4', 'HCPCS', 'ICD10CM', 'ICD10PCS', 'ICD9CM', 'ICD9Proc') AND TARGET_DOMAIN_ID ='Procedure' AND SOURCE_CONCEPT_CLASS_ID NOT IN ('CPT4 Modifier', 'ICD10PCS Hierarchy') <br /><br /> SELECT TARGET_CONCEPT_ID FROM CTE_VOCAB_MAP WHERE SOURCE_VOCABULARY_ID IN ('JNJ_PMR_PROC_CHRG_CD' AND TARGET_CONCEPT_ID=0 |  |
+| PROCEDURE_DATE | VISIT_OCCURRENCE.VISIT_END_DATE or VISIT_OCCURRENCE.VISIT_START_DATE <br> PATBILL.SERV_DATE <br> PATICD_PROC.PROC_DATE  |  | If the procedure is a CPT code then discharge date is used as procedure date because the exact date is unknown. If the row is coming from PATBILL then a combination or admit date and service date is used. If the record comes from PATICD_PROC then a combination of admit date and service date is used. |
 | PROCEDURE_DATETIME | - | NULL |  |
 | PROCEDURE_TYPE_CONCEPT_ID | | All records within the procedure_occurrence table should have a procedure_type_concept_id = 32875 (Provider financial system) ||
 | MODIFIER_CONCEPT_ID | - | NULL |  |
 | QUANTITY | PATBILL.STD_QTY | Quantities are populated for all records obtained from the billing record. |  |
 | PROVIDER_ID | PATICD_PROC.PROC_PHY |  |  |
 | VISIT_OCCURRENCE_ID | PAT.PAT_KEY |  |  |
-| PROCEDURE_SOURCE_VALUE | PATICD_PROC.ICD CODE Or PATCPT.CPT_CODEFor all other procedures:CHGMSTR.STD_CHG_CODE_DESC/ HOSP_CHG.HOSP_CHG_DESC  | SELECT SOURCE_VALUE FROM (SELECT CONCAT(STD_CHG_DESC, ' / ', HOSP_CHG_DESC) AS SOURCE_VALUE FROM PATBILL AJOIN CHGMSTR B ON A.STD_CHG_CODE=B.STD_CHG_CODEJOIN hospchg C ON A.hosp_chg_id=C.hosp_chg_id ) ASELECT SOURCE_VALUE FROM (SELECT ICD_CODE FROM PATICD_PROC AJOIN CONCEPT C ON C.CONCEPT_CODE=A.ICD_CODEWHERE VOCABULARY_ID=’ICDProc’) AUNION(SELECT CPT_CODE AS SOURCE_VALUE FROM PATCPT) | To preserve the most detailed description of procedures, if hospital charge descriptions are available, they are to be used, otherwise standard charge code description is displayed |
-| PROCEDURE_SOURCE_CONCEPT_ID | - | SELECT SOURCE_CONCEPT_IDFROM CTE_VOCAB_MAPWHERE SOURCE_VOCABULARY_ID IN ('ICD9Proc', 'CPT4', 'HCPCS')AND TARGET_VOCABULARY_ID IN ('ICD9Proc', 'CPT4', 'HCPCS') AND DOMAIN_ID='Procedure 'SELECT SOURCE_VALUE FROM (SELECT CONCAT(STD_CHG_DESC, ' / ', HOSP_CHG_DESC) AS SOURCE_VALUE FROM PATBILL AJOIN CHGMSTR B ON A.STD_CHG_CODE=B.STD_CHG_CODEJOIN hospchg C ON A.hosp_chg_id=C.hosp_chg_id ) A |  |
+| PROCEDURE_SOURCE_VALUE | PATICD_PROC.ICD CODE Or PATCPT.CPT_CODE For all other procedures: CHGMSTR.STD_CHG_CODE_DESC <br /> HOSP_CHG.HOSP_CHG_DESC <br /> PATBILL.HOSP_CHG_ID  | <code>SELECT SOURCE_VALUE FROM (SELECT CONCAT(STD_CHG_DESC, ' / ', HOSP_CHG_DESC) AS SOURCE_VALUE FROM PATBILL A JOIN CHGMSTR B ON A.STD_CHG_CODE=B.STD_CHG_CODE JOIN hospchg C ON A.hosp_chg_id=C.hosp_chg_id ) A SELECT SOURCE_VALUE FROM (SELECT ICD_CODE FROM PATICD_PROC A JOIN CONCEPT C ON C.CONCEPT_CODE=A.ICD_CODE WHERE VOCABULARY_ID=’ICDProc’) A UNION (SELECT CPT_CODE AS SOURCE_VALUE FROM PATCPT)</code> | To preserve the most detailed description of procedures, if hospital charge descriptions are available, they are to be used, otherwise standard charge code description is displayed |
+| PROCEDURE_SOURCE_CONCEPT_ID | - | <code>SELECT SOURCE_CONCEPT_ID FROM CTE_VOCAB_MAP WHERE SOURCE_VOCABULARY_ID IN ('ICD9Proc', 'CPT4', 'HCPCS') AND TARGET_VOCABULARY_ID IN ('ICD9Proc', 'CPT4', 'HCPCS') AND DOMAIN_ID='Procedure 'SELECT SOURCE_VALUE FROM (SELECT CONCAT(STD_CHG_DESC, ' / ', HOSP_CHG_DESC) AS SOURCE_VALUE FROM PATBILL A JOIN CHGMSTR B ON A.STD_CHG_CODE=B.STD_CHG_CODEJOIN hospchg C ON A.hosp_chg_id=C.hosp_chg_id ) A </code>|  |
 | QUALIFER_SOURCE_VALUE | - | NULL |  |
 
 ## Supplementary Code:
 
-````{SQL echo=FALSE}
+``` sql
 WITH CTE_CPT4 AS ( 
 
   SELECT CONCEPT_CODE AS FIXED_CONCEPT_CODE, CONCEPT_NAME, CONCEPT_ID, DOMAIN_ID, CONCEPT_CODE, VOCABULARY_ID 
