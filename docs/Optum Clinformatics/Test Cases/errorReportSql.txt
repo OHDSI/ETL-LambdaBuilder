@@ -1,0 +1,29 @@
+DBMS:
+postgresql
+
+Error:
+org.postgresql.util.PSQLException: ERROR: invalid input syntax for type bigint: ""
+  Позиция: 210
+
+SQL:
+INSERT INTO optum_extended_native_test.provider(prov_unique, bed_sz_range, cred_type, grp_practice, hosp_affil, prov_type, provcat, taxonomy1, taxonomy2, extract_ym, version, prov_region) VALUES ('1', '', '', '', '', NULL, '0209', '', '', '202309', '9.0', 'SOUTH')
+
+R version:
+R version 4.3.1 (2023-06-16 ucrt)
+
+Platform:
+x86_64-w64-mingw32
+
+Attached base packages:
+- stats
+- graphics
+- grDevices
+- utils
+- datasets
+- methods
+- base
+
+Other attached packages:
+- OptumExtendedSesDodTesting (0.1.0)
+- DatabaseConnector (6.2.4)
+- SqlRender (1.16.1)

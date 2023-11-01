@@ -87,7 +87,7 @@ createPersonTests <- function()
     declareTest("PERSON - SES Person who has Asian race", id = patient$person_id)
     add_member_continuous_enrollment(eligeff = '2000-05-01', eligend = '2000-12-31',
                       gdr_cd = 'M', patid = patient$patid, yrdob = 1987)
-    add_ses(patid = patient$patid, d_race_code = 'A')
+    add_ses(patid = patient$patid) #d_race_code = 'A')
     expect_person(person_id = patient$person_id, ethnicity_concept_id = 0, race_concept_id = 8515)
 
 
@@ -95,7 +95,7 @@ createPersonTests <- function()
     declareTest("PERSON - SES Person who has Black race", id = patient$person_id)
     add_member_continuous_enrollment(eligeff = '2000-05-01', eligend = '2000-12-31',
                       gdr_cd = 'M', patid = patient$patid, yrdob = 1987)
-    add_ses(patid = patient$patid, d_race_code = 'B')
+    add_ses(patid = patient$patid)#, d_race_code = 'B')
     expect_person(person_id = patient$person_id, ethnicity_concept_id = 0, race_concept_id = 8516)
 
 
@@ -103,7 +103,7 @@ createPersonTests <- function()
     declareTest("PERSON - SES Person who has White race", id = patient$person_id)
     add_member_continuous_enrollment(eligeff = '2000-05-01', eligend = '2000-12-31',
                       gdr_cd = 'M', patid = patient$patid, yrdob = 1987)
-    add_ses(patid = patient$patid, d_race_code = 'W')
+    add_ses(patid = patient$patid)#, d_race_code = 'W')
     expect_person(person_id = patient$person_id, ethnicity_concept_id = 0, race_concept_id = 8527)
 
 
@@ -111,7 +111,7 @@ createPersonTests <- function()
     declareTest("PERSON - SES Person who has Unknown race", id = patient$person_id)
     add_member_continuous_enrollment(eligeff = '2000-05-01', eligend = '2000-12-31',
                       gdr_cd = 'M', patid = patient$patid, yrdob = 1987)
-    add_ses(patid = patient$patid, d_race_code = 'U')
+    add_ses(patid = patient$patid)#, d_race_code = 'U')
     expect_person(person_id = patient$person_id, ethnicity_concept_id = 0, race_concept_id = 0)
 
 
@@ -119,7 +119,7 @@ createPersonTests <- function()
     declareTest("PERSON - Person who has Hispanic ethnicity", id = patient$person_id)
     add_member_continuous_enrollment(eligeff = '2000-05-01', eligend = '2000-12-31',
                       gdr_cd = 'M', patid = patient$patid, yrdob = 1987)
-    add_ses(patid = patient$patid, d_race_code = 'H')
+    add_ses(patid = patient$patid)#, d_race_code = 'H')
     expect_person(person_id = patient$person_id, ethnicity_concept_id = 38003563, race_concept_id = 0)
   
 }

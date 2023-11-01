@@ -12,14 +12,17 @@ truvenType <- "CCAE"
 
 # Set the variables for the native and cdm schemas these test cases will be inserted into as well as the connectionDetails object
 
-nativeDatabaseSchema <- "ccae_native_test"
-cdmDatabaseSchema <- "ccae_cdm_test"
+nativeDatabaseSchema <- "ibm_ccae_native_test"
+cdmDatabaseSchema <- "ibm_ccae_cdm_test"
 
-connectionDetails <- DatabaseConnector::createConnectionDetails(dbms = "dmbs",
-                                                                server = "server",
+Sys.setenv("DATABASECONNECTOR_JAR_FOLDER"="C:\\tools\\jdbcDrivers")
+
+connectionDetails <- DatabaseConnector::createConnectionDetails(dbms = "postgresql",
+                                                                server = "localhost",
                                                                 port = 5432,
-                                                                user = "user",
-                                                                password = "password"
+                                                                user = "postgres",
+                                                                password = "postgres",
+                                                                pathToDriver = "C:/Program Files/DBeaver/plugins"
 )
 
 # STEP 2: Run the getSource function to source the proper framework based on the variable set above. 
@@ -30,11 +33,12 @@ getSource()
 
 sequencer <- getSequence() # This will create unique patient ids
 initFramework(); # This will set up the framework to create the inserts
+source("C:/Users/AnuarAssylkhanov/Documents/projects/ETL-LambdaBuilder/docs/IBM_CCAE_MDCR/Test Cases/R/SetDefaults.R")
 setDefaults(); # This sets the default values for certain variables
 createTests(); # This creates the tests and puts the values in the framework initialized above
-
+source("R/main.R")
 # STEP 5: Create the insert & test sql file 
-
+devtools::load_all()
 cat(file="insert.sql", paste(generateInsertSql(databaseSchema = nativeDatabaseSchema), collapse="\n"))
 
 cat(file="test.sql", paste(generateTestSql(databaseSchema = cdmDatabaseSchema), collapse="\n"))

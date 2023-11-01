@@ -6,9 +6,13 @@
 
 detach("package:OptumExtendedSesDodTesting", unload = TRUE)
 
+
+source('R/TestFramework.R')
+devtools::load_all()
 ## This testing package combines both SES and DOD so there is no need to switch between the two.
 
-library(OptumExtendedSesDodTesting)
+library(OptumExtendedSesDodSesUnitTests)
+
 
 source_schema <- "optum_extended_native_test"
 cdm_schema <- "optum_extended_cdm_test"
@@ -16,15 +20,16 @@ cdm_schema <- "optum_extended_cdm_test"
 ## Set Environment variables before running
 config <- read.csv("inst/csv/config.csv", stringsAsFactors = FALSE)
 
-user <- config$user
+user <- <- config$user
 password <- config$pw
-server <- config$server
-port <- config$port
-dbms <- config$dbms
+server <- "localhost/postgres"#config$server
+port <- 5432 #config$port
+dbms <- "postgresql" #config$dbms
+pathToDriver <- "C:/Users/AnuarAssylkhanov/Documents"
 
 ## Modify connection details as needed
 connectionDetails <- DatabaseConnector::createConnectionDetails(dbms = dbms, server = server,
-                                                                port = port, user = user, password = password)
+                                                                port = port, user = user, password = password, pathToDriver = pathToDriver)
 
 #BUILD RAW DATA
 #=============================
@@ -35,6 +40,7 @@ insertSql <- SqlRender::translate(SqlRender::render(paste(generateInsertSql(sour
                                                           sep = "", collapse = "\n")),
                                   targetDialect = connectionDetails$dbms)
 SqlRender::writeSql(insertSql, 'insertSql.sql')
+
 
 DatabaseConnector::executeSql(connection = connection, sql = insertSql)
 DatabaseConnector::disconnect(connection = connection)
