@@ -76,17 +76,17 @@ The information in the PERSON table is sourced from the  **Member_Continuous_Enr
 |DAY_OF_BIRTH|Derived field|[See logic above](#PERSON-Table-Logic)|
 |BIRTH_DATETIME|**Member_Continuous_Enrollment** YRDOB <br> **PERSON** MONTH_OF_BIRTH <br> **PERSON** DAY_OF_BIRTH <br> UTC tz midnight|Concatenate the source field values into datetime value with UTC Timezone|
 |DEATH_DATETIME|**(DOD only) DEATH** YMDOD|Set the day to the last day of the month and set time to UTC tz midnight|
-|RACE_CONCEPT_ID|**(SES only)** **SES** D_RACE_CODE|[See Race mapping](#Mapping-Race)|This data does not exist for DOD so this should be set to 0 for persons in the DOD database.|
-|ETHNICITY_CONCEPT_ID|**(SES only)** **SES**  D_RACE_CODE |[See Ethnicity mapping](#Mapping-Race)|This data does not exist for DOD so this should be set to 0 for persons in the DOD database.|
-|LOCATION_ID|FK to Location table.|Represents the last known location for person in **Member_Continuous_Enrollment**. For **SES** the field is DIVISON, and **DOD** it is STATE||
+|RACE_CONCEPT_ID|**Member_Enrollment** Race|[See Race mapping](#Mapping-Race)||
+|ETHNICITY_CONCEPT_ID|**Member_Enrollment** Race|[See Ethnicity mapping](#Mapping-Race)||
+|LOCATION_ID|FK to Location table.|Represents the last known location for person in **Member_Continuous_Enrollment**. For **SES** the field is REGION, and **DOD** it is STATE||
 |PROVIDER_ID||| |
 |CARE_SITE_ID|| | |
 |PERSON_SOURCE_VALUE|**Member_Continuous_Enrollment** PATID|||
 |GENDER_SOURCE_VALUE|**Member_Continuous_Enrollment** GDR_CD|||
 |GENDER_SOURCE_CONCEPT_ID||0||
-|RACE_SOURCE_VALUE|**(SES only) SES** D_RACE_CODE |`If D_RACE_CODE in ('W','A','U','B')`|This data does not exist for DOD so this should be set to NULL for persons in the DOD database.|
+|RACE_SOURCE_VALUE|**Member_Enrollment** Race |`If Race in ('W','A','U','B')`||
 |RACE_SOURCE_CONCEPT_ID||0||
-|ETHNICITY_SOURCE_VALUE|**(SES only)**<br/>**SES** D_RACE_CODE|`If D_RACE_CODE = 'H'`|This data does not exist for DOD so this should be set to NULL for persons in the DOD database.|
+|ETHNICITY_SOURCE_VALUE|**Member_Enrollment** Race|`If Race = 'H'`||
 |ETHNICITY_SOURCE_CONCEPT_ID||0||
 
 ---
@@ -94,6 +94,11 @@ The information in the PERSON table is sourced from the  **Member_Continuous_Enr
 <br>CDM Version = 5.4
 
 ## Change log
+
+### 3-Nov-2023
+- Race now included in Member_Enrollment table instead of SES table 
+- Race added to DOD
+- SES LOCATION_ID division -> region
 
 ### 11-Aug-2023
 
