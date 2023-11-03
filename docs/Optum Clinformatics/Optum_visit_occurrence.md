@@ -84,4 +84,8 @@ PRECEDING_VISIT_OCCURRENCE_ID|**VISIT_OCCURRENCE** | For a given person, find th
 
 ---
 *Common Data Model ETL Mapping Specification for Optum Extended SES & Extended DOD*
-<br>*CDM Version = 6.0.0, Clinformatics Version = v8.0*
+<br>*CDM Version = 5.4.0, Clinformatics Version = v9.0*
+
+### 3-Nov-2023
+- Clinformatics Version = v8.0 -> v9.0
+- CDM v6.0 -> V5.4

@@ -53,4 +53,8 @@ GENDER_SOURCE_CONCEPT_ID|0||
 
 ---
 *Common Data Model ETL Mapping Specification for Optum Extended SES & Extended DOD*
-<br>*CDM Version = 6.0.0, Clinformatics Version = v8.0*
+<br>*CDM Version = 5.4.0, Clinformatics Version = v9.0*
+
+### 3-Nov-2023
+- CDM v6.0 -> V5.4
+- Clinformatics Version = v8.0 -> v9.0

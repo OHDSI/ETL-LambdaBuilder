@@ -41,10 +41,15 @@ If CARE_SITE_SOURCE_VALUE from **RX_CLAIMS**.Pharm set PLACE_OF_SERVICE_CONCEPT_
 CARE_SITE_ID|<system generated>|**PROVIDER** Prov_Unique or distinct **RX_CLAIMS** Pharm |
 CARE_SITE_NAME|**PROVIDER** Prov_Unique or distinct **RX_CLAIMS** Pharm | |
 PLACE_OF_SERVICE_CONCEPT_ID|Derived Field|[See logic above](#Mapping_Place_of_Service) |
-LOCATION_ID|**PROVIDER** Prov_State|FK to Location table|
+LOCATION_ID|**PROVIDER** prov_region|FK to Location table|
 CARE_SITE_SOURCE_VALUE|**PROVIDER** Prov_Unique <br> **RX_CLAIMS** Pharm| |
 PLACE_OF_SERVICE_SOURCE_VALUE|Derived Field|Put the description of the **PROV_TYPE** here.<br> [See logic above](#Mapping_Place_of_Service)|
 
 ---
 *Common Data Model ETL Mapping Specification for Optum Extended SES & Extended DOD*
-<br>*CDM Version = 6.0.0, Clinformatics Version = v8.0*
+<br>*CDM Version = 5.4.0, Clinformatics Version = v9.0*
+
+### 3-Nov-2023
+- Clinformatics Version = v8.0 -> v9.0
+- CDM v6.0 -> V5.4
+- STATE - provider.prov_state ->provider.prov_region
