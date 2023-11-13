@@ -20,8 +20,8 @@ cdm_schema <- "optum_extended_cdm_test"
 ## Set Environment variables before running
 config <- read.csv("inst/csv/config.csv", stringsAsFactors = FALSE)
 
-user <- <- config$user
-password <- config$pw
+user <- #$user
+password <- #$pw
 server <- "localhost/postgres"#config$server
 port <- 5432 #config$port
 dbms <- "postgresql" #config$dbms

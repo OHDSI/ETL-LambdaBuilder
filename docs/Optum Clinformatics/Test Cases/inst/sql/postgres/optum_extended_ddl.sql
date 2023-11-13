@@ -218,7 +218,10 @@ CREATE TABLE optum_extended_native_test.member_continuous_enrollment
    gdr_cd      char(1),
    yrdob       integer,
    extract_ym  varchar(6),
-   version     varchar(6)
+   ethnicity   varchar(20),
+   version     varchar(6),
+   race        varchar(20),
+   race_source varchar(20)
 );
 
 

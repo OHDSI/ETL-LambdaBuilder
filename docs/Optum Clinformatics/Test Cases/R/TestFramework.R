@@ -1550,7 +1550,7 @@ add_med_procedure <- function(patid, pat_planid, clmid, icd_flag, proc, proc_pos
   } else {
     frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'med_procedure.proc')
   }
-  fields <- c(fields, "[proc]")
+  fields <- c(fields, "proc")
   values <- c(values, if (is.null(proc)) "NULL" else if (is(proc, "subQuery")) paste0("(", as.character(proc), ")") else paste0("'", as.character(proc), "'"))
   
   if (missing(proc_position)) {

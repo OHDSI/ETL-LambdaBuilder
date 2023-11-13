@@ -1,3 +1,4 @@
+set_defaults_medical_claims(paid_dt  = NULL, op_visit_id = NULL, ndc_qty = NULL)
 createCostTests <- function()
 {
   # patient <- createPatient()
@@ -30,6 +31,7 @@ createCostTests <- function()
   declareTest("Patient has procedure cost", source_pid = patient$patid, cdm_pid = patient$person_id)
   add_member_detail(aso = 'N', bus = 'COM', cdhp = 3, eligeff = '2010-05-01', eligend = '2013-10-31',
                     gdr_cd = 'F', patid = patient$patid, pat_planid = patient$patid, product = 'HMO', yrdob = 1969)
+  
   add_medical_claims(clmid = claim$clmid, clmseq = '001', proc_cd = '92928', lst_dt = '2013-07-01',
                      pat_planid = patient$patid, patid = patient$patid, fst_dt = '2013-07-01', prov = '111111', provcat = '5678', 
                      charge = 200, coins = 100, deduct = 75, copay = 10, std_cost = 90)
