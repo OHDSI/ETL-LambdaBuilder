@@ -185,7 +185,7 @@ initFramework <- function() {
   defaults <- list()
   defaults$boe <- '4'
   defaults$cap <- '1'
-  defaults$dobyr <- '2006'
+  defaults$dobyr <- '1957'
   defaults$drugcovg <- '1'
   defaults$dtend <- '2021-05-31'
   defaults$dtstart <- '2021-05-01'

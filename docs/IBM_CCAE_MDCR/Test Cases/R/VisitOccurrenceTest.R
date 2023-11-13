@@ -123,7 +123,7 @@ createVisitOccurrenceTests <- function () {
     add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
     declareTest(id = patient$person_id, "Patient has LTC claim where the end_date = the start_date. Id is PERSON_ID.")
     add_long_term_care(enrolid = patient$enrolid, svcdate = '2012-08-03', tsvcdat = '2012-08-03', year = '2012')
-    expect_visit_occurrence(person_id = patient$person_id, visit_start_date = '2012-08-01', visit_end_date = '2012-08-31')
+    expect_visit_occurrence(person_id = patient$person_id, visit_start_date = '2012-08-03', visit_end_date = '2012-08-03')
     
   }
 }
