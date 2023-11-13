@@ -127,6 +127,7 @@ InsertsToCsv <- function(scanLocation, outputDir = NULL) {
         }
       }
       assign(paste(tables[i]), csv)
+	  csv[csv == 'NULL'] <- NA # normalize missing values
       write.csv(
         x = csv,
         file = file.path(

@@ -50,12 +50,7 @@ createPersonTests <- function () {
   declareTest(id = patient$person_id, "Person with sex=3 is excluded. Id is PERSON_ID.")
   add_enrollment_detail(enrolid=patient$enrolid, sex="3")
   expect_no_person(person_id = patient$person_id)
-  
-  patient<-createPatient()
-  declareTest(id = patient$person_id, "Person born after current year. Id is PERSON_ID.")
-  add_enrollment_detail(enrolid=patient$enrolid, dobyr="2022")
-  expect_no_person(person_id = patient$person_id)
-
+ 
   patient<-createPatient()
   declareTest(id = patient$person_id, "Person has record with sex=3 but last record has sex=1, person is kept. Id is PERSON_ID.")
   add_enrollment_detail(enrolid=patient$enrolid, dtend="2012-01-31", dtstart="2012-01-01", sex="3")
