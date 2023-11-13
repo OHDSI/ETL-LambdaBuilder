@@ -20,12 +20,11 @@ cdm_schema <- "optum_extended_cdm_test"
 ## Set Environment variables before running
 config <- read.csv("inst/csv/config.csv", stringsAsFactors = FALSE)
 
-user <- #$user
-password <- #$pw
-server <- "localhost/postgres"#config$server
-port <- 5432 #config$port
-dbms <- "postgresql" #config$dbms
-pathToDriver <- "C:/Users/AnuarAssylkhanov/Documents"
+user <- config$user
+password <- config$pw
+server <- config$server
+port <- config$port
+dbms <- config$dbms
 
 ## Modify connection details as needed
 connectionDetails <- DatabaseConnector::createConnectionDetails(dbms = dbms, server = server,
