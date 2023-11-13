@@ -22,3 +22,6 @@ src/*.so
 src/*.dll
 /Debug
 standalone/build/*
+
+#VSCode files
+.vscode/
