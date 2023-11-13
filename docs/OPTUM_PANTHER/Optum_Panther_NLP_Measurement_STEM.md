@@ -30,7 +30,7 @@ description: "OPTUM EHR NLP_Measurement table to STEM"
 | source_concept_id |0 || |
 | type_concept_id | 32858  | NLP| | 
 | operator_concept_id |0 | | |
-| unit_concept_id | measurement_detail | If the inbound record maps to measurement_concept_id = (Body mass index), then set the unit_concept_id to 9531 (kilogram per square meter). Otherwise, match to the JNJ_UNITS STCM. If no match is found, set this field to 0.| |
+| unit_concept_id | measurement_detail | If the inbound record maps to measurement_concept_id = (Body mass index) and unit maps to any of these: 'kilogram per square meter', 'No matching concept', 'kilogram', 'square meter', then set the unit_concept_id to 9531 (kilogram per square meter). Otherwise, match to the JNJ_UNITS STCM. If no match is found, set this field to 0.| |
 | unit_source_value | measurement_detail | | |
 | range_high | |  | | 
 | range_low |  | | |

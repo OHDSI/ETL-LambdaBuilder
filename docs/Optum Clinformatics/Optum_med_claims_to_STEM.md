@@ -42,15 +42,15 @@ Records will be written from the **MEDICAL_CLAIMS** table mapping the field **RV
 | operator_concept_id | |||
 | unit_concept_id | |||
 | unit_source_value | |||
-| start_date | **VISIT_DETAIL** VISIT_DETAIL_START_DATE||| 
-| end_date | |||
+| start_date | **VISIT_DETAIL** VISIT_DETAIL_START_DATE, for drugs - fst_dt||| 
+| end_date | **VISIT_DETAIL** VISIT_DETAIL_END_DATE, for drugs - fst_dt |||
 | range_high | |||
 | range_low | |||
 | value_as_number | |||
 | value_as_string | |||
 | value_as_concept_id | |||
 | value_source_value | |||
-| end_datetime | |||
+| end_datetime | **VISIT_DETAIL** VISIT_DETAIL_START_DATETIME, for drugs - fst_dt |||
 | verbatim_end_date | |||
 | days_supply | |If record is created using **MEDICAL_CLAIMS**<br/>NDC set days_supply to 1||
 | dose_unit_source_value |**NDC**<br>**MEDICAL_CLAIMS** NDC_UOM |||
@@ -71,3 +71,8 @@ Records will be written from the **MEDICAL_CLAIMS** table mapping the field **RV
 | disease_status_source_value | |||
 | condition_status_concept_id | |||
 | condition_status_source_value | |||
+
+## Change log
+
+### 13-Nov-2023
+Set drug start and end dates as fst_dt - dates are extracted from the med_claims table itself

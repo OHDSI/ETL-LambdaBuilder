@@ -26,13 +26,13 @@ The STEM table is a staging area where source codes like ICD9 codes will first b
 
 - Some 11 digit NDC codes are invalid and instead need to mapped to the 9-digit version. To account for this map the 11-digit NDC code to SOURCE_CODE in OMOP vocab first. If no mapping is found, map the first 9 digits of NDC code to SOURCE_CODE.
 
-- In the **RX_CLAIMS** table some values in DAYS_SUP are invalid. Any value < 0 or > 365 should be updated using this logic:
+- In the **RX_CLAIMS** table some values in DAYS_SUP are invalid. Any value <= 0 or > 365 should be updated using this logic:
 
 ```
     CASE
-    WHEN DAYS_SUPPLY < 0 THEN 0
+    WHEN DAYS_SUPPLY <= 0 THEN 1
     WHEN DAYS_SUPPLY > 365 THEN 365
-    WHEN DAYS_SUPPLY IS NULL THEN 0
+    WHEN DAYS_SUPPLY IS NULL THEN 1
     ELSE DAYS_SUPPLY
     END
 ```
@@ -47,7 +47,7 @@ The STEM table is a staging area where source codes like ICD9 codes will first b
 | visit_detail_id |**VISIT_DETAIL**<br>VISIT_DETAIL_ID|||
 | visit_occurrence_id |**VISIT_DETAIL**<br>VISIT_OCCURRENCE_ID|Use the linking to **VISIT_DETAIL** to look up VISIT_OCCURRENCE_ID||
 | provider_id |**VISIT_DETAIL**<br>PROVIDER_ID |||
-| start_datetime |**VISIT_DETAIL** VISIT_DETAIL_START_DATETIME |||
+| start_datetime | fill_dt |||
 | concept_id | NDC|Use the SOURCE_TO_STANDARD query with the filter<br/><br/>**NDC**<br> WHERE SOURCE_VOCABULARY_ID IN ('NDC') AND TARGET_STANDARD_CONCEPT ='S' AND TARGET_INVALID_REASON IS NULL AND VISIT_DETAIL_START_DATE BETWEEN SOURCE_VALID_START_DATE AND SOURCE_VALID_END_DATE| If an NDC does not have a mapping, set the concept_id to 0|
 | source_value | NDC|||
 | source_concept_id |NDC|Use the SOURCE_TO_SOURCE query with the filter<br/><br/>**NDC**<br> WHERE SOURCE_VOCABULARY_ID IN ('NDC') AND VISIT_DETAIL_START_DATE BETWEEN SOURCE_VALID_START_DATE AND SOURCE_VALID_END_DATE||
@@ -55,17 +55,17 @@ The STEM table is a staging area where source codes like ICD9 codes will first b
 | operator_concept_id | |||
 | unit_concept_id | |||
 | unit_source_value | |||
-| start_date | **VISIT_DETAIL** VISIT_DETAIL_START_DATE||| 
-| end_date |  **VISIT_DETAIL** VISIT_DETAIL_END_DATE|||
+| start_date | fill_dt||| 
+| end_date ||fill_dt + days_supply - 1|first calculate days_supply|
 | range_high | |||
 | range_low | |||
 | value_as_number | |||
 | value_as_string | |||
 | value_as_concept_id | |||
 | value_source_value | |||
-| end_datetime | **VISIT_DETAIL** VISIT_DETAIL_END_DATE|||
+| end_datetime ||fill_dt + days_supply - 1|first calculate days_supply|
 | verbatim_end_date | |||
-| days_supply | DAYS_SUP|If DAYS_SUP = 0 or is blank, set to 1||
+| days_supply | DAYS_SUP|If DAYS_SUP <= 0 or is blank, set to 1, if > 365, set to 365||
 | dose_unit_source_value ||||
 | lot_number | |||
 |MODIFIER_CONCEPT_ID|| | |
@@ -84,3 +84,9 @@ The STEM table is a staging area where source codes like ICD9 codes will first b
 | disease_status_source_value | |||
 | condition_status_concept_id | |||
 | condition_status_source_value | |||
+
+
+## Change log:
+
+### 13-Nov-2023
+fixed end_date logic, fixed days_supply logic, setting it to 1 if <=0 or NULL
