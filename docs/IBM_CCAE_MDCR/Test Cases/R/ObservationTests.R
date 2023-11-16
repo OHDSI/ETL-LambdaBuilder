@@ -31,6 +31,13 @@ createObservationTests <- function () {
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_health_risk_assessment(enrolid = patient$enrolid, survdate = '2012-05-25', flu_shot = '1')
   expect_observation(person_id = patient$person_id, observation_source_value = 'FLU_SHOT')
+
+  patient <- createPatient()
+  encounter <- createEncounter()  
+  declareTest(id = patient$person_id, "Event date is outside of observation_period, observation record created. Id is PERSON_ID")
+  add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
+  add_health_risk_assessment(enrolid = patient$enrolid, survdate = '2022-03-14', cgtpkamt = '2')
+  expect_observation(person_id = patient$person_id, observation_source_value = 'CGTPKAMT', value_as_number = '2.00', observation_date = '2022-03-14')
   
   }
 }

@@ -73,10 +73,24 @@ createMeasurementTests <- function () {
   
   patient <- createPatient()
   encounter <- createEncounter()
-  declareTest(id = patient$person_id, "If you do not get a map from UCUM for UNIT_CONCEPT_ID then try JNJ_UNITS (HIX-1419). Id is PERSON_ID.")
+  declareTest(id = patient$person_id, "For UNIT_CONCEPT_ID use JNJ_UNITS. Id is PERSON_ID.")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_lab(enrolid = patient$enrolid, year='2012', svcdate = '2012-04-06', loinccd = '56789-1', result = '100', resunit = 'lbs.')
   expect_measurement(person_id = patient$person_id, unit_concept_id = '8739')
+  
+  patient <- createPatient()
+  encounter <- createEncounter()
+  declareTest(id = patient$person_id, "For UNIT_CONCEPT_ID UCUM lookup not used, use JNJ_UNITS istead. 9471(UCUM) 586323(JNJ_UNITS). Id is PERSON_ID.")
+  add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
+  add_lab(enrolid = patient$enrolid, year='2012', svcdate = '2012-04-06', loinccd = '56789-1', result = '100', resunit = 'C')
+  expect_measurement(person_id = patient$person_id, unit_concept_id = '586323')
+  
+  patient <- createPatient()
+  encounter <- createEncounter()
+  declareTest(id = patient$person_id, "Patient has null in resunit, measurement record have unit_concept_id = NULL and unit_source_concept_id = NULL. Id is PERSON_ID.")
+  add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
+  add_lab(enrolid = patient$enrolid, year='2012', svcdate = '2012-04-06', loinccd = '56789-1', result = NULL, resunit = NULL)
+  expect_measurement(person_id = patient$person_id, unit_concept_id = NULL, unit_source_concept_id = NULL)
   
   patient <- createPatient()
   encounter <- createEncounter()
@@ -99,6 +113,13 @@ createMeasurementTests <- function () {
   add_lab(enrolid = patient$enrolid, year='2012', svcdate = '2012-04-06', loinccd = '29463-7', result = '1950000', resunit = 'LBS')
   expect_measurement(person_id = patient$person_id, value_as_number = '195', unit_concept_id = '8739')
   
+
+  patient <- createPatient()
+  encounter <- createEncounter()
+  declareTest(id = patient$person_id, "Event date is outside of observation_period, measurement record created. Id is PERSON_ID")
+  add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
+  add_lab(enrolid = patient$enrolid, year='2022', svcdate = '2022-04-06', loinccd = '29463-7', result = '1950000', resunit = 'LBS')
+  expect_measurement(person_id = patient$person_id, measurement_date = '2022-04-06')
   }
   
   

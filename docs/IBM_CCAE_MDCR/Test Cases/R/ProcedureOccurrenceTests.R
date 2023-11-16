@@ -21,6 +21,28 @@ createProcedureOccurrenceTests <- function () {
   # expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '40757126', procedure_date = '2012-06-12', procedure_type_concept_id = '32855')
   expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '40757105', procedure_date = '2012-06-11')
   expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '40757126', procedure_date = '2012-06-11')
+
+  patient <- createPatient()
+  encounter <- createEncounter()
+  declareTest(id = patient$person_id, "Event data is outside of observation_period, procedure_occurrence record created. Id is PERSON_ID")
+  add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
+  add_inpatient_services(caseid = encounter$caseid, enrolid = patient$enrolid, pproc = '65779', svcdate = '2022-06-11', tsvcdat = '2022-06-12', year = '2022')
+  expect_procedure_occurrence(person_id = patient$person_id, procedure_date = '2022-06-11')
+  
+  patient <- createPatient()
+  encounter <- createEncounter()
+  declareTest(id = patient$person_id, "Procedure occurrence quantity - if not populated in source, leave it NULL. Id is PERSON_ID")
+  add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
+  add_inpatient_services(caseid = encounter$caseid, enrolid = patient$enrolid, pproc = '65779', svcdate = '2022-05-15', tsvcdat = '2022-05-17', qty = NULL, year = '2022')
+  expect_procedure_occurrence(person_id = patient$person_id, procedure_date = '2022-05-15', quantity = NULL)
+  
+  patient <- createPatient()
+  encounter <- createEncounter()
+  declareTest(id = patient$person_id, "Move all records in the PROCEDURE_OCCURRENCE table where the PROCEDURE_SOURCE_VALUE = 'S0013' to the DRUG_EXPOSURE table with the DRUG_CONCEPT_ID = 37496953. Id is PERSON_ID")
+  add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
+  add_inpatient_services(caseid = encounter$caseid, enrolid = patient$enrolid, pproc = 'S0013', svcdate = '2022-05-15', tsvcdat = '2022-05-17', year = '2022')
+  expect_drug_exposure(person_id = patient$person_id, drug_concept_id = '37496953', drug_exposure_start_date = '2022-05-15')
+  
   
   if (truvenType != "MDCD") {
     patient <- createPatient()

@@ -70,6 +70,13 @@ createVisitOccurrenceTests <- function () {
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_inpatient_services(enrolid=patient$enrolid, svcdate = '2012-03-21', tsvcdat = '2012-03-19',dstatus = '01')
   expect_visit_occurrence(person_id=patient$person_id, visit_start_date = '2012-03-21', visit_end_date = '2012-03-21',discharged_to_concept_id = '581476' )
+
+  patient <- createPatient()
+  encounter <- createEncounter()
+  declareTest(id = patient$person_id, "Event data is outside of observation_period, visit_occurrence record created. Id is PERSON_ID.")
+  add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
+  add_inpatient_services(enrolid=patient$enrolid, svcdate = '2022-03-21', tsvcdat = '2022-03-19',dstatus = '01')
+  expect_visit_occurrence(person_id=patient$person_id, visit_start_date = '2022-03-21', visit_end_date = '2022-03-21',discharged_to_concept_id = '581476' )
   
   if (truvenType != "MDCD")
   {
