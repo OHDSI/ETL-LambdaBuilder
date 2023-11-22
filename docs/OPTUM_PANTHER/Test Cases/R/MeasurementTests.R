@@ -4,8 +4,9 @@ createMeasurementTests <- function () {
   # DIAGNOSIS
   ######################################
 
+  
   patient <- createPatient();
-  declareTest("When DIAGNOSIS_STATUS=Diagnosis Of and DIAGNOSIS_CD maps to DOMAIN=MEASUREMENT concept", source_pid = patient$ptid, cdm_pid = patient$person_id)
+  declareTest("When DIAGNOSIS_STATUS=Diagnosis Of and DIAGNOSIS_CD maps to DOMAIN=MEASUREMENT concept", id = patient$person_id)
   enc <- createEncounter();
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
@@ -17,7 +18,7 @@ createMeasurementTests <- function () {
 
 
   patient <- createPatient();
-  declareTest("When DIAGNOSIS_STATUS=Zachary and DIAGNOSIS_CD maps to DOMAIN=MEASUREMENT concept, should not write record", source_pid = patient$ptid, cdm_pid = patient$person_id)
+  declareTest("When DIAGNOSIS_STATUS=Zachary and DIAGNOSIS_CD maps to DOMAIN=MEASUREMENT concept, should not write record", id = patient$person_id)
   enc <- createEncounter();
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
@@ -28,7 +29,7 @@ createMeasurementTests <- function () {
 
 
   patient <- createPatient();
-  declareTest("When PRIMARY_DIAGNOSIS = 1 Then Type = 44786627", source_pid = patient$ptid, cdm_pid = patient$person_id)
+  declareTest("When PRIMARY_DIAGNOSIS = 1 Then Type = 44786627", id = patient$person_id)
   enc <- createEncounter();
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
@@ -38,7 +39,7 @@ createMeasurementTests <- function () {
   expect_measurement(person_id=patient$person_id, measurement_type_concept_id=44786627)
 
   patient <- createPatient();
-  declareTest("When PRIMARY_DIAGNOSIS = 6 Then Type = 44786629", source_pid = patient$ptid, cdm_pid = patient$person_id)
+  declareTest("When PRIMARY_DIAGNOSIS = 6 Then Type = 44786629", id = patient$person_id)
   enc <- createEncounter();
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
@@ -49,7 +50,7 @@ createMeasurementTests <- function () {
 
 
   patient <- createPatient();
-  declareTest("MEASUREMENT_SOURCE_CONCEPT_ID for ICD9 795.3 gets mapped properly to 44828170", source_pid = patient$ptid, cdm_pid = patient$person_id)
+  declareTest("MEASUREMENT_SOURCE_CONCEPT_ID for ICD9 795.3 gets mapped properly to 44828170", id = patient$person_id)
   enc <- createEncounter();
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
@@ -60,7 +61,7 @@ createMeasurementTests <- function () {
 
 
   patient <- createPatient();
-  declareTest("When DIAGNOSIS_STATUS=Diagnosis Of and Source code is a SNOMED", source_pid = patient$ptid, cdm_pid = patient$person_id)
+  declareTest("When DIAGNOSIS_STATUS=Diagnosis Of and Source code is a SNOMED", id = patient$person_id)
   enc <- createEncounter();
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
@@ -76,7 +77,7 @@ createMeasurementTests <- function () {
   ######################################
 
   patient <- createPatient();
-  declareTest("Test numeric result and SOURCE_CONCEPT_ID = 0", source_pid = patient$ptid, cdm_pid = patient$person_id)
+  declareTest("Test numeric result and SOURCE_CONCEPT_ID = 0", id = patient$person_id)
   enc <- createEncounter();
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
@@ -87,7 +88,7 @@ createMeasurementTests <- function () {
                      value_as_number=100)
 
   patient <- createPatient();
-  declareTest("Test non-numeric result and SOURCE_CONCEPT_ID = 0", source_pid = patient$ptid, cdm_pid = patient$person_id)
+  declareTest("Test non-numeric result and SOURCE_CONCEPT_ID = 0", id = patient$person_id)
   enc <- createEncounter();
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
@@ -98,7 +99,7 @@ createMeasurementTests <- function () {
                      value_as_number=NULL, value_as_concept_id=45884084)
 
   patient <- createPatient();
-  declareTest("Test valid operator gets an OPERATOR_CONCEPT_ID", source_pid = patient$ptid, cdm_pid = patient$person_id)
+  declareTest("Test valid operator gets an OPERATOR_CONCEPT_ID", id = patient$person_id)
   enc <- createEncounter();
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
@@ -108,7 +109,7 @@ createMeasurementTests <- function () {
   expect_measurement(person_id=patient$person_id,operator_concept_id=4171754)
 
   patient <- createPatient();
-  declareTest("Test invalid operator gets an OPERATOR_CONCEPT_ID", source_pid = patient$ptid, cdm_pid = patient$person_id)
+  declareTest("Test invalid operator gets an OPERATOR_CONCEPT_ID", id = patient$person_id)
   enc <- createEncounter();
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
@@ -118,7 +119,7 @@ createMeasurementTests <- function () {
   expect_measurement(person_id=patient$person_id,operator_concept_id=0)
 
   patient <- createPatient();
-  declareTest("map case-sensitive UCUM vocabulary to UNIT_CONCEPT_ID, row count right", source_pid = patient$ptid, cdm_pid = patient$person_id)
+  declareTest("map case-sensitive UCUM vocabulary to UNIT_CONCEPT_ID, row count right", id = patient$person_id)
   enc <- createEncounter();
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
@@ -129,7 +130,7 @@ createMeasurementTests <- function () {
   expect_count_measurement(person_id=patient$person_id,rowCount = 1)
 
   patient <- createPatient();
-  declareTest("Test when normal range has a hyphen", source_pid = patient$ptid, cdm_pid = patient$person_id)
+  declareTest("Test when normal range has a hyphen", id = patient$person_id)
   enc <- createEncounter();
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
@@ -139,7 +140,7 @@ createMeasurementTests <- function () {
   expect_measurement(person_id=patient$person_id,range_low=55,range_high=65)
 
   patient <- createPatient();
-  declareTest("Test when normal range does not have a hyphen", source_pid = patient$ptid, cdm_pid = patient$person_id)
+  declareTest("Test when normal range does not have a hyphen", id = patient$person_id)
   enc <- createEncounter();
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
@@ -153,7 +154,7 @@ createMeasurementTests <- function () {
   ######################################
 
   patient <- createPatient();
-  declareTest("MEASUREMENT_TYPE gets properly mapped to a CONCEPT_ID from NLP_MEASUREMENT", source_pid = patient$ptid, cdm_pid = patient$person_id)
+  declareTest("MEASUREMENT_TYPE gets properly mapped to a CONCEPT_ID from NLP_MEASUREMENT", id = patient$person_id)
   enc <- createEncounter();
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
@@ -165,7 +166,7 @@ createMeasurementTests <- function () {
                      measurement_source_concept_id =0, measurement_source_value='WEIGHT')
 
   patient <- createPatient();
-  declareTest("Non-numeric MEASUREMENT_VALUE from NLP_MEASUREMENT", source_pid = patient$ptid, cdm_pid = patient$person_id)
+  declareTest("Non-numeric MEASUREMENT_VALUE from NLP_MEASUREMENT", id = patient$person_id)
   enc <- createEncounter();
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
@@ -178,7 +179,7 @@ createMeasurementTests <- function () {
 
 
   patient <- createPatient();
-  declareTest("Measurement_detail gets mapped properly to a case sensitive UCUM from NLP_MEASUREMENT", source_pid = patient$ptid, cdm_pid = patient$person_id)
+  declareTest("Measurement_detail gets mapped properly to a case sensitive UCUM from NLP_MEASUREMENT", id = patient$person_id)
   enc <- createEncounter();
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
@@ -193,7 +194,7 @@ createMeasurementTests <- function () {
   ######################################
 
   patient <- createPatient();
-  declareTest("Test that a mappable OBS_TYPE gets a CONCEPT_ID from OBSERVATIONS", source_pid = patient$ptid, cdm_pid = patient$person_id)
+  declareTest("Test that a mappable OBS_TYPE gets a CONCEPT_ID from OBSERVATIONS", id = patient$person_id)
   enc <- createEncounter();
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
@@ -203,7 +204,7 @@ createMeasurementTests <- function () {
                      measurement_type_concept_id=45754907,measurement_source_value='SBP')
 
   patient <- createPatient();
-  declareTest("Test that an unmappable OBS_TYPE gets a 0 CONCEPT_ID write a record to OBSERVATION table", source_pid = patient$ptid, cdm_pid = patient$person_id)
+  declareTest("Test that an unmappable OBS_TYPE gets a 0 CONCEPT_ID write a record to OBSERVATION table", id = patient$person_id)
   enc <- createEncounter();
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
@@ -212,7 +213,7 @@ createMeasurementTests <- function () {
   expect_observation(person_id=patient$person_id,observation_concept_id=0,observation_source_value='Zach')
 
   patient <- createPatient();
-  declareTest("Test VALUE_AS_CONCEPT_ID gets mapped from OBSERVATIONS", source_pid = patient$ptid, cdm_pid = patient$person_id)
+  declareTest("Test VALUE_AS_CONCEPT_ID gets mapped from OBSERVATIONS", id = patient$person_id)
   enc <- createEncounter();
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
@@ -223,7 +224,7 @@ createMeasurementTests <- function () {
                      measurement_source_concept_id=0)
 
   patient <- createPatient();
-  declareTest("Test UNIT_CONCEPT_ID gets mapped from OBSERVATIONS", source_pid = patient$ptid, cdm_pid = patient$person_id)
+  declareTest("Test UNIT_CONCEPT_ID gets mapped from OBSERVATIONS", id = patient$person_id)
   enc <- createEncounter();
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')

@@ -1,7 +1,7 @@
 createVisitOccurrenceTests <- function () {
 
   patient <- createPatient();
-  declareTest(description="Visit from Diagnosis Test", source_pid = patient$ptid, cdm_pid = patient$person_id)
+  declareTest(description="Visit from Diagnosis Test", id = patient$person_id)
   encounter1 <- createEncounter();
   encounter2 <- createEncounter();
   visitId <- sequencer$nextSequence();
@@ -17,6 +17,6 @@ createVisitOccurrenceTests <- function () {
   expect_no_visit_occurrence(person_id = patient$person_id, visit_start_date = "2014-03-06")
   expect_no_visit_occurrence(person_id = patient$person_id, visit_start_date = "2014-03-07")
 
-  declareTest("Visit from Drug Exposure")
+  declareTest("Visit from Drug Exposure",id = patient$person_id)
 
 }

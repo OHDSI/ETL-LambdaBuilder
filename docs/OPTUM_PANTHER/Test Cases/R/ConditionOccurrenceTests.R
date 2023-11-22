@@ -4,9 +4,26 @@ createConditionOccurrenceTests <- function () {
   # DIAGNOSIS
   ######################################
 
-
+  set_defaults_patient(avg_hh_income = NULL, pct_college_educ = NULL) 
+  
+  set_defaults_encounter(visitid = NULL, interaction_date = "2012-12-31")
+  
+  set_defaults_labs(collected_date = NULL, result_date = NULL, order_date = NULL)
+  
+  set_defaults_medication_administrations(admin_date = NULL)
+  
+  set_defaults_microbiology(collect_date = NULL, receive_date = NULL)
+  
+  set_defaults_nlp_measurement(measurement_year = NULL, measurement_date = NULL)
+  
+  set_defaults_nlp_sds(occurrence_year = NULL, occurrence_date = NULL)
+  
+  set_defaults_observations(result_date = NULL)
+  
+  set_defaults_prescriptions_written(daily_dose = NULL, days_supply = NULL)
+  
   patient <- createPatient();
-  declareTest("Diagnosis without ''Diagnosis of'' status is not loaded", source_pid = patient$ptid, cdm_pid = patient$person_id)
+  declareTest("Diagnosis without ''Diagnosis of'' status is not loaded", id = patient$person_id)
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
   add_diagnosis(ptid=patient$ptid, diagnosis_status = 'Family history of', diagnosis_cd = '7061',
@@ -15,7 +32,7 @@ createConditionOccurrenceTests <- function () {
 
 
   patient <- createPatient();
-  declareTest("Test diag_date to condition_start_date", source_pid = patient$ptid, cdm_pid = patient$person_id)
+  declareTest("Test diag_date to condition_start_date", id = patient$person_id)
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
   add_diagnosis(ptid=patient$ptid, diagnosis_status = 'Diagnosis of', diagnosis_cd = '7061',
@@ -24,7 +41,7 @@ createConditionOccurrenceTests <- function () {
 
 
   patient <- createPatient();
-  declareTest("Test diagnosis code type ICD9", source_pid = patient$ptid, cdm_pid = patient$person_id)
+  declareTest("Test diagnosis code type ICD9", id = patient$person_id)
   enc <- createEncounter();
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
@@ -34,7 +51,7 @@ createConditionOccurrenceTests <- function () {
 
 
   patient <- createPatient();
-  declareTest("Test diagnosis code type ICD10", source_pid = patient$ptid, cdm_pid = patient$person_id)
+  declareTest("Test diagnosis code type ICD10", id = patient$person_id)
   enc <- createEncounter();
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
@@ -44,7 +61,7 @@ createConditionOccurrenceTests <- function () {
 
 
   patient <- createPatient();
-  declareTest("Test primary diagnosis to condition_type_concept_id", source_pid = patient$ptid, cdm_pid = patient$person_id)
+  declareTest("Test primary diagnosis to condition_type_concept_id", id = patient$person_id)
   enc <- createEncounter();
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
@@ -54,7 +71,7 @@ createConditionOccurrenceTests <- function () {
 
 
   patient <- createPatient();
-  declareTest("Test non-primary diagnosis to condition_type_concept_id", source_pid = patient$ptid, cdm_pid = patient$person_id)
+  declareTest("Test non-primary diagnosis to condition_type_concept_id", id = patient$person_id)
   enc <- createEncounter();
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
@@ -64,7 +81,7 @@ createConditionOccurrenceTests <- function () {
 
 
   patient <- createPatient();
-  declareTest("Test diagnosis code with wrong diagnosis code type", source_pid = patient$ptid, cdm_pid = patient$person_id)
+  declareTest("Test diagnosis code with wrong diagnosis code type", id = patient$person_id)
   enc <- createEncounter();
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
@@ -74,7 +91,7 @@ createConditionOccurrenceTests <- function () {
 
 
   patient <- createPatient();
-  declareTest("Test blank diagnosis code", source_pid = patient$ptid, cdm_pid = patient$person_id)
+  declareTest("Test blank diagnosis code", id = patient$person_id)
   enc <- createEncounter();
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
@@ -87,7 +104,7 @@ createConditionOccurrenceTests <- function () {
   ######################################
 
   patient <- createPatient();
-  declareTest("Test HCPCS derived condition coming from procedure table", source_pid = patient$ptid, cdm_pid = patient$person_id)
+  declareTest("Test HCPCS derived condition coming from procedure table", id = patient$person_id)
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
   add_procedure(ptid=patient$ptid, proc_code = 'G8007', proc_code_type = 'HCPCS', proc_date = '2009-01-01')
@@ -99,7 +116,7 @@ createConditionOccurrenceTests <- function () {
   patient <- createPatient();
   provider <- createProvider();
   enc <- createEncounter();
-  declareTest("Patient has PROCEDURE record; validate the provider for the encid is mapped to provid", source_pid = patient$ptid, cdm_pid = patient$person_id)
+  declareTest("Patient has PROCEDURE record; validate the provider for the encid is mapped to provid", id = patient$person_id)
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
   add_provider(provid = provider$provid, specialty = "Internal Medicine", prim_spec_ind = "1")
@@ -113,7 +130,7 @@ createConditionOccurrenceTests <- function () {
   patient <- createPatient();
   enc <- createEncounter();
   provider <- createProvider();
-  declareTest("Patient has PROCEDURE record; validate the visit_occurrence_id", source_pid = patient$ptid, cdm_pid = patient$person_id)
+  declareTest("Patient has PROCEDURE record; validate the visit_occurrence_id", id = patient$person_id)
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
   add_encounter(enc = enc$encid, ptid = patient$ptid, interaction_type = 'Inpatient', interaction_date = '2009-01-01', visitid = enc$encId)

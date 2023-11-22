@@ -5,7 +5,7 @@ createDeviceExposureTests <- function () {
   ######################################
 
   patient <- createPatient();
-  declareTest("Test HCPCS derived device coming from procedure table", source_pid = patient$ptid, cdm_pid = patient$person_id)
+  declareTest("Test HCPCS derived device coming from procedure table", id = patient$person_id)
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
   add_procedure(ptid=patient$ptid, proc_code = 'A4217', proc_code_type = 'HCPCS', proc_date = '2009-01-01')
@@ -19,7 +19,7 @@ createDeviceExposureTests <- function () {
   ######################################
 
   patient <- createPatient();
-  declareTest("Test device derived from diagnosis table", source_pid = patient$ptid, cdm_pid = patient$person_id)
+  declareTest("Test device derived from diagnosis table", id = patient$person_id)
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
   add_diagnosis(ptid=patient$ptid, diagnosis_cd = 'Y73.0', diagnosis_cd_type = 'ICD10', diag_date = '2009-01-01',
