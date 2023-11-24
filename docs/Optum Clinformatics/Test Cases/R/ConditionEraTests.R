@@ -11,7 +11,6 @@ createConditionEraTests <- function()
                     gdr_cd = 'F', patid = patient$patid, yrdob = 1969)
   
   claim <- createClaim()
-  set_defaults_medical_claims(paid_dt  = NULL, op_visit_id = NULL, ndc_qty = NULL)
   add_medical_claims(clmid = claim$clmid, clmseq = '001', lst_dt = '2013-07-01',
                      pat_planid = patient$patid, patid = patient$patid, fst_dt = '2013-07-01', prov = '111111', provcat = '5678', loc_cd = '2')
   add_med_diagnosis(patid = patient$patid, pat_planid = patient$patid, icd_flag = "9", diag = testDiag, clmid = claim$clmid, fst_dt = '2013-07-01', loc_cd = '2')
