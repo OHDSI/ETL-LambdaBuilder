@@ -1,4 +1,3 @@
-set_defaults_medical_claims(paid_dt  = NULL, op_visit_id = NULL, ndc_qty = NULL)
 createCostTests <- function()
 {
   # patient <- createPatient()
@@ -13,6 +12,7 @@ createCostTests <- function()
   #             total_charge = 200, paid_by_patient = 175, paid_patient_copay = 10, paid_patient_coinsurance = 100, 
   #             paid_patient_deductible = 75, amount_allowed = 90)
   
+  set_defaults_medical_claims(paid_dt  = NULL, op_visit_id = NULL, ndc_qty = NULL)
   
   patient <- createPatient()
   claim <- createClaim()

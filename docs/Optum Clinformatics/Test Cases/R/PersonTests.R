@@ -40,7 +40,7 @@ createPersonTests <- function()
   declareTest("PERSON - Person with 2 YOBs that are have a MIN/MAX(YOB) > 2 years apart", id = patient$person_id)
   add_member_continuous_enrollment(eligeff = '2011-01-01', eligend = '2011-04-30',
                     gdr_cd = 'F', patid = patient$patid, yrdob = 1974)
-  add_member_continuous_enrollment(eligeff = '01/01/2008', eligend = '2010-04-30',
+  add_member_continuous_enrollment(eligeff = '2008-01-01', eligend = '2010-04-30',
                     gdr_cd = 'F', patid = patient$patid, yrdob = 1989)
   expect_no_person(person_id = patient$person_id)
 
