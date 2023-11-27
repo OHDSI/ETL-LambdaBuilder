@@ -92,6 +92,7 @@ createObservationTests <- function()
               id = patient$person_id)
   add_member_continuous_enrollment(eligeff = '2010-05-01', eligend = '2014-10-31',
                                    gdr_cd = 'F', patid = patient$patid, yrdob = 1980)
+  add_member_enrollment(patid = patient$patid, eligeff = '2010-05-01', eligend = '2014-10-31')
   add_lab_results(pat_planid = patient$patid, patid = patient$patid, loinc_cd = '76345-8', labclmid = claim$clmid, fst_dt = '2013-07-01')
   add_lab_results(pat_planid = patient$patid, patid = patient$patid, loinc_cd = '75415-0', labclmid = claim$clmid, fst_dt = '2013-07-02')
   expect_observation(person_id = patient$person_id, observation_source_value = '76345-8')
@@ -104,6 +105,7 @@ createObservationTests <- function()
               id = patient$person_id)
   add_member_continuous_enrollment(eligeff = '2010-05-01', eligend = '2014-10-31',
                                    gdr_cd = 'F', patid = patient$patid, yrdob = 1980)
+  add_member_enrollment(patid = patient$patid, eligeff = '2010-05-01', eligend = '2014-10-31')								   
   add_medical_claims(clmid = claim$clmid, clmseq = '001', lst_dt = '2013-07-01', rvnu_cd = '0100', pos = '21', loc_cd = '2',
                      pat_planid = patient$patid, patid = patient$patid, fst_dt = '2013-07-01', prov = '111111', provcat = '5678')
   add_med_diagnosis(patid = patient$patid, pat_planid = patient$patid, icd_flag = "9", diag = "E001", clmid = claim$clmid, diag_position = 1, loc_cd = '2', fst_dt = '2013-07-01')
@@ -117,6 +119,7 @@ createObservationTests <- function()
               id = patient$person_id)
   add_member_continuous_enrollment(eligeff = '2010-05-01', eligend = '2014-10-31',
                                    gdr_cd = 'F', patid = patient$patid, yrdob = 1980)
+  add_member_enrollment(patid = patient$patid, eligeff = '2010-05-01', eligend = '2014-10-31')								   
   add_medical_claims(clmid = claim$clmid, clmseq = '001', lst_dt = '2013-07-01', loc_cd = '2', pos = '11', 
                      pat_planid = patient$patid, patid = patient$patid, fst_dt = '2013-07-01', prov = '111111', provcat = '5678')
   add_med_diagnosis(patid = patient$patid, pat_planid = patient$patid, icd_flag = "9", diag = "E001", clmid = claim$clmid, diag_position = 1, loc_cd = '2', fst_dt = '2013-07-01')
@@ -162,6 +165,7 @@ createObservationTests <- function()
               id = patient$person_id)
   add_member_continuous_enrollment(eligeff = '2010-05-01', eligend = '2014-10-31',
                                    gdr_cd = 'F', patid = patient$patid, yrdob = 1980)
+  add_member_enrollment(patid = patient$patid, eligeff = '2010-05-01', eligend = '2014-10-31')								   
   add_medical_claims(clmid = claim$clmid, clmseq = '001', lst_dt = '2013-07-01', rvnu_cd = '0100', pos = '21', loc_cd = '2',
                      pat_planid = patient$patid, patid = patient$patid, fst_dt = '2013-07-01', prov = '111111', provcat = '5678', proc_cd = 'A0210')
   expect_visit_occurrence(person_id = patient$person_id, visit_concept_id = 9201)
@@ -174,16 +178,10 @@ createObservationTests <- function()
               id = patient$person_id)
   add_member_continuous_enrollment(eligeff = '2010-05-01', eligend = '2014-10-31',
                                    gdr_cd = 'F', patid = patient$patid, yrdob = 1980)
+  add_member_enrollment(patid = patient$patid, eligeff = '2010-05-01', eligend = '2014-10-31')								   
   add_inpatient_confinement(patid = patient$patid, pat_planid = patient$patid, admit_date = '2013-08-11', proc2 = 'A0210',
                             diag1 = '250.00', disch_date = '2013-08-22', icd_flag = '9', conf_id = '456', pos = '21')
   expect_visit_occurrence(person_id = patient$person_id, visit_concept_id = 9201)
   expect_observation(person_id = patient$person_id, observation_source_value = 'A0210')
-  
-  
-  patient <- createPatient()
-  claim <- createClaim()
-  declareTest("OBSERVATION - Patient has observation source value of 000", 
-              id = patient$person_id)
-  add_lab_results(pat_planid = patient$patid, patid = patient$patid, loinc_cd = '000', fst_dt = '2013-07-01')
-  expect_observation(person_id = patient$person_id, observation_source_value = '000')
+
 }

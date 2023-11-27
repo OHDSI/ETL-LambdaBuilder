@@ -31,6 +31,7 @@ createCareSiteTests <- function()
   claim <- createClaim()
   declareTest("CARE_SITE - Creates a CARE_SITE entry from an Rx_claims record", id = provider$provider_id) #PASS V2.0.0.19
   add_member_continuous_enrollment(patid = patient$patid, eligeff = '2000-05-01', eligend = '2009-12-31', gdr_cd = 'F', yrdob = 1988, ethnicity = NULL)
+  add_member_enrollment(patid = patient$patid, eligeff = '2000-05-01', eligend = '2009-12-31')
   add_rx_claims(patid = patient$patid, pat_planid = patient$patid, fill_dt = '2001-01-01', clmid = claim$clmid, pharm = provider$provid)
   expect_care_site(care_site_id = provider$provider_id, care_site_source_value = provider$provider_id, place_of_service_concept_id = 38004340)
   

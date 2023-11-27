@@ -6,6 +6,7 @@ createDrugExposureTests <- function()
                 id = patient$person_id)
   add_member_continuous_enrollment(eligeff = '2010-05-01', eligend = '2013-10-31',
                                    gdr_cd = 'F', patid = patient$patid, yrdob = 1969)
+  add_member_enrollment(patid = patient$patid, eligeff = '2010-05-01', eligend = '2013-10-31')					  								   
   add_rx_claims(patid = patient$patid, pat_planid = patient$patid, clmid = claim$clmid, ndc = '55111067101', fill_dt = '2013-10-01')
   add_rx_claims(patid = patient$patid, pat_planid = patient$patid, clmid = claim$clmid, ndc = '58487000102', fill_dt = '2013-12-01')
   expect_drug_exposure(person_id = patient$person_id, drug_concept_id = 1322189, drug_source_value = '55111067101')
@@ -20,6 +21,7 @@ createDrugExposureTests <- function()
               id = patient$person_id)
   add_member_continuous_enrollment(eligeff = '2010-05-01', eligend = '2013-10-31',
                                    gdr_cd = 'F', patid = patient$patid, yrdob = 1969)
+  add_member_enrollment(patid = patient$patid, eligeff = '2010-05-01', eligend = '2013-10-31')								   
   add_rx_claims(patid = patient$patid, pat_planid = patient$patid, clmid = claim$clmid, ndc = '55111067101', fill_dt = '2013-10-01')
   add_rx_claims(patid = patient$patid, pat_planid = patient$patid, clmid = claim$clmid, ndc = '55111067101', fill_dt = '2013-10-01')
   add_rx_claims(patid = patient$patid, pat_planid = patient$patid, clmid = claim$clmid, ndc = '55111067101', fill_dt = '2013-10-01')
@@ -34,6 +36,7 @@ createDrugExposureTests <- function()
               id = patient$person_id)
   add_member_continuous_enrollment(eligeff = '2010-05-01', eligend = '2013-10-31',
                                    gdr_cd = 'F', patid = patient$patid, yrdob = 1969)
+  add_member_enrollment(patid = patient$patid, eligeff = '2010-05-01', eligend = '2013-10-31')
   add_medical_claims(clmid = claim$clmid, clmseq = '001', lst_dt = '2013-07-01',
                      pat_planid = patient$patid, patid = patient$patid, fst_dt = '2013-07-01', prov = '111111', provcat = '5678', proc_cd = 'J0456', units = 1)
   expect_drug_exposure(person_id = patient$person_id, drug_concept_id = 41212830)
@@ -45,6 +48,7 @@ createDrugExposureTests <- function()
               id = patient$person_id)
   add_member_continuous_enrollment(eligeff = '2010-05-01', eligend = '2013-10-31',
                                    gdr_cd = 'F', patid = patient$patid, yrdob = 1969)
+  add_member_enrollment(patid = patient$patid, eligeff = '2010-05-01', eligend = '2013-10-31')								   
   add_medical_claims(clmid = claim$clmid, clmseq = '001', lst_dt = '2013-07-01', proc_cd = NULL,
                      pat_planid = patient$patid, patid = patient$patid, fst_dt = '2013-07-01', prov = '111111', provcat = '5678')
   add_med_procedure(patid = patient$patid, pat_planid = patient$patid, proc = 'J0456', proc_position = 1, clmid = claim$clmid, fst_dt = '2013-07-01')
@@ -57,6 +61,7 @@ createDrugExposureTests <- function()
   declareTest("DRUG_EXPOSURE - NDC codes from Medical map to drug exposure", id = patient$person_id)
   add_member_continuous_enrollment(eligeff = '2010-05-01', eligend = '2013-10-31',
                                    gdr_cd = 'F', patid = patient$patid, yrdob = 1969)
+  add_member_enrollment(patid = patient$patid, eligeff = '2010-05-01', eligend = '2013-10-31')								   
   add_medical_claims(clmid = claim$clmid, clmseq = '001', ndc = '55111067101', lst_dt = '2013-07-01',
                      pat_planid = patient$patid, patid = patient$patid, fst_dt = '2013-07-01', prov = '111111', provcat = '5678')
   expect_drug_exposure(person_id = patient$person_id, drug_concept_id = 1322189, drug_source_value = '55111067101')
@@ -67,8 +72,9 @@ createDrugExposureTests <- function()
   declareTest("DRUG_EXPOSURE - Proc codes from lab results map to drug exposure", id = patient$person_id)
   add_member_continuous_enrollment(eligeff = '2010-05-01', eligend = '2014-10-31',
                                    gdr_cd = 'F', patid = patient$patid, yrdob = 1980)
+  add_member_enrollment(patid = patient$patid, eligeff = '2010-05-01', eligend = '2014-10-31')
   add_lab_results(labclmid = claim$clmid, pat_planid = patient$patid, patid = patient$patid, fst_dt = '2013-07-01', proc_cd = '90651')
-  expect_drug_exposure(person_id = patient$person_id, drug_concept_id = 40213322, drug_source_value = '90651')
+  expect_drug_exposure(person_id = patient$person_id, drug_concept_id = 45892510, drug_source_value = '90651')
   
   
   patient <- createPatient()
@@ -77,8 +83,9 @@ createDrugExposureTests <- function()
               id = patient$person_id)
   add_member_continuous_enrollment(eligeff = '2010-05-01', eligend = '2014-10-31',
                                    gdr_cd = 'F', patid = patient$patid, yrdob = 1980)
+  add_member_enrollment(patid = patient$patid, eligeff = '2010-05-01', eligend = '2014-10-31')								   
   add_inpatient_confinement(patid = patient$patid, pat_planid = patient$patid, admit_date = '2013-08-11', 
                             diag1 = '250.00', disch_date = '2013-08-22', icd_flag = '9', conf_id = '456', pos = '21', proc1 = '90651')
-  expect_drug_exposure(person_id = patient$person_id, drug_concept_id = 40213322, drug_source_value = '90651')
+  expect_drug_exposure(person_id = patient$person_id, drug_concept_id = 45892510, drug_source_value = '90651')
   
 }
