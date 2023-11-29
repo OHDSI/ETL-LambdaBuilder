@@ -1,5 +1,10 @@
 getSource <- function() {
+  if (frameworkType == "SES") {
     source('R/TestFramework.R')
+  }
+  else {
+    source('R/TestFrameworkDOD.R')
+  }
 }
 
 getSequence <- function (startValue = 1) {
@@ -61,7 +66,7 @@ testInit <- function() {
 InsertsToCsv <- function(scanLocation, outputDir = NULL) {
 
     if (is.null(outputDir)) {
-      outputDir <- paste0("inst/csv/", truvenType)
+      outputDir <- paste0("inst/csv/", frameworkType)
     }
 
     overview <- readxl::read_xlsx(scanLocation, sheet = "Field Overview")
