@@ -1,6 +1,6 @@
 createDeathTests <- function()
 {
-    if (frameworkType == "dod")
+    if (tolower(frameworkType) == "dod")
     {
 		patient <- createPatient()
 		claim <- createClaim()

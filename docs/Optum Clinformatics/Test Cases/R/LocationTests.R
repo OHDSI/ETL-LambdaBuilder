@@ -1,6 +1,6 @@
 createLocationTests <- function()
 {
-    if (frameworkType == "ses")
+    if (tolower(frameworkType) == "ses")
     {
 		patient <- createPatient()
 		declareTest("LOCATION - Person location test (SES)", id = patient$person_id)
@@ -14,7 +14,7 @@ createLocationTests <- function()
 		add_provider(prov_unique = provider$provid, prov_type = '2', prov_region = 'VA')
 		expect_location(location_source_value = 'VA')
     }
-	else
+	else if (tolower(frameworkType) == "dod")
 	{
 	    patient <- createPatient()
 		declareTest("LOCATION - Person location test (DOD)", id = patient$person_id)

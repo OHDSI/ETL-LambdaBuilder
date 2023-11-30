@@ -3,6 +3,9 @@
 library("DatabaseConnector")
 library("SqlRender")
 
+frameworkType <- "ses"
+# frameworkType <- "dod"
+
 
 ## This testing package combines both SES and DOD so there is no need to switch between the two.
 # Set the variables for the native and cdm schemas these test cases will be inserted into as well as the connectionDetails object

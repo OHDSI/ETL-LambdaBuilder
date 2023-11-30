@@ -1,9 +1,8 @@
 getSource <- function() {
-  if (frameworkType == "ses") {
-    source('R/TestFramework.R')
-  }
-  else {
-    source('R/TestFrameworkDOD.R')
+  if (tolower(frameworkType) == "ses") {
+    source('extras/TestFramework.R')
+  } else if (tolower(frameworkType) == "dod") {
+    source('extras/TestFrameworkDOD.R')
   }
 }
 
@@ -41,11 +40,6 @@ createProvider <- function() {
 # and export the below when debugging.
 #' @export
 testInit <- function() {
-  initFramework()
-  createTests()
-}
-
-.onLoad <- function(libname, pkgname) {
   initFramework()
   createTests()
 }
