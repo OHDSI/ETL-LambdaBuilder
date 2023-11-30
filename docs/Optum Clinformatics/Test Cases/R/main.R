@@ -1,5 +1,5 @@
 getSource <- function() {
-  if (frameworkType == "SES") {
+  if (frameworkType == "ses") {
     source('R/TestFramework.R')
   }
   else {
