@@ -1,6 +1,6 @@
 createLocationTests <- function()
 {
-    if (frameworkType == "SES")
+    if (frameworkType == "ses")
     {
 		patient <- createPatient()
 		declareTest("LOCATION - Person location test (SES)", id = patient$person_id)
