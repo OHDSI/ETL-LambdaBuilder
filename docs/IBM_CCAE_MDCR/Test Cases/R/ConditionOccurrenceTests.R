@@ -126,18 +126,33 @@ createConditionOccurrenceTests <- function () {
   # expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '195587', condition_status_concept_id = '32908', condition_start_date = '2012-08-02', condition_type_concept_id = '32854')
   expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '195587', condition_start_date = '2012-07-01', condition_type_concept_id = '32854')
   expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '195587', condition_start_date = '2012-08-02', condition_type_concept_id = '32854')
+
+  patient <- createPatient()
+  encounter <- createEncounter()
+  declareTest(id = patient$person_id, "Event date is outside of observation_period, condition_occurrence record created. Id is PERSON_ID")
+  add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
+  add_inpatient_services(enrolid = patient$enrolid, svcdate = '2022-08-02', tsvcdat = '2022-08-02', dx4='57411', dxver='9')
+  expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '195587', condition_start_date = '2022-08-02', condition_type_concept_id = '32854')
   
-  if (truvenType == "MDCD")
+  patient <- createPatient()
+  encounter <- createEncounter()
+  declareTest(id = patient$person_id, "Condition_occurrence record default end_date is NULL. Id is PERSON_ID")
+  add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
+  add_inpatient_services(enrolid = patient$enrolid, svcdate = '2022-08-03', dx4='57411', dxver='9')
+  expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '195587', condition_start_date = '2022-08-03', condition_end_date = NULL)
+  
+  
+  if (tolower(frameworkType) == "mdcd")
   {
     patient <- createPatient()
     encounter <- createEncounter()
     declareTest(id = patient$person_id, "Patient has diagnosis in dx1 in ltc. Id is PERSON_ID")
     add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
-    add_long_term_care(enrolid = patient$enrolid, dx1 = 'v901', dxver = '9', svcdate = '2012-11-05', tsvcdat = '2012-11-10')
+    add_long_term_care(enrolid = patient$enrolid, dx1 = 'v9001', dxver = '9', svcdate = '2012-11-05', tsvcdat = '2012-11-10')
     expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '46270117', condition_type_concept_id = '38004277')
   }
   
-  if (truvenType == "CCAE")
+  if (tolower(frameworkType) == "ccae")
   {
     patient <- createPatient()
     encounter <- createEncounter()

@@ -2,7 +2,7 @@
 #' @export
 createPayerPlanPeriodTests <- function () {
 
-  if (truvenType != "MDCD") {
+  if (tolower(frameworkType) != "mdcd") {
 
   patient<-createPatient()
   declareTest(id = patient$person_id, "Person does not have prescription benefits and is excluded. Id is PERSON_ID.")
@@ -11,7 +11,7 @@ createPayerPlanPeriodTests <- function () {
 
   }
 
-  if (truvenType == "CCAE") {
+  if (tolower(frameworkType) == "ccae") {
     patient<-createPatient()
     declareTest(id = patient$person_id, "Person has a gap of >32 days between enrollment periods with the same payer_source_value; person has two records. Id is PERSON_ID.")
     add_enrollment_detail(enrolid=patient$enrolid, dtstart="2013-01-01", dtend="2013-01-31", datatyp="1", plantyp="6")
@@ -47,7 +47,7 @@ createPayerPlanPeriodTests <- function () {
 
   }
 
-  if (truvenType == "MDCR") {
+  if (tolower(frameworkType) == "mdcr") {
     patient<-createPatient()
     declareTest(id = patient$person_id, "Person has a gap of >32 days between enrollment periods with the same payer_source_value; person has two records. Id is PERSON_ID.")
     add_enrollment_detail(enrolid=patient$enrolid, dtstart="2013-01-01", dtend="2013-01-31", datatyp="1", plantyp="6")
@@ -69,7 +69,7 @@ createPayerPlanPeriodTests <- function () {
     expect_payer_plan_period(person_id=patient$person_id, payer_plan_period_start_date="2012-04-01", payer_plan_period_end_date="2012-04-30", payer_source_value="C Medicare PPO")
   }
 
-  if (truvenType == "MDCD") {
+  if (tolower(frameworkType) == "mdcd") {
 
     patient<-createPatient()
     declareTest(id = patient$person_id, "Person has a gap of >32 days between enrollment periods with the same payer_source_value; person has two records. Id is PERSON_ID.")
@@ -80,7 +80,7 @@ createPayerPlanPeriodTests <- function () {
 
     patient<-createPatient()
     declareTest(id = patient$person_id, "Person does not have prescription benefits and is excluded. Id is PERSON_ID.")
-    add_enrollment_detail(enrolid=patient$enrolid, dtstart="2013-01-01", dtend="2013-01-31", plantyp="6", drugcovg ="0")
+    add_enrollment_detail(enrolid=patient$enrolid, dtstart="2013-01-01", dtend="2013-01-31", plantyp="6", drugcovg ="0", medicare="0")
     expect_no_payer_plan_period(person_id = patient$person_id)
 
     patient<-createPatient()

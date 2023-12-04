@@ -6,9 +6,9 @@ library("SqlRender")
 ## STEP 1: Source the main file and set variable for which Truven database is being tested ("CCAE" for Commercial Claims and Encounters, "MDCR" for Medicare
 ## and "MDCD" for Medicaid)
 
-truvenType <- "CCAE"
-# truvenType <- "MDCR"
-# truvenType <- "MDCD"
+frameworkType <- "CCAE"
+# frameworkType <- "MDCR"
+# frameworkType <- "MDCD"
 
 # Set the variables for the native and cdm schemas these test cases will be inserted into as well as the connectionDetails object
 
@@ -48,16 +48,17 @@ insertSql <- readSql("insert.sql")
 translatedSql <- translate(insertSql, connectionDetails$dbms)
 executeSql(conn, translatedSql)
 
-if(truvenType != "MDCD" ){
-  #YOU NEED A COPY OF GEOLOC IN YOUR RAW
-  executeSql(conn, paste0("TRUNCATE TABLE ",nativeDatabaseSchema,".GEOLOC; INSERT INTO ",nativeDatabaseSchema,
-                          ".GEOLOC (EGEOLOC, EGEOLOC_Description, STATE) VALUES (11, 'New Jersey', 'NJ'); INSERT INTO ",
-                          nativeDatabaseSchema,
-                          ".GEOLOC (EGEOLOC, EGEOLOC_Description, STATE) VALUES (38, 'Virginia', 'VA')"))
+if(frameworkType != "MDCD" ){
+#YOU NEED A COPY OF GEOLOC IN YOUR RAW
+executeSql(conn, paste0("TRUNCATE TABLE ",nativeDatabaseSchema,".GEOLOC; INSERT INTO ",nativeDatabaseSchema,
+          ".GEOLOC (EGEOLOC, EGEOLOC_Description, STATE) VALUES (11, 'New Jersey', 'NJ'); INSERT INTO ",
+          nativeDatabaseSchema,
+          ".GEOLOC (EGEOLOC, EGEOLOC_Description, STATE) VALUES (38, 'Virginia', 'VA')"))
+
 }
 
 #IF TESTING CCAE  YOU NEED A COPY OF HRA_QUESTON_REF, HRA_VARIABLE_REF IN YOUR RAW
-if (truvenType == "CCAE" ){
+if (frameworkType == "CCAE" ){
   executeSql(conn, paste0("TRUNCATE TABLE ",nativeDatabaseSchema,".HRA_VARIABLE_REF;
            INSERT INTO ",nativeDatabaseSchema,".HRA_VARIABLE_REF (VARIABLE_NAME, VARIABLE_LONGNAME, QUESTION_TYPE_ID) 
            VALUES ('CC_ASTHMA', 'Self-reported asthma', '4');

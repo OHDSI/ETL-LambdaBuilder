@@ -2,13 +2,13 @@
 
 #' @export
 getSource <- function() {
-  if (truvenType == "CCAE") {
+  if (tolower(frameworkType) == "ccae") {
     source('extras/IBMCCAE_TestingFramework.R')
   }
-  if (truvenType == "MDCR") {
+  if (tolower(frameworkType) == "mdcr") {
     source('extras/IBMMDCR_TestingFramework.R')
   }
-  else if (truvenType == "MDCD") {
+  else if (tolower(frameworkType) == "mdcd") {
     source('extras/IBMMDCD_TestingFramework.R')
   }
 }
@@ -85,7 +85,7 @@ createProvider <- function() {
 InsertsToCsv <- function(scanLocation, outputDir = NULL) {
 
     if (is.null(outputDir)) {
-      outputDir <- paste0("inst/csv/", truvenType)
+      outputDir <- paste0("inst/csv/", frameworkType)
     }
 
     overview <- readxl::read_xlsx(scanLocation, sheet = "Field Overview")

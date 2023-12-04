@@ -21,8 +21,22 @@ createProcedureOccurrenceTests <- function () {
   # expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '40757126', procedure_date = '2012-06-12', procedure_type_concept_id = '32855')
   expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '40757105', procedure_date = '2012-06-11')
   expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '40757126', procedure_date = '2012-06-11')
+
+  patient <- createPatient()
+  encounter <- createEncounter()
+  declareTest(id = patient$person_id, "If event date is outside of observation_period, procedure_occurrence record created anyway. Id is PERSON_ID")
+  add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
+  add_inpatient_services(caseid = encounter$caseid, enrolid = patient$enrolid, pproc = '65779', svcdate = '2022-06-11', tsvcdat = '2022-06-12', year = '2022')
+  expect_procedure_occurrence(person_id = patient$person_id, procedure_date = '2022-06-11')
   
-  if (truvenType != "MDCD") {
+  patient <- createPatient()
+  encounter <- createEncounter()
+  declareTest(id = patient$person_id, "Procedure occurrence quantity - if not populated in source, leave it NULL. Id is PERSON_ID")
+  add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
+  add_inpatient_services(caseid = encounter$caseid, enrolid = patient$enrolid, pproc = '65779', svcdate = '2022-05-15', tsvcdat = '2022-05-17', qty = NULL, year = '2022')
+  expect_procedure_occurrence(person_id = patient$person_id, procedure_date = '2022-05-15', quantity = NULL)
+  
+  if (tolower(frameworkType) != "mdcd") {
     patient <- createPatient()
     encounter <- createEncounter()
     declareTest(id = patient$person_id, "Patient has two different providers for the same procedure, two records should be created. Id is PERSON_ID.")
@@ -42,7 +56,7 @@ createProcedureOccurrenceTests <- function () {
     
   } 
   
-  if (truvenType == "MDCD") {
+  if (tolower(frameworkType) == "mdcd") {
     patient <- createPatient()
     encounter <- createEncounter()
     declareTest(id = patient$person_id, "Patient has two different providers for the same procedure, the provider on the first line (ascending) is chosen. Id is PERSON_ID.")

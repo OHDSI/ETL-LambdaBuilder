@@ -5,12 +5,12 @@ setDefaults <- function (){
   set_defaults_inpatient_admissions(admdate = '2012-01-01', disdate = '2012-12-31', year = '2012', proc2 = NULL)
   
   
-  if (Sys.getenv("truvenType") == "MDCD")
+  if (tolower(frameworkType) == "mdcd")
   {
     set_defaults_enrollment_detail(drugcovg = '1')
   }
   
-  if (Sys.getenv("truvenType") == "CCAE")
+  if (tolower(frameworkType) == "ccae")
   {
     set_defaults_enrollment_detail(indstry = '1')
     set_defaults_enrollment_detail(efamid = '0')

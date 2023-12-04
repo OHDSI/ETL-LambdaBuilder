@@ -50,7 +50,12 @@ createPersonTests <- function () {
   declareTest(id = patient$person_id, "Person with sex=3 is excluded. Id is PERSON_ID.")
   add_enrollment_detail(enrolid=patient$enrolid, sex="3")
   expect_no_person(person_id = patient$person_id)
- 
+  
+  patient<-createPatient()
+  declareTest(id = patient$person_id, "Person born after current year. Id is PERSON_ID.")
+  add_enrollment_detail(enrolid=patient$enrolid, dobyr="2032")
+  expect_no_person(person_id = patient$person_id)
+
   patient<-createPatient()
   declareTest(id = patient$person_id, "Person has record with sex=3 but last record has sex=1, person is kept. Id is PERSON_ID.")
   add_enrollment_detail(enrolid=patient$enrolid, dtend="2012-01-31", dtstart="2012-01-01", sex="3")
@@ -62,7 +67,7 @@ createPersonTests <- function () {
   add_enrollment_detail(enrolid=patient$enrolid, dtend="2012-04-30", dtstart="2012-04-01", dobyr="2012")
   expect_person(person_id=patient$person_id, year_of_birth="2012", month_of_birth="4", day_of_birth="1")
   
-  if (truvenType != "MDCD")
+  if (tolower(frameworkType) != "mdcd")
   {
     patient<-createPatient()
     declareTest(id = patient$person_id, "Person with Rx benefits is kept. Id is PERSON_ID.")
@@ -81,7 +86,7 @@ createPersonTests <- function () {
     expect_person(person_id=patient$person_id)
   }
   
-  if (truvenType == "MDCD")
+  if (tolower(frameworkType) == "mdcd")
   {
     patient<-createPatient()
     declareTest(id = patient$person_id, "Person with two birth years >2 yrs apart is included because max(DOBYR) > 90. Id is PERSON_ID.") 

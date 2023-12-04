@@ -43,6 +43,13 @@ createDrugExposureTests <- function () {
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_drug_claims(enrolid = patient$enrolid, ndcnum = '13533063670', year = '2012', svcdate = '2012-01-17')
   expect_drug_exposure(person_id = patient$person_id, drug_concept_id = '46275250', drug_exposure_start_date = '2012-01-17')
+  
+  patient <- createPatient()
+  encounter <- createEncounter()
+  declareTest(id = patient$person_id, "Drug exposure quantity - if not populated in source, leave it NULL. Id is PERSON_ID. Id is PERSON_ID.")
+  add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
+  add_drug_claims(enrolid = patient$enrolid, ndcnum = '13533063670', year = '2012', svcdate = '2012-01-19', metqty = NULL)
+  expect_drug_exposure(person_id = patient$person_id, drug_concept_id = '46275250', drug_exposure_start_date = '2012-01-19', quantity = NULL)
 
   patient <- createPatient()
   encounter <- createEncounter()
@@ -65,16 +72,12 @@ createDrugExposureTests <- function () {
   add_drug_claims(enrolid = patient$enrolid, ndcnum = '00069100101', year = '2014', svcdate = '2014-09-18')
   expect_drug_exposure(person_id = patient$person_id, drug_source_concept_id = '45332969')
 
-  if (Sys.getenv("truvenType") == "CCAE")
-  {
-    patient <- createPatient()
-    encounter <- createEncounter()
-    declareTest(id = patient$person_id, "HRA Drug still has a DRUG_EXPOSURE_END_DATE (HIX-1433). Id is PERSON_ID.")
-    add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
-    add_health_risk_assessment(enrolid = patient$enrolid, survdate = '2012-05-25', flu_shot = '1')
-    expect_drug_exposure(person_id = patient$person_id, drug_exposure_end_date = '2012-05-25', drug_concept_id = '4214838')
-
-  }
+  patient <- createPatient()
+  encounter <- createEncounter()
+  declareTest(id = patient$person_id, "Event date is outside of observation_period, drug_exposure record created. Id is PERSON_ID")
+  add_enrollment_detail(enrolid=patient$enrolid, dtend = '2014-12-31', dtstart = '2014-01-01')
+  add_drug_claims(enrolid = patient$enrolid, ndcnum = '00069100101', year = '2019', svcdate = '2019-09-18')
+  expect_drug_exposure(person_id = patient$person_id, drug_exposure_start_date = '2019-09-18')
 }
 
 

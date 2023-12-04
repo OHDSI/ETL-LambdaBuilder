@@ -68,7 +68,7 @@ createCostTests <- function () {
   # event_ID <- lookup_procedure_occurrence(fetchField = "procedure_occurrence_id", person_id = patient$person_id)
   # expect_cost(cost_event_id = event_ID , revenue_code_concept_id = 0)
   #
-  # if (Sys.getenv("truvenType") == "MDCD")
+  # if (Sys.getenv("frameworkType") == "MDCD")
   # {
   #   patient <- createPatient()
   #   encounter <- createEncounter()
