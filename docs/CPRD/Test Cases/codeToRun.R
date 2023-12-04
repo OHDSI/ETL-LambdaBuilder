@@ -4,6 +4,14 @@
 
 library(CPRDtesting)
 
+source('R/TestFrameworkCprd.R')
+devtools::load_all()
+
+
+
+#getwd()
+#setwd("C:/Users/AnuarAssylkhanov/Documents/projects/ETL-LambdaBuilder/docs/CPRD/Test Cases")
+
 source_schema <- "cprd_native_test"
 cdm_schema <- "cprd_cdm_test"
 
@@ -14,11 +22,13 @@ connectionDetails <- DatabaseConnector::createConnectionDetails(dbms = config$db
                                                                 server = config$server,
                                                                 user = config$user,
                                                                 password = config$pw,
-                                                                port = config$port
-                                                                )
+                                                                port = config$port,
+                                                                pathToDriver = config$pathToDriver)
 #BUILD RAW DATA
 #=============================
-
+## Modify connection details as needed
+connectionDetails <- DatabaseConnector::createConnectionDetails(dbms = dbms, server = server,
+                                                                port = port, user = user, password = password, pathToDriver = pathToDriver)
 connection <- DatabaseConnector::connect(connectionDetails)
 
 insertSql <- SqlRender::translate(SqlRender::render(paste(generateInsertSql(source_schema),

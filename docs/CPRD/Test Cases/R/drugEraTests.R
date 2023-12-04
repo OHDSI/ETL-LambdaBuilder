@@ -1,5 +1,7 @@
 createDrugEraTests <- function()
 {
+  set_defaults_therapy(consid = NULL, prn = NULL)
+  
   # 1) drug era with 2 drug records
   patient <- createPatient(pracid='111');
   declareTest(id = patient$person_id, 'drug era with 2 drug records, id is person_id')

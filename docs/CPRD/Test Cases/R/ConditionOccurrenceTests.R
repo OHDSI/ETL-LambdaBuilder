@@ -8,7 +8,10 @@ createConditionOccurrenceTests <- function()
   add_medical(medcode = 11531, read_code = 'P00..00')
   add_medical(medcode = 35968, read_code = 'PB2z.00')
 
-
+  set_defaults_consultation(consid = NULL)
+  set_defaults_referral(sctmaptype = NULL, sctmapversion = NULL, sctisindicative = NULL, sctisassured = NULL)
+  set_defaults_test(consid = NULL, sctmaptype = NULL, sctmapversion = NULL, sctisindicative = NULL, sctisassured = NULL, data2 = NULL, data5 = NULL, data6 = NULL, data8_value = NULL, data8_date = NULL)
+  
   # 1) -- clinical condition with visit
   patient <- createPatient(pracid='311');
   declareTest(id = patient$person_id, 'CONDITION_OCCURRENCE - Read clinical condition with visit, id is person_id')

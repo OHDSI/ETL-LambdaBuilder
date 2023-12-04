@@ -5,6 +5,9 @@ createDrugExposureTests <- function()
   add_product(prodcode = 46190, gemscriptcode = '99978020')
 
   # 1) 9100
+  
+  set_defaults_immunisation(consid = NULL, sctmaptype = NULL, sctmapversion = NULL, sctisindicative = NULL, sctisassured = NULL)
+  
   patient <- createPatient();
   declareTest(id = patient$person_id, 'DRUG_EXPOSURE - testing the lookup for numdays does correct end date start+28 days, id is person_id')
   add_daysupply_decodes(prodcode = 2, qty = 1, numpacks = 0, numdays = 29)

@@ -10,6 +10,9 @@ createObservationTests <- function()
 
 
   # 1) -- clinical procedure with visit
+  
+  
+  
   patient <- createPatient();
   declareTest(id = patient$person_id, ' clinical procedure with visit')
   add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid = patient$pracid)
@@ -222,6 +225,8 @@ createObservationTests <- function()
 
 
   # 26) -- additional observation
+  set_defaults_additional(data1_date = NULL, data2_date = NULL, data3_value = NULL, data3_date = NULL, data4_value = NULL, data4_date = NULL, data5_value = NULL, data5_date = NULL, data6_value = NULL, data6_date = NULL, data7_value = NULL, data7_date = NULL, data8_value = NULL, data8_date = NULL, data9_value = NULL, data9_date = NULL, data10_value = NULL, data10_date = NULL, data11_value = NULL, data11_date = NULL, data12_value = NULL, data12_date = NULL)
+  
   add_product(prodcode=42, gemscriptcode = 72487020, productname = 'Simvastatin 10mg tablets')
   add_medical(medcode = 1942, read_code = 'M240012', 'Hair loss')
   patient <- createPatient();
