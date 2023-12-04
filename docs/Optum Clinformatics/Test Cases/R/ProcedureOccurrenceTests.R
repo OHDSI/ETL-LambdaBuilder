@@ -6,6 +6,7 @@ createProcedureOccurrenceTests <- function()
               id = patient$person_id)
   add_member_continuous_enrollment(eligeff = '2010-05-01', eligend = '2013-10-31',
                     gdr_cd = 'F', patid = patient$patid, yrdob = 1969)
+  add_member_enrollment(patid = patient$patid, eligeff = '2010-05-01', eligend = '2013-10-31')
   add_medical_claims(clmid = claim$clmid, clmseq = '001', proc_cd = '92928', lst_dt = '2013-07-01', loc_cd = '2',
 
                      pat_planid = patient$patid, patid = patient$patid, fst_dt = '2013-07-01', prov = '111111', provcat = '5678')
@@ -32,6 +33,7 @@ createProcedureOccurrenceTests <- function()
               id = patient$person_id)
   add_member_continuous_enrollment(eligeff = '2010-05-01', eligend = '2013-10-31',
                     gdr_cd = 'F', patid = patient$patid, yrdob = 1969)
+  add_member_enrollment(patid = patient$patid, eligeff = '2010-05-01', eligend = '2013-10-31')					
   add_medical_claims(clmid = claim$clmid, clmseq = '001', proc_cd = '92928', lst_dt = '2013-07-01',
                      pat_planid = patient$patid, patid = patient$patid, fst_dt = '2013-07-01', prov = '111111', provcat = '5678')
   add_med_procedure(patid = patient$patid, pat_planid = patient$patid, proc = "2", clmid = claim$clmid, proc_position = 1, fst_dt = '2013-07-01')
@@ -47,6 +49,7 @@ createProcedureOccurrenceTests <- function()
               id = patient$person_id)
   add_member_continuous_enrollment(eligeff = '2010-05-01', eligend = '2013-10-31',
                     gdr_cd = 'F', patid = patient$patid, yrdob = 1969)
+  add_member_enrollment(patid = patient$patid, eligeff = '2010-05-01', eligend = '2013-10-31')					
   add_medical_claims(clmid = claim$clmid, clmseq = '001', proc_cd = '92928', lst_dt = '2013-07-01', rvnu_cd = '0100', pos = '21',
                      pat_planid = patient$patid, patid = patient$patid, fst_dt = '2013-07-01', prov = '111111', provcat = '5678')
   add_med_procedure(patid = patient$patid, pat_planid = patient$patid, proc = "70481", clmid = claim$clmid, proc_position = 1, fst_dt = '2013-07-01')
@@ -69,6 +72,7 @@ createProcedureOccurrenceTests <- function()
               id = patient$person_id)
   add_member_continuous_enrollment(eligeff = '2010-05-01', eligend = '2013-10-31',
                     gdr_cd = 'F', patid = patient$patid, yrdob = 1969)
+  add_member_enrollment(patid = patient$patid, eligeff = '2010-05-01', eligend = '2013-10-31')					
   add_medical_claims(clmid = claim$clmid, clmseq = '001', proc_cd = '92928', lst_dt = '2013-07-01',
                      pat_planid = patient$patid, patid = patient$patid, fst_dt = '2013-07-01', prov = '111111', provcat = '5678')
   add_medical_claims(clmid = claim$clmid, clmseq = '001', lst_dt = '2013-07-01', proc_cd = '70481',
@@ -83,6 +87,7 @@ createProcedureOccurrenceTests <- function()
               id = patient$person_id)
   add_member_continuous_enrollment(eligeff = '2010-05-01', eligend = '2013-10-31',
                     gdr_cd = 'F', patid = patient$patid, yrdob = 1969)
+  add_member_enrollment(patid = patient$patid, eligeff = '2010-05-01', eligend = '2013-10-31')					
   add_medical_claims(clmid = claim$clmid, clmseq = '001', proc_cd = '92928',
                      lst_dt = '2013-07-01', pat_planid = patient$patid, patid = patient$patid, fst_dt = '2013-07-01', prov = '111111', provcat = '5678')
   add_med_procedure(patid = patient$patid, pat_planid = patient$patid, proc = "0000000", clmid = claim$clmid, proc_position = 1, fst_dt = '2013-07-01')
@@ -105,6 +110,7 @@ createProcedureOccurrenceTests <- function()
               id = patient$person_id)
   add_member_continuous_enrollment(eligeff = '2010-05-01', eligend = '2013-10-31',
                     gdr_cd = 'F', patid = patient$patid, yrdob = 1969)
+  add_member_enrollment(patid = patient$patid, eligeff = '2010-05-01', eligend = '2013-10-31')					
   add_medical_claims(clmid = claim$clmid, clmseq = '001', lst_dt = '2013-07-01', proc_cd = '70481', loc_cd = '2',
                      pat_planid = patient$patid, patid = patient$patid, fst_dt = '2013-07-01', prov = '111111', provcat = '5678')
   add_med_diagnosis(patid = patient$patid, pat_planid = patient$patid, icd_flag = "9", diag = "24910", diag_position = 1, clmid = claim$clmid, fst_dt = '2013-07-01', loc_cd = '2')
@@ -120,6 +126,7 @@ createProcedureOccurrenceTests <- function()
               id = patient$person_id)
   add_member_continuous_enrollment(eligeff = '2010-05-01', eligend = '2013-10-31',
                     gdr_cd = 'F', patid = patient$patid, yrdob = 1969)
+  add_member_enrollment(patid = patient$patid, eligeff = '2010-05-01', eligend = '2013-10-31')					
   add_medical_claims(clmid = claim$clmid, clmseq = '001', lst_dt = '2013-07-01', proc_cd = '92928', loc_cd = '2',
                      pat_planid = patient$patid, patid = patient$patid, fst_dt = '2013-07-01', prov = '111111', provcat = '5678')
   add_med_diagnosis(patid = patient$patid, pat_planid = patient$patid, icd_flag = "9", diag = "7061", diag_position = 1, clmid = claim$clmid, loc_cd = '2', fst_dt = '2013-07-01')
@@ -138,6 +145,7 @@ createProcedureOccurrenceTests <- function()
               id = patient$person_id)
   add_member_continuous_enrollment(eligeff = '2010-05-01', eligend = '2013-10-31',
                     gdr_cd = 'F', patid = patient$patid, yrdob = 1969)
+  add_member_enrollment(patid = patient$patid, eligeff = '2010-05-01', eligend = '2013-10-31')					
   add_medical_claims(clmid = claim$clmid, clmseq = '001', lst_dt = '2013-07-01', proc_cd = '92928', rvnu_cd = '0100', pos = '21', loc_cd = '2',
                      pat_planid = patient$patid, patid = patient$patid, fst_dt = '2013-07-01', prov = '111111', provcat = '5678')
   add_med_diagnosis(patid = patient$patid, pat_planid = patient$patid, icd_flag = "9", diag = "V5789", diag_position = 1, clmid = claim$clmid, loc_cd = '2', fst_dt = '2013-07-01')
@@ -154,6 +162,7 @@ createProcedureOccurrenceTests <- function()
               id = patient$person_id)
   add_member_continuous_enrollment(eligeff = '2010-05-01', eligend = '2013-10-31',
                     gdr_cd = 'F', patid = patient$patid, yrdob = 1969)
+  add_member_enrollment(patid = patient$patid, eligeff = '2010-05-01', eligend = '2013-10-31')					
   add_medical_claims(clmid = claim$clmid, clmseq = '001', lst_dt = '2013-07-01', proc_cd = '92928', loc_cd = '2',
                      pat_planid = patient$patid, patid = patient$patid, fst_dt = '2013-07-01', prov = '111111', provcat = '5678', pos = '11')
   add_med_diagnosis(patid = patient$patid, pat_planid = patient$patid, icd_flag = "9", diag = "V5789", diag_position = 1, clmid = claim$clmid, loc_cd = '2', fst_dt = '2013-07-01')
@@ -169,6 +178,7 @@ createProcedureOccurrenceTests <- function()
               id = patient$person_id)
   add_member_continuous_enrollment(eligeff = '2010-05-01', eligend = '2013-10-31',
                     gdr_cd = 'F', patid = patient$patid, yrdob = 1969)
+  add_member_enrollment(patid = patient$patid, eligeff = '2010-05-01', eligend = '2013-10-31')					
   add_lab_results(labclmid = claim$clmid, fst_dt = '2013-07-01', pat_planid = patient$patid, patid = patient$patid,
                   loinc_cd = '', proc_cd = '70481')
   expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = 2211331)

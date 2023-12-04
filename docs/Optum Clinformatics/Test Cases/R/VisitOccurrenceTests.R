@@ -6,7 +6,7 @@ createVisitOccurrenceTests <- function() {
               id = patient$person_id)
   add_member_continuous_enrollment(eligeff = '2010-05-01', eligend = '2013-10-31',
                     gdr_cd = 'F', patid = patient$patid, yrdob = 1969)  
-
+  add_member_enrollment(patid = patient$patid, eligeff = '2010-05-01', eligend = '2013-10-31')
   add_medical_claims(clmid = claim$clmid, clmseq = '001', lst_dt = '2013-07-01', rvnu_cd = '0100', pos = '21',
                      pat_planid = patient$patid, patid = patient$patid, fst_dt = '2013-07-01', prov = '111111', provcat = '5678')
   add_med_diagnosis(patid = patient$patid, pat_planid = patient$patid, icd_flag = "9", diag = "7061", diag_position = 1, clmid = claim$clmid)
@@ -26,6 +26,7 @@ createVisitOccurrenceTests <- function() {
               id = patient$person_id)
   add_member_continuous_enrollment(eligeff = '2010-05-01', eligend = '2014-10-31',
                     gdr_cd = 'F', patid = patient$patid, yrdob = 1969)
+  add_member_enrollment(patid = patient$patid, eligeff = '2010-05-01', eligend = '2014-10-31')					
   add_medical_claims(clmid = claim$clmid, clmseq = '001', lst_dt = '2014-03-13', rvnu_cd = '0100', pos = '21',
                      pat_planid = patient$patid, patid = patient$patid, fst_dt = '2014-03-01', prov = '111111', provcat = '5678')
   add_med_diagnosis(patid = patient$patid, pat_planid = patient$patid, icd_flag = "9", diag = "7061", diag_position = 1, clmid = claim$clmid)
@@ -39,6 +40,7 @@ createVisitOccurrenceTests <- function() {
               id = patient$person_id)
   add_member_continuous_enrollment(eligeff = '2010-05-01', eligend = '2013-10-31',
                     gdr_cd = 'F', patid = patient$patid, yrdob = 1969)
+  add_member_enrollment(patid = patient$patid, eligeff = '2010-05-01', eligend = '2013-10-31')					
   add_medical_claims(clmid = claim$clmid, clmseq = '001', lst_dt = '2013-08-01', pos = '11',
                      pat_planid = patient$patid, patid = patient$patid, fst_dt = '2013-08-01', prov = '111111', provcat = '5678')
   add_med_diagnosis(patid = patient$patid, pat_planid = patient$patid, icd_flag = "9", diag = "7061", diag_position = 1, clmid = claim$clmid)
@@ -52,6 +54,7 @@ createVisitOccurrenceTests <- function() {
               id = patient$person_id)
   add_member_continuous_enrollment(eligeff = '2010-05-01', eligend = '2013-10-31',
                     gdr_cd = 'F', patid = patient$patid, yrdob = 1969)
+  add_member_enrollment(patid = patient$patid, eligeff = '2010-05-01', eligend = '2013-10-31')					
   add_medical_claims(clmid = claim$clmid, clmseq = '001', lst_dt = '2013-09-01', rvnu_cd = '0981', pos = '23',
                      pat_planid = patient$patid, patid = patient$patid, fst_dt = '2013-09-01', prov = '111111', provcat = '5678')
   add_med_diagnosis(patid = patient$patid, pat_planid = patient$patid, icd_flag = "9", diag = "7061", diag_position = 1, clmid = claim$clmid)
@@ -65,6 +68,7 @@ createVisitOccurrenceTests <- function() {
               id = patient$person_id)
   add_member_continuous_enrollment(eligeff = '2010-05-01', eligend = '2015-10-31',
                     gdr_cd = 'F', patid = patient$patid, yrdob = 1969)
+  add_member_enrollment(patid = patient$patid, eligeff = '2010-05-01', eligend = '2015-10-31')					
   add_medical_claims(clmid = claim$clmid, clmseq = '001', lst_dt = '2013-10-30', rvnu_cd = '0100', pos = '13',
                      pat_planid = patient$patid, patid = patient$patid, fst_dt = '2013-10-01', prov = '111111', provcat = '5678')
   add_med_diagnosis(patid = patient$patid, pat_planid = patient$patid, icd_flag = "9", diag = "7061", diag_position = 1, clmid = claim$clmid)
@@ -78,6 +82,7 @@ createVisitOccurrenceTests <- function() {
               id = patient$person_id)
   add_member_continuous_enrollment(eligeff = '2010-05-01', eligend = '2013-10-31',
                     gdr_cd = 'F', patid = patient$patid, yrdob = 1969)
+  add_member_enrollment(patid = patient$patid, eligeff = '2010-05-01', eligend = '2013-10-31')					
   add_medical_claims(clmid = claim$clmid, clmseq = '001', lst_dt = '2009-07-01', pos = '22',
                      pat_planid = patient$patid, patid = patient$patid, fst_dt = '2009-07-01', prov = '111111', provcat = '5678')
   add_med_diagnosis(patid = patient$patid, pat_planid = patient$patid, icd_flag = "9", diag = "7061", diag_position = 1, clmid = claim$clmid)
@@ -91,6 +96,7 @@ createVisitOccurrenceTests <- function() {
               id = patient$person_id)
   add_member_continuous_enrollment(eligeff = '2010-05-01', eligend = '2013-10-31',
                     gdr_cd = 'F', patid = patient$patid, yrdob = 1969)
+  add_member_enrollment(patid = patient$patid, eligeff = '2010-05-01', eligend = '2013-10-31')					
   
   add_medical_claims(clmid = claim$clmid, clmseq = '001', lst_dt = '2012-11-01', pos = '11',
                      pat_planid = patient$patid, patid = patient$patid, fst_dt = '2012-11-01', 
@@ -104,7 +110,7 @@ createVisitOccurrenceTests <- function() {
   firstDetailId <- lookup_visit_detail(fetchField = "visit_detail_id", 
                                                person_id = patient$person_id, visit_detail_start_date = '2012-11-01')
   
-  claim <- createClaim()
+  # claim <- createClaim()
   add_medical_claims(clmid = claim$clmid, clmseq = '001', lst_dt = '2012-11-02',
                      pat_planid = patient$patid, patid = patient$patid, 
                      fst_dt = '2012-11-02', prov = '111111', provcat = '5678')
@@ -123,6 +129,7 @@ createVisitOccurrenceTests <- function() {
               id = patient$person_id)
   add_member_continuous_enrollment(eligeff = '2010-05-01', eligend = '2015-10-31',
                                    gdr_cd = 'F', patid = patient$patid, yrdob = 1959)
+  add_member_enrollment(patid = patient$patid, eligeff = '2010-05-01', eligend = '2015-10-31')								   
   
   add_medical_claims(clmid = claim$clmid, clmseq = '001', lst_dt = '2013-08-21',
                      pat_planid = patient$patid, patid = patient$patid, fst_dt = '2013-08-21', 
@@ -146,6 +153,7 @@ createVisitOccurrenceTests <- function() {
               id = patient$person_id)
   add_member_continuous_enrollment(eligeff = '2010-05-01', eligend = '2013-10-31',
                                    gdr_cd = 'F', patid = patient$patid, yrdob = 1980)
+  add_member_enrollment(patid = patient$patid, eligeff = '2010-05-01', eligend = '2013-10-31')								   
   add_medical_claims(clmid = claim$clmid, clmseq = '001', lst_dt = '2013-09-01', rvnu_cd = '0981', pos = '23',
                      pat_planid = patient$patid, patid = patient$patid, fst_dt = '2013-09-01', prov = '111111', provcat = '1001', conf_id = '987')
   add_inpatient_confinement(patid = patient$patid, pat_planid = patient$patid, admit_date = '2013-09-01', 

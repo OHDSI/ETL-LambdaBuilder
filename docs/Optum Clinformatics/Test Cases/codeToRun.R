@@ -1,74 +1,48 @@
-### OPTUM EXTENDED DOD/SES TEST SCRIPT
-## For Optum Clinformatics DataMart v8 / OMOP CDM v5.3.1
+#Code to run
 
-# Establish Extended Type and Connection strings
-#=============================
+library("DatabaseConnector")
+library("SqlRender")
 
-detach("package:OptumExtendedSesDodTesting", unload = TRUE)
+frameworkType <- "ses"
+# frameworkType <- "dod"
+
 
 ## This testing package combines both SES and DOD so there is no need to switch between the two.
+# Set the variables for the native and cdm schemas these test cases will be inserted into as well as the connectionDetails object
 
-library(OptumExtendedSesDodTesting)
+nativeDatabaseSchema  <- "optum_extended_native_test"
+cdmDatabaseSchema  <- "optum_extended_cdm_test"
 
-source_schema <- "optum_extended_native_test"
-cdm_schema <- "optum_extended_cdm_test"
+connectionDetails <- DatabaseConnector::createConnectionDetails(dbms = "dmbs",
+                                                                server = "server",
+                                                                port = 5432,
+                                                                user = "user",
+                                                                password = "password"
+)
 
-## Set Environment variables before running
-config <- read.csv("inst/csv/config.csv", stringsAsFactors = FALSE)
+# STEP 2: Run the getSource function to source the proper framework based on the variable set above. 
 
-user <- config$user
-password <- config$pw
-server <- config$server
-port <- config$port
-dbms <- config$dbms
+getSource()
 
-## Modify connection details as needed
-connectionDetails <- DatabaseConnector::createConnectionDetails(dbms = dbms, server = server,
-                                                                port = port, user = user, password = password)
+# STEP 4: AFTER writing all of your tests in the different files, rebuild the package and create the insertsql statements
 
-#BUILD RAW DATA
-#=============================
+sequencer <- getSequence() # This will create unique patient ids
+initFramework(); # This will set up the framework to create the inserts
+createTests(); # This creates the tests and puts the values in the framework initialized above
 
-connection <- DatabaseConnector::connect(connectionDetails = connectionDetails)
+# STEP 5: Create the insert & test sql file 
 
-insertSql <- SqlRender::translate(SqlRender::render(paste(generateInsertSql(source_schema),
-                                                          sep = "", collapse = "\n")),
-                                  targetDialect = connectionDetails$dbms)
-SqlRender::writeSql(insertSql, 'insertSql.sql')
+cat(file="insert.sql", paste(generateInsertSql(databaseSchema = nativeDatabaseSchema), collapse="\n"))
 
-DatabaseConnector::executeSql(connection = connection, sql = insertSql)
-DatabaseConnector::disconnect(connection = connection)
-
-#RUN CDM BUILDER (not part of this package)
-#=============================
+cat(file="test.sql", paste(generateTestSql(databaseSchema = cdmDatabaseSchema), collapse="\n"))
 
 
-# RUN TESTS
-#=============================
+# STEP 6: Run DatabaseConnector to put the test cases in your empty native database and add lines in the lookup tables to support the test cases
 
-connection <- DatabaseConnector::connect(connectionDetails = connectionDetails)
+conn <- DatabaseConnector::connect(connectionDetails)
 
-sql <- SqlRender::translate(SqlRender::render(paste(generateTestSql(cdm_schema),
-                                                                            sep = "", collapse = "\n")),
-                                                    targetDialect = connectionDetails$dbms)
-SqlRender::writeSql(sql, 'testSql.sql')
+insertSql <- readSql("insert.sql")
+translatedSql <- translate(insertSql, connectionDetails$dbms)
+executeSql(conn, translatedSql)
 
-DatabaseConnector::executeSql(connection = connection, sql = sql)
-DatabaseConnector::disconnect(connection = connection)
-
-# VIEW TEST RESULTS
-#=============================
-
-connection <- DatabaseConnector::connect(connectionDetails = connectionDetails)
-
-DatabaseConnector::querySql(connection, 
-                            SqlRender::renderSql("SELECT status, count(*) FROM @cdmDatabaseSchema.test_results group by status", 
-                                                 cdmDatabaseSchema = cdmDatabaseSchema)$sql)
-DatabaseConnector::querySql(connection, 
-                            SqlRender::renderSql("SELECT * FROM @cdmDatabaseSchema.test_results where status = 'FAIL'", 
-                                                 cdmDatabaseSchema = cdmDatabaseSchema)$sql)
-
-DatabaseConnector::disconnect(connection = connection)
-
-
-
+DatabaseConnector::disconnect(conn)

@@ -7,6 +7,8 @@ createObservationPeriodTests <- function()
                     gdr_cd = 'F', patid = patient$patid, yrdob = 1969)
   add_member_continuous_enrollment(eligeff = '2000-05-01', eligend = '2008-02-29',
                     gdr_cd = 'F', patid = patient$patid, yrdob = 1969)
+  add_member_enrollment(patid = patient$patid, eligeff = '2000-05-01', eligend = '2008-12-31')
+  add_member_enrollment(patid = patient$patid, eligeff = '2000-05-01', eligend = '2008-02-29')  
   expect_count_observation_period(rowCount = 1, person_id = patient$person_id)
   expect_observation_period(person_id = patient$person_id, observation_period_start_date = '2000-05-01', observation_period_end_date = '2008-12-31')
 
@@ -18,6 +20,9 @@ createObservationPeriodTests <- function()
                     gdr_cd = 'F', patid = patient$patid, yrdob = 1969)
   add_member_continuous_enrollment(eligeff = '2006-01-29', eligend = '2011-12-31',
                     gdr_cd = 'F', patid = patient$patid, yrdob = 1969)
+  add_member_enrollment(patid = patient$patid, eligeff = '2000-05-01', eligend = '2005-12-31')
+  add_member_enrollment(patid = patient$patid, eligeff = '2006-01-29', eligend = '2011-12-31')  
+					
   expect_count_observation_period(rowCount = 1, person_id = patient$person_id)
   expect_observation_period(person_id = patient$person_id, observation_period_start_date = '2000-05-01', observation_period_end_date = '2011-12-31')
 
@@ -29,6 +34,9 @@ createObservationPeriodTests <- function()
                     gdr_cd = 'M', patid = patient$patid, yrdob = 1969)
   add_member_continuous_enrollment(eligeff = '2000-05-01', eligend = '2000-12-31',
                     gdr_cd = 'M', patid = patient$patid, yrdob = 1969)
+  add_member_enrollment(patid = patient$patid, eligeff = '2001-04-01', eligend = '2006-12-31')
+  add_member_enrollment(patid = patient$patid, eligeff = '2000-05-01', eligend = '2000-12-31')  
+					
   expect_count_observation_period(rowCount = 2, person_id = patient$person_id)
   expect_observation_period(person_id = patient$person_id, observation_period_start_date = '2001-04-01', observation_period_end_date = '2006-12-31')
   expect_observation_period(person_id = patient$person_id, observation_period_start_date = '2000-05-01', observation_period_end_date = '2000-12-31')

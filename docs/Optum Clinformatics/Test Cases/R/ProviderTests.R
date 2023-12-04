@@ -17,6 +17,6 @@ createProviderTests <- function()
   declareTest("PROVIDER - Creates a provider entry from record in native PROVIDER table, specialty in taxonomy2.", 
               id = provider$provider_id)
   add_provider(prov_unique = provider$provid, provcat = NULL, taxonomy1 = NULL, taxonomy2 = '207PE0004X')
-  expect_provider(provider_source_value = provider$provid, specialty_concept_id = 38003845, specialty_source_value = '207PE0004X')
+  expect_provider(provider_source_value = provider$provid, specialty_concept_id = 38004510, specialty_source_value = '207PE0004X')
   
 }
