@@ -142,17 +142,17 @@ createConditionOccurrenceTests <- function () {
   expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '195587', condition_start_date = '2022-08-03', condition_end_date = NULL)
   
   
-  if (truvenType == "MDCD")
+  if (tolower(frameworkType) == "mdcd")
   {
     patient <- createPatient()
     encounter <- createEncounter()
     declareTest(id = patient$person_id, "Patient has diagnosis in dx1 in ltc. Id is PERSON_ID")
     add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
-    add_long_term_care(enrolid = patient$enrolid, dx1 = 'v901', dxver = '9', svcdate = '11-05-2012', tsvcdat = '11-10-2012')
-    expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '4053838', condition_type_concept_id = '38000215')
+    add_long_term_care(enrolid = patient$enrolid, dx1 = 'v9001', dxver = '9', svcdate = '2012-11-05', tsvcdat = '2012-11-10')
+    expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '46270117', condition_type_concept_id = '38004277')
   }
   
-  if (truvenType == "CCAE")
+  if (tolower(frameworkType) == "ccae")
   {
     patient <- createPatient()
     encounter <- createEncounter()

@@ -36,7 +36,7 @@ createProcedureOccurrenceTests <- function () {
   add_inpatient_services(caseid = encounter$caseid, enrolid = patient$enrolid, pproc = '65779', svcdate = '2022-05-15', tsvcdat = '2022-05-17', qty = NULL, year = '2022')
   expect_procedure_occurrence(person_id = patient$person_id, procedure_date = '2022-05-15', quantity = NULL)
   
-  if (truvenType != "MDCD") {
+  if (tolower(frameworkType) != "mdcd") {
     patient <- createPatient()
     encounter <- createEncounter()
     declareTest(id = patient$person_id, "Patient has two different providers for the same procedure, two records should be created. Id is PERSON_ID.")
@@ -56,7 +56,7 @@ createProcedureOccurrenceTests <- function () {
     
   } 
   
-  if (truvenType == "MDCD") {
+  if (tolower(frameworkType) == "mdcd") {
     patient <- createPatient()
     encounter <- createEncounter()
     declareTest(id = patient$person_id, "Patient has two different providers for the same procedure, the provider on the first line (ascending) is chosen. Id is PERSON_ID.")

@@ -2,7 +2,7 @@
 createMeasurementTests <- function () {
 
   
-  if (truvenType != "MDCD")
+  if (tolower(frameworkType) != "mdcd")
   {
   
   patient <- createPatient()
@@ -73,14 +73,14 @@ createMeasurementTests <- function () {
   
   patient <- createPatient()
   encounter <- createEncounter()
-  declareTest(id = patient$person_id, "For UNIT_CONCEPT_ID use JNJ_UNITS. Id is PERSON_ID.")
+  declareTest(id = patient$person_id, "For UNIT_CONCEPT_ID UCUM lookup should not be used, use JNJ_UNITS istead. Id is PERSON_ID.")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_lab(enrolid = patient$enrolid, year='2012', svcdate = '2012-04-06', loinccd = '56789-1', result = '100', resunit = 'lbs.')
   expect_measurement(person_id = patient$person_id, unit_concept_id = '8739')
   
   patient <- createPatient()
   encounter <- createEncounter()
-  declareTest(id = patient$person_id, "For UNIT_CONCEPT_ID UCUM lookup not used, use JNJ_UNITS istead. 9471(UCUM) 586323(JNJ_UNITS). Id is PERSON_ID.")
+  declareTest(id = patient$person_id, "For UNIT_CONCEPT_ID UCUM lookup should not be used, use JNJ_UNITS istead. 586323 concept_id is expected. 9471 is a wrong UCUM derived unit. Id is a PERSON_ID.")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_lab(enrolid = patient$enrolid, year='2012', svcdate = '2012-04-06', loinccd = '56789-1', result = '100', resunit = 'C')
   expect_measurement(person_id = patient$person_id, unit_concept_id = '586323')
@@ -123,7 +123,7 @@ createMeasurementTests <- function () {
   }
   
   
-  if (truvenType == "CCAE")
+  if (tolower(frameworkType) == "ccae")
   {
 
     patient <- createPatient()

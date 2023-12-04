@@ -1,7 +1,7 @@
 #' @export
 createProviderTests <- function () {
   
-  if (truvenType != "MDCD")
+  if (tolower(frameworkType) != "mdcd")
   {
     provider<-createProvider();
     declareTest(id = provider$provid, description = "Provider in facility header table with stdprov=220, specialty = emergency medicine. Id is PROVIDER_SOURCE_VALUE")
@@ -40,7 +40,7 @@ createProviderTests <- function () {
     expect_provider(provider_source_value ="", specialty_source_value="220")
   }
   
-  if (truvenType == "MDCD")
+  if (tolower(frameworkType) == "mdcd")
   {
     provider<-createProvider();
     declareTest(id = provider$provid, description = "Provider in facility header table with stdprov=220, specialty = emergency medicine. Id is PROVIDER_SOURCE_VALUE")
