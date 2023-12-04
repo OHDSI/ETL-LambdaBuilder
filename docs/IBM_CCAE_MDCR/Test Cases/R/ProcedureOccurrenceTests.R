@@ -24,7 +24,7 @@ createProcedureOccurrenceTests <- function () {
 
   patient <- createPatient()
   encounter <- createEncounter()
-  declareTest(id = patient$person_id, "Event data is outside of observation_period, procedure_occurrence record created. Id is PERSON_ID")
+  declareTest(id = patient$person_id, "If event date is outside of observation_period, procedure_occurrence record created anyway. Id is PERSON_ID")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_inpatient_services(caseid = encounter$caseid, enrolid = patient$enrolid, pproc = '65779', svcdate = '2022-06-11', tsvcdat = '2022-06-12', year = '2022')
   expect_procedure_occurrence(person_id = patient$person_id, procedure_date = '2022-06-11')
