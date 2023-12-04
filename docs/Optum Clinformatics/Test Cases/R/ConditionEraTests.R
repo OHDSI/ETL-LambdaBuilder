@@ -1,3 +1,4 @@
+
 createConditionEraTests <- function()
 {
   testDiag <- '7061'
@@ -8,6 +9,7 @@ createConditionEraTests <- function()
               id = patient$person_id)
   add_member_continuous_enrollment(eligeff = '2010-05-01', eligend = '2013-10-31',
                     gdr_cd = 'F', patid = patient$patid, yrdob = 1969)
+  add_member_enrollment(patid = patient$patid, eligeff = '2010-05-01', eligend = '2013-10-31')
   
   claim <- createClaim()
   add_medical_claims(clmid = claim$clmid, clmseq = '001', lst_dt = '2013-07-01',

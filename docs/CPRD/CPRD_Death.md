@@ -34,7 +34,7 @@ Per CPRD cause-specific mortality is not reliably recorded in the General Practi
 PERSON_ID|Patient.Patid||
 DEATH_DATE|Patient.Deathdate|
 DEATH_DATETIME|Set time to 00:00:00 UTC Tz||
-DEATH_TYPE_CONCEPT_ID|32815 (Death Certificate)
+DEATH_TYPE_CONCEPT_ID|32817 (EHR)
 CAUSE_OF_DEATH_CONCEPT_ID|0||
 CAUSE_OF_DEATH_SOURCE_VALUE|0||
 CAUSE_SOURCE_CONCEPT_ID|0||

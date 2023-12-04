@@ -54,8 +54,9 @@ executeSql(conn, paste0("TRUNCATE TABLE ",nativeDatabaseSchema,".GEOLOC; INSERT 
           ".GEOLOC (EGEOLOC, EGEOLOC_Description, STATE) VALUES (11, 'New Jersey', 'NJ'); INSERT INTO ",
           nativeDatabaseSchema,
           ".GEOLOC (EGEOLOC, EGEOLOC_Description, STATE) VALUES (38, 'Virginia', 'VA')"))
+
 }
-  
+
 #IF TESTING CCAE  YOU NEED A COPY OF HRA_QUESTON_REF, HRA_VARIABLE_REF IN YOUR RAW
 if (frameworkType == "CCAE" ){
   executeSql(conn, paste0("TRUNCATE TABLE ",nativeDatabaseSchema,".HRA_VARIABLE_REF;
