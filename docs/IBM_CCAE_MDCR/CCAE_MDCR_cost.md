@@ -45,7 +45,9 @@ The **COST** table captures all cost information.
 | PAID_BY_PRIMARY | - | - | - |
 | PAID_INGREDIENT_COST | - | - | - |
 | PAID_DISPENSING_FEE | - | - | - |
-| PAYER_PLAN_PERIOD_ID | - | - | - |
+| PAYER_PLAN_PERIOD_ID | - | - | Lookup associated PAYER_PLAN_PERIOD_ID. Look up by PERSON_ID and PROCEDURE_DATE. If there no match, put NULL.
+
+There should only be one possible plan. |
 | AMOUNT_ALLOWED | - | - | - |
 | REVENUE_CODE_CONCEPT_ID | - | 0 | - |
 | REVENUE_CODE_SOURCE_VALUE | - | - | - |
@@ -77,7 +79,9 @@ The **COST** table captures all cost information.
 | PAID_BY_PRIMARY | - | - | - |
 | PAID_INGREDIENT_COST | - | - | - |
 | PAID_DISPENSING_FEE | - | - | - |
-| PAYER_PLAN_PERIOD_ID | - | - | - |
+| PAYER_PLAN_PERIOD_ID | - | - | Lookup associated PAYER_PLAN_PERIOD_ID. Look up by PERSON_ID and PROCEDURE_DATE. If there no match, put NULL.
+
+There should only be one possible plan. |
 | AMOUNT_ALLOWED | - | - | - |
 | REVENUE_CODE_CONCEPT_ID | - | 0 | - |
 | REVENUE_CODE_SOURCE_VALUE | - | - | - |
@@ -109,7 +113,9 @@ The **COST** table captures all cost information.
 | PAID_BY_PRIMARY | - | - | - |
 | PAID_INGREDIENT_COST | - | - | - |
 | PAID_DISPENSING_FEE | - | - | - |
-| PAYER_PLAN_PERIOD_ID | - | - | - |
+| PAYER_PLAN_PERIOD_ID | - | - | Lookup associated PAYER_PLAN_PERIOD_ID. Look up by PERSON_ID and PROCEDURE_DATE. If there no match, put NULL.
+
+There should only be one possible plan. |
 | AMOUNT_ALLOWED | - | - | - |
 | REVENUE_CODE_CONCEPT_ID | - | 0 | - |
 | REVENUE_CODE_SOURCE_VALUE | - | - | - |
