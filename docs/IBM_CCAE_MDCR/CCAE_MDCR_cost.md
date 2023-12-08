@@ -24,7 +24,6 @@ The **COST** table captures all cost information.
 
 ### Reading from **DRUG_CLAIMS**
 
-![](images/image17DrugCost.png)
 
 <br>
 
@@ -33,7 +32,7 @@ The **COST** table captures all cost information.
 | COST_ID | - | A system generated unique identifier for each cost record | - |
 | COST_EVENT_ID | - | Costs coming from the **DRUG_CLAIMS** table will have COST_EVENT_ID = DRUG_EXPOSURE_ID | - |
 | COST_DOMAIN_ID | - | `Drug` | - |
-| COST_TYPE_CONCEPT_ID | - | -| When RXMR = 2 then 32857 (Mail order record) else set to 32869 (Pharmacy claim) |
+| COST_TYPE_CONCEPT_ID | - | When RXMR = 2 then 32857 (Mail order record) else set to 32869 (Pharmacy claim) |
 | CURRENCY_CONCEPT_ID |  | `44818668` | This will be `44818668` for all rows since this is a US claims database and paid in US Dollars. |
 | TOTAL_CHARGE | - | - | - |
 | TOTAL_COST | - | - | - |
@@ -57,7 +56,6 @@ The **COST** table captures all cost information.
 
 ### Reading from **OUTPATIENT_SERVICES**
 
-![](images/image14OPSCost.png)
 
 <br>
 
@@ -90,7 +88,6 @@ The **COST** table captures all cost information.
 
 ### Reading from **INPATIENT_SERVICES**
 
-![](images/image15IPSCOST.png)
 
 <br>
 
