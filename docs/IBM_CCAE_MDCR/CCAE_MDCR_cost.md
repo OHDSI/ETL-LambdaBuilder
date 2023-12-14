@@ -29,7 +29,7 @@ The **COST** table captures all cost information.
 | --- | --- | --- | --- |
 | COST_ID | - | A system generated unique identifier for each cost record | - |
 | COST_EVENT_ID | - | Costs coming from the **DRUG_CLAIMS** table will have COST_EVENT_ID = the corresponding VISIT_DETAIL_ID that was generated for loading the VISIT_DETAIL table | - |
-| COST_DOMAIN_ID | - | 'Visit Detail' | - |
+| COST_DOMAIN_ID | - | `Visit Detail` | - |
 | COST_TYPE_CONCEPT_ID | - | `32869` | <br>`32869` (Pharmacy claim)</br> <br>This should match the VISIT_DETAIL_TYPE_CONCEPT_ID.</br>
 | CURRENCY_CONCEPT_ID |  | `44818668` | This will be `44818668` for all rows since this is a US claims database and paid in US Dollars. |
 | TOTAL_CHARGE | - | - | - |
@@ -61,7 +61,7 @@ The **COST** table captures all cost information.
 | --- | --- | --- | --- |
 | COST_ID | - | A system generated unique identifier for each cost record | - |
 | COST_EVENT_ID | - | Costs coming from the **OUTPATIENT_SERVICES** table will have COST_EVENT_ID = the corresponding VISIT_DETAIL_ID that was generated for loading the VISIT_DETAIL table | - |
-| COST_DOMAIN_ID | - | 'Visit Detail' | - |
+| COST_DOMAIN_ID | - | `Visit Detail` | - |
 | COST_TYPE_CONCEPT_ID | - | `32860` | <br>`32860`	Outpatient Claim Detail </br> <br>This should match the VISIT_DETAIL_TYPE_CONCEPT_ID.</br> |
 | CURRENCY_CONCEPT_ID | - | `44818668` | This will be `44818668` for all rows since this is a US claims database and paid in US Dollars. |
 | TOTAL_CHARGE | - | - | - |
@@ -93,7 +93,7 @@ The **COST** table captures all cost information.
 | --- | --- | --- | --- |
 | COST_ID | - | A system generated unique identifier for each cost record | - |
 | COST_EVENT_ID | - | Costs coming from the **INPATIENT_SERVICES** table will have COST_EVENT_ID = the corresponding VISIT_DETAIL_ID that was generated for loading the VISIT_DETAIL table | - |
-| COST_DOMAIN_ID | - | 'Visit Detail' | - |
+| COST_DOMAIN_ID | - | `Visit Detail` | - |
 | COST_TYPE_CONCEPT_ID | - | `32854` | <br>`32854`	Inpatient Claim Detail </br> <br>This should match the VISIT_DETAIL_TYPE_CONCEPT_ID.</br> |
 | CURRENCY_CONCEPT_ID | - | `44818668` | This will be `44818668` for all rows since this is a US claims database and paid in US Dollars. |
 | TOTAL_CHARGE | - | - | - |
@@ -125,7 +125,7 @@ The **COST** table captures all cost information.
 | --- | --- | --- | --- |
 | COST_ID | - | A system generated unique identifier for each cost record | - |
 | COST_EVENT_ID | - | Costs coming from the **INPATIENT_ADMISSIONS** table will have COST_EVENT_ID = the corresponding VISIT_DETAIL_ID that was generated for loading the VISIT_DETAIL table | - |
-| COST_DOMAIN_ID | - | 'Visit Detail' | - |
+| COST_DOMAIN_ID | - | `Visit Detail` | - |
 | COST_TYPE_CONCEPT_ID | - | `32855` | <br>`32855`	Inpatient Claim Header </br> <br>This should match the VISIT_DETAIL_TYPE_CONCEPT_ID.</br>|
 | CURRENCY_CONCEPT_ID | - | `44818668` | This will be `44818668` for all rows since this is a US claims database and paid in US Dollars. |
 | TOTAL_CHARGE | - | - | - |
