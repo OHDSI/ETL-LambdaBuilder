@@ -11,16 +11,16 @@ description: "OPTUM EHR Diagnosis table to STEM"
 
 The **Diagnosis** table has multiple columns we use to assign CONDITION_STATUS_CONCEPT_ID. These are PRIMARY_DIAGNOSIS, ADMITTING_DIAGNOSIS, DISCHARGE_DIAGNOSIS, and DISCHARGE_STATUS. The below table details the possible combinations of the fields and how to assign the CONDITION_STATUS_CONCEPT_ID accordingly. 
 
-|Primary_Diagnosis Value|	Admitting_Diagnosis Value	|Discharge_Diagnosis Value|	Discharge_Status Value|	**Set Condition_Status_Concept_Id to**|
-|-|-|-|-|-|
-|1|	0	|0	|any value	|32902|
-1|	1	|any value|	any value	|32901|
-1|	0	|1	|any value|	32903| 
-0	|0	|0|	History of|	4188893|
-0|	0	|0|	Possible diagnosis of|	32899|
-0|1|any value|any value|32830|
-0|0|1|any value|32896|
-0|0|0|any value | 0
+| primary_diagnosis | admitting_diagnosis | discharge_diagnosis | diagnosis_status      | Set Condition_Status_Concept_Id to | comment                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| ----------------- | ------------------- | ------------------- | --------------------- | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1                 | 0 or NULL           | 0 or NULL           | any value             | 32902                              | primary diagnosis                                                                                                                                                                                                                                                                                                                                                                                                          |
+| 1                 | 1                   | any value           | any value             | 32901                              | Primary admission diagnosis                                                                                                                                                                                                                                                                                                                                                                                                |
+| 1                 | 0 or NULL           | 1                   | any value             | 32903                              | Primary discharge diagnosis                                                                                                                                                                                                                                                                                                                                                                                                |
+| any value         | any value           | any value           | History of            |                                    | put it in the Observation table with observation_concept_id = 1340204 and value_as_concept_id = mapped diagnosis_cd_type&diagnosis_cd (same logic as described in concept_Id). Note, if the source concept is mapped with Maps to value, ignore this relationship. type_concept_id = 32840, source_value = 'History of '||diagnosis_cd,  other fields have the same logic as described in Reading from OPTUM_EHR.Diagnosis |
+| any value         | any value           | any value           | Possible diagnosis of | 32899                              | Preliminary diagnosis                                                                                                                                                                                                                                                                                                                                                                                                      |
+| 0 or NULL         | 1                   | any value           | any value             | 32890                              | Admission diagnosis                                                                                                                                                                                                                                                                                                                                                                                                        |
+| 0 or NULL         | 0 or NULL           | 1                   | any value             | 32896                              | Discharge diagnosis                                                                                                                                                                                                                                                                                                                                                                                                        |
+| else              |                     |                     |                       | NULL                               |																																																																																																							  |
 
 
 ## Reading from OPTUM_EHR.Diagnosis
@@ -84,3 +84,6 @@ The **Diagnosis** table has multiple columns we use to assign CONDITION_STATUS_C
 
 ### 01-Aug-2023
 - Added Maps to value logic
+
+### 12-Dec-2023
+CONDITION_STATUS_CONCEPT_ID logic updated
