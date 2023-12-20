@@ -151,7 +151,7 @@ The **COST** table captures all cost information.
 ## Change Log
 
 ### Dec 14, 2023
-* Updated COST ETL guidance to populate the COST table at the same time as the VISIT_DETAIL table and apply logic to populate the cost_event_id, cost_type_concept_id and cost_domain_id with visit_detail_id, visit_detail_concept_id and 'Visit Detail' respectively.
+* Updated COST ETL guidance to populate the COST table at the same time as the VISIT_DETAIL table and apply logic to populate the cost_event_id, cost_type_concept_id and cost_domain_id with visit_detail_id, visit_detail_type_concept_id and 'Visit Detail' respectively.
 
 ### Dec 7, 2023
 * Updated COST ETL logic to map Outpatient_services.pay, Inpatient_services.pay and Drug_claims.pay to cost.total_paid
