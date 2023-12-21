@@ -16,7 +16,7 @@ This logic is reiterated from the PERSON table page but is put here as well for 
 The Optum EHR Patient table contains an indicator that denotes whether the paient is part of an integrated delivery network, which means that there is a higher likelihood of complete capture of medical events. An integrated delivery network is an organization or group of hospitals and health care providers that aligns local facilities, managing them as one. To keep track of this, for each person in the Patient table with **idn_indicator** = 1, create a record in the OBSERVATION table where OBSERVATION_DATE = OBSERVATION_PERIOD_START_DATE, OBSERVATION_CONCEPT_ID = 44804235 and VALUE_AS_NUMBER = 1, OBSERVATION_SOURCE_VALUE = 'IDN' and OBSERVATION_TYPE_CONCEPT_ID = 32817 (EHR). 
 
 Dataset contains dates beore 2007 year, which are mistakes, since the start of the dataset is 01-Jan-2007. Events with these dates are removed from the CDM.
-
+Additionally needs to be removed any events that has an event date year that is prior to the person YEAR_OF_BIRTH.
 
 **Fields in the STEM table**
 
@@ -71,3 +71,6 @@ Dataset contains dates beore 2007 year, which are mistakes, since the start of t
 
 - 07-Aug-2023
 Cut of dates before 01-Jan-2007 rule added
+
+- 12-Dec-2023
+Delete events with year prior to the person YEAR_OF_BIRTH

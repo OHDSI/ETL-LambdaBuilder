@@ -34,7 +34,7 @@ We apply this imputation strategy after data has been moved to the DRUG_EXPOSURE
 | drug_type_concept_id | type_concept_id |  |  |
 | stop_reason | stop_reason |  |  |
 | refills | refills |  |  |
-| quantity | quantity |  |  |
+| quantity | quantity | Allowed number of refills up to 24. if this number is higher, set drug_expusure.refills = NULL |  |
 | days_supply | days_supply |  |  |
 | sig | sig |  |  |
 | route_concept_id | route_concept_id |  |  |
@@ -46,3 +46,8 @@ We apply this imputation strategy after data has been moved to the DRUG_EXPOSURE
 | drug_source_concept_id | source_concept_id |  |  |
 | route_source_value | route_source_value |  |  |
 | dose_unit_source_value | dose_unit_source_value |  |  |
+
+### Change log
+
+- 12-Dec-2023
+Set max allowed refills up to 24
