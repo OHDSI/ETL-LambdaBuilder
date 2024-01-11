@@ -74,7 +74,7 @@ createObservationTests <- function () {
               first_month_active = '200701', last_month_active = '201001')
   add_observations(ptid=patient$ptid, obs_date = '2009-01-01', obs_time = '14:30:00')
   #expect_observation(person_id = patient$person_id, observation_time = '14:30:00')
-  expect_observation(person_id = patient$person_id, observation_datetime = "14:30:00")
+  expect_observation(person_id = patient$person_id, observation_datetime = '2009-01-01 14:30:00')
 
   # Obs Result casting to numeric Observation value
   patient <- createPatient();

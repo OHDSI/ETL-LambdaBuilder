@@ -292,30 +292,30 @@ createDrugExposureTests <- function () {
   patient <- createPatient();
   encounter1 <- createEncounter();
   encounter2 <- createEncounter();
-  declareTest(description = "Patient has covid vaccine with immunization_desc = 'COVID-19 VACCINE, PFIZER' ", id = patient$person_id)
+  declareTest(description = "Patient has covid vaccine with immunization_desc = ''COVID-19 VACCINE, PFIZER'' ", id = patient$person_id)
   add_patient(ptid = patient$ptid, first_month_active = '201005', last_month_active = '201212')
-  add_encounter(ptid = patient$ptid, encid = encounter1$encid, interaction_date = "05-01-2010")
-  add_encounter(ptid = patient$ptid, encid = encounter2$encid,  interaction_date = "31-12-2012")
+  add_encounter(ptid = patient$ptid, encid = encounter1$encid, interaction_date = "2010-05-01")
+  add_encounter(ptid = patient$ptid, encid = encounter2$encid,  interaction_date = "2012-12-31")
   add_immunizations(ptid = patient$ptid, immunization_date="2011-10-12", immunization_desc = "COVID-19 VACCINE, PFIZER")
   expect_drug_exposure(person_id = patient$person_id, drug_type_concept_id="32818", drug_concept_id = "37003436")
 
   patient <- createPatient();
   encounter1 <- createEncounter();
   encounter2 <- createEncounter();
-  declareTest(description = "Patient has covid vaccine with immunization_desc = 'COVID-19 VACCINE, MODERNA' ", id = patient$person_id)
+  declareTest(description = "Patient has covid vaccine with immunization_desc = ''COVID-19 VACCINE, MODERNA'' ", id = patient$person_id)
   add_patient(ptid = patient$ptid, first_month_active = '201005', last_month_active = '201212')
-  add_encounter(ptid = patient$ptid, encid = encounter1$encid, interaction_date = "05-01-2010")
-  add_encounter(ptid = patient$ptid, encid = encounter2$encid,  interaction_date = "31-12-2012")
+  add_encounter(ptid = patient$ptid, encid = encounter1$encid, interaction_date = "2010-05-01")
+  add_encounter(ptid = patient$ptid, encid = encounter2$encid,  interaction_date = "2012-12-31")
   add_immunizations(ptid = patient$ptid, immunization_date="2011-10-12", immunization_desc = "COVID-19 VACCINE, MODERNA")
   expect_drug_exposure(person_id = patient$person_id, drug_type_concept_id="32818", drug_concept_id = "37003518")
 
   patient <- createPatient();
   encounter1 <- createEncounter();
   encounter2 <- createEncounter();
-  declareTest(description = "Patient has covid vaccine with immunization_desc = 'SARS-COV-2 (COVID-19) vaccine, UNSPECIFIED' ", id = patient$person_id)
+  declareTest(description = "Patient has covid vaccine with immunization_desc = ''SARS-COV-2 (COVID-19) vaccine, UNSPECIFIED'' ", id = patient$person_id)
   add_patient(ptid = patient$ptid, first_month_active = '201005', last_month_active = '201212')
-  add_encounter(ptid = patient$ptid, encid = encounter1$encid, interaction_date = "05-01-2010")
-  add_encounter(ptid = patient$ptid, encid = encounter2$encid,  interaction_date = "31-12-2012")
+  add_encounter(ptid = patient$ptid, encid = encounter1$encid, interaction_date = "2010-05-01")
+  add_encounter(ptid = patient$ptid, encid = encounter2$encid,  interaction_date = "2012-12-31")
   add_immunizations(ptid = patient$ptid, immunization_date="2011-10-12", immunization_desc = "SARS-COV-2 (COVID-19) vaccine, UNSPECIFIED")
   expect_drug_exposure(person_id = patient$person_id, drug_type_concept_id="32818", drug_concept_id = "724904")
 

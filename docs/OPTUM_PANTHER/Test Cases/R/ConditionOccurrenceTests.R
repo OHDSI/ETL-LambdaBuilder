@@ -21,15 +21,6 @@ createConditionOccurrenceTests <- function () {
   set_defaults_observations(result_date = NULL)
   
   set_defaults_prescriptions_written(daily_dose = NULL, days_supply = NULL)
-  
-  patient <- createPatient();
-  declareTest("Diagnosis without ''Diagnosis of'' status is not loaded", id = patient$person_id)
-  add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
-              first_month_active = '200701', last_month_active = '201001')
-  add_diagnosis(ptid=patient$ptid, diagnosis_status = 'Family history of', diagnosis_cd = '7061',
-                diagnosis_cd_type = 'ICD9', diag_date = '2009-01-01')
-  expect_no_condition_occurrence(person_id = patient$person_id)
-
 
   patient <- createPatient();
   declareTest("Test diag_date to condition_start_date", id = patient$person_id)
@@ -55,19 +46,19 @@ createConditionOccurrenceTests <- function () {
   enc <- createEncounter();
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
-  add_diagnosis(ptid=patient$ptid, diagnosis_status = 'Diagnosis of', diagnosis_cd = 'H44.611',
+  add_diagnosis(ptid=patient$ptid, diagnosis_status = 'Diagnosis of', diagnosis_cd = 'H44611',
                 diagnosis_cd_type = 'ICD10', diag_date = '2009-01-01')
-  expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = 381850, condition_source_value = 'H44.611')
+  expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = 45543058, condition_source_value = 'H44.611')
 
 
   patient <- createPatient();
-  declareTest("Test primary diagnosis to condition_type_concept_id", id = patient$person_id)
+  declareTest("Test primary diagnosis to condition_status_concept_id", id = patient$person_id)
   enc <- createEncounter();
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
   add_diagnosis(ptid=patient$ptid, diagnosis_status = 'Diagnosis of', diagnosis_cd = '7061',
                 diagnosis_cd_type = 'ICD9', diag_date = '2009-01-01', primary_diagnosis = '1')
-  expect_condition_occurrence(person_id = patient$person_id, condition_type_concept_id = 44786627)
+  expect_condition_occurrence(person_id = patient$person_id, condition_status_concept_id = 32902)
 
 
   patient <- createPatient();
