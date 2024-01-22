@@ -12,7 +12,7 @@ createDeathTests <- function () {
 
   # START - Tests
   declareTest("Patient is indicated dead by date_of_death. Their death date is the last day of the month.", id = patient$person_id)
-  add_patient(ptid=patient$ptid, date_of_death="201404")
+  add_patient(ptid=patient$ptid, date_of_death="201404", deceased_indicator="1")
   expect_death(person_id = patient$person_id, death_date = "04/30/2014")
   patient <- createPatient()
 
@@ -33,7 +33,7 @@ createDeathDataForTables <- function(tables_to_check, death_date_desc, death_dat
     enc = createEncounter();
     visitId <- sequencer$nextSequence();
     declareTest(paste("Patient has", tableName, "data occurring", death_date_desc), id = patient$person_id)
-    add_patient(ptid=patient$ptid, date_of_death=death_date)
+    add_patient(ptid=patient$ptid, date_of_death=death_date,deceased_indicator="1")
     add_encounter(enc=enc$encid, ptid = patient$ptid, interaction_date = end_date, visitid = visitId)
 
     if (tableName == "care_area")

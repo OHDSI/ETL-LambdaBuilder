@@ -119,6 +119,24 @@ createObservationTests <- function () {
               first_month_active = '200701', last_month_active = '201001')
   add_observations(ptid=patient$ptid, obs_date = '2009-01-01', obs_unit = 'TEST_UNIT')
   expect_observation(person_id = patient$person_id, unit_concept_id = 0, unit_source_value = 'TEST_UNIT')
+  
+  patient <- createPatient();
+  declareTest("Records from diagnosis with diagnosis_status = 'History of' and primary discharge diagnosis then put in the Observation table with observation_concept_id = 1340204", id = patient$person_id)
+  enc <- createEncounter();
+  add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
+              first_month_active = '200701', last_month_active = '201001')
+  add_diagnosis(ptid=patient$ptid, diagnosis_cd = 'H44611',
+                diagnosis_cd_type = 'ICD10', diag_date = '2009-01-01', primary_diagnosis = '1', admitting_diagnosis = '0', discharge_diagnosis = '1', diagnosis_status = 'History of')
+  expect_observation(person_id = patient$person_id, observation_concept_id = 1340204, value_as_concept_id = 381850)
+  
+  patient <- createPatient();
+  declareTest("Records from diagnosis with diagnosis_status = 'History of' and primary diagnosis diagnosis then put in the Observation table with observation_concept_id = 1340204", id = patient$person_id)
+  enc <- createEncounter();
+  add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
+              first_month_active = '200701', last_month_active = '201001')
+  add_diagnosis(ptid=patient$ptid, diagnosis_cd = 'H44611',
+                diagnosis_cd_type = 'ICD10', diag_date = '2009-01-01', primary_diagnosis = '1', admitting_diagnosis = '0', discharge_diagnosis = '1', diagnosis_status = 'History of')
+  expect_observation(person_id = patient$person_id, observation_concept_id = 1340204, value_as_concept_id = 381850)
 
 
   # ######################################
