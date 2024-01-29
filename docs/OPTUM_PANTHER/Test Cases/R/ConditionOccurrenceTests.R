@@ -4,24 +4,6 @@ createConditionOccurrenceTests <- function () {
   # DIAGNOSIS
   ######################################
 
-  set_defaults_patient(avg_hh_income = NULL, pct_college_educ = NULL) 
-  
-  set_defaults_encounter(visitid = NULL, interaction_date = "2012-12-31")
-  
-  set_defaults_labs(collected_date = NULL, result_date = NULL, order_date = NULL)
-  
-  set_defaults_medication_administrations(admin_date = NULL)
-  
-  set_defaults_microbiology(collect_date = NULL, receive_date = NULL)
-  
-  set_defaults_nlp_measurement(measurement_year = NULL, measurement_date = NULL)
-  
-  set_defaults_nlp_sds(occurrence_year = NULL, occurrence_date = NULL)
-  
-  set_defaults_observations(result_date = NULL)
-  
-  set_defaults_prescriptions_written(daily_dose = NULL, days_supply = NULL)
-
   patient <- createPatient();
   declareTest("Test diag_date to condition_start_date", id = patient$person_id)
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
@@ -98,7 +80,7 @@ createConditionOccurrenceTests <- function () {
   expect_condition_occurrence(person_id = patient$person_id, condition_status_concept_id = 32899)
   
   patient <- createPatient();
-  declareTest("diagnosis_status = 'History of' and primary diagnosis, record moved to Observation", id = patient$person_id)
+  declareTest("diagnosis_status = History of and primary diagnosis, record moved to Observation", id = patient$person_id)
   enc <- createEncounter();
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
@@ -107,7 +89,7 @@ createConditionOccurrenceTests <- function () {
   expect_no_condition_occurrence(person_id = patient$person_id)
   
   patient <- createPatient();
-  declareTest("diagnosis_status = 'History of' and primary discharge diagnosis, record moved to Observation", id = patient$person_id)
+  declareTest("diagnosis_status = History of and primary discharge diagnosis, record moved to Observation", id = patient$person_id)
   enc <- createEncounter();
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
@@ -162,32 +144,34 @@ createConditionOccurrenceTests <- function () {
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
   add_procedure(ptid=patient$ptid, proc_code = 'G9312', proc_code_type = 'HCPCS', proc_date = '2009-01-01')
-  expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = 312327)
+  expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = 4334801)
 
   #no conditions in latest vocab originate from ICD9Proc, ICD10PCS, or CPT4
 
   # Test provider for encounter
-  patient <- createPatient();
-  provider <- createProvider();
-  enc <- createEncounter();
-  declareTest("Patient has PROCEDURE record; validate the provider for the encid is mapped to provid", id = patient$person_id)
-  add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
-              first_month_active = '200701', last_month_active = '201001')
-  add_provider(provid = provider$provid, specialty = "Internal Medicine", prim_spec_ind = "1")
-  add_encounter(encid = enc$encid, ptid = patient$ptid, interaction_type = 'Inpatient', interaction_date = '2009-01-01')
-  add_encounter_provider(enc=enc$encid, provid=provider$provid)
-  add_procedure(ptid=patient$ptid, proc_code = 'G9312', encid = enc$encid, proc_code_type = 'HCPCS', proc_date = '2009-01-01')
-  expect_condition_occurrence(person_id = patient$person_id, provider_id = provider$provid)
+  # TODO: provider_id auto generated, need to find way to get correct id
+  # patient <- createPatient();
+  # provider <- createProvider();
+  # enc <- createEncounter();
+  # declareTest("Patient has PROCEDURE record; validate the provider for the encid is mapped to provid", id = patient$person_id)
+  # add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
+              # first_month_active = '200701', last_month_active = '201001')
+  # add_provider(provid = provider$provid, specialty = "Internal Medicine", prim_spec_ind = "1")
+  # add_encounter(encid = enc$encid, ptid = patient$ptid, interaction_type = 'Inpatient', interaction_date = '2009-01-01')
+  # add_encounter_provider(enc=enc$encid, provid=provider$provid)
+  # add_procedure(ptid=patient$ptid, proc_code = 'G9312', encid = enc$encid, proc_code_type = 'HCPCS', proc_date = '2009-01-01')
+  # expect_condition_occurrence(person_id = patient$person_id, provider_id = provider$provid)
 
 
   # Test visit_occurrence_id
-  patient <- createPatient();
-  enc <- createEncounter();
-  provider <- createProvider();
-  declareTest("Patient has PROCEDURE record; validate the visit_occurrence_id", id = patient$person_id)
-  add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
-              first_month_active = '200701', last_month_active = '201001')
-  add_encounter(enc = enc$encid, ptid = patient$ptid, interaction_type = 'Inpatient', interaction_date = '2009-01-01', visitid = enc$encId)
-  add_procedure(ptid = patient$ptid, encid = enc$encid, proc_code = 'G9312', proc_code_type = 'HCPCS', proc_date = '2009-01-01')
-  expect_condition_occurrence(person_id = patient$person_id, visit_occurrence_id = enc$visit_occurrence_id)
+  # TODO: visit_occurrence_id auto generated, need to find way to get correct id
+  # patient <- createPatient();
+  # enc <- createEncounter();
+  # provider <- createProvider();
+  # declareTest("Patient has PROCEDURE record; validate the visit_occurrence_id", id = patient$person_id)
+  # add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
+              # first_month_active = '200701', last_month_active = '201001')
+  # add_encounter(enc = enc$encid, ptid = patient$ptid, interaction_type = 'Inpatient', interaction_date = '2009-01-01', visitid = enc$encId)
+  # add_procedure(ptid = patient$ptid, encid = enc$encid, proc_code = 'G9312', proc_code_type = 'HCPCS', proc_date = '2009-01-01')
+  # expect_condition_occurrence(person_id = patient$person_id, visit_occurrence_id = enc$visit_occurrence_id)
 }

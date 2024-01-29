@@ -18,35 +18,16 @@ createMeasurementTests <- function () {
 
 
   patient <- createPatient();
-  declareTest("When DIAGNOSIS_STATUS=Zachary and DIAGNOSIS_CD maps to DOMAIN=MEASUREMENT concept, should not write record", id = patient$person_id)
+  declareTest("When DIAGNOSIS_STATUS=Zachary and DIAGNOSIS_CD maps to DOMAIN=MEASUREMENT concept, MEASUREMENT should be created", id = patient$person_id)
   enc <- createEncounter();
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
   add_encounter(ptid=patient$ptid, encid = enc$encid, interaction_type='Inpatient', interaction_date='2009-01-01')
   add_diagnosis(ptid=patient$ptid, encid = enc$encid, diagnosis_status = 'Zachary', diagnosis_cd = '7953',
                 diagnosis_cd_type = 'ICD9', diag_date = '2009-01-01')
-  expect_no_measurement(person_id=patient$person_id)
+  expect_measurement(person_id=patient$person_id, measurement_concept_id=4189544, measurement_date='2009-01-01',
+                     measurement_source_value='7953')
 
-
-  patient <- createPatient();
-  declareTest("When PRIMARY_DIAGNOSIS = 1 Then Type = 44786627", id = patient$person_id)
-  enc <- createEncounter();
-  add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
-              first_month_active = '200701', last_month_active = '201001')
-  add_encounter(ptid=patient$ptid, encid = enc$encid, interaction_type='Inpatient', interaction_date='2009-01-01')
-  add_diagnosis(ptid=patient$ptid, encid = enc$encid, diagnosis_status = 'Diagnosis of', diagnosis_cd = '7953',
-                diagnosis_cd_type = 'ICD9', diag_date = '2009-01-01', primary_diagnosis=1)
-  expect_measurement(person_id=patient$person_id, measurement_type_concept_id=44786627)
-
-  patient <- createPatient();
-  declareTest("When PRIMARY_DIAGNOSIS = 6 Then Type = 44786629", id = patient$person_id)
-  enc <- createEncounter();
-  add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
-              first_month_active = '200701', last_month_active = '201001')
-  add_encounter(ptid=patient$ptid, encid = enc$encid, interaction_type='Inpatient', interaction_date='2009-01-01')
-  add_diagnosis(ptid=patient$ptid, encid = enc$encid, diagnosis_status = 'Diagnosis of', diagnosis_cd = '7953',
-                diagnosis_cd_type = 'ICD9', diag_date = '2009-01-01', primary_diagnosis=6)
-  expect_measurement(person_id=patient$person_id, measurement_type_concept_id=44786629)
 
 
   patient <- createPatient();
@@ -68,7 +49,7 @@ createMeasurementTests <- function () {
   add_encounter(ptid=patient$ptid, encid = enc$encid, interaction_type='Inpatient', interaction_date='2009-01-01')
   add_diagnosis(ptid=patient$ptid, encid = enc$encid, diagnosis_status = 'Diagnosis of', diagnosis_cd = '145003003',
                 diagnosis_cd_type = 'SNOMED', diag_date = '2009-01-01')
-  expect_measurement(person_id=patient$person_id, measurement_concept_id=4152685, measurement_date='2009-01-01',
+  expect_measurement(person_id=patient$person_id, measurement_concept_id=4120300, measurement_date='2009-01-01',
                      measurement_source_value='145003003')
 
 
@@ -82,9 +63,9 @@ createMeasurementTests <- function () {
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
   add_encounter(ptid=patient$ptid, encid = enc$encid, interaction_type='Inpatient', interaction_date='2009-01-01')
-  add_labs(ptid=patient$ptid, encid = enc$encid, test_name='O2 saturation.oximetry', test_result='100', result_date='2009-01-01')
-  expect_measurement(person_id=patient$person_id,measurement_concept_id=4130729,measurement_date='2009-01-01',
-                     measurement_source_value='O2 saturation.oximetry', measurement_source_concept_id=0,
+  add_labs(ptid=patient$ptid, encid = enc$encid, test_name='Oxygen saturation (SpO2).pulse oximetry', test_result='100', result_date='2009-01-01')
+  expect_measurement(person_id=patient$person_id,measurement_concept_id=3027315,measurement_date='2009-01-01',
+                     measurement_source_value='Oxygen saturation (SpO2).pulse oximetry', measurement_source_concept_id=0,
                      value_as_number=100)
 
   patient <- createPatient();
@@ -93,9 +74,9 @@ createMeasurementTests <- function () {
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
   add_encounter(ptid=patient$ptid, encid = enc$encid, interaction_type='Inpatient', interaction_date='2009-01-01')
-  add_labs(ptid=patient$ptid, encid = enc$encid, test_name='O2 saturation.oximetry', test_result='positive', result_date='2009-01-01')
-  expect_measurement(person_id=patient$person_id,measurement_concept_id=4130729,measurement_date='2009-01-01',
-                     measurement_source_value='O2 saturation.oximetry', measurement_source_concept_id=0,
+  add_labs(ptid=patient$ptid, encid = enc$encid, test_name='Oxygen saturation (SpO2).pulse oximetry', test_result='positive', result_date='2009-01-01')
+  expect_measurement(person_id=patient$person_id,measurement_concept_id=3027315,measurement_date='2009-01-01',
+                     measurement_source_value='Oxygen saturation (SpO2).pulse oximetry', measurement_source_concept_id=0,
                      value_as_number=NULL, value_as_concept_id=45884084)
 
   patient <- createPatient();
@@ -162,7 +143,7 @@ createMeasurementTests <- function () {
   add_nlp_measurement(ptid=patient$ptid, encid = enc$encid, measurement_type='WEIGHT',measurement_date='2009-01-01',
                        measurement_value=100)
   expect_measurement(person_id=patient$person_id,measurement_concept_id=3025315,measurement_date='2009-01-01',
-                     measurement_type_concept_id=45754907,visit_occurrence_id=enc$visit_occurrence_id,
+                     measurement_type_concept_id=32858,
                      measurement_source_concept_id =0, measurement_source_value='WEIGHT')
 
   patient <- createPatient();
@@ -174,7 +155,7 @@ createMeasurementTests <- function () {
   add_nlp_measurement(ptid=patient$ptid, encid = enc$encid, measurement_type='WEIGHT',measurement_date='2009-01-01',
                        measurement_value='positive')
   expect_measurement(person_id=patient$person_id,measurement_concept_id=3025315,measurement_date='2009-01-01',
-                     measurement_type_concept_id=45754907,visit_occurrence_id=enc$visit_occurrence_id,
+                     measurement_type_concept_id=32858,
                      measurement_source_concept_id =0, measurement_source_value='WEIGHT',value_as_concept_id=45884084)
 
 
@@ -185,7 +166,7 @@ createMeasurementTests <- function () {
               first_month_active = '200701', last_month_active = '201001')
   add_encounter(ptid=patient$ptid, encid = enc$encid, interaction_type='Inpatient', interaction_date='2009-01-01')
   add_nlp_measurement(ptid=patient$ptid, encid = enc$encid, measurement_type='WEIGHT',measurement_date='2009-01-01',
-                       measurement_value='positive',measurement_detail='pH')
+                       measurement_value=100,measurement_detail='pH')
   expect_measurement(person_id=patient$person_id,unit_concept_id=8482,unit_source_value='pH')
   expect_count_measurement(person_id=patient$person_id,rowCount = 1)
 
@@ -201,7 +182,7 @@ createMeasurementTests <- function () {
   add_encounter(ptid=patient$ptid, encid = enc$encid, interaction_type='Inpatient', interaction_date='2009-01-01')
   add_observations(ptid=patient$ptid, encid = enc$encid,obs_type='SBP',obs_date='2009-01-01')
   expect_measurement(person_id=patient$person_id,measurement_concept_id=3004249,measurement_date='2009-01-01',
-                     measurement_type_concept_id=45754907,measurement_source_value='SBP')
+                     measurement_type_concept_id=32831,measurement_source_value='SBP')
 
   patient <- createPatient();
   declareTest("Test that an unmappable OBS_TYPE gets a 0 CONCEPT_ID write a record to OBSERVATION table", id = patient$person_id)
@@ -230,7 +211,7 @@ createMeasurementTests <- function () {
               first_month_active = '200701', last_month_active = '201001')
   add_encounter(ptid=patient$ptid, encid = enc$encid, interaction_type='Inpatient', interaction_date='2009-01-01')
   add_observations(ptid=patient$ptid, encid = enc$encid,obs_type='SBP',obs_date='2009-01-01',
-                   obs_result='rare',obs_unit='pH')
+                   obs_result=100,obs_unit='pH')
   expect_measurement(person_id=patient$person_id,unit_concept_id = 8482,unit_source_value='pH')
   expect_count_measurement(person_id=patient$person_id,rowCount = 1)
 

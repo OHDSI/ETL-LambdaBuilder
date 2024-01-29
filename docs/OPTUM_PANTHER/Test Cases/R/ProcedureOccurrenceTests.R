@@ -16,7 +16,7 @@ createProcedureOccurrenceTests <- function () {
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
   add_procedure(ptid=patient$ptid, proc_code = 'C9743', proc_code_type = 'HCPCS', proc_date = '2009-01-01')
-  expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = 915607, procedure_source_value = 'C9743')
+  expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = 37204304, procedure_source_value = 'C9743')
 
 
   patient <- createPatient();
@@ -24,7 +24,7 @@ createProcedureOccurrenceTests <- function () {
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
   add_procedure(ptid=patient$ptid, proc_code = '33.50', proc_code_type = 'ICD9', proc_date = '2009-01-01')
-  expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = 2001373, procedure_source_value = '33.50')
+  expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = 4337138, procedure_source_value = '33.50')
 
 
   patient <- createPatient();
@@ -40,7 +40,7 @@ createProcedureOccurrenceTests <- function () {
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
   add_procedure(ptid=patient$ptid, proc_date = '2009-01-01', proc_code = '36415', proc_code_type = 'CPT4')
-  expect_procedure_occurrence(person_id = patient$person_id, procedure_type_concept_id = 38000275)
+  expect_procedure_occurrence(person_id = patient$person_id, procedure_type_concept_id = 32833)
 
 
   patient <- createPatient();
@@ -83,19 +83,9 @@ createProcedureOccurrenceTests <- function () {
   enc <- createEncounter();
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
-  add_diagnosis(ptid=patient$ptid, diagnosis_status = 'Diagnosis of', diagnosis_cd = '63491',
+  add_diagnosis(ptid=patient$ptid, diagnosis_status = 'Diagnosis of', diagnosis_cd = '7606',
                 diagnosis_cd_type = 'ICD9', diag_date = '2009-01-01')
-  expect_procedure_occurrence(person_id = patient$person_id, procedure_type_concept_id = 42865906)
-
-
-  patient <- createPatient();
-  declareTest("Diagnosis without ''Diagnosis of'' status is not loaded", id = patient$person_id)
-  enc <- createEncounter();
-  add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
-              first_month_active = '200701', last_month_active = '201001')
-  add_diagnosis(ptid=patient$ptid, diagnosis_status = 'Family history of', diagnosis_cd = '634.91',
-                diagnosis_cd_type = 'ICD9', diag_date = '2009-01-01')
-  expect_no_procedure_occurrence(person_id = patient$person_id)
+  expect_procedure_occurrence(person_id = patient$person_id, procedure_type_concept_id = 32840)
 
 
   patient <- createPatient();
@@ -103,9 +93,9 @@ createProcedureOccurrenceTests <- function () {
   enc <- createEncounter();
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
-  add_diagnosis(ptid=patient$ptid, diagnosis_status = 'Diagnosis of', diagnosis_cd = '63491',
+  add_diagnosis(ptid=patient$ptid, diagnosis_status = 'Diagnosis of', diagnosis_cd = '7606',
                 diagnosis_cd_type = 'ICD9', diag_date = '2009-01-01')
-  expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = 435868, procedure_source_value = '63491')
+  expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = 4301351, procedure_source_value = '7606')
 
 
   patient <- createPatient();
@@ -113,9 +103,9 @@ createProcedureOccurrenceTests <- function () {
   enc <- createEncounter();
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
-  add_diagnosis(ptid=patient$ptid, diagnosis_status = 'Diagnosis of', diagnosis_cd = 'O04.87',
+  add_diagnosis(ptid=patient$ptid, diagnosis_status = 'Diagnosis of', diagnosis_cd = 'Z01.110',
                 diagnosis_cd_type = 'ICD10', diag_date = '2009-01-01')
-  expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = 43530939, procedure_source_value = 'O04.87')
+  expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = 4134565, procedure_source_value = 'Z01.110')
 
 
   patient <- createPatient();

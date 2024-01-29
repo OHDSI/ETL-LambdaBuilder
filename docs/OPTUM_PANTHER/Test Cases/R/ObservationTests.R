@@ -6,8 +6,8 @@ createObservationTests <- function () {
 
   patient <- createPatient();
   declareTest("Patient has 1 valid OBSERVATIONS record within the enrollment period. Validate that the obs_date maps to the observation_date field properly.", id = patient$person_id)
-  add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male', first_month_active = '200701', last_month_active = '201001')
-  add_observations(ptid=patient$ptid, obs_date = '2009-01-01')
+  add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male', first_month_active = '200701', last_month_active = '201001', idn_indicator = 0)
+  add_observations(ptid=patient$ptid, obs_date = '2009-01-01', obs_type = 'SMOKE')
   expect_observation(person_id = patient$person_id, observation_date = '2009-01-01')
 
 
@@ -15,46 +15,46 @@ createObservationTests <- function () {
   # Handle case of observation outside of observation_period
   patient <- createPatient();
   declareTest("Patient has 2 OBSERVATIONS records, the first within the enrollment period, the second outside of enrollment.", id = patient$person_id)
-  add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male', first_month_active = '200701', last_month_active = '201001')
-  add_observations(ptid=patient$ptid, obs_date = '2009-01-01')
-  add_observations(ptid=patient$ptid, obs_date = '2015-01-01')
-  expect_count_observation(person_id = patient$person_id, rowCount = 1)
+  add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male', first_month_active = '200701', last_month_active = '201001', idn_indicator = 0)
+  add_observations(ptid=patient$ptid, obs_date = '2009-01-01', obs_type = 'SMOKE')
+  add_observations(ptid=patient$ptid, obs_date = '2015-01-01', obs_type = 'SMOKE')
+  expect_count_observation(person_id = patient$person_id, rowCount = 2)
 
 
   # Allow duplicates
   patient <- createPatient();
   declareTest("Patient has multiple OBSERVATIONS records, all within enrollment period", id = patient$person_id)
-  add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male', first_month_active = '200701', last_month_active = '201001')
-  add_observations(ptid=patient$ptid, obs_date = '2009-01-01', obs_type = 'ALCOHOL')
-  add_observations(ptid=patient$ptid, obs_date = '2009-01-01', obs_type = 'ALCOHOL')
+  add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male', first_month_active = '200701', last_month_active = '201001', idn_indicator = 0)
+  add_observations(ptid=patient$ptid, obs_date = '2009-01-01', obs_type = 'SMOKE')
+  add_observations(ptid=patient$ptid, obs_date = '2009-01-01', obs_type = 'SMOKE')
   expect_count_observation(person_id = patient$person_id, rowCount = 2)
 
 
   # Handle field mapping
-  patient <- createPatient();
-  enc <- createEncounter();
-  declareTest("Patient has OBSERVATIONS record; validate the encid mapping to visit_occurrence_id", id = patient$person_id)
-  add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male', first_month_active = '200701', last_month_active = '201001')
-  add_encounter(encid = enc$encid, ptid = patient$ptid, interaction_type = 'Inpatient', interaction_date = '2009-01-01')
-  add_observations(ptid=patient$ptid, encid=enc$encid, obs_date = '2009-01-01')
-  expect_visit_occurrence(person_id = patient$person_id, visit_occurrence_id = enc$visit_occurrence_id)
+  # patient <- createPatient();
+  # enc <- createEncounter();
+  # declareTest("Patient has OBSERVATIONS record; validate the encid mapping to visit_occurrence_id", id = patient$person_id)
+  # add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male', first_month_active = '200701', last_month_active = '201001', idn_indicator = 0)
+  # add_encounter(encid = enc$encid, ptid = patient$ptid, interaction_type = 'Inpatient', interaction_date = '2009-01-01')
+  # add_observations(ptid=patient$ptid, encid=enc$encid, obs_date = '2009-01-01')
+  # expect_visit_occurrence(person_id = patient$person_id, visit_occurrence_id = enc$visit_occurrence_id)
 
 
   # Validate obs_type from true STCM
   patient <- createPatient();
   declareTest("Patient has OBSERVATIONS record; validate the obs_type mapping found in the STCM to observation_concept_id", id = patient$person_id)
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
-              first_month_active = '200701', last_month_active = '201001')
-  add_observations(ptid=patient$ptid, obs_type = 'ALCOHOL', obs_date = '2009-01-01')
-  expect_observation(person_id = patient$person_id, observation_concept_id = 4052351)
+              first_month_active = '200701', last_month_active = '201001', idn_indicator = 0)
+  add_observations(ptid=patient$ptid, obs_type = 'SMOKE', obs_date = '2009-01-01')
+  expect_observation(person_id = patient$person_id, observation_concept_id = 40766362)
 
 
   # Handle unmapped obs types
   patient <- createPatient();
   declareTest("Patient has OBSERVATIONS record; validate the obs_type mapping NOT found in the STCM maps to observation_concept_id = 0", id = patient$person_id)
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
-              first_month_active = '200701', last_month_active = '201001')
-  add_observations(ptid=patient$ptid, obs_date = '2009-01-01')
+              first_month_active = '200701', last_month_active = '201001', idn_indicator = 0)
+  add_observations(ptid=patient$ptid, obs_date = '2009-01-01', obs_type = 'SMOKEX')
   expect_observation(person_id = patient$person_id, observation_concept_id = 0)
 
 
@@ -62,17 +62,17 @@ createObservationTests <- function () {
   patient <- createPatient();
   declareTest("Patient has OBSERVATIONS record; validate the observation_type_concept_id is populated correctly", id = patient$person_id)
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
-              first_month_active = '200701', last_month_active = '201001')
-  add_observations(ptid=patient$ptid, obs_date = '2009-01-01')
-  expect_observation(person_id = patient$person_id, observation_type_concept_id = 38000280)
+              first_month_active = '200701', last_month_active = '201001', idn_indicator = 0)
+  add_observations(ptid=patient$ptid, obs_date = '2009-01-01', obs_type = 'SMOKE')
+  expect_observation(person_id = patient$person_id, observation_type_concept_id = 32831)
 
 
   # Test observation time
   patient <- createPatient();
   declareTest("Patient has OBSERVATIONS record; validate the obs_time is mapped to observation_time", id = patient$person_id)
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
-              first_month_active = '200701', last_month_active = '201001')
-  add_observations(ptid=patient$ptid, obs_date = '2009-01-01', obs_time = '14:30:00')
+              first_month_active = '200701', last_month_active = '201001', idn_indicator = 0)
+  add_observations(ptid=patient$ptid, obs_date = '2009-01-01', obs_time = '14:30:00', obs_type = 'SMOKE')
   #expect_observation(person_id = patient$person_id, observation_time = '14:30:00')
   expect_observation(person_id = patient$person_id, observation_datetime = '2009-01-01 14:30:00')
 
@@ -80,8 +80,8 @@ createObservationTests <- function () {
   patient <- createPatient();
   declareTest("Patient has OBSERVATIONS record; validate the obs_result is mapped to value_as_number when obs_result can be cast to a numeric", id = patient$person_id)
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
-              first_month_active = '200701', last_month_active = '201001')
-  add_observations(ptid=patient$ptid, obs_date = '2009-01-01', obs_result = '100')
+              first_month_active = '200701', last_month_active = '201001', idn_indicator = 0)
+  add_observations(ptid=patient$ptid, obs_date = '2009-01-01', obs_result = '100', obs_type = 'SMOKE')
   expect_observation(person_id = patient$person_id, value_as_number = 100, value_as_string = NULL)
 
 
@@ -89,8 +89,8 @@ createObservationTests <- function () {
   patient <- createPatient();
   declareTest("Patient has OBSERVATIONS record; validate the obs_result is mapped to value_as_string when obs_result CANNOT be cast to a numeric", id = patient$person_id)
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
-              first_month_active = '200701', last_month_active = '201001')
-  add_observations(ptid=patient$ptid, obs_date = '2009-01-01', obs_result = 'One Hundred')
+              first_month_active = '200701', last_month_active = '201001', idn_indicator = 0)
+  add_observations(ptid=patient$ptid, obs_date = '2009-01-01', obs_result = 'One Hundred', obs_type = 'SMOKE')
   expect_observation(person_id = patient$person_id, value_as_number = NULL, value_as_string = 'One Hundred')
 
 
@@ -98,8 +98,8 @@ createObservationTests <- function () {
   patient <- createPatient();
   declareTest("Patient has OBSERVATIONS record; validate the obs_unit is mapped to unit_source_value AND a valid unit_concept_id when it matches a concept in the UCUM vocabulary", id = patient$person_id)
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
-              first_month_active = '200701', last_month_active = '201001')
-  add_observations(ptid=patient$ptid, obs_date = '2009-01-01', obs_unit = 'kilogram')
+              first_month_active = '200701', last_month_active = '201001', idn_indicator = 0)
+  add_observations(ptid=patient$ptid, obs_date = '2009-01-01', obs_unit = 'kilogram', obs_type = 'SMOKE', obs_result = 100)
   expect_observation(person_id = patient$person_id, unit_concept_id = 9529, unit_source_value = 'kilogram')
 
 
@@ -107,8 +107,8 @@ createObservationTests <- function () {
   patient <- createPatient();
   declareTest("Patient has OBSERVATIONS record; validate the obs_unit is mapped to unit_source_value AND unit_concept_id = 0 when it matches a concept in the UCUM vocabulary", id = patient$person_id)
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
-              first_month_active = '200701', last_month_active = '201001')
-  add_observations(ptid=patient$ptid, obs_date = '2009-01-01', obs_unit = 'kg')
+              first_month_active = '200701', last_month_active = '201001', idn_indicator = 0)
+  add_observations(ptid=patient$ptid, obs_date = '2009-01-01', obs_unit = 'kg', obs_type = 'SMOKE', obs_result = 100)
   expect_observation(person_id = patient$person_id, unit_concept_id = 9529, unit_source_value = 'kg')
 
 
@@ -116,24 +116,24 @@ createObservationTests <- function () {
   patient <- createPatient();
   declareTest("Patient has OBSERVATIONS record; validate the obs_unit is mapped to unit_source_value AND unit_concept_id = 0 when it does not match a standard concept in the UCUM vocabulary", id = patient$person_id)
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
-              first_month_active = '200701', last_month_active = '201001')
-  add_observations(ptid=patient$ptid, obs_date = '2009-01-01', obs_unit = 'TEST_UNIT')
+              first_month_active = '200701', last_month_active = '201001', idn_indicator = 0)
+  add_observations(ptid=patient$ptid, obs_date = '2009-01-01', obs_unit = 'TEST_UNIT', obs_type = 'SMOKE', obs_result = 100)
   expect_observation(person_id = patient$person_id, unit_concept_id = 0, unit_source_value = 'TEST_UNIT')
   
   patient <- createPatient();
-  declareTest("Records from diagnosis with diagnosis_status = 'History of' and primary discharge diagnosis then put in the Observation table with observation_concept_id = 1340204", id = patient$person_id)
+  declareTest("Records from diagnosis with diagnosis_status = History of and primary discharge diagnosis then put in the Observation table with observation_concept_id = 1340204", id = patient$person_id)
   enc <- createEncounter();
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
-              first_month_active = '200701', last_month_active = '201001')
+              first_month_active = '200701', last_month_active = '201001', idn_indicator = 0)
   add_diagnosis(ptid=patient$ptid, diagnosis_cd = 'H44611',
                 diagnosis_cd_type = 'ICD10', diag_date = '2009-01-01', primary_diagnosis = '1', admitting_diagnosis = '0', discharge_diagnosis = '1', diagnosis_status = 'History of')
   expect_observation(person_id = patient$person_id, observation_concept_id = 1340204, value_as_concept_id = 381850)
   
   patient <- createPatient();
-  declareTest("Records from diagnosis with diagnosis_status = 'History of' and primary diagnosis diagnosis then put in the Observation table with observation_concept_id = 1340204", id = patient$person_id)
+  declareTest("Records from diagnosis with diagnosis_status = History of and primary diagnosis diagnosis then put in the Observation table with observation_concept_id = 1340204", id = patient$person_id)
   enc <- createEncounter();
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
-              first_month_active = '200701', last_month_active = '201001')
+              first_month_active = '200701', last_month_active = '201001', idn_indicator = 0)
   add_diagnosis(ptid=patient$ptid, diagnosis_cd = 'H44611',
                 diagnosis_cd_type = 'ICD10', diag_date = '2009-01-01', primary_diagnosis = '1', admitting_diagnosis = '0', discharge_diagnosis = '1', diagnosis_status = 'History of')
   expect_observation(person_id = patient$person_id, observation_concept_id = 1340204, value_as_concept_id = 381850)

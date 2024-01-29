@@ -4,10 +4,9 @@ library(DatabaseConnector)
 library(SqlRender)
 library(OptumPantherTests)
 
-source('R/TestFramework_EHR_2.R')
+source('R/extras/TestFramework.R')
 devtools::load_all()
 #getwd()
-#setwd("C:/Users/AnuarAssylkhanov/Documents/projects/ETL-LambdaBuilder/docs/OPTUM_PANTHER/Test Cases")
 
 source_schema <- "optum_panther_native_test"
 cdm_schema <- "optum_panther_cdm_test"
