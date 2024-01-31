@@ -1,10 +1,9 @@
 ---
 layout: default
-title: Immunizations
+title: Insurance
 nav_order: 20
-parent: Optum EHR to STEM
-grand_parent: Optum EHR
-description: "OPTUM EHR Immunzations table to STEM"
+parent: Optum EHR
+description: "OPTUM EHR Insurance table to Observation"
 ---
 
 # CDM Table name: Observation
@@ -284,3 +283,8 @@ Note, the observation_concept_id belong to Payer domain, but goes to Observation
    </td>
   </tr>
 </table>
+
+## Change log
+
+### 13-Nov-2023
+Set proper header.
