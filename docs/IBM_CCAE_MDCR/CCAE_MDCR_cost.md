@@ -113,6 +113,7 @@ The **COST** table captures all cost information.
 | REVENUE_CODE_SOURCE_VALUE | - | - | - |
 | DRG_CONCEPT_ID | - | 0 | - |
 | DRG_SOURCE_VALUE | - | - | - |
+
 <br>
 
 
@@ -145,6 +146,7 @@ The **COST** table captures all cost information.
 | REVENUE_CODE_SOURCE_VALUE | - | - | - |
 | DRG_CONCEPT_ID | - | 0 | - |
 | DRG_SOURCE_VALUE | - | - | - |
+
 <br>
 
 
