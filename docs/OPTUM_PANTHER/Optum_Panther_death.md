@@ -7,6 +7,10 @@ description: "Death table mapping from Optum EHR patient table"
 
 ---
 
+## **Note**:
+
+A person’s death should be removed if any data available > 30 days after date_of_death
+
 # CDM Table: DEATH
 
 In Optum EHR this information will be sourced from the native **PATIENT** table. Only take records where **DECEASED_INDICATOR** = 1 and **DATE_OF_DEATH** is not blank. 
@@ -22,6 +26,9 @@ CAUSE_OF_DEATH_SOURCE_VALUE|0|||
 CAUSE_SOURCE_CONCEPT_ID|0|||
 
 ## Change Log:
+
+### 07-Feb-2024
+- Added note
 
 ### November 2, 2021
 - Changed DEATH_TYPE_CONCEPT_ID to 32519
