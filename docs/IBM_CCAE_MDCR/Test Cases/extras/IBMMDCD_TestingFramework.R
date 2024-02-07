@@ -118,7 +118,7 @@ initFramework <- function() {
   defaults$thergrp <- '08'
   defaults$version <- '10'
   defaults$year <- '2017'
-  defaults$gpi <- '44201010103410'
+  
   assign('drug_claims', defaults, envir = frameworkContext$defaultValues)
 
   defaults <- list()
@@ -709,7 +709,7 @@ set_defaults_version <- function(version_id, version_date) {
   invisible(defaults)
 }
 
-set_defaults_drug_claims <- function(awp, boe, cap, cob, coins, copay, dawind, daysupp, deaclas, deduct, dispfee, dobyr, drugcovg, enrolid, generid, genind, ingcost, maintin, mas, mcasenum, medicare, metqty, mhsacovg, ndcnum, netpay, pay, pddate, pharmid, plantyp, qty, refill, seqnum, sex, stdrace, svcdate, thercls, thergrp, version, year, gpi) {
+set_defaults_drug_claims <- function(awp, boe, cap, cob, coins, copay, dawind, daysupp, deaclas, deduct, dispfee, dobyr, drugcovg, enrolid, generid, genind, ingcost, maintin, mas, mcasenum, medicare, metqty, mhsacovg, ndcnum, netpay, pay, pddate, pharmid, plantyp, qty, refill, seqnum, sex, stdrace, svcdate, thercls, thergrp, version, year) {
   defaults <- get('drug_claims', envir = frameworkContext$defaultValues)
   if (!missing(awp)) {
     defaults$awp <- awp
@@ -827,9 +827,6 @@ set_defaults_drug_claims <- function(awp, boe, cap, cob, coins, copay, dawind, d
   }
   if (!missing(year)) {
     defaults$year <- year
-  }
-  if (!missing(gpi)) {
-    defaults$gpi <- gpi
   }
   assign('drug_claims', defaults, envir = frameworkContext$defaultValues)
   invisible(defaults)
@@ -2516,7 +2513,7 @@ add_version <- function(version_id, version_date) {
   invisible(NULL)
 }
 
-add_drug_claims <- function(awp, boe, cap, cob, coins, copay, dawind, daysupp, deaclas, deduct, dispfee, dobyr, drugcovg, enrolid, generid, genind, ingcost, maintin, mas, mcasenum, medicare, metqty, mhsacovg, ndcnum, netpay, pay, pddate, pharmid, plantyp, qty, refill, seqnum, sex, stdrace, svcdate, thercls, thergrp, version, year, gpi) {
+add_drug_claims <- function(awp, boe, cap, cob, coins, copay, dawind, daysupp, deaclas, deduct, dispfee, dobyr, drugcovg, enrolid, generid, genind, ingcost, maintin, mas, mcasenum, medicare, metqty, mhsacovg, ndcnum, netpay, pay, pddate, pharmid, plantyp, qty, refill, seqnum, sex, stdrace, svcdate, thercls, thergrp, version, year) {
   defaults <- get('drug_claims', envir = frameworkContext$defaultValues)
   fields <- c()
   values <- c()
@@ -2831,15 +2828,7 @@ add_drug_claims <- function(awp, boe, cap, cob, coins, copay, dawind, daysupp, d
   }
   fields <- c(fields, "year")
   values <- c(values, if (is.null(year)) "NULL" else if (is(year, "subQuery")) paste0("(", as.character(year), ")") else paste0("'", as.character(year), "'"))
-
-  if (missing(gpi)) {
-    gpi <- defaults$gpi
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug_claims.gpi')
-  }
-  fields <- c(fields, "_gpi")
-  values <- c(values, if (is.null(gpi)) "NULL" else if (is(gpi, "subQuery")) paste0("(", as.character(gpi), ")") else paste0("'", as.character(gpi), "'"))
-
+  
   inserts <- list(testId = frameworkContext$testId, testDescription = frameworkContext$testDescription, table = "drug_claims", fields = fields, values = values)
   frameworkContext$inserts[[length(frameworkContext$inserts) + 1]] <- inserts
   invisible(NULL)
