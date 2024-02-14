@@ -1,5 +1,6 @@
 createPayerPlanPeriodTests <- function () {
-
+  set_defaults_pat(age = 33);
+  
   add_payor(std_payor = 360, std_payor_desc = "MANAGED CARE - NON-CAP");
   add_payor(std_payor = 330, std_payor_desc = "MEDICAID - TRADITIONAL");
   add_payor(std_payor = 300, std_payor_desc = "MEDICARE - TRADITIONAL");
@@ -24,7 +25,7 @@ createPayerPlanPeriodTests <- function () {
   add_patbill(pat_key  = visit3$pat_key);
 
   add_pat(medrec_key   = patient$medrec_key, pat_key = visit4$pat_key,
-          adm_date     = "2011-05-01", disc_date = "2011-05-01", std_payor = 360);
+          adm_date     = "2011-05-01", disc_date = "2011-05-11", std_payor = 360);
   add_patbill(pat_key  = visit4$pat_key);
 
   expect_payer_plan_period(person_id                    = patient$person_id,
@@ -53,7 +54,7 @@ createPayerPlanPeriodTests <- function () {
           adm_date     = "2011-05-01", disc_date = "2011-05-01", std_payor = 330);
   add_patbill(pat_key  = visit3$pat_key);
   add_pat(medrec_key   = patient$medrec_key, pat_key = visit4$pat_key,
-          adm_date     = "2011-05-01", disc_date = "2011-05-01", std_payor = 330);
+          adm_date     = "2011-05-01", disc_date = "2011-05-11", std_payor = 330);
   add_patbill(pat_key  = visit4$pat_key);
   expect_payer_plan_period(person_id                    = patient$person_id,
                            payer_plan_period_start_date = "2010-10-01",
@@ -89,7 +90,7 @@ createPayerPlanPeriodTests <- function () {
                            payer_plan_period_start_date = "2013-05-01",
                            payer_plan_period_end_date = "2013-05-01")
   expect_payer_plan_period(person_id = patient$medrec_key,
-                           payer_plan_period_start_date = "2014-01-15",
+                           payer_plan_period_start_date = "2014-01-01",
                            payer_plan_period_end_date = "2014-05-01")
   expect_payer_plan_period(person_id = patient$medrec_key,
                            payer_plan_period_start_date = "2014-05-02",

@@ -9,11 +9,11 @@ createDeathTests <- function ()
   add_pat(medrec_key   = patient$medrec_key,
           pat_key      = visit$pat_key,
           adm_date     = "2010-10-01",
-          disc_date    = "2010-10-01",
+          disc_date    = "2010-10-04",
           disc_status  = 20);
   add_patbill(pat_key  = visit$pat_key)
   expect_death(person_id             = patient$person_id,
-               death_type_concept_id = 38003566,
+               death_type_concept_id = 32812,
                death_date            = '2010-10-04');
 
 
@@ -23,14 +23,14 @@ createDeathTests <- function ()
   add_pat(medrec_key   = patient$medrec_key,
           pat_key      = visit$pat_key,
           adm_date     = "2010-10-01",
-          disc_date    = "2010-10-01",
+          disc_date    = "2010-10-04",
           disc_status  = 20);
   add_patbill(pat_key  = visit$pat_key)
   add_paticd_diag(pat_key     = visit$pat_key,
                   icd_version = 10,
                   icd_code    = "G93.82")
   expect_death(person_id             = patient$person_id,
-               death_type_concept_id = 38003566,
+               death_type_concept_id = 32812,
                death_date            = '2010-10-04');
 
 
@@ -40,14 +40,14 @@ createDeathTests <- function ()
   add_pat(medrec_key   = patient$medrec_key,
           pat_key      = visit$pat_key,
           adm_date     = "2010-10-01",
-          disc_date    = "2010-10-01",
+          disc_date    = "2010-10-04",
           disc_status  = 99);
   add_patbill(pat_key  = visit$pat_key);
   add_paticd_diag(pat_key     = visit$pat_key,
                   icd_version = 10,
                   icd_code    = "G93.82");
   expect_death(person_id             = patient$person_id,
-               death_type_concept_id = 38003567,
+               death_type_concept_id = 32875,
                death_date            = '2010-10-04');
 
 
@@ -58,7 +58,7 @@ createDeathTests <- function ()
   add_pat(medrec_key   = patient$medrec_key,
           pat_key      = visit1$pat_key,
           adm_date     = "2010-10-01",
-          disc_date    = "2010-10-01",
+          disc_date    = "2010-10-04",
           disc_status  = 20);
   add_patbill(pat_key  = visit1$pat_key);
   add_pat(medrec_key   = patient$medrec_key,
@@ -68,7 +68,7 @@ createDeathTests <- function ()
           disc_status  = 99);
   add_patbill(pat_key  = visit2$pat_key);
   expect_death(person_id             = patient$person_id,
-               death_type_concept_id = 38003566,
+               death_type_concept_id = 32812,
                death_date            = '2010-10-04');
   expect_no_visit_occurrence(person_id           = patient$person_id,
                              visit_occurrence_id = visit2$visit_occurrence_id,

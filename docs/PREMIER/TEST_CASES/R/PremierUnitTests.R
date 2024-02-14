@@ -1,30 +1,30 @@
 createTests <- function() {
-  declareTestGroup("Condition Occurrence")
+  # declareTestGroup("Condition Occurrence")
   createConditionOccurrenceTests();
-  declareTestGroup("Cost")
+  # declareTestGroup("Cost")
   createCostTests();
-  declareTestGroup("Death")
+  # declareTestGroup("Death")
   createDeathTests();
-  declareTestGroup("Device Exposure")
+  # declareTestGroup("Device Exposure")
   createDeviceExposureTests();
-  declareTestGroup("Drug Exposure")
+  # declareTestGroup("Drug Exposure")
   createDrugExposureTests();
   # declareTestGroup("Location")
-  # createLocationTests();
-  declareTestGroup("Measurement")
+  createLocationTests();
+  # declareTestGroup("Measurement")
   createMeasurementTests();
   # declareTestGroup("Observation Period")
-  # createObservationPeriodTests();
-  declareTestGroup("Observation")
+  createObservationPeriodTests();
+  # declareTestGroup("Observation")
   createObservationTests();
-  declareTestGroup("Payer Plan Period")
+  # declareTestGroup("Payer Plan Period")
   createPayerPlanPeriodTests();
-  declareTestGroup("Person");
+  # declareTestGroup("Person");
   createPersonTests();
-  declareTestGroup("Procedure Occurrence")
+  # declareTestGroup("Procedure Occurrence")
   createProcedureOccurrenceTests();
   # declareTestGroup("Provider")
-  # createProviderTests();
-  declareTestGroup("Visit Occurrence")
+  createProviderTests();
+  # declareTestGroup("Visit Occurrence")
   createVisitOccurrenceTests();
 }

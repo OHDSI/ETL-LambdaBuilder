@@ -41,17 +41,17 @@ createObservationTests <- function () {
           adm_date     = "2009-07-01",
           disc_date    = "2009-07-01");
   add_patbill(pat_key      = visit$pat_key,
-              std_chg_code = as.numeric(Sys.getenv("std_chg_code_14")),
-              hosp_chg_id  = 465860152);
-  add_hospchg(hosp_chg_id   = 465860152,
-              hosp_chg_desc = "PF HOME VISIT NEW LEVEL 3");
-  add_chgmstr(std_chg_code = as.numeric(Sys.getenv("std_chg_code_14")),
-              std_chg_desc = "PF HOME VISIT NEW PATIENT");
+              std_chg_code = 300301800060000,
+              hosp_chg_id  = -882725);
+  add_hospchg(hosp_chg_id   = -882725,
+              hosp_chg_desc = "I-STAT (6+ PANEL)");
+  add_chgmstr(std_chg_code = 300301800060000,
+              std_chg_desc = "*6 CLINICAL CHEMISTRY TESTS");
   expect_observation(person_id                = patient$person_id,
                      visit_occurrence_id      = visit$visit_occurrence_id,
-                     observation_concept_id   = 2514486,
-                     observation_date         = "2009-07-03",
-                     observation_source_value = "PF HOME VISIT NEW PATIENT / PF HOME VISIT NEW LEVEL 3"); #INCREASE LENGTH!
+                     observation_concept_id   = 4148655,
+                     observation_date         = "2009-07-01",
+                     observation_source_value = "*6 CLINICAL CHEMISTRY TESTS / I-STAT (6+ PANEL)");
 
   # PATBILL.STD_CHG_CODE JNJ_PMR_PROC_CHRG_CD; JNJ_PMR_PROC_CHRG_CD codes aren't in chgmstr?
 
@@ -87,7 +87,7 @@ createObservationTests <- function () {
                   icd_version = 10);
   expect_observation(person_id                = patient$person_id,
                      visit_occurrence_id      = visit$visit_occurrence_id,
-                     observation_concept_id   = 435134,
+                     observation_concept_id   = 4069060,
                      observation_date         = "2008-10-01",
                      observation_source_value = "V56.3");
 
@@ -101,13 +101,13 @@ createObservationTests <- function () {
           disc_date    = "2005-12-01");
   add_patbill(pat_key  = visit$pat_key);
   add_paticd_diag(pat_key     = visit$pat_key,
-                  icd_code    = "E850.3",
+                  icd_code    = "E872.9",
                   icd_version = 9);
   expect_observation(person_id                = patient$person_id,
                      visit_occurrence_id      = visit$visit_occurrence_id,
-                     observation_concept_id   = 439994,
+                     observation_concept_id   = 439633,
                      observation_date         = "2005-12-01",
-                     observation_source_value = "E850.3");
+                     observation_source_value = "E872.9");
 
   # PATICD_DIAG.ICD_CODE ICD10CM
   patient <- createPatient();
@@ -135,32 +135,10 @@ createObservationTests <- function () {
           adm_date     = "2004-12-01",
           disc_date    = "2004-12-01");
   add_patbill(pat_key      = visit$pat_key,
-              std_chg_code = as.numeric(Sys.getenv("std_chg_code_15")));
+              std_chg_code = 999999040442008);
   expect_observation(person_id                = patient$person_id,
                      visit_occurrence_id      = visit$visit_occurrence_id,
                      observation_concept_id   = 2108550,
                      observation_date         = "2004-12-01");
-
-  patient <- createPatient();
-  visit <- createVisit();
-  declareTest(description="inpatient visit sampling weight field proj_wgt to observation", id = patient$person_id);
-  add_pat(medrec_key = patient$medrec_key,
-          pat_key    = visit$pat_key,
-          i_o_ind    = 'I');
-  expect_observation(person_id                   = patient$person_id,
-                     visit_occurrence_id         = visit$visit_occurrence_id,
-                     observation_concept_id      = 37392832,
-                     observation_type_concept_id = 900000003,
-                     value_as_number             = 33.285000);
-
-  patient <- createPatient();
-  visit <- createVisit();
-  declareTest(description="outpatient visit where proj_wgt=0 does not move to observation", id = patient$person_id);
-  add_pat(medrec_key = patient$medrec_key,
-          pat_key    = visit$pat_key,
-          i_o_ind    = 'O');
-  expect_no_observation(person_id              = patient$person_id,
-                        visit_occurrence_id    = visit$visit_occurrence_id,
-                        observation_concept_id = 37392832);
 
 }

@@ -43,26 +43,26 @@ createConditionOccurrenceTests <- function () {
                               condition_start_date   = "2004-03-01",
                               condition_source_value = "M05.421");
 
-  #POA flag to condition_status_concept_id
-  poa_vals <- data.frame(
-    icd_poa = c('W', 'Y', '9'),
-    concept_id = c('46236988', '46236988', '0'));
+  #PRI_SEC flag to condition_status_concept_id
+  pri_sec_vals <- data.frame(
+    icd_pri_sec = c('A', 'P', 'S'),
+    concept_id = c('32890', '32902', '32908'));
 
-  for (i in 1:nrow(poa_vals))
+  for (i in 1:nrow(pri_sec_vals))
   {
-    poa_val <- poa_vals[i,]
+    pri_sec_val <- pri_sec_vals[i,]
     patient <- createPatient();
     visit <- createVisit();
-    declareTest(description=paste0("PATICD_DIAG.ICD_POA = ", poa_val$icd_poa, " to CONDITION_STATUS_CONCEPT_ID = ", poa_val$concept_id),
+    declareTest(description=paste0("PATICD_DIAG.ICD_PRI_SEC = ", pri_sec_val$icd_pri_sec, " to CONDITION_STATUS_CONCEPT_ID = ", pri_sec_val$concept_id),
                 id = patient$person_id);
     add_pat(medrec_key   = patient$medrec_key,
             pat_key      = visit$pat_key);
     add_paticd_diag(pat_key = visit$pat_key,
-                    icd_poa = as.character(poa_val$icd_poa));
+                    icd_pri_sec = as.character(pri_sec_val$icd_pri_sec));
     expect_condition_occurrence(person_id                     = patient$person_id,
                                 visit_occurrence_id           = visit$visit_occurrence_id,
-                                condition_status_concept_id   = poa_val$concept_id,
-                                condition_status_source_value = poa_val$icd_poa);
+                                condition_status_concept_id   = pri_sec_val$concept_id,
+                                condition_status_source_value = pri_sec_val$icd_pri_sec);
   }
 
 }

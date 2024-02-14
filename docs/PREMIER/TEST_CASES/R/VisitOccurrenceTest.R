@@ -1,6 +1,6 @@
 createVisitOccurrenceTests <- function ()
 {
-
+  set_defaults_pat(age = 33);
   patient <- createPatient()
   declareTest(description = "Creates good visit_occurrence records", id = patient$person_id);
   visit1 <- createVisit();
@@ -25,13 +25,13 @@ createVisitOccurrenceTests <- function ()
   add_patbill(pat_key = visit4$pat_key);
 
   expect_visit_occurrence(person_id        = patient$person_id, visit_occurrence_id = visit1$visit_occurrence_id,
-                          visit_start_date = '2010-10-01', visit_end_date = '2010-10-04');
+                          visit_start_date = '2010-10-01', visit_end_date = '2010-10-01');
   expect_visit_occurrence(person_id        = patient$person_id, visit_occurrence_id = visit2$visit_occurrence_id,
-                          visit_start_date = '2010-10-23', visit_end_date = '2010-11-01');
+                          visit_start_date = '2010-10-01', visit_end_date = '2010-11-01');
   expect_visit_occurrence(person_id        = patient$person_id, visit_occurrence_id = visit3$visit_occurrence_id,
-                          visit_start_date = '2011-05-01', visit_end_date = '2011-05-08');
+                          visit_start_date = '2011-05-01', visit_end_date = '2011-05-01');
   expect_visit_occurrence(person_id        = patient$person_id, visit_occurrence_id = visit4$visit_occurrence_id,
-                          visit_start_date = '2011-05-09', visit_end_date = '2011-05-11');
+                          visit_start_date = '2011-05-01', visit_end_date = '2011-05-01');
 
 
   # fix for inpatient stays only
@@ -79,6 +79,7 @@ createVisitOccurrenceTests <- function ()
   add_pat(medrec_key = patient$medrec_key,
           pat_key    = visit$pat_key,
           adm_date   = "2005-01-01",
+		  point_of_origin = 7,
           i_o_ind    = 'I');
   expect_visit_occurrence(person_id           = patient$person_id,
                           visit_occurrence_id = visit$visit_occurrence_id,

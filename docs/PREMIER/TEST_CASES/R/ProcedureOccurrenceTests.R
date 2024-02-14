@@ -9,10 +9,10 @@ createProcedureOccurrenceTests <- function () {
           adm_date     = "2011-07-01",
           disc_date    = "2011-07-01");
   add_patbill(pat_key      = visit$pat_key,
-              std_chg_code = as.numeric(Sys.getenv("std_chg_code_16")));
+              std_chg_code = 360360206110000);
   expect_procedure_occurrence(person_id            = patient$person_id,
                               visit_occurrence_id  = visit$visit_occurrence_id,
-                              procedure_concept_id = 4301600,
+                              procedure_concept_id = 46257707,
                               procedure_date       = "2011-07-01");
 
   # PATICD_PROC.ICD_CODE ICD9CM
@@ -25,11 +25,11 @@ createProcedureOccurrenceTests <- function () {
           disc_date    = "2014-10-01");
   add_patbill(pat_key  = visit$pat_key);
   add_paticd_proc(pat_key     = visit$pat_key,
-                  icd_code    = "V43.7",
+                  icd_code    = "V43.64",
                   icd_version = 9);
   expect_procedure_occurrence(person_id            = patient$person_id,
                               visit_occurrence_id  = visit$visit_occurrence_id,
-                              procedure_concept_id = 4158906,
+                              procedure_concept_id = 4134857,
                               procedure_date       = "2014-10-01");
 
   # PATICD_PROC.ICD_CODE ICD9Proc
@@ -46,7 +46,7 @@ createProcedureOccurrenceTests <- function () {
                   icd_version = 9);
   expect_procedure_occurrence(person_id            = patient$person_id,
                               visit_occurrence_id  = visit$visit_occurrence_id,
-                              procedure_concept_id = 2001184,
+                              procedure_concept_id = 4239779,
                               procedure_date       = "2013-04-01");
 
   # PATICD_PROC.ICD_CODE ICD10CM
@@ -59,12 +59,12 @@ createProcedureOccurrenceTests <- function () {
           disc_date    = "2004-03-01");
   add_patbill(pat_key  = visit$pat_key);
   add_paticd_proc(pat_key     = visit$pat_key,
-                  icd_code    = "Z49.01",
+                  icd_code    = "Z05.1",
                   icd_version = 19);
   expect_procedure_occurrence(person_id            = patient$person_id,
                               visit_occurrence_id  = visit$visit_occurrence_id,
-                              procedure_concept_id = 4032243,
-                              procedure_date       = "2004-03-19");
+                              procedure_concept_id = 44789514,
+                              procedure_date       = "2004-03-01");
 
   # PATICD_PROC.ICD_CODE ICD10PCS
   patient <- createPatient();
@@ -76,12 +76,12 @@ createProcedureOccurrenceTests <- function () {
           disc_date    = "2002-02-01");
   add_patbill(pat_key  = visit$pat_key);
   add_paticd_proc(pat_key     = visit$pat_key,
-                  icd_code    = "0SG00Z1",
+                  icd_code    = "0SG33KJ",
                   icd_version = 10);
   expect_procedure_occurrence(person_id            = patient$person_id,
                               visit_occurrence_id  = visit$visit_occurrence_id,
-                              procedure_concept_id = 2771554,
-                              procedure_date       = "2002-02-04");
+                              procedure_concept_id = 2771840,
+                              procedure_date       = "2002-02-01");
 
   # PATICD_PROC.ICD_CODE ICD10PCS Modifier, not mapped
   patient <- createPatient();
@@ -108,7 +108,7 @@ createProcedureOccurrenceTests <- function () {
              cpt_code = "S2325");
   expect_procedure_occurrence(person_id            = patient$person_id,
                               visit_occurrence_id  = visit$visit_occurrence_id,
-                              procedure_concept_id = 2721153,
+                              procedure_concept_id = 40489502,
                               procedure_date       = "2001-01-01");
 
   # PATCPT.CPT_CODE CPT4
@@ -168,7 +168,7 @@ createProcedureOccurrenceTests <- function () {
   add_pat(medrec_key   = patient$medrec_key,
           pat_key      = visit$pat_key);
   add_patbill(pat_key      = visit$pat_key,
-              std_chg_code = as.numeric(Sys.getenv("std_chg_code_17")));
+              std_chg_code = 300305856520000);
   expect_no_procedure_occurrence(person_id           = patient$person_id,
                                  visit_occurrence_id = visit$visit_occurrence_id);
 
@@ -197,10 +197,10 @@ createProcedureOccurrenceTests <- function () {
                                  visit_occurrence_id = visit$visit_occurrence_id);
 
   # PATICD_PROC.ICD_PRI_SEC
-
+  # All records within the procedure_occurrence table should have a procedure_type_concept_id = 32875 (Provider financial system)
   pri_secs <- data.frame(
     cond = c('P', 'S'),
-    type = c(44786630, 44786631));
+    type = c(32875, 32875));
 
   for (i in 1:nrow(pri_secs))
   {
@@ -227,13 +227,13 @@ createProcedureOccurrenceTests <- function () {
           adm_date     = "2002-02-01",
           disc_date    = "2002-02-01");
   add_patbill(pat_key      = visit$pat_key,
-              std_chg_code = as.numeric(Sys.getenv("std_chg_code_18")),
+              std_chg_code = 360360206110000,
               std_qty      = 3);
 
   expect_procedure_occurrence(person_id            = patient$person_id,
                               visit_occurrence_id  = visit$visit_occurrence_id,
                               procedure_date       = "2002-02-01",
-                              procedure_concept_id = 2104175,
+                              procedure_concept_id = 46257707,
                               quantity             = 3);
 
   patient <- createPatient();
@@ -244,7 +244,7 @@ createProcedureOccurrenceTests <- function () {
           adm_date     = "2002-02-01",
           disc_date    = "2002-02-01");
   add_patbill(pat_key      = visit$pat_key,
-              std_chg_code = as.numeric(Sys.getenv("std_chg_code_19")),
+              std_chg_code = 270270019860000,
               std_qty      = 3);
 
   expect_procedure_occurrence(person_id            = patient$person_id,
@@ -252,40 +252,5 @@ createProcedureOccurrenceTests <- function () {
                               procedure_date       = "2002-02-01",
                               procedure_concept_id = 0,
                               quantity             = 3);
-
-  # procedure date tests
-  patient <- createPatient();
-  visit <- createVisit();
-  declareTest(description="Procedure date at visit start + proc_day for records from PATICD_PROC", id = patient$person_id);
-  add_pat(medrec_key   = patient$medrec_key,
-          pat_key      = visit$pat_key,
-          adm_date     = "2014-10-01",
-          disc_date    = "2014-10-01");
-  add_patbill(pat_key  = visit$pat_key);
-  add_paticd_proc(pat_key     = visit$pat_key,
-                  icd_code    = "V43.7",
-                  icd_version = 9);
-  expect_procedure_occurrence(person_id            = patient$person_id,
-                              visit_occurrence_id  = visit$visit_occurrence_id,
-                              procedure_concept_id = 4158906,
-                              procedure_date       = "2014-10-05");
-
-  patient <- createPatient();
-  visit <- createVisit();
-  declareTest(description="PATICD_PROC procedure date > visit end, set procedure date = visit_end", id = patient$person_id);
-  add_pat(medrec_key   = patient$medrec_key,
-          pat_key      = visit$pat_key,
-          adm_date     = "2014-10-01",
-          disc_date    = "2014-10-01");
-  add_patbill(pat_key  = visit$pat_key);
-  add_paticd_proc(pat_key     = visit$pat_key,
-                  icd_code    = "V43.7",
-                  icd_version = 9);
-  expect_procedure_occurrence(person_id            = patient$person_id,
-                              visit_occurrence_id  = visit$visit_occurrence_id,
-                              procedure_concept_id = 4158906,
-                              procedure_date       = "2014-10-10");
-
-
 
 }

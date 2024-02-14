@@ -33,7 +33,7 @@ createPersonTests <- function ()
   declareTest(description="Year of birth > current year; drop person", id = patient$person_id);
   add_pat(medrec_key = patient$medrec_key,
           pat_key    = visit$pat_key,
-          adm_date   = "2030-01-01",
+          adm_date   = "2050-01-01",
           age        = 8);
   expect_no_person(person_id = patient$person_id);
 
@@ -46,10 +46,6 @@ createPersonTests <- function ()
           pat_key    = visit1$pat_key,
           adm_date   = "2000-01-01",
           age        = 999);
-  add_pat(medrec_key = patient$medrec_key,
-          pat_key    = visit1$pat_key,
-          adm_date   = "2010-01-01",
-          age        = 5);
   expect_no_person(person_id = patient$person_id);
 
 
