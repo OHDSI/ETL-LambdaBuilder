@@ -4,6 +4,10 @@ library(DatabaseConnector)
 library(SqlRender)
 library(OptumPantherTests)
 
+source('R/extras/TestFramework.R')
+devtools::load_all()
+#getwd()
+
 source_schema <- "optum_panther_native_test"
 cdm_schema <- "optum_panther_cdm_test"
 

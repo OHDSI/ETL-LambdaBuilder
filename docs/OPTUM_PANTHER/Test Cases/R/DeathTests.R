@@ -2,6 +2,7 @@ createDeathTests <- function () {
 
   # Parameters to use in the function
   patient <- createPatient();
+  enc <- createEncounter();
   death_date_threshold <- 31
   death_date <- "201404"
   stay_dead_date <- as.character(as.Date("2014-04-30") + death_date_threshold - 1)
@@ -11,9 +12,10 @@ createDeathTests <- function () {
                        "observations", "patient_reported_medications", "prescriptions_written", "procedure", "visit")
 
   # START - Tests
-  declareTest("Patient is indicated dead by date_of_death. Their death date is the last day of the month.", source_pid = patient$ptid, cdm_pid = patient$person_id)
-  add_patient(ptid=patient$ptid, date_of_death="201404")
-  expect_death(person_id = patient$person_id, death_date = "04/30/2014")
+  declareTest("Patient is indicated dead by date_of_death. Their death date is the last day of the month.", id = patient$person_id)
+  add_patient(ptid=patient$ptid, date_of_death="201404", deceased_indicator="1")
+  add_encounter(enc=enc$encid, ptid = patient$ptid, interaction_date = "2014-04-30")
+  expect_death(person_id = patient$person_id, death_date = "2014-04-30")
   patient <- createPatient()
 
   # Check each table that contains references to the patient (PTID) to see if they have information
@@ -32,8 +34,8 @@ createDeathDataForTables <- function(tables_to_check, death_date_desc, death_dat
     patient <- createPatient();
     enc = createEncounter();
     visitId <- sequencer$nextSequence();
-    declareTest(paste("Patient has", tableName, "data occurring", death_date_desc), source_pid = patient$ptid, cdm_pid = patient$person_id)
-    add_patient(ptid=patient$ptid, date_of_death=death_date)
+    declareTest(paste("Patient has", tableName, "data occurring", death_date_desc), id = patient$person_id)
+    add_patient(ptid=patient$ptid, date_of_death=death_date,deceased_indicator="1")
     add_encounter(enc=enc$encid, ptid = patient$ptid, interaction_date = end_date, visitid = visitId)
 
     if (tableName == "care_area")
@@ -47,11 +49,11 @@ createDeathDataForTables <- function(tables_to_check, death_date_desc, death_dat
     if (tableName =="insurance")
       add_insurance(ptid=patient$ptid, encid=enc$encid, insurance_date=end_date)
     if (tableName =="labs")
-      add_labs(ptid=patient$ptid, encid=enc$encid, order_date=end_date)
+      add_labs(ptid=patient$ptid, encid=enc$encid, result_date=end_date, order_date=end_date)
     if (tableName =="medication_administrations")
       add_medication_administrations(ptid=patient$ptid, encid=enc$encid, order_date=end_date)
     if (tableName =="microbiology")
-      add_microbiology(ptid=patient$ptid, encid=enc$encid, order_date=end_date)
+      add_microbiology(ptid=patient$ptid, encid=enc$encid, collect_date=end_date, order_date=end_date)
     if (tableName =="nlp_biomarkers")
       add_nlp_biomarkers(ptid=patient$ptid, note_date=end_date)
     if (tableName =="nlp_drug_rationale")
