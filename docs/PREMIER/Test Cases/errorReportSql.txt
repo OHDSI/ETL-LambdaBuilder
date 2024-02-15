@@ -1,0 +1,28 @@
+DBMS:
+postgresql
+
+Error:
+org.postgresql.util.PSQLException: ERROR: relation "native_cdm_testing_premier._lookup_datadictionary" does not exist
+
+SQL:
+TRUNCATE TABLE native_cdm_testing_premier._lookup_datadictionary
+
+R version:
+R version 4.3.1 (2023-06-16 ucrt)
+
+Platform:
+x86_64-w64-mingw32
+
+Attached base packages:
+- stats
+- graphics
+- grDevices
+- utils
+- datasets
+- methods
+- base
+
+Other attached packages:
+- PremierTests (0.1.0)
+- DatabaseConnector (6.2.4)
+- SqlRender (1.16.1)
