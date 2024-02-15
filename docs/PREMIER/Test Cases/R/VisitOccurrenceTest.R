@@ -1,6 +1,5 @@
 createVisitOccurrenceTests <- function ()
 {
-  set_defaults_pat(age = 33);
   patient <- createPatient()
   declareTest(description = "Creates good visit_occurrence records", id = patient$person_id);
   visit1 <- createVisit();

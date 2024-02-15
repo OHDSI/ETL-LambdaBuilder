@@ -1,7 +1,5 @@
 createDeviceExposureTests <- function () {
 
-  set_defaults_paticd_proc(proc_date = NULL)
-  set_defaults_patcpt(proc_date = NULL)
   
   # PATBILL.STD_CHG_CODE
   patient <- createPatient();

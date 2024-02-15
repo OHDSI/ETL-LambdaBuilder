@@ -1,6 +1,5 @@
 createConditionOccurrenceTests <- function () {
 
-  set_defaults_patbill(serv_date = NULL)
   
   # PATICD_DIAG.ICD_CODE ICD9CM
   patient <- createPatient();

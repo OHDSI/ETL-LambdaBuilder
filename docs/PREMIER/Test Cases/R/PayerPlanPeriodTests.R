@@ -1,6 +1,5 @@
 createPayerPlanPeriodTests <- function () {
-  set_defaults_pat(age = 33);
-  
+ 
   add_payor(std_payor = 360, std_payor_desc = "MANAGED CARE - NON-CAP");
   add_payor(std_payor = 330, std_payor_desc = "MEDICAID - TRADITIONAL");
   add_payor(std_payor = 300, std_payor_desc = "MEDICARE - TRADITIONAL");
