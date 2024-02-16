@@ -8,8 +8,8 @@ expect_cost(cost_event_id = 1201, cost_domain_id = "Visit", cost_type_concept_id
 declareTest(1202, "Procedure cost")
 add_enrollment(member_id = "M000001202")
 add_claim(member_id = "M000001202", claim_id = "C000000001202")
-add_procedure(claim_id = "C000000001202", member_id = "M000001202", standardized_procedure_id = 2, standardized_procedure_version = '201404', number_of_times = 3)
-add_procedure_master(standardized_procedure_id = 2, standardized_procedure_version = '201404', procedure_standard_point = 50)
+add_procedure(claim_id = "C000000001202", member_id = "M000001202", standardized_procedure_code = 2, standardized_procedure_version = '201404', number_of_times = 3)
+add_procedure_master(standardized_procedure_code = 2, standardized_procedure_version = '201404')
 expect_cost(cost_event_id = lookup_procedure_occurrence("procedure_occurrence_id", person_id = 1202, visit_occurrence_id = 1202), cost_domain_id = "Procedure", cost_type_concept_id = 5032, currency_concept_id = 44818592, total_charge = 1500)
 
 declareTest(1203, "Drug cost")

@@ -13518,7 +13518,6 @@ generateInsertSql <- function(databaseSchema = NULL) {
   insertSql <- c()
   insertSql <- c(insertSql, "TRUNCATE TABLE @cdm_database_schema.annual_health_checkup;")
   insertSql <- c(insertSql, "TRUNCATE TABLE @cdm_database_schema.claim;")
-  insertSql <- c(insertSql, "TRUNCATE TABLE @cdm_database_schema._version;")
   insertSql <- c(insertSql, "TRUNCATE TABLE @cdm_database_schema.material_master;")
   insertSql <- c(insertSql, "TRUNCATE TABLE @cdm_database_schema.drug_master;")
   insertSql <- c(insertSql, "TRUNCATE TABLE @cdm_database_schema.enrollment;")
