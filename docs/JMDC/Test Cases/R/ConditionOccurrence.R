@@ -1,0 +1,70 @@
+# Condition occurrence ------------------------------------------------------------------
+
+createConditionOccurrenceTests <- function () {
+	declareTest(701, "Condition occurrence person ID")
+	add_enrollment(member_id = "M000000701")
+	add_claim(member_id = "M000000701", claim_id = "C000000000701")
+	add_diagnosis(member_id = "M000000701", claim_id = "C000000000701")
+	expect_condition_occurrence(person_id = 701)
+
+	declareTest(702, "Condition occurrence visit occurrence ID")
+	add_enrollment(member_id = "M000000702")
+	add_claim(member_id = "M000000702", claim_id = "C000000000702")
+	add_diagnosis(member_id = "M000000702", claim_id = "C000000000702")
+	expect_condition_occurrence(visit_occurrence_id = 702)
+
+	declareTest(703, "Condition type concept ID")
+	add_enrollment(member_id = "M000000703")
+	add_claim(member_id = "M000000703", claim_id = "C000000000703")
+	add_diagnosis(member_id = "M000000703", claim_id = "C000000000703", type_of_claim = "Outpatient")
+	add_claim(member_id = "M000000703", claim_id = "C000000000704")
+	add_diagnosis(member_id = "M000000703", claim_id = "C000000000704", type_of_claim = "Inpatient")
+	add_claim(member_id = "M000000703", claim_id = "C000000000705")
+	add_diagnosis(member_id = "M000000703", claim_id = "C000000000705", type_of_claim = "DPC")
+	expect_condition_occurrence(person_id = 703, visit_occurrence_id = 703, condition_type_concept_id = 32859)
+	expect_condition_occurrence(person_id = 703, visit_occurrence_id = 704, condition_type_concept_id = 32853)
+	expect_condition_occurrence(person_id = 703, visit_occurrence_id = 705, condition_type_concept_id = 32853)
+
+	declareTest(704, "Condition start date from admission date")
+	add_enrollment(member_id = "M000000704")
+	add_claim(member_id = "M000000704", claim_id = "C000000000706", month_and_year_of_medical_care = "201002", admission_date = "2010-01-01")
+	add_diagnosis(member_id = "M000000704", claim_id = "C000000000706")
+	expect_condition_occurrence(person_id = 704, visit_occurrence_id = 706, condition_start_date = "2010-01-01")
+
+	declareTest(705, "Condition start date from claim date")
+	add_enrollment(member_id = "M000000705")
+	add_claim(member_id = "M000000705", claim_id = "C000000000707", month_and_year_of_medical_care = "201002")
+	add_diagnosis(member_id = "M000000705", claim_id = "C000000000707")
+	expect_condition_occurrence(person_id = 705, visit_occurrence_id = 707, condition_start_date = "2010-02-15")
+
+	declareTest(706, "Condition provider ID")
+	add_enrollment(member_id = "M000000706")
+	add_claim(member_id = "M000000706", claim_id = "C000000000708")
+	add_diagnosis(member_id = "M000000706", claim_id = "C000000000708", medical_facility_id = "F0000006")
+	expect_condition_occurrence(person_id = 706, visit_occurrence_id = 708, provider_id = 10000006)
+
+	declareTest(707, "Condition concept ID and source values")
+	add_enrollment(member_id = "M000000707")
+	add_claim(member_id = "M000000707", claim_id = "C000000000709")
+	add_diagnosis(member_id = "M000000707", claim_id = "C000000000709", standard_disease_code = 1)
+	add_diagnosis_master(standard_disease_code = 1, icd10_level4_code = "I10-")
+	expect_condition_occurrence(person_id = 707, visit_occurrence_id = 709, condition_concept_id =  320128, condition_source_value = "I10-", condition_source_concept_id = 45591453)
+
+	# declareTest(708, "Condition occurrence that are era-like")
+	# add_enrollment(member_id = "M000000708", observation_start = "201001", observation_end = "201212")
+	# add_claim(member_id = "M000000708", claim_id = "C000000000710", month_and_year_of_medical_care = "201002", days_of_medical_care = 1)
+	# add_diagnosis(member_id = "M000000708", claim_id = "C000000000710", date_of_medical_care_start = "2010-01-05")
+	# expect_condition_occurrence(person_id = 708, condition_type_concept_id = 38000246, condition_start_date = "2010-01-05", condition_end_date = "2010-02-15")
+
+	# declareTest(709, "Condition occurrence that are era-like, start before OP start")
+	# add_enrollment(member_id = "M000000709", observation_start = "201001", observation_end = "201212")
+	# add_claim(member_id = "M000000709", claim_id = "C000000000711", month_and_year_of_medical_care = "201002", days_of_medical_care = 1)
+	# add_diagnosis(member_id = "M000000709", claim_id = "C000000000711", date_of_medical_care_start = "2009-12-01")
+	# expect_condition_occurrence(person_id = 709, condition_type_concept_id = 38000246, condition_start_date = "2010-01-01", condition_end_date = "2010-02-15")
+
+	declareTest(710, "Condition with suspicion flag")
+	add_enrollment(member_id = "M000000710")
+	add_claim(member_id = "M000000710", claim_id = "C000000000712")
+	add_diagnosis(member_id = "M000000710", claim_id = "C000000000712", standard_disease_code = 1, suspicion_flag = 1)
+	expect_no_condition_occurrence(person_id = 710)
+}	
