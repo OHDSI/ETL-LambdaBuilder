@@ -2,15 +2,9 @@
 source('extras/TestFrameworkJMDC.R')
 devtools::load_all()
 
-set_defaults_enrollment(withdrawal_death_flag = NULL)
-set_defaults_medical_facility(home_care_support_clinic = NULL, designated_cancer_care_hospitals = NULL, medical_institution_introducing_dpc = NULL, special_functioning_hospitals = NULL)
-
-
-set_defaults_enrollment(observation_start = "201001", observation_end = "201712")
-set_defaults_diagnosis(standard_disease_code = 123)
-add_diagnosis_master(standard_disease_code = 123, icd10_level4_code = 'J309') # allergic rhinitis
-set_defaults_procedure(standardized_procedure_id = 123, standardized_procedure_version = '201404')
-add_procedure_master(standardized_procedure_id = 123, standardized_procedure_version = '201404', icd9cm_level1 = 9394) # Respiratory medication administered by nebulizer
+initFramework(); # This will set up the framework to create the inserts
+setDefaults(); # This sets the default values for certain variables
+createTests(); 
 
 # Generate SQL -------------------------------------------------------------------
 
