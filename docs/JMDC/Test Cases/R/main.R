@@ -2,6 +2,18 @@ getSource <- function() {
     source('extras/TestFrameworkJMDC.R')
 }
 
+getSequence <- function (startValue = 1) {
+  counterInstance <- new.env(parent = emptyenv());
+  counterInstance$currentValue <- startValue;
+  counterInstance$nextSequence <- function()
+  {
+    nextValue <- counterInstance$currentValue;
+    counterInstance$currentValue = counterInstance$currentValue + 1;
+    return(nextValue)
+  }
+  return (counterInstance);
+}
+
 # Use this function to test build errors
 # It's challenging to debug errors when a package loads, so disable onLoad
 # and export the below when debugging.

@@ -28,7 +28,7 @@ createObservationTests <- function () {
 
 	declareTest(1105, "Observation date from diagnosis with admission date")
 	add_enrollment(member_id = "M000001105")
-	add_claim(member_id = "M000001105", claim_id = "C000000001105", month_and_year_of_medical_care = "201001", admission_date = "20100101")
+	add_claim(member_id = "M000001105", claim_id = "C000000001105", month_and_year_of_medical_care = "201001", admission_date = "2010-01-01")
 	add_diagnosis(member_id = "M000001105", claim_id = "C000000001105", standard_disease_code = 4) # Personal history of psychological trauma, not elsewhere classified
 	expect_observation(person_id = 1105, visit_occurrence_id = 1105, observation_date = "2010-01-01")
 
