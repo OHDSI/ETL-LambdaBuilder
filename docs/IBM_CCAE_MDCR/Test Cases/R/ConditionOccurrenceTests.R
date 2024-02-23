@@ -159,14 +159,14 @@ createConditionOccurrenceTests <- function () {
     declareTest(id = patient$person_id, "HRA mapped to condition/drug the END_DATE is NULL. Id is PERSON_ID")
     add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
     add_health_risk_assessment(enrolid = patient$enrolid, survdate = '2012-03-12', cc_backpain = "1")
-    expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '134736', condition_status_concept_id = 0, condition_start_date = '2012-03-12', condition_end_date = NULL)#, condition_type_concept_id = '32850')
+    expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '134736', condition_status_concept_id = NULL, condition_start_date = '2012-03-12', condition_end_date = NULL)#, condition_type_concept_id = '32850')
     
     patient <- createPatient()
     encounter <- createEncounter()  
     declareTest(id = patient$person_id, "Patient has 1 in CC_ASTHMA column, condition_source_value=Self-reported Asthma. Id is PERSON_ID")
     add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
     add_health_risk_assessment(enrolid = patient$enrolid, survdate = '2012-09-13', cc_asthma = '1')
-    expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '317009', condition_source_value = 'CC_ASTHMA', condition_status_concept_id = 0, condition_start_date = '2012-09-13')#, condition_type_concept_id = '32850')
+    expect_condition_occurrence(person_id = patient$person_id, condition_concept_id = '317009', condition_source_value = 'CC_ASTHMA', condition_status_concept_id = NULL, condition_start_date = '2012-09-13')#, condition_type_concept_id = '32850')
     
   }
 }
