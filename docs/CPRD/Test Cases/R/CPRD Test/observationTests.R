@@ -67,7 +67,7 @@ createObservationTests <- function()
   declareTest(id = patient$person_id, 'test procedure')
   add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid = patient$pracid)
   add_test(patid = patient$patid, eventdate = '2011-03-01', medcode = 1137, staffid = 1001, consid = 4244, enttype=311, data1=9)
-  expect_observation(person_id = lookup_person("person_id", person_source_value = patient$person_id), observation_date='2011-03-01', observation_type_concept_id=32856,
+  expect_observation(person_id = lookup_person("person_id", person_source_value = patient$person_id), observation_date='2011-03-01', observation_type_concept_id=32817,
                      observation_source_value='R100.00', observation_concept_id=0,
                      observation_source_concept_id=45474099)
 
