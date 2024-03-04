@@ -1,0 +1,24 @@
+﻿<QueryDefinition>
+	<Query>
+		SELECT t.PERSON_ID,
+		t.PERSON_SOURCE_VALUE,
+		op.OBSERVATION_PERIOD_START_DATE,
+		op.OBSERVATION_PERIOD_END_DATE,
+		t.GENDER_SOURCE_VALUE,
+		t.YEAR_OF_BIRTH
+		FROM {sc}.PERSON as t
+		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND t.PERSON_ID = ch.PERSON_ID
+		JOIN {sc}.OBSERVATION_PERIOD op ON t.PERSON_ID = op.PERSON_ID
+		order by t.PERSON_ID
+	</Query>
+	<Persons>
+		<PersonDefinition>
+			<PersonId>PERSON_ID</PersonId>
+			<PersonSourceValue>PERSON_SOURCE_VALUE</PersonSourceValue>
+			<StartDate>OBSERVATION_PERIOD_START_DATE</StartDate>
+			<EndDate>OBSERVATION_PERIOD_END_DATE</EndDate>
+			<Gender>GENDER_SOURCE_VALUE</Gender>
+			<YearOfBirth>YEAR_OF_BIRTH</YearOfBirth>
+		</PersonDefinition>
+	</Persons>
+</QueryDefinition>

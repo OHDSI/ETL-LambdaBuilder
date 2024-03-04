@@ -1,0 +1,129 @@
+﻿<QueryDefinition>
+  <Query database="full">
+		with a as
+		(
+		SELECT
+		ch.person_id as PersonId,
+		note_date,
+		null as result_numeric,
+		result_narrative,
+		system_name || ' grade tubular ' || grade_tubular as source1,
+		system_name || ' grade nuclear ' || grade_nuclear as source2,
+		system_name || ' grade mitotic ' || grade_mitotic as source3,
+		null as source4,
+		null as neoplasm_histology_key
+		FROM {sc}.onc_evaluation_system l
+		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
+		where temporal_status = 'current' and system_name like 'Nottingham%'
+
+		union
+
+		SELECT
+		ch.person_id as PersonId,
+		note_date,
+		null as result_numeric,
+		result_narrative,
+		system_name || ' grade primary '   || grade_primary as source1,
+		system_name || ' grade secondary ' || grade_secondary as source2,
+		system_name || ' grade tertiary '  || grade_tertiary as source3,
+		system_name || ' result numeric '  || result_numeric as source4,
+		null as neoplasm_histology_key
+		FROM {sc}.onc_evaluation_system l
+		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
+		where temporal_status = 'current' and system_name like 'Gleason%'
+
+		union
+
+		SELECT
+		ch.person_id as PersonId,
+		note_date,
+		result_numeric,
+		result_narrative,
+		system_name || ' ' || result_numeric as source1,
+		null as source2,
+		null as source3,
+		null as source4,
+		null as neoplasm_histology_key
+		FROM {sc}.onc_evaluation_system l
+		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
+		where temporal_status = 'current' and result_numeric is not null and lower(system_name) in
+		('figo grade',
+		'durie/salmon stage',
+		'international staging system stage',
+		'riss stage',
+		'rai stage',
+		'figo stage',
+		'binet stage')
+
+		union
+
+		SELECT
+		ch.person_id as PersonId,
+		note_date,
+		result_numeric,
+		result_narrative,
+		system_name as source1,
+		null as source2,
+		null as source3,
+		null as source4,
+		null as neoplasm_histology_key
+		FROM {sc}.onc_evaluation_system l
+		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
+		where temporal_status = 'current' and result_numeric is not null and lower(system_name) in
+		('ecog performance status',
+		'karnofsky performance status',
+		'oncotype dx recurrence score',
+		'recurrence score')
+		)
+
+		select distinct *,
+		1147127 as meas_event_field_concept_id,
+		null as unit
+		from a
+
+		order by 1
+	</Query>
+  <Measurement>
+    <MeasurementDefinition>
+	  <IsUnique>true</IsUnique>
+      <PersonId>PersonId</PersonId>
+      <StartDate>note_date</StartDate>
+      <ValueSourceValue>result_narrative</ValueSourceValue>
+      <EventFieldConceptId>meas_event_field_concept_id</EventFieldConceptId>
+      <AdditionalFields>
+        <string>neoplasm_histology_key</string>
+        <string>result_numeric</string>
+      </AdditionalFields>
+      <Concepts>
+        <Concept>
+          <ConceptIdMappers>
+            <Mapper>
+              <Lookup>EhrOncevs</Lookup>
+            </Mapper>
+          </ConceptIdMappers>
+          <Fields>
+            <Field key="source1" defaultTypeId="32882"/>
+            <Field key="source2" defaultTypeId="32882"/>
+            <Field key="source3" defaultTypeId="32882"/>
+            <Field key="source4" defaultTypeId="32882"/>
+          </Fields>
+        </Concept>
+				<Concept>
+					<Fields>
+						<Field key="unit" defaultTypeId="0"/>
+					</Fields>
+				</Concept>
+        <Concept>
+          <ConceptIdMappers>
+            <Mapper>
+              <Lookup>LabRes</Lookup>
+            </Mapper>
+          </ConceptIdMappers>
+          <Fields>
+            <Field key="result_narrative" defaultTypeId="0" />
+          </Fields>
+        </Concept>
+      </Concepts>
+    </MeasurementDefinition>
+  </Measurement>
+</QueryDefinition>

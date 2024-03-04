@@ -1,0 +1,12 @@
+﻿with person as
+(
+SELECT DISTINCT {0} PERSON_ID, PERSON_ID
+FROM {sc}.CONDITION_OCCURRENCE
+UNION
+SELECT DISTINCT {0} PERSON_ID, PERSON_ID
+FROM {sc}.DRUG_EXPOSURE
+)
+
+select *
+from person
+order by 1

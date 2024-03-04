@@ -1,0 +1,27 @@
+﻿<QueryDefinition>
+  <Query>
+		SELECT t.PROCEDURE_OCCURRENCE_ID
+		,t.PERSON_ID
+		,t.PROCEDURE_CONCEPT_ID as CONCEPT_ID
+		,t.PROCEDURE_DATE as START_DATE
+		,t.PROCEDURE_END_DATE as END_DATE
+		,t.PROCEDURE_TYPE_CONCEPT_ID as TYPE_CONCEPT_ID
+		FROM {sc}.PROCEDURE_OCCURRENCE as t
+		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND t.PERSON_ID = ch.PERSON_ID
+		order by t.PERSON_ID, t.PROCEDURE_OCCURRENCE_ID
+	</Query>
+	<ProcedureOccurrence>
+		<ProcedureOccurrenceDefinition>
+      <PersonId>PERSON_ID</PersonId>
+      <StartDate>START_DATE</StartDate>
+      <EndDate>END_DATE</EndDate>
+      <Concepts>
+        <Concept>
+          <Fields>
+            <Field conceptId="CONCEPT_ID" typeId="TYPE_CONCEPT_ID"/>
+          </Fields>
+        </Concept>
+      </Concepts>
+    </ProcedureOccurrenceDefinition>
+  </ProcedureOccurrence>
+</QueryDefinition>

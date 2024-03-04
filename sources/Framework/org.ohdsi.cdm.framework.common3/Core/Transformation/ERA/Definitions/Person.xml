@@ -1,0 +1,29 @@
+﻿<QueryDefinition>
+	<Query>
+		with person as
+		(
+		SELECT DISTINCT t.PERSON_ID
+		FROM {sc}.CONDITION_OCCURRENCE t
+		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND t.PERSON_ID = ch.PERSON_ID
+		UNION
+		SELECT DISTINCT t.PERSON_ID
+		FROM {sc}.DRUG_EXPOSURE t
+		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND t.PERSON_ID = ch.PERSON_ID
+		)
+
+		SELECT PERSON_ID,
+		1 as GENDER_SOURCE_VALUE,
+		1999 as YEAR_OF_BIRTH,
+		PERSON_ID PERSON_SOURCE_VALUE
+		FROM person
+		order by PERSON_ID
+	</Query>
+	<Persons>
+		<PersonDefinition>
+			<PersonId>PERSON_ID</PersonId>
+			<PersonSourceValue>PERSON_SOURCE_VALUE</PersonSourceValue>
+			<Gender>GENDER_SOURCE_VALUE</Gender>
+			<YearOfBirth>YEAR_OF_BIRTH</YearOfBirth>
+		</PersonDefinition>
+	</Persons>
+</QueryDefinition>

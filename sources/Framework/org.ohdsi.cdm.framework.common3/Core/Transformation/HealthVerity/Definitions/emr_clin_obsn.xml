@@ -1,0 +1,48 @@
+﻿<QueryDefinition>
+	<Query>
+		SELECT
+		ch.person_id as PersonId,
+		hvid,
+		hv_clin_obsn_dt,
+		hv_enc_id,
+		clin_obsn_typ_cd source_value,
+		replace(clin_obsn_msrmt, chr(9), ' ') as value_as_string,
+		clin_obsn_prov_id,
+		clin_obsn_uom,
+		32827 type_concept_id,
+		coalesce(clin_obsn_prov_id, '') || ';' || coalesce(clin_obsn_prov_taxnmy_id, '') ProviderIdKey
+		from cdm_health_verity_cc_ehr_cce_v2776.emr_clin_obsn
+		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
+		order by ch.person_id
+	</Query>
+	<Observation>
+		<ObservationDefinition>
+			<PersonId>PersonId</PersonId>
+			<StartDate>hv_clin_obsn_dt</StartDate>
+			<ValuesAsString>
+				<string>value_as_string</string>
+			</ValuesAsString>
+			<ProviderIdKey>ProviderIdKey</ProviderIdKey>
+			<AdditionalFields>
+				<string>hv_enc_id</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field defaultConceptId="0" sourceKey="source_value" defaultTypeId="32817"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+			<Concept>
+				<ConceptIdMappers>
+					<Mapper>
+						<Lookup>Units</Lookup>
+					</Mapper>
+				</ConceptIdMappers>
+				<Fields>
+					<Field key="clin_obsn_uom" defaultTypeId="0" />
+				</Fields>
+			</Concept>
+		</ObservationDefinition>
+	</Observation>
+</QueryDefinition>

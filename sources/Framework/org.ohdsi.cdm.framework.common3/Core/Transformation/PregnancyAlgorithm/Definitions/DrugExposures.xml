@@ -1,0 +1,27 @@
+﻿<QueryDefinition>
+	<Query>
+		SELECT t.DRUG_EXPOSURE_ID
+		,t.PERSON_ID
+		,t.DRUG_CONCEPT_ID as CONCEPT_ID
+		,t.DRUG_EXPOSURE_START_DATE as START_DATE
+		,t.DRUG_EXPOSURE_END_DATE as END_DATE
+		,t.DRUG_TYPE_CONCEPT_ID as TYPE_CONCEPT_ID
+		FROM {sc}.DRUG_EXPOSURE as t
+		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND t.PERSON_ID = ch.PERSON_ID
+		order by t.PERSON_ID, t.DRUG_EXPOSURE_ID
+	</Query>
+	<DrugExposure>
+		<DrugExposureDefinition>
+			<PersonId>PERSON_ID</PersonId>
+			<StartDate>START_DATE</StartDate>
+			<EndDate>END_DATE</EndDate>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field conceptId="CONCEPT_ID" typeId="TYPE_CONCEPT_ID"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</DrugExposureDefinition>
+	</DrugExposure>
+</QueryDefinition>

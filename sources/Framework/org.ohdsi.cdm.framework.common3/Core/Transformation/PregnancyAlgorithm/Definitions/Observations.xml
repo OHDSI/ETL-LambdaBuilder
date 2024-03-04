@@ -1,0 +1,25 @@
+﻿<QueryDefinition>
+  <Query>
+		SELECT t.OBSERVATION_ID
+		,t.PERSON_ID
+		,t.OBSERVATION_CONCEPT_ID as CONCEPT_ID
+		,t.OBSERVATION_DATE as START_DATE
+		,t.OBSERVATION_TYPE_CONCEPT_ID as TYPE_CONCEPT_ID
+		FROM {sc}.OBSERVATION as t
+		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND t.PERSON_ID = ch.PERSON_ID
+		order by t.PERSON_ID, t.OBSERVATION_ID
+	</Query>
+	<Observation>
+		<ObservationDefinition>
+      <PersonId>PERSON_ID</PersonId>
+      <StartDate>START_DATE</StartDate>
+       <Concepts>
+        <Concept>
+          <Fields>
+            <Field conceptId="CONCEPT_ID" typeId="TYPE_CONCEPT_ID"/>
+          </Fields>
+        </Concept>
+      </Concepts>
+    </ObservationDefinition>
+  </Observation>
+</QueryDefinition>

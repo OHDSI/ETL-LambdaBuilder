@@ -1,0 +1,85 @@
+﻿<QueryDefinition>
+  <Query database="full">
+		with neoplasm as
+		(
+		select
+		ch.person_id as PersonId,
+		note_date,
+		neoplasm_characteristic as source_value,
+		neoplasm_histology_key
+		from {sc}.onc_characteristic l
+		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
+		where lower(neoplasm_char_temporal_status) = 'current'
+		and lower(neoplasm_characteristic) not in ('in situ', 'malignant', 'benign')
+		and neoplasm_characteristic != ''
+		),
+		histology as
+		(
+		select
+		ch.person_id as PersonId,
+		note_date,
+		histology_characteristic as source_value,
+		neoplasm_histology_key
+		from {sc}.onc_characteristic l
+		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
+		where lower(histology_char_temporal_status) = 'current'
+		and lower(histology_characteristic) not in ('in situ', 'malignant', 'benign')
+		and histology_characteristic != ''
+		),
+		exclude as
+		(
+		select
+		ch.person_id as PersonId,
+		l2.note_date,
+		l2.histology_characteristic as source_value,
+		l2.neoplasm_histology_key
+		from {sc}.onc_characteristic l
+		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
+		JOIN {sc}.onc_characteristic l2 ON l.ptid = l2.ptid and l.note_date = l2.note_date
+		where lower(l.histology_char_temporal_status) = 'current' and lower(l2.histology_char_temporal_status) = 'current'
+		and lower(l.histology_characteristic) in ('in situ') and lower(l2.histology_characteristic) in ('invasive')
+		), final as
+		(
+		select distinct *
+		from neoplasm
+		union
+		select distinct h.*
+		from histology h
+		left join exclude e on h.PersonId = e.PersonId and h.note_date = e.note_date and h.source_value = e.source_value and h.neoplasm_histology_key = e.neoplasm_histology_key
+		where e.PersonId is null
+		)
+
+		select distinct *,
+		1147127 as meas_event_field_concept_id,
+		case
+		when lower(source_value) = 'metastatic' then 4181412
+		else 0
+		end as value_as_concept_id
+		from final
+		order by 1
+	</Query>
+  <Measurement>
+    <MeasurementDefinition>
+	  <IsUnique>true</IsUnique>
+      <PersonId>PersonId</PersonId>
+      <StartDate>note_date</StartDate>
+      <EventFieldConceptId>meas_event_field_concept_id</EventFieldConceptId>
+			<ValueAsConceptId>value_as_concept_id</ValueAsConceptId>
+      <AdditionalFields>
+        <string>neoplasm_histology_key</string>
+      </AdditionalFields>
+      <Concepts>
+        <Concept>
+          <ConceptIdMappers>
+            <Mapper>
+              <Lookup>EhrOncchr</Lookup>
+            </Mapper>
+          </ConceptIdMappers>
+          <Fields>
+            <Field key="source_value" defaultTypeId="32882"/>
+          </Fields>
+        </Concept>
+      </Concepts>
+    </MeasurementDefinition>
+  </Measurement>
+</QueryDefinition>

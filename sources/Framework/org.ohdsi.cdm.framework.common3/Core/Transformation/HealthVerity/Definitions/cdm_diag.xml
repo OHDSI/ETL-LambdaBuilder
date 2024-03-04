@@ -1,0 +1,73 @@
+﻿<QueryDefinition>
+  <Query>
+    SELECT
+    ch.person_id as PersonId,
+    hvid,
+    enc_start_dt,
+    diag_cd,
+    prmy_diag_flg,
+    case
+    when lower(prmy_diag_flg) = 'y' then 32902
+    else 32908
+    end as condition_status_concept_id,
+    32852 as type_concept_id,
+    case
+    when diag_cd_qual = '02' then '10'
+    when diag_cd_qual = '01' then '9'
+    when enc_start_dt &lt; '10/1/2015' then '9'
+    when enc_start_dt &gt;= '10/1/2015' then '10'
+		end as icd_ver
+		FROM cdm_health_verity_cc_ehr_cce_v2776.cdm_diag
+		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
+		where enc_start_dt is not null
+		order by ch.person_id
+	</Query>
+  <ConditionOccurrence>
+    <ConditionOccurrenceDefinition>
+      <Condition>{icd_ver} = 9</Condition>
+      <PersonId>PersonId</PersonId>
+      <StartDate>enc_start_dt</StartDate>
+      <EndDate>enc_start_dt</EndDate>
+      <Concepts>
+        <Concept>
+          <ConceptIdMappers>
+            <Mapper>
+              <Lookup>icd9</Lookup>
+            </Mapper>
+          </ConceptIdMappers>
+          <Fields>
+            <Field key="diag_cd" typeId="type_concept_id"/>
+          </Fields>
+        </Concept>
+        <Concept>
+          <Fields>
+            <Field conceptId="condition_status_concept_id" sourceKey="prmy_diag_flg" defaultTypeId="32852"/>
+          </Fields>
+        </Concept>
+      </Concepts>
+    </ConditionOccurrenceDefinition>
+    <ConditionOccurrenceDefinition>
+      <Condition>{icd_ver} = 10</Condition>
+      <PersonId>PersonId</PersonId>
+      <StartDate>enc_start_dt</StartDate>
+      <EndDate>enc_start_dt</EndDate>
+      <Concepts>
+        <Concept>
+          <ConceptIdMappers>
+            <Mapper>
+              <Lookup>icd10</Lookup>
+            </Mapper>
+          </ConceptIdMappers>
+          <Fields>
+            <Field key="diag_cd" typeId="type_concept_id"/>
+          </Fields>
+        </Concept>
+        <Concept>
+          <Fields>
+            <Field conceptId="condition_status_concept_id" sourceKey="prmy_diag_flg" defaultTypeId="32852"/>
+          </Fields>
+        </Concept>
+      </Concepts>
+    </ConditionOccurrenceDefinition>
+  </ConditionOccurrence>
+</QueryDefinition>

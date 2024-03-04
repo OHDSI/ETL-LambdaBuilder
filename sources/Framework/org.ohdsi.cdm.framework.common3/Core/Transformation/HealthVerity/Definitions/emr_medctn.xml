@@ -1,0 +1,120 @@
+﻿<QueryDefinition>
+	<Query>
+		SELECT
+		ch.person_id as PersonId,
+		hvid,
+		coalesce(hv_medctn_dt, medctn_start_dt, medctn_admin_dt, medctn_ord_dt) as date,
+		medctn_ndc,
+		medctn_alt_cd,
+		replace(medctn_brd_nm, chr(9), ' ') as medctn_brd_nm,
+		medctn_qty,
+		replace(medctn_days_supply_cnt, chr(9), ' ') as medctn_days_supply_cnt,
+		medctn_end_dt,
+		coalesce(medctn_admin_txt, '') || '_' || coalesce(medctn_admin_sig_cd, '') as sig,
+		medctn_remng_rfll_qty,
+		case
+		when medctn_ndc is not null and medctn_ndc != '' then '1'
+		when medctn_alt_cd is not null and medctn_alt_cd != '' and upper(medctn_alt_cd_qual) in ('RXNORM', 'RXNORM_CODE') then '2'
+		when medctn_alt_cd is not null and medctn_alt_cd != '' and upper(medctn_alt_cd_qual) in ('CVX') then '3'
+		else '4'
+		end as type,
+		32833 type_concept_id
+		from cdm_health_verity_cc_ehr_cce_v2776.emr_medctn
+		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
+		where coalesce(hv_medctn_dt, medctn_start_dt, medctn_admin_dt, medctn_ord_dt) is not null
+		order by 1
+	</Query>
+	<DrugExposure>
+		<DrugExposureDefinition>
+			<Condition>{type} = 1</Condition>
+			<PersonId>PersonId</PersonId>
+			<StartDate>date</StartDate>
+			<EndDate>date</EndDate>
+			<Quantity>medctn_qty</Quantity>
+			<Sig>sig</Sig>
+			<Refill>medctn_remng_rfll_qty</Refill>
+			<AdditionalFields>
+				<string>medctn_days_supply_cnt</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>ndc</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="medctn_ndc" sourceKey="medctn_brd_nm" typeId="type_concept_id" eventDate="date"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</DrugExposureDefinition>
+		<DrugExposureDefinition>
+			<Condition>{type} = 2</Condition>
+			<PersonId>PersonId</PersonId>
+			<StartDate>date</StartDate>
+			<EndDate>date</EndDate>
+			<Quantity>medctn_qty</Quantity>
+			<Sig>sig</Sig>
+			<Refill>medctn_remng_rfll_qty</Refill>
+			<AdditionalFields>
+				<string>medctn_days_supply_cnt</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>rxnorm</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="medctn_alt_cd" sourceKey="medctn_brd_nm"  typeId="type_concept_id" eventDate="date"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</DrugExposureDefinition>
+		<DrugExposureDefinition>
+			<Condition>{type} = 3</Condition>
+			<PersonId>PersonId</PersonId>
+			<StartDate>date</StartDate>
+			<EndDate>date</EndDate>
+			<Quantity>medctn_qty</Quantity>
+			<Sig>sig</Sig>
+			<Refill>medctn_remng_rfll_qty</Refill>
+			<AdditionalFields>
+				<string>medctn_days_supply_cnt</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>cvx</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="medctn_alt_cd" sourceKey="medctn_brd_nm"  typeId="type_concept_id" eventDate="date"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</DrugExposureDefinition>
+		<DrugExposureDefinition>
+			<Condition>{type} = 4</Condition>
+			<PersonId>PersonId</PersonId>
+			<StartDate>date</StartDate>
+			<EndDate>date</EndDate>
+			<Quantity>medctn_qty</Quantity>
+			<Sig>sig</Sig>
+			<Refill>medctn_remng_rfll_qty</Refill>
+			<AdditionalFields>
+				<string>medctn_days_supply_cnt</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field key="medctn_brd_nm" defaultConceptId="0" typeId="type_concept_id"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</DrugExposureDefinition>
+	</DrugExposure>
+</QueryDefinition>
