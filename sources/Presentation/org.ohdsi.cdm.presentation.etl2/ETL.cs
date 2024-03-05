@@ -20,7 +20,7 @@ namespace org.ohdsi.cdm.presentation.etl
     {
         private string _cdmFolderCsv;
 
-        public void Start(bool skipChunkCreation, bool resumeChunkCreation, bool skipLookupCreation, bool skipBuild, bool skipVocabularyCopying, LambdaUtility utility, string cdmFolderCsv)
+        public void Start(bool skipChunkCreation, bool resumeChunkCreation, bool skipLookupCreation, bool skipBuild, bool skipVocabularyCopying, LambdaUtility utility, string cdmFolderCsv, bool readFromS3)
         {
             _cdmFolderCsv = cdmFolderCsv;
 
@@ -42,14 +42,14 @@ namespace org.ohdsi.cdm.presentation.etl
                     chunkController.CreateChunks();
 
                 CopyVocabularyTables(skipVocabularyCopying);
-                CreateLookupTables(vocabulary, skipLookupCreation);
+                CreateLookupTables(vocabulary, skipLookupCreation, readFromS3);
 
                 chunkController.MoveChunkDataToS3(true, true, utility);
             }
             else
             {
                 Console.WriteLine("Chunk creation skipped");
-                createLookupTables = Task.Run(() => CreateLookupTables(vocabulary, skipLookupCreation));
+                createLookupTables = Task.Run(() => CreateLookupTables(vocabulary, skipLookupCreation, readFromS3));
                 copyVocabularyTables = Task.Run(() => CopyVocabularyTables(skipVocabularyCopying));
 
                 if (!skipBuild)
@@ -129,7 +129,7 @@ namespace org.ohdsi.cdm.presentation.etl
             }
         }
 
-        private void CreateLookupTables(Vocabulary vocabulary, bool skipLookupCreation)
+        private void CreateLookupTables(Vocabulary vocabulary, bool skipLookupCreation, bool readFromS3)
         {
             try
             {
@@ -142,7 +142,7 @@ namespace org.ohdsi.cdm.presentation.etl
                 Console.WriteLine("Creating lookup tables...");
                 Console.WriteLine("[Creating lookup] Loading vocabulary...");
 
-                vocabulary.Fill(true, true);
+                vocabulary.Fill(true, readFromS3);
                 Console.WriteLine("[Creating lookup] Vocabulary was loaded");
 
                 var saver = new RedshiftSaver();

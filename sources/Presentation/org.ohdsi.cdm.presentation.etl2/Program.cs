@@ -181,7 +181,9 @@ namespace org.ohdsi.cdm.presentation.etl
                 Console.WriteLine($"BuildingId:{Settings.Current.Building.Id}");
                 Console.WriteLine("building settings - initialized successfully");
 
-                if (string.IsNullOrEmpty(configuration.GetSection("AppSettings")["vendor_settings"]))
+                var useLocalSettings = string.IsNullOrEmpty(configuration.GetSection("AppSettings")["vendor_settings"]);
+
+                if (useLocalSettings)
                 {
                     Console.WriteLine("vendor settings loaded from local");
                 }
@@ -202,7 +204,7 @@ namespace org.ohdsi.cdm.presentation.etl
                 else
                 {
                     var etl = new ETL();
-                    etl.Start(skipChunkCreation, resumeChunkCreation, skipLookupCreation, skipBuild, skipVocabularyCopying, lambdaUtility, configuration.GetSection("AppSettings")["cdm_folder_csv"]);
+                    etl.Start(skipChunkCreation, resumeChunkCreation, skipLookupCreation, skipBuild, skipVocabularyCopying, lambdaUtility, configuration.GetSection("AppSettings")["cdm_folder_csv"], !useLocalSettings);
                 }
 
                 if (skipValidation)
