@@ -6,7 +6,7 @@ Getting Started
 
 The ETL-LambdaBuilder consist of 2 AWS Lambda fuctions and the ETL command line tool:
  - the ETL command line tool - split source dataset (Redshift) to chunks, move data to S3 bucket and triggers AWS Lambda functions
- - CDM Builder function - convert native data from S3 bucket to CDM format and store result to S3 result bucket as .csv files
+ - CDM Builder function - convert native data from S3 bucket to CDM 5.4 format and store result to S3 result bucket as .csv files
  - Merge function - used for aggregation of the following tables: fact_relationship, metadata. 
 
 Prerequisites:
@@ -138,17 +138,20 @@ And in a similar way for the Merge function, org.ohdsi.cdm.presentation.lambdame
 }
 ```
 
-Connection string example: Driver={Amazon Redshift (x64)};Server=your server name;Database={db};Sc={sc};UID=your user;PWD=your pswd;Port=5439;SSL=true;Sslmode=Require;UseDeclareFetch=1;Fetch=10000000;UseMultipleStatements=1
+Connection string example: 
+```
+Driver={Amazon Redshift (x64)};Server=your server name;Database={db};Sc={sc};UID=your user;PWD=your pswd;Port=5439;SSL=true;Sslmode=Require;UseDeclareFetch=1;Fetch=10000000;UseMultipleStatements=1
+```
 
 Following parameters {db} and {sc} will be replaced to command line parameters, during tool startup
 
-3. run org.ohdsi.cdm.presentation.etl with below parameters:
+3. Run org.ohdsi.cdm.presentation.etl with below parameters:
 
 - vendor - name of the ETL converter (available converters: ccae, mdcr, mdcd, jmdc, cprd, premier, jmdc, dod, ses, panther)
 - rawdb - name of the source database   
 - rawschema - name of the source schema
 - batch - size of the chunk in person numbers, tool will split native data to equivalent chunk, details below 
-- new - true/false, default true, create new folder for conversion
+- new - true/false, default true, create new folder for conversion result
 - skip_chunk - true/false, default false, true used in resume mode, skip or not chunk creation step
 - resume - true/false, default false, in resume mode tool will convert not completed chunks
 - skip_lookup - true/false, default false, lookup step creates follwoing tables: Provider, Location, Care_site
@@ -177,6 +180,59 @@ To check number of slices use below query:
 select node, slice from stv_slices;
 ```
 
-Chunk size depended on source dataset and slice number. Larger size of chunk provides better performance, but can cause Out of memory error in function, so you will need to reduce chunk size or increase lambda memory.
+Chunk size depended on source dataset and slice number. 
+Larger size of chunk provides better performance, but can cause Out of memory error in lambda function, so to process chunk you will need to reduce chunk size or increase lambda memory.
 
-Roughly use like this: for 3000MB CDMBuilder function batch=number of slice * 100k
+The approximate chunk size (for 3000MB CDMBuilder function) can be calculated using this formula: 
+```
+batch=number of slice * 100k
+```
+A couple of examples of conversion time depending on cluster type for IBM CCAE:
+- ra3.16xlarge, 12 nodes, 24 slices - chunk size = 250000, conversion time approximately 30h
+- ra3.4xlarge, 6 nodes, 192 slices  - chunk size = 2000000, conversion time approximately 4h
+
+ETL tool parameters example:
+```
+org.ohdsi.cdm.presentation.etl.exe --vendor ccae --rawdb ibm_ccae --rawschema native --batch 500000 --new true --skip_chunk false --resume false --skip_lookup false  --skip_build false --skip_etl false --versionid 1 --skip_vocabulary true --skip_cdmsource false --skip_merge false --skip_validation true
+```
+
+### Lambda function log output
+
+When chunk data will be available on s3, etl tool will trigger function by creating N files in s3 trigger bucket, number of functions/files equivalent number of slices, etl output shouw messages like below:
+```
+...
+[Moving raw data] Lambda functions for cuhnkId=21 were triggered | 24 functions
+...
+```
+
+You can check log of each lambda function with Amazon CloudWatch, CDMBuilder and Merge function will have own log group.
+File that triggered lambda will be automatically dropped if conversion was successful.
+
+Etl tool output provide information about total number of chunks, like below:
+
+```
+...
+***** Chunk ids were generated and saved, total count=36 *****
+...
+```
+
+and current progress, for example:
+```
+*** 6:17 AM | Running: lambda 7 local 0; Validating 0; Valid 16; Timeout 0; Invalid 0; Error 0; Total 23
+```
+
+### Export CDM from s3 to Redshift
+
+1. Create CDM database [dll](https://github.com/OHDSI/CommonDataModel/blob/main/inst/ddl/5.4/redshift/OMOPCDM_redshift_5.4_ddl.sql)
+2. Use following template to move data from s3 to Redshift table
+
+```
+copy "schema_name"."cdm_table" 
+from 's3://your_result_bucket/vendor_name/conversionId/cdmCSV/cdm_table/cdm_table.' 
+credentials 'aws_access_key_id=your_result_bucket_access_key_id;aws_secret_access_key=your_result_bucket_secret_access_key' DELIMITER ',' CSV QUOTE AS '"' GZIP
+```
+
+## Important
+
+- Be careful with trigger bucket <b>all PUT events in this bucket will invoke lambda function</b>
+- For current implementation, all native tables that are involved in the transformation must have distribution key on person id columns (ENROLID for ibms, medrec_key for premier, patid for CPRD and etc.) 
