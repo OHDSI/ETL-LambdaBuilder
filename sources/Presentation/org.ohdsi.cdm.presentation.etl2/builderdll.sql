@@ -1,11 +1,9 @@
 CREATE TABLE [Chunk](
-	[Id] INTEGER PRIMARY KEY AUTOINCREMENT,
+	[Id] [int] NOT NULL,
 	[BuildingId] [int] NOT NULL,
 	[BuilderId] [int] NULL,
+	[Created] [datetime] NULL,
 	[Started] [datetime] NULL,
-	[QueriesExecuted] [datetime] NULL,
-	[Loaded] [datetime] NULL,
-	[Built] [datetime] NULL,
 	[Ended] [datetime] NULL,
 	[Failed] [datetime] NULL
 );
