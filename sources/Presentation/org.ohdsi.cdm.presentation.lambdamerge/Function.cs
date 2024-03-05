@@ -40,7 +40,7 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
         private int? _lastSavedChunkId;
         private int? _lastSavedIndex;
         private long? _lastSavedId;
-        private int _rowGroupSize;
+        //private int _rowGroupSize;
         private bool _chunkComplete;
 
         public Function()
@@ -90,8 +90,8 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
                 }
             };
 
-            var saveSize = int.Parse(Environment.GetEnvironmentVariable("SaveSize"));
-            _rowGroupSize = int.Parse(Environment.GetEnvironmentVariable("RowGroupSize"));
+            //var saveSize = int.Parse(Environment.GetEnvironmentVariable("SaveSize"));
+            //_rowGroupSize = int.Parse(Environment.GetEnvironmentVariable("RowGroupSize"));
 
             GetRestorePoint();
 
@@ -111,9 +111,9 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
                 //_timeOut = 300;
 
                 Console.WriteLine(
-                    $"_versionId={_versionId};vendor={_settings.Vendor};buildingId={_settings.BuildingId};subChunkId={_subChunkId};cdmFolder={_settings.CdmFolder};resultFolder={_settings.ResultFolder};saveSize={saveSize}Mb");
+                    $"_versionId={_versionId};vendor={_settings.Vendor};buildingId={_settings.BuildingId};subChunkId={_subChunkId};cdmFolder={_settings.CdmFolder};resultFolder={_settings.ResultFolder};");
                 Console.WriteLine(
-                    $"timeOut={_timeOut}s;lastSavedChunkId={_lastSavedChunkId};lastSavedIndex={_lastSavedIndex};_lastSavedId={_lastSavedId};rowGroupSize={_rowGroupSize}");
+                    $"timeOut={_timeOut}s;lastSavedChunkId={_lastSavedChunkId};lastSavedIndex={_lastSavedIndex};_lastSavedId={_lastSavedId};");
 
                 _timer.Start();
 
@@ -177,7 +177,7 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
                 }
             };
 
-            _rowGroupSize = 250000;
+            //_rowGroupSize = 250000;
 
             _settings.Vendor = Vendors.OptumPantherFull;
             _settings.BuildingId = 5230;
