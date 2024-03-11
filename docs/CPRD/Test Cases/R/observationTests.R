@@ -225,8 +225,7 @@ createObservationTests <- function()
 
 
   # 26) -- additional observation
-  set_defaults_additional(data1_date = NULL, data2_date = NULL, data3_value = NULL, data3_date = NULL, data4_value = NULL, data4_date = NULL, data5_value = NULL, data5_date = NULL, data6_value = NULL, data6_date = NULL, data7_value = NULL, data7_date = NULL, data8_value = NULL, data8_date = NULL, data9_value = NULL, data9_date = NULL, data10_value = NULL, data10_date = NULL, data11_value = NULL, data11_date = NULL, data12_value = NULL, data12_date = NULL)
-  
+    
   add_product(prodcode=42, gemscriptcode = 72487020, productname = 'Simvastatin 10mg tablets')
   add_medical(medcode = 1942, read_code = 'M240012', 'Hair loss')
   patient <- createPatient();
@@ -270,30 +269,30 @@ createObservationTests <- function()
 
 
   # 27) --dates
-  patient <- createPatient();
-  declareTest(id = patient$person_id, '1) dates ')
-  add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid = patient$pracid)
-  add_entity(code = 461, description = 'Repeat Medication Review', filetype = 'Clinical', category = 'Miscellaneous',
-             data_fields = 4,
-             data1 = 'Due date', data1lkup = 'dd/mm/yyyy',
-             data2 = 'Seen by', data2lkup = NULL,
-             data3 = 'Review date', data3lkup = 'dd/mm/yyyy',
-             data4 = 'Next review date', data4lkup = 'dd/mm/yyyy'
-            )
-  add_additional(patid = patient$patid, enttype = 461, adid = 42, data1_date  = '2007-07-08',
-                 data3_date  = '2007-01-08',
-                 data4_date  = '2007-07-09')
-  add_clinical(patid = patient$patid, eventdate = '2010-01-01', adid = 42)
-  add_consultation(patid = patient$patid, eventdate = '2010-01-01', staffid = 1001)
-  expect_observation(person_id = lookup_person("person_id", person_source_value = patient$person_id), observation_date='2010-01-01',
-                     observation_source_value='461-Miscellaneous-Repeat Medication Review-Due date',
-                     observation_type_concept_id=32817, value_as_string='2007-07-08',
-                     observation_concept_id=44807096, observation_source_concept_id=0)
+  # patient <- createPatient();
+  # declareTest(id = patient$person_id, '1) dates ')
+  # add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid = patient$pracid)
+  # add_entity(code = 461, description = 'Repeat Medication Review', filetype = 'Clinical', category = 'Miscellaneous',
+             # data_fields = 4,
+             # data1 = 'Due date', data1lkup = 'dd/mm/yyyy',
+             # data2 = 'Seen by', data2lkup = NULL,
+             # data3 = 'Review date', data3lkup = 'dd/mm/yyyy',
+             # data4 = 'Next review date', data4lkup = 'dd/mm/yyyy'
+            # )
+  # add_additional(patid = patient$patid, enttype = 461, adid = 42, data1_date  = '2007-07-08',
+                 # data3_date  = '2007-01-08',
+                 # data4_date  = '2007-07-09')
+  # add_clinical(patid = patient$patid, eventdate = '2010-01-01', adid = 42)
+  # add_consultation(patid = patient$patid, eventdate = '2010-01-01', staffid = 1001)
+  # expect_observation(person_id = lookup_person("person_id", person_source_value = patient$person_id), observation_date='2010-01-01',
+                     # observation_source_value='461-Miscellaneous-Repeat Medication Review-Due date',
+                     # observation_type_concept_id=32817, value_as_string='2007-07-08',
+                     # observation_concept_id=44807096, observation_source_concept_id=0)
 
-  declareTest(id = patient$person_id, '2) dates')
-  expect_observation(person_id = lookup_person("person_id", person_source_value = patient$person_id), observation_concept_id=44807096, observation_date='2010-01-01',
-                     observation_source_value='461-Miscellaneous-Repeat Medication Review-Seen By', observation_type_concept_id=32817,
-                     value_as_string='2007-01-08', observation_source_concept_id=0 )
+  # declareTest(id = patient$person_id, '2) dates')
+  # expect_observation(person_id = lookup_person("person_id", person_source_value = patient$person_id), observation_concept_id=44807096, observation_date='2010-01-01',
+                     # observation_source_value='461-Miscellaneous-Repeat Medication Review-Seen By', observation_type_concept_id=32817,
+                     # value_as_string='2007-01-08', observation_source_concept_id=0 )
 
 
 

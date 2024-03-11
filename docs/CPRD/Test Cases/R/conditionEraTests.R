@@ -1,7 +1,5 @@
 createConditionEraTests <- function()
 {
-  set_defaults_patient(chsdate = NULL, tod = NULL, deathdate = NULL)
-  set_defaults_clinical(consid = NULL, sctmaptype = NULL, sctmapversion = NULL, sctisindicative = NULL, sctisassured = NULL)
   
   patient <- createPatient();
   declareTest(id = patient$person_id, "CONDITION_ERA - Patient has Medical records that collapse in the Condition Era table")
