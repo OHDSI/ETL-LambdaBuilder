@@ -57,3 +57,8 @@ description: "OPTUM EHR Medication_Administrations table to STEM"
 | disease_status_source_value |  | | |
 | condition_status_concept_id | | | |
 | condition_status_source_value | | | |
+
+## Change Log
+
+### March 12, 2024
+- start/end date added use order_date if admin_date is epmty or null 

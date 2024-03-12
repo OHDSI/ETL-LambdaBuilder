@@ -30,3 +30,8 @@ Use the staff table to populate the provider table. In CPRD, the staffid field r
 | specialty_source_concept_id |  |  | 0 |
 | gender_source_value | gender | logic: <br>1 = M<br>2 = F |  |
 | gender_source_concept_id |  |  | 0 |
+
+## Change Log
+
+### March 12, 2024
+- specialty_concept_id added Unknown Physician Specialty for missing role
