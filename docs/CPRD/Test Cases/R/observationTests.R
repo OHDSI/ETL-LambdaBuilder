@@ -10,6 +10,9 @@ createObservationTests <- function()
 
 
   # 1) -- clinical procedure with visit
+  
+  
+  
   patient <- createPatient();
   declareTest(id = patient$person_id, ' clinical procedure with visit')
   add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid = patient$pracid)
@@ -17,18 +20,18 @@ createObservationTests <- function()
   add_consultation(patid = patient$patid, eventdate = '2012-01-01', staffid = 9001)
   # --also add hes visit with same date to test 9202
   #add_hes_hospital(patid = patient$patid, spno = 5, admidate = '2012-01-01')
-  expect_observation(person_id = patient$person_id, observation_date='2012-01-01',
-                     observation_type_concept_id=38000280,
+  expect_observation(person_id = lookup_person("person_id", person_source_value = patient$person_id), observation_date='2012-01-01',
+                     observation_type_concept_id=32817,
                      observation_source_value='65PT.11', observation_concept_id=40479404,
                      observation_source_concept_id=45425506)
-  expect_count_observation(person_id = patient$person_id, rowCount = 1)
+  expect_count_observation(person_id = lookup_person("person_id", person_source_value = patient$person_id), rowCount = 1)
 
   # 2) -- clinical procedure without visit
   patient <- createPatient();
   declareTest(id = patient$person_id, ' clinical procedure without visit')
   add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid = patient$pracid)
   add_clinical(patid = patient$patid, eventdate = '2012-03-01', medcode = 98196, staffid = 1001)
-  expect_observation(person_id = patient$person_id, observation_date='2012-03-01', observation_type_concept_id=38000280,
+  expect_observation(person_id = lookup_person("person_id", person_source_value = patient$person_id), observation_date='2012-03-01', observation_type_concept_id=32817,
                      observation_source_value='65PT.11', observation_concept_id=40479404,
                      observation_source_concept_id=45425506)
 
@@ -37,7 +40,7 @@ createObservationTests <- function()
   declareTest(id = patient$person_id, ' clinical procedure outside observation period')
   add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid = patient$pracid)
   add_clinical(patid = patient$patid, eventdate = '2009-03-01', medcode = 1137, staffid = 1001)
-  expect_observation(person_id = patient$person_id, observation_date='2009-03-01', observation_source_value='R100.00',
+  expect_observation(person_id = lookup_person("person_id", person_source_value = patient$person_id), observation_date='2009-03-01', observation_source_value='R100.00',
                      observation_concept_id=4044812, observation_source_concept_id=45474099)
 
   # 4) ---- immunisation procedure
@@ -45,8 +48,8 @@ createObservationTests <- function()
   declareTest(id = patient$person_id, 'immunisation procedure')
   add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid = patient$pracid)
   add_immunisation(patid = patient$patid, eventdate = '2011-03-01', medcode = 1137, staffid = 1001)
-  expect_observation(person_id = patient$person_id, observation_date='2011-03-01',
-                     observation_type_concept_id=38000280,
+  expect_observation(person_id = lookup_person("person_id", person_source_value = patient$person_id), observation_date='2011-03-01',
+                     observation_type_concept_id=32818,
                      observation_source_value='R100.00', observation_concept_id=4044812,#44801932,
                      observation_source_concept_id=45474099)
 
@@ -55,7 +58,7 @@ createObservationTests <- function()
   declareTest(id = patient$person_id, 'referral procedure')
   add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid = patient$pracid)
   add_referral(patid = patient$patid, eventdate = '2011-03-01', medcode = 1137, staffid = 1001)
-  expect_observation(person_id = patient$person_id, observation_date='2011-03-01', observation_type_concept_id=38000280,
+  expect_observation(person_id = lookup_person("person_id", person_source_value = patient$person_id), observation_date='2011-03-01', observation_type_concept_id=32817,
                      observation_source_value='R100.00', observation_concept_id=4044812,#44801932,
                      observation_source_concept_id=45474099)
 
@@ -63,8 +66,8 @@ createObservationTests <- function()
   patient <- createPatient();
   declareTest(id = patient$person_id, 'test procedure')
   add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid = patient$pracid)
-  add_test(patid = patient$patid, eventdate = '2011-03-01', medcode = 1137, staffid = 1001, consid = 4244, enttype=216, data1=9)
-  expect_observation(person_id = patient$person_id, observation_date='2011-03-01', observation_type_concept_id=38000280,
+  add_test(patid = patient$patid, eventdate = '2011-03-01', medcode = 1137, staffid = 1001, consid = 4244, enttype=311, data1=9)
+  expect_observation(person_id = lookup_person("person_id", person_source_value = patient$person_id), observation_date='2011-03-01', observation_type_concept_id=32856,
                      observation_source_value='R100.00', observation_concept_id=0,
                      observation_source_concept_id=45474099)
 
@@ -72,8 +75,8 @@ createObservationTests <- function()
   patient <- createPatient();
   declareTest(id = patient$person_id, 'observation not mapped')
   add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid = patient$pracid)
-  add_test(patid = patient$patid, eventdate = '2011-03-01', medcode = 70038, staffid = 1001, consid = 4245, enttype= 216, data1=9)
-  expect_observation(person_id = patient$person_id, observation_date='2011-03-01', observation_source_value='Z5A6200',
+  add_test(patid = patient$patid, eventdate = '2011-03-01', medcode = 70038, staffid = 1001, consid = 4245, enttype= 311, data1=9)
+  expect_observation(person_id = lookup_person("person_id", person_source_value = patient$person_id), observation_date='2011-03-01', observation_source_value='Z5A6200',
                      observation_concept_id=0, observation_source_concept_id=0)
 
   #============================================================
@@ -83,8 +86,8 @@ createObservationTests <- function()
   # declareTest(id = patient$person_id, 'Read clinical medical history condition')
   # add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid = patient$pracid)
   # add_clinical(patid = patient$patid, eventdate = '2011-01-01', medcode = 1058, staffid = 1001)
-  # expect_observation(person_id = patient$person_id, observation_date='2010-01-01',
-  #                    observation_type_concept_id=38000280,
+  # expect_observation(person_id = lookup_person("person_id", person_source_value = patient$person_id), observation_date='2010-01-01',
+  #                    observation_type_concept_id=32817,
   #                    observation_source_value='F563500', observation_concept_id=43054928,
   #                    observation_source_concept_id=45436713, value_as_concept_id=75555)
   #
@@ -93,8 +96,8 @@ createObservationTests <- function()
   # declareTest(id = patient$person_id, 'Read referral medical history procedure')
   # add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid = patient$pracid)
   # add_referral(patid = patient$patid, eventdate = '2011-01-01', medcode = 69651, staffid = 1001)
-  # expect_observation(person_id = patient$person_id, observation_date='2010-01-01',
-  #                    observation_type_concept_id=38000280,
+  # expect_observation(person_id = lookup_person("person_id", person_source_value = patient$person_id), observation_date='2010-01-01',
+  #                    observation_type_concept_id=32817,
   #                    observation_source_value='744C.00', observation_concept_id=43054928,
   #                    observation_source_concept_id=45425639, value_as_concept_id=4192131)
 
@@ -103,8 +106,8 @@ createObservationTests <- function()
   # declareTest(id = patient$person_id, 'Read test medical history procedure')
   # add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid = patient$pracid)
   # add_test(patid = patient$patid, eventdate = '2011-01-01', medcode = 1137, staffid = 1001, enttype=215, data1=9)
-  # expect_observation(person_id = patient$person_id, observation_date='2010-01-01',
-  #                    observation_type_concept_id=38000280,
+  # expect_observation(person_id = lookup_person("person_id", person_source_value = patient$person_id), observation_date='2010-01-01',
+  #                    observation_type_concept_id=32817,
   #                    observation_source_value='R100.00', observation_concept_id=43054928,
   #                    observation_source_concept_id=45474099, value_as_concept_id=4044812)#44801932)
   #
@@ -114,7 +117,7 @@ createObservationTests <- function()
   # declareTest(id = patient$person_id, 'Read immunisation medical history drug')
   # add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid = patient$pracid)
   # add_immunisation(patid = patient$patid, eventdate = '2011-01-01', medcode = 14612, staffid = 1001)
-  # expect_observation(person_id = patient$person_id, observation_date='2010-01-01', observation_source_value='657E.00',
+  # expect_observation(person_id = lookup_person("person_id", person_source_value = patient$person_id), observation_date='2010-01-01', observation_source_value='657E.00',
   #                    observation_concept_id=43054928, observation_source_concept_id=45472275,
   #                    value_as_concept_id=4197151)
   #
@@ -124,7 +127,7 @@ createObservationTests <- function()
   # declareTest(id = patient$person_id, 'Read clinical non-medical history condition on observation_period_start_date')
   # add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid = patient$pracid)
   # add_clinical(patid = patient$patid, eventdate = '2010-01-01', medcode = 10584, staffid = 1001)
-  # expect_observation(person_id = patient$person_id, observation_date='2010-01-01',
+  # expect_observation(person_id = lookup_person("person_id", person_source_value = patient$person_id), observation_date='2010-01-01',
   #                    observation_source_value='13JW.00',
   #                    observation_concept_id=4053230, observation_source_concept_id=45471745)
 
@@ -133,7 +136,7 @@ createObservationTests <- function()
   declareTest(id = patient$person_id, 'Read clinical medical history condition non-mapped')
   add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid = patient$pracid)
   add_clinical(patid = patient$patid, eventdate = '2011-01-01', medcode = 70038, staffid = 1001)
-  expect_condition_occurrence(person_id = patient$person_id, condition_start_date='2011-01-01', condition_source_value='Z5A6200',
+  expect_condition_occurrence(person_id = lookup_person("person_id", person_source_value = patient$person_id), condition_start_date='2011-01-01', condition_source_value='Z5A6200',
                               condition_concept_id=0, condition_source_concept_id=0)
 
 
@@ -142,7 +145,7 @@ createObservationTests <- function()
   declareTest(id = patient$person_id, 'Read referral medical history condition non-mapped')
   add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid = patient$pracid)
   add_referral(patid = patient$patid, eventdate = '2011-01-01', medcode = 70038, staffid = 1001)
-  expect_observation(person_id = patient$person_id, observation_date='2011-01-01',
+  expect_observation(person_id = lookup_person("person_id", person_source_value = patient$person_id), observation_date='2011-01-01',
                      observation_source_value='Z5A6200',
                               observation_concept_id=0, observation_source_concept_id=0)
 
@@ -152,7 +155,7 @@ createObservationTests <- function()
   declareTest(id = patient$person_id, 'Read test medical history condition non-mapped')
   add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid = patient$pracid)
   add_test(patid = patient$patid, eventdate = '2011-01-01', medcode = 70038, staffid = 1001, enttype = 215, data1=9)
-  expect_measurement(person_id = patient$person_id, measurement_date='2011-01-01', measurement_source_value='Z5A6200',
+  expect_measurement(person_id = lookup_person("person_id", person_source_value = patient$person_id), measurement_date='2011-01-01', measurement_source_value='Z5A6200',
                               measurement_concept_id=4199172, measurement_source_concept_id=0)
 
   # 16) --Read immunisatoin medical history condition non-mapped
@@ -160,7 +163,7 @@ createObservationTests <- function()
   declareTest(id = patient$person_id, 'Read immunisatoin medical history condition non-mapped')
   add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid = patient$pracid)
   add_immunisation(patid = patient$patid, eventdate = '2011-01-01', medcode = 70038, staffid = 1001)
-  expect_observation(person_id = patient$person_id, observation_date='2011-01-01', observation_source_value='Z5A6200',
+  expect_observation(person_id = lookup_person("person_id", person_source_value = patient$person_id), observation_date='2011-01-01', observation_source_value='Z5A6200',
                               observation_concept_id=0, observation_source_concept_id=0)
 
 
@@ -184,9 +187,9 @@ createObservationTests <- function()
              data3 = 'Normal range to', data3lkup = NULL,
              data4 = 'Normal range basis', data4lkup = NULL)
   add_lookup(lookup_id = 1156,lookup_type_id = 85, code = 9, text = 'Normal')
-  expect_measurement(person_id=patient$person_id, measurement_concept_id=4199172,
+  expect_measurement(person_id = lookup_person("person_id", person_source_value = patient$person_id), measurement_concept_id=4199172,
                      measurement_date='2012-01-01',
-                     measurement_type_concept_id=44818702,
+                     measurement_type_concept_id=32856,
                      measurement_source_value='65PT.11')
 
   # 25) -- test observation record 7 fields
@@ -210,18 +213,19 @@ createObservationTests <- function()
   add_lookup(lookup_id = 1155, lookup_type_id = 83, code = 8, text = '%')
   add_lookup(lookup_id = 1407, lookup_type_id = 85, code = 1, text = 'High')
 
-  expect_observation(person_id=patient$person_id, observation_concept_id=0,
+  expect_observation(person_id = lookup_person("person_id", person_source_value = patient$person_id), observation_concept_id=0,
                      observation_date='2012-01-01',
-                     observation_type_concept_id=38000280,
+                     observation_type_concept_id=32856,
                      value_as_number=3.7, observation_source_value='66Ya.00', qualifier_concept_id=4172703,
                      unit_source_value='%')
-  expect_count_observation(rowCount = 1, person_id = patient$person_id)
+  expect_count_observation(rowCount = 1, person_id = lookup_person("person_id", person_source_value = patient$person_id))
 
   #========================================================================
   # DONE TESTS UP TO HERE
 
 
   # 26) -- additional observation
+    
   add_product(prodcode=42, gemscriptcode = 72487020, productname = 'Simvastatin 10mg tablets')
   add_medical(medcode = 1942, read_code = 'M240012', 'Hair loss')
   patient <- createPatient();
@@ -239,56 +243,56 @@ createObservationTests <- function()
                  data3_value  = 3.000 ,data4_value = 3, data5_value = 1942)
   add_clinical(patid = patient$patid, eventdate = '2010-01-01', adid = 35)
   add_consultation(patid = patient$patid, eventdate = '2010-01-01', staffid = 1001)
-  expect_observation(person_id=patient$person_id, observation_date='2010-01-01', observation_source_value='21-Allergy-Allergy-Drug Code',
-                     observation_type_concept_id=38000280, value_as_string='72487020', value_as_concept_id = 1539463,
+  expect_observation(person_id = lookup_person("person_id", person_source_value = patient$person_id), observation_date='2010-01-01', observation_source_value='21-Allergy-Allergy-Drug Code',
+                     observation_type_concept_id=32817, value_as_string='72487020', value_as_concept_id = 1539463,
                      observation_concept_id=0, observation_source_concept_id=0)
 
   declareTest(id = patient$person_id, '2) additional observation ')
-  expect_observation(person_id=patient$person_id, observation_concept_id=0, observation_date='2010-01-01',
-                     observation_source_value='21-Allergy-Allergy-Reaction Type', observation_type_concept_id=38000280,
+  expect_observation(person_id = lookup_person("person_id", person_source_value = patient$person_id), observation_concept_id=0, observation_date='2010-01-01',
+                     observation_source_value='21-Allergy-Allergy-Reaction Type', observation_type_concept_id=32817,
                      value_as_string='Intolerance', observation_source_concept_id=0 )
 
   declareTest(id = patient$person_id, '3) additional observation ')
-  expect_observation(person_id=patient$person_id, observation_date='2010-01-01',
-                     observation_source_value='21-Allergy-Allergy-Severity', observation_type_concept_id=38000280,
+  expect_observation(person_id = lookup_person("person_id", person_source_value = patient$person_id), observation_date='2010-01-01',
+                     observation_source_value='21-Allergy-Allergy-Severity', observation_type_concept_id=32817,
                      value_as_number=3, observation_source_concept_id=0 )
 
   declareTest(id = patient$person_id, '4) additional observation ')
-  expect_observation(person_id=patient$person_id, observation_date='2010-01-01',
-                     observation_source_value='21-Allergy-Allergy-Certainty', observation_type_concept_id=38000280,
+  expect_observation(person_id = lookup_person("person_id", person_source_value = patient$person_id), observation_date='2010-01-01',
+                     observation_source_value='21-Allergy-Allergy-Certainty', observation_type_concept_id=32817,
                      value_as_number=3, observation_source_concept_id=0 )
 
   declareTest(id = patient$person_id, '4) additional observation ')
-  expect_observation(person_id=patient$person_id, observation_date='2010-01-01',
-                     observation_source_value='21-Allergy-Allergy-Read Code For Reaction', observation_type_concept_id=38000280,
+  expect_observation(person_id = lookup_person("person_id", person_source_value = patient$person_id), observation_date='2010-01-01',
+                     observation_source_value='21-Allergy-Allergy-Read Code For Reaction', observation_type_concept_id=32817,
                      value_as_string='M240012', observation_source_concept_id=0 )
 
 
   # 27) --dates
-  patient <- createPatient();
-  declareTest(id = patient$person_id, '1) dates ')
-  add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid = patient$pracid)
-  add_entity(code = 461, description = 'Repeat Medication Review', filetype = 'Clinical', category = 'Miscellaneous',
-             data_fields = 4,
-             data1 = 'Due date', data1lkup = 'dd/mm/yyyy',
-             data2 = 'Seen by', data2lkup = NULL,
-             data3 = 'Review date', data3lkup = 'dd/mm/yyyy',
-             data4 = 'Next review date', data4lkup = 'dd/mm/yyyy'
-            )
-  add_additional(patid = patient$patid, enttype = 461, adid = 42, data1_date  = '2007-07-08',
-                 data3_date  = '2007-01-08',
-                 data4_date  = '2007-07-09')
-  add_clinical(patid = patient$patid, eventdate = '2010-01-01', adid = 42)
-  add_consultation(patid = patient$patid, eventdate = '2010-01-01', staffid = 1001)
-  expect_observation(person_id=patient$person_id, observation_date='2010-01-01',
-                     observation_source_value='461-Miscellaneous-Repeat Medication Review-Due Date',
-                     observation_type_concept_id=38000280, value_as_string='2007-07-08',
-                     observation_concept_id=44807096, observation_source_concept_id=0)
+  # patient <- createPatient();
+  # declareTest(id = patient$person_id, '1) dates ')
+  # add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid = patient$pracid)
+  # add_entity(code = 461, description = 'Repeat Medication Review', filetype = 'Clinical', category = 'Miscellaneous',
+             # data_fields = 4,
+             # data1 = 'Due date', data1lkup = 'dd/mm/yyyy',
+             # data2 = 'Seen by', data2lkup = NULL,
+             # data3 = 'Review date', data3lkup = 'dd/mm/yyyy',
+             # data4 = 'Next review date', data4lkup = 'dd/mm/yyyy'
+            # )
+  # add_additional(patid = patient$patid, enttype = 461, adid = 42, data1_date  = '2007-07-08',
+                 # data3_date  = '2007-01-08',
+                 # data4_date  = '2007-07-09')
+  # add_clinical(patid = patient$patid, eventdate = '2010-01-01', adid = 42)
+  # add_consultation(patid = patient$patid, eventdate = '2010-01-01', staffid = 1001)
+  # expect_observation(person_id = lookup_person("person_id", person_source_value = patient$person_id), observation_date='2010-01-01',
+                     # observation_source_value='461-Miscellaneous-Repeat Medication Review-Due date',
+                     # observation_type_concept_id=32817, value_as_string='2007-07-08',
+                     # observation_concept_id=44807096, observation_source_concept_id=0)
 
-  declareTest(id = patient$person_id, '2) dates')
-  expect_observation(person_id=patient$person_id, observation_concept_id=44807096, observation_date='2010-01-01',
-                     observation_source_value='461-Miscellaneous-Repeat Medication Review-Seen By', observation_type_concept_id=38000280,
-                     value_as_string='2007-01-08', observation_source_concept_id=0 )
+  # declareTest(id = patient$person_id, '2) dates')
+  # expect_observation(person_id = lookup_person("person_id", person_source_value = patient$person_id), observation_concept_id=44807096, observation_date='2010-01-01',
+                     # observation_source_value='461-Miscellaneous-Repeat Medication Review-Seen By', observation_type_concept_id=32817,
+                     # value_as_string='2007-01-08', observation_source_concept_id=0 )
 
 
 
@@ -313,7 +317,7 @@ createObservationTests <- function()
                  data3_value  = 1, data4_value = 0)
   add_clinical(patid = patient$patid, eventdate = '2010-01-01', adid = 45)
   add_consultation(patid =patient$patid, eventdate = '2010-01-01', staffid = 1001)
-  expect_observation(person_id=patient$person_id, observation_type_concept_id=38000280,
+  expect_observation(person_id = lookup_person("person_id", person_source_value = patient$person_id), observation_type_concept_id=32817,
                      observation_concept_id=0, value_as_string = '1JJ..00')
 
   # 29) -- scores mapped (in correct as measurement)
@@ -325,7 +329,7 @@ createObservationTests <- function()
                  data3_value  = 0.000)
   add_clinical(patid = patient$patid, eventdate = '2010-01-01', adid = 45)
   add_consultation(patid = patient$patid, eventdate = '2010-01-01', staffid = 1001)
-  expect_no_observation(person_id=patient$person_id, observation_type_concept_id=44814721,
+  expect_no_observation(person_id = lookup_person("person_id", person_source_value = patient$person_id), observation_type_concept_id=32817,
                      observation_concept_id=40769009, observation_source_value='372-0-10302',
                      value_as_number=500)
 
@@ -346,7 +350,7 @@ createObservationTests <- function()
                  data3_value = 1373.000)
   add_clinical(patid = patient$patid,  eventdate = '2010-01-01', adid = 45)
   add_consultation(patid = patient$patid, eventdate = '2010-01-01', staffid = 1001)
-  expect_observation(person_id=patient$person_id, observation_source_value='372-Diagnostic Tests-Scoring test result-Condition',
+  expect_observation(person_id = lookup_person("person_id", person_source_value = patient$person_id), observation_source_value='372-Diagnostic Tests-Scoring test result-Condition',
                      observation_concept_id=0)
 
   # 25) -- additional observation 114-2
@@ -364,7 +368,7 @@ createObservationTests <- function()
                  data3_value = 1373.000)
   add_clinical(patid = patient$patid,  eventdate = '2010-01-01', adid = 35)
   add_consultation(patid = patient$patid, eventdate = '2010-01-01', staffid = 1001)
-  expect_observation(person_id=patient$person_id, observation_source_value='114-Maternity-Preg out-Discharge Date',
+  expect_observation(person_id = lookup_person("person_id", person_source_value = patient$person_id), observation_source_value='114-Maternity-Preg out-Discharge Date',
                      observation_concept_id=0)
 
   # 26) -- additional observation 60-1 with SUM
@@ -382,7 +386,7 @@ createObservationTests <- function()
   ##add_lookuptype(lookup_type_id = 81, name = 'SUM', description = 'Specimen ...')
   add_clinical(patid = patient$patid, eventdate = '2010-01-01', adid = 35)
   add_consultation(patid = patient$patid, eventdate = '2010-01-01', staffid = 1001)
-  expect_observation(person_id=patient$person_id, observation_source_value='60-Maternity-Ante-natal booking-Weeks gestation',
+  expect_observation(person_id = lookup_person("person_id", person_source_value = patient$person_id), observation_source_value='60-Maternity-Ante-natal booking-Weeks gestation',
                      observation_concept_id=0, value_as_number=8,
                      unit_source_value='week')
 

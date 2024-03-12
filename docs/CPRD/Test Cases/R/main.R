@@ -1,17 +1,11 @@
-#' Clean native DB
-#'
-#' @details
-#' Removes all test case data (truncates native tables)
-#'
-#' @return
-#' none
-#'
-#' @export
+getSource <- function() {
+    source('extras/TestFrameworkCprd.R')
+}
+
 clean <- function(connectionDetails) {
   writeLines("Clean Executed");
 
 }
-
 
 getSequence <- function (startValue = 1) {
   counterInstance <- new.env(parent = emptyenv());
@@ -53,7 +47,72 @@ testInit <- function() {
 
 sequencer <- getSequence();
 
-.onLoad <- function(libname, pkgname) {
-  initFramework();
-  createTests();
+## Function to get insertsql statement
+#' @export
+  getInsertSql <- function(connectionDetails) {
+    return(frameworkContext$insertSql);
+  }
+
+  ## Function to get testsql statement
+#' @export
+  getTestSql <- function(connectionDetails) {
+    return(frameworkContext$testSql);
+  }
+
+#' @export
+InsertsToCsv <- function(scanLocation, outputDir = NULL) {
+
+    if (is.null(outputDir)) {
+      outputDir <- paste0("inst/csv/", frameworkType)
+    }
+
+    overview <- readxl::read_xlsx(scanLocation, sheet = "Field Overview")
+
+    tables <- c()
+
+    for (i in 1:length(frameworkContext$inserts)){
+      tables <- c(tables, frameworkContext$inserts[[i]]$table)
+    }
+    ## get list of tables to create a csv for
+    tables <- unique(tables)
+
+    for (i in 1:length(tables)){
+      ddl <-subset(overview, Table == tables[i], select = c("Field"))
+      ddl <- data.table::transpose(ddl)
+
+      csv <- data.frame(matrix(ncol=ncol(ddl),nrow=1))
+
+      ## copy column names from scan report
+      ## and make all columns to be character
+      fieldNames <- as.character(ddl[1, ])
+      colnames(csv) <- fieldNames
+      csv[fieldNames] <- NA_character_
+      csv <- csv[FALSE, ]
+
+      for (j in 1:length(frameworkContext$inserts)){
+        list <- frameworkContext$inserts[[j]]
+        table <- list$table
+        fields <- list$fields
+
+        if(tables[i]==table){
+
+          values <- list(gsub("'", '', list$values))
+
+          df <- do.call(rbind.data.frame, values)
+          colnames(df) <- fields
+
+          csv <- dplyr::bind_rows(csv, df)
+        }
+      }
+      assign(paste(tables[i]), csv)
+	  csv[csv == 'NULL'] <- NA # normalize missing values
+      write.csv(
+        x = csv,
+        file = file.path(
+          outputDir,
+          paste0(tables[i], ".csv")
+        ),
+        row.names = FALSE
+      )
+    }
 }
