@@ -19,8 +19,8 @@ description: "OPTUM EHR Medication_Administrations table to STEM"
 | visit_occurrence_id | encid | Lookup the VISIT_OCCURRENCE_ID based on the encid |If encid is blank then use admin_date to determine which VISIT_OCCURRENCE_ID the diagnosis should be associated to|
 | visit_detail_id| encid | Lookup the VISIT_DETAIL_ID based on the encid|If encid is blank then leave VISIT_DETAIL_ID blank|
 | provider_id | provid | Lookup the PROVIDER_ID in the PROVIDER table using provid|If provid then leave PROVIDER_ID blank|
-| start_date | admin_date  | | |
-| end_date | admin_date | | | 
+| start_date | admin_date  | | Use order_date if admin_date is epmty or null. |
+| end_date | admin_date | | Use order_date if admin_date is epmty or null. | 
 | start_datetime | admin_time | Combine admin_date and admin_time into a datetime| |
 | end_datetime | admin_time| Combine admin_date and admin_time into a datetime| |
 | concept_id |ndc |Use the [SOURCE_TO_STANDARD](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_STANDARD.sql) query to map the code to standard concept(s) with the following filters: <br> <br>  Where source_vocabulary_id = 'NDC'  and Target_standard_concept = 'S'  and target_invalid_reason is NULL and admin_date between valid_start_date and valid_end_date<br><br>If there is no mapping available, set concept_id to zero.| |
