@@ -1,5 +1,4 @@
-﻿using org.ohdsi.cdm.framework.common.Enums;
-using System;
+﻿using System;
 using static org.ohdsi.cdm.framework.common.Enums.Vendor;
 
 namespace org.ohdsi.cdm.presentation.lambdabuilder

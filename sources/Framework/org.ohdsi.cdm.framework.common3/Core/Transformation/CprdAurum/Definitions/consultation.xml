@@ -16,7 +16,7 @@
     end as source_value
     from {sc}.consultation c
     left join {sc}.lookup_emismedicaldictionary m on c.consmedcodeid = m.medcodeid
-    join {sc}._chunks ch ON ch.ChunkId = {0} AND c.patid = ch.PERSON_ID
+    join {ch_sc}._chunks ch ON ch.ChunkId = {0} AND c.patid = ch.PERSON_ID
     where c.consdate is not NULL
     order by c.patid
   </Query>

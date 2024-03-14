@@ -62,7 +62,7 @@
     END as VALUE_AS_STRING,
     {field2}
     FROM {sc}.FACILITY_HEADER
-    JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND ENROLID = ch.PERSON_ID
+    JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND ENROLID = ch.PERSON_ID
     )
     select *,
     {vendor},

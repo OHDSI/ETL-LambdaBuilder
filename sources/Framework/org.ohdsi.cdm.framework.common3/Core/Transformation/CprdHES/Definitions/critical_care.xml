@@ -16,7 +16,7 @@
 		case when cc.discharged is null then cc.epiend else cc.discharged end as event_date_end,
 		CONCAT(cast(cc.patid as varchar), cast(cc.epikey as varchar)) as description
 		FROM {sc}.hes_ccare cc
-		join {sc}._chunks ch ON ch.ChunkId = {0} AND cc.patid = ch.PERSON_ID
+		join {ch_sc}._chunks ch ON ch.ChunkId = {0} AND cc.patid = ch.PERSON_ID
 		order by cc.patid
 	</Query>
   <Observation>

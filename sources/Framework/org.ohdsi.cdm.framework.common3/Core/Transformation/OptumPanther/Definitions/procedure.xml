@@ -27,7 +27,7 @@
 		end as unknown
 
 		from {sc}.procedure as p
-		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND p.ptid = ch.PERSON_SOURCE_VALUE
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND p.ptid = ch.PERSON_SOURCE_VALUE
 		left join {sc}.provider pr on p.provid_perform  = pr.provid
 
 		where proc_code is not NULL

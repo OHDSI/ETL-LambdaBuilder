@@ -4,7 +4,7 @@
     PATID,
     cast(YMDOD || '01' as date) as Date
     FROM {sc}.DEATH
-    JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND DEATH.PATID = ch.PERSON_ID
+    JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND DEATH.PATID = ch.PERSON_ID
     order by PATID
   </Query>
   <Death>

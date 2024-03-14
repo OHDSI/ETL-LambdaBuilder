@@ -8,7 +8,7 @@
 		case when evdate is null then epistart else evdate end as start_date,
 		CONCAT(cast(patid as varchar), cast(epikey as varchar)) as description
 		FROM {sc}.hes_procedures_epi
-		join {sc}._chunks ch ON ch.ChunkId = {0} AND patid = ch.PERSON_ID
+		join {ch_sc}._chunks ch ON ch.ChunkId = {0} AND patid = ch.PERSON_ID
 		order by patid
 	</Query>
   <Observation>

@@ -1,5 +1,4 @@
-﻿using org.ohdsi.cdm.framework.common.Definitions;
-using org.ohdsi.cdm.framework.common.Extensions;
+﻿using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.desktop.Helpers;
 using System;
 using System.Collections.Generic;

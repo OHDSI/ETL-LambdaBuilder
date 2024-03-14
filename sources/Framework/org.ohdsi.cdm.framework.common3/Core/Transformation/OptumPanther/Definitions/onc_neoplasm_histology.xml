@@ -17,7 +17,7 @@
 		end as date,
 		h.neoplasm_histology_key
 		FROM {sc}.onc_neoplasm_histology h
-		JOIN {sc}._chunks chu ON chu.ChunkId = {0} AND h.ptid = chu.PERSON_SOURCE_VALUE
+		JOIN {ch_sc}._chunks chu ON chu.ChunkId = {0} AND h.ptid = chu.PERSON_SOURCE_VALUE
 		left join {sc}.onc_characteristic ch on  h.neoplasm_histology_key= ch.neoplasm_histology_key
 		And (ch.neoplasm_char_temporal_status ='current' OR ch.histology_char_temporal_status ='current')
 		and  (ch.neoplasm_characteristic in ('in situ','malignant', 'benign') or ch.histology_characteristic in ('in situ', 'malignant', 'benign') )

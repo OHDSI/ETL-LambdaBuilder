@@ -18,7 +18,7 @@
     cast(left(cast(d.patid as varchar), 7) || cast(d.probobsid as varchar) as bigint) as visitDetailId,
     d.prodcodeid
     from {sc}.drug d
-    join {sc}._chunks ch ON ch.ChunkId = {0} AND d.patid = ch.PERSON_ID
+    join {ch_sc}._chunks ch ON ch.ChunkId = {0} AND d.patid = ch.PERSON_ID
     left join {sc}.lookup_emisproductdictionary dc on d.prodcodeid = dc.prodcodeid
     left join {sc}.lookup_quantunit q on d.quantunitid = q.quantunitid
     where d.issuedate is not null

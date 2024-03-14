@@ -7,7 +7,7 @@
 		t.GENDER_SOURCE_VALUE,
 		t.YEAR_OF_BIRTH
 		FROM {sc}.PERSON as t
-		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND t.PERSON_ID = ch.PERSON_ID
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND t.PERSON_ID = ch.PERSON_ID
 		JOIN {sc}.OBSERVATION_PERIOD op ON t.PERSON_ID = op.PERSON_ID
 		order by t.PERSON_ID
 	</Query>

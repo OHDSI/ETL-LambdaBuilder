@@ -24,7 +24,7 @@
 		end as icd_ver
 
 		FROM cdm_health_verity_cc_ehr_cce_v2776.pharmacy_claims_vaccine
-		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
 		where date_service is not null and date_part('year', date_service) &gt;= 2009 and
 		(logical_delete_reason is null or logical_delete_reason = '' or logical_delete_reason = 'null')
 		order by 1

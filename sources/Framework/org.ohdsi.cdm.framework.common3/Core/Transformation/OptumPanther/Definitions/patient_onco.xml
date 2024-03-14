@@ -35,7 +35,7 @@
     idn_indicator,
 	1 as onco
     FROM {sc}.patient p
-    JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND p.ptid = ch.PERSON_SOURCE_VALUE
+    JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND p.ptid = ch.PERSON_SOURCE_VALUE
     LEFT JOIN {sc}.provider ON provider.provid = p.provid_pcp
     LEFT JOIN {sc}.encounter as e ON e.ptid = p.ptid
     order by ch.person_id

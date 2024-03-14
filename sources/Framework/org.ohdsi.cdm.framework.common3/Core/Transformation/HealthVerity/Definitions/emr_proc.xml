@@ -18,7 +18,7 @@
 		32827 type_concept_id,
 		coalesce(proc_prov_id, '') || ';' || coalesce(proc_prov_taxnmy_id, '') ProviderIdKey
 		from cdm_health_verity_cc_ehr_cce_v2776.emr_proc
-		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
 		where coalesce(upper(proc_stat_cd), '') not in
 		(
 		'ENTERED IN ERROR',

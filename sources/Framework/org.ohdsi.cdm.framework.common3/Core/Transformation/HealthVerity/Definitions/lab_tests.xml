@@ -11,7 +11,7 @@
 		replace(result, chr(9), ' ') as result,
 		data_vendor
 		from cdm_health_verity_cc_ehr_cce_v2776.lab_tests
-		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
 		where loinc_code is not null and test_ordered_name is not null and result_name is not null and coalesce(date_service, date_specimen) is not null
 		order by ch.person_id
 	</Query>

@@ -5,7 +5,7 @@
     note_date,
     treatment_response || ' to ' || treatment as source
     FROM {sc}.onc_treatment_response l
-    JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
+    JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
     order by 1
   </Query>
   <Observation>

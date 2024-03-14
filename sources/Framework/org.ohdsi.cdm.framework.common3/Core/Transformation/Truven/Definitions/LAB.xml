@@ -40,7 +40,7 @@
      l.RESUNIT AS UNITS_SOURCE_VALUE,
      l.DX1
      FROM {sc}.Lab l
-     JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND l.ENROLID = ch.PERSON_ID
+     JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ENROLID = ch.PERSON_ID
      )
 
      select *,

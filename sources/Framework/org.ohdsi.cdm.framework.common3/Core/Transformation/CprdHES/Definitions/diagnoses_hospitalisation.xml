@@ -7,7 +7,7 @@
 		discharged,
 		icd
 		FROM {sc}.hes_diagnosis_hosp
-		join {sc}._chunks ch ON ch.ChunkId = {0} AND patid = ch.PERSON_ID
+		join {ch_sc}._chunks ch ON ch.ChunkId = {0} AND patid = ch.PERSON_ID
 		order by patid
 	</Query>
   <Observation>

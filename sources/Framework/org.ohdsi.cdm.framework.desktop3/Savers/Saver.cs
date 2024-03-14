@@ -4,7 +4,6 @@ using org.ohdsi.cdm.framework.common.DataReaders.v5.v52;
 using org.ohdsi.cdm.framework.common.DataReaders.v5.v53;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Omop;
-using org.ohdsi.cdm.framework.common.Omop;
 using org.ohdsi.cdm.framework.desktop.DataReaders;
 using org.ohdsi.cdm.framework.desktop.Enums;
 using System;
@@ -563,7 +562,7 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
                 yield return list;
         }
 
-        public virtual void AddChunk(List<ChunkRecord> chunk, int index)
+        public virtual void AddChunk(List<ChunkRecord> chunk, int index, string schemaName)
         {
             try
             {

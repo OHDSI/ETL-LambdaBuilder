@@ -7,7 +7,7 @@
     'NLP_BIOMARKERS' as note_title,
     40639387 as language_concept_id
     from {sc}.nlp_biomarkers n
-    JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND n.ptid = ch.PERSON_SOURCE_VALUE
+    JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND n.ptid = ch.PERSON_SOURCE_VALUE
     order by 1
   </Query>
   <Note>

@@ -11,7 +11,7 @@
 		1 as fake,
 		null as unit
 		FROM {sc}.onc_biomarker l
-		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
 		where lower(temporal_status) = 'current' and biomarker is not NULL
 		order by 1
 	</Query>

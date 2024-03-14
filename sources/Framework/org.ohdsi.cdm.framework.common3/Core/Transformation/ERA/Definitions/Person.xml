@@ -4,11 +4,11 @@
 		(
 		SELECT DISTINCT t.PERSON_ID
 		FROM {sc}.CONDITION_OCCURRENCE t
-		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND t.PERSON_ID = ch.PERSON_ID
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND t.PERSON_ID = ch.PERSON_ID
 		UNION
 		SELECT DISTINCT t.PERSON_ID
 		FROM {sc}.DRUG_EXPOSURE t
-		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND t.PERSON_ID = ch.PERSON_ID
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND t.PERSON_ID = ch.PERSON_ID
 		)
 
 		SELECT PERSON_ID,

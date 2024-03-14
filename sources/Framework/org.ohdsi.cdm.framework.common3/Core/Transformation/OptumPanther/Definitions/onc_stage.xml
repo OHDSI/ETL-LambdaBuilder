@@ -7,7 +7,7 @@
     neoplasm_histology_key,
     1147127 as meas_event_field_concept_id
     from {sc}.onc_stage l
-    JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
+    JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
     where stage != ''
     order by 1
   </Query>

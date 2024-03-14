@@ -11,7 +11,7 @@
     fst_dt as START_DATE,
     CASE WHEN icd_flag IS NULL OR icd_flag NOT IN ('10', '9') THEN CASE WHEN fst_dt &lt; '10/01/2015' THEN '9' ELSE '10' END ELSE icd_flag END icd_flag
     from {sc}.med_procedure mp
-    JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND mp.patid = ch.PERSON_ID
+    JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND mp.patid = ch.PERSON_ID
     order by PATID
   </Query>
   <ProcedureOccurrence>

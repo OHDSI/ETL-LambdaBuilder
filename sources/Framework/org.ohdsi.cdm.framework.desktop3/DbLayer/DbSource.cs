@@ -14,29 +14,60 @@ namespace org.ohdsi.cdm.framework.desktop.DbLayer
         private readonly string _folder = folder;
         private readonly string _schemaName = schemaName;
 
-        public void CreateChunkTable()
+        private void CreateChunkSchema(string name)
         {
-            DropChunkTable();
+            // TMP
+            try
+            {
+                var query = "CREATE SCHEMA IF NOT EXISTS {sc};";
+                query = query.Replace("{sc}", name);
+                using var connection = SqlConnectionHelper.OpenOdbcConnection(_connectionString);
+                using var cmd = new OdbcCommand(query, connection);
+                cmd.ExecuteNonQuery();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Can't create chunk schema");
+            }
+        }
+
+        public void CreateChunkTable(string schemaName)
+        {
+            CreateChunkSchema(schemaName);
+            DropChunkTable(schemaName);
             var query = File.ReadAllText(Path.Combine(_folder, "CreateChunkTable.sql"));
-            query = query.Replace("{sc}", _schemaName);
+            query = query.Replace("{sc}", schemaName);
             using var connection = SqlConnectionHelper.OpenOdbcConnection(_connectionString);
-            using var cmd = new OdbcCommand(query, connection) { CommandTimeout = 0 };
+            using var cmd = new OdbcCommand(query, connection);
             cmd.ExecuteNonQuery();
         }
 
-        public void DropChunkTable()
+        public void DropChunkTable(string schemaName)
         {
+            CreateChunkSchema(schemaName);
             var query = File.ReadAllText(Path.Combine(_folder, "DropChunkTable.sql"));
-            query = query.Replace("{sc}", _schemaName);
+            query = query.Replace("{sc}", schemaName);
             using var connection = SqlConnectionHelper.OpenOdbcConnection(_connectionString);
-            using var cmd = new OdbcCommand(query, connection) { CommandTimeout = 0 };
+            using var cmd = new OdbcCommand(query, connection);
             cmd.ExecuteNonQuery();
         }
 
-        public void CreateIndexesChunkTable()
+        public IEnumerable<long> GetPersonIds(int chunkId, string schemaName)
+        {
+            var query = $"SELECT person_id FROM {schemaName}._chunks where chunkid={chunkId};";
+            using var connection = SqlConnectionHelper.OpenOdbcConnection(_connectionString);
+            using var c = new OdbcCommand(query, connection) { CommandTimeout = 300 };
+            using var reader = c.ExecuteReader();
+            while (reader.Read())
+            {
+                yield return reader.GetInt64(0);
+            }
+        }
+
+        public void CreateIndexesChunkTable(string schemaName)
         {
             var query = File.ReadAllText(Path.Combine(_folder, "CreateIndexesChunkTable.sql"));
-            query = query.Replace("{sc}", _schemaName);
+            query = query.Replace("{sc}", schemaName);
             if (string.IsNullOrEmpty(query.Trim())) return;
 
             using var connection = SqlConnectionHelper.OpenOdbcConnection(_connectionString);
@@ -64,18 +95,6 @@ namespace org.ohdsi.cdm.framework.desktop.DbLayer
                 yield return reader;
             }
 
-        }
-
-        public IEnumerable<long> GetPersonIds(int chunkId)
-        {
-            var query = $"SELECT person_id FROM {_schemaName}._chunks where chunkid={chunkId};";
-            using var connection = SqlConnectionHelper.OpenOdbcConnection(_connectionString);
-            using var c = new OdbcCommand(query, connection) { CommandTimeout = 300 };
-            using var reader = c.ExecuteReader();
-            while (reader.Read())
-            {
-                yield return reader.GetInt64(0);
-            }
         }
 
         public string GetSourceReleaseDate()

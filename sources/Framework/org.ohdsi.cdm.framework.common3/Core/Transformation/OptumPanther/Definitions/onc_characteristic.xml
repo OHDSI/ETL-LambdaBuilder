@@ -8,7 +8,7 @@
 		neoplasm_characteristic as source_value,
 		neoplasm_histology_key
 		from {sc}.onc_characteristic l
-		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
 		where lower(neoplasm_char_temporal_status) = 'current'
 		and lower(neoplasm_characteristic) not in ('in situ', 'malignant', 'benign')
 		and neoplasm_characteristic != ''
@@ -21,7 +21,7 @@
 		histology_characteristic as source_value,
 		neoplasm_histology_key
 		from {sc}.onc_characteristic l
-		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
 		where lower(histology_char_temporal_status) = 'current'
 		and lower(histology_characteristic) not in ('in situ', 'malignant', 'benign')
 		and histology_characteristic != ''
@@ -34,7 +34,7 @@
 		l2.histology_characteristic as source_value,
 		l2.neoplasm_histology_key
 		from {sc}.onc_characteristic l
-		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
 		JOIN {sc}.onc_characteristic l2 ON l.ptid = l2.ptid and l.note_date = l2.note_date
 		where lower(l.histology_char_temporal_status) = 'current' and lower(l2.histology_char_temporal_status) = 'current'
 		and lower(l.histology_characteristic) in ('in situ') and lower(l2.histology_characteristic) in ('invasive')

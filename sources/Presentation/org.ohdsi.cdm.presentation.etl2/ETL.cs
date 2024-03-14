@@ -20,7 +20,7 @@ namespace org.ohdsi.cdm.presentation.etl
     {
         private string _cdmFolderCsv;
 
-        public void Start(bool skipChunkCreation, bool resumeChunkCreation, bool skipLookupCreation, bool skipBuild, bool skipVocabularyCopying, LambdaUtility utility, string cdmFolderCsv, bool readFromS3)
+        public void Start(bool skipChunkCreation, bool resumeChunkCreation, bool skipLookupCreation, bool skipBuild, bool skipVocabularyCopying, LambdaUtility utility, string cdmFolderCsv, bool readFromS3, string chunksSchema)
         {
             _cdmFolderCsv = cdmFolderCsv;
 
@@ -36,7 +36,7 @@ namespace org.ohdsi.cdm.presentation.etl
             {
                 Console.WriteLine("Chunks creation in progress...");
 
-                var chunkController = new ChunkController();
+                var chunkController = new ChunkController(chunksSchema);
 
                 if (!resumeChunkCreation)
                     chunkController.CreateChunks();
@@ -273,7 +273,7 @@ namespace org.ohdsi.cdm.presentation.etl
         private static IEnumerable<T> GetEntities<T>(QueryDefinition qd, EntityDefinition ed) where T : IEntity
         {
             var sql = GetSqlHelper.GetSql(Settings.Current.Building.SourceEngine.Database,
-                qd.GetSql(Settings.Current.Building.Vendor, Settings.Current.Building.SourceSchemaName), Settings.Current.Building.SourceSchemaName);
+                qd.GetSql(Settings.Current.Building.Vendor, Settings.Current.Building.SourceSchemaName, Settings.Current.Building.SourceSchemaName), Settings.Current.Building.SourceSchemaName);
             var keys = new Dictionary<string, bool>();
             if (!string.IsNullOrEmpty(sql))
             {

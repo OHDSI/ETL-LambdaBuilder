@@ -119,7 +119,7 @@
      0                           AS RELEVANT_CONDITION_CONCEPT_ID,
      'hra' source
      from hra
-     JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND hra.PERSON_ID = ch.PERSON_ID
+     JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hra.PERSON_ID = ch.PERSON_ID
      LEFT JOIN hraref1 on hra.OBSERVATION_SOURCE_VALUE = hraref1.VARIABLE_NAME and hra.VALUE_AS_NUMBER = hraref1.CATEGORY_VALUE
      where hra.VALUE_AS_NUMBER is not NULL and hra.VALUE_AS_NUMBER not in ('-','9')
 
@@ -161,7 +161,7 @@
      0                           AS RELEVANT_CONDITION_CONCEPT_ID,
      'hra' source
      FROM hra1
-     JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND hra1.PERSON_ID = ch.PERSON_ID
+     JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hra1.PERSON_ID = ch.PERSON_ID
      WHERE VALUE_AS_NUMBER is not null
      ),
      result as

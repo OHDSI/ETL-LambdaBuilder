@@ -16,7 +16,7 @@
     ELSE 0
     END AS Observation
     from {sc}.observations o
-    JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND o.ptid = ch.PERSON_SOURCE_VALUE
+    JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND o.ptid = ch.PERSON_SOURCE_VALUE
     order by 1
   </Query>
   <Observation>

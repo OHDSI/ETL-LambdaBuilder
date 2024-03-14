@@ -25,7 +25,7 @@
     ELSE 0
     END AS Drug
     from {sc}.nlp_drug_rationale
-    JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND ptid = ch.PERSON_SOURCE_VALUE
+    JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND ptid = ch.PERSON_SOURCE_VALUE
     order by 1
   </Query>
   <DrugExposure>

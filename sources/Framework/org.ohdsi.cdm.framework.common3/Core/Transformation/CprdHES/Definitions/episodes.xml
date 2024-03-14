@@ -10,7 +10,7 @@
 		cast(CONCAT(cast(e.patid as varchar), cast(e.spno as varchar)) as bigint) as visit_occurrence_id,
 		CONCAT(cast(e.patid as varchar), cast(e.epikey as varchar)) as description
 		FROM {sc}.hes_episodes e
-		join {sc}._chunks ch ON ch.ChunkId = {0} AND e.patid = ch.PERSON_ID
+		join {ch_sc}._chunks ch ON ch.ChunkId = {0} AND e.patid = ch.PERSON_ID
 		order by e.patid
 	</Query>
   <VisitDetail>

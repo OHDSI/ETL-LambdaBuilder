@@ -64,7 +64,7 @@
 		TOTPAY as TOTAL_PAID,
 		{field2}
 		FROM {sc}.inpatient_admissions
-		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND ENROLID = ch.PERSON_ID
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND ENROLID = ch.PERSON_ID
 		)
 
 		select *,

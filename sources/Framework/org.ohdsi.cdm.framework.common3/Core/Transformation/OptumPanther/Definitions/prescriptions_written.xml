@@ -14,7 +14,7 @@
     SUBSTRING(p.ndc,1,9) ndc_9,
     1 as itNdc
     from {sc}.prescriptions_written as p
-    JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND p.ptid = ch.PERSON_SOURCE_VALUE
+    JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND p.ptid = ch.PERSON_SOURCE_VALUE
     left join {sc}.provider pr on p.provid = pr.provid
     where ndc is not NULL
     order by 1

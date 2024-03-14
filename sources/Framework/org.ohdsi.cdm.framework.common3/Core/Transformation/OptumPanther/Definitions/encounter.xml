@@ -9,7 +9,7 @@
     e.interaction_date,
     e.interaction_time
     from {sc}.encounter as e
-    JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND e.ptid = ch.PERSON_SOURCE_VALUE
+    JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND e.ptid = ch.PERSON_SOURCE_VALUE
     group by encid, ch.person_id, interaction_type, interaction_date, interaction_time
     )
 

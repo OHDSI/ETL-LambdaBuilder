@@ -13,7 +13,7 @@
 		else 0
 		end as concept_id
 		from {sc}.insurance i
-		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND i.ptid = ch.PERSON_SOURCE_VALUE
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND i.ptid = ch.PERSON_SOURCE_VALUE
 		order by 1
 	</Query>
   <Observation>

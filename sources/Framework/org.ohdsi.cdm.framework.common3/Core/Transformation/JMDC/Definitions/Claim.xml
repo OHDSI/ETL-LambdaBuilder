@@ -18,7 +18,7 @@
     total_point * 10 AS total_paid,
     44818592 as CurrencyConceptId
     FROM {sc}.Claim c
-    JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND c.Member_ID = ch.PERSON_SOURCE_VALUE
+    JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND c.Member_ID = ch.PERSON_SOURCE_VALUE
     order by CAST(RIGHT(Member_ID, LEN(Member_ID) - 1) AS BIGINT)
   </Query>
   <VisitOccurrence>

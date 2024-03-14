@@ -1,6 +1,5 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
-using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.desktop.DbLayer;
 using System;
 using System.Collections.Generic;
@@ -25,6 +24,7 @@ namespace org.ohdsi.cdm.framework.desktop3.Monitor
 
         private DateTime _previousLastModified = DateTime.MinValue;
         private int _previousCount = 0;
+        private string _chunksSchema;
 
         private readonly AmazonS3Config _config = new()
         {
@@ -34,7 +34,7 @@ namespace org.ohdsi.cdm.framework.desktop3.Monitor
             MaxErrorRetry = 20
         };
 
-        public void Start()
+        public void Start(string chunksSchema)
         {
             State = ChunkState.RunningLambda;
 
@@ -43,6 +43,7 @@ namespace org.ohdsi.cdm.framework.desktop3.Monitor
             _timer.Enabled = true;
 
             Console.WriteLine($">  {DateTime.Now.ToShortTimeString()} | ChunkId={ChunkId} {State}");
+            _chunksSchema = chunksSchema;
         }
 
         private void OnTimedEvent(object source, ElapsedEventArgs e)
@@ -152,7 +153,7 @@ namespace org.ohdsi.cdm.framework.desktop3.Monitor
                 State = ChunkState.Validating;
                 
                 var dbSource = new DbSource(Settings.Current.Building.SourceConnectionString, null, Settings.Current.Building.SourceSchemaName);
-                foreach (var personId in dbSource.GetPersonIds(ChunkId))
+                foreach (var personId in dbSource.GetPersonIds(ChunkId, _chunksSchema))
                 {
                     personsData.Add(personId, []);
                 }

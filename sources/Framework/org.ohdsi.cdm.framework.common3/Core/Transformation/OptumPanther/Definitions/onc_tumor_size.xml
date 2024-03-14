@@ -14,7 +14,7 @@
 		tumor_size_3,
 		tumor_size_unit_3
 		from {sc}.onc_tumor_size
-		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND ptid = ch.PERSON_SOURCE_VALUE
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND ptid = ch.PERSON_SOURCE_VALUE
 		),
 		ts_clean as
 		(

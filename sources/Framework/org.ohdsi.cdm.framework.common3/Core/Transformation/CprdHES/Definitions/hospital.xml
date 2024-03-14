@@ -7,7 +7,7 @@
 		spno,
 		cast(CONCAT(cast(patid as varchar), cast(spno as varchar)) as bigint) as visit_occurrence_id
 		FROM {sc}.hes_hospital
-		join {sc}._chunks ch ON ch.ChunkId = {0} AND patid = ch.PERSON_ID
+		join {ch_sc}._chunks ch ON ch.ChunkId = {0} AND patid = ch.PERSON_ID
 		order by patid
 	</Query>
   <VisitOccurrence>

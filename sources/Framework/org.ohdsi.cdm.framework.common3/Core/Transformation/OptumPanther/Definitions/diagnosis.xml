@@ -10,7 +10,7 @@
 		else primary_diagnosis
 		end as primary_diagnosis2
 		from {sc}.diagnosis as d
-		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND d.ptid = ch.PERSON_SOURCE_VALUE
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND d.ptid = ch.PERSON_SOURCE_VALUE
 		), b as
 		(
 		select

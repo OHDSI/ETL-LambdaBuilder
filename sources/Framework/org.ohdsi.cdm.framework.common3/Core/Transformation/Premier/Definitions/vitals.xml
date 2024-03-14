@@ -23,7 +23,7 @@
 		else 1
 		end as isloinc
 		from {sc}.pat pat
-		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND pat.medrec_key = ch.PERSON_SOURCE_VALUE
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND pat.medrec_key = ch.PERSON_SOURCE_VALUE
 		join {sc}.vitals v on pat.pat_key = v.pat_key
 		order by cast(pat.medrec_key as bigint)
 	</Query>

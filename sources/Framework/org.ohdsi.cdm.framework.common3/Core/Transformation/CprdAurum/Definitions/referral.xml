@@ -21,7 +21,7 @@
     cast(left(cast(r.patid as varchar), 7) || cast(r.obsid as varchar) as bigint) as visitDetailId,
     cast(GETDATE() as date) eventdate
     FROM {sc}.referral r
-    JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND r.patid = ch.PERSON_ID
+    JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND r.patid = ch.PERSON_ID
     left join {sc}.lookup_refservicetype rs on r.refservicetypeid = rs.refservicetypeid
     order by r.patid
   </Query>

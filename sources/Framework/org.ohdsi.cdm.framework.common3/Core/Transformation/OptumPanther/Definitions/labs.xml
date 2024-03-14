@@ -19,7 +19,7 @@
     replace(replace(result_unit, chr(9), ' '), chr(11), ' ') as result_unit,
     replace(replace(normal_range, chr(9), ' '), chr(11), ' ') as normal_range
     from {sc}.labs l
-    JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
+    JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
     order by 1
   </Query>
   <Measurement>

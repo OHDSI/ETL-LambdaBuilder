@@ -46,7 +46,7 @@
     drg,
     rvnu_cd
     FROM {sc}.medical_claims mc
-    JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND mc.patid = ch.PERSON_ID
+    JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND mc.patid = ch.PERSON_ID
     left join prov pb on pb.prov=mc.prov
     left join care_site cs on cs.prov=mc.bill_prov
     order by PATID

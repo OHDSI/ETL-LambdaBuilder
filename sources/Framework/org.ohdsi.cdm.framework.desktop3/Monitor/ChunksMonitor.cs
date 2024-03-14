@@ -20,7 +20,6 @@ namespace org.ohdsi.cdm.framework.desktop3.Monitor
         public int TotalCount { get; private set; }
         private Dictionary<int, Task> _local;
 
-
         private void Start(int chunkId)
         {
             if (_slicesNum != null)
@@ -72,7 +71,7 @@ namespace org.ohdsi.cdm.framework.desktop3.Monitor
             Console.WriteLine($"*** CompleteAdding");
         }
 
-        public bool TryAddChunk(int chunkId)
+        public bool TryAddChunk(int chunkId, string chunksSchema)
         {
             Start(chunkId);
 
@@ -84,7 +83,7 @@ namespace org.ohdsi.cdm.framework.desktop3.Monitor
                 ChunkId = chunkId,
                 SlicesNum = _slicesNum.Value
             };
-            chunk.Start();
+            chunk.Start(chunksSchema);
             _chunks.Add(chunkId, chunk);
             return true;
         }

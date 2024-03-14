@@ -12,6 +12,8 @@ using org.ohdsi.cdm.framework.desktop.DbLayer;
 using org.ohdsi.cdm.framework.desktop.Settings;
 using org.ohdsi.cdm.framework.desktop3.Monitor;
 using System;
+using System.Data.Odbc;
+using System.Data.SqlClient;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -36,11 +38,11 @@ namespace org.ohdsi.cdm.presentation.etl
                         
             var versionId = 0;
 
-            var sourceCluster = "";
-            var sourceDb = "";
-            var sourceSchema = "";
+            var sourceCluster = string.Empty;
+            var sourceDb = string.Empty;
+            var sourceSchema = string.Empty;
 
-            var vocabularySchema = "";
+            var vocabularySchema = string.Empty;
             Vendors vendor = Vendors.None;
             int batchSize = 0;
 
@@ -95,9 +97,14 @@ namespace org.ohdsi.cdm.presentation.etl
                         command.CommandText = File.ReadAllText("builderdll.sql");
                         command.ExecuteNonQuery();
                     }
-                }
 
-                Console.WriteLine("builderConnectionString: " + builderConnectionString);
+                    Console.WriteLine("builder: local file (builder.db)");
+                }
+                else
+                {
+                    Console.WriteLine($"builder:{new SqlConnectionStringBuilder(builderConnectionString).DataSource};");
+                }
+                                
                 var s3awsAccessKeyId = configuration.GetSection("AppSettings")["s3_aws_access_key_id"];
                 var s3awsSecretAccessKey = configuration.GetSection("AppSettings")["s3_aws_secret_access_key"];
 
@@ -113,6 +120,7 @@ namespace org.ohdsi.cdm.presentation.etl
                 var msgBucketMerge = configuration.GetSection("AppSettings")["messages_bucket_merge"];
 
                 var iamRole = configuration.GetSection("AppSettings")["iam_role"];
+                var chunksSchema = configuration.GetSection("AppSettings")["chunks_schema"];
 
                 Settings.Initialize(builderConnectionString, Environment.MachineName);
                 Settings.Current.S3AwsAccessKeyId = s3awsAccessKeyId;
@@ -135,10 +143,21 @@ namespace org.ohdsi.cdm.presentation.etl
 
                 Console.WriteLine();
                 Console.WriteLine("initializing building settings...");
-                var sourceConnectionString = configuration.GetConnectionString("Source");
+                
                 var vocabularyConnectionString = configuration.GetConnectionString("Vocabulary");
 
+                var sourceConnectionString = string.Empty;
+                if (string.IsNullOrWhiteSpace(sourceCluster))
+                {
+                    sourceConnectionString = configuration.GetConnectionString("Source");
+                }
+                else
+                {
+                    sourceConnectionString = sourceCluster;
+                }
+
                 sourceConnectionString = sourceConnectionString.Replace("{db}", sourceDb).Replace("{sc}", sourceSchema);
+
                 vocabularyConnectionString = vocabularyConnectionString.Replace("{db}", vocabularySchema);
                 var destinationConnectionString = "Driver={Amazon Redshift (x64)};Server=fake;Database={db};Sc=cdm;UID=user1;PWD=pswd;Port=5439;SSL=true;Sslmode=Require";
                 destinationConnectionString =
@@ -172,9 +191,12 @@ namespace org.ohdsi.cdm.presentation.etl
                     }
                 }
 
+                var sourceOdbc = new OdbcConnectionStringBuilder(sourceConnectionString);
+                var vocabOdbc = new OdbcConnectionStringBuilder(vocabularyConnectionString);
+
                 Settings.Current.Building.Save();
-                Console.WriteLine($"sourceConnectionString:{sourceConnectionString}");
-                Console.WriteLine($"vocabularyConnectionString:{vocabularyConnectionString}");
+                Console.WriteLine($"source:{sourceOdbc["server"]}; {sourceDb}; {sourceSchema}");
+                Console.WriteLine($"vocabulary:{vocabOdbc["server"]}; {vocabularySchema}");
                 Console.WriteLine($"vendor:{vendor}");
                 Console.WriteLine($"Cdm:{Settings.Current.Building.Cdm}");
                 Console.WriteLine($"BatchSize:{Settings.Current.Building.BatchSize}");
@@ -204,7 +226,7 @@ namespace org.ohdsi.cdm.presentation.etl
                 else
                 {
                     var etl = new ETL();
-                    etl.Start(skipChunkCreation, resumeChunkCreation, skipLookupCreation, skipBuild, skipVocabularyCopying, lambdaUtility, configuration.GetSection("AppSettings")["cdm_folder_csv"], !useLocalSettings);
+                    etl.Start(skipChunkCreation, resumeChunkCreation, skipLookupCreation, skipBuild, skipVocabularyCopying, lambdaUtility, configuration.GetSection("AppSettings")["cdm_folder_csv"], !useLocalSettings, chunksSchema);
                 }
 
                 if (skipValidation)

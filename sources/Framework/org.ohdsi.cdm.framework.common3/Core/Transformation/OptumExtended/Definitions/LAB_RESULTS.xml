@@ -20,7 +20,7 @@
     end as operator_concept_id,
     concat(concat(rslt_nbr,';'), coalesce(rslt_txt, '')) as ValueSourceValue
     FROM {sc}.LAB_RESULTS
-    JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND patid = ch.PERSON_ID
+    JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND patid = ch.PERSON_ID
     order by PATID
   </Query>
   <Measurement>

@@ -43,7 +43,7 @@
      CASE WHEN MHSACOVG IS NULL THEN '0' ELSE MHSACOVG END AS VALUE_AS_NUMBER,
      case when DRUGCOVG = '1' OR MEDICARE = '1' then 0 else 1  end as missinginsurance
      FROM {sc}.ENROLLMENT_DETAIL
-     JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND ENROLID = ch.PERSON_ID)
+     JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND ENROLID = ch.PERSON_ID)
 
      select *,
      CASE WHEN MEDICARE = '1' THEN 'D ' ELSE 'N ' END + CASE WHEN CAP = '1' THEN 'C ' ELSE 'N ' END

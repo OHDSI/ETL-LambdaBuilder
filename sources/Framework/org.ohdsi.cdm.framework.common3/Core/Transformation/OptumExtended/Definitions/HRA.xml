@@ -18,7 +18,7 @@
     when lower(H_CHRONIC_PAIN) = 'u' THEN 'Unknown'
     end as H_SMOKING_STATUS_VALUE
     FROM {sc}.HRA
-    JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND patid = ch.PERSON_ID
+    JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND patid = ch.PERSON_ID
     order by patid
   </Query>
   <Measurement>

@@ -9,7 +9,7 @@
 		icd,
 		case when d_order = 1 then 44786627 else 44786629 end as type_concept_id
 		FROM {sc}.hes_diagnosis_epi
-		join {sc}._chunks ch ON ch.ChunkId = {0} AND patid = ch.PERSON_ID
+		join {ch_sc}._chunks ch ON ch.ChunkId = {0} AND patid = ch.PERSON_ID
 		order by patid
 	</Query>
   <Observation>

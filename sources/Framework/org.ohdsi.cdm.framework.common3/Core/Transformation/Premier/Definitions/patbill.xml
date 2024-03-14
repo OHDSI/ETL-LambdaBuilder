@@ -37,7 +37,7 @@
 		 'From PATBILL - No information provided' as condition_status_source_value
 		 FROM {sc}.patbill bill
 		 join {sc}.pat pat on pat.pat_key = bill.pat_key
-		 JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND pat.medrec_key = ch.PERSON_SOURCE_VALUE
+		 JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND pat.medrec_key = ch.PERSON_SOURCE_VALUE
 		 left join {sc}.chgmstr chg on chg.std_chg_code = bill.std_chg_code
 		 left join {sc}.hospchg hosp on hosp.hosp_chg_id=bill.hosp_chg_id
 		 order by cast(pat.medrec_key as bigint)

@@ -30,7 +30,7 @@
      pat.adm_phy,
      icd.icd_version
      from {sc}.pat pat
-     JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND pat.medrec_key = ch.PERSON_SOURCE_VALUE
+     JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND pat.medrec_key = ch.PERSON_SOURCE_VALUE
      join {sc}.paticd_diag icd on pat.pat_key = icd.pat_key
      order by cast(pat.medrec_key as bigint)
    </Query>

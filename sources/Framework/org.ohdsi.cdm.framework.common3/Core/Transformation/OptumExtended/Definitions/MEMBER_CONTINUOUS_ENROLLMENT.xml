@@ -35,7 +35,7 @@
 		CONCAT(me.aso, me.group_nbr) as SPONSOR_SOURCE_VALUE,
 		me.family_id as FAMILY_SOURCE_VALUE
 		FROM {sc}.MEMBER_CONTINUOUS_ENROLLMENT mce
-		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND mce.PATID = ch.PERSON_ID
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND mce.PATID = ch.PERSON_ID
 		LEFT JOIN {sc}.MEMBER_ENROLLMENT me ON mce.PATID = me.PATID
 		),
 		a2 as

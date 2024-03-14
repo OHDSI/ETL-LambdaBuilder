@@ -11,7 +11,7 @@
 		case when acp.acploc NOT IN (13, 15, 16) then 1 else 0 end as Observation,
 		case when acp.acploc NOT IN (13, 15, 16) then 32037 else 9201 end as visit_concept_id
 		FROM {sc}.hes_acp acp
-		join {sc}._chunks ch ON ch.ChunkId = {0} AND acp.patid = ch.PERSON_ID
+		join {ch_sc}._chunks ch ON ch.ChunkId = {0} AND acp.patid = ch.PERSON_ID
 		order by acp.patid
 	</Query>
   <Observation>

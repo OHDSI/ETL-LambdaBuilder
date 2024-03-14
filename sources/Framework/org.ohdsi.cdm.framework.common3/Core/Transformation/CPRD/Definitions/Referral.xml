@@ -76,7 +76,7 @@
     end as description,
     c.constype
     FROM {sc}.Referral a
-    JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND a.patid = ch.PERSON_SOURCE_VALUE
+    JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND a.patid = ch.PERSON_SOURCE_VALUE
     LEFT JOIN {sc}.Medical m on (a.medcode = m.medcode)
     left join {sc}.consultation c on a.patid = c.patid and a.consid = c.consid
     where a.eventdate is not NULL

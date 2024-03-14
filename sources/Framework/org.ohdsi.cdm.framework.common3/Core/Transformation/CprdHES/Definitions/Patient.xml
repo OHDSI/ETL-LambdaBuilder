@@ -3,7 +3,7 @@
 		SELECT DISTINCT
 		p.patid
 		FROM {sc}.hes_patient p
-		join {sc}._chunks ch ON ch.ChunkId = {0} AND p.patid = ch.PERSON_ID
+		join {ch_sc}._chunks ch ON ch.ChunkId = {0} AND p.patid = ch.PERSON_ID
 		order by p.patid
 	</Query>
   <Persons>

@@ -20,7 +20,7 @@
     p.acceptable
     FROM {sc}.patient p
     left join {sc}.practice pr on p.pracid = pr.pracid
-    join {sc}._chunks ch ON ch.ChunkId = {0} AND p.patid = ch.PERSON_ID
+    join {ch_sc}._chunks ch ON ch.ChunkId = {0} AND p.patid = ch.PERSON_ID
     order by p.patid
   </Query>
   <Persons>

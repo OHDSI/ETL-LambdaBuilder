@@ -35,7 +35,7 @@
     null as RACE_SOURCE_VALUE,
     accept
     from {sc}.PATIENT a
-    JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND a.patid = ch.PERSON_SOURCE_VALUE
+    JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND a.patid = ch.PERSON_SOURCE_VALUE
     join {sc}.practice b on a.pracid = b.pracid
     ) as person
     order by patid

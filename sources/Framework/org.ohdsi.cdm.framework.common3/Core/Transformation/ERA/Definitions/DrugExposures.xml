@@ -7,7 +7,7 @@
 		,t.DRUG_EXPOSURE_END_DATE as END_DATE
 		,t.DRUG_TYPE_CONCEPT_ID as TYPE_CONCEPT_ID
 		FROM {sc}.DRUG_EXPOSURE as t
-		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND t.PERSON_ID = ch.PERSON_ID
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND t.PERSON_ID = ch.PERSON_ID
 		order by t.PERSON_ID, t.DRUG_EXPOSURE_ID
 	</Query>
 	<DrugExposure>

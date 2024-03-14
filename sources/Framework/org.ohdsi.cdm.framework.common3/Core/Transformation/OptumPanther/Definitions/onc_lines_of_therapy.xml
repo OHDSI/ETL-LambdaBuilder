@@ -7,7 +7,7 @@
     lot,
     regimen_name
     FROM {sc}.onc_lines_of_therapy l
-    JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
+    JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
     order by 1
   </Query>
   <Episodes>

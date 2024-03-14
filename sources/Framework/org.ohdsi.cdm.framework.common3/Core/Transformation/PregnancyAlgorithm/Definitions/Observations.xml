@@ -6,7 +6,7 @@
 		,t.OBSERVATION_DATE as START_DATE
 		,t.OBSERVATION_TYPE_CONCEPT_ID as TYPE_CONCEPT_ID
 		FROM {sc}.OBSERVATION as t
-		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND t.PERSON_ID = ch.PERSON_ID
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND t.PERSON_ID = ch.PERSON_ID
 		order by t.PERSON_ID, t.OBSERVATION_ID
 	</Query>
 	<Observation>

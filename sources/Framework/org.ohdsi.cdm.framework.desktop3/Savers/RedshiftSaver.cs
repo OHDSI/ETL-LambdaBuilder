@@ -129,7 +129,7 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
             putObject.Wait();
         }
 
-        public override void AddChunk(List<ChunkRecord> chunk, int index)
+        public override void AddChunk(List<ChunkRecord> chunk, int index, string schemaName)
         {
             try
             {
@@ -140,8 +140,7 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
 
                 using var currentConnection = SqlConnectionHelper.OpenOdbcConnection(_connectionString);
                 using var currentTransaction = currentConnection.BeginTransaction();
-                CopyToRedshift(Settings.Settings.Current.Bucket,
-                    Settings.Settings.Current.Building.SourceSchemaName, "_chunks",
+                CopyToRedshift(Settings.Settings.Current.Bucket, schemaName, "_chunks",
                     fileName,
                     currentConnection,
                     currentTransaction);

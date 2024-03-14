@@ -15,7 +15,7 @@
     number_of_times * 10 * procedure_standard_point as total_charge,
     44818592 as CurrencyConceptId
     FROM {sc}.procedure p
-    JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND p.Member_ID = ch.PERSON_SOURCE_VALUE
+    JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND p.Member_ID = ch.PERSON_SOURCE_VALUE
     JOIN {sc}.procedure_master pm on p.standardized_procedure_code = pm.standardized_procedure_code and p.standardized_procedure_version = pm.standardized_procedure_version
     order by CAST(RIGHT(Member_ID, LEN(Member_ID) - 1) AS BIGINT)
   </Query>

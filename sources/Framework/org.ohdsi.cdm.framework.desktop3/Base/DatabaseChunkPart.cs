@@ -51,7 +51,7 @@ namespace org.ohdsi.cdm.framework.desktop.Base
 
                     var sql = GetSqlHelper.GetSql(Settings.Settings.Current.Building.SourceEngine.Database,
                         qd.GetSql(Settings.Settings.Current.Building.Vendor,
-                            Settings.Settings.Current.Building.SourceSchemaName),
+                            Settings.Settings.Current.Building.SourceSchemaName, Settings.Settings.Current.Building.SourceSchemaName),
                         Settings.Settings.Current.Building.SourceSchemaName);
 
                     if (string.IsNullOrEmpty(sql))
@@ -105,7 +105,7 @@ namespace org.ohdsi.cdm.framework.desktop.Base
                     if (qd.CareSites != null) continue;
 
                     var sql = GetSqlHelper.GetSql(Settings.Settings.Current.Building.SourceEngine.Database,
-                            qd.GetSql(Settings.Settings.Current.Building.Vendor, Settings.Settings.Current.Building.SourceSchemaName), Settings.Settings.Current.Building.SourceSchemaName);
+                            qd.GetSql(Settings.Settings.Current.Building.Vendor, Settings.Settings.Current.Building.SourceSchemaName, Settings.Settings.Current.Building.SourceSchemaName), Settings.Settings.Current.Building.SourceSchemaName);
 
                     if (string.IsNullOrEmpty(sql)) continue;
 

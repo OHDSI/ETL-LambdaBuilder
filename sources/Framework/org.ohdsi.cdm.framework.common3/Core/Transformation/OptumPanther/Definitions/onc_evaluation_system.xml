@@ -13,7 +13,7 @@
 		null as source4,
 		null as neoplasm_histology_key
 		FROM {sc}.onc_evaluation_system l
-		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
 		where temporal_status = 'current' and system_name like 'Nottingham%'
 
 		union
@@ -29,7 +29,7 @@
 		system_name || ' result numeric '  || result_numeric as source4,
 		null as neoplasm_histology_key
 		FROM {sc}.onc_evaluation_system l
-		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
 		where temporal_status = 'current' and system_name like 'Gleason%'
 
 		union
@@ -45,7 +45,7 @@
 		null as source4,
 		null as neoplasm_histology_key
 		FROM {sc}.onc_evaluation_system l
-		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
 		where temporal_status = 'current' and result_numeric is not null and lower(system_name) in
 		('figo grade',
 		'durie/salmon stage',
@@ -68,7 +68,7 @@
 		null as source4,
 		null as neoplasm_histology_key
 		FROM {sc}.onc_evaluation_system l
-		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
 		where temporal_status = 'current' and result_numeric is not null and lower(system_name) in
 		('ecog performance status',
 		'karnofsky performance status',

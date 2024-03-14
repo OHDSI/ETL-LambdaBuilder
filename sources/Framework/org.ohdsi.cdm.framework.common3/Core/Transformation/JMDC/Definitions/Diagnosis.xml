@@ -31,7 +31,7 @@
 		END as condition_status_concept_id,
 		1 as fake
 		FROM {sc}.Diagnosis d
-		join {sc}._chunks ch ON ch.ChunkId = {0} AND d.Member_ID = ch.PERSON_SOURCE_VALUE
+		join {ch_sc}._chunks ch ON ch.ChunkId = {0} AND d.Member_ID = ch.PERSON_SOURCE_VALUE
 		left join {sc}.Claim c on c.claim_id = d.claim_id and c.member_id = d.member_id
 		left join {sc}.Diagnosis_master dm on d.standard_disease_code = dm.standard_disease_code
 		order by CAST(RIGHT(d.Member_ID, LEN(d.Member_ID) - 1) AS BIGINT)

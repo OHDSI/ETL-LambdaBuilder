@@ -6,7 +6,7 @@
 		neoplasm_histology_key,
 		progression as source
 		FROM {sc}.onc_tumor_progression l
-		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
 		order by 1
 	</Query>
   <Observation>

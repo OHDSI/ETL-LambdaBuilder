@@ -13,7 +13,7 @@
     1 as vax,
     1 as itNdc
     from {sc}.immunizations as i
-    JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND i.ptid = ch.PERSON_SOURCE_VALUE
+    JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND i.ptid = ch.PERSON_SOURCE_VALUE
     where i.immunization_date is not null
     order by 1
   </Query>

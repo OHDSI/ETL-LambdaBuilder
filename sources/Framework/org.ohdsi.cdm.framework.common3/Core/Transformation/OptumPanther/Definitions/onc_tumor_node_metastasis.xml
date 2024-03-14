@@ -9,7 +9,7 @@
     neoplasm_histology_key,
     1147127 as meas_event_field_concept_id
     FROM {sc}.onc_tumor_node_metastasis l
-    JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
+    JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
     where t is not null or n is not null or m is not null
     order by 1
   </Query>

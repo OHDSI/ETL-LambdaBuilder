@@ -76,7 +76,7 @@
     end as description,
     c.constype
     FROM {sc}.immunisation i
-    JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND patid = ch.PERSON_SOURCE_VALUE
+    JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND patid = ch.PERSON_SOURCE_VALUE
     LEFT JOIN {sc}.Medical m on (i.medcode = m.medcode)
     left join {sc}.consultation c on i.patid = c.patid and i.consid = c.consid
     WHERE i.eventdate is not NULL

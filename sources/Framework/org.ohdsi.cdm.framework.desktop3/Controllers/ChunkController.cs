@@ -17,6 +17,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -26,8 +27,9 @@ namespace org.ohdsi.cdm.framework.desktop.Controllers
     {
         private readonly DbChunk _dbChunk;
         private readonly DbSource _dbSource;
+        private string _chunksSchema;
 
-        public ChunkController()
+        public ChunkController(string chunksSchema)
         {
             _dbChunk = new DbChunk(Settings.Settings.Current.Building.BuilderConnectionString);
             _dbSource = new DbSource(Settings.Settings.Current.Building.SourceConnectionString, Path.Combine(
@@ -36,25 +38,28 @@ namespace org.ohdsi.cdm.framework.desktop.Controllers
                 "Common",
                 Settings.Settings.Current.Building.SourceEngine.Database.ToString()
             ]), Settings.Settings.Current.Building.SourceSchemaName);
+
+            _chunksSchema = chunksSchema;
         }
 
 
         public void ClenupChunks()
         {
-            _dbSource.DropChunkTable();
+            _dbSource.DropChunkTable(_chunksSchema);
         }
 
         public void CreateChunks()
         {
             Console.WriteLine("Generating chunk ids...");
             _dbChunk.ClearChunks(Settings.Settings.Current.Building.Id.Value);
-            _dbSource.CreateChunkTable();
+            _dbSource.CreateChunkTable(_chunksSchema);
 
             var chunkId = 0;
             var k = 0;
 
+            var chunksConnectionString = Regex.Replace(Settings.Settings.Current.Building.RawSourceConnectionString, "sc=" + _chunksSchema + ";", "", RegexOptions.IgnoreCase);
             using (var saver = Settings.Settings.Current.Building.SourceEngine.GetSaver()
-                .Create(Settings.Settings.Current.Building.SourceConnectionString))
+                .Create(chunksConnectionString))
             {
                 var chunks = new List<ChunkRecord>();
                 foreach (var chunk in GetPersonKeys(Settings.Settings.Current.Building.BatchSize))
@@ -65,7 +70,7 @@ namespace org.ohdsi.cdm.framework.desktop.Controllers
 
                     if (Settings.Settings.Current.Building.SourceEngine.Database == Database.Redshift)
                     {
-                        saver.AddChunk(chunks, k);
+                        saver.AddChunk(chunks, k, _chunksSchema);
                         chunks.Clear();
                         GC.Collect();
                         k++;
@@ -76,18 +81,13 @@ namespace org.ohdsi.cdm.framework.desktop.Controllers
 
                 if (chunks.Count > 0)
                 {
-                    saver.AddChunk(chunks, k);
+                    saver.AddChunk(chunks, k, _chunksSchema);
                 }
 
                 saver.Commit();
             }
 
             Console.WriteLine("***** Chunk ids were generated and saved, total count=" + chunkId + " *****");
-        }
-
-        public void MoveChunkDataToS3(bool triggerLambdas, LambdaUtility utility)
-        {
-            MoveChunkDataToS3(false, triggerLambdas, utility);
         }
 
         public void MoveChunkDataToS3(bool useMonitor, bool triggerLambdas, LambdaUtility utility)
@@ -109,9 +109,7 @@ namespace org.ohdsi.cdm.framework.desktop.Controllers
                 if (queryDefinition.CareSites != null) return;
 
                 var sql = GetSqlHelper.GetSql(Settings.Settings.Current.Building.SourceEngine.Database,
-                    queryDefinition.GetSql(Settings.Settings.Current.Building.Vendor,
-                        Settings.Settings.Current.Building.SourceSchemaName),
-                    Settings.Settings.Current.Building.SourceSchemaName);
+                    queryDefinition.GetSql(Settings.Settings.Current.Building.Vendor, Settings.Settings.Current.Building.SourceSchemaName, _chunksSchema), Settings.Settings.Current.Building.SourceSchemaName);
 
                 if (string.IsNullOrEmpty(sql)) return;
 
@@ -171,7 +169,7 @@ namespace org.ohdsi.cdm.framework.desktop.Controllers
 
                       if (useMonitor)
                       {
-                          monitor.TryAddChunk(chunkId);
+                          monitor.TryAddChunk(chunkId, _chunksSchema);
 
                           monitorHandle ??= monitor.Handle();
                       }
@@ -220,7 +218,7 @@ namespace org.ohdsi.cdm.framework.desktop.Controllers
             Console.WriteLine("Moving raw data to S3 - complete");
         }
 
-        private static void MoveChunkRawData(int chunkId, string baseFolder)
+        private void MoveChunkRawData(int chunkId, string baseFolder)
         {
             Parallel.ForEach(Settings.Settings.Current.Building.SourceQueryDefinitions,
                 new ParallelOptions { MaxDegreeOfParallelism = Settings.Settings.Current.ParallelQueries }, queryDefinition =>
@@ -231,9 +229,8 @@ namespace org.ohdsi.cdm.framework.desktop.Controllers
                     if (queryDefinition.CareSites != null) return;
 
                     var sql = GetSqlHelper.GetSql(Settings.Settings.Current.Building.SourceEngine.Database,
-                        queryDefinition.GetSql(Settings.Settings.Current.Building.Vendor,
-                            Settings.Settings.Current.Building.SourceSchemaName),
-                        Settings.Settings.Current.Building.SourceSchemaName);
+                        queryDefinition.GetSql(Settings.Settings.Current.Building.Vendor, Settings.Settings.Current.Building.SourceSchemaName,
+                            _chunksSchema), Settings.Settings.Current.Building.SourceSchemaName);
 
                     if (string.IsNullOrEmpty(sql)) return;
 

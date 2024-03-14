@@ -9,7 +9,7 @@
     c.carearea_date,
     c.carearea_time
     FROM {sc}.care_area c
-    join {sc}._chunks ch ON ch.ChunkId = {0} AND c.ptid = ch.PERSON_SOURCE_VALUE
+    join {ch_sc}._chunks ch ON ch.ChunkId = {0} AND c.ptid = ch.PERSON_SOURCE_VALUE
     where UPPER(c.carearea) not in ('OTHER CARE AREA', 'UNKNOWN CARE AREA')
     )
 

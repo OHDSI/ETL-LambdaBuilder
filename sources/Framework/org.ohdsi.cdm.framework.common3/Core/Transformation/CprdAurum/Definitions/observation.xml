@@ -25,7 +25,7 @@
     else concat(concat(m.cleansedreadcode,'-'),m.term)
     end as source_value
     from {sc}.observation o
-    join {sc}._chunks ch ON ch.ChunkId = {0} AND o.patid = ch.PERSON_ID
+    join {ch_sc}._chunks ch ON ch.ChunkId = {0} AND o.patid = ch.PERSON_ID
     left join {sc}.consultation c on o.patid = c.patid and o.consid = c.consid
     left join {sc}.problem p on o.patid = p.patid and o.obsid = p.obsid
     left join {sc}.lookup_numunit n on o.numunitid = n.numunitid

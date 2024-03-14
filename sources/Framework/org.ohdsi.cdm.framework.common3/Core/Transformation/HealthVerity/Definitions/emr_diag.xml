@@ -29,7 +29,7 @@
 		32827 type_concept_id,
 		coalesce(diag_prov_id, '') || ';' || coalesce(diag_prov_taxnmy_id, '') ProviderIdKey
 		from cdm_health_verity_cc_ehr_cce_v2776.emr_diag
-		JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
 		where upper(coalesce(diag_stat_desc, '')) not in
 		(
 		'FAMILY HISTORY OF',

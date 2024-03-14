@@ -115,7 +115,7 @@
     t.data5 as range_low,
     t.data6 as range_high
     FROM {sc}.test t
-    JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND t.patid = ch.PERSON_SOURCE_VALUE
+    JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND t.patid = ch.PERSON_SOURCE_VALUE
     JOIN {sc}.entity e ON t.enttype = e.code
     JOIN {sc}.medical m ON t.medcode = m.medcode
     left JOIN {sc}.lookup l ON t.data1 = l.code AND l.lookup_type_id = 56 /*OPR - Operator*/
@@ -144,7 +144,7 @@
     t.data2 as range_low,
     t.data3 as range_high
     FROM {sc}.test t
-    JOIN {sc}._chunks ch ON ch.ChunkId = {0} AND t.patid = ch.PERSON_SOURCE_VALUE
+    JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND t.patid = ch.PERSON_SOURCE_VALUE
     JOIN {sc}.entity e ON t.enttype = e.code
     JOIN {sc}.medical m ON t.medcode = m.medcode
     left JOIN {sc}.lookup l ON t.data1 = l.code AND l.lookup_type_id = 85 /*TQU - Test Qualifier*/
