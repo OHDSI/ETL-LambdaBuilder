@@ -24,7 +24,7 @@ namespace org.ohdsi.cdm.presentation.etl
 
     class Program
     {
-        static void Main(string[] arguments)
+        static int Main(string[] arguments)
         {
             bool skipETL = true;
             bool skipValidation = true;
@@ -73,7 +73,7 @@ namespace org.ohdsi.cdm.presentation.etl
                   });
 
             if (r.Tag.ToString() != "Parsed")
-                return;
+                return -1;
 
             try
             {
@@ -281,6 +281,7 @@ namespace org.ohdsi.cdm.presentation.etl
                 }
 
                 Console.WriteLine("DONE.");
+                return Settings.Current.Building.Id.Value;
             }
             catch (Exception e)
             {
