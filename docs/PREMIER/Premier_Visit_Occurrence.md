@@ -18,7 +18,7 @@ Admitting and discharge information is captured in Premier as the place of servi
 |---|---|---|---|
 |VISIT_OCCURRENCE_ID|PAT.PAT_KEY|
 |PERSON_ID|PAT.MEDREC_KEY|
-|VISIT_CONCEPT_ID||When PAT.ADM_DATE <= ‘6/1/2010’ and ADM_SOURCE=7 and I_O_IND =’O’ then concept_id=9203<br>When PAT.ADM_DATE <= ‘6/1/2010’ and ADM_SOURCE=7 and I_O_IND =’I’ then concept_id=262<br>When PAT.ADM_DATE >= ‘7/1/2010’ and (POINT_OF_ORIGIN=7 or ADM_SOURCE =1) and I_O_IND =’O’ then concept_id=9203<br>When PAT.ADM_DATE >= ‘7/1/2010’ and (POINT_OF_ORIGIN=7 or ADM_SOURCE =1) and I_O_IND =’I’ then concept_id=262<br>When  I_O_IND =’I’ then concept_id=9201<br>When I_O_IND =’O’ then concept_id=9202||
+|VISIT_CONCEPT_ID||When POINT_OF_ORIGIN=7 and I_O_IND ='O' then concept_id=9203 <br> When POINT_OF_ORIGIN=7 and I_O_IND ='I' then concept_id=262 <br> When I_O_IND ='I' then concept_id=9201 <br> When I_O_IND ='O' then concept_id=9202||
 |VISIT_START_DATE|PAT.ADM_DATE <br>PATBILL.SERV_DATE|||
 |VISIT_START_DATETIME||||
 |VISIT_END_DATE|PAT.DISC_DATE<br>PATBILL.SERV_DATE|||
@@ -35,5 +35,6 @@ Admitting and discharge information is captured in Premier as the place of servi
 |PRECEDING_VISIT_OCCURRENCE_ID|VISIT_OCCURRENCE.VISIT_OCCURRENCE_ID|For a given person, find the visit prior to this one and reference it here|A foreign key to the VISIT_OCCURRENCE table of the visit immediately preceding this visit|
 
 ## Change Log:
+* 2024.03.12:  Updated VISIT_CONCEPT_ID  
 * 2023.10.23:  Updated visit logic, the exact date of visits is now available.
 * 2021.08.11:  Updated VISIT_TYPE_CONCEPT_ID to leverage standard concept id.
