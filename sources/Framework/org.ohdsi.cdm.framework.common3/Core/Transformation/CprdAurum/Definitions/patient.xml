@@ -1,0 +1,57 @@
+﻿<QueryDefinition>
+  <Query>
+    select
+    p.patid,
+    p.yob,
+    p.mob,
+    p.pracid,
+    case when p.gender = 2 then 'F'
+    when p.gender = 1 then 'M'
+    else 'Unknown' end as gender,
+    cprd_ddate,
+    p.regstartdate as OBSERVATION_PERIOD_START_DATE,
+    case when p.regenddate is NULL then pr.lcd
+    when pr.lcd is NULL then p.regenddate
+    when pr.lcd &lt; p.regenddate then pr.lcd
+    when p.regenddate &lt; pr.lcd then p.regenddate
+    end as OBSERVATION_PERIOD_END_DATE,
+    32882 PeriodTypeConceptId,
+    usualgpstaffid,
+    p.acceptable
+    FROM {sc}.patient p
+    left join {sc}.practice pr on p.pracid = pr.pracid
+    join {ch_sc}._chunks ch ON ch.ChunkId = {0} AND p.patid = ch.PERSON_ID
+    order by p.patid
+  </Query>
+  <Persons>
+    <PersonDefinition>
+      <PersonId>patid</PersonId>
+      <PersonSourceValue>patid</PersonSourceValue>
+      <StartDate>OBSERVATION_PERIOD_START_DATE</StartDate>
+      <EndDate>OBSERVATION_PERIOD_END_DATE</EndDate>
+      <Gender>gender</Gender>
+      <YearOfBirth>yob</YearOfBirth>
+      <MonthOfBirth>mob</MonthOfBirth>
+      <CareSiteId>pracid</CareSiteId>
+      <ProviderId>usualgpstaffid</ProviderId>
+      <PeriodTypeConceptId>PeriodTypeConceptId</PeriodTypeConceptId>
+      <AdditionalFields>
+        <string>acceptable</string>
+      </AdditionalFields>
+    </PersonDefinition>
+  </Persons>
+
+  <Death>
+    <DeathDefinition>
+      <PersonId>patid</PersonId>
+      <StartDate>cprd_ddate</StartDate>
+      <Concepts>
+        <Concept>
+          <Fields>
+            <Field defaultConceptId="1" defaultTypeId="32815"/>
+          </Fields>
+        </Concept>
+      </Concepts>
+    </DeathDefinition>
+  </Death>
+</QueryDefinition>

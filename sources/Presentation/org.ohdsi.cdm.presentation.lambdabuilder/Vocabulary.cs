@@ -1,25 +1,22 @@
-﻿using System;
+﻿using Amazon.S3;
+using Amazon.S3.Model;
+using org.ohdsi.cdm.framework.common.Definitions;
+using org.ohdsi.cdm.framework.common.Lookups;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using Amazon.S3;
-using org.ohdsi.cdm.framework.common2.Definitions;
-using org.ohdsi.cdm.framework.common2.Enums;
-using org.ohdsi.cdm.framework.common2.Lookups;
+using static org.ohdsi.cdm.framework.common.Enums.Vendor;
 
 namespace org.ohdsi.cdm.presentation.lambdabuilder
 {
-    public class Vocabulary : IVocabulary
+    public class Vocabulary(Vendors vendor) : IVocabulary
     {
-        private readonly Dictionary<string, Lookup> _lookups = new Dictionary<string, Lookup>();
+        private readonly Dictionary<string, Lookup> _lookups = [];
         private GenderLookup _genderConcepts;
         private PregnancyConcepts _pregnancyConcepts;
 
-        public Vendors Vendor { get; }
-
-        public Vocabulary(Vendors vendor)
-        {
-            Vendor = vendor;
-        }
+        public Vendors Vendor { get; } = vendor;
 
         private void Load(AmazonS3Client client, IEnumerable<EntityDefinition> definitions)
         {
@@ -43,9 +40,20 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
 
                                 var prefix = $"{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id}/Lookups/{conceptIdMapper.Lookup}.txt";
                                 Console.WriteLine(Settings.Current.Bucket + "/" + prefix);
-                                lookup.Fill(client, Settings.Current.Bucket, prefix);
-                                _lookups.Add(conceptIdMapper.Lookup, lookup);
-                                
+                                try
+                                {
+                                    lookup.Fill(client, Settings.Current.Bucket, prefix);
+                                    Console.WriteLine(lookup.KeysCount);
+                                    _lookups.Add(conceptIdMapper.Lookup, lookup);
+                                }
+                                catch (Exception e)
+                                {
+                                    Console.WriteLine(e.Message);
+                                    Console.WriteLine(e.StackTrace);
+                                    throw;
+                                }
+
+
                             }
                         }
                     }
@@ -53,96 +61,117 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
             }
         }
 
-        private void Attach(IEnumerable<EntityDefinition> definitions)
+        private static void Attach(IEnumerable<EntityDefinition> definitions, Vocabulary vocabulary)
         {
             if (definitions == null) return;
 
             foreach (var ed in definitions)
             {
-                ed.Vocabulary = this;
+                ed.Vocabulary = vocabulary;
             }
         }
 
-        public void Attach()
+        public void Attach(Vocabulary vocabulary)
         {
             foreach (var qd in Settings.Current.Building.SourceQueryDefinitions)
             {
-                Attach(qd.Persons);
-                Attach(qd.ConditionOccurrence);
-                Attach(qd.DrugExposure);
-                Attach(qd.ProcedureOccurrence);
-                Attach(qd.Observation);
-                Attach(qd.VisitOccurrence);
-                Attach(qd.CareSites);
-                Attach(qd.Providers);
-                Attach(qd.Death);
-                Attach(qd.Measurement);
-                Attach(qd.DeviceExposure);
-                Attach(qd.Note);
+                Attach(qd.Persons, vocabulary);
+                Attach(qd.ConditionOccurrence, vocabulary);
+                Attach(qd.DrugExposure, vocabulary);
+                Attach(qd.ProcedureOccurrence, vocabulary);
+                Attach(qd.Observation, vocabulary);
+                Attach(qd.VisitOccurrence, vocabulary);
+                Attach(qd.VisitDetail, vocabulary);
+                Attach(qd.CareSites, vocabulary);
+                Attach(qd.Providers, vocabulary);
+                Attach(qd.Death, vocabulary);
+                Attach(qd.Measurement, vocabulary);
+                Attach(qd.DeviceExposure, vocabulary);
+                Attach(qd.Note, vocabulary);
+                Attach(qd.Episodes, vocabulary);
 
-                Attach(qd.VisitCost);
-                Attach(qd.ProcedureCost);
-                Attach(qd.DeviceCost);
-                Attach(qd.ObservationCost);
-                Attach(qd.MeasurementCost);
-                Attach(qd.DrugCost);
+                Attach(qd.VisitCost, vocabulary);
+                Attach(qd.ProcedureCost, vocabulary);
+                Attach(qd.DeviceCost, vocabulary);
+                Attach(qd.ObservationCost, vocabulary);
+                Attach(qd.MeasurementCost, vocabulary);
+                Attach(qd.DrugCost, vocabulary);
             }
         }
 
-        public void Fill(bool forLookup)
+        public void Fill(bool forLookup, bool readFromS3)
         {
             _genderConcepts = new GenderLookup();
             _genderConcepts.Load();
 
-            _pregnancyConcepts = new PregnancyConcepts();
+            _pregnancyConcepts = new PregnancyConcepts(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location));
 
-            using (var client = new AmazonS3Client(Settings.Current.S3AwsAccessKeyId,
-                Settings.Current.S3AwsSecretAccessKey, Amazon.RegionEndpoint.USEast1))
+            Console.WriteLine(Settings.Current.S3AwsAccessKeyId);
+            Console.WriteLine(Settings.Current.S3AwsSecretAccessKey);
+
+            using var client = new AmazonS3Client(Settings.Current.S3AwsAccessKeyId,
+                Settings.Current.S3AwsSecretAccessKey, Amazon.RegionEndpoint.USEast1);
+            foreach (var qd in Settings.Current.Building.SourceQueryDefinitions)
             {
-                foreach (var qd in Settings.Current.Building.SourceQueryDefinitions)
-                {
-                    Load(client, qd.ConditionOccurrence);
-                    Load(client, qd.DrugExposure);
-                    Load(client, qd.ProcedureOccurrence);
-                    Load(client, qd.Observation);
-                    Load(client, qd.VisitOccurrence);
-                    //Load(client, qd.CareSites);
-                    //Load(client, qd.Providers);
-                    Load(client, qd.Death);
-                    Load(client, qd.Measurement);
-                    Load(client, qd.DeviceExposure);
-                    Load(client, qd.Note);
+                if (!QueryDefinition.IsSuitable(qd.Query.Database, Settings.Current.Building.Vendor))
+                    continue;
 
-                    Load(client, qd.VisitCost);
-                    Load(client, qd.ProcedureCost);
-                    Load(client, qd.DeviceCost);
-                    Load(client, qd.ObservationCost);
-                    Load(client, qd.MeasurementCost);
-                    Load(client, qd.DrugCost);
-                }
+                Load(client, qd.ConditionOccurrence);
+                Load(client, qd.DrugExposure);
+                Load(client, qd.ProcedureOccurrence);
+                Load(client, qd.Observation);
+                Load(client, qd.VisitOccurrence);
+                Load(client, qd.VisitDetail);
 
-                var lookup = new Lookup();
-                var prefix =
-                    $"{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id}/Lookups/PregnancyDrug.txt";
-                Console.WriteLine(Settings.Current.Bucket + "/" + prefix);
-                lookup.Fill(client, Settings.Current.Bucket, prefix);
-                _lookups.Add("PregnancyDrug", lookup);
+                Load(client, qd.Death);
+                Load(client, qd.Measurement);
+                Load(client, qd.DeviceExposure);
+                Load(client, qd.Note);
+
+                Load(client, qd.VisitCost);
+                Load(client, qd.ProcedureCost);
+                Load(client, qd.DeviceCost);
+                Load(client, qd.ObservationCost);
+                Load(client, qd.MeasurementCost);
+                Load(client, qd.DrugCost);
+            }
+
+            var lookup = new Lookup();
+            var prefix =
+                $"{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id}/Lookups/PregnancyDrug.txt";
+            Console.WriteLine(Settings.Current.Bucket + "/" + prefix);
+            lookup.Fill(client, Settings.Current.Bucket, prefix);
+            _lookups.Add("PregnancyDrug", lookup);
+
+
+            lookup = new Lookup();
+            prefix =
+                $"{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id}/CombinedLookups";
+            Console.WriteLine(Settings.Current.Bucket + "/" + prefix);
+
+            var request = new ListObjectsV2Request
+            {
+                BucketName = Settings.Current.Bucket,
+                Prefix = prefix
+            };
+
+            using var listObjects = client.ListObjectsV2Async(request);
+            listObjects.Wait();
+
+            foreach (var o in listObjects.Result.S3Objects)
+            {
+                lookup.Fill(client, Settings.Current.Bucket, o.Key);
+                _lookups.Add(o.Key.Split('/')[3].Replace(".txt.gz", ""), lookup);
             }
         }
-
-        //public List<LookupValue> Lookup(string sourceValue, string key, DateTime eventDate, bool caseSensitive)
-        //{
-        //    return _lookups[key].LookupValues(sourceValue, eventDate, caseSensitive).ToList();
-        //}
 
         public List<LookupValue> Lookup(string sourceValue, string key, DateTime eventDate)
         {
             if (!_lookups.ContainsKey(key))
-                return new List<LookupValue>();
+                return [];
 
             return _lookups[key].LookupValues(sourceValue, eventDate).ToList();
         }
-
 
         public int? LookupGender(string genderSourceValue)
         {
@@ -153,7 +182,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
             return res;
         }
 
-        public IEnumerable<PregnancyConcept> LookupPregnancyConcept(int conceptId)
+        public IEnumerable<PregnancyConcept> LookupPregnancyConcept(long conceptId)
         {
             return _pregnancyConcepts.GetConcepts(conceptId);
         }

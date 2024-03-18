@@ -1,0 +1,101 @@
+﻿<QueryDefinition>
+	<Query>
+		SELECT
+		ch.person_id as PersonId,
+		hvid,
+		enc_dt,
+		hv_enc_id,
+		diag_cd,
+		diag_cd_qual,
+		case
+		when diag_cd_qual = '02' OR diag_cd_qual IS NULL and hv_diag_dt >= '2015-10-01' then '10'
+		when diag_cd_qual = '01' OR diag_cd_qual IS NULL and hv_diag_dt &lt; '2015-10-01' then '9'
+		end as icd_ver,
+		diag_prov_id,
+		diag_stat_desc,
+		case upper(diag_stat_desc)
+		when 'PRIMARY DIAGNOSIS OF' then 4033240
+		when 'CONSIDERED' then 4033240
+		when 'DISCUSSION OF' then 4033240
+		when 'PROBABLE' then 4163351
+		when 'POSSIBLE' then 4163351
+		when 'WORKING DIAGNOSIS OF' then 4208085
+		when 'SECONDARY DIAGNOSIS OF' then 4309641
+		when 'ADMISSION DIAGNOSIS OF' then 4203942
+		when 'REFERRAL DIAGNOSIS OF' then 4236137
+		when 'DISCHARGE DIAGNOSIS OF' then 4230359
+		else 0
+		END as condition_status_concept_id,
+		32827 type_concept_id,
+		coalesce(diag_prov_id, '') || ';' || coalesce(diag_prov_taxnmy_id, '') ProviderIdKey
+		from cdm_health_verity_cc_ehr_cce_v2776.emr_diag
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
+		where upper(coalesce(diag_stat_desc, '')) not in
+		(
+		'FAMILY HISTORY OF',
+		'FAMILY',
+		'MATERNAL HISTORY OF',
+		'PATERNAL HISTORY OF',
+		'FRATERNAL HISTORY OF',
+		'SORORAL HISTORY OF',
+		'HISTORY OF',
+		'OTHER PAST HISTORY'
+		)
+		and enc_dt is not null
+		order by ch.person_id
+	</Query>
+	<ConditionOccurrence>
+		<ConditionOccurrenceDefinition>
+			<Condition>{icd_ver} = 9</Condition>
+			<PersonId>PersonId</PersonId>
+			<StartDate>enc_dt</StartDate>
+			<ProviderIdKey>ProviderIdKey</ProviderIdKey>
+			<AdditionalFields>
+				<string>hv_enc_id</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>icd9</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="diag_cd" typeId="type_concept_id"/>
+					</Fields>
+				</Concept>
+				<Concept>
+					<Fields>
+						<Field conceptId="condition_status_concept_id" sourceKey="diag_stat_desc" defaultTypeId="0"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ConditionOccurrenceDefinition>
+		<ConditionOccurrenceDefinition>
+			<Condition>{icd_ver} = 10</Condition>
+			<PersonId>PersonId</PersonId>
+			<StartDate>enc_dt</StartDate>
+			<ProviderIdKey>ProviderIdKey</ProviderIdKey>
+			<AdditionalFields>
+				<string>hv_enc_id</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>icd10</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="diag_cd" typeId="type_concept_id"/>
+					</Fields>
+				</Concept>
+				<Concept>
+					<Fields>
+						<Field conceptId="condition_status_concept_id" sourceKey="diag_stat_desc" defaultTypeId="0"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ConditionOccurrenceDefinition>
+	</ConditionOccurrence>
+</QueryDefinition>

@@ -1,0 +1,67 @@
+﻿<QueryDefinition>
+	<Query>
+		SELECT distinct
+		ch.person_id as PersonId,
+		d.hvid,
+		d.proc_dt,
+		d.proc_cd,
+		d.proc_unit_qty,
+		d.hv_enc_id,
+
+		e.enc_grp_txt,
+		e.los_day_cnt,
+		e.bill_typ_std_cd,
+		case
+		when enc_grp_txt LIKE '%ENCOUNTER_VISIT_TYPE: Inpatient%' and los_day_cnt > 1 then 9201
+		else 9202
+		end defaultConceptId
+		FROM cdm_health_verity_cc_ehr_cce_v2776.cdm_enc_dtl d
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND d.hvid = ch.PERSON_SOURCE_VALUE
+		JOIN cdm_health_verity_cc_ehr_cce_v2776.cdm_enc e ON d.hvid = e.hvid and d.hv_enc_id = e.hv_enc_id
+		where d.proc_dt is not null
+		order by ch.person_id
+	</Query>
+	<DrugExposure>
+		<DrugExposureDefinition>
+			<PersonId>PersonId</PersonId>
+			<StartDate>proc_dt</StartDate>
+			<EndDate>proc_dt</EndDate>
+			<Quantity>proc_unit_qty</Quantity>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>procedure</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="proc_cd" defaultTypeId="32852" />
+					</Fields>
+				</Concept>
+			</Concepts>
+		</DrugExposureDefinition>
+	</DrugExposure>
+	<VisitOccurrence>
+		<VisitOccurrenceDefinition>
+			<PersonId>PersonId</PersonId>
+			<StartDate>proc_dt</StartDate>
+			<EndDate>proc_dt</EndDate>
+			<AdditionalFields>
+				<string>defaultConceptId</string>
+				<string>hv_enc_id</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>ub04</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="bill_typ_std_cd" defaultTypeId="32852"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</VisitOccurrenceDefinition>
+	</VisitOccurrence>
+</QueryDefinition>

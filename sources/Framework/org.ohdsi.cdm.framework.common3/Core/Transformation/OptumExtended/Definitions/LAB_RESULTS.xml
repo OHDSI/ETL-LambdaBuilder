@@ -1,0 +1,119 @@
+﻿<QueryDefinition>
+  <Query>
+    SELECT patid,
+    loinc_cd,
+    proc_cd,
+    fst_dt,
+    rslt_unit_nm unit_source_value,
+    hi_nrml RANGE_HIGH,
+    low_nrml RANGE_LOW,
+    rslt_nbr VALUE_AS_NUMBER,
+    rslt_txt,
+    pat_planid,
+    labclmid as clmid,
+    case substring(rslt_txt, 0, 2)
+    when '&lt;' then  4172704
+    when '&gt;' then  4171756
+    when '=' then  4172703
+    when '&gt;=' then  4171755
+    when '&lt;=' then  4171754
+    end as operator_concept_id,
+    concat(concat(rslt_nbr,';'), coalesce(rslt_txt, '')) as ValueSourceValue
+    FROM {sc}.LAB_RESULTS
+    JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND patid = ch.PERSON_ID
+    order by PATID
+  </Query>
+  <Measurement>
+    <MeasurementDefinition>
+      <PersonId>patid</PersonId>
+      <StartDate>fst_dt</StartDate>
+      <ValueAsNumber>VALUE_AS_NUMBER</ValueAsNumber>
+      <RangeLow>RANGE_LOW</RangeLow>
+      <RangeHigh>RANGE_HIGH</RangeHigh>
+      <ValueSourceValue>ValueSourceValue</ValueSourceValue>
+      <OperatorConceptId>operator_concept_id</OperatorConceptId>
+      <AdditionalFields>
+        <string>pat_planid</string>
+        <string>clmid</string>
+      </AdditionalFields>
+      <Concepts>
+        <Concept>
+          <ConceptIdMappers>
+            <Mapper>
+              <Lookup>Lab</Lookup>
+            </Mapper>
+          </ConceptIdMappers>
+          <Fields>
+            <Field key="loinc_cd" defaultTypeId="100"/>
+          </Fields>
+        </Concept>
+        <Concept>
+          <ConceptIdMappers>
+            <Mapper>
+              <Lookup>Lab_Units</Lookup>
+            </Mapper>
+          </ConceptIdMappers>
+          <Fields>
+            <Field key="unit_source_value" defaultTypeId="0" />
+          </Fields>
+        </Concept>
+        <Concept>
+          <ConceptIdMappers>
+            <Mapper>
+              <Lookup>ValueAsConcept</Lookup>
+            </Mapper>
+          </ConceptIdMappers>
+          <Fields>
+            <Field key="rslt_txt" defaultTypeId="0" />
+          </Fields>
+        </Concept>
+      </Concepts>
+    </MeasurementDefinition>
+
+    <MeasurementDefinition>
+      <PersonId>patid</PersonId>
+      <StartDate>fst_dt</StartDate>
+      <ValueAsNumber>VALUE_AS_NUMBER</ValueAsNumber>
+      <RangeLow>RANGE_LOW</RangeLow>
+      <RangeHigh>RANGE_HIGH</RangeHigh>
+      <ValueSourceValue>ValueSourceValue</ValueSourceValue>
+      <OperatorConceptId>operator_concept_id</OperatorConceptId>
+      <AdditionalFields>
+        <string>pat_planid</string>
+        <string>clmid</string>
+      </AdditionalFields>
+      <Concepts>
+        <Concept>
+          <ConceptIdMappers>
+            <Mapper>
+              <Lookup>Procedure</Lookup>
+            </Mapper>
+          </ConceptIdMappers>
+          <Fields>
+            <Field key="proc_cd" defaultTypeId="101"/>
+          </Fields>
+        </Concept>
+        <Concept>
+          <ConceptIdMappers>
+            <Mapper>
+              <Lookup>Lab_Units</Lookup>
+            </Mapper>
+          </ConceptIdMappers>
+          <Fields>
+            <Field key="unit_source_value" defaultTypeId="0" />
+          </Fields>
+        </Concept>
+        <Concept>
+          <ConceptIdMappers>
+            <Mapper>
+              <Lookup>ValueAsConcept</Lookup>
+            </Mapper>
+          </ConceptIdMappers>
+          <Fields>
+            <Field key="rslt_txt" defaultTypeId="0" />
+          </Fields>
+        </Concept>
+      </Concepts>
+    </MeasurementDefinition>
+  </Measurement>
+</QueryDefinition>

@@ -1,0 +1,25 @@
+﻿<QueryDefinition>
+  <Query>
+    select distinct
+    staffid as PROVIDER_ID,
+    pracid as CARE_SITE_ID,
+    cast(staffid as varchar) as PROVIDER_SOURCE_VALUE,
+    l.description as SPECIALTY_SOURCE_VALUE
+    from {sc}.Staff s
+    left join {sc}.lookup_jobcat l ON l.jobcatid = s.jobcatid
+  </Query>
+  <Providers>
+    <ProviderDefinition>
+      <Id>PROVIDER_ID</Id>
+      <ProviderSourceValue>PROVIDER_SOURCE_VALUE</ProviderSourceValue>
+      <CareSiteId>CARE_SITE_ID</CareSiteId>
+      <Concepts>
+        <Concept>
+          <Fields>
+            <Field key="SPECIALTY_SOURCE_VALUE" defaultConceptId="0"/>
+          </Fields>
+        </Concept>
+      </Concepts>
+    </ProviderDefinition>
+  </Providers>
+</QueryDefinition>

@@ -1,0 +1,63 @@
+﻿<QueryDefinition>
+  <Query database="full">
+    select
+    ch.person_id as PersonId,
+    i.immunization_date,
+    i.ndc,
+    SUBSTRING(i.ndc,1,9) ndc_9,
+    i.immunization_desc,
+    case
+    when i.ndc is null then i.immunization_desc
+    else i.ndc || '-' || i.immunization_desc
+    end as immunization_source,
+    1 as vax,
+    1 as itNdc
+    from {sc}.immunizations as i
+    JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND i.ptid = ch.PERSON_SOURCE_VALUE
+    where i.immunization_date is not null
+    order by 1
+  </Query>
+  <DrugExposure>
+    <DrugExposureDefinition>
+      <PersonId>PersonId</PersonId>
+      <StartDate>immunization_date</StartDate>
+      <EndDate>immunization_date</EndDate>
+      <AdditionalFields>
+        <string>itNdc</string>
+      </AdditionalFields>
+      <Concepts>
+        <Concept>
+          <ConceptIdMappers>
+            <Mapper>
+              <Lookup>Drug</Lookup>
+            </Mapper>
+          </ConceptIdMappers>
+          <Fields>
+            <Field key="ndc" defaultTypeId="32818" />
+            <Field key="ndc_9" sourceKey="ndc"  defaultTypeId="32818" />
+          </Fields>
+        </Concept>
+      </Concepts>
+    </DrugExposureDefinition>
+    <DrugExposureDefinition>
+      <PersonId>PersonId</PersonId>
+      <StartDate>immunization_date</StartDate>
+      <EndDate>immunization_date</EndDate>
+      <AdditionalFields>
+        <string>vax</string>
+      </AdditionalFields>
+      <Concepts>
+        <Concept>
+          <ConceptIdMappers>
+            <Mapper>
+              <Lookup>EhrVax</Lookup>
+            </Mapper>
+          </ConceptIdMappers>
+          <Fields>
+            <Field key="immunization_desc" sourceKey="immunization_source"  defaultTypeId="32818" />
+          </Fields>
+        </Concept>
+      </Concepts>
+    </DrugExposureDefinition>
+  </DrugExposure>
+</QueryDefinition>

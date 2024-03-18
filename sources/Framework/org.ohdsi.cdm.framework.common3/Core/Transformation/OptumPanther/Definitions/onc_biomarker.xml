@@ -1,0 +1,90 @@
+﻿<QueryDefinition>
+	<Query database="full">
+		SELECT distinct
+		ch.person_id as PersonId,
+		Biomarker || ' ' || coalesce(gene_characteristics, '') source_value,
+		numeric_result,
+		note_date,
+		trim(coalesce(numeric_result, '') ||' '|| coalesce (narrative_result, '') ||' '|| coalesce(modifier_narrative, '')) as value_source_value,
+		null neoplasm_histology_key,
+		1147127 as meas_event_field_concept_id,
+		1 as fake,
+		null as unit
+		FROM {sc}.onc_biomarker l
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
+		where lower(temporal_status) = 'current' and biomarker is not NULL
+		order by 1
+	</Query>
+	<Measurement>
+		<MeasurementDefinition>
+			<Condition>{fake} = 0</Condition>
+			<PersonId>PersonId</PersonId>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>Operators</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="numeric_result" defaultTypeId="0"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</MeasurementDefinition>
+		<MeasurementDefinition>
+			<Condition>{fake} = 0</Condition>
+			<PersonId>PersonId</PersonId>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>Lab_Units</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="numeric_result" defaultTypeId="0"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</MeasurementDefinition>
+		<MeasurementDefinition>
+			<IsUnique>true</IsUnique>
+			<PersonId>PersonId</PersonId>
+			<StartDate>note_date</StartDate>
+			<ValueSourceValue>value_source_value</ValueSourceValue>
+			<EventFieldConceptId>meas_event_field_concept_id</EventFieldConceptId>
+			<AdditionalFields>
+				<string>neoplasm_histology_key</string>
+				<string>numeric_result</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>EhrOncbm</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="source_value" defaultTypeId="32882"/>
+					</Fields>
+				</Concept>
+				<Concept>
+					<Fields>
+						<Field key="unit" defaultTypeId="0"/>
+					</Fields>
+				</Concept>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>LabRes</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="value_source_value" defaultTypeId="0" />
+					</Fields>
+				</Concept>
+			</Concepts>
+		</MeasurementDefinition>
+	</Measurement>
+</QueryDefinition>

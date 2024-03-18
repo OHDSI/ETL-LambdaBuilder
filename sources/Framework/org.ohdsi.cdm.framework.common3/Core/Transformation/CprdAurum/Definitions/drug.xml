@@ -1,0 +1,59 @@
+﻿<QueryDefinition>
+  <Query>
+    with a as
+    (
+    select
+    d.patid,
+    d.staffid,
+    d.issuedate,
+    CASE
+    WHEN d.duration &gt; 365 THEN 365
+    WHEN d.duration &lt; 0   THEN 1
+    WHEN d.duration IS NULL THEN 1
+    ELSE d.duration 
+    END AS duration,
+    q.description,
+    d.quantity,
+    dc.dmdid,
+    cast(left(cast(d.patid as varchar), 7) || cast(d.probobsid as varchar) as bigint) as visitDetailId,
+    d.prodcodeid
+    from {sc}.drug d
+    join {ch_sc}._chunks ch ON ch.ChunkId = {0} AND d.patid = ch.PERSON_ID
+    left join {sc}.lookup_emisproductdictionary dc on d.prodcodeid = dc.prodcodeid
+    left join {sc}.lookup_quantunit q on d.quantunitid = q.quantunitid
+    where d.issuedate is not null
+    )
+
+    select *,
+    case 
+    when duration = 0 then issuedate
+    else issuedate + (duration-1) * INTERVAL '1 day'
+    end as end_date
+    from a
+    order by patid
+  </Query>
+  <DrugExposure>
+    <DrugExposureDefinition>
+      <PersonId>patid</PersonId>
+      <StartDate>issuedate</StartDate>
+      <EndDate>end_date</EndDate>
+      <DaysSupply>duration</DaysSupply>
+      <VisitDetailId>visitDetailId</VisitDetailId>
+      <DoseUnitSourceValue>description</DoseUnitSourceValue>
+      <Quantity>quantity</Quantity>
+      <ProviderId>staffid</ProviderId>
+      <Concepts>
+        <Concept>
+          <ConceptIdMappers>
+            <Mapper>
+              <Lookup>Drug</Lookup>
+            </Mapper>
+          </ConceptIdMappers>
+          <Fields>
+            <Field key="dmdid" defaultTypeId="38000177"/>
+          </Fields>
+        </Concept>
+      </Concepts>
+    </DrugExposureDefinition>
+  </DrugExposure>
+</QueryDefinition>

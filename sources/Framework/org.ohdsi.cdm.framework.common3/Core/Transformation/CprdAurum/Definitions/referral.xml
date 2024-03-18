@@ -1,0 +1,47 @@
+﻿<QueryDefinition>
+  <Query>
+    SELECT
+    r.patid,
+    case when r.refservicetypeid = 1 then 0
+    when r.refservicetypeid = 2 then 45884011
+    when r.refservicetypeid = 3 then 36308045
+    when r.refservicetypeid = 4 then 45876918
+    when r.refservicetypeid = 5 then 45882580
+    when r.refservicetypeid = 6 then 0
+    when r.refservicetypeid = 7 then 36308045
+    when r.refservicetypeid = 8 then 45885153
+    when r.refservicetypeid = 9 then 706505
+    when r.refservicetypeid = 10 then 45880650
+    when r.refservicetypeid = 11 then 45884467
+    when r.refservicetypeid = 12 then 45876494
+    when r.refservicetypeid = 13 then 706352
+    else 0 end as value_as_concept_id,
+    rs.description,
+    r.refservicetypeid,
+    cast(left(cast(r.patid as varchar), 7) || cast(r.obsid as varchar) as bigint) as visitDetailId,
+    cast(GETDATE() as date) eventdate
+    FROM {sc}.referral r
+    JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND r.patid = ch.PERSON_ID
+    left join {sc}.lookup_refservicetype rs on r.refservicetypeid = rs.refservicetypeid
+    order by r.patid
+  </Query>
+  <Observation>
+    <ObservationDefinition>
+      <PersonId>patid</PersonId>
+      <StartDate>eventdate</StartDate>
+      <VisitDetailId>visitDetailId</VisitDetailId>
+      <ValueAsConceptId>value_as_concept_id</ValueAsConceptId>
+      <ValuesAsString>
+        <string>description</string>
+      </ValuesAsString>
+      <Concepts>
+        <Concept>
+          <Fields>
+            <Field defaultConceptId="4144684" defaultSource=" " defaultTypeId="32842" />
+          </Fields>
+        </Concept>
+      </Concepts>
+    </ObservationDefinition>
+  </Observation>
+  
+</QueryDefinition>

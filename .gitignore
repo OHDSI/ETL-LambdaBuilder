@@ -343,3 +343,5 @@ docs/IBM_CCAE_MDCR/Test Cases/extras/config.csv
 _site
 .Rproj.user
 ETL-LambdaBuilder.Rproj
+sources/Presentation/org.ohdsi.cdm.presentation.lambdabuilder/aws-lambda-tools-defaults.json
+sources/Presentation/org.ohdsi.cdm.presentation.lambdamerge/aws-lambda-tools-defaults.json

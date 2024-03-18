@@ -1,0 +1,61 @@
+﻿<QueryDefinition>
+  <Query database="full">
+    select
+    ch.person_id as PersonId,
+    pr.provid provid,
+    p.rxdate,
+    p.num_refills,
+    cast(p.days_supply as int) as days_supply,
+    p.route,
+    p.quantity_of_dose,
+    p.quantity_per_fill,
+    isnull(p.strength, '') + ';' + isnull(p.strength_unit, '') + ';' + isnull(p.dosage_form, '') + ';' + isnull(p.dose_frequency, '') as dose_unit_source_value,
+    p.ndc,
+    SUBSTRING(p.ndc,1,9) ndc_9,
+    1 as itNdc
+    from {sc}.prescriptions_written as p
+    JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND p.ptid = ch.PERSON_SOURCE_VALUE
+    left join {sc}.provider pr on p.provid = pr.provid
+    where ndc is not NULL
+    order by 1
+  </Query>
+  <DrugExposure>
+    <DrugExposureDefinition>
+      <PersonId>PersonId</PersonId>
+      <StartDate>rxdate</StartDate>
+      <EndDate>rxdate</EndDate>
+      <ProviderIdKey>provid</ProviderIdKey>
+      <Refill>num_refills</Refill>
+      <DaysSupply>days_supply</DaysSupply>
+      <DoseUnitSourceValue>dose_unit_source_value</DoseUnitSourceValue>
+      <AdditionalFields>
+        <string>quantity_of_dose</string>
+        <string>quantity_per_fill</string>
+        <string>itNdc</string>
+      </AdditionalFields>
+      <Concepts>
+        <Concept>
+          <ConceptIdMappers>
+            <Mapper>
+              <Lookup>Drug</Lookup>
+            </Mapper>
+          </ConceptIdMappers>
+          <Fields>
+            <Field key="ndc" defaultTypeId="32838"/>
+            <Field key="ndc_9" sourceKey="ndc" defaultTypeId="32838" />
+          </Fields>
+        </Concept>
+        <Concept>
+          <ConceptIdMappers>
+            <Mapper>
+              <Lookup>Route</Lookup>
+            </Mapper>
+          </ConceptIdMappers>
+          <Fields>
+            <Field key="route" defaultTypeId="0"/>
+          </Fields>
+        </Concept>
+      </Concepts>
+    </DrugExposureDefinition>
+  </DrugExposure>
+</QueryDefinition>

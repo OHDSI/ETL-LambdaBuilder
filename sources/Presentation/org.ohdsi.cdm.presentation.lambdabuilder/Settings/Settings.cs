@@ -1,5 +1,5 @@
 ﻿using System;
-using org.ohdsi.cdm.framework.common2.Enums;
+using static org.ohdsi.cdm.framework.common.Enums.Vendor;
 
 namespace org.ohdsi.cdm.presentation.lambdabuilder
 {
@@ -12,9 +12,9 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
         public DateTime Started { get; set; }
         public bool Error { get; set; }
 
-        public bool WatchdogTimeout { get; set; }
+        //public bool WatchdogTimeout { get; set; }
 
-        public bool ReadIdle { get; set; }
+        //public bool ReadIdle { get; set; }
 
         public double Duration => DateTime.Now.Subtract(Started).TotalSeconds;
 
@@ -38,8 +38,8 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
 
         public string CDMFolder { get; set; }
 
-        public S3StorageType StorageType { get; set; }
-        public int TimeoutValue { get; set; }
+        //public S3StorageType StorageType { get; set; }
+        public double TimeoutValue { get; set; }
         public int WatchdogValue { get; set; }
 
         public int MinPersonToSave { get; set; }
@@ -48,10 +48,15 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
         #endregion
 
         #region Methods
-        public static void Initialize(int buildingId, Vendors vendor)
+        public static void Initialize(int buildingId, Vendors vendor, bool readFromS3)
         {
             Current.Building = new BuildingSettings { Id = buildingId, Vendor = vendor };
-            Current.Building.SetVendorSettings();
+            Current.Building.SetVendorSettings(readFromS3);
+        }
+
+        public static void Initialize(int buildingId, Vendors vendor)
+        {
+            Initialize(buildingId, vendor, false);
         }
 
         #endregion

@@ -1,0 +1,93 @@
+﻿<QueryDefinition>
+  <Query>
+    select distinct
+    cast(left(cast(o.patid as varchar), 7) || cast(o.obsid as varchar) as bigint) as visitDetailId,
+    o.patid,
+    o.staffid,
+    o.pracid,
+    o.obsdate,
+    coalesce(c.consdate, o.obsdate) as date,
+    case when p.probenddate is null
+    then o.obsdate
+    else p.probenddate
+    end as end_date,
+    o.numrangehigh,
+    o.numrangelow,
+    o.value,
+    n.description,
+    cast(left(cast(o.patid as varchar), 7) || cast(o.parentobsid as varchar) as bigint) as parentVisitDetailId,
+    case when m.cleansedreadcode is null
+    then m.snomedctconceptid
+    else m.cleansedreadcode
+    end as key,
+    case when m.cleansedreadcode is null
+    then concat(concat(cast(m.snomedctconceptid as varchar),'-'),m.term)
+    else concat(concat(m.cleansedreadcode,'-'),m.term)
+    end as source_value
+    from {sc}.observation o
+    join {ch_sc}._chunks ch ON ch.ChunkId = {0} AND o.patid = ch.PERSON_ID
+    left join {sc}.consultation c on o.patid = c.patid and o.consid = c.consid
+    left join {sc}.problem p on o.patid = p.patid and o.obsid = p.obsid
+    left join {sc}.lookup_numunit n on o.numunitid = n.numunitid
+    left join {sc}.lookup_emismedicaldictionary m on o.medcodeid = m.medcodeid
+    where o.obsdate is not null
+    order by o.patid
+  </Query>
+  <Observation>
+    <ObservationDefinition>
+      <PersonId>patid</PersonId>
+      <StartDate>obsdate</StartDate>
+      <ProviderId>staffid</ProviderId>
+      <VisitDetailId>visitDetailId</VisitDetailId>
+      <ValuesAsNumber>
+        <string>value</string>
+      </ValuesAsNumber>
+      <AdditionalFields>
+        <string>numrangehigh</string>
+        <string>numrangelow</string>
+      </AdditionalFields>
+      <Concepts>
+        <Concept>
+          <ConceptIdMappers>
+            <Mapper>
+              <Lookup>Read_Snomed</Lookup>
+            </Mapper>
+          </ConceptIdMappers>
+          <Fields>
+            <Field key="key" sourceKey="source_value" defaultTypeId="38000280" isNullable="true"/>
+          </Fields>
+        </Concept>
+        <Concept>
+          <ConceptIdMappers>
+            <Mapper>
+              <Lookup>Units</Lookup>
+            </Mapper>
+          </ConceptIdMappers>
+          <Fields>
+            <Field key="description" defaultTypeId="0" />
+          </Fields>
+        </Concept>
+      </Concepts>
+    </ObservationDefinition>
+  </Observation>
+  <VisitOccurrence>
+    <VisitOccurrenceDefinition>
+      <Id>visitDetailId</Id>
+      <PersonId>patid</PersonId>
+      <StartDate>date</StartDate>
+      <EndDate>date</EndDate>
+      <CareSiteId>pracid</CareSiteId>
+      <ProviderId>staffid</ProviderId>
+      <AdditionalFields>
+        <string>parentVisitDetailId</string>
+      </AdditionalFields>
+      <Concepts>
+        <Concept>
+          <Fields>
+            <Field defaultConceptId="581477" defaultSource=" " defaultTypeId="32827"/>
+          </Fields>
+        </Concept>
+      </Concepts>
+    </VisitOccurrenceDefinition>
+  </VisitOccurrence>
+</QueryDefinition>

@@ -1,0 +1,214 @@
+﻿<QueryDefinition>
+	<Query>
+		SELECT distinct
+		ch.person_id as PersonId,
+		hvid,
+		date_service,
+		diagnosis_code,
+		procedure_code,
+		ndc_code,
+		claim_type,
+		case
+		when lower(claim_type) = 'p' then 32871
+		when lower(claim_type) = 'i' then 32810
+		when claim_type is NULL then 32811
+		end as type_concept_id,
+		principal_proc_ind,
+		case
+		when diagnosis_priority = '1' then 32902
+		else 32908
+		end as condition_status_concept_id,
+
+		inst_type_of_bill_std_id,
+		place_of_service_std_id,
+		case
+		when date_service_end is null then date_service
+		else date_service_end
+		end as end_date,
+		inst_admit_source_std_id,
+		data_vendor,
+
+		case
+		when diagnosis_code_qual = '02' then '10'
+		when diagnosis_code_qual = '01' then '9'
+		when date_service &lt; '10/1/2015' then '9'
+		when date_service &gt;= '10/1/2015' then '10'
+		end as icd_ver,
+		hv_enc_id,
+		1 as fake
+		FROM cdm_health_verity_cc_ehr_cce_v2776.medical_claims
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
+		where  date_service is not null and date_part('year', date_service) &gt;= 2009 and
+		(logical_delete_reason is null or logical_delete_reason = '' or logical_delete_reason = 'null' or lower(logical_delete_reason) not in ('denied claims', 'reversal to original claim'))
+		order by ch.person_id
+	</Query>
+	<ConditionOccurrence>
+		<ConditionOccurrenceDefinition>
+			<IsUnique>true</IsUnique>
+			<Condition>{icd_ver} = 9</Condition>
+			<PersonId>PersonId</PersonId>
+			<StartDate>date_service</StartDate>
+			<EndDate>date_service</EndDate>
+			<AdditionalFields>
+				<string>data_vendor</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>icd9</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="diagnosis_code" typeId="type_concept_id"/>
+					</Fields>
+				</Concept>
+				<Concept>
+					<Fields>
+						<Field conceptId="condition_status_concept_id" sourceKey="principal_proc_ind" defaultTypeId="0"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ConditionOccurrenceDefinition>
+		<ConditionOccurrenceDefinition>
+			<IsUnique>true</IsUnique>
+			<Condition>{icd_ver} = 10</Condition>
+			<PersonId>PersonId</PersonId>
+			<StartDate>date_service</StartDate>
+			<EndDate>date_service</EndDate>
+			<AdditionalFields>
+				<string>data_vendor</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>icd10</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="diagnosis_code" typeId="type_concept_id"/>
+					</Fields>
+				</Concept>
+				<Concept>
+					<Fields>
+						<Field conceptId="condition_status_concept_id" sourceKey="principal_proc_ind" defaultTypeId="0"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ConditionOccurrenceDefinition>
+	</ConditionOccurrence>
+	<ProcedureOccurrence>
+		<ProcedureOccurrenceDefinition>
+			<IsUnique>true</IsUnique>
+			<PersonId>PersonId</PersonId>
+			<StartDate>date_service</StartDate>
+			<EndDate>date_service</EndDate>
+			<AdditionalFields>
+				<string>data_vendor</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>procedure</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="procedure_code" typeId="type_concept_id" />
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ProcedureOccurrenceDefinition>
+	</ProcedureOccurrence>
+	<DrugExposure>
+		<DrugExposureDefinition>
+			<IsUnique>true</IsUnique>
+			<PersonId>PersonId</PersonId>
+			<StartDate>date_service</StartDate>
+			<EndDate>date_service</EndDate>
+			<AdditionalFields>
+				<string>data_vendor</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>ndc</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="ndc_code" typeId="type_concept_id" eventDate="date_service" />
+					</Fields>
+				</Concept>
+			</Concepts>
+		</DrugExposureDefinition>
+	</DrugExposure>
+	<VisitOccurrence>
+		<!-- fake definition, only to load CMSPlaceOfService lookup for Visit Concept Roll-up Logic  -->
+		<VisitOccurrenceDefinition>
+			<Condition>{fake} = 0</Condition>
+			<PersonId>PersonId</PersonId>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>CMSPlaceOfService</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="fake" typeId="1" sourceKey="fake"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</VisitOccurrenceDefinition>
+		<VisitOccurrenceDefinition>
+			<IsUnique>true</IsUnique>
+			<Condition>{type_concept_id} = 32810</Condition>
+			<PersonId>PersonId</PersonId>
+			<StartDate>date_service</StartDate>
+			<EndDate>end_date</EndDate>
+			<AdmittingSourceValue>inst_admit_source_std_id</AdmittingSourceValue>
+			<AdditionalFields>
+				<string>data_vendor</string>
+				<string>hv_enc_id</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>ub04</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="inst_type_of_bill_std_id"  typeId="type_concept_id" defaultConceptId="9202"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</VisitOccurrenceDefinition>
+		<VisitOccurrenceDefinition>
+			<IsUnique>true</IsUnique>
+			<Condition>{type_concept_id} = 32871</Condition>
+			<PersonId>PersonId</PersonId>
+			<StartDate>date_service</StartDate>
+			<EndDate>end_date</EndDate>
+			<AdmittingSourceValue>inst_admit_source_std_id</AdmittingSourceValue>
+			<AdditionalFields>
+				<string>data_vendor</string>
+				<string>hv_enc_id</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>cms</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="place_of_service_std_id"  typeId="type_concept_id" defaultConceptId="9202"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</VisitOccurrenceDefinition>
+	</VisitOccurrence>
+</QueryDefinition>

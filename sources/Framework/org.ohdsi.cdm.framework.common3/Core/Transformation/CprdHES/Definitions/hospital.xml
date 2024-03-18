@@ -1,0 +1,28 @@
+﻿<QueryDefinition>
+  <Query>
+		select
+		patid,
+		admitdate,
+		discharged,
+		spno,
+		cast(CONCAT(cast(patid as varchar), cast(spno as varchar)) as bigint) as visit_occurrence_id
+		FROM {sc}.hes_hospital
+		join {ch_sc}._chunks ch ON ch.ChunkId = {0} AND patid = ch.PERSON_ID
+		order by patid
+	</Query>
+  <VisitOccurrence>
+    <VisitOccurrenceDefinition>
+      <Id>visit_occurrence_id</Id>
+      <PersonId>patid</PersonId>
+      <StartDate>admitdate</StartDate>
+      <EndDate>discharged</EndDate>
+      <Concepts>
+        <Concept>
+          <Fields>
+            <Field defaultConceptId="9201" sourceKey="visit_occurrence_id" defaultTypeId="44818518"/>
+          </Fields>
+        </Concept>
+      </Concepts>
+    </VisitOccurrenceDefinition>
+  </VisitOccurrence>
+</QueryDefinition>

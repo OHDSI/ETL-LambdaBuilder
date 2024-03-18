@@ -1,0 +1,151 @@
+﻿<QueryDefinition>
+	<Query>
+		SELECT distinct
+		ch.person_id as PersonId,
+		hvid,
+		date_service,
+
+		procedure_code,
+		diagnosis_code,
+		ndc_code,
+
+		days_supply,
+		dispensed_quantity,
+		fill_number,
+		unit_of_measure,
+
+		32869 as type_concept_id,
+		data_vendor,
+		case
+		when diagnosis_code_qual = '02' then '10'
+		when diagnosis_code_qual = '01' then '9'
+		when date_service &lt; '10/1/2015' then '9'
+		when date_service &gt;= '10/1/2015' then '10'
+		end as icd_ver
+
+		FROM cdm_health_verity_cc_ehr_cce_v2776.pharmacy_claims
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
+		where date_service is not null and date_part('year', date_service) &gt;= 2009 and
+		(logical_delete_reason is null or logical_delete_reason = '' or logical_delete_reason = 'null')
+		order by 1
+	</Query>
+	<DrugExposure>
+		<DrugExposureDefinition>
+			<IsUnique>true</IsUnique>
+			<PersonId>PersonId</PersonId>
+			<StartDate>date_service</StartDate>
+			<EndDate>date_service</EndDate>
+
+			<Quantity>dispensed_quantity</Quantity>
+			<Refill>fill_number</Refill>
+			<DaysSupply>days_supply</DaysSupply>
+			<DoseUnitSourceValue>unit_of_measure</DoseUnitSourceValue>
+			<AdditionalFields>
+				<string>data_vendor</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>ndc</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="ndc_code" typeId="type_concept_id" eventDate="date_service"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</DrugExposureDefinition>
+	</DrugExposure>
+
+	<ConditionOccurrence>
+		<ConditionOccurrenceDefinition>
+			<IsUnique>true</IsUnique>
+			<Condition>{icd_ver} = 9</Condition>
+			<PersonId>PersonId</PersonId>
+			<StartDate>date_service</StartDate>
+			<EndDate>date_service</EndDate>
+			<AdditionalFields>
+				<string>data_vendor</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>icd9</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="diagnosis_code" typeId="type_concept_id"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ConditionOccurrenceDefinition>
+		<ConditionOccurrenceDefinition>
+			<IsUnique>true</IsUnique>
+			<Condition>{icd_ver} = 10</Condition>
+			<PersonId>PersonId</PersonId>
+			<StartDate>date_service</StartDate>
+			<EndDate>date_service</EndDate>
+			<AdditionalFields>
+				<string>data_vendor</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>icd10</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="diagnosis_code" typeId="type_concept_id"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ConditionOccurrenceDefinition>
+	</ConditionOccurrence>
+
+	<ProcedureOccurrence>
+		<ProcedureOccurrenceDefinition>
+			<IsUnique>true</IsUnique>
+			<PersonId>PersonId</PersonId>
+			<StartDate>date_service</StartDate>
+			<EndDate>date_service</EndDate>
+			<AdditionalFields>
+				<string>data_vendor</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>procedure</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="procedure_code" typeId="type_concept_id" />
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ProcedureOccurrenceDefinition>
+	</ProcedureOccurrence>
+
+	<VisitOccurrence>
+		<VisitOccurrenceDefinition>
+			<IsUnique>true</IsUnique>
+			<PersonId>PersonId</PersonId>
+			<StartDate>date_service</StartDate>
+			<EndDate>date_service</EndDate>
+			<AdditionalFields>
+				<string>data_vendor</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field defaultConceptId="581458" defaultSource=" " defaultTypeId="32869"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</VisitOccurrenceDefinition>
+	</VisitOccurrence>
+
+</QueryDefinition>

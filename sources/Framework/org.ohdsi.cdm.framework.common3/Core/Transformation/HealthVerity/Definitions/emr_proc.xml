@@ -1,0 +1,106 @@
+﻿<QueryDefinition>
+	<Query>
+		SELECT
+		ch.person_id as PersonId,
+		hvid,
+		hv_proc_dt,
+		hv_enc_id,
+		replace(proc_cd, chr(9), ' ') as proc_cd,
+		proc_cd_qual,
+		proc_ndc,
+		proc_unit_qty,
+		proc_prov_id,
+		proc_uom unit_source_value,
+		case
+		when upper(proc_cd_qual) in ('VACCINES.CVX', 'CVX') then '0'
+		else '1'
+		end proc,
+		32827 type_concept_id,
+		coalesce(proc_prov_id, '') || ';' || coalesce(proc_prov_taxnmy_id, '') ProviderIdKey
+		from cdm_health_verity_cc_ehr_cce_v2776.emr_proc
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
+		where coalesce(upper(proc_stat_cd), '') not in
+		(
+		'ENTERED IN ERROR',
+		'PATIENT PARENT REFUSED',
+		'TEMPORARY DEFERRAL',
+		'PERMANENT DEFERRAL',
+		'ERRONEOUS',
+		'CANCELED',
+		'UNAUTHORIZED'
+		)
+		and proc_cd is not null
+		order by ch.person_id
+	</Query>
+	<DrugExposureDefinition>
+		<Condition>{proc} = 0</Condition>
+		<PersonId>PersonId</PersonId>
+		<StartDate>hv_proc_dt</StartDate>
+		<Quantity>proc_unit_qty</Quantity>
+		<ProviderIdKey>ProviderIdKey</ProviderIdKey>
+		<AdditionalFields>
+			<string>hv_enc_id</string>
+			<string>unit_source_value</string>
+		</AdditionalFields>
+		<Concepts>
+			<Concept>
+				<ConceptIdMappers>
+					<Mapper>
+						<Lookup>cvx</Lookup>
+					</Mapper>
+				</ConceptIdMappers>
+				<Fields>
+					<Field key="proc_cd" typeId="type_concept_id"/>
+				</Fields>
+			</Concept>
+		</Concepts>
+	</DrugExposureDefinition>
+	
+	<ProcedureOccurrence>
+		<ProcedureOccurrenceDefinition>
+			<Condition>{proc} = 1</Condition>
+			<PersonId>PersonId</PersonId>
+			<StartDate>hv_proc_dt</StartDate>
+			<Quantity>proc_unit_qty</Quantity>
+			<ProviderIdKey>ProviderIdKey</ProviderIdKey>
+			<AdditionalFields>
+				<string>hv_enc_id</string>
+				<string>unit_source_value</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>procedure</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="proc_cd" typeId="type_concept_id" />
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ProcedureOccurrenceDefinition>
+		<ProcedureOccurrenceDefinition>
+			<PersonId>PersonId</PersonId>
+			<StartDate>hv_proc_dt</StartDate>
+			<Quantity>proc_unit_qty</Quantity>
+			<ProviderIdKey>ProviderIdKey</ProviderIdKey>
+			<AdditionalFields>
+				<string>hv_enc_id</string>
+				<string>unit_source_value</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>ndc</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="proc_ndc" typeId="type_concept_id" eventDate="hv_proc_dt"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ProcedureOccurrenceDefinition>
+	</ProcedureOccurrence>
+</QueryDefinition>

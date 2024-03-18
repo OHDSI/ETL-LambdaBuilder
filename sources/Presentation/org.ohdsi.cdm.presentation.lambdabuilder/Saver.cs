@@ -1,240 +1,488 @@
-﻿using System;
+﻿using org.ohdsi.cdm.framework.common.Attributes;
+using org.ohdsi.cdm.framework.common.Builder;
+using org.ohdsi.cdm.framework.common.DataReaders.v5;
+using org.ohdsi.cdm.framework.common.DataReaders.v5.v52;
+using org.ohdsi.cdm.framework.common.DataReaders.v5.v53;
+using org.ohdsi.cdm.framework.common.DataReaders.v5.v54;
+using org.ohdsi.cdm.framework.common.Enums;
+using org.ohdsi.cdm.framework.common.Extensions;
+using System;
 using System.Data;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Amazon.S3;
-using Amazon.S3.Model;
-using org.ohdsi.cdm.framework.common2.Builder;
-using org.ohdsi.cdm.framework.common2.DataReaders.v5;
-using org.ohdsi.cdm.framework.common2.DataReaders.v5.v52;
-using org.ohdsi.cdm.framework.common2.DataReaders.v5.v53;
-using org.ohdsi.cdm.framework.common2.Enums;
-using org.ohdsi.cdm.framework.common2.Extensions;
+using cdm6 = org.ohdsi.cdm.framework.common.DataReaders.v6;
 
 namespace org.ohdsi.cdm.presentation.lambdabuilder
 {
-    public class Saver
+    public class Saver(KeyMasterOffsetManager offsetManager, string tmpFolder)
     {
-        private readonly int _chunkId;
-        private readonly string _subChunkId;
+        private readonly KeyMasterOffsetManager _offsetManager = offsetManager;
+        private readonly string _tmpFolder = tmpFolder;
 
-        public Saver(int chunkId, string subChunkId)
+        public string TmpFolder
         {
-            _chunkId = chunkId;
-            _subChunkId = subChunkId;
-        }
-
-        protected IDataReader CreateDataReader(ChunkData chunk, string table)
-        {
-            switch (table)
+            get
             {
-                case "PERSON":
+                if (string.IsNullOrEmpty(_tmpFolder))
+                    return "/tmp";
+
+                return $"/tmp/{_tmpFolder}";
+            }
+        }
+        protected Tuple<IDataReader, int> CreateDataReader(ChunkData chunk, string table)
+        {
+            var cdm = Settings.Current.Building.Vendor.GetAttribute<CdmVersionAttribute>().Value;
+            if (cdm == CdmVersions.V6)
+            {
+                switch (table)
                 {
-                    return chunk.Persons.Count == 0 ? null : new PersonDataReader(chunk.Persons.ToList());
+                    case "PERSON":
+                        {
+                            return chunk.Persons.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(new cdm6.PersonDataReader([.. chunk.Persons]),
+                                    chunk.Persons.Count);
+                        }
+
+                    case "OBSERVATION_PERIOD":
+                        {
+                            return chunk.ObservationPeriods.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(
+                                    new cdm6.ObservationPeriodDataReader([.. chunk.ObservationPeriods], _offsetManager),
+                                    chunk.ObservationPeriods.Count);
+                        }
+
+                    case "PAYER_PLAN_PERIOD":
+                        {
+                            return chunk.PayerPlanPeriods.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(
+                                    new cdm6.PayerPlanPeriodDataReader([.. chunk.PayerPlanPeriods], _offsetManager),
+                                    chunk.PayerPlanPeriods.Count);
+                        }
+
+                    case "DRUG_EXPOSURE":
+                        {
+                            return chunk.DrugExposures.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(new cdm6.DrugExposureDataReader([.. chunk.DrugExposures], _offsetManager),
+                                    chunk.DrugExposures.Count);
+                        }
+
+                    case "OBSERVATION":
+                        {
+                            return chunk.Observations.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(new cdm6.ObservationDataReader([.. chunk.Observations], _offsetManager),
+                                    chunk.Observations.Count);
+                        }
+
+                    case "VISIT_OCCURRENCE":
+                        {
+                            return chunk.VisitOccurrences.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(
+                                    new cdm6.VisitOccurrenceDataReader([.. chunk.VisitOccurrences], _offsetManager),
+                                    chunk.VisitOccurrences.Count);
+                        }
+
+                    case "VISIT_DETAIL":
+                        {
+                            return chunk.VisitDetails.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(new cdm6.VisitDetailDataReader([.. chunk.VisitDetails], _offsetManager),
+                                    chunk.VisitDetails.Count);
+                        }
+
+                    case "PROCEDURE_OCCURRENCE":
+                        {
+                            return chunk.ProcedureOccurrences.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(
+                                    new cdm6.ProcedureOccurrenceDataReader([.. chunk.ProcedureOccurrences], _offsetManager),
+                                    chunk.ProcedureOccurrences.Count);
+                        }
+
+                    case "DRUG_ERA":
+                        {
+                            return chunk.DrugEra.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(
+                                    new cdm6.DrugEraDataReader([.. chunk.DrugEra], _offsetManager),
+                                    chunk.DrugEra.Count);
+                        }
+
+                    case "CONDITION_ERA":
+                        {
+                            return chunk.ConditionEra.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(
+                                    new cdm6.ConditionEraDataReader([.. chunk.ConditionEra], _offsetManager),
+                                    chunk.ConditionEra.Count);
+                        }
+
+                    case "DEVICE_EXPOSURE":
+                        {
+                            return chunk.DeviceExposure.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(
+                                    new cdm6.DeviceExposureDataReader([.. chunk.DeviceExposure], _offsetManager),
+                                    chunk.DeviceExposure.Count);
+                        }
+
+                    case "MEASUREMENT":
+                        {
+                            return chunk.Measurements.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(
+                                    new cdm6.MeasurementDataReader([.. chunk.Measurements], _offsetManager),
+                                    chunk.Measurements.Count);
+                        }
+
+                    case "COHORT":
+                        {
+                            return chunk.Cohort.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(
+                                    new cdm6.CohortDataReader([.. chunk.Cohort]),
+                                    chunk.Cohort.Count);
+                        }
+
+                    case "CONDITION_OCCURRENCE":
+                        {
+                            return chunk.ConditionOccurrences.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(
+                                    new cdm6.ConditionOccurrenceDataReader([.. chunk.ConditionOccurrences], _offsetManager),
+                                    chunk.ConditionOccurrences.Count);
+                        }
+
+                    case "COST":
+                        {
+                            return chunk.Cost.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(
+                                    new cdm6.CostDataReader([.. chunk.Cost], _offsetManager),
+                                    chunk.Cost.Count);
+                        }
+
+                    case "NOTE":
+                        {
+                            return chunk.Note.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(
+                                    new cdm6.NoteDataReader([.. chunk.Note], _offsetManager),
+                                    chunk.Note.Count);
+                        }
+
+                    case "METADATA_TMP":
+                        {
+                            return chunk.Metadata.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(
+                                    new cdm6.MetadataDataReader([.. chunk.Metadata.Values]),
+                                    chunk.Metadata.Values.Count);
+                        }
+
+                    case "FACT_RELATIONSHIP":
+                        {
+                            return chunk.FactRelationships.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(
+                                    new cdm6.FactRelationshipDataReader([.. chunk.FactRelationships]),
+                                    chunk.FactRelationships.Count);
+                        }
+
+                    case "DEATH":
+                        return null;
                 }
-
-                case "OBSERVATION_PERIOD":
+            }
+            else
+            {
+                switch (table)
                 {
-                    return chunk.ObservationPeriods.Count == 0
-                        ? null
-                        : new ObservationPeriodDataReader53(chunk.ObservationPeriods.ToList());
-                }
+                    case "PERSON":
+                        {
+                            return chunk.Persons.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(new PersonDataReader([.. chunk.Persons]),
+                                    chunk.Persons.Count);
+                        }
 
-                case "PAYER_PLAN_PERIOD":
-                {
-                    return chunk.PayerPlanPeriods.Count == 0
-                        ? null
-                        : new PayerPlanPeriodDataReader53(chunk.PayerPlanPeriods.ToList());
-                }
+                    case "OBSERVATION_PERIOD":
+                        {
+                            return chunk.ObservationPeriods.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(
+                                    new ObservationPeriodDataReader53([.. chunk.ObservationPeriods], _offsetManager),
+                                    chunk.ObservationPeriods.Count);
+                        }
 
-                case "DEATH":
-                {
-                    return chunk.Deaths.Count == 0 ? null : new DeathDataReader52(chunk.Deaths.ToList());
-                }
+                    case "PAYER_PLAN_PERIOD":
+                        {
+                            return chunk.PayerPlanPeriods.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(
+                                    new PayerPlanPeriodDataReader53([.. chunk.PayerPlanPeriods], _offsetManager),
+                                    chunk.PayerPlanPeriods.Count);
+                        }
 
-                case "DRUG_EXPOSURE":
-                {
-                    return chunk.DrugExposures.Count == 0
-                        ? null
-                        : new DrugExposureDataReader53(chunk.DrugExposures.ToList());
-                }
+                    case "DEATH":
+                        {
+                            return chunk.Deaths.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(new DeathDataReader52([.. chunk.Deaths]),
+                                    chunk.Deaths.Count);
+                        }
 
+                    case "DRUG_EXPOSURE":
+                        {
+                            return chunk.DrugExposures.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(new DrugExposureDataReader53([.. chunk.DrugExposures], _offsetManager),
+                                    chunk.DrugExposures.Count);
+                        }
 
-                case "OBSERVATION":
-                {
-                    return chunk.Observations.Count == 0
-                        ? null
-                        : new ObservationDataReader53(chunk.Observations.ToList());
-                }
+                    case "OBSERVATION":
+                        {
+                            if (cdm == CdmVersions.V54)
+                            {
+                                return chunk.Observations.Count == 0
+                                    ? null
+                                    : new Tuple<IDataReader, int>(new ObservationDataReader54([.. chunk.Observations], _offsetManager),
+                                    chunk.Observations.Count);
+                            }
+                            else
+                            {
+                                return chunk.Observations.Count == 0
+                                    ? null
+                                    : new Tuple<IDataReader, int>(new ObservationDataReader53([.. chunk.Observations], _offsetManager),
+                                    chunk.Observations.Count);
+                            }
+                        }
 
-                case "VISIT_OCCURRENCE":
-                {
-                    return chunk.VisitOccurrences.Count == 0
-                        ? null
-                        : new VisitOccurrenceDataReader52(chunk.VisitOccurrences.ToList());
-                }
+                    case "VISIT_OCCURRENCE":
+                        {
+                            if (cdm == CdmVersions.V54)
+                            {
+                                return chunk.VisitOccurrences.Count == 0
+                                    ? null
+                                    : new Tuple<IDataReader, int>(
+                                    new VisitOccurrenceDataReader54([.. chunk.VisitOccurrences], _offsetManager),
+                                    chunk.VisitOccurrences.Count);
+                            }
+                            else
+                            {
+                                return chunk.VisitOccurrences.Count == 0
+                                    ? null
+                                    : new Tuple<IDataReader, int>(
+                                    new VisitOccurrenceDataReader52([.. chunk.VisitOccurrences], _offsetManager),
+                                    chunk.VisitOccurrences.Count);
+                            }
+                        }
 
-                case "VISIT_DETAIL":
-                {
-                    return chunk.VisitDetails.Count == 0
-                        ? null
-                        : new VisitDetailDataReader53(chunk.VisitDetails.ToList());
-                }
+                    case "VISIT_DETAIL":
+                        {
+                            if (cdm == CdmVersions.V54)
+                            {
+                                return chunk.VisitDetails.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(new VisitDetailDataReader54([.. chunk.VisitDetails], _offsetManager),
+                                    chunk.VisitDetails.Count);
+                            }
+                            else
+                            {
+                                return chunk.VisitDetails.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(new VisitDetailDataReader53([.. chunk.VisitDetails], _offsetManager),
+                                    chunk.VisitDetails.Count);
+                            }
+                        }
 
-                case "PROCEDURE_OCCURRENCE":
-                {
-                    return chunk.ProcedureOccurrences.Count == 0
-                        ? null
-                        : new ProcedureOccurrenceDataReader53(chunk.ProcedureOccurrences.ToList());
-                }
+                    case "PROCEDURE_OCCURRENCE":
+                        {
+                            if (cdm == CdmVersions.V54)
+                            {
+                                return chunk.ProcedureOccurrences.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(
+                                    new ProcedureOccurrenceDataReader54([.. chunk.ProcedureOccurrences], _offsetManager),
+                                    chunk.ProcedureOccurrences.Count);
+                            }
+                            else
+                            {
+                                return chunk.ProcedureOccurrences.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(
+                                    new ProcedureOccurrenceDataReader53([.. chunk.ProcedureOccurrences], _offsetManager),
+                                    chunk.ProcedureOccurrences.Count);
+                            }
+                        }
 
-                case "DRUG_ERA":
-                {
-                    return chunk.DrugEra.Count == 0 ? null : new DrugEraDataReader(chunk.DrugEra.ToList());
-                }
+                    case "DRUG_ERA":
+                        {
+                            return chunk.DrugEra.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(
+                                    new DrugEraDataReader([.. chunk.DrugEra], _offsetManager),
+                                    chunk.DrugEra.Count);
+                        }
 
-                case "CONDITION_ERA":
-                {
-                    return chunk.ConditionEra.Count == 0 
-                        ? null
-                        : new ConditionEraDataReader(chunk.ConditionEra); 
-                }
+                    case "CONDITION_ERA":
+                        {
+                            return chunk.ConditionEra.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(
+                                    new ConditionEraDataReader([.. chunk.ConditionEra], _offsetManager),
+                                    chunk.ConditionEra.Count);
+                        }
 
-                case "DEVICE_EXPOSURE":
-                {
-                    return chunk.DeviceExposure.Count == 0
-                        ? null
-                        : new DeviceExposureDataReader53(chunk.DeviceExposure.ToList());
-                }
+                    case "DEVICE_EXPOSURE":
+                        {
+                            if (cdm == CdmVersions.V54)
+                            {
+                                return chunk.DeviceExposure.Count == 0
+                                  ? null
+                                  : new Tuple<IDataReader, int>(
+                                      new DeviceExposureDataReader54([.. chunk.DeviceExposure], _offsetManager),
+                                      chunk.DeviceExposure.Count);
+                            }
+                            else
+                            {
+                                return chunk.DeviceExposure.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(
+                                    new DeviceExposureDataReader53([.. chunk.DeviceExposure], _offsetManager),
+                                    chunk.DeviceExposure.Count);
+                            }
+                        }
 
-                case "MEASUREMENT":
-                {
-                    return chunk.Measurements.Count == 0
-                        ? null
-                        : new MeasurementDataReader53(chunk.Measurements.ToList());
-                }
+                    case "MEASUREMENT":
+                        {
+                            if (cdm == CdmVersions.V54)
+                            {
+                                return chunk.Measurements.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(
+                                    new MeasurementDataReader54([.. chunk.Measurements], _offsetManager),
+                                    chunk.Measurements.Count);
+                            }
+                            else
+                            {
+                                return chunk.Measurements.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(
+                                    new MeasurementDataReader53([.. chunk.Measurements], _offsetManager),
+                                    chunk.Measurements.Count);
+                            }
+                        }
 
-                case "COHORT":
-                {
-                    return chunk.Cohort.Count == 0 ? null : new CohortDataReader(chunk.Cohort.ToList());
-                }
+                    case "COHORT":
+                        {
+                            return chunk.Cohort.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(
+                                    new CohortDataReader([.. chunk.Cohort]),
+                                    chunk.Cohort.Count);
+                        }
 
-                case "CONDITION_OCCURRENCE":
-                {
-                    return chunk.ConditionOccurrences.Count == 0
-                        ? null
-                        : new ConditionOccurrenceDataReader53(chunk.ConditionOccurrences.ToList());
-                }
+                    case "CONDITION_OCCURRENCE":
+                        {
+                            return chunk.ConditionOccurrences.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(
+                                    new ConditionOccurrenceDataReader53([.. chunk.ConditionOccurrences], _offsetManager),
+                                    chunk.ConditionOccurrences.Count);
+                        }
 
-                case "COST":
-                {
-                    return chunk.Cost.Count == 0 ? null : new CostDataReader52(chunk.Cost.ToList());
-                }
+                    case "COST":
+                        {
+                            return chunk.Cost.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(
+                                    new CostDataReader52([.. chunk.Cost], _offsetManager),
+                                    chunk.Cost.Count);
+                        }
 
-                case "NOTE":
-                {
-                    return chunk.Note.Count == 0 ? null : new NoteDataReader53(chunk.Note.ToList());
-                }
+                    case "NOTE":
+                        {
+                            if (cdm == CdmVersions.V54)
+                            {
+                                return chunk.Note.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(
+                                    new NoteDataReader54([.. chunk.Note], _offsetManager),
+                                    chunk.Note.Count);
+                            }
+                            else
+                            {
+                                return chunk.Note.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(
+                                    new NoteDataReader53([.. chunk.Note], _offsetManager),
+                                    chunk.Note.Count);
+                            }
+                        }
 
-                case "METADATA_TMP":
-                {
-                    return chunk.Metadata.Count == 0 ? null : new MetadataDataReader(chunk.Metadata.ToList());
-                }
+                    case "METADATA_TMP":
+                        {
+                            return chunk.Metadata.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(
+                                    new MetadataDataReader([.. chunk.Metadata.Values]),
+                                    chunk.Metadata.Values.Count);
+                        }
 
-                case "FACT_RELATIONSHIP":
-                {
-                    return chunk.FactRelationships.Count == 0
-                        ? null
-                        : new FactRelationshipDataReader(chunk.FactRelationships.ToList());
+                    case "FACT_RELATIONSHIP":
+                        {
+                            return chunk.FactRelationships.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(
+                                    new FactRelationshipDataReader([.. chunk.FactRelationships]),
+                                    chunk.FactRelationships.Count);
+                        }
+
+                    case "EPISODE":
+                        {
+                            return chunk.Episode.Count == 0
+                            ? null
+                            : new Tuple<IDataReader, int>(
+                                new EpisodeDataReader54([.. chunk.Episode], _offsetManager),
+                                chunk.Note.Count);
+                        }
+
+                    case "EPISODE_EVENT":
+                        {
+                            return null;
+                        }
                 }
             }
 
             throw new Exception("CreateDataReader, unsupported table name: " + table);
         }
 
-
-        public void Write(ChunkData chunk, string table)
+        public void Write(ChunkData chunk, int chunkId, string subChunkId, string table)
         {
             try
             {
-                var prefix = int.Parse(_subChunkId.Split('.')[0]);
-                var personIds = _subChunkId.Split('.')[2];
-                var personCount = int.Parse(_subChunkId.Split('.')[3]);
+                var prefix = int.Parse(subChunkId.Split('.')[0]);
+                var personIds = subChunkId.Split('.')[2];
 
-                if (table == "METADATA_TMP" && chunk.Metadata.Count > 0)
-                {
-                    personCount = chunk.Metadata.Count;
-                }
+                var tuple = CreateDataReader(chunk, table);
 
-                var fileName = $"{table}/{table}.{_chunkId}.{prefix}.{personIds}.{personCount}.snappy";
-                if(Settings.Current.StorageType == S3StorageType.CSV)
-                    fileName = $"{table}/{table}.{_chunkId}.{prefix}.{personIds}.{personCount}.txt.gz";
+                if (tuple == null) return;
 
-                var bucket = $"{Settings.Current.Bucket}/{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id}/{Settings.Current.CDMFolder}";
+                var reader = tuple.Item1;
+                var rowCount = tuple.Item2;
 
-                var config = new AmazonS3Config
-                {
-                    Timeout = TimeSpan.FromMinutes(60),
-                    ReadWriteTimeout = TimeSpan.FromMinutes(60),
-                    RegionEndpoint = Amazon.RegionEndpoint.USEast1,
-                    BufferSize = 512 * 1024,
-                    MaxErrorRetry = 20
-                };
+                var fileName = $"{table}.{chunkId}.{prefix}.{personIds}.{rowCount}.txt.gz";
 
-                var attempt = 0;
-
-                while (true)
-                {
-                    if (attempt > 0)
-                    {
-                        Console.WriteLine($"[SAVE] {fileName} saving... attempt={attempt}");
-                    }
-
-                    var reader = CreateDataReader(chunk, table);
-                    if (reader == null) return;
-
-                    using (var client = new AmazonS3Client(Settings.Current.S3AwsAccessKeyId,
-                        Settings.Current.S3AwsSecretAccessKey, config))
-                    using (var stream = reader.GetStream(Settings.Current.StorageType))
-                    {
-                        var putObject = client.PutObjectAsync(new PutObjectRequest
-                        {
-                            BucketName = bucket,
-                            Key = fileName,
-                            ServerSideEncryptionMethod = ServerSideEncryptionMethod.AES256,
-                            StorageClass = S3StorageClass.Standard,
-                            InputStream = stream
-                        });
-                        putObject.Wait();
-
-
-                        var response = putObject.Result;
-
-                        if (string.IsNullOrEmpty(response.ETag))
-                        {
-                            var responseMetadata = string.Empty;
-                            if (response.ResponseMetadata?.Metadata != null &&
-                                response.ResponseMetadata.Metadata.Keys.Count > 0)
-                            {
-                                responseMetadata = string.Join('|',
-                                    response.ResponseMetadata.Metadata.Select(m => m.Key + "=" + m.Value));
-                            }
-
-                            Console.WriteLine(
-                                $"[SAVE] {fileName} - ETag is empty, file was not saved; {responseMetadata}");
-                            attempt++;
-                        }
-                        else
-                        {
-                            if (attempt > 0)
-                            {
-                                Console.WriteLine($"[SAVE] {fileName} saved... attempt={attempt}");
-                            }
-
-                            break;
-                        }
-                    }
-                }
+                using var ms = reader.GetStream(S3StorageType.CSV);
+                using var fs = new FileStream($"{TmpFolder}/{fileName}", FileMode.OpenOrCreate);
+                ms.WriteTo(fs);
             }
             catch (Exception e)
             {
@@ -245,9 +493,11 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
             }
         }
 
-
-        public void Save(ChunkData chunk)
+        public void Save(ChunkData chunk, int chunkId, string subChunkId)
         {
+            var timer = new Stopwatch();
+            timer.Start();
+
             try
             {
                 var tables = new[]
@@ -270,11 +520,12 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                     "COST",
                     "NOTE",
                     "METADATA_TMP",
-                    "FACT_RELATIONSHIP"
+                    "FACT_RELATIONSHIP",
+                    "EPISODE_EVENT",
+                    "EPISODE"
                 };
 
-                Parallel.ForEach(tables, new ParallelOptions { MaxDegreeOfParallelism = 1 }, t => { Write(chunk, t); });
-                //Parallel.ForEach(tables, t => { Write(chunk, t); });
+                Parallel.ForEach(tables, t => { Write(chunk, chunkId, subChunkId, t); });
             }
             catch (Exception e)
             {
@@ -283,6 +534,8 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                 Console.WriteLine(e.StackTrace);
                 throw;
             }
+
+            timer.Stop();
         }
     }
 }

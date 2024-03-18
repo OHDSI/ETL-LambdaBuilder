@@ -1,0 +1,32 @@
+﻿<LookupDefinition>
+  <Aggregation>MostFrequent</Aggregation>
+  <SourceLookup>
+    <Key1>ndc</Key1>
+    <Value1>days_supply</Value1>
+    <Key2></Key2>
+    <Value2>days_supply</Value2>
+    <Query>
+      SELECT distinct ndc, cast(days_supply as int) as days_supply
+      FROM {sc}.prescriptions_written
+      where cast(days_supply as int) > 10
+    </Query>
+  </SourceLookup>
+  <VocabularyLookup>
+    <Key1>SOURCE_CODE</Key1>
+    <Value1>TARGET_CONCEPT_ID</Value1>
+    <Key2>TARGET_CONCEPT_ID</Key2>
+    <Value2></Value2>
+    <Query>
+      {base},
+      Standard as (
+      SELECT distinct SOURCE_CODE, TARGET_CONCEPT_ID, TARGET_DOMAIN_ID, SOURCE_VALID_START_DATE as VALID_START_DATE, SOURCE_VALID_END_DATE as VALID_END_DATE, SOURCE_VOCABULARY_ID
+      FROM Source_to_Standard
+      WHERE lower(SOURCE_VOCABULARY_ID) IN ('ndc')
+      AND (TARGET_STANDARD_CONCEPT IS NOT NULL or TARGET_STANDARD_CONCEPT != '')
+      AND (TARGET_INVALID_REASON IS NULL or TARGET_INVALID_REASON = '')
+      )
+      select distinct Standard.SOURCE_CODE, Standard.TARGET_CONCEPT_ID
+      from Standard
+    </Query>
+  </VocabularyLookup>
+</LookupDefinition>

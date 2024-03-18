@@ -1,0 +1,1704 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Platforms>AnyCPU;x64</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Core\Transformation\HealthVerity - Copy\**" />
+    <Compile Remove="Core\Transformation\PpsProstateCancer\**" />
+    <EmbeddedResource Remove="Core\Transformation\HealthVerity - Copy\**" />
+    <EmbeddedResource Remove="Core\Transformation\PpsProstateCancer\**" />
+    <None Remove="Core\Transformation\HealthVerity - Copy\**" />
+    <None Remove="Core\Transformation\PpsProstateCancer\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Common\MSSQL\AddUsers.sql" />
+    <None Remove="Common\MSSQL\CreateChunkTable.sql" />
+    <None Remove="Common\MSSQL\CreateDestination.sql" />
+    <None Remove="Common\MSSQL\CreateIndexesChunkTable.sql" />
+    <None Remove="Common\MSSQL\DropChunkTable.sql" />
+    <None Remove="Common\MSSQL\v5.2\CopyVocabulary.sql" />
+    <None Remove="Common\MSSQL\v5.2\CreateIndexes.sql" />
+    <None Remove="Common\MSSQL\v5.2\CreateTables.sql" />
+    <None Remove="Common\MSSQL\v5.2\DropTables.sql" />
+    <None Remove="Common\MSSQL\v5.2\DropVocabularyTables.sql" />
+    <None Remove="Common\MSSQL\v5.2\TruncateLookup.sql" />
+    <None Remove="Common\MSSQL\v5.2\TruncateTables.sql" />
+    <None Remove="Common\MSSQL\v5.2\TruncateWithoutLookupTables.sql" />
+    <None Remove="Common\MSSQL\v5.3\CopyVocabulary.sql" />
+    <None Remove="Common\MSSQL\v5.3\CreateIndexes.sql" />
+    <None Remove="Common\MSSQL\v5.3\CreateTables.sql" />
+    <None Remove="Common\MSSQL\v5.3\DropTables.sql" />
+    <None Remove="Common\MSSQL\v5.3\DropVocabularyTables.sql" />
+    <None Remove="Common\MSSQL\v5.3\TruncateLookup.sql" />
+    <None Remove="Common\MSSQL\v5.3\TruncateTables.sql" />
+    <None Remove="Common\MSSQL\v5.3\TruncateWithoutLookupTables.sql" />
+    <None Remove="Common\MSSQL\v6.0\CopyVocabulary.sql" />
+    <None Remove="Common\MSSQL\v6.0\CreateIndexes.sql" />
+    <None Remove="Common\MSSQL\v6.0\CreateTables.sql" />
+    <None Remove="Common\MSSQL\v6.0\DropTables.sql" />
+    <None Remove="Common\MSSQL\v6.0\DropVocabularyTables.sql" />
+    <None Remove="Common\MSSQL\v6.0\TruncateLookup.sql" />
+    <None Remove="Common\MSSQL\v6.0\TruncateTables.sql" />
+    <None Remove="Common\MSSQL\v6.0\TruncateWithoutLookupTables.sql" />
+    <None Remove="Common\MySql\AddUsers.sql" />
+    <None Remove="Common\MySql\CreateChunkTable.sql" />
+    <None Remove="Common\MySql\CreateDestination.sql" />
+    <None Remove="Common\MySql\CreateIndexesChunkTable.sql" />
+    <None Remove="Common\MySql\DropChunkTable.sql" />
+    <None Remove="Common\MySql\v5.3\CopyVocabulary.sql" />
+    <None Remove="Common\MySql\v5.3\CreateIndexes.sql" />
+    <None Remove="Common\MySql\v5.3\CreateTables.sql" />
+    <None Remove="Common\MySql\v5.3\DropTables.sql" />
+    <None Remove="Common\MySql\v5.3\DropVocabularyTables.sql" />
+    <None Remove="Common\MySql\v5.3\TruncateLookup.sql" />
+    <None Remove="Common\MySql\v5.3\TruncateTables.sql" />
+    <None Remove="Common\MySql\v5.3\TruncateWithoutLookupTables.sql" />
+    <None Remove="Common\Postgre\AddUsers.sql" />
+    <None Remove="Common\Postgre\CreateChunkTable.sql" />
+    <None Remove="Common\Postgre\CreateDestination.sql" />
+    <None Remove="Common\Postgre\CreateIndexesChunkTable.sql" />
+    <None Remove="Common\Postgre\DropChunkTable.sql" />
+    <None Remove="Common\Postgre\v5.3\CopyVocabulary.sql" />
+    <None Remove="Common\Postgre\v5.3\CreateIndexes.sql" />
+    <None Remove="Common\Postgre\v5.3\CreateTables.sql" />
+    <None Remove="Common\Postgre\v5.3\DropTables.sql" />
+    <None Remove="Common\Postgre\v5.3\DropVocabularyTables.sql" />
+    <None Remove="Common\Postgre\v5.3\TruncateLookup.sql" />
+    <None Remove="Common\Postgre\v5.3\TruncateTables.sql" />
+    <None Remove="Common\Postgre\v5.3\TruncateWithoutLookupTables.sql" />
+    <None Remove="Common\Postgre\v5.3\Vocabulary\concept.sql" />
+    <None Remove="Common\Postgre\v5.3\Vocabulary\concept_ancestor.sql" />
+    <None Remove="Common\Postgre\v5.3\Vocabulary\concept_class.sql" />
+    <None Remove="Common\Postgre\v5.3\Vocabulary\concept_relationship.sql" />
+    <None Remove="Common\Postgre\v5.3\Vocabulary\concept_synonym.sql" />
+    <None Remove="Common\Postgre\v5.3\Vocabulary\domain.sql" />
+    <None Remove="Common\Postgre\v5.3\Vocabulary\drug_strength.sql" />
+    <None Remove="Common\Postgre\v5.3\Vocabulary\relationship.sql" />
+    <None Remove="Common\Postgre\v5.3\Vocabulary\source_to_concept_map.sql" />
+    <None Remove="Common\Postgre\v5.3\Vocabulary\vocabulary.sql" />
+    <None Remove="Common\Postgre\v6.0\CopyVocabulary.sql" />
+    <None Remove="Common\Postgre\v6.0\CreateIndexes.sql" />
+    <None Remove="Common\Postgre\v6.0\CreateTables.sql" />
+    <None Remove="Common\Postgre\v6.0\DropTables.sql" />
+    <None Remove="Common\Postgre\v6.0\DropVocabularyTables.sql" />
+    <None Remove="Common\Postgre\v6.0\TruncateLookup.sql" />
+    <None Remove="Common\Postgre\v6.0\TruncateTables.sql" />
+    <None Remove="Common\Postgre\v6.0\TruncateWithoutLookupTables.sql" />
+    <None Remove="Common\Postgre\v6.0\Vocabulary\concept.sql" />
+    <None Remove="Common\Postgre\v6.0\Vocabulary\concept_ancestor.sql" />
+    <None Remove="Common\Postgre\v6.0\Vocabulary\concept_class.sql" />
+    <None Remove="Common\Postgre\v6.0\Vocabulary\concept_relationship.sql" />
+    <None Remove="Common\Postgre\v6.0\Vocabulary\concept_synonym.sql" />
+    <None Remove="Common\Postgre\v6.0\Vocabulary\domain.sql" />
+    <None Remove="Common\Postgre\v6.0\Vocabulary\drug_strength.sql" />
+    <None Remove="Common\Postgre\v6.0\Vocabulary\relationship.sql" />
+    <None Remove="Common\Postgre\v6.0\Vocabulary\source_to_concept_map.sql" />
+    <None Remove="Common\Postgre\v6.0\Vocabulary\vocabulary.sql" />
+    <None Remove="Common\Redshift\AddUsers.sql" />
+    <None Remove="Common\Redshift\CreateChunkTable.sql" />
+    <None Remove="Common\Redshift\CreateDestination.sql" />
+    <None Remove="Common\Redshift\CreateIndexesChunkTable.sql" />
+    <None Remove="Common\Redshift\DropChunkTable.sql" />
+    <None Remove="Common\Redshift\v5.2\CopyVocabulary.sql" />
+    <None Remove="Common\Redshift\v5.2\CreateIndexes.sql" />
+    <None Remove="Common\Redshift\v5.2\CreateTables.sql" />
+    <None Remove="Common\Redshift\v5.2\DropTables.sql" />
+    <None Remove="Common\Redshift\v5.2\DropVocabularyTables.sql" />
+    <None Remove="Common\Redshift\v5.2\TruncateLookup.sql" />
+    <None Remove="Common\Redshift\v5.2\TruncateTables.sql" />
+    <None Remove="Common\Redshift\v5.2\TruncateWithoutLookupTables.sql" />
+    <None Remove="Common\Redshift\v5.2\Vocabulary\concept.sql" />
+    <None Remove="Common\Redshift\v5.2\Vocabulary\concept_ancestor.sql" />
+    <None Remove="Common\Redshift\v5.2\Vocabulary\concept_class.sql" />
+    <None Remove="Common\Redshift\v5.2\Vocabulary\concept_relationship.sql" />
+    <None Remove="Common\Redshift\v5.2\Vocabulary\concept_synonym.sql" />
+    <None Remove="Common\Redshift\v5.2\Vocabulary\domain.sql" />
+    <None Remove="Common\Redshift\v5.2\Vocabulary\drug_strength.sql" />
+    <None Remove="Common\Redshift\v5.2\Vocabulary\relationship.sql" />
+    <None Remove="Common\Redshift\v5.2\Vocabulary\source_to_concept_map.sql" />
+    <None Remove="Common\Redshift\v5.2\Vocabulary\vocabulary.sql" />
+    <None Remove="Common\Redshift\v5.3\CopyVocabulary.sql" />
+    <None Remove="Common\Redshift\v5.3\CreateIndexes.sql" />
+    <None Remove="Common\Redshift\v5.3\CreateTables.sql" />
+    <None Remove="Common\Redshift\v5.3\DropTables.sql" />
+    <None Remove="Common\Redshift\v5.3\DropVocabularyTables.sql" />
+    <None Remove="Common\Redshift\v5.3\TruncateLookup.sql" />
+    <None Remove="Common\Redshift\v5.3\TruncateTables.sql" />
+    <None Remove="Common\Redshift\v5.3\TruncateWithoutLookupTables.sql" />
+    <None Remove="Common\Redshift\v5.3\Vocabulary\concept.sql" />
+    <None Remove="Common\Redshift\v5.3\Vocabulary\concept_ancestor.sql" />
+    <None Remove="Common\Redshift\v5.3\Vocabulary\concept_class.sql" />
+    <None Remove="Common\Redshift\v5.3\Vocabulary\concept_relationship.sql" />
+    <None Remove="Common\Redshift\v5.3\Vocabulary\concept_synonym.sql" />
+    <None Remove="Common\Redshift\v5.3\Vocabulary\domain.sql" />
+    <None Remove="Common\Redshift\v5.3\Vocabulary\drug_strength.sql" />
+    <None Remove="Common\Redshift\v5.3\Vocabulary\relationship.sql" />
+    <None Remove="Common\Redshift\v5.3\Vocabulary\source_to_concept_map.sql" />
+    <None Remove="Common\Redshift\v5.3\Vocabulary\vocabulary.sql" />
+    <None Remove="Common\Redshift\v6.0\CopyVocabulary.sql" />
+    <None Remove="Common\Redshift\v6.0\CreateIndexes.sql" />
+    <None Remove="Common\Redshift\v6.0\CreateTables.sql" />
+    <None Remove="Common\Redshift\v6.0\DropTables.sql" />
+    <None Remove="Common\Redshift\v6.0\DropVocabularyTables.sql" />
+    <None Remove="Common\Redshift\v6.0\TruncateLookup.sql" />
+    <None Remove="Common\Redshift\v6.0\TruncateTables.sql" />
+    <None Remove="Common\Redshift\v6.0\TruncateWithoutLookupTables.sql" />
+    <None Remove="Common\Redshift\v6.0\Vocabulary\concept.sql" />
+    <None Remove="Common\Redshift\v6.0\Vocabulary\concept_ancestor.sql" />
+    <None Remove="Common\Redshift\v6.0\Vocabulary\concept_class.sql" />
+    <None Remove="Common\Redshift\v6.0\Vocabulary\concept_relationship.sql" />
+    <None Remove="Common\Redshift\v6.0\Vocabulary\concept_synonym.sql" />
+    <None Remove="Common\Redshift\v6.0\Vocabulary\domain.sql" />
+    <None Remove="Common\Redshift\v6.0\Vocabulary\drug_strength.sql" />
+    <None Remove="Common\Redshift\v6.0\Vocabulary\relationship.sql" />
+    <None Remove="Common\Redshift\v6.0\Vocabulary\source_to_concept_map.sql" />
+    <None Remove="Common\Redshift\v6.0\Vocabulary\vocabulary.sql" />
+    <None Remove="Common\Spectrum\CreateDestination.sql" />
+    <None Remove="Common\Spectrum\CreateTables.sql" />
+    <None Remove="Common\Spectrum\DropTables.sql" />
+    <None Remove="Common\Spectrum\v6.0\CreateTables.sql" />
+    <None Remove="Core\Lookups\Base.sql" />
+    <None Remove="Core\Lookups\PregnancyDrug.sql" />
+    <None Remove="Core\Transformation\CprdAurum\Batch.sql" />
+    <None Remove="Core\Transformation\CprdAurum\Definitions\consultation.xml" />
+    <None Remove="Core\Transformation\CprdAurum\Definitions\drug.xml" />
+    <None Remove="Core\Transformation\CprdAurum\Definitions\L_CARE_SITE.xml" />
+    <None Remove="Core\Transformation\CprdAurum\Definitions\L_LOCATION.xml" />
+    <None Remove="Core\Transformation\CprdAurum\Definitions\L_PROVIDER.xml" />
+    <None Remove="Core\Transformation\CprdAurum\Definitions\observation.xml" />
+    <None Remove="Core\Transformation\CprdAurum\Definitions\patient.xml" />
+    <None Remove="Core\Transformation\CprdAurum\Definitions\referral.xml" />
+    <None Remove="Core\Transformation\CprdAurum\Lookups\Drug.sql" />
+    <None Remove="Core\Transformation\CprdAurum\Lookups\Read_Snomed.sql" />
+    <None Remove="Core\Transformation\CprdAurum\Lookups\Units.sql" />
+    <None Remove="Core\Transformation\CprdHES\Batch.sql" />
+    <None Remove="Core\Transformation\CprdHES\Definitions\augmented_care_periods.xml" />
+    <None Remove="Core\Transformation\CprdHES\Definitions\critical_care.xml" />
+    <None Remove="Core\Transformation\CprdHES\Definitions\diagnoses_episode.xml" />
+    <None Remove="Core\Transformation\CprdHES\Definitions\diagnoses_hospitalisation.xml" />
+    <None Remove="Core\Transformation\CprdHES\Definitions\diagnoses_primary_hospitalisation.xml" />
+    <None Remove="Core\Transformation\CprdHES\Definitions\episodes.xml" />
+    <None Remove="Core\Transformation\CprdHES\Definitions\hospital.xml" />
+    <None Remove="Core\Transformation\CprdHES\Definitions\L_PROVIDER.xml" />
+    <None Remove="Core\Transformation\CprdHES\Definitions\patient.xml" />
+    <None Remove="Core\Transformation\CprdHES\Definitions\procedures.xml" />
+    <None Remove="Core\Transformation\CprdHES\Lookups\icd10.sql" />
+    <None Remove="Core\Transformation\CprdHES\Lookups\opcs.sql" />
+    <None Remove="Core\Transformation\CPRD\Batch.sql" />
+    <None Remove="Core\Transformation\CPRD\CdmSource.sql" />
+    <None Remove="Core\Transformation\CPRD\CohortDefinition.sql" />
+    <None Remove="Core\Transformation\CPRD\Definitions\Additional.xml" />
+    <None Remove="Core\Transformation\CPRD\Definitions\Clinical.xml" />
+    <None Remove="Core\Transformation\CPRD\Definitions\Immunisation.xml" />
+    <None Remove="Core\Transformation\CPRD\Definitions\L_CARE_SITE.xml" />
+    <None Remove="Core\Transformation\CPRD\Definitions\L_LOCATION.xml" />
+    <None Remove="Core\Transformation\CPRD\Definitions\L_PROVIDER.xml" />
+    <None Remove="Core\Transformation\CPRD\Definitions\Patient.xml" />
+    <None Remove="Core\Transformation\CPRD\Definitions\Referral.xml" />
+    <None Remove="Core\Transformation\CPRD\Definitions\Test.xml" />
+    <None Remove="Core\Transformation\CPRD\Definitions\Therapy.xml" />
+    <None Remove="Core\Transformation\CPRD\Lookups\Additional.sql" />
+    <None Remove="Core\Transformation\CPRD\Lookups\Drug.sql" />
+    <None Remove="Core\Transformation\CPRD\Lookups\Read_Code.sql" />
+    <None Remove="Core\Transformation\CPRD\Lookups\Specialty.sql" />
+    <None Remove="Core\Transformation\CPRD\Lookups\Test_Ent.sql" />
+    <None Remove="Core\Transformation\CPRD\Lookups\Units.sql" />
+    <None Remove="Core\Transformation\CPRD\Lookups\ValueAsConceptId.sql" />
+    <None Remove="Core\Transformation\Era\Definitions\DrugExposures.xml" />
+    <None Remove="Core\Transformation\Era\Definitions\Person.xml" />
+    <None Remove="Core\Transformation\Era\Lookups\Ingredient.sql" />
+    <None Remove="Core\Transformation\PregnancyAlgorithm\Batch.sql" />
+    <None Remove="Core\Transformation\PregnancyAlgorithm\Definitions\ConditionOccurrence.xml" />
+    <None Remove="Core\Transformation\ERA\Batch.sql" />
+    <None Remove="Core\Transformation\ERA\Definitions\ConditionOccurrence.xml" />
+    <None Remove="Core\Transformation\HealthVerity\Definitions\cdm_diag.xml" />
+    <None Remove="Core\Transformation\HealthVerity\Definitions\cdm_enc_dtl.xml" />
+    <None Remove="Core\Transformation\HealthVerity\Definitions\emr_clin_obsn.xml" />
+    <None Remove="Core\Transformation\HealthVerity\Definitions\emr_diag.xml" />
+    <None Remove="Core\Transformation\HealthVerity\Definitions\emr_enc.xml" />
+    <None Remove="Core\Transformation\HealthVerity\Definitions\emr_lab_test.xml" />
+    <None Remove="Core\Transformation\HealthVerity\Definitions\emr_medctn.xml" />
+    <None Remove="Core\Transformation\HealthVerity\Definitions\emr_proc.xml" />
+    <None Remove="Core\Transformation\HealthVerity\Definitions\enrollment.xml" />
+    <None Remove="Core\Transformation\HealthVerity\Definitions\lab_tests.xml" />
+    <None Remove="Core\Transformation\HealthVerity\Definitions\L_PROVIDER.xml" />
+    <None Remove="Core\Transformation\HealthVerity\Definitions\medical_claims.xml" />
+    <None Remove="Core\Transformation\HealthVerity\Definitions\pharmacy_claims.xml" />
+    <None Remove="Core\Transformation\HealthVerity\Definitions\pharmacy_claims_vaccine.xml" />
+    <None Remove="Core\Transformation\HealthVerity\Lookups\CMS.sql" />
+    <None Remove="Core\Transformation\HealthVerity\Lookups\CMSPlaceOfService.sql" />
+    <None Remove="Core\Transformation\HealthVerity\Lookups\cvx.sql" />
+    <None Remove="Core\Transformation\HealthVerity\Lookups\icd10.sql" />
+    <None Remove="Core\Transformation\HealthVerity\Lookups\icd9.sql" />
+    <None Remove="Core\Transformation\HealthVerity\Lookups\loinc.sql" />
+    <None Remove="Core\Transformation\HealthVerity\Lookups\Ndc.sql" />
+    <None Remove="Core\Transformation\HealthVerity\Lookups\Procedure.sql" />
+    <None Remove="Core\Transformation\HealthVerity\Lookups\rxnorm.sql" />
+    <None Remove="Core\Transformation\HealthVerity\Lookups\Specialty.sql" />
+    <None Remove="Core\Transformation\HealthVerity\Lookups\ub04.sql" />
+    <None Remove="Core\Transformation\HealthVerity\Lookups\Units.sql" />
+    <None Remove="Core\Transformation\HealthVerity\Lookups\ValueAsConceptId.sql" />
+    <None Remove="Core\Transformation\JMDC\Batch.sql" />
+    <None Remove="Core\Transformation\JMDC\CdmSource.sql" />
+    <None Remove="Core\Transformation\JMDC\Definitions\Annual_health_checkups.xml" />
+    <None Remove="Core\Transformation\JMDC\Definitions\Claim.xml" />
+    <None Remove="Core\Transformation\JMDC\Definitions\Diagnosis.xml" />
+    <None Remove="Core\Transformation\JMDC\Definitions\Drug.xml" />
+    <None Remove="Core\Transformation\JMDC\Definitions\Enrollment.xml" />
+    <None Remove="Core\Transformation\JMDC\Definitions\L_CARE_SITE.xml" />
+    <None Remove="Core\Transformation\JMDC\Definitions\L_PROVIDER.xml" />
+    <None Remove="Core\Transformation\JMDC\Definitions\Procedure.xml" />
+    <None Remove="Core\Transformation\JMDC\Lookups\JMDC-ICD10-MapsToValue.sql" />
+    <None Remove="Core\Transformation\JMDC\Lookups\JMDC-ICD10-SNOMED.sql" />
+    <None Remove="Core\Transformation\JMDC\Lookups\JMDC-ICDProcedure.sql" />
+    <None Remove="Core\Transformation\JMDC\Lookups\JMDC-JNJProcedure.sql" />
+    <None Remove="Core\Transformation\JMDC\Lookups\JMDC_DRUGCODE_RXNORM.sql" />
+    <None Remove="Core\Transformation\JMDC\Lookups\JMDC_SPECIALTY.sql" />
+    <None Remove="Core\Transformation\OptumExtended\Batch.sql" />
+    <None Remove="Core\Transformation\OptumExtended\CdmSourceDOD.sql" />
+    <None Remove="Core\Transformation\OptumExtended\CdmSourceSES.sql" />
+    <None Remove="Core\Transformation\OptumExtended\Definitions\DEATH.xml" />
+    <None Remove="Core\Transformation\OptumExtended\Definitions\HRA.xml" />
+    <None Remove="Core\Transformation\OptumExtended\Definitions\INPATIENT_CONFINEMENT.xml" />
+    <None Remove="Core\Transformation\OptumExtended\Definitions\LAB_RESULTS.xml" />
+    <None Remove="Core\Transformation\OptumExtended\Definitions\L_CARE_SITE.xml" />
+    <None Remove="Core\Transformation\OptumExtended\Definitions\L_LOCATION.xml" />
+    <None Remove="Core\Transformation\OptumExtended\Definitions\L_PROVIDER.xml" />
+    <None Remove="Core\Transformation\OptumExtended\Definitions\MEDICAL_CLAIMS.xml" />
+    <None Remove="Core\Transformation\OptumExtended\Definitions\MED_DIAGNOSIS.xml" />
+    <None Remove="Core\Transformation\OptumExtended\Definitions\MED_PROCEDURE.xml" />
+    <None Remove="Core\Transformation\OptumExtended\Definitions\MEMBER_CONTINUOUS_ENROLLMENT.xml" />
+    <None Remove="Core\Transformation\OptumExtended\Definitions\RX_CLAIMS.xml" />
+    <None Remove="Core\Transformation\OptumExtended\Lookups\CMS.sql" />
+    <None Remove="Core\Transformation\OptumExtended\Lookups\CMSPlaceOfService.sql" />
+    <None Remove="Core\Transformation\OptumExtended\Lookups\ConditionICD10.sql" />
+    <None Remove="Core\Transformation\OptumExtended\Lookups\ConditionICD9.sql" />
+    <None Remove="Core\Transformation\OptumExtended\Lookups\DeathCodes.sql" />
+    <None Remove="Core\Transformation\OptumExtended\Lookups\DeathCodesICD10.sql" />
+    <None Remove="Core\Transformation\OptumExtended\Lookups\DischargeTo.sql" />
+    <None Remove="Core\Transformation\OptumExtended\Lookups\DRG.sql" />
+    <None Remove="Core\Transformation\OptumExtended\Lookups\DrgDeathCodes.sql" />
+    <None Remove="Core\Transformation\OptumExtended\Lookups\DrugRx.sql" />
+    <None Remove="Core\Transformation\OptumExtended\Lookups\Lab.sql" />
+    <None Remove="Core\Transformation\OptumExtended\Lookups\Lab_Units.sql" />
+    <None Remove="Core\Transformation\OptumExtended\Lookups\Modifier.sql" />
+    <None Remove="Core\Transformation\OptumExtended\Lookups\Procedure.sql" />
+    <None Remove="Core\Transformation\OptumExtended\Lookups\ProcedureICD10.sql" />
+    <None Remove="Core\Transformation\OptumExtended\Lookups\ProcedureICD9.sql" />
+    <None Remove="Core\Transformation\OptumExtended\Lookups\RevenueCode.sql" />
+    <None Remove="Core\Transformation\OptumExtended\Lookups\SourcetoValue.sql" />
+    <None Remove="Core\Transformation\OptumExtended\Lookups\Specialty.sql" />
+    <None Remove="Core\Transformation\OptumExtended\Lookups\ValueAsConcept.sql" />
+    <None Remove="Core\Transformation\OptumPanther\Batch.sql" />
+    <None Remove="Core\Transformation\OptumPanther\CdmSource.sql" />
+    <None Remove="Core\Transformation\OptumPanther\Definitions\care_area.xml" />
+    <None Remove="Core\Transformation\OptumPanther\Definitions\diagnosis.xml" />
+    <None Remove="Core\Transformation\OptumPanther\Definitions\encounter.xml" />
+    <None Remove="Core\Transformation\OptumPanther\Definitions\immunization.xml" />
+    <None Remove="Core\Transformation\OptumPanther\Definitions\insurance.xml" />
+    <None Remove="Core\Transformation\OptumPanther\Definitions\labs.xml" />
+    <None Remove="Core\Transformation\OptumPanther\Definitions\L_LOCATION.xml" />
+    <None Remove="Core\Transformation\OptumPanther\Definitions\L_PROVIDER.xml" />
+    <None Remove="Core\Transformation\OptumPanther\Definitions\medication_administrations.xml" />
+    <None Remove="Core\Transformation\OptumPanther\Definitions\microbiology.xml" />
+    <None Remove="Core\Transformation\OptumPanther\Definitions\nlp_biomarker.xml" />
+    <None Remove="Core\Transformation\OptumPanther\Definitions\nlp_drug_rationale.xml" />
+    <None Remove="Core\Transformation\OptumPanther\Definitions\nlp_measurements.xml" />
+    <None Remove="Core\Transformation\OptumPanther\Definitions\nlp_sds.xml" />
+    <None Remove="Core\Transformation\OptumPanther\Definitions\nlp_sds_family.xml" />
+    <None Remove="Core\Transformation\OptumPanther\Definitions\observations.xml" />
+    <None Remove="Core\Transformation\OptumPanther\Definitions\onc_biomarker.xml" />
+    <None Remove="Core\Transformation\OptumPanther\Definitions\onc_characteristic.xml" />
+    <None Remove="Core\Transformation\OptumPanther\Definitions\onc_evaluation_system.xml" />
+    <None Remove="Core\Transformation\OptumPanther\Definitions\onc_lines_of_therapy.xml" />
+    <None Remove="Core\Transformation\OptumPanther\Definitions\onc_metastatic_location.xml" />
+    <None Remove="Core\Transformation\OptumPanther\Definitions\onc_neoplasm_histology.xml" />
+    <None Remove="Core\Transformation\OptumPanther\Definitions\onc_stage.xml" />
+    <None Remove="Core\Transformation\OptumPanther\Definitions\onc_treatment_response.xml" />
+    <None Remove="Core\Transformation\OptumPanther\Definitions\onc_tumor_grade.xml" />
+    <None Remove="Core\Transformation\OptumPanther\Definitions\onc_tumor_node_metastasis.xml" />
+    <None Remove="Core\Transformation\OptumPanther\Definitions\onc_tumor_progression.xml" />
+    <None Remove="Core\Transformation\OptumPanther\Definitions\onc_tumor_size.xml" />
+    <None Remove="Core\Transformation\OptumPanther\Definitions\patient.xml" />
+    <None Remove="Core\Transformation\OptumPanther\Definitions\patient_onco.xml" />
+    <None Remove="Core\Transformation\OptumPanther\Definitions\patient_reported_meds.xml" />
+    <None Remove="Core\Transformation\OptumPanther\Definitions\prescriptions_written.xml" />
+    <None Remove="Core\Transformation\OptumPanther\Definitions\procedure.xml" />
+    <None Remove="Core\Transformation\OptumPanther\Lookups\Admitting.sql" />
+    <None Remove="Core\Transformation\OptumPanther\Lookups\CMSPlaceOfService.sql" />
+    <None Remove="Core\Transformation\OptumPanther\Lookups\ConditionFromProcedure.sql" />
+    <None Remove="Core\Transformation\OptumPanther\Lookups\ConditionIcd10.sql" />
+    <None Remove="Core\Transformation\OptumPanther\Lookups\ConditionIcd9.sql" />
+    <None Remove="Core\Transformation\OptumPanther\Lookups\ConditionSNOMED.sql" />
+    <None Remove="Core\Transformation\OptumPanther\Lookups\DischargeTo.sql" />
+    <None Remove="Core\Transformation\OptumPanther\Lookups\Drug.sql" />
+    <None Remove="Core\Transformation\OptumPanther\Lookups\DrugNlp.sql" />
+    <None Remove="Core\Transformation\OptumPanther\Lookups\EhrOncbm.sql" />
+    <None Remove="Core\Transformation\OptumPanther\Lookups\EhrOncchr.sql" />
+    <None Remove="Core\Transformation\OptumPanther\Lookups\EhrOncevs.sql" />
+    <None Remove="Core\Transformation\OptumPanther\Lookups\EhrOnclot.sql" />
+    <None Remove="Core\Transformation\OptumPanther\Lookups\EhrOncmet.sql" />
+    <None Remove="Core\Transformation\OptumPanther\Lookups\EhrOncnhc.sql" />
+    <None Remove="Core\Transformation\OptumPanther\Lookups\EhrOncstg.sql" />
+    <None Remove="Core\Transformation\OptumPanther\Lookups\EhrOnctgr.sql" />
+    <None Remove="Core\Transformation\OptumPanther\Lookups\EhrOnctnm.sql" />
+    <None Remove="Core\Transformation\OptumPanther\Lookups\EhrVax.sql" />
+    <None Remove="Core\Transformation\OptumPanther\Lookups\Icd9Proc.sql" />
+    <None Remove="Core\Transformation\OptumPanther\Lookups\LabNam.sql" />
+    <None Remove="Core\Transformation\OptumPanther\Lookups\LabRes.sql" />
+    <None Remove="Core\Transformation\OptumPanther\Lookups\Lab_Units.sql" />
+    <None Remove="Core\Transformation\OptumPanther\Lookups\Nlpm.sql" />
+    <None Remove="Core\Transformation\OptumPanther\Lookups\Obtype.sql" />
+    <None Remove="Core\Transformation\OptumPanther\Lookups\Operators.sql" />
+    <None Remove="Core\Transformation\OptumPanther\Lookups\RevenueCode.sql" />
+    <None Remove="Core\Transformation\OptumPanther\Lookups\Route.sql" />
+    <None Remove="Core\Transformation\OptumPanther\Lookups\Specialty.sql" />
+    <None Remove="Core\Transformation\OptumPanther\Lookups\Visits.sql" />
+    <None Remove="Core\Transformation\OptumPanther\CombinedLookups\DaysSupply.xml" />
+    <None Remove="Core\Transformation\OptumPanther\OncoBatch.sql" />
+    <None Remove="Core\Transformation\PregnancyAlgorithm\Definitions\DrugExposures.xml" />
+    <None Remove="Core\Transformation\PregnancyAlgorithm\Definitions\Measurements.xml" />
+    <None Remove="Core\Transformation\PregnancyAlgorithm\Definitions\Observations.xml" />
+    <None Remove="Core\Transformation\PregnancyAlgorithm\Definitions\Person.xml" />
+    <None Remove="Core\Transformation\PregnancyAlgorithm\Definitions\ProcedureOccurrences.xml" />
+    <None Remove="Core\Transformation\Premier\Batch.sql" />
+    <None Remove="Core\Transformation\Premier\CdmSource.sql" />
+    <None Remove="Core\Transformation\Premier\Definitions\genlab.xml" />
+    <None Remove="Core\Transformation\Premier\Definitions\lab_result.xml" />
+    <None Remove="Core\Transformation\Premier\Definitions\L_CARE_SITE.xml" />
+    <None Remove="Core\Transformation\Premier\Definitions\L_LOCATION.xml" />
+    <None Remove="Core\Transformation\Premier\Definitions\L_PROVIDER.xml" />
+    <None Remove="Core\Transformation\Premier\Definitions\pat.xml" />
+    <None Remove="Core\Transformation\Premier\Definitions\patbill.xml" />
+    <None Remove="Core\Transformation\Premier\Definitions\patcpt.xml" />
+    <None Remove="Core\Transformation\Premier\Definitions\paticd_diag.xml" />
+    <None Remove="Core\Transformation\Premier\Definitions\paticd_proc.xml" />
+    <None Remove="Core\Transformation\Premier\Definitions\payor.xml" />
+    <None Remove="Core\Transformation\Premier\Definitions\vitals.xml" />
+    <None Remove="Core\Transformation\Premier\Lookups\Condition.sql" />
+    <None Remove="Core\Transformation\Premier\Lookups\ConditionIcd.sql" />
+    <None Remove="Core\Transformation\Premier\Lookups\DeathCodes.sql" />
+    <None Remove="Core\Transformation\Premier\Lookups\Device.sql" />
+    <None Remove="Core\Transformation\Premier\Lookups\Drg.sql" />
+    <None Remove="Core\Transformation\Premier\Lookups\Drug.sql" />
+    <None Remove="Core\Transformation\Premier\Lookups\DrugCpt.sql" />
+    <None Remove="Core\Transformation\Premier\Lookups\Lab.sql" />
+    <None Remove="Core\Transformation\Premier\Lookups\lab_result.sql" />
+    <None Remove="Core\Transformation\Premier\Lookups\Lab_Units.sql" />
+    <None Remove="Core\Transformation\Premier\Lookups\Measurement.sql" />
+    <None Remove="Core\Transformation\Premier\Lookups\Observation.sql" />
+    <None Remove="Core\Transformation\Premier\Lookups\ObservationICD10.sql" />
+    <None Remove="Core\Transformation\Premier\Lookups\ObservationICD9.sql" />
+    <None Remove="Core\Transformation\Premier\Lookups\Procedure.sql" />
+    <None Remove="Core\Transformation\Premier\Lookups\RevenueCode.sql" />
+    <None Remove="Core\Transformation\Premier\Lookups\snomed.sql" />
+    <None Remove="Core\Transformation\Premier\Lookups\Specialty.sql" />
+    <None Remove="Core\Transformation\HealthVerity\Batch.sql" />
+    <None Remove="Core\Transformation\HealthVerity\CdmSource.sql" />
+    <None Remove="Core\Transformation\Truven\Batch.sql" />
+    <None Remove="Core\Transformation\Truven\CdmSourceCCAE.sql" />
+    <None Remove="Core\Transformation\Truven\CdmSourceMDCD.sql" />
+    <None Remove="Core\Transformation\Truven\CdmSourceMDCR.sql" />
+    <None Remove="Core\Transformation\Truven\Definitions\DRUG_CLAIMS.xml" />
+    <None Remove="Core\Transformation\Truven\Definitions\ENROLLMENT_DETAIL.xml" />
+    <None Remove="Core\Transformation\Truven\Definitions\ENROLLMENT_DETAIL_MDCD.xml" />
+    <None Remove="Core\Transformation\Truven\Definitions\FACILITY_HEADER.xml" />
+    <None Remove="Core\Transformation\Truven\Definitions\HEALTH_RISK_ASSESSMENT.xml" />
+    <None Remove="Core\Transformation\Truven\Definitions\INPATIENT_ADMISSIONS.xml" />
+    <None Remove="Core\Transformation\Truven\Definitions\INPATIENT_SERVICES.xml" />
+    <None Remove="Core\Transformation\Truven\Definitions\LAB.xml" />
+    <None Remove="Core\Transformation\Truven\Definitions\LONG_TERM_CARE.xml" />
+    <None Remove="Core\Transformation\Truven\Definitions\L_LOCATION.xml" />
+    <None Remove="Core\Transformation\Truven\Definitions\L_PROVIDER.xml" />
+    <None Remove="Core\Transformation\Truven\Definitions\L_PROVIDER_MDCD.xml" />
+    <None Remove="Core\Transformation\Truven\Definitions\OUTPATIENT_SERVICES.xml" />
+    <None Remove="Core\Transformation\Truven\Lookups\CMS.sql" />
+    <None Remove="Core\Transformation\Truven\Lookups\CMSPlaceOfService.sql" />
+    <None Remove="Core\Transformation\Truven\Lookups\Condition.sql" />
+    <None Remove="Core\Transformation\Truven\Lookups\Condition_icd10.sql" />
+    <None Remove="Core\Transformation\Truven\Lookups\Death.sql" />
+    <None Remove="Core\Transformation\Truven\Lookups\DischargeTo.sql" />
+    <None Remove="Core\Transformation\Truven\Lookups\Drg.sql" />
+    <None Remove="Core\Transformation\Truven\Lookups\Drug.sql" />
+    <None Remove="Core\Transformation\Truven\Lookups\HRA.sql" />
+    <None Remove="Core\Transformation\Truven\Lookups\Lab.sql" />
+    <None Remove="Core\Transformation\Truven\Lookups\Modifier.sql" />
+    <None Remove="Core\Transformation\Truven\Lookups\Procedure.sql" />
+    <None Remove="Core\Transformation\Truven\Lookups\Revenue.sql" />
+    <None Remove="Core\Transformation\Truven\Lookups\Specialty.sql" />
+    <None Remove="Core\Transformation\Truven\Lookups\Units.sql" />
+    <None Remove="Core\Transformation\Truven\Lookups\ValueAsConcept.sql" />
+    <None Remove="Core\Transformation\Truven\Lookups\Visits.sql" />
+    <None Remove="PregnancyAlgorithm\npa_pregnancy_concepts.csv" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Common\MSSQL\AddUsers.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MSSQL\CreateChunkTable.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MSSQL\CreateDestination.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MSSQL\CreateIndexesChunkTable.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MSSQL\DropChunkTable.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MSSQL\v5.2\CopyVocabulary.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MSSQL\v5.2\CreateIndexes.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MSSQL\v5.2\CreateTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MSSQL\v5.2\DropTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MSSQL\v5.2\DropVocabularyTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MSSQL\v5.2\TruncateLookup.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MSSQL\v5.2\TruncateTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MSSQL\v5.2\TruncateWithoutLookupTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MSSQL\v5.3\CopyVocabulary.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MSSQL\v5.3\CreateIndexes.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MSSQL\v5.3\CreateTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MSSQL\v5.3\DropTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MSSQL\v5.3\DropVocabularyTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MSSQL\v5.3\TruncateLookup.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MSSQL\v5.3\TruncateTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MSSQL\v5.3\TruncateWithoutLookupTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MSSQL\v6.0\CopyVocabulary.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MSSQL\v6.0\CreateIndexes.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MSSQL\v6.0\CreateTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MSSQL\v6.0\DropTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MSSQL\v6.0\DropVocabularyTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MSSQL\v6.0\TruncateLookup.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MSSQL\v6.0\TruncateTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MSSQL\v6.0\TruncateWithoutLookupTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MySql\AddUsers.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MySql\CreateChunkTable.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MySql\CreateDestination.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MySql\CreateIndexesChunkTable.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MySql\DropChunkTable.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MySql\v5.3\CopyVocabulary.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MySql\v5.3\CreateIndexes.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MySql\v5.3\CreateTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MySql\v5.3\DropTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MySql\v5.3\DropVocabularyTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MySql\v5.3\TruncateLookup.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MySql\v5.3\TruncateTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\MySql\v5.3\TruncateWithoutLookupTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\AddUsers.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\CreateChunkTable.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\CreateDestination.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\CreateIndexesChunkTable.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\DropChunkTable.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\v5.3\CopyVocabulary.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\v5.3\CreateIndexes.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\v5.3\CreateTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\v5.3\DropTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\v5.3\DropVocabularyTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\v5.3\TruncateLookup.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\v5.3\TruncateTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\v5.3\TruncateWithoutLookupTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\v5.3\Vocabulary\concept.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\v5.3\Vocabulary\concept_ancestor.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\v5.3\Vocabulary\concept_class.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\v5.3\Vocabulary\concept_relationship.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\v5.3\Vocabulary\concept_synonym.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\v5.3\Vocabulary\domain.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\v5.3\Vocabulary\drug_strength.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\v5.3\Vocabulary\relationship.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\v5.3\Vocabulary\source_to_concept_map.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\v5.3\Vocabulary\vocabulary.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\v6.0\CopyVocabulary.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\v6.0\CreateIndexes.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\v6.0\CreateTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\v6.0\DropTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\v6.0\DropVocabularyTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\v6.0\TruncateLookup.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\v6.0\TruncateTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\v6.0\TruncateWithoutLookupTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\v6.0\Vocabulary\concept.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\v6.0\Vocabulary\concept_ancestor.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\v6.0\Vocabulary\concept_class.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\v6.0\Vocabulary\concept_relationship.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\v6.0\Vocabulary\concept_synonym.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\v6.0\Vocabulary\domain.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\v6.0\Vocabulary\drug_strength.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\v6.0\Vocabulary\relationship.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\v6.0\Vocabulary\source_to_concept_map.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Postgre\v6.0\Vocabulary\vocabulary.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\AddUsers.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\CreateChunkTable.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\CreateDestination.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\CreateIndexesChunkTable.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\DropChunkTable.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v5.2\CopyVocabulary.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v5.2\CreateIndexes.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v5.2\CreateTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v5.2\DropTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v5.2\DropVocabularyTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v5.2\TruncateLookup.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v5.2\TruncateTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v5.2\TruncateWithoutLookupTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v5.2\Vocabulary\concept.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v5.2\Vocabulary\concept_ancestor.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v5.2\Vocabulary\concept_class.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v5.2\Vocabulary\concept_relationship.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v5.2\Vocabulary\concept_synonym.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v5.2\Vocabulary\domain.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v5.2\Vocabulary\drug_strength.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v5.2\Vocabulary\relationship.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v5.2\Vocabulary\source_to_concept_map.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v5.2\Vocabulary\vocabulary.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v5.3\CopyVocabulary.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v5.3\CreateIndexes.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v5.3\CreateTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v5.3\DropTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v5.3\DropVocabularyTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v5.3\TruncateLookup.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v5.3\TruncateTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v5.3\TruncateWithoutLookupTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v5.3\Vocabulary\concept.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v5.3\Vocabulary\concept_ancestor.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v5.3\Vocabulary\concept_class.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v5.3\Vocabulary\concept_relationship.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v5.3\Vocabulary\concept_synonym.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v5.3\Vocabulary\domain.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v5.3\Vocabulary\drug_strength.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v5.3\Vocabulary\relationship.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v5.3\Vocabulary\source_to_concept_map.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v5.3\Vocabulary\vocabulary.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v6.0\CopyVocabulary.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v6.0\CreateIndexes.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v6.0\CreateTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v6.0\DropTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v6.0\DropVocabularyTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v6.0\TruncateLookup.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v6.0\TruncateTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v6.0\TruncateWithoutLookupTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v6.0\Vocabulary\concept.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v6.0\Vocabulary\concept_ancestor.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v6.0\Vocabulary\concept_class.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v6.0\Vocabulary\concept_relationship.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v6.0\Vocabulary\concept_synonym.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v6.0\Vocabulary\domain.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v6.0\Vocabulary\drug_strength.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v6.0\Vocabulary\relationship.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v6.0\Vocabulary\source_to_concept_map.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Redshift\v6.0\Vocabulary\vocabulary.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Spectrum\CreateDestination.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Spectrum\CreateTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Spectrum\DropTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Common\Spectrum\v6.0\CreateTables.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Lookups\Base.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Lookups\PregnancyDrug.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CprdAurum\Batch.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CprdAurum\Definitions\drug.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CprdAurum\Definitions\L_CARE_SITE.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CprdAurum\Definitions\L_LOCATION.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CprdAurum\Definitions\L_PROVIDER.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CprdAurum\Definitions\consultation.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CprdAurum\Definitions\observation.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CprdAurum\Definitions\patient.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CprdAurum\Definitions\referral.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CprdAurum\Lookups\Drug.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CprdAurum\Lookups\Read_Snomed.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CprdAurum\Lookups\Units.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CprdHES\Batch.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CprdHES\Definitions\augmented_care_periods.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CprdHES\Definitions\critical_care.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CprdHES\Definitions\diagnoses_episode.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CprdHES\Definitions\diagnoses_hospitalisation.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CprdHES\Definitions\diagnoses_primary_hospitalisation.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CprdHES\Definitions\episodes.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CprdHES\Definitions\hospital.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CprdHES\Definitions\L_PROVIDER.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CprdHES\Definitions\patient.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CprdHES\Definitions\procedures.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CprdHES\Lookups\icd10.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CprdHES\Lookups\opcs.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CPRD\Batch.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CPRD\CdmSource.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CPRD\CohortDefinition.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CPRD\Definitions\Additional.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CPRD\Definitions\Clinical.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CPRD\Definitions\Immunisation.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CPRD\Definitions\L_CARE_SITE.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CPRD\Definitions\L_LOCATION.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CPRD\Definitions\L_PROVIDER.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CPRD\Definitions\Patient.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CPRD\Definitions\Referral.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CPRD\Definitions\Test.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CPRD\Definitions\Therapy.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CPRD\Lookups\Additional.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CPRD\Lookups\Drug.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CPRD\Lookups\Read_Code.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CPRD\Lookups\ValueAsConceptId.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CPRD\Lookups\Specialty.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CPRD\Lookups\Test_Ent.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CPRD\Lookups\Units.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Era\Definitions\DrugExposures.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Era\Definitions\Person.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Era\Lookups\Ingredient.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\PregnancyAlgorithm\Batch.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\PregnancyAlgorithm\Definitions\Person.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\PregnancyAlgorithm\Definitions\DrugExposures.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\PregnancyAlgorithm\Definitions\Measurements.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\PregnancyAlgorithm\Definitions\Observations.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\PregnancyAlgorithm\Definitions\ProcedureOccurrences.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\PregnancyAlgorithm\Definitions\ConditionOccurrence.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\ERA\Batch.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\ERA\Definitions\ConditionOccurrence.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\HealthVerity\Definitions\emr_enc.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\HealthVerity\Definitions\lab_tests.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\HealthVerity\Definitions\emr_medctn.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\HealthVerity\Definitions\emr_diag.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\HealthVerity\Definitions\cdm_diag.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\HealthVerity\Definitions\emr_clin_obsn.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\HealthVerity\Definitions\enrollment.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\HealthVerity\Definitions\cdm_enc_dtl.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\HealthVerity\Definitions\L_PROVIDER.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\HealthVerity\Definitions\emr_proc.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\HealthVerity\Definitions\pharmacy_claims_vaccine.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\HealthVerity\Definitions\pharmacy_claims.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\HealthVerity\Definitions\emr_lab_test.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\HealthVerity\Lookups\CMSPlaceOfService.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\HealthVerity\Lookups\loinc.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\HealthVerity\Lookups\rxnorm.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\HealthVerity\Lookups\cvx.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\HealthVerity\Lookups\icd9.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\HealthVerity\Lookups\Specialty.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\HealthVerity\Lookups\ub04.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\HealthVerity\Lookups\cms.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\HealthVerity\Lookups\icd10.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\HealthVerity\Lookups\ndc.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\HealthVerity\Lookups\procedure.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\HealthVerity\Lookups\units.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\HealthVerity\Lookups\ValueAsConceptId.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\JMDC\Batch.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\JMDC\CdmSource.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\JMDC\Definitions\Annual_health_checkups.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\JMDC\Definitions\Claim.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\JMDC\Definitions\Diagnosis.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\JMDC\Definitions\Drug.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\JMDC\Definitions\Enrollment.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\JMDC\Definitions\L_CARE_SITE.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\JMDC\Definitions\L_PROVIDER.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\JMDC\Definitions\Procedure.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\JMDC\Lookups\JMDC-ICD10-MapsToValue.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\JMDC\Lookups\JMDC-ICD10-SNOMED.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\JMDC\Lookups\JMDC-JNJProcedure.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\JMDC\Lookups\JMDC-ICDProcedure.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\JMDC\Lookups\JMDC_DRUGCODE_RXNORM.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\JMDC\Lookups\JMDC_SPECIALTY.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumExtended\Batch.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumExtended\CdmSourceDOD.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumExtended\CdmSourceSES.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumExtended\Definitions\DEATH.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumExtended\Definitions\HRA.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumExtended\Definitions\INPATIENT_CONFINEMENT.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumExtended\Definitions\LAB_RESULTS.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumExtended\Definitions\L_CARE_SITE.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumExtended\Definitions\L_LOCATION.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumExtended\Definitions\L_PROVIDER.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumExtended\Definitions\MEDICAL_CLAIMS.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumExtended\Definitions\MED_DIAGNOSIS.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumExtended\Definitions\MED_PROCEDURE.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumExtended\Definitions\MEMBER_CONTINUOUS_ENROLLMENT.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumExtended\Definitions\RX_CLAIMS.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumExtended\Lookups\CMS.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumExtended\Lookups\CMSPlaceOfService.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumExtended\Lookups\ConditionICD10.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumExtended\Lookups\ConditionICD9.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumExtended\Lookups\DeathCodes.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumExtended\Lookups\DeathCodesICD10.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumExtended\Lookups\DischargeTo.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumExtended\Lookups\DRG.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumExtended\Lookups\DrgDeathCodes.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumExtended\Lookups\DrugRx.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumExtended\Lookups\ValueAsConcept.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumExtended\Lookups\Lab.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumExtended\Lookups\Lab_Units.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumExtended\Lookups\Modifier.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumExtended\Lookups\Procedure.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumExtended\Lookups\ProcedureICD10.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumExtended\Lookups\ProcedureICD9.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumExtended\Lookups\RevenueCode.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumExtended\Lookups\SourcetoValue.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumExtended\Lookups\Specialty.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Definitions\onc_tumor_progression.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Definitions\onc_tumor_size.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\OncoBatch.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Batch.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\CdmSource.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Definitions\care_area.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Definitions\diagnosis.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Definitions\encounter.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Definitions\immunization.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Definitions\insurance.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Definitions\labs.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Definitions\L_LOCATION.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Definitions\L_PROVIDER.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Definitions\medication_administrations.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Definitions\microbiology.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Definitions\nlp_biomarker.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Definitions\nlp_drug_rationale.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Definitions\nlp_measurements.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Definitions\nlp_sds.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Definitions\nlp_sds_family.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Definitions\observations.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Definitions\onc_biomarker.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Definitions\onc_characteristic.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Definitions\onc_evaluation_system.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Definitions\onc_lines_of_therapy.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Definitions\onc_metastatic_location.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Definitions\onc_neoplasm_histology.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Definitions\onc_stage.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Definitions\onc_treatment_response.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Definitions\onc_tumor_grade.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Definitions\onc_tumor_node_metastasis.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Definitions\patient_onco.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Definitions\patient.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Definitions\patient_reported_meds.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Definitions\prescriptions_written.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Definitions\procedure.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Lookups\Admitting.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Lookups\CMSPlaceOfService.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Lookups\EhrOncbm.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Lookups\EhrOncchr.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Lookups\EhrOncevs.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Lookups\EhrOnclot.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Lookups\EhrOncmet.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Lookups\EhrOncnhc.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Lookups\EhrOncstg.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Lookups\EhrOnctgr.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Lookups\EhrOnctnm.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Lookups\Operators.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Lookups\EhrVax.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Lookups\Icd9Proc.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Lookups\ConditionFromProcedure.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Lookups\ConditionIcd10.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Lookups\ConditionIcd9.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Lookups\ConditionSNOMED.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Lookups\DischargeTo.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Lookups\Drug.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Lookups\DrugNlp.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Lookups\LabNam.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Lookups\LabRes.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Lookups\Lab_Units.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Lookups\Nlpm.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Lookups\Obtype.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Lookups\RevenueCode.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Lookups\Route.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Lookups\Specialty.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\Lookups\Visits.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumPanther\CombinedLookups\DaysSupply.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Premier\Batch.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Premier\CdmSource.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Premier\Definitions\vitals.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Premier\Definitions\genlab.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Premier\Definitions\lab_result.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Premier\Definitions\L_CARE_SITE.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Premier\Definitions\L_LOCATION.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Premier\Definitions\L_PROVIDER.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Premier\Definitions\pat.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Premier\Definitions\patbill.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Premier\Definitions\patcpt.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Premier\Definitions\paticd_diag.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Premier\Definitions\paticd_proc.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Premier\Definitions\payor.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Premier\Lookups\Condition.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Premier\Lookups\ConditionIcd.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Premier\Lookups\Snomed.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Premier\Lookups\DeathCodes.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Premier\Lookups\Device.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Premier\Lookups\Drg.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Premier\Lookups\DrugCpt.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Premier\Lookups\Drug.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Premier\Lookups\Lab_Result.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Premier\Lookups\Lab.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Premier\Lookups\Lab_Units.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Premier\Lookups\Measurement.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Premier\Lookups\Observation.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Premier\Lookups\ObservationICD10.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Premier\Lookups\ObservationICD9.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Premier\Lookups\Procedure.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Premier\Lookups\RevenueCode.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Premier\Lookups\Specialty.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\HealthVerity\Batch.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\HealthVerity\CdmSource.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\HealthVerity\Definitions\medical_claims.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Truven\Batch.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Truven\CdmSourceCCAE.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Truven\CdmSourceMDCD.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Truven\CdmSourceMDCR.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Truven\Definitions\DRUG_CLAIMS.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Truven\Definitions\ENROLLMENT_DETAIL.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Truven\Definitions\ENROLLMENT_DETAIL_MDCD.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Truven\Definitions\FACILITY_HEADER.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Truven\Definitions\HEALTH_RISK_ASSESSMENT.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Truven\Definitions\INPATIENT_ADMISSIONS.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Truven\Definitions\INPATIENT_SERVICES.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Truven\Definitions\LAB.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Truven\Definitions\LONG_TERM_CARE.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Truven\Definitions\L_LOCATION.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Truven\Definitions\L_PROVIDER.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Truven\Definitions\L_PROVIDER_MDCD.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Truven\Definitions\OUTPATIENT_SERVICES.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Truven\Lookups\CMS.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Truven\Lookups\CMSPlaceOfService.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Truven\Lookups\Condition.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Truven\Lookups\Condition_icd10.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Truven\Lookups\Death.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Truven\Lookups\DischargeTo.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Truven\Lookups\Drg.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Truven\Lookups\Drug.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Truven\Lookups\HRA.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Truven\Lookups\Lab.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Truven\Lookups\Modifier.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Truven\Lookups\Procedure.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Truven\Lookups\Revenue.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Truven\Lookups\Specialty.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Truven\Lookups\Units.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Truven\Lookups\ValueAsConcept.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\Truven\Lookups\Visits.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="PregnancyAlgorithm\npa_pregnancy_concepts.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.S3" Version="3.7.306" />
+    <PackageReference Include="CsvHelper" Version="31.0.2" />
+  </ItemGroup>
+
+</Project>
