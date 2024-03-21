@@ -373,6 +373,11 @@ AND TARGET_INVALID_REASON IS NULL
 </p><p>
 when lab_test_loinc_code = ‘’, then map to SNOMED using <strong><code>regexp_replace(lab_test, '\\(.*\\)', '') = c.concept_name and c. standard_concept ='S' and c.vocabulary_id ='SNOMED'</code></strong>
 </p><p>
+</br>
+if lab_test_loinc_code = 'LP17803-5-15' map to 4179840 (Rh blood group typing)
+</br>
+if lab_test_loinc_code = 'LP30736-0-3' map to 3045688 (Homocysteine cysteine disulfide [Moles/volume] in Serum or Plasma)
+</br>
 if there’s still no standard concept, set to 0
    </p></td>
    <td> 
@@ -856,6 +861,8 @@ WHERE PAT.PAT_KEY = GEN_LAB.PAT_KEY
 
 
 ## Change Log:
+### 2024.03.21: 
+ Added mapping for genlab.lab_test_loinc_code ('LP17803-5-15' and 'LP30736-0-3')
 ### 2024.03.12: 
  Moved Surgery (concept_id=3016562) to the Observation table
 ### 2021.08.11: 
