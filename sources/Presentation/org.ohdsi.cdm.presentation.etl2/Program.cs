@@ -50,6 +50,8 @@ namespace org.ohdsi.cdm.presentation.etl
 
             bool skipCdmsource = true;
 
+            string cdmEtlReference = string.Empty;
+
             var r = Parser.Default.ParseArguments<Options>(arguments)
                   .WithParsed<Options>(o =>
                   {
@@ -70,6 +72,7 @@ namespace org.ohdsi.cdm.presentation.etl
                       createNewBuildingId = o.CreateNewBuildingId.Value;
                       skipCdmsource = o.CdmSource.Value;
                       resumeChunkCreation = o.ResumeChunk.Value;
+                      cdmEtlReference = o.cdmEtlReference;
                   });
 
             if (r.Tag.ToString() != "Parsed")
@@ -266,7 +269,7 @@ namespace org.ohdsi.cdm.presentation.etl
 
                     if (Settings.Current.Building.Cdm == CdmVersions.V54)
                     {
-                        var reader = new CdmSourceDataReader54(vendor, DateTime.Parse(sourceReleaseDate), vocabularyVersion);
+                        var reader = new CdmSourceDataReader54(vendor, DateTime.Parse(sourceReleaseDate), vocabularyVersion, cdmEtlReference);
                         using var stream = reader.GetStreamCsv();
                         SaveToS3(stream, 0, "cdmCSV", "CDM_SOURCE", "gz", vendor, Settings.Current.Building.Id.Value);
                     }

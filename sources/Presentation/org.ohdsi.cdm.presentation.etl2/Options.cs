@@ -54,5 +54,9 @@ namespace org.ohdsi.cdm.presentation.etl
 
         [Option("new", Required = true)]
         public bool? CreateNewBuildingId { get; set; }
+
+        [Option("etl_ref")]
+        public string cdmEtlReference { get; set; }
+        
     }
 }
