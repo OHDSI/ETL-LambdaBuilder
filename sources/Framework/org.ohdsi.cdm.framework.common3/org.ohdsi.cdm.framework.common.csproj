@@ -311,18 +311,6 @@
     <None Remove="Core\Transformation\OptumPanther\Definitions\nlp_sds.xml" />
     <None Remove="Core\Transformation\OptumPanther\Definitions\nlp_sds_family.xml" />
     <None Remove="Core\Transformation\OptumPanther\Definitions\observations.xml" />
-    <None Remove="Core\Transformation\OptumPanther\Definitions\onc_biomarker.xml" />
-    <None Remove="Core\Transformation\OptumPanther\Definitions\onc_characteristic.xml" />
-    <None Remove="Core\Transformation\OptumPanther\Definitions\onc_evaluation_system.xml" />
-    <None Remove="Core\Transformation\OptumPanther\Definitions\onc_lines_of_therapy.xml" />
-    <None Remove="Core\Transformation\OptumPanther\Definitions\onc_metastatic_location.xml" />
-    <None Remove="Core\Transformation\OptumPanther\Definitions\onc_neoplasm_histology.xml" />
-    <None Remove="Core\Transformation\OptumPanther\Definitions\onc_stage.xml" />
-    <None Remove="Core\Transformation\OptumPanther\Definitions\onc_treatment_response.xml" />
-    <None Remove="Core\Transformation\OptumPanther\Definitions\onc_tumor_grade.xml" />
-    <None Remove="Core\Transformation\OptumPanther\Definitions\onc_tumor_node_metastasis.xml" />
-    <None Remove="Core\Transformation\OptumPanther\Definitions\onc_tumor_progression.xml" />
-    <None Remove="Core\Transformation\OptumPanther\Definitions\onc_tumor_size.xml" />
     <None Remove="Core\Transformation\OptumPanther\Definitions\patient.xml" />
     <None Remove="Core\Transformation\OptumPanther\Definitions\patient_onco.xml" />
     <None Remove="Core\Transformation\OptumPanther\Definitions\patient_reported_meds.xml" />
@@ -1283,12 +1271,6 @@
     <Content Include="Core\Transformation\OptumExtended\Lookups\Specialty.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Core\Transformation\OptumPanther\Definitions\onc_tumor_progression.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Core\Transformation\OptumPanther\Definitions\onc_tumor_size.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Core\Transformation\OptumPanther\OncoBatch.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1344,36 +1326,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Core\Transformation\OptumPanther\Definitions\observations.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Core\Transformation\OptumPanther\Definitions\onc_biomarker.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Core\Transformation\OptumPanther\Definitions\onc_characteristic.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Core\Transformation\OptumPanther\Definitions\onc_evaluation_system.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Core\Transformation\OptumPanther\Definitions\onc_lines_of_therapy.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Core\Transformation\OptumPanther\Definitions\onc_metastatic_location.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Core\Transformation\OptumPanther\Definitions\onc_neoplasm_histology.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Core\Transformation\OptumPanther\Definitions\onc_stage.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Core\Transformation\OptumPanther\Definitions\onc_treatment_response.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Core\Transformation\OptumPanther\Definitions\onc_tumor_grade.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Core\Transformation\OptumPanther\Definitions\onc_tumor_node_metastasis.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Core\Transformation\OptumPanther\Definitions\patient_onco.xml">
