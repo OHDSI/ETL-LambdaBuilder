@@ -1,11 +1,17 @@
 ﻿<QueryDefinition>
 	<Query>
-    SELECT CAST('1' + RIGHT(medical_facility_id, LEN(medical_facility_id) - 1) AS BIGINT) AS provider_id,
-    medical_facility_id AS provider_source_value,
-    Medium_classification_of_department AS specialty_source_value,
-    CAST('1' + RIGHT(medical_facility_id, LEN(medical_facility_id) - 1) AS BIGINT) AS care_site_id
-    FROM {sc}.Medical_facility
-  </Query>
+		SELECT CAST('2' + RIGHT(physician_id, LENGTH(physician_id) - 1) AS BIGINT) AS provider_id,
+		physician_id AS provider_source_value,
+		medium_classification_of_department AS specialty_source_value,
+		0 AS care_site_id
+		FROM {sc}.Physician
+		union all
+		SELECT CAST('1' + RIGHT(institution_id, LENGTH(institution_id) - 1) AS BIGINT) AS provider_id,
+		institution_id AS provider_source_value,
+		medium_classification_of_department AS specialty_source_value,
+		CAST('1' + RIGHT(institution_id, LENGTH(institution_id) - 1) AS BIGINT) AS care_site_id
+		FROM {sc}.Institution
+	</Query>
 	<Providers>
 		<ProviderDefinition>
       <Id>provider_id</Id>

@@ -2,290 +2,281 @@
 	<Query>
 		SELECT
 		CAST(RIGHT(Member_ID, LEN(Member_ID) - 1) AS BIGINT) AS person_id,
-		date_of_health_checkup AS observation_date,
+		CAST(CAST(month_and_year_of_health_chechups AS VARCHAR(6)) + '15' AS DATE) AS observation_date,
 		--value_as_number
 		BMI,
-		ast as Got,
-		abdominal_circumference as Abdominal_girth,
-		systolic_bp as SBP,
-		diastolic_bp as DBP,
-		total_cholesterol as TC,
-		Triglyceride as TG,
-		alt as gpt,
+		abdominal_girth as Abdominal_girth,
+		sbp as SBP,
+		dbp as DBP,
+		tc as TC,
+		tg as TG,
+		gpt as gpt,
 
 		CASE
-		WHEN uric_protein_qualitative is NULL
+		WHEN urine_protein is NULL
 		THEN NULL
-		WHEN uric_protein_qualitative = 1
+		WHEN urine_protein = 1
 		THEN '-'
-		WHEN uric_protein_qualitative = 2
+		WHEN urine_protein = 2
 		THEN '-+'
-		WHEN uric_protein_qualitative = 3
+		WHEN urine_protein = 3
 		THEN '+'
-		WHEN uric_protein_qualitative = 4
+		WHEN urine_protein = 4
 		THEN '++'
-		WHEN uric_protein_qualitative = 5
+		WHEN urine_protein = 5
 		THEN '+++'
 		END AS Urine_protein,
 
 		CASE
-		WHEN uric_protein_qualitative is NULL
+		WHEN urine_protein is NULL
 		THEN NULL
-		WHEN uric_protein_qualitative = 1
+		WHEN urine_protein = 1
 		THEN 'Absent'
-		WHEN uric_protein_qualitative = 2
+		WHEN urine_protein = 2
 		THEN 'Equivocal'
-		WHEN uric_protein_qualitative = 3
+		WHEN urine_protein = 3
 		THEN '+'
-		WHEN uric_protein_qualitative = 4
+		WHEN urine_protein = 4
 		THEN '++'
-		WHEN uric_protein_qualitative = 5
+		WHEN urine_protein = 5
 		THEN '+++'
 		END AS Urine_protein_unit,
 
 		CASE
-		WHEN uric_protein_qualitative is NULL
+		WHEN urine_protein is NULL
 		THEN NULL
-		WHEN uric_protein_qualitative = 1
+		WHEN urine_protein = 1
 		THEN 4132135
-		WHEN uric_protein_qualitative = 2
+		WHEN urine_protein = 2
 		THEN 4172976
-		WHEN uric_protein_qualitative = 3
+		WHEN urine_protein = 3
 		THEN 4123508
-		WHEN uric_protein_qualitative = 4
+		WHEN urine_protein = 4
 		THEN 4126673
-		WHEN uric_protein_qualitative = 5
+		WHEN urine_protein = 5
 		THEN 4125547
 		END AS Urine_protein_unit_concept_id,
 
-		hdl_cholesterol as HDL_C,
-		ldl_cholesterol as LDL_C,
+		hdl_c as HDL_C,
+		ldl_c as LDL_C,
 
 		G_GT as G_GT,
 		Fasting_blood_sugar as Fasting_blood_sugar,
 		Casual_blood_sugar as Casual_blood_sugar,
 		HbA1c,
-		HCT as Hematocrit,
-		hemoglobin_content as Hemoglobin,
-		rbc_count as Red_blood_cell_count,
+		Hematocrit as Hematocrit,
+		hemoglobin as Hemoglobin,
+		red_blood_cell_count as Red_blood_cell_count,
 		Serum_uric_acid as Serum_uric_acid,
 		Serum_creatinine as Serum_creatinine,
 
 		--value_as_string
 		CASE
-		WHEN Urinary_sugar is NULL
+		WHEN Urine_sugar is NULL
 		THEN NULL
-		WHEN Urinary_sugar = 1
+		WHEN Urine_sugar = 1
 		THEN '-'
-		WHEN Urinary_sugar = 2
+		WHEN Urine_sugar = 2
 		THEN '-+'
-		WHEN Urinary_sugar = 3
+		WHEN Urine_sugar = 3
 		THEN '+'
-		WHEN Urinary_sugar = 4
+		WHEN Urine_sugar = 4
 		THEN '++'
-		WHEN Urinary_sugar = 5
+		WHEN Urine_sugar = 5
 		THEN '+++'
 		END AS Urine_sugar,
 
 		CASE
-		WHEN Urinary_sugar is NULL
+		WHEN Urine_sugar is NULL
 		THEN NULL
-		WHEN Urinary_sugar = 1
+		WHEN Urine_sugar = 1
 		THEN 'Absent'
-		WHEN Urinary_sugar = 2
+		WHEN Urine_sugar = 2
 		THEN 'Equivocal'
-		WHEN Urinary_sugar = 3
+		WHEN Urine_sugar = 3
 		THEN '+'
-		WHEN Urinary_sugar = 4
+		WHEN Urine_sugar = 4
 		THEN '++'
-		WHEN Urinary_sugar = 5
+		WHEN Urine_sugar = 5
 		THEN '+++'
 		END AS Urine_sugar_unit,
 
 		CASE
-		WHEN Urinary_sugar is NULL
+		WHEN Urine_sugar is NULL
 		THEN NULL
-		WHEN Urinary_sugar = 1
+		WHEN Urine_sugar = 1
 		THEN 4132135
-		WHEN Urinary_sugar = 2
+		WHEN Urine_sugar = 2
 		THEN 4172976
-		WHEN Urinary_sugar = 3
+		WHEN Urine_sugar = 3
 		THEN 4123508
-		WHEN Urinary_sugar = 4
+		WHEN Urine_sugar = 4
 		THEN 4126673
-		WHEN Urinary_sugar = 5
+		WHEN Urine_sugar = 5
 		THEN 4125547
 		END AS Urine_sugar_unit_concept_id,
 
 		CASE
-		WHEN Fundus_examination_Keith_Wagener_classification IS NULL
+		WHEN Ophthalmoscopy_K_W_classificatio IS NULL
 		THEN NULL
-		WHEN Fundus_examination_Keith_Wagener_classification = 1
+		WHEN Ophthalmoscopy_K_W_classificatio = 1
 		THEN '0'
-		WHEN Fundus_examination_Keith_Wagener_classification = 2
+		WHEN Ophthalmoscopy_K_W_classificatio = 2
 		THEN 'I'
-		WHEN Fundus_examination_Keith_Wagener_classification = 3
+		WHEN Ophthalmoscopy_K_W_classificatio = 3
 		THEN 'IIa'
-		WHEN Fundus_examination_Keith_Wagener_classification = 4
+		WHEN Ophthalmoscopy_K_W_classificatio = 4
 		THEN 'IIb'
-		WHEN Fundus_examination_Keith_Wagener_classification = 5
+		WHEN Ophthalmoscopy_K_W_classificatio = 5
 		THEN 'III'
 		ELSE 'IV'
 		END AS Ophthalmoscopy_K_W_classificatio,
 
 		CASE
-		WHEN fundus_examination_scheie_classification_h IS NULL
+		WHEN Ophthalmoscopy_Scheie_Classifica IS NULL
 		THEN NULL
-		WHEN fundus_examination_scheie_classification_h = 1
+		WHEN Ophthalmoscopy_Scheie_Classifica = 1
 		THEN '0'
-		WHEN fundus_examination_scheie_classification_h = 2
+		WHEN Ophthalmoscopy_Scheie_Classifica = 2
 		THEN '1'
-		WHEN fundus_examination_scheie_classification_h = 3
+		WHEN Ophthalmoscopy_Scheie_Classifica = 3
 		THEN '2'
-		WHEN fundus_examination_scheie_classification_h = 3
+		WHEN Ophthalmoscopy_Scheie_Classifica = 3
 		THEN '3'
 		ELSE '4'
 		END AS Ophthalmoscopy_Scheie_Classifica,
 
 		CASE
-		WHEN fundus_examination_scheie_classification_s IS NULL
+		WHEN Ophthalmoscopy_Scheie_Classific0 IS NULL
 		THEN NULL
-		WHEN fundus_examination_scheie_classification_s = 1
+		WHEN Ophthalmoscopy_Scheie_Classific0 = 1
 		THEN '0'
-		WHEN fundus_examination_scheie_classification_s = 2
+		WHEN Ophthalmoscopy_Scheie_Classific0 = 2
 		THEN '1'
-		WHEN fundus_examination_scheie_classification_s = 3
+		WHEN Ophthalmoscopy_Scheie_Classific0 = 3
 		THEN '2'
-		WHEN fundus_examination_scheie_classification_s = 3
+		WHEN Ophthalmoscopy_Scheie_Classific0 = 3
 		THEN '3'
 		ELSE '4'
 		END AS Ophthalmoscopy_Scheie_Classific0,
 
 		CASE
-		WHEN fundus_examination_scott_classification IS NULL
+		WHEN Ophthalmoscopy_SCOTT_classificat IS NULL
 		THEN NULL
-		WHEN fundus_examination_scott_classification = 1
+		WHEN Ophthalmoscopy_SCOTT_classificat = 1
 		THEN 'I (a)'
-		WHEN fundus_examination_scott_classification = 2
+		WHEN Ophthalmoscopy_SCOTT_classificat = 2
 		THEN 'I (b)'
-		WHEN fundus_examination_scott_classification = 3
+		WHEN Ophthalmoscopy_SCOTT_classificat = 3
 		THEN 'II'
-		WHEN fundus_examination_scott_classification = 4
+		WHEN Ophthalmoscopy_SCOTT_classificat = 4
 		THEN 'III (a)'
-		WHEN fundus_examination_scott_classification = 5
+		WHEN Ophthalmoscopy_SCOTT_classificat = 5
 		THEN 'III (b)'
-		WHEN fundus_examination_scott_classification = 6
+		WHEN Ophthalmoscopy_SCOTT_classificat = 6
 		THEN 'IV'
-		WHEN fundus_examination_scott_classification = 7
+		WHEN Ophthalmoscopy_SCOTT_classificat = 7
 		THEN 'V (a)'
-		WHEN fundus_examination_scott_classification = 8
+		WHEN Ophthalmoscopy_SCOTT_classificat = 8
 		THEN 'V (b)'
 		ELSE 'VI'
 		END AS Ophthalmoscopy_SCOTT_classificat,
 
 		CASE
-		WHEN Eating1_fast_eating IS NULL
+		WHEN eating_habit_1 IS NULL
 		THEN NULL
-		WHEN Eating1_fast_eating = 1
+		WHEN eating_habit_1 = 1
 		THEN 'fast'
-		WHEN Eating1_fast_eating = 2
+		WHEN eating_habit_1 = 2
 		THEN 'normal'
 		ELSE 'slow'
 		END AS Eating_speed,
 
 		CASE
-		WHEN Eating2_before_bedtime IS NULL
+		WHEN eating_habit_2 IS NULL
 		THEN NULL
-		WHEN Eating2_before_bedtime = 1
+		WHEN eating_habit_2 = 1
 		THEN 'yes'
 		ELSE 'no'
 		END AS Eat_snack,
 
 		CASE
-		WHEN Eating3_late_evening_snack IS NULL
+		WHEN eating_habit_3 IS NULL
 		THEN NULL
-		WHEN Eating3_late_evening_snack = 1
+		WHEN eating_habit_3 = 1
 		THEN 'yes'
 		ELSE 'no'
 		END AS night_meal,
 
 		CASE
-		WHEN Eating_habit IS NULL
+		WHEN eating_habit_4 IS NULL
 		THEN NULL
-		WHEN Eating_habit = 1
+		WHEN eating_habit_4 = 1
 		THEN 'yes'
 		ELSE 'no'
 		END AS Skip_breakfast,
 
 		CASE
-		WHEN Drinking_habit IS NULL
+		WHEN Drinking_habits IS NULL
 		THEN NULL
-		WHEN Drinking_habit = 1
+		WHEN Drinking_habits = 1
 		THEN 'everyday'
-		WHEN Drinking_habit = 2
+		WHEN Drinking_habits = 2
 		THEN 'sometimes'
 		ELSE 'rare'
 		END AS Drinking_habits,
 
-		ecg as Electrocardiogram,
-		
+		Electrocardiogram as Electrocardiogram,
+
 		CASE
-		WHEN ecg IS NULL THEN 0
+		WHEN Electrocardiogram IS NULL THEN 0
 		ELSE 1
 		END AS Condition,
 
 		CASE
-		WHEN ecg IS NULL
+		WHEN Electrocardiogram IS NULL
 		THEN NULL
-		WHEN ecg = 1
+		WHEN Electrocardiogram = 1
 		THEN 320536
 		ELSE 4065279
 		END AS ecg_concept_id,
 
 		CASE
-		WHEN ecg IS NULL
+		WHEN Electrocardiogram IS NULL
 		THEN NULL
-		WHEN ecg = 1
+		WHEN Electrocardiogram = 1
 		THEN 'Electrocardiogram abnormal'
 		ELSE 'ECG normal'
 		END AS ecg_concept_name,
 
 		CASE
-		WHEN Smoking_habit IS NULL
+		WHEN Smoking_habits IS NULL
 		THEN NULL
-		WHEN Smoking_habit = 1
+		WHEN Smoking_habits = 1
 		THEN 4188539
 		ELSE 4188540
 		END AS Smoking_habits_value,
 
 		CASE
-		WHEN Smoking_habit IS NULL
+		WHEN Smoking_habits IS NULL
 		THEN NULL
-		WHEN Smoking_habit = 1
+		WHEN Smoking_habits = 1
 		THEN 4298794
 		ELSE 4222303
 		END AS Smoking_habit_concept_id,
 
 		CASE
-		WHEN Smoking_habit IS NULL
+		WHEN Smoking_habits IS NULL
 		THEN NULL
-		WHEN Smoking_habit = 1
+		WHEN Smoking_habits = 1
 		THEN 'Smoker'
 		ELSE 'Non-smoker'
 		END AS Smoking_habit_concept_name,
 
 		CASE
-		WHEN mastication IS NULL THEN NULL
-		WHEN mastication = 1 THEN 45880745
-		WHEN mastication = 2 THEN 45877108
-		WHEN mastication = 3 THEN 45884578
-		ELSE 0
-		END AS mastication_value,
-
-		CASE
-		WHEN sleep IS NULL
+		WHEN Sleeping IS NULL
 		THEN NULL
-		WHEN sleep = 1
+		WHEN Sleeping = 1
 		THEN 4188539
 		ELSE 4188540
 		END AS Sleeping_value,
@@ -306,7 +297,7 @@
 		1000 as Red_blood_cell_count_max,
 		100 as Serum_uric_acid_max,
 		100 as Serum_creatinine_max
-		FROM {sc}.Annual_health_checkup h
+		FROM {sc}.health_checkups h
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND h.Member_ID = ch.PERSON_SOURCE_VALUE
 		order by CAST(RIGHT(Member_ID, LEN(Member_ID) - 1) AS BIGINT)
 	</Query>
@@ -554,26 +545,6 @@
 				<Concept>
 					<Fields>
 						<Field defaultSource="mg/dl" defaultConceptId="8840" defaultTypeId="0"/>
-					</Fields>
-				</Concept>
-			</Concepts>
-		</MeasurementDefinition>
-
-		<MeasurementDefinition>
-			<PersonId>PERSON_ID</PersonId>
-			<IsUnique>true</IsUnique>
-			<StartDate>observation_date</StartDate>
-			<ValueAsNumber>Got</ValueAsNumber>
-			<ValueSourceValue>Got</ValueSourceValue>
-			<Concepts>
-				<Concept>
-					<Fields>
-						<Field defaultSource="glutamic-oxaloacetic transaminase" defaultConceptId="3003792" defaultTypeId="32836"/>
-					</Fields>
-				</Concept>
-				<Concept>
-					<Fields>
-						<Field defaultSource="IU/I 37 degrees celcius" defaultConceptId="8645" defaultTypeId="0"/>
 					</Fields>
 				</Concept>
 			</Concepts>
@@ -867,19 +838,6 @@
 			</Concepts>
 		</ObservationDefinition>
 
-		<ObservationDefinition>
-			<PersonId>PERSON_ID</PersonId>
-			<IsUnique>true</IsUnique>
-			<StartDate>observation_date</StartDate>
-			<ValueAsConceptId>mastication_value</ValueAsConceptId>
-			<Concepts>
-				<Concept>
-					<Fields>
-						<Field defaultSource="Mastication" defaultConceptId="4003394" defaultTypeId="32836"/>
-					</Fields>
-				</Concept>
-			</Concepts>
-		</ObservationDefinition>
 		<ObservationDefinition>
 			<PersonId>PERSON_ID</PersonId>
 			<IsUnique>true</IsUnique>
