@@ -9,7 +9,7 @@ description: "Person mapping from Optum member_continuous_enrollment table"
 
 # CDM Table: PERSON
 
-The information in the PERSON table is sourced from the  **Member_Continuous_Enrollment** table. This table can contain multiple records per person, each record representing a period of time the person was enrolled in a health benefit Plan. These records are consolidated using the logic below to create one record per person in the PERSON table.
+The information in the PERSON table is sourced from the  **Member_Continuous_Enrollment** table. This table can contain multiple records per person, each record representing a period of time the person was enrolled in a health benefit Plan. These records are consolidated using the logic below to create one record per person in the PERSON table. 
 
 ## PERSON Table Logic
 
@@ -37,6 +37,8 @@ The information in the PERSON table is sourced from the  **Member_Continuous_Enr
 |F|Female|8532|
 
 #### **Mapping Race**
+
+Per our Optum representative, the race and ethnicity attribute is derived. An external vendor utilizes the member’s name and geography to derive the member’s ethnicity (e.g. Chinese, Irish, Somali, Mexican etc.). Once the ethnicity is determined, the member is mapped to one of five race categories: A-Asian, B-Black, H-Hispanic, W-White or Unknown/Other.
 
 |**Race**|**DESCRIPTION**|**OMOP Concept_Id**|
 |:-----:|:-----:|:-----:|

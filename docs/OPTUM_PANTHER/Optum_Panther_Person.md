@@ -13,6 +13,22 @@ The Optum EHR Patient table contains an indicator that denotes whether the paien
 
 Do not populate if person doesn't have Observation period
 
+### Race and Ethnicity
+
+Unlike Optum Extended Clinformatics data, the race and ethnicity in Optum EHR are self-reported and not derived.
+
+### Insured vs Uninsured population
+
+The table below compares the proportion of patients based on their insurance type between the patients in Optum EHR and the overall United States.
+
+|**ins_type**|	**% of EHR Population**	|**United States**|
+|-|-|-|
+|Commercial|	44.7%|	50.3%|
+|Uninsured|	15.3%	|8.6%|
+|Medicaid|	13.3%|	17.8%|
+|Medicare|	12.4%	|15.6%|
+
+
 ## Reading from OPTUM_EHR.Patient
 
 ![](images/personmap.png)
