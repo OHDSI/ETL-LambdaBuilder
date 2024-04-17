@@ -15,6 +15,8 @@ This condition-era type record is possible because in Japanese claims, the “da
 
 The “date_of_medical_care_start” is often the date of true occurrence of the condition though the date can be later than the true occurrence date as a new start date will be created if the patient is referred to a different clinic/hospital.  Even in the same clinic/hospital, a new start date may be given to the same condition of the same patient because of several reasons.  For instance, if the patient had an acute condition again after the recovery from the previous same acute condition, a new start date may be created as two episodes were judged independent.  Even for the chronic condition, a new start date may be created if the service has not been given for certain period (e.g., more than several months).  The latter may occur according to the policy of handling patient’s conditions which may differ between clinics/hospitals.  A new start date may also be created from an administrative view (e.g., the service fee for a new condition is a little higher than that for an old condition).
 
+**Note:** We include events outside of the observation period in the CONDITION_OCCURRENCE table but these records will not be used to create CONDITION_ERAs.
+
 ## Reading from JMDC.Diagnosis
 
 When an ICD10 code in the diagnosis table maps to a concept in the Condition domain a record should be created in the condition_occurrence table, except when the field ‘Suspicion flag’ equals 1.
