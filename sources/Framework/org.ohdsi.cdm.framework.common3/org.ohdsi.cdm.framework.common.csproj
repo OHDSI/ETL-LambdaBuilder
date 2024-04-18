@@ -211,6 +211,7 @@
     <None Remove="Core\Transformation\Era\Definitions\DrugExposures.xml" />
     <None Remove="Core\Transformation\Era\Definitions\Person.xml" />
     <None Remove="Core\Transformation\Era\Lookups\Ingredient.sql" />
+    <None Remove="Core\Transformation\OptumExtended\Definitions\SES.xml" />
     <None Remove="Core\Transformation\PregnancyAlgorithm\Batch.sql" />
     <None Remove="Core\Transformation\PregnancyAlgorithm\Definitions\ConditionOccurrence.xml" />
     <None Remove="Core\Transformation\ERA\Batch.sql" />
@@ -1023,6 +1024,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Core\Transformation\Era\Lookups\Ingredient.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\OptumExtended\Definitions\SES.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Core\Transformation\PregnancyAlgorithm\Batch.sql">
