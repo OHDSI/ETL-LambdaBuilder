@@ -11,7 +11,7 @@ description: "Description for how to build the Optum Panther Observation Period 
 
 ## Reading from OPTUM_EHR.Encounter
 
-The OBSERVATION_PERIOD table should be built by setting the OBSERVATION_PERIOD_START_DATE as the date of the earliest encounter available in the data and the OBSERVATION_PERIOD_END_DATE should the the date of the latest encounter in the data, data from the oncology module (type_concept_id=32882) should not be used in the OBSERVATION_PERIOD table creation.
+The OBSERVATION_PERIOD table should be built by setting the OBSERVATION_PERIOD_START_DATE as the date of the earliest encounter available in the data and the OBSERVATION_PERIOD_END_DATE should the the date of the latest encounter in the data, data from the oncology module (type_concept_id=32882) should not be used in the OBSERVATION_PERIOD table creation. **If the latest encounter has a year greater than the current year, truncate the date to the current date.**
 
 
 |     Destination Field    |     Source Field    |     Logic    |     Comment    |
@@ -24,6 +24,9 @@ The OBSERVATION_PERIOD table should be built by setting the OBSERVATION_PERIOD_S
 
 ## Change Log
 - Removed the use of *first_month_active* and *last_month_active* and changed to using the encounter dates instead
+
+### 19-Apr-2024
+- Added logic for how to handle dates greater than the current date
 
 ### 04-Dec-2023
 - Oncology event dates excluded from the OBSERVATION PERIOD table
