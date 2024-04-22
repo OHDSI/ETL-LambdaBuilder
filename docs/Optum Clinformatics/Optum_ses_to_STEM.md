@@ -13,7 +13,7 @@ description: "Optum SES table mapping to CDM STEM table"
 
 ## **Mapping from SES**
 
-The SES table in the Optum Extended SES data contains additional socio-economic variables that are not available in the DOD (date of death) version. Use the following to set the `value_as_string` and `value_as_concept_id` for each variable. 
+The SES table in the Optum Extended SES data contains additional socio-economic variables that are not available in the DOD (date of death) version. It does not have a date associated to the information and when it was asked of the patient so we will use the last day of the most recent observation period.Use the following to set the `value_as_string` and `value_as_concept_id` for each variable. 
 
 
 ### d_education_level_code - Highest level of education
@@ -58,7 +58,7 @@ The table below details how the other variables in the SES table should be mappe
 | visit_detail_id |NULL|||
 | visit_occurrence_id |NULL|||
 | provider_id | |||
-| start_datetime |extract_ym | The first four digits of this value are the **year**, the second two digits are the **month**, set day to the last **day** in the month||
+| start_datetime |observation_period_end_date | Use the **latest** observation_period_end_date per patient since we do not have dates associated with this data. ||
 | concept_id | d_household_income_range_code<br> d_education_level_code<br>d_home_ownership_code|d_household_income_range_code: Set to concept 4076114 (Household Income) <br><br>d_education_level_code: Set to 42528763 (Highest level of education - reported)<br><br>d_home_ownership_code: Set to 4076206 (House ownership and tenure)|
 | source_value |d_household_income_range_code<br> d_education_level_code<br>d_home_ownership_code<br> |Set to the name of the variable||
 | source_concept_id |0| ||
