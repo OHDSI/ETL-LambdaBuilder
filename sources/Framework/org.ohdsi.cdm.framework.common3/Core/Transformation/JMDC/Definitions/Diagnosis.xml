@@ -29,6 +29,7 @@
 		WHEN d.main_disease_flag = 1 THEN 32902
 		ELSE 32908
 		END as condition_status_concept_id,
+		d.standard_disease_code || '|' || d.standard_disease_name source_value,
 		1 as fake
 		FROM {sc}.Diagnosis d
 		join {ch_sc}._chunks ch ON ch.ChunkId = {0} AND d.Member_ID = ch.PERSON_SOURCE_VALUE
@@ -74,7 +75,7 @@
             </Mapper>
           </ConceptIdMappers>
           <Fields>
-            <Field key="condition_lookup_key" typeId="condition_type_concept_id" sourceKey="condition_source_value"/>
+            <Field key="condition_lookup_key" typeId="condition_type_concept_id" sourceKey="source_value"/>
           </Fields>
         </Concept>
         <Concept>
