@@ -8,6 +8,8 @@ description: "PROVIDER mapping from an existing CDM instance"
 
 ## Table name: **PROVIDER**
 
+Map the new PROVIDER table from the existing PROVIDER table.
+
 ### Reading from **PROVIDER**
 
 | Destination Field | Source field | Logic | Comment field |

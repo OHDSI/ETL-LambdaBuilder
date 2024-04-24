@@ -8,11 +8,14 @@ description: "PAYER_PLAN_PERIOD mapping from an existing CDM instance"
 
 ## Table name: **PAYER_PLAN_PERIOD**
 
+Map the new PAYER_PLAN_PERIOD table from the existing PAYER_PLAN_PERIOD table.
+
+### Reading from **PAYER_PLAN_PERIOD**
+
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
 | payer_plan_period_id | payer_plan_period_id | | |
 | person_id | person_id | | |
-| contract_person_id | contract_person_id | | |
 | payer_plan_period_start_date | payer_plan_period_start_date | | |
 | payer_plan_period_end_date |payer_plan_period_end_date | | |
 | payer_concept_id | payer_concept_id| | |
@@ -21,9 +24,6 @@ description: "PAYER_PLAN_PERIOD mapping from an existing CDM instance"
 | plan_concept_id | plan_concept_id | | |
 | plan_source_value | plan_source_value| | |
 | plan_source_concept_id | plan_source_concept_id | | |
-| contract_concept_id | contract_concept_id  | | |
-| contract_source_value | contract_source_value | | |
-| contract_source_concept_id | contract_source_concept_id| | |
 | sponsor_concept_id | sponsor_concept_id | | |
 | sponsor_source_value | sponsor_source_value | | |
 | sponsor_source_concept_id | sponsor_source_concept_id | | |

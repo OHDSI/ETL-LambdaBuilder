@@ -8,8 +8,11 @@ description: "VISIT_OCCURRENCE mapping from an existing CDM instance"
 
 # CDM Table: VISIT_OCCURRENCE
 
-### Reading from **VISIT_OCCURRENCE**
+Map the new VISIT_OCCURRENCE table from the existing VISIT_OCCURRENCE table.  The following data quality fixes are employed:
 
+- Any visit_occurrence records with a visit_start_date and/or visit_start_datetime that occures in the future is removed.
+
+### Reading from **VISIT_OCCURRENCE**
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
@@ -25,10 +28,10 @@ description: "VISIT_OCCURRENCE mapping from an existing CDM instance"
 | care_site_id|care_site_id|||
 | visit_source_value| visit_source_value|||
 | visit_source_concept_id|visit_source_concept_id|||
-| admitted_from_concept_id|admitted_from_concept_id(v5.4) <br> admitting_source_concept_id(v5.3)|||
-| admitted_from_source_value| admitted_from_source_value(v5.4)  <br> admitting_source_value(v5.3)|||
-| discharged_to_concept_id| discharged_to_concept_id(v5.4)  <br> discharge_to_concept_id(v5.3)|||
-| discharged_to_source_value| discharged_to_source_value(v5.4)  <br>  discharge_to_source_value(v5.3)|||
+| admitted_from_concept_id|admitted_from_concept_id (v5.4) <br> admitting_source_concept_id (v5.3)|||
+| admitted_from_source_value| admitted_from_source_value (v5.4)  <br> admitting_source_value (v5.3)|||
+| discharged_to_concept_id| discharged_to_concept_id (v5.4)  <br> discharge_to_concept_id (v5.3)|||
+| discharged_to_source_value| discharged_to_source_value (v5.4)  <br>  discharge_to_source_value (v5.3)|||
 | preceding_visit_occurrence_id|preceding_visit_occurrence_id|||
 
 ## Change Log
