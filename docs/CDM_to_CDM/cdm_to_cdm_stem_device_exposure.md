@@ -7,6 +7,16 @@ parent: CDM to CDM to STEM
 description: Existing Device Exposure to STEM for remapping
 ---
 
+**How to remap source concepts and standard concepts when going from an old CDM to a new CDM with updated vocab:**
+
+**Step 1:** Start with original source_concept_id as it is given in the original CDM. Using the [source-to-source query](https://ohdsi.github.io/CommonDataModel/sqlScripts.html#Source_to_Source), identify the source_code and source_vocabulary_id.
+
+**Step 2:** Use the source_code and source_vocabulary_id you found in step 1 and find the correct source_concept_id through the [source-to-source query](https://ohdsi.github.io/CommonDataModel/sqlScripts.html#Source_to_Source) where the date of the event falls between the valid_start_date and valid_end_date of the concept. 
+
+**Note** most of the source concepts will likely stay the same but there are some drug codes that are reused and therefore will change source concepts.
+
+**Step 3:** Map the new source_concept_id to a standard concept_id using the [Source-to-Standard Query](https://ohdsi.github.io/CommonDataModel/sqlScripts.html).
+
 
 ### Reading from **DEVICE_EXPOSURE**
 
@@ -20,7 +30,7 @@ description: Existing Device Exposure to STEM for remapping
 | ID | DEVICE_EXPOSURE_ID |  | - |
 | CONCEPT_ID | **DEVICE_SOURCE_CONCEPT_ID** | Use the [Source-to-Standard Query](https://ohdsi.github.io/CommonDataModel/sqlScripts.html).<br><br> Lookup the target concept that the source concept maps to. If there are multiple target concepts, create multiple records.| 	  |
 | SOURCE_VALUE | DEVICE_SOURCE_VALUE | - | - |
-| SOURCE_CONCEPT_ID | DEVICE_SOURCE_CONCEPT_ID | - | - |
+| SOURCE_CONCEPT_ID | **DEVICE_SOURCE_CONCEPT_ID**<br><br>**DEVICE_SOURCE_VALUE** | Please see the logic above for mapping the correct source and standard concept ids. | - |
 | TYPE_CONCEPT_ID | DEVICE_TYPE_CONCEPT_ID | - | - |
 | START_DATE | DEVICE_EXPOSURE_START_DATE | - | - |
 | START_DATETIME | DEVICE_EXPOSURE_START_DATETIME  | - | - |

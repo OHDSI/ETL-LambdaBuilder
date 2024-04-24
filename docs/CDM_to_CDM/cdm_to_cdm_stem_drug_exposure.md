@@ -7,8 +7,18 @@ parent: CDM to CDM to STEM
 description: Existing Drug Exposure to STEM for remapping
 ---
 
+**How to remap source concepts and standard concepts when going from an old CDM to a new CDM with updated vocab:**
 
-### Reading from **DEVICE_EXPOSURE**
+**Step 1:** Start with original source_concept_id as it is given in the original CDM. Using the [source-to-source query](https://ohdsi.github.io/CommonDataModel/sqlScripts.html#Source_to_Source), identify the source_code and source_vocabulary_id.
+
+**Step 2:** Use the source_code and source_vocabulary_id you found in step 1 and find the correct source_concept_id through the [source-to-source query](https://ohdsi.github.io/CommonDataModel/sqlScripts.html#Source_to_Source) where the date of the event falls between the valid_start_date and valid_end_date of the concept. 
+
+**Note** most of the source concepts will likely stay the same but there are some drug codes that are reused and therefore will change source concepts.
+
+**Step 3:** Map the new source_concept_id to a standard concept_id using the [Source-to-Standard Query](https://ohdsi.github.io/CommonDataModel/sqlScripts.html).
+
+
+### Reading from **DRUG_EXPOSURE**
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
@@ -18,9 +28,9 @@ description: Existing Drug Exposure to STEM for remapping
 | VISIT_DETAIL_ID | VISIT_DETAIL_ID  | - | - |
 | PROVIDER_ID | PROVIDER_ID  | - | -|
 | ID | DRUG_EXPOSURE_ID |  | - |
-| CONCEPT_ID | **DRUG_SOURCE_CONCEPT_ID** | Use the [Source-to-Standard Query](https://ohdsi.github.io/CommonDataModel/sqlScripts.html).<br><br> Lookup the target concept that the source concept maps to. If there are multiple target concepts, create multiple records.| 	  |
+| CONCEPT_ID | **DRUG_SOURCE_CONCEPT_ID** | Use the [Source-to-Standard Query](https://ohdsi.github.io/CommonDataModel/sqlScripts.html).<br><br> Lookup the target concept that the source concept maps to. If there are multiple target concepts, create multiple records.  | 	  |
 | SOURCE_VALUE | DRUG_SOURCE_VALUE | - | - |
-| SOURCE_CONCEPT_ID | DRUG_SOURCE_CONCEPT_ID | - | - |
+| SOURCE_CONCEPT_ID | **DRUG_SOURCE_VALUE** <br><br> **DRUG_SOURCE_CONCEPT_ID**| See the logic above for assigning the correct source concept and standard concept | - |
 | TYPE_CONCEPT_ID | DRUG_TYPE_CONCEPT_ID | - | - |
 | START_DATE | DRUG_EXPOSURE_START_DATE | - | - |
 | START_DATETIME | DRUG_EXPOSURE_START_DATETIME | - | - |

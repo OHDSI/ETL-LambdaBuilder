@@ -7,8 +7,18 @@ parent: CDM to CDM to STEM
 description: Existing Observation to STEM for remapping
 ---
 
+**How to remap source concepts and standard concepts when going from an old CDM to a new CDM with updated vocab:**
 
-### Reading from **DEVICE_EXPOSURE**
+**Step 1:** Start with original source_concept_id as it is given in the original CDM. Using the [source-to-source query](https://ohdsi.github.io/CommonDataModel/sqlScripts.html#Source_to_Source), identify the source_code and source_vocabulary_id.
+
+**Step 2:** Use the source_code and source_vocabulary_id you found in step 1 and find the correct source_concept_id through the [source-to-source query](https://ohdsi.github.io/CommonDataModel/sqlScripts.html#Source_to_Source) where the date of the event falls between the valid_start_date and valid_end_date of the concept. 
+
+**Note** most of the source concepts will likely stay the same but there are some drug codes that are reused and therefore will change source concepts.
+
+**Step 3:** Map the new source_concept_id to a standard concept_id using the [Source-to-Standard Query](https://ohdsi.github.io/CommonDataModel/sqlScripts.html).
+
+
+### Reading from **OBSERVATION**
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
@@ -20,7 +30,7 @@ description: Existing Observation to STEM for remapping
 | ID | OBSERVATION_ID |  | - |
 | CONCEPT_ID | **OBSERVATION_SOURCE_CONCEPT_ID** | Use the [Source-to-Standard Query](https://ohdsi.github.io/CommonDataModel/sqlScripts.html).<br><br> Lookup the target concept that the source concept maps to. If there are multiple target concepts, create multiple records.| 	  |
 | SOURCE_VALUE | OBSERVATION_SOURCE_VALUE | - | - |
-| SOURCE_CONCEPT_ID | OBSERVATION_SOURCE_CONCEPT_ID | - | - |
+| SOURCE_CONCEPT_ID | **OBSERVATION_SOURCE_CONCEPT_ID**<br><br>**OBSERVATION_SOURCE_VALUE** | Please see the logic above for assigning the proper source and standard concepts. | - |
 | TYPE_CONCEPT_ID | OBSERVATION_TYPE_CONCEPT_ID | - | - |
 | START_DATE | OBSERVATION_DATE | - | - |
 | START_DATETIME | OBSERVATION_DATETIME | - | - |
