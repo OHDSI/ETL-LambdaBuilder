@@ -32,7 +32,7 @@
 				<!--payer_concept_id-->
 				<Concept>
 					<Fields>
-						<Field conceptId="plan_concept_id" sourceConceptId="plan_source_concept_id" key="payer_source_value" sourceKey="payer_source_value" defaultTypeId="0"/>
+						<Field conceptId="payer_concept_id" sourceConceptId="payer_source_concept_id" key="payer_source_value" sourceKey="payer_source_value" defaultTypeId="0"/>
 					</Fields>
 				</Concept>
 				<!--plan_concept_id-->

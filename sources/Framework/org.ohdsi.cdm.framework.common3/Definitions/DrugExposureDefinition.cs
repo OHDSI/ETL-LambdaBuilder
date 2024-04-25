@@ -64,18 +64,7 @@ namespace org.ohdsi.cdm.framework.common.Definitions
 
                 var verbatimEndDate = reader.GetDateTime(VerbatimEndDate);
 
-                var id = reader.GetLong(Id);
-
-                if (id.HasValue)
-                {
-                    e.Id = id.Value;
-                }
-                else
-                {
-                    e.Id = offset.GetKeyOffset(e.PersonId).DrugExposureId;
-                }
-
-                yield return new DrugExposure(e)
+                var de = new DrugExposure(e)
                 {
                     Refills = reader.GetIntSafe(Refill),
                     DaysSupply = reader.GetInt(DaysSupply),
@@ -91,6 +80,19 @@ namespace org.ohdsi.cdm.framework.common.Definitions
                     StopReason = reader.GetString(StopReason) == "" ? null : reader.GetString(StopReason),
                     LotNumber = reader.GetString(LotNumber)
                 };
+
+                var id = reader.GetLong(Id);
+
+                if (id.HasValue)
+                {
+                    de.Id = id.Value;
+                }
+                else
+                {
+                    de.Id = offset.GetKeyOffset(e.PersonId).DrugExposureId;
+                }
+
+                yield return de;
             }
         }
     }
