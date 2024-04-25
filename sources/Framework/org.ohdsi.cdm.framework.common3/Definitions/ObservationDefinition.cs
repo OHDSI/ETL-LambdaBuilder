@@ -85,7 +85,7 @@ namespace org.ohdsi.cdm.framework.common.Definitions
 
                 var createObservation = new Func<Observation>(() => new Observation(entity)
                 {
-                    Id = offset.GetKeyOffset(entity.PersonId).ObservationId,
+                    //Id = offset.GetKeyOffset(entity.PersonId).ObservationId,
                     SourceValue = string.IsNullOrWhiteSpace(entity.SourceValue)
                         ? null
                         : entity.SourceValue,
@@ -156,6 +156,17 @@ namespace org.ohdsi.cdm.framework.common.Definitions
                             observation.ValueAsString = observation.SourceValue;
                             observation.SourceValue = observation.AdditionalFields["original_source"];
                         }
+                    }
+
+                    var id = reader.GetLong(Id);
+
+                    if (id.HasValue)
+                    {
+                        observation.Id = id.Value;
+                    }
+                    else
+                    {
+                        observation.Id = offset.GetKeyOffset(observation.PersonId).ObservationId;
                     }
 
                     yield return observation;

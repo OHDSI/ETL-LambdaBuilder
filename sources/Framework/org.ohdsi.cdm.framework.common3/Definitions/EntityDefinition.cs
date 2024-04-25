@@ -122,6 +122,16 @@ namespace org.ohdsi.cdm.framework.common.Definitions
                                 }
                             }
 
+                            var sourceConceptId = lookupValue.SourceConceptId;
+                            if (!string.IsNullOrEmpty(field.SourceConceptId))
+                            {
+                                var scId  = reader.GetLong(field.SourceConceptId);
+                                if(scId.HasValue)
+                                {
+                                    sourceConceptId = scId.Value;
+                                }
+                            }
+
                             yield return new Entity
                             {
                                 IsUnique = IsUnique,
@@ -139,7 +149,7 @@ namespace org.ohdsi.cdm.framework.common.Definitions
                                 AdditionalFields = additionalFields,
                                 ValidStartDate = lookupValue.ValidStartDate,
                                 ValidEndDate = lookupValue.ValidEndDate,
-                                SourceConceptId = lookupValue.SourceConceptId,
+                                SourceConceptId = sourceConceptId,
                                 Domain = lookupValue.Domain,
                                 //SourceVocabularyId = lookupValue.SourceVocabularyId,
                                 VocabularySourceValue = lookupValue.SourceCode,

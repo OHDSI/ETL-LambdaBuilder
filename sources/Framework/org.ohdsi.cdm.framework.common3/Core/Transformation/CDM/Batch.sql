@@ -1,0 +1,4 @@
+﻿SELECT DISTINCT {0} PERSON_ID, PERSON_ID
+FROM {sc}.PERSON
+order by 1
+limit 1000000

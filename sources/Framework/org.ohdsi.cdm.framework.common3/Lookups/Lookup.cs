@@ -162,6 +162,18 @@ namespace org.ohdsi.cdm.framework.common.Lookups
                         }
                     }
 
+                    if (spliter.Results.Length > 6)
+                    {
+                        if (!DateTime.TryParse(spliter.Results[7], out var sourceValidStartDate))
+                            sourceValidStartDate = DateTime.MinValue;
+
+                        if (!DateTime.TryParse(spliter.Results[8], out var sourceValidEndDate))
+                            sourceValidEndDate = DateTime.MaxValue;
+
+                        value.SourceValidStartDate = sourceValidStartDate;
+                        value.SourceValidEndDate = sourceValidEndDate;
+                    }
+
                     if (spliter.Results.Length > 10)
                     {
                         if (!IsNullOrEmpty(spliter.Results[10]))

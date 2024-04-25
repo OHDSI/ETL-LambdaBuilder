@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using static Amazon.S3.Util.S3EventNotification;
 
 namespace org.ohdsi.cdm.framework.common.Definitions
 {
@@ -20,6 +21,8 @@ namespace org.ohdsi.cdm.framework.common.Definitions
         public string DoseUnitConceptId { get; set; }
         public string DoseUnitSourceValue { get; set; }
         public string StopReason { get; set; }
+        public string LotNumber { get; set; }
+        
 
         // CDM v5.2 props
         public string VerbatimEndDate { get; set; }
@@ -61,9 +64,19 @@ namespace org.ohdsi.cdm.framework.common.Definitions
 
                 var verbatimEndDate = reader.GetDateTime(VerbatimEndDate);
 
+                var id = reader.GetLong(Id);
+
+                if (id.HasValue)
+                {
+                    e.Id = id.Value;
+                }
+                else
+                {
+                    e.Id = offset.GetKeyOffset(e.PersonId).DrugExposureId;
+                }
+
                 yield return new DrugExposure(e)
                 {
-                    Id = offset.GetKeyOffset(e.PersonId).DrugExposureId,
                     Refills = reader.GetIntSafe(Refill),
                     DaysSupply = reader.GetInt(DaysSupply),
                     CalculatedDaysSupply = calculatedDaysSupply,
@@ -75,7 +88,8 @@ namespace org.ohdsi.cdm.framework.common.Definitions
                     RouteSourceValue = routeSourceValue,
                     DoseUnitConceptId = reader.GetInt(DoseUnitConceptId) ?? 0,
                     DoseUnitSourceValue = reader.GetString(DoseUnitSourceValue),
-                    StopReason = reader.GetString(StopReason) == "" ? null : reader.GetString(StopReason)
+                    StopReason = reader.GetString(StopReason) == "" ? null : reader.GetString(StopReason),
+                    LotNumber = reader.GetString(LotNumber)
                 };
             }
         }

@@ -1,0 +1,28 @@
+﻿<QueryDefinition>
+	<Query>
+		SELECT t.person_id
+		, t.death_date
+		, t.death_datetime
+		, t.death_type_concept_id
+		, t.cause_concept_id
+		, t.cause_source_value
+		, t.cause_source_concept_id
+		FROM {sc}.death t
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND t.PERSON_ID = ch.PERSON_ID
+		order by 1
+	</Query>
+	<Death>
+		<DeathDefinition>
+			<PersonId>person_id</PersonId>
+			<StartDate>death_date</StartDate>
+			<StartTime>death_datetime</StartTime>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field sourceKey="cause_source_value" conceptId="cause_concept_id" typeId="death_type_concept_id"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</DeathDefinition>
+	</Death>
+</QueryDefinition>

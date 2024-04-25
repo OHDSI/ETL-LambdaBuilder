@@ -4,6 +4,7 @@ using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
 using org.ohdsi.cdm.framework.common.Base;
+using org.ohdsi.cdm.framework.common.Core.Transformation.CDM;
 using org.ohdsi.cdm.framework.common.Core.Transformation.CPRD;
 using org.ohdsi.cdm.framework.common.Core.Transformation.CprdAurum;
 using org.ohdsi.cdm.framework.common.Core.Transformation.CprdHES;
@@ -766,6 +767,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                 Vendors.HealthVerity or Vendors.HealthVerityCovid => new HealthVerityPersonBuilder(),
                 Vendors.PregnancyAlgorithm => new PregnancyAlgorithmPersonBuilder(),
                 Vendors.Era => new EraPersonBuilder(),
+                Vendors.CDM => new CdmPersonBuilder(),
                 _ => new PersonBuilder(),
             };
         }

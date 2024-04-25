@@ -1,0 +1,33 @@
+﻿<QueryDefinition>
+   <Query>
+		 SELECT location_id
+		 , address_1
+		 , address_2
+		 , city
+		 , state
+		 , zip
+		 , county
+		 , location_source_value
+		 , country_concept_id
+		 , country_source_value
+		 , latitude
+		 , longitude
+		 FROM {sc}.location
+	 </Query>
+   <Locations>
+      <LocationDefinition>
+				<Id>location_id</Id>
+				<Address1>address_1</Address1>
+				<Address2>address_2</Address2>
+				<City>city</City>
+				<State>state</State>
+				<Zip>zip</Zip>
+				<Country>county</Country>
+				<SourceValue>location_source_value</SourceValue>
+				<CountryConceptId>country_concept_id</CountryConceptId>
+				<CountrySourceValue>country_source_value</CountrySourceValue>
+				<Latitude>latitude</Latitude>
+				<Longitude>longitude</Longitude>
+      </LocationDefinition>
+   </Locations>
+</QueryDefinition>

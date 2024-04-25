@@ -1,0 +1,65 @@
+﻿<QueryDefinition>
+	<Query>
+		SELECT t.observation_id
+		, t.person_id
+		, t.observation_concept_id
+		, t.observation_date
+		, t.observation_datetime
+		, t.observation_type_concept_id
+		, t.value_as_number
+		, t.value_as_string
+		, t.value_as_concept_id
+		, t.qualifier_concept_id
+		, t.unit_concept_id
+		, t.provider_id
+		, t.visit_occurrence_id
+		, t.visit_detail_id
+		, t.observation_source_value
+		, t.observation_source_concept_id
+		, t.unit_source_value
+		, t.qualifier_source_value
+		, t.value_source_value
+		, t.observation_event_id
+		, t.obs_event_field_concept_id
+		FROM {sc}.observation as t
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND t.PERSON_ID = ch.PERSON_ID
+		order by 2
+	</Query>
+	<Observation>
+		<ObservationDefinition>
+			<Id>observation_id</Id>
+			<PersonId>person_id</PersonId>
+			<StartDate>observation_date</StartDate>
+			<StartTime>observation_datetime</StartTime>
+			
+			<ProviderId>provider_id</ProviderId>
+			<VisitOccurrenceId>visit_occurrence_id</VisitOccurrenceId>
+			<VisitDetailId>visit_detail_id</VisitDetailId>
+
+			<ValueAsConceptId>value_as_concept_id</ValueAsConceptId>
+			<ValuesAsString>
+				<string>value_as_string</string>
+			</ValuesAsString>
+			<ValuesAsNumber>
+				<string>value_as_number</string>
+			</ValuesAsNumber>
+			<QualifierConceptId>qualifier_concept_id</QualifierConceptId>
+			<QualifierSourceValue>qualifier_source_value</QualifierSourceValue>
+			<ValueSourceValue>value_source_value</ValueSourceValue>
+			<EventId>observation_event_id</EventId>
+			<EventFieldConceptId>obs_event_field_concept_id</EventFieldConceptId>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field conceptId="observation_concept_id" sourceConceptId="observation_source_concept_id" key="observation_source_value" sourceKey="observation_source_value" typeId="observation_type_concept_id"/>
+					</Fields>
+				</Concept>
+				<Concept>
+					<Fields>
+						<Field conceptId="unit_concept_id" key="unit_source_value" sourceKey="unit_source_value" defaultTypeId="0"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ObservationDefinition>
+	</Observation>
+</QueryDefinition>

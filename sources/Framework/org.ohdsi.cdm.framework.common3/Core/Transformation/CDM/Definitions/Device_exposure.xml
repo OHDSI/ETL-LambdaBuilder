@@ -1,0 +1,55 @@
+﻿<QueryDefinition>
+	<Query>
+		SELECT t.device_exposure_id
+		, t.person_id
+		, t.device_concept_id
+		, t.device_exposure_start_date
+		, t.device_exposure_start_datetime
+		, t.device_exposure_end_date
+		, t.device_exposure_end_datetime
+		, t.device_type_concept_id
+		, t.unique_device_id
+		, t.quantity
+		, t.provider_id
+		, t.visit_occurrence_id
+		, t.visit_detail_id
+		, t.device_source_value
+		, t.device_source_concept_id
+		, t.production_id
+		, t.unit_concept_id
+		, t.unit_source_value
+		, t.unit_source_concept_id
+		FROM {sc}.device_exposure as t
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND t.PERSON_ID = ch.PERSON_ID
+		order by 2
+	</Query>
+	<DeviceExposure>
+		<DeviceExposureDefinition>
+			<Id>device_exposure_id</Id>
+			<PersonId>person_id</PersonId>
+			<StartDate>device_exposure_start_date</StartDate>
+			<StartTime>device_exposure_start_datetime</StartTime>
+			<EndDate>device_exposure_end_date</EndDate>
+			<EndTime>device_exposure_end_datetime</EndTime>
+			<ProviderId>provider_id</ProviderId>
+			<VisitOccurrenceId>visit_occurrence_id</VisitOccurrenceId>
+			<VisitDetailId>visit_detail_id</VisitDetailId>
+
+			<Quantity>quantity</Quantity>
+			<ProductionId>production_id</ProductionId>
+			<UniqueDeviceId>unique_device_id</UniqueDeviceId>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field conceptId="device_concept_id" sourceConceptId="device_source_concept_id" key="device_source_value" sourceKey="device_source_value" typeId="device_type_concept_id"/>
+					</Fields>
+				</Concept>
+				<Concept>
+					<Fields>
+						<Field conceptId="unit_concept_id" sourceConceptId="unit_source_concept_id" key="unit_source_value" sourceKey="unit_source_value" defaultTypeId="0"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</DeviceExposureDefinition>
+	</DeviceExposure>
+</QueryDefinition>

@@ -38,10 +38,20 @@ namespace org.ohdsi.cdm.framework.common.Definitions
 
             foreach (var e in base.GetConcepts(concept, reader, offset))
             {
+                var id = reader.GetLong(Id);
+
+                if (id.HasValue)
+                {
+                    e.Id = id.Value;
+                }
+                else
+                {
+                    e.Id = offset.GetKeyOffset(e.PersonId).ProcedureOccurrenceId;
+                }
+
                 yield return
                    new ProcedureOccurrence(e)
                    {
-                       Id = offset.GetKeyOffset(e.PersonId).ProcedureOccurrenceId,
                        ReleventConditionConceptId = relevantConditionConceptId,
                        ModifierConceptId = modifierConceptId ?? 0,
                        Quantity = q,

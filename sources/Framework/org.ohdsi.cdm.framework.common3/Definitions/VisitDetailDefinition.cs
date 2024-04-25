@@ -17,6 +17,8 @@ namespace org.ohdsi.cdm.framework.common.Definitions
         public string DischargeToConceptId { get; set; }
         public string DischargeToSourceValue { get; set; }
         public string PrecedingVisitDetailId { get; set; }
+        public string ParentId { get; set; }
+        
 
         public override IEnumerable<IEntity> GetConcepts(Concept concept, IDataRecord reader,
             KeyMasterOffsetManager keyOffset)
@@ -71,7 +73,8 @@ namespace org.ohdsi.cdm.framework.common.Definitions
                     AdmittingSourceValue = admittingSourceValue,
                     DischargeToConceptId = dischargeToConceptId,
                     DischargeToSourceValue = dischargeToSourceValue,
-                    PrecedingVisitDetailId = reader.GetInt(PrecedingVisitDetailId)
+                    PrecedingVisitDetailId = reader.GetInt(PrecedingVisitDetailId),
+                    VisitDetailParentId = reader.GetLong(ParentId),
                 };
                 if (id.HasValue)
                 {

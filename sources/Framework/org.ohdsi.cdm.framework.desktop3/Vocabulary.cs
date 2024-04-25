@@ -252,6 +252,41 @@ namespace org.ohdsi.cdm.framework.desktop
             }
         }
 
+        private static void LoadConceptIdToSourceVocabularyId()
+        {
+            var sql = File.ReadAllText(Path.Combine(Settings.Settings.Current.Builder.Folder,
+                @"Core\Lookups\ConceptIdToSourceVocabularyId.sql"));
+
+            sql = sql.Replace("{sc}", Settings.Settings.Current.Building.VocabularySchemaName);
+
+            Console.WriteLine("ConceptIdToSourceVocabularyId - Loading...");
+            using (var connection =
+                SqlConnectionHelper.OpenOdbcConnection(Settings.Settings.Current.Building.VocabularyConnectionString))
+            using (var command = new OdbcCommand(sql, connection) { CommandTimeout = 0 })
+            using (var reader = command.ExecuteReader())
+            {
+                var fileName =
+                    $"{Settings.Settings.Current.Building.Vendor}/{Settings.Settings.Current.Building.Id}/Lookups/ConceptIdToSourceVocabularyId.txt.gz";
+
+                Console.WriteLine("ConceptIdToSourceVocabularyId - store to S3 | " + fileName);
+
+                using var client = new AmazonS3Client(
+                    Settings.Settings.Current.S3AwsAccessKeyId,
+                    Settings.Settings.Current.S3AwsSecretAccessKey,
+                    new AmazonS3Config
+                    {
+                        Timeout = TimeSpan.FromMinutes(60),
+                        RegionEndpoint = Amazon.RegionEndpoint.USEast1,
+                        MaxErrorRetry = 20,
+                    });
+                AmazonS3Helper.CopyFile(client, Settings.Settings.Current.Bucket,
+                    fileName,
+                    reader, "\t", '`', "\0");
+
+            }
+            Console.WriteLine("ConceptIdToSourceVocabularyId - Done");
+        }
+
         private void LoadPregnancyDrug(bool readFromS3, bool storeToS3)
         {
             string sql;
@@ -265,9 +300,7 @@ namespace org.ohdsi.cdm.framework.desktop
                     @"Core\Lookups\PregnancyDrug.sql"));
             }
 
-
             sql = sql.Replace("{sc}", Settings.Settings.Current.Building.VocabularySchemaName);
-
 
             Console.WriteLine("PregnancyDrug - Loading...");
             using (var connection =
@@ -469,6 +502,9 @@ namespace org.ohdsi.cdm.framework.desktop
                 }
             }
             LoadPregnancyDrug(readFromS3, false);
+
+            if(Settings.Settings.Current.Building.Vendor == common.Enums.Vendor.Vendors.CDM)
+                LoadConceptIdToSourceVocabularyId();
         }
 
         public void SaveToS3(bool readFromS3)
@@ -568,6 +604,11 @@ namespace org.ohdsi.cdm.framework.desktop
 
                 throw;
             }
+        }
+
+        public string GetSourceVocabularyId(long conceptId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

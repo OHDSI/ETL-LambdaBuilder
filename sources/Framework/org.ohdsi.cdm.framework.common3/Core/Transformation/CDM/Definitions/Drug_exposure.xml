@@ -1,0 +1,64 @@
+﻿<QueryDefinition>
+	<Query>
+		SELECT t.drug_exposure_id
+		, t.person_id
+		, t.drug_concept_id
+		, t.drug_exposure_start_date
+		, t.drug_exposure_start_datetime
+		, t.drug_exposure_end_date
+		, t.drug_exposure_end_datetime
+		, t.verbatim_end_date
+		, t.drug_type_concept_id
+		, t.stop_reason
+		, t.refills
+		, t.quantity
+		, t.days_supply
+		, t.sig
+		, t.route_concept_id
+		, t.lot_number
+		, t.provider_id
+		, t.visit_occurrence_id
+		, t.visit_detail_id
+		, t.drug_source_value
+		, t.drug_source_concept_id
+		, t.route_source_value
+		, t.dose_unit_source_value
+		FROM {sc}.drug_exposure as t
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND t.PERSON_ID = ch.PERSON_ID
+		order by 2
+	</Query>
+	<DrugExposure>
+		<DrugExposureDefinition>
+			<Id>drug_exposure_id</Id>
+			<PersonId>person_id</PersonId>
+			<StartDate>drug_exposure_start_date</StartDate>
+			<StartTime>drug_exposure_start_datetime</StartTime>
+			<EndDate>drug_exposure_end_date</EndDate>
+			<EndTime>drug_exposure_end_datetime</EndTime>
+			<ProviderId>provider_id</ProviderId>
+			<VisitOccurrenceId>visit_occurrence_id</VisitOccurrenceId>
+			<VisitDetailId>visit_detail_id</VisitDetailId>
+
+			<LotNumber>lot_number</LotNumber>
+			<DoseUnitSourceValue>dose_unit_source_value</DoseUnitSourceValue>
+			<Sig>sig</Sig>
+			<StopReason>stop_reason</StopReason>
+			<Quantity>quantity</Quantity>
+			<DaysSupply>days_supply</DaysSupply>
+			<Refill>refills</Refill>
+			<VerbatimEndDate>verbatim_end_date</VerbatimEndDate>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field conceptId="drug_concept_id" sourceConceptId="drug_source_concept_id" key="drug_source_value" sourceKey="drug_source_value" typeId="drug_type_concept_id"/>
+					</Fields>
+				</Concept>
+				<Concept>
+					<Fields>
+						<Field conceptId="route_concept_id" key="route_source_value" sourceKey="route_source_value" defaultTypeId="0"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</DrugExposureDefinition>
+	</DrugExposure>
+</QueryDefinition>

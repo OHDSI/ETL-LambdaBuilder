@@ -122,6 +122,12 @@ namespace org.ohdsi.cdm.framework.common.Enums
             [Description("CPRD Aurum v5.4")]
             [CdmSource("CdmSource.sql")]
             CprdAurum,
+
+            [CdmVersion(CdmVersions.V54)]
+            [Folder("CDM")]
+            [Description("CDM v5.4")]
+            [CdmSource("CdmSource.sql")]
+            CDM,
         }
 
         public static Vendors GetVendorByName(string name)
@@ -177,6 +183,9 @@ namespace org.ohdsi.cdm.framework.common.Enums
             if (name.Contains("era", StringComparison.CurrentCultureIgnoreCase))
                 return Vendors.Era;
 
+            if (name.Equals("cdm", StringComparison.CurrentCultureIgnoreCase))
+                return Vendors.CDM;
+
             return Vendors.None;
         }
 
@@ -206,6 +215,9 @@ namespace org.ohdsi.cdm.framework.common.Enums
                 Vendors.OptumPantherCovid => "patient",
                 Vendors.CprdHES => "patient",
                 Vendors.HealthVerity => "enrollment",
+                Vendors.PregnancyAlgorithm => "Person",
+                Vendors.CDM => "Person",
+                Vendors.Era => "Person",
                 _ => throw new Exception("GetPersonTableName Unknown Vendor"),
             };
         }

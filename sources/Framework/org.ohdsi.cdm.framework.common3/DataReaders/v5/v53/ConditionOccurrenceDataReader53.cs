@@ -28,7 +28,12 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v53
             switch (i)
             {
                 case 0:
-                    return _offset.GetId(_enumerator.Current.PersonId, _enumerator.Current.Id);
+                    {
+                        if (_offset.GetKeyOffset(_enumerator.Current.PersonId).ConditionOccurrenceIdChanged)
+                            return _offset.GetId(_enumerator.Current.PersonId, _enumerator.Current.Id);
+                        else 
+                            return _enumerator.Current.Id;
+                    }
                 case 1:
                     return _enumerator.Current.PersonId;
                 case 2:
