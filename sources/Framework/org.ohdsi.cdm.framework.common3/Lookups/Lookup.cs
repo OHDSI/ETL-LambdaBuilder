@@ -217,7 +217,9 @@ namespace org.ohdsi.cdm.framework.common.Lookups
                     Ingredients = _lookup[sourceCode][conceptId].Ingredients,
                     ValidStartDate = _lookup[sourceCode][conceptId].ValidStartDate,
                     ValidEndDate = _lookup[sourceCode][conceptId].ValidEndDate,
-                    ValueAsConceptId = _lookup[sourceCode][conceptId].ValueAsConceptId
+                    ValueAsConceptId = _lookup[sourceCode][conceptId].ValueAsConceptId,
+                    SourceValidStartDate = _lookup[sourceCode][conceptId].SourceValidStartDate,
+                    SourceValidEndDate = _lookup[sourceCode][conceptId].SourceValidEndDate,
                 };
 
                 if (l.ConceptId == -1)

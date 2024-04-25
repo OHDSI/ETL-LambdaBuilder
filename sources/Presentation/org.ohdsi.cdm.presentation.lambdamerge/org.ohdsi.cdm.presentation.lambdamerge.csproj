@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Amazon.Lambda.Core" Version="2.2.0" />
-    <PackageReference Include="Amazon.Lambda.Serialization.Json" Version="2.2.0" />
+    <PackageReference Include="Amazon.Lambda.Serialization.Json" Version="2.2.1" />
     <PackageReference Include="Amazon.Lambda.S3Events" Version="3.1.0" />
   </ItemGroup>
   <ItemGroup>
