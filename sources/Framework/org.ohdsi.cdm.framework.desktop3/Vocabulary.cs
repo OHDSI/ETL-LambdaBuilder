@@ -254,12 +254,13 @@ namespace org.ohdsi.cdm.framework.desktop
 
         private static void LoadConceptIdToSourceVocabularyId()
         {
+            Console.WriteLine("ConceptIdToSourceVocabularyId - Loading...");
+
             var sql = File.ReadAllText(Path.Combine(Settings.Settings.Current.Builder.Folder,
                 @"Core\Lookups\ConceptIdToSourceVocabularyId.sql"));
 
             sql = sql.Replace("{sc}", Settings.Settings.Current.Building.VocabularySchemaName);
 
-            Console.WriteLine("ConceptIdToSourceVocabularyId - Loading...");
             using (var connection =
                 SqlConnectionHelper.OpenOdbcConnection(Settings.Settings.Current.Building.VocabularyConnectionString))
             using (var command = new OdbcCommand(sql, connection) { CommandTimeout = 0 })
@@ -533,6 +534,9 @@ namespace org.ohdsi.cdm.framework.desktop
                 Load(qd.DrugCost, readFromS3, true);
             }
             LoadPregnancyDrug(readFromS3, true);
+
+            if (Settings.Settings.Current.Building.Vendor == common.Enums.Vendor.Vendors.CDM)
+                LoadConceptIdToSourceVocabularyId();
 
             _lookups.Clear();
         }

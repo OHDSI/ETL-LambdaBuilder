@@ -23,11 +23,11 @@
 		op.observation_period_start_date,
 		op.observation_period_end_date,
 		op.period_type_concept_id,
-		
+
 		1 as fake
 		FROM {sc}.person t
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND t.PERSON_ID = ch.PERSON_ID
-		JOIN {ch_sc}.observation_period op ON t.PERSON_ID = op.PERSON_ID
+		JOIN {sc}.observation_period op ON t.PERSON_ID = op.PERSON_ID
 		order by 1
 	</Query>
 	<Persons>
