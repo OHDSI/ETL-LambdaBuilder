@@ -69,7 +69,9 @@ namespace org.ohdsi.cdm.framework.desktop
 
             if (reader.FieldCount > 5)
             {
-                lv.SourceConceptId = int.TryParse(reader[6].ToString(), out var scptId) ? scptId : 0;
+                //lv.SourceConceptId = int.TryParse(reader[6].ToString(), out var scptId) ? scptId : 0;
+                var sourceConceptId = int.TryParse(reader[6].ToString(), out var scptId) ? scptId : 0;
+                lv.SourceConcepts.Add(new SourceConcepts { ConceptId = sourceConceptId });
 
                 if (int.TryParse(reader[9].ToString(), out var ingredient))
                     lv.Ingredients.Add(ingredient);

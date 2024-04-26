@@ -97,8 +97,8 @@ namespace org.ohdsi.cdm.framework.common.Definitions
                     if (specialtyConceptIds[0].ConceptId != 0)
                         specialtyConcept = specialtyConceptIds[0].ConceptId;
 
-                    if (specialtyConceptIds[0].SourceConceptId != 0)
-                        specialtySourceConceptId = specialtyConceptIds[0].SourceConceptId;
+                    if (specialtyConceptIds[0].SourceConcepts.Count > 0 && specialtyConceptIds[0].SourceConcepts[0].ConceptId != 0)
+                        specialtySourceConceptId = specialtyConceptIds[0].SourceConcepts[0].ConceptId;
                 }
 
                 var prov = new Provider

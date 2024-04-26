@@ -52,7 +52,7 @@ namespace org.ohdsi.cdm.framework.common.Definitions
                             TypeConceptId = field.DefaultTypeId ?? 0,
                             ValidStartDate = lookupValue.ValidStartDate,
                             ValidEndDate = lookupValue.ValidEndDate,
-                            SourceCauseConceptId = lookupValue.SourceConceptId
+                            SourceCauseConceptId = lookupValue.SourceConcepts.Count != 0 ? lookupValue.SourceConcepts[0].ConceptId : 0
                         };
                         break;
 

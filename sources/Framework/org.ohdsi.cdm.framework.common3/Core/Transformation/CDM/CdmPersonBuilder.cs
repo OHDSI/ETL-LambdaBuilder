@@ -90,21 +90,58 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.CDM
             if (!string.IsNullOrEmpty(lookupName)) 
             {
                 var lookup = Vocabulary.Lookup(e.SourceValue, lookupName, DateTime.MinValue);
-
+                
+                var newConceptIds = new List<Tuple<long, long>>();
                 foreach (var l in lookup)
                 {
-                    if (l.SourceValidStartDate.Year <= 1900)
-                        continue;
-
-                    if (l.SourceConceptId > 0 && e.StartDate.Between(l.SourceValidStartDate, l.SourceValidEndDate))
+                    foreach (var sc in l.SourceConcepts)
                     {
-                        e.SourceConceptId = l.SourceConceptId;
+                        if (sc.ValidStartDate.Year <= 1900)
+                            continue;
+
+                        long newSourceConceptId = 0;
+                        long newConceptId = 0;
+                        if (sc.ConceptId > 0 && e.StartDate.Between(sc.ValidStartDate, sc.ValidEndDate))
+                        {
+                            newSourceConceptId = sc.ConceptId;
+                        }
+
+                        if (l.ConceptId.HasValue && l.ConceptId.Value > 0 && e.StartDate.Between(l.ValidStartDate, l.ValidEndDate))
+                        {
+                            newConceptId = l.ConceptId.Value;
+                        }
+                        newConceptIds.Add(new Tuple<long, long>(newSourceConceptId, newConceptId));
+                    }
+                }
+
+                if (newConceptIds.Count > 0)
+                {
+                    Tuple<long, long> newMap = null;
+                    // SourceConceptId
+                    var r1 = newConceptIds.Where(c => c.Item1 > 0);
+
+                    if (r1.Any())
+                    {
+                        // ConceptId
+                        var r2 = r1.Where(c => c.Item2 > 0);
+                        if (r2.Any())
+                        {
+                            newMap = r2.FirstOrDefault();
+                        }
+                    }
+                    else
+                    {
+                        var r2 = newConceptIds.Where(c => c.Item2 > 0);
+                        if (r2.Any())
+                        {
+                            newMap = r2.FirstOrDefault();
+                        }
                     }
 
-                    if (l.ConceptId.HasValue && l.ConceptId.Value > 0 && e.StartDate.Between(l.ValidStartDate, l.ValidEndDate))
-                    {
-                        e.ConceptId = l.ConceptId.Value;
-                    }
+                    newMap ??= r1.FirstOrDefault();
+
+                    e.SourceConceptId = newMap.Item1;
+                    e.ConceptId = newMap.Item2;
                 }
             }
         }

@@ -140,13 +140,32 @@ namespace org.ohdsi.cdm.framework.common.Lookups
                             ValidEndDate = validEndDate
                         };
 
-                        if (spliter.Results.Length > 5)
-                        {
-                            lv.SourceConceptId = IsNullOrEmpty(spliter.Results[6])
-                                ? 0
-                                : long.Parse(spliter.Results[6]);
+                        //if (spliter.Results.Length > 5)
+                        //{
+                        //    //lv.SourceConceptId = IsNullOrEmpty(spliter.Results[6])
+                        //    //    ? 0
+                        //    //    : long.Parse(spliter.Results[6]);
 
-                        }
+                        //    var sourceConceptId = IsNullOrEmpty(spliter.Results[6])
+                        //       ? 0
+                        //       : long.Parse(spliter.Results[6]);
+
+                        //    var sourceValidStartDate =  DateTime.MinValue;
+                        //    var sourceValidEndDate = DateTime.MaxValue;
+
+                        //    if (spliter.Results.Length > 6)
+                        //    {
+                        //        DateTime.TryParse(spliter.Results[7], out sourceValidStartDate);
+                        //        DateTime.TryParse(spliter.Results[8], out sourceValidEndDate);
+                        //    }
+
+                        //    lv.SourceConcepts.Add(new SourceConcepts 
+                        //    { 
+                        //        ConceptId = sourceConceptId, 
+                        //        ValidStartDate = sourceValidStartDate, 
+                        //        ValidEndDate = sourceValidEndDate 
+                        //    });
+                        //}
 
                         value = lv;
                         _lookup[sourceCode].Add(conceptId, value);
@@ -154,6 +173,26 @@ namespace org.ohdsi.cdm.framework.common.Lookups
 
                     if (spliter.Results.Length > 5)
                     {
+                        var sourceConceptId = IsNullOrEmpty(spliter.Results[6])
+                               ? 0
+                               : long.Parse(spliter.Results[6]);
+
+                        var sourceValidStartDate = DateTime.MinValue;
+                        var sourceValidEndDate = DateTime.MaxValue;
+
+                        if (spliter.Results.Length > 6)
+                        {
+                            DateTime.TryParse(spliter.Results[7], out sourceValidStartDate);
+                            DateTime.TryParse(spliter.Results[8], out sourceValidEndDate);
+                        }
+
+                        value.SourceConcepts.Add(new SourceConcepts
+                        {
+                            ConceptId = sourceConceptId,
+                            ValidStartDate = sourceValidStartDate,
+                            ValidEndDate = sourceValidEndDate
+                        });
+
                         if (!IsNullOrEmpty(spliter.Results[9]) &&
                             long.TryParse(spliter.Results[9], out var ingredient))
                         {
@@ -161,19 +200,7 @@ namespace org.ohdsi.cdm.framework.common.Lookups
                             value.Ingredients.Add(ingredient);
                         }
                     }
-
-                    if (spliter.Results.Length > 6)
-                    {
-                        if (!DateTime.TryParse(spliter.Results[7], out var sourceValidStartDate))
-                            sourceValidStartDate = DateTime.MinValue;
-
-                        if (!DateTime.TryParse(spliter.Results[8], out var sourceValidEndDate))
-                            sourceValidEndDate = DateTime.MaxValue;
-
-                        value.SourceValidStartDate = sourceValidStartDate;
-                        value.SourceValidEndDate = sourceValidEndDate;
-                    }
-
+                    
                     if (spliter.Results.Length > 10)
                     {
                         if (!IsNullOrEmpty(spliter.Results[10]))
@@ -213,13 +240,14 @@ namespace org.ohdsi.cdm.framework.common.Lookups
                     ConceptId = _lookup[sourceCode][conceptId].ConceptId,
                     Domain = _lookup[sourceCode][conceptId].Domain,
                     SourceCode = _lookup[sourceCode][conceptId].SourceCode,
-                    SourceConceptId = _lookup[sourceCode][conceptId].SourceConceptId,
+                    //SourceConceptId = _lookup[sourceCode][conceptId].SourceConceptId,
                     Ingredients = _lookup[sourceCode][conceptId].Ingredients,
                     ValidStartDate = _lookup[sourceCode][conceptId].ValidStartDate,
                     ValidEndDate = _lookup[sourceCode][conceptId].ValidEndDate,
                     ValueAsConceptId = _lookup[sourceCode][conceptId].ValueAsConceptId,
-                    SourceValidStartDate = _lookup[sourceCode][conceptId].SourceValidStartDate,
-                    SourceValidEndDate = _lookup[sourceCode][conceptId].SourceValidEndDate,
+                    //SourceValidStartDate = _lookup[sourceCode][conceptId].SourceValidStartDate,
+                    //SourceValidEndDate = _lookup[sourceCode][conceptId].SourceValidEndDate,
+                    SourceConcepts = _lookup[sourceCode][conceptId].SourceConcepts,
                 };
 
                 if (l.ConceptId == -1)

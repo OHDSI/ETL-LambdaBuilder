@@ -5,6 +5,7 @@ using org.ohdsi.cdm.framework.common.Omop;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace org.ohdsi.cdm.framework.common.Definitions
@@ -122,7 +123,8 @@ namespace org.ohdsi.cdm.framework.common.Definitions
                                 }
                             }
 
-                            var sourceConceptId = lookupValue.SourceConceptId;
+                            // TMP
+                            var sourceConceptId = lookupValue.SourceConcepts.Count != 0 ? lookupValue.SourceConcepts[0].ConceptId : 0;
                             if (!string.IsNullOrEmpty(field.SourceConceptId))
                             {
                                 var scId  = reader.GetLong(field.SourceConceptId);
