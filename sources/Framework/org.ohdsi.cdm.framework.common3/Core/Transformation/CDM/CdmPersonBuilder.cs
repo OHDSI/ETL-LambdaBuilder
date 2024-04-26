@@ -96,6 +96,7 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.CDM
                 {
                     foreach (var sc in l.SourceConcepts)
                     {
+                        // Year > 1900 = invalid_reason = 'R'
                         if (sc.ValidStartDate.Year <= 1900)
                             continue;
 
@@ -114,7 +115,7 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.CDM
                     }
                 }
 
-                if (newConceptIds.Count > 0)
+                if (newConceptIds.Count > 0) // Fix for invalid_reason = 'R'
                 {
                     Tuple<long, long> newMap = null;
                     // SourceConceptId
@@ -145,6 +146,40 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.CDM
                     {
                         e.SourceConceptId = newMap.Item1;
                         e.ConceptId = newMap.Item2;
+                    }
+                    else
+                    {
+                        e.SourceConceptId = 0;
+                        e.ConceptId = 0;
+                    }
+                }
+                else // Others
+                {
+                    var needToUpdate = lookup.Where(l => l.ConceptId == e.ConceptId).FirstOrDefault() == null;
+                    if (needToUpdate)
+                    {
+                        foreach (var l in lookup)
+                        {
+                            if (l.ConceptId.HasValue && l.ConceptId.Value > 0)
+                            {
+                                if (lookupName != "ndc" || e.StartDate.Between(l.ValidStartDate, l.ValidEndDate))
+                                {
+                                    //if (e.ConceptId != l.ConceptId.Value)
+                                    //{
+
+                                    //}
+
+                                    e.ConceptId = l.ConceptId.Value;
+
+                                    var sc = l.SourceConcepts.Where(c => c.ConceptId > 0).FirstOrDefault();
+                                    if (sc != null)
+                                    {
+                                        e.SourceConceptId = sc.ConceptId;
+                                    }
+                                    break;
+                                }
+                            }
+                        }
                     }
                 }
             }

@@ -10,6 +10,10 @@ union
 SELECT  distinct PERSON_ID  
 FROM {sc}.procedure_occurrence
 where procedure_source_value = 'G0050'
+union
+SELECT distinct PERSON_ID  
+FROM {sc}.PERSON
+where PERSON_ID > 283787864
 )
 ) a
 order by 1
