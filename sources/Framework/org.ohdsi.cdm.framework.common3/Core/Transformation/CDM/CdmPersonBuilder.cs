@@ -140,8 +140,12 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.CDM
 
                     newMap ??= r1.FirstOrDefault();
 
-                    e.SourceConceptId = newMap.Item1;
-                    e.ConceptId = newMap.Item2;
+                    // TMP ???
+                    if (newMap != null)
+                    {
+                        e.SourceConceptId = newMap.Item1;
+                        e.ConceptId = newMap.Item2;
+                    }
                 }
             }
         }
