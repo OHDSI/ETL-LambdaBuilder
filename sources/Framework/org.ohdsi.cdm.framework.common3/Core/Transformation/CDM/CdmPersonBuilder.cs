@@ -310,7 +310,7 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.CDM
                         }
 
                         var newEnt = byConceptId.First();
-                        newEnt.Id = GetId();
+                        //newEnt.Id = GetId();
 
                         AddToChunk(newEnt.Domain, [newEnt]);
                     }
@@ -389,6 +389,9 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.CDM
                             var c = entity as ConditionOccurrence ??
                                            new ConditionOccurrence(entity);
 
+                            if (c.Id == 0)
+                                c.Id = GetId();
+
                             ConditionForEra.Add(c);
                             ChunkData.AddData(c);
                         }
@@ -398,6 +401,9 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.CDM
                         {
                             var m = entity as Measurement ?? new Measurement(entity);
 
+                            if (m.Id == 0)
+                                m.Id = GetId();
+
                             ChunkData.AddData(m);
                         }
                         break;
@@ -405,6 +411,9 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.CDM
                     case "Observation":
                         {
                             var o = entity as Observation ?? new Observation(entity);
+
+                            if (o.Id == 0)
+                                o.Id = GetId();
 
                             ChunkData.AddData(o);
                         }
@@ -415,6 +424,9 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.CDM
                             var p = entity as ProcedureOccurrence ??
                                           new ProcedureOccurrence(entity);
 
+                            if (p.Id == 0)
+                                p.Id = GetId();
+
                             ChunkData.AddData(p);
                         }
                         break;
@@ -424,6 +436,9 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.CDM
                             var d = entity as DeviceExposure ??
                                           new DeviceExposure(entity);
 
+                            if (d.Id == 0)
+                                d.Id = GetId();
+
                             ChunkData.AddData(d);
                         }
                         break;
@@ -432,6 +447,9 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.CDM
                         {
                             var drg = entity as DrugExposure ??
                                       new DrugExposure(entity);
+
+                            if (drg.Id == 0)
+                                drg.Id = GetId();
 
                             DrugForEra.Add(drg);
                             ChunkData.AddData(drg);
