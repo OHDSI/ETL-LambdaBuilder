@@ -220,6 +220,11 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.CDM
                 return result.Value;
             }
 
+            if(person.PersonId == 136899754)
+            {
+
+            }
+
             if(ObservationPeriodsRaw.Count == 0)
                 return Attrition.InvalidObservationTime;
 
@@ -302,7 +307,7 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.CDM
             {
                 foreach (var bySourceConceptId in byVisitDetailId.GroupBy(i => i.SourceConceptId))
                 {
-                    foreach (var byConceptId in byVisitDetailId.GroupBy(i => i.ConceptId))
+                    foreach (var byConceptId in bySourceConceptId.GroupBy(i => i.ConceptId))
                     {
                         if (byConceptId.Count() > 1)
                         {
