@@ -203,8 +203,8 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.CDM
         private long GetId()
         {
             _newId++;
-            var personIndex = Offset.GetPersonIndex(PersonRecords[0].PersonId);
-            return 1000000000000000000 + ChunkData.ChunkId * 1000000000000000 + personIndex * 10000000L + _newId;
+             return 1000000000000000000 + ChunkData.ChunkId * 1000000000000000 + PersonRecords[0].PersonId * 100000L + _newId;
+            //return 1000000000000000000 + ChunkData.ChunkId * 1000000000000000 + personIndex * 10000000L + _newId;
         }
 
         public override Attrition Build(ChunkData data, KeyMasterOffsetManager o)
