@@ -1,4 +1,5 @@
-﻿using org.ohdsi.cdm.framework.common.Base;
+﻿using Force.DeepCloner;
+using org.ohdsi.cdm.framework.common.Base;
 using org.ohdsi.cdm.framework.common.Builder;
 using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Lookups;
@@ -16,6 +17,9 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.CDM
     {
         private readonly Dictionary<long, bool> _removedVisitIds = [];
         private readonly Dictionary<long, bool> _removedVisitDetailIds = [];
+
+        private readonly Dictionary<long, HashSet<LookupValue>> _alternativeConcepts = [];
+        private int _newId = 0;
 
         public override KeyValuePair<Person, Attrition> BuildPerson(List<Person> records)
         {
@@ -91,7 +95,7 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.CDM
             {
                 var lookup = Vocabulary.Lookup(e.SourceValue, lookupName, DateTime.MinValue);
                 
-                var newConceptIds = new List<Tuple<long, long>>();
+                var newConceptIds = new List<Tuple<long, long, string>>();
                 foreach (var l in lookup)
                 {
                     foreach (var sc in l.SourceConcepts)
@@ -111,13 +115,13 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.CDM
                         {
                             newConceptId = l.ConceptId.Value;
                         }
-                        newConceptIds.Add(new Tuple<long, long>(newSourceConceptId, newConceptId));
+                        newConceptIds.Add(new Tuple<long, long, string>(newSourceConceptId, newConceptId, l.Domain));
                     }
                 }
 
                 if (newConceptIds.Count > 0) // Fix for invalid_reason = 'R'
                 {
-                    Tuple<long, long> newMap = null;
+                    Tuple<long, long, string> newMap = null;
                     // SourceConceptId
                     var r1 = newConceptIds.Where(c => c.Item1 > 0);
 
@@ -140,12 +144,12 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.CDM
                     }
 
                     newMap ??= r1.FirstOrDefault();
-
-                    // TMP ???
+                    
                     if (newMap != null)
                     {
                         e.SourceConceptId = newMap.Item1;
                         e.ConceptId = newMap.Item2;
+                        e.Domain = newMap.Item3;
                     }
                     else
                     {
@@ -155,34 +159,52 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.CDM
                 }
                 else // Others
                 {
-                    var needToUpdate = lookup.Where(l => l.ConceptId == e.ConceptId).FirstOrDefault() == null;
-                    if (needToUpdate)
+                    var newMap = lookup.Where(l => l.ConceptId != e.ConceptId);
+                    if (newMap.Any())
                     {
-                        foreach (var l in lookup)
+                        if (newMap.Count() == 1)
                         {
+                            var l = newMap.First();
                             if (l.ConceptId.HasValue && l.ConceptId.Value > 0)
                             {
                                 if (lookupName != "ndc" || e.StartDate.Between(l.ValidStartDate, l.ValidEndDate))
                                 {
-                                    //if (e.ConceptId != l.ConceptId.Value)
-                                    //{
-
-                                    //}
-
                                     e.ConceptId = l.ConceptId.Value;
+                                    e.Domain = l.Domain;
 
                                     var sc = l.SourceConcepts.Where(c => c.ConceptId > 0).FirstOrDefault();
                                     if (sc != null)
                                     {
                                         e.SourceConceptId = sc.ConceptId;
                                     }
-                                    break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            foreach (var l in lookup)
+                            {
+                                foreach (var sc in l.SourceConcepts)
+                                {
+                                    e.ConceptId = 0;
+
+                                    if (!_alternativeConcepts.ContainsKey(sc.ConceptId))
+                                        _alternativeConcepts.Add(sc.ConceptId, []);
+
+                                    _alternativeConcepts[sc.ConceptId].Add(l);
                                 }
                             }
                         }
                     }
                 }
             }
+        }
+
+        private long GetId()
+        {
+            _newId++;
+            var personIndex = Offset.GetPersonIndex(PersonRecords[0].PersonId);
+            return 1000000000000000000 + ChunkData.ChunkId * 1000000000000000 + personIndex * 10000000L + _newId;
         }
 
         public override Attrition Build(ChunkData data, KeyMasterOffsetManager o)
@@ -257,28 +279,48 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.CDM
             TryToRemap(MeasurementsRaw);
             TryToRemap(DeviceExposureRaw);
 
-            var drugExposures = DrugExposuresRaw.ToArray();
-            var conditionOccurrences = ConditionOccurrencesRaw.ToArray();
-            var procedureOccurrences = ProcedureOccurrencesRaw.ToArray();
-            var observations = ObservationsRaw.ToArray();
-            var measurements = MeasurementsRaw.ToArray();
-            var deviceExposure = DeviceExposureRaw.ToArray();
+            var newEntities = new List<IEntity>();
 
+            var drugExposures = GetNewMap(DrugExposuresRaw, newEntities).ToArray();
+            var conditionOccurrences = GetNewMap(ConditionOccurrencesRaw, newEntities).ToArray();
+            var procedureOccurrences = GetNewMap(ProcedureOccurrencesRaw, newEntities).ToArray();
+            var observations = GetNewMap(ObservationsRaw, newEntities).ToArray();
+            var measurements = GetNewMap(MeasurementsRaw, newEntities).ToArray();
+            var deviceExposure = GetNewMap(DeviceExposureRaw, newEntities).ToArray();
 
             Death death = DeathRecords.FirstOrDefault();
 
             if(death != null && death.StartDate.Date > DateTime.Now.Date)
-                death = null;
+                death = null;           
 
             // push built entities to ChunkBuilder for further save to CDM database
-            AddToChunk(person, death, [.. observationPeriods], payerPlanPeriods, drugExposures,
-                conditionOccurrences, procedureOccurrences, observations, measurements,
-                [.. visitOccurrences.Values], [.. visitDetails], null, deviceExposure, null, null);
+            AddToChunk(person, death, [.. observationPeriods], payerPlanPeriods, [.. drugExposures],
+                [.. conditionOccurrences], [.. procedureOccurrences], [.. observations], [.. measurements],
+                [.. visitOccurrences.Values], [.. visitDetails], null, [.. deviceExposure], null, null);
+
+            foreach (var byVisitDetailId in newEntities.GroupBy(i => i.VisitDetailId))
+            {
+                foreach (var bySourceConceptId in byVisitDetailId.GroupBy(i => i.SourceConceptId))
+                {
+                    foreach (var byConceptId in byVisitDetailId.GroupBy(i => i.ConceptId))
+                    {
+                        if (byConceptId.Count() > 1)
+                        {
+
+                        }
+
+                        var newEnt = byConceptId.First();
+                        newEnt.Id = GetId();
+
+                        AddToChunk(newEnt.Domain, [newEnt]);
+                    }
+                }
+            }
 
             Complete = true;
 
             var pg = new PregnancyAlgorithm.PregnancyAlgorithm();
-            foreach (var r in pg.GetPregnancyEpisodes(Vocabulary, person, observationPeriods.ToArray(),
+            foreach (var r in pg.GetPregnancyEpisodes(Vocabulary, person, [.. observationPeriods],
                 ChunkData.ConditionOccurrences.Where(e => e.PersonId == person.PersonId).ToArray(),
                 ChunkData.ProcedureOccurrences.Where(e => e.PersonId == person.PersonId).ToArray(),
                 ChunkData.Observations.Where(e => e.PersonId == person.PersonId).ToArray(),
@@ -288,8 +330,115 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.CDM
                 r.Id = Offset.GetKeyOffset(r.PersonId).ConditionEraId;
                 ChunkData.ConditionEra.Add(r);
             }
-
             return Attrition.None;
+        }
+
+        protected IEnumerable<T> GetNewMap<T>(IEnumerable<T> entities, List<IEntity> newEntities) where T : class, IEntity
+        {
+            foreach (var byVisitDetailId in entities.GroupBy(i => i.VisitDetailId))
+            {
+                foreach (var bySource in byVisitDetailId.GroupBy(i => i.SourceValue))
+                {
+                    foreach (var bySourceConceptId in bySource.GroupBy(i => i.SourceConceptId))
+                    {
+                        var sourceConceptId = bySourceConceptId.First().SourceConceptId;
+                        if (_alternativeConcepts.Count > 0 && _alternativeConcepts.ContainsKey(sourceConceptId))
+                        {
+                            if(bySourceConceptId.Count() > 1)
+                            {
+
+                            }
+
+                            foreach (var e in bySourceConceptId.Distinct())
+                            {
+                                foreach (var c in _alternativeConcepts[sourceConceptId])
+                                {
+                                    var newEntity = e.DeepClone();
+
+                                    newEntity.Id = 0;
+                                    newEntity.SourceRecordGuid = Guid.Empty;
+                                    newEntity.ConceptId = c.ConceptId.Value;
+                                    newEntity.Domain = c.Domain;
+                                    newEntities.Add(newEntity);
+
+                                }
+                            }
+                        }
+                        else
+                        {
+                            foreach (var e in bySourceConceptId)
+                            {
+                                yield return e;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        public override void AddToChunk(string domain, IEnumerable<IEntity> entities)
+        {
+            foreach (var entity in entities)
+            {
+                var entityDomain = GetDomain(domain, entity.Domain);
+
+                switch (entityDomain)
+                {
+                    case "Condition":
+                        {
+                            var c = entity as ConditionOccurrence ??
+                                           new ConditionOccurrence(entity);
+
+                            ConditionForEra.Add(c);
+                            ChunkData.AddData(c);
+                        }
+                        break;
+
+                    case "Measurement":
+                        {
+                            var m = entity as Measurement ?? new Measurement(entity);
+
+                            ChunkData.AddData(m);
+                        }
+                        break;
+
+                    case "Observation":
+                        {
+                            var o = entity as Observation ?? new Observation(entity);
+
+                            ChunkData.AddData(o);
+                        }
+                        break;
+
+                    case "Procedure":
+                        {
+                            var p = entity as ProcedureOccurrence ??
+                                          new ProcedureOccurrence(entity);
+
+                            ChunkData.AddData(p);
+                        }
+                        break;
+
+                    case "Device":
+                        {
+                            var d = entity as DeviceExposure ??
+                                          new DeviceExposure(entity);
+
+                            ChunkData.AddData(d);
+                        }
+                        break;
+
+                    case "Drug":
+                        {
+                            var drg = entity as DrugExposure ??
+                                      new DrugExposure(entity);
+
+                            DrugForEra.Add(drg);
+                            ChunkData.AddData(drg);
+                        }
+                        break;
+                }
+            }
         }
 
     }
