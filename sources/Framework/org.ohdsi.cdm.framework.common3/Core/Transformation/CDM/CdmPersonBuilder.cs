@@ -505,7 +505,7 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.CDM
                                     foreach (var r in result)
                                     {
                                         if(r.ConceptId.HasValue && r.ConceptId > 0)
-                                            r.Ingredients.Add(r.ConceptId.Value);
+                                            drg.Ingredients.Add(r.ConceptId.Value);
                                     }
                                 }
                             }
