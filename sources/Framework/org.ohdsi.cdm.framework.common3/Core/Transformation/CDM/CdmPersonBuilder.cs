@@ -2,6 +2,7 @@
 using org.ohdsi.cdm.framework.common.Base;
 using org.ohdsi.cdm.framework.common.Builder;
 using org.ohdsi.cdm.framework.common.Extensions;
+using org.ohdsi.cdm.framework.common.Helpers;
 using org.ohdsi.cdm.framework.common.Lookups;
 using org.ohdsi.cdm.framework.common.Omop;
 using System;
@@ -277,6 +278,42 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.CDM
                 visitDetails.Add(vd);
             }
 
+            foreach (var de in DrugExposuresRaw)
+            {
+                if (string.IsNullOrEmpty(de.Domain))
+                    de.Domain = "Drug";
+            }
+
+            foreach (var co in ConditionOccurrencesRaw)
+            {
+                if (string.IsNullOrEmpty(co.Domain))
+                    co.Domain = "Condition";
+            }
+
+            foreach (var po in ProcedureOccurrencesRaw)
+            {
+                if (string.IsNullOrEmpty(po.Domain))
+                    po.Domain = "Procedure";
+            }
+
+            foreach (var obs in ObservationsRaw)
+            {
+                if (string.IsNullOrEmpty(obs.Domain))
+                    obs.Domain = "Observation";
+            }
+
+            foreach (var m in MeasurementsRaw)
+            {
+                if (string.IsNullOrEmpty(m.Domain))
+                    m.Domain = "Measurement";
+            }
+
+            foreach (var de in DeviceExposureRaw)
+            {
+                if (string.IsNullOrEmpty(de.Domain))
+                    de.Domain = "Device";
+            }
+
             TryToRemap(DrugExposuresRaw);
             TryToRemap(ConditionOccurrencesRaw);
             TryToRemap(ProcedureOccurrencesRaw);
@@ -296,12 +333,8 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.CDM
             Death death = DeathRecords.FirstOrDefault();
 
             if(death != null && death.StartDate.Date > DateTime.Now.Date)
-                death = null;           
+                death = null;
 
-            // push built entities to ChunkBuilder for further save to CDM database
-            AddToChunk(person, death, [.. observationPeriods], payerPlanPeriods, [.. drugExposures],
-                [.. conditionOccurrences], [.. procedureOccurrences], [.. observations], [.. measurements],
-                [.. visitOccurrences.Values], [.. visitDetails], null, [.. deviceExposure], null, null);
 
             foreach (var byVisitDetailId in newEntities.GroupBy(i => i.VisitDetailId))
             {
@@ -321,6 +354,12 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.CDM
                     }
                 }
             }
+
+            // push built entities to ChunkBuilder for further save to CDM database
+            AddToChunk(person, death, [.. observationPeriods], payerPlanPeriods, [.. drugExposures],
+                [.. conditionOccurrences], [.. procedureOccurrences], [.. observations], [.. measurements],
+                [.. visitOccurrences.Values], [.. visitDetails], null, [.. deviceExposure], null, null);
+
 
             Complete = true;
 
@@ -456,6 +495,21 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.CDM
                             if (drg.Id == 0)
                                 drg.Id = GetId();
 
+                            if (drg.ConceptId > 0)
+                            {
+                                var result = Vocabulary.Lookup(drg.ConceptId.ToString(), "ingredient", DateTime.MinValue);
+
+                                if (result.Count != 0)
+                                {
+                                    drg.Ingredients = [];
+                                    foreach (var r in result)
+                                    {
+                                        if(r.ConceptId.HasValue && r.ConceptId > 0)
+                                            r.Ingredients.Add(r.ConceptId.Value);
+                                    }
+                                }
+                            }
+
                             DrugForEra.Add(drg);
                             ChunkData.AddData(drg);
                         }
@@ -463,6 +517,16 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.CDM
                 }
             }
         }
+
+        //public override IEnumerable<EraEntity> BuildDrugEra(DrugExposure[] drugExposures, ObservationPeriod[] observationPeriods)
+        //{
+        //    foreach (var eraEntity in EraHelper.GetEras(
+        //        Clean(drugExposures, observationPeriods, false).Where(d => string.IsNullOrEmpty(d.Domain) || d.Domain == "Drug"), 30, 38000182))
+        //    {
+        //        eraEntity.Id = Offset.GetKeyOffset(eraEntity.PersonId).DrugEraId;
+        //        yield return eraEntity;
+        //    }
+        //}
 
     }
 }
