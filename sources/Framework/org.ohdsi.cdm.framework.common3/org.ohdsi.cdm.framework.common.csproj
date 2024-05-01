@@ -181,11 +181,13 @@
     <None Remove="Core\Transformation\CDM\Definitions\Visit_occurrence.xml" />
     <None Remove="Core\Transformation\CDM\Lookups\cpt4.sql" />
     <None Remove="Core\Transformation\CDM\Lookups\hcpcs.sql" />
+    <None Remove="Core\Transformation\CDM\Lookups\icd10.sql" />
     <None Remove="Core\Transformation\CDM\Lookups\icd10cm.sql" />
     <None Remove="Core\Transformation\CDM\Lookups\icd10pcs.sql" />
     <None Remove="Core\Transformation\CDM\Lookups\icd9cm.sql" />
     <None Remove="Core\Transformation\CDM\Lookups\icd9proc.sql" />
     <None Remove="Core\Transformation\CDM\Lookups\Ingredient.sql" />
+    <None Remove="Core\Transformation\CDM\Lookups\loinc.sql" />
     <None Remove="Core\Transformation\CDM\Lookups\ndc.sql" />
     <None Remove="Core\Transformation\CDM\Lookups\revenue_code.sql" />
     <None Remove="Core\Transformation\CprdAurum\Batch.sql" />
@@ -952,6 +954,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Core\Transformation\CDM\Definitions\Person.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CDM\Lookups\icd10.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CDM\Lookups\loinc.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Core\Transformation\CDM\Lookups\ingredient.sql">
