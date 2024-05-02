@@ -37,6 +37,11 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.CDM
             if (person.YearOfBirth > DateTime.Now.Year)
                 return new KeyValuePair<Person, Attrition>(null, Attrition.ImplausibleYOBFuture);
 
+            if (person.GenderConceptId == 0 || person.GenderConceptId == 8551)
+            {
+                return new KeyValuePair<Person, Attrition>(null, Attrition.UnknownGender);
+            }
+
             return new KeyValuePair<Person, Attrition>(person, Attrition.None);
         }
 
@@ -160,7 +165,7 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.CDM
                 }
                 else // Others
                 {
-                    var newMap = lookup.Where(l => l.ConceptId != e.ConceptId);
+                    var newMap = lookup.Where(l => l.ConceptId != e.ConceptId || l.Domain != e.Domain);
                     if (newMap.Any())
                     {
                         if (newMap.Count() == 1)
@@ -205,7 +210,6 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.CDM
         {
             _newId++;
              return 1000000000000000000 + ChunkData.ChunkId * 1000000000000000 + PersonRecords[0].PersonId * 100000L + _newId;
-            //return 1000000000000000000 + ChunkData.ChunkId * 1000000000000000 + personIndex * 10000000L + _newId;
         }
 
         public override Attrition Build(ChunkData data, KeyMasterOffsetManager o)
@@ -221,10 +225,10 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.CDM
                 return result.Value;
             }
 
-            if(person.PersonId == 136899754)
-            {
+            //if(person.PersonId == 136899754)
+            //{
 
-            }
+            //}
 
             if(ObservationPeriodsRaw.Count == 0)
                 return Attrition.InvalidObservationTime;
@@ -388,10 +392,10 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.CDM
                         var sourceConceptId = bySourceConceptId.First().SourceConceptId;
                         if (_alternativeConcepts.Count > 0 && _alternativeConcepts.ContainsKey(sourceConceptId))
                         {
-                            if(bySourceConceptId.Count() > 1)
-                            {
+                            //if(bySourceConceptId.Count() > 1)
+                            //{
 
-                            }
+                            //}
 
                             foreach (var e in bySourceConceptId.Distinct())
                             {
