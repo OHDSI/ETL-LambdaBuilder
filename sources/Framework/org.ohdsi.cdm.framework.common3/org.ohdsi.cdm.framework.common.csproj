@@ -180,6 +180,7 @@
     <None Remove="Core\Transformation\CDM\Definitions\Visit_detail.xml" />
     <None Remove="Core\Transformation\CDM\Definitions\Visit_occurrence.xml" />
     <None Remove="Core\Transformation\CDM\Lookups\cpt4.sql" />
+    <None Remove="Core\Transformation\CDM\Lookups\domain.sql" />
     <None Remove="Core\Transformation\CDM\Lookups\hcpcs.sql" />
     <None Remove="Core\Transformation\CDM\Lookups\icd10.sql" />
     <None Remove="Core\Transformation\CDM\Lookups\icd10cm.sql" />
@@ -963,6 +964,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Core\Transformation\CDM\Lookups\ingredient.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CDM\Lookups\domain.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Core\Transformation\CDM\Lookups\revenue_code.sql">

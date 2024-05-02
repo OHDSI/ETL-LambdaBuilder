@@ -204,6 +204,15 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.CDM
                     }
                 }
             }
+            else if(e.ConceptId > 0)
+            {
+                var lookup = Vocabulary.Lookup(e.ConceptId.ToString(), "domain", DateTime.MinValue);
+                if(lookup.Count > 0)
+                {
+                    var l = lookup.First();
+                    e.Domain = l.Domain;
+                }
+            }
         }
 
         private long GetId()
