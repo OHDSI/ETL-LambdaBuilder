@@ -6,6 +6,8 @@ where vocabulary_id in
 'HCPCS',
 'ICD10CM',
 'ICD10PCS',
+'ICD10',
+'LOINC',
 'ICD9CM',
 'ICD9Proc',
 'NDC',
