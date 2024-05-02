@@ -616,5 +616,10 @@ namespace org.ohdsi.cdm.framework.desktop
         {
             throw new NotImplementedException();
         }
+
+        public string GetSourceDomain(long conceptId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

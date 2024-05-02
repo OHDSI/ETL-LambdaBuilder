@@ -206,11 +206,10 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.CDM
             }
             else if(e.ConceptId > 0)
             {
-                var lookup = Vocabulary.Lookup(e.ConceptId.ToString(), "domain", DateTime.MinValue);
-                if(lookup.Count > 0)
+                var domain  = Vocabulary.GetSourceDomain(e.ConceptId);
+                if (!string.IsNullOrEmpty(domain))
                 {
-                    var l = lookup.First();
-                    e.Domain = l.Domain;
+                    e.Domain = domain;
                 }
             }
         }
@@ -355,10 +354,10 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.CDM
                 {
                     foreach (var byConceptId in bySourceConceptId.GroupBy(i => i.ConceptId))
                     {
-                        if (byConceptId.Count() > 1)
-                        {
+                        //if (byConceptId.Count() > 1)
+                        //{
 
-                        }
+                        //}
 
                         var newEnt = byConceptId.First();
                         //newEnt.Id = GetId();

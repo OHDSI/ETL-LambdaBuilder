@@ -18,7 +18,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
         private readonly Dictionary<string, Lookup> _lookups = [];
         private GenderLookup _genderConcepts;
         private PregnancyConcepts _pregnancyConcepts;
-        private Dictionary<long, string> _conceptIdToSourceVocabularyId = [];
+        private Dictionary<long, Tuple<string, string>> _conceptIdToSourceVocabularyId = [];
 
         public Vendors Vendor { get; } = vendor;
 
@@ -178,7 +178,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                 var getObject = client.GetObjectAsync(getObjectRequest);
                 getObject.Wait();
 
-                var spliter = new StringSplitter(2);
+                var spliter = new StringSplitter(3);
 
                 using var responseStream = getObject.Result.ResponseStream;
                 using var bufferedStream = new BufferedStream(responseStream);
@@ -191,7 +191,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                     if (!string.IsNullOrEmpty(line))
                     {
                         spliter.SafeSplit(line, '\t');
-                        _conceptIdToSourceVocabularyId.Add(long.Parse(spliter.Results[0]), spliter.Results[1]);
+                        _conceptIdToSourceVocabularyId.Add(long.Parse(spliter.Results[0]), new Tuple<string, string>(spliter.Results[1], spliter.Results[2]));
                     }
                 }
             }
@@ -199,8 +199,16 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
 
         public string GetSourceVocabularyId(long conceptId)
         {
-            if(_conceptIdToSourceVocabularyId.TryGetValue(conceptId, out string value))
-                return value;
+            if (_conceptIdToSourceVocabularyId.TryGetValue(conceptId, out Tuple<string, string> value))
+                return value.Item1;                                
+
+            return null;
+        }
+
+        public string GetSourceDomain(long conceptId)
+        {
+            if (_conceptIdToSourceVocabularyId.TryGetValue(conceptId, out Tuple<string, string> value))
+                return value.Item2;
 
             return null;
         }

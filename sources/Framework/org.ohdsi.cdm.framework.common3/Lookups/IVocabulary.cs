@@ -14,5 +14,6 @@ namespace org.ohdsi.cdm.framework.common.Lookups
         IEnumerable<PregnancyConcept> LookupPregnancyConcept(long conceptId);
 
         string GetSourceVocabularyId(long conceptId);
+        string GetSourceDomain(long conceptId);
     }
 }
