@@ -845,6 +845,9 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.OptumOncology
             {
                 visitOccurrence.Id = Offset.GetKeyOffset(visitOccurrence.PersonId).VisitOccurrenceId;
 
+                if (visitOccurrence.ConceptId == 0)
+                    visitOccurrence.ConceptId = 9202;
+
                 if (!visitOccurrence.EndDate.HasValue)
                     visitOccurrence.EndDate = visitOccurrence.StartDate;
 
@@ -968,6 +971,15 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.OptumOncology
             if (observationPeriodsFinal[0].EndDate < new DateTime(2007, 1, 1))
             {
                 return Attrition.InvalidObservationTime;
+            }
+
+            // there are a small number of patients who have weird observation_period_end_date between 2025 - 6011.
+            // These should be truncated to the current year. I will update the ETL to reflect this
+            if (observationPeriodsFinal[0].EndDate.Value.Year > DateTime.Now.Year)
+            {
+                observationPeriodsFinal[0].EndDate = new DateTime(DateTime.Now.Year, 
+                    observationPeriodsFinal[0].EndDate.Value.Month,
+                    observationPeriodsFinal[0].EndDate.Value.Day);
             }
 
             // set corresponding ProviderIds
