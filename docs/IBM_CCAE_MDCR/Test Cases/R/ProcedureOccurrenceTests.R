@@ -102,9 +102,9 @@ createProcedureOccurrenceTests <- function () {
   expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '4180942', procedure_type_concept_id = '32846' )
   expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '2314322', procedure_type_concept_id = '32846' )
   expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '40757149', procedure_type_concept_id = '32846' )
-  expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '4088016', procedure_type_concept_id = '32846' )
   expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '42739018', procedure_type_concept_id = '32846' )
   ## expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '709845', procedure_type_concept_id = '32846' )
+  expect_measurement(person_id = patient$person_id, measurement_concept_id = '4167674', measurement_type_concept_id = '32846' )
   expect_measurement(person_id = patient$person_id, measurement_concept_id= '709845', measurement_type_concept_id = '32846')
   
   

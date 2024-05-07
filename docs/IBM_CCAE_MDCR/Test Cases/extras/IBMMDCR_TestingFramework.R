@@ -543,7 +543,6 @@ initFramework <- function() {
   defaults$wgtkey <- ''
   defaults$year <- '2011'
   defaults$medadv <- ''
-  defaults$gpi <- '34000003100330'
   assign('drug_claims', defaults, envir = frameworkContext$defaultValues)
 
   defaults <- list()
@@ -2112,7 +2111,7 @@ set_defaults_inpatient_admissions <- function(flag, admdate, admtyp, age, agegrp
   invisible(defaults)
 }
 
-set_defaults_drug_claims <- function(flag, age, agegrp, awp, cap_svc, cob, coins, copay, datatyp, dawind, daysupp, deaclas, deduct, dispfee, dobyr, eeclass, eestatu, efamid, egeoloc, eidflag, emprel, enrflag, enrolid, generid, genind, hlthplan, indstry, ingcost, maintin, metqty, mhsacovg, msa, ndcnum, netpay, ntwkprov, paidntwk, pay, pddate, pharmid, phyflag, plankey, plantyp, qty, refill, region, rxmr, saletax, seqnum, sex, svcdate, thercls, thergrp, version, wgtkey, year, medadv, gpi) {
+set_defaults_drug_claims <- function(flag, age, agegrp, awp, cap_svc, cob, coins, copay, datatyp, dawind, daysupp, deaclas, deduct, dispfee, dobyr, eeclass, eestatu, efamid, egeoloc, eidflag, emprel, enrflag, enrolid, generid, genind, hlthplan, indstry, ingcost, maintin, metqty, mhsacovg, msa, ndcnum, netpay, ntwkprov, paidntwk, pay, pddate, pharmid, phyflag, plankey, plantyp, qty, refill, region, rxmr, saletax, seqnum, sex, svcdate, thercls, thergrp, version, wgtkey, year, medadv) {
   defaults <- get('drug_claims', envir = frameworkContext$defaultValues)
   if (!missing(flag)) {
     defaults$flag <- flag
@@ -2282,9 +2281,7 @@ set_defaults_drug_claims <- function(flag, age, agegrp, awp, cap_svc, cob, coins
   if (!missing(medadv)) {
     defaults$medadv <- medadv
   }
-  if (!missing(gpi)) {
-    defaults$gpi <- gpi
-  }
+  
   assign('drug_claims', defaults, envir = frameworkContext$defaultValues)
   invisible(defaults)
 }
@@ -6478,7 +6475,7 @@ add_inpatient_admissions <- function(flag, admdate, admtyp, age, agegrp, caseid,
   invisible(NULL)
 }
 
-add_drug_claims <- function(flag, age, agegrp, awp, cap_svc, cob, coins, copay, datatyp, dawind, daysupp, deaclas, deduct, dispfee, dobyr, eeclass, eestatu, efamid, egeoloc, eidflag, emprel, enrflag, enrolid, generid, genind, hlthplan, indstry, ingcost, maintin, metqty, mhsacovg, msa, ndcnum, netpay, ntwkprov, paidntwk, pay, pddate, pharmid, phyflag, plankey, plantyp, qty, refill, region, rxmr, saletax, seqnum, sex, svcdate, thercls, thergrp, version, wgtkey, year, medadv, gpi) {
+add_drug_claims <- function(flag, age, agegrp, awp, cap_svc, cob, coins, copay, datatyp, dawind, daysupp, deaclas, deduct, dispfee, dobyr, eeclass, eestatu, efamid, egeoloc, eidflag, emprel, enrflag, enrolid, generid, genind, hlthplan, indstry, ingcost, maintin, metqty, mhsacovg, msa, ndcnum, netpay, ntwkprov, paidntwk, pay, pddate, pharmid, phyflag, plankey, plantyp, qty, refill, region, rxmr, saletax, seqnum, sex, svcdate, thercls, thergrp, version, wgtkey, year, medadv) {
   defaults <- get('drug_claims', envir = frameworkContext$defaultValues)
   fields <- c()
   values <- c()
@@ -6929,14 +6926,6 @@ add_drug_claims <- function(flag, age, agegrp, awp, cap_svc, cob, coins, copay, 
   }
   fields <- c(fields, "medadv")
   values <- c(values, if (is.null(medadv)) "NULL" else if (is(medadv, "subQuery")) paste0("(", as.character(medadv), ")") else paste0("'", as.character(medadv), "'"))
-
-  if (missing(gpi)) {
-    gpi <- defaults$gpi
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug_claims.gpi')
-  }
-  fields <- c(fields, "_gpi")
-  values <- c(values, if (is.null(gpi)) "NULL" else if (is(gpi, "subQuery")) paste0("(", as.character(gpi), ")") else paste0("'", as.character(gpi), "'"))
 
   inserts <- list(testId = frameworkContext$testId, testDescription = frameworkContext$testDescription, table = "drug_claims", fields = fields, values = values)
   frameworkContext$inserts[[length(frameworkContext$inserts) + 1]] <- inserts
