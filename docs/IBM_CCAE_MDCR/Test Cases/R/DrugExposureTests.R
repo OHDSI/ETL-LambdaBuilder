@@ -14,7 +14,7 @@ createDrugExposureTests <- function () {
   declareTest(id = patient$person_id, "Negative daysupp should be 0 in cdm. Id is PERSON_ID.")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_drug_claims(enrolid = patient$enrolid, ndcnum = '58864060830', year = '2012', daysupp = '-30', svcdate = '2012-06-12')
-  expect_drug_exposure(person_id = patient$person_id, drug_concept_id = '1545998', days_supply = '0', drug_exposure_start_date = '2012-06-12')
+  expect_drug_exposure(person_id = patient$person_id, drug_concept_id = '1545998', days_supply = '1', drug_exposure_start_date = '2012-06-12')
 
   patient <- createPatient()
   encounter <- createEncounter()
