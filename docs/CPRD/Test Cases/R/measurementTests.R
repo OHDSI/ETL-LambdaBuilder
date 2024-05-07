@@ -114,7 +114,7 @@ createMeasurementTests <- function()
   expect_measurement(person_id = lookup_person("person_id", person_source_value = patient$person_id), measurement_concept_id=4132152,
                      measurement_date='2012-01-01',
                      value_source_value='Normal',
-                     measurement_source_value='424Z.00', value_as_concept_id=45884153)
+                     measurement_source_value='424Z.00', value_as_concept_id=4069590)
 
 
   # TESTING VALUES RANGE LOW (TEST.data2)
@@ -129,7 +129,7 @@ createMeasurementTests <- function()
   expect_measurement(person_id = lookup_person("person_id", person_source_value = patient$person_id), measurement_concept_id=4132152,
                      measurement_date='2012-01-01', range_low = 1.2,
                      measurement_type_concept_id=32856, value_source_value='Normal',
-                     value_as_concept_id=45884153)
+                     value_as_concept_id=4069590)
 
 
   # TESTING VALUES RANGE HIGH (TEST.data3)
@@ -144,7 +144,7 @@ createMeasurementTests <- function()
   expect_measurement(person_id = lookup_person("person_id", person_source_value = patient$person_id), measurement_concept_id=4132152,
                      measurement_date='2012-01-01', range_high = 4.3,
                      measurement_type_concept_id=32856, value_source_value='Normal',
-                     value_as_concept_id=45884153)
+                     value_as_concept_id=4069590)
 
 
   # 19) -- test observation record 7 fields -- enntype 173 maps to 3000963 --> SHOULD WORK!
@@ -298,12 +298,12 @@ createMeasurementTests <- function()
   add_consultation(patid = patient$patid, eventdate = '2010-01-01', staffid = 1001)
   expect_measurement(person_id = lookup_person("person_id", person_source_value = patient$person_id), measurement_date='2010-01-01', value_as_number=80,
                      measurement_source_value='1-Examination Findings-Blood pressure-Diastolic', measurement_type_concept_id=32817,
-                     measurement_concept_id=4154790)
+                     measurement_concept_id=3012888)
 
   declareTest(id = patient$person_id, '2) additional observation')
   expect_measurement(person_id = lookup_person("person_id", person_source_value = patient$person_id),measurement_date='2010-01-01', value_as_number=160,
                      measurement_source_value='1-Examination Findings-Blood pressure-Systolic', measurement_type_concept_id=32817,
-                     measurement_concept_id=4152194)
+                     measurement_concept_id=3004249)
 
   #observation_table: 3) person_id=1361111;observation_date=2012-01-01; value_as_numbr=5; observation_source_value='1-3'; observation_type _type_concept_id=44818701 4) '1-5' value_source_value='Midline'  )
 
