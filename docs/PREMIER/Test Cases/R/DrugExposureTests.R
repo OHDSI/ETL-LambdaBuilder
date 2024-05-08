@@ -14,7 +14,7 @@ createDrugExposureTests <- function ()
              cpt_code = "J9310");
   expect_drug_exposure(person_id                = patient$person_id,
                        visit_occurrence_id      = visit$visit_occurrence_id,
-                       drug_concept_id          = 43148859,
+                       drug_concept_id          = 46275081,
                        drug_exposure_start_date = "2010-04-01",
                        drug_source_value        = "J9310");
 
@@ -70,7 +70,7 @@ createDrugExposureTests <- function ()
              cpt_code = "J9310");
   expect_drug_exposure(person_id                = patient$person_id,
                        visit_occurrence_id      = visit$visit_occurrence_id,
-                       drug_concept_id          = 43148859,
+                       drug_concept_id          = 46275081,
                        drug_exposure_start_date = "2010-04-01",
                        drug_exposure_end_date   = "2010-04-01",
                        drug_source_value        = "J9310");
