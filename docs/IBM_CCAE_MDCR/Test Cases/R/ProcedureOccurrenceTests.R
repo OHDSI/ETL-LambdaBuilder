@@ -71,7 +71,8 @@ createProcedureOccurrenceTests <- function () {
     declareTest(id = patient$person_id, "Patient has procedure in proc1 field in long_term_care table. Id is PERSON_ID.")
     add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
     add_long_term_care(enrolid = patient$enrolid, svcdate = '2012-09-15', tsvcdat = '2012-10-30', proc1 = '92568' )
-    expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '2313736', procedure_date = '2012-09-15')
+    ## expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '2313736', procedure_date = '2012-09-15')
+	expect_measurement(person_id = patient$person_id, measurement_concept_id= '4167674', measurement_date = '2012-09-15')
   }
   
   patient <- createPatient()
