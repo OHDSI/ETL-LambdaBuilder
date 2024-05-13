@@ -12,16 +12,16 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5
         private readonly IEnumerator<CdmSource> _enumerator;
 
         // A custom DataReader is implemented to prevent the need for the HashSet to be transformed to a DataTable for loading by SqlBulkCopy
-        public CdmSourceDataReader(Vendors vendor)
+        public CdmSourceDataReader()
         {
-            _enumerator = new List<CdmSource> { new(vendor) }.GetEnumerator();
+            _enumerator = new List<CdmSource> { new() }.GetEnumerator();
         }
 
-        public CdmSourceDataReader(Vendors vendor, DateTime sourceReleaseDate, string vocabularyVersion)
+        public CdmSourceDataReader(DateTime sourceReleaseDate, string vocabularyVersion)
         {
             _enumerator = new List<CdmSource>
             {
-                new(vendor) {SourceReleaseDate = sourceReleaseDate, VocabularyVersion = vocabularyVersion}
+                new() {SourceReleaseDate = sourceReleaseDate, VocabularyVersion = vocabularyVersion}
             }.GetEnumerator();
         }
 
