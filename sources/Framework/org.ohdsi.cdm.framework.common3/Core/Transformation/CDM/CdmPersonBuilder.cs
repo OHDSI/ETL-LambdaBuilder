@@ -95,6 +95,9 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.CDM
                     case "revenue code":
                         lookupName = "revenue_code";
                         break;
+                    case "grr":
+                        lookupName = "grr";
+                        break;
                 }
             }
             if (!string.IsNullOrEmpty(lookupName)) 
