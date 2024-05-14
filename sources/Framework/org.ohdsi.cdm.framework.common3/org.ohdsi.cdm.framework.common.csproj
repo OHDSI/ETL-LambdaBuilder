@@ -162,7 +162,34 @@
     <None Remove="Common\Spectrum\DropTables.sql" />
     <None Remove="Common\Spectrum\v6.0\CreateTables.sql" />
     <None Remove="Core\Lookups\Base.sql" />
+    <None Remove="Core\Lookups\ConceptIdToSourceVocabularyId.sql" />
     <None Remove="Core\Lookups\PregnancyDrug.sql" />
+    <None Remove="Core\Transformation\CDM\Batch.sql" />
+    <None Remove="Core\Transformation\CDM\Definitions\Condition_occurrence.xml" />
+    <None Remove="Core\Transformation\CDM\Definitions\death.xml" />
+    <None Remove="Core\Transformation\CDM\Definitions\Device_exposure.xml" />
+    <None Remove="Core\Transformation\CDM\Definitions\Drug_exposure.xml" />
+    <None Remove="Core\Transformation\CDM\Definitions\L_CARE_SITE.xml" />
+    <None Remove="Core\Transformation\CDM\Definitions\L_LOCATION.xml" />
+    <None Remove="Core\Transformation\CDM\Definitions\L_PROVIDER.xml" />
+    <None Remove="Core\Transformation\CDM\Definitions\Measurement.xml" />
+    <None Remove="Core\Transformation\CDM\Definitions\Observation.xml" />
+    <None Remove="Core\Transformation\CDM\Definitions\Payer_plan_period.xml" />
+    <None Remove="Core\Transformation\CDM\Definitions\Person.xml" />
+    <None Remove="Core\Transformation\CDM\Definitions\Procedure_occurrence.xml" />
+    <None Remove="Core\Transformation\CDM\Definitions\Visit_detail.xml" />
+    <None Remove="Core\Transformation\CDM\Definitions\Visit_occurrence.xml" />
+    <None Remove="Core\Transformation\CDM\Lookups\cpt4.sql" />
+    <None Remove="Core\Transformation\CDM\Lookups\hcpcs.sql" />
+    <None Remove="Core\Transformation\CDM\Lookups\icd10.sql" />
+    <None Remove="Core\Transformation\CDM\Lookups\icd10cm.sql" />
+    <None Remove="Core\Transformation\CDM\Lookups\icd10pcs.sql" />
+    <None Remove="Core\Transformation\CDM\Lookups\icd9cm.sql" />
+    <None Remove="Core\Transformation\CDM\Lookups\icd9proc.sql" />
+    <None Remove="Core\Transformation\CDM\Lookups\Ingredient.sql" />
+    <None Remove="Core\Transformation\CDM\Lookups\loinc.sql" />
+    <None Remove="Core\Transformation\CDM\Lookups\ndc.sql" />
+    <None Remove="Core\Transformation\CDM\Lookups\revenue_code.sql" />
     <None Remove="Core\Transformation\CprdAurum\Batch.sql" />
     <None Remove="Core\Transformation\CprdAurum\Definitions\consultation.xml" />
     <None Remove="Core\Transformation\CprdAurum\Definitions\drug.xml" />
@@ -879,7 +906,88 @@
     <Content Include="Core\Lookups\Base.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Core\Lookups\ConceptIdToSourceVocabularyId.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Core\Lookups\PregnancyDrug.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CDM\Batch.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CDM\Definitions\Drug_exposure.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CDM\Definitions\Observation.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CDM\Definitions\Procedure_occurrence.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CDM\Definitions\Measurement.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CDM\Definitions\Device_exposure.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CDM\Definitions\Condition_occurrence.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CDM\Definitions\L_PROVIDER.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CDM\Definitions\Visit_detail.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CDM\Definitions\Visit_occurrence.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CDM\Definitions\Payer_plan_period.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CDM\Definitions\L_CARE_SITE.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CDM\Definitions\L_LOCATION.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CDM\Definitions\Death.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CDM\Definitions\Person.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CDM\Lookups\icd10.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CDM\Lookups\loinc.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CDM\Lookups\ingredient.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CDM\Lookups\revenue_code.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CDM\Lookups\icd9proc.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CDM\Lookups\icd9cm.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CDM\Lookups\icd10pcs.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CDM\Lookups\icd10cm.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CDM\Lookups\hcpcs.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CDM\Lookups\cpt4.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Core\Transformation\CDM\Lookups\ndc.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Core\Transformation\CprdAurum\Batch.sql">
@@ -1701,8 +1809,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AWSSDK.S3" Version="3.7.306" />
-    <PackageReference Include="CsvHelper" Version="31.0.2" />
+    <PackageReference Include="AWSSDK.S3" Version="3.7.307.23" />
+    <PackageReference Include="CsvHelper" Version="31.0.4" />
+    <PackageReference Include="DeepCloner" Version="0.10.4" />
   </ItemGroup>
 
 </Project>

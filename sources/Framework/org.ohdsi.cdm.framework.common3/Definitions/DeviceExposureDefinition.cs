@@ -47,9 +47,8 @@ namespace org.ohdsi.cdm.framework.common.Definitions
 
             foreach (var entity in base.GetConcepts(concept, reader, offset))
             {
-                yield return new DeviceExposure(entity)
+                var de = new DeviceExposure(entity)
                 {
-                    Id = offset.GetKeyOffset(entity.PersonId).DeviceExposureId,
                     UniqueDeviceId = reader.GetString(UniqueDeviceId),
                     Quantity = reader.GetInt(Quantity),
                     ProductionId = reader.GetString(ProductionId),
@@ -57,6 +56,18 @@ namespace org.ohdsi.cdm.framework.common.Definitions
                     //UnitSourceConceptId = 0,
                     UnitSourceValue = string.IsNullOrWhiteSpace(unitConcept.Value) ? null : unitConcept.Value,
                 };
+
+                var id = reader.GetLong(Id);
+
+                if (id.HasValue)
+                {
+                    de.Id = id.Value;
+                }
+                else
+                {
+                    de.Id = offset.GetKeyOffset(entity.PersonId).DeviceExposureId;
+                }
+                yield return de;
             }
         }
     }

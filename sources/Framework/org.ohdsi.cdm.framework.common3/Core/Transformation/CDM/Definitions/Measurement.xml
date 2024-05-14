@@ -1,0 +1,64 @@
+﻿<QueryDefinition>
+	<Query>
+		SELECT t.measurement_id
+		, t.person_id
+		, t.measurement_concept_id
+		, t.measurement_date
+		, t.measurement_datetime
+		, t.measurement_time
+		, t.measurement_type_concept_id
+		, t.operator_concept_id
+		, t.value_as_number
+		, t.value_as_concept_id
+		, t.unit_concept_id
+		, t.range_low
+		, t.range_high
+		, t.provider_id
+		, t.visit_occurrence_id
+		, t.visit_detail_id
+		, t.measurement_source_value
+		, t.measurement_source_concept_id
+		, t.unit_source_value
+		, t.value_source_value
+		, t.unit_source_concept_id
+		, t.measurement_event_id
+		, t.meas_event_field_concept_id
+		FROM {sc}.measurement as t
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND t.PERSON_ID = ch.PERSON_ID
+		order by 2
+	</Query>
+	<Measurement>
+		<MeasurementDefinition>
+			<Id>measurement_id</Id>
+			<PersonId>person_id</PersonId>
+			<StartDate>measurement_date</StartDate>
+			<StartTime>measurement_datetime</StartTime>
+			
+			<ProviderId>provider_id</ProviderId>
+			<VisitOccurrenceId>visit_occurrence_id</VisitOccurrenceId>
+			<VisitDetailId>visit_detail_id</VisitDetailId>
+
+			<Time>measurement_time</Time>
+			<RangeLow>range_low</RangeLow>
+			<RangeHigh>range_high</RangeHigh>
+			<ValueAsNumber>value_as_number</ValueAsNumber>
+			<OperatorConceptId>operator_concept_id</OperatorConceptId>
+			<ValueSourceValue>value_source_value</ValueSourceValue>
+			<ValueAsConceptId>value_as_concept_id</ValueAsConceptId>
+			<EventId>measurement_event_id</EventId>
+			<EventFieldConceptId>meas_event_field_concept_id</EventFieldConceptId>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field conceptId="measurement_concept_id" sourceConceptId="measurement_source_concept_id" key="measurement_source_value" sourceKey="measurement_source_value" typeId="measurement_type_concept_id"/>
+					</Fields>
+				</Concept>
+				<Concept>
+					<Fields>
+						<Field conceptId="unit_concept_id" sourceConceptId="unit_source_concept_id" key="unit_source_value" sourceKey="unit_source_value" defaultTypeId="0"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</MeasurementDefinition>
+	</Measurement>
+</QueryDefinition>

@@ -15,7 +15,7 @@ namespace org.ohdsi.cdm.framework.common.Definitions
         public string FamilySource { get; set; }
 
         public override IEnumerable<IEntity> GetConcepts(Concept concept, IDataRecord reader,
-            KeyMasterOffsetManager keyOffset)
+            KeyMasterOffsetManager offset)
         {
             var personId = reader.GetLong(PersonId);
 
@@ -26,6 +26,10 @@ namespace org.ohdsi.cdm.framework.common.Definitions
             if (!string.IsNullOrEmpty(Id))
             {
                 id = reader.GetLong(Id);
+            }
+            else
+            {
+                id = offset.GetKeyOffset(personId.Value).PayerPlanPeriodId;
             }
 
             if (personId.HasValue)

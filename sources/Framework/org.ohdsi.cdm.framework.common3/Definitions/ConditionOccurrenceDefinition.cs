@@ -9,6 +9,7 @@ namespace org.ohdsi.cdm.framework.common.Definitions
 {
     public class ConditionOccurrenceDefinition : EntityDefinition
     {
+        public string StopReason { get; set; }
 
         public override IEnumerable<IEntity> GetConcepts(Concept concept, IDataRecord reader,
             KeyMasterOffsetManager offset)
@@ -33,16 +34,33 @@ namespace org.ohdsi.cdm.framework.common.Definitions
                 }
             }
 
-            return
-                base.GetConcepts(concept, reader, offset)
+            var records = base.GetConcepts(concept, reader, offset)
                     .Select(
                         e =>
                             new ConditionOccurrence(e)
                             {
-                                Id = offset.GetKeyOffset(e.PersonId).ConditionOccurrenceId,
                                 StatusConceptId = statusConceptId,
-                                StatusSourceValue = statusSource
+                                StatusSourceValue = statusSource,
+                                StopReason = reader.GetString(StopReason)
                             });
+            
+            var id = reader.GetLong(Id);
+
+            if (id.HasValue)
+            {
+                var c = records.FirstOrDefault();
+                c.Id = id.Value;
+                yield return c;
+            }
+            else
+            {
+                foreach (var co in records)
+                {
+                    co.Id = offset.GetKeyOffset(co.PersonId).ConditionOccurrenceId;
+
+                    yield return co;
+                }
+            }
         }
     }
 }

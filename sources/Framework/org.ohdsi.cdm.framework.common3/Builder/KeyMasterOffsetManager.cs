@@ -20,7 +20,7 @@ namespace org.ohdsi.cdm.framework.common.Builder
             return KeyOffsets[personIndex];
         }
 
-        private int GetPersonIndex(long personId)
+        public int GetPersonIndex(long personId)
         {
             if (PersonIndexes.TryAdd(personId, 0))
             {

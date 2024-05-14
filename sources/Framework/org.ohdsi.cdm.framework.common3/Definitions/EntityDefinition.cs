@@ -5,6 +5,7 @@ using org.ohdsi.cdm.framework.common.Omop;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Xml.Serialization;
 
 namespace org.ohdsi.cdm.framework.common.Definitions
@@ -122,6 +123,17 @@ namespace org.ohdsi.cdm.framework.common.Definitions
                                 }
                             }
 
+                            // TMP
+                            var sourceConceptId = lookupValue.SourceConcepts.Count != 0 ? lookupValue.SourceConcepts[0].ConceptId : 0;
+                            if (!string.IsNullOrEmpty(field.SourceConceptId))
+                            {
+                                var scId  = reader.GetLong(field.SourceConceptId);
+                                if(scId.HasValue)
+                                {
+                                    sourceConceptId = scId.Value;
+                                }
+                            }
+
                             yield return new Entity
                             {
                                 IsUnique = IsUnique,
@@ -139,7 +151,7 @@ namespace org.ohdsi.cdm.framework.common.Definitions
                                 AdditionalFields = additionalFields,
                                 ValidStartDate = lookupValue.ValidStartDate,
                                 ValidEndDate = lookupValue.ValidEndDate,
-                                SourceConceptId = lookupValue.SourceConceptId,
+                                SourceConceptId = sourceConceptId,
                                 Domain = lookupValue.Domain,
                                 //SourceVocabularyId = lookupValue.SourceVocabularyId,
                                 VocabularySourceValue = lookupValue.SourceCode,

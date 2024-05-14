@@ -412,10 +412,11 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.CPRD
 
                             if (result.Count != 0
                                 && result.Count > 0
-                                && result[0].SourceConceptId > 0
+                                && result[0].SourceConcepts.Count > 0
+                                && result[0].SourceConcepts[0].ConceptId > 0
                                 /*&& result[0].Domain == "Measurement"*/)
                             {
-                                mes.SourceConceptId = result[0].SourceConceptId;
+                                mes.SourceConceptId = result[0].SourceConcepts[0].ConceptId;
                             }
                         }
 
@@ -479,9 +480,10 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.CPRD
 
                                 if (result.Count != 0
                                     && result.Count > 0
-                                    && result[0].SourceConceptId > 0)
+                                    && result[0].SourceConcepts.Count > 0
+                                    && result[0].SourceConcepts[0].ConceptId > 0)
                                 {
-                                    obs.SourceConceptId = result[0].SourceConceptId;
+                                    obs.SourceConceptId = result[0].SourceConcepts[0].ConceptId;
                                 }
                             }
 

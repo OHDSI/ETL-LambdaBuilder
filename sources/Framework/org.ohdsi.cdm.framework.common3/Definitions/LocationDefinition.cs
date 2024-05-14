@@ -14,6 +14,7 @@ namespace org.ohdsi.cdm.framework.common.Definitions
         public string SourceValue { get; set; }
         public string Address1 { get; set; }
         public string Address2 { get; set; }
+        public string City { get; set; }
 
         public string CountryConceptId { get; set; }
         public string CountrySourceValue { get; set; }
@@ -34,7 +35,8 @@ namespace org.ohdsi.cdm.framework.common.Definitions
                 CountryConceptId = reader.GetInt(CountryConceptId) ?? 0,
                 CountrySourceValue = reader.GetString(CountrySourceValue),
                 Latitude = reader.GetDecimal(Latitude),
-                Longitude = reader.GetDecimal(Longitude)
+                Longitude = reader.GetDecimal(Longitude),
+                City = reader.GetString(City),
             };
 
             loc.Id = string.IsNullOrEmpty(Id) ? Entity.GetId(loc.GetKey()) : reader.GetLong(Id).Value;

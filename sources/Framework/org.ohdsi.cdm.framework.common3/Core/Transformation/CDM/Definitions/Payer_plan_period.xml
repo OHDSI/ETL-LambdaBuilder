@@ -1,0 +1,62 @@
+﻿<QueryDefinition>
+	<Query>
+		SELECT t.payer_plan_period_id
+		, t.person_id
+		, t.payer_plan_period_start_date
+		, t.payer_plan_period_end_date
+		, t.payer_concept_id
+		, t.payer_source_value
+		, t.payer_source_concept_id
+		, t.plan_concept_id
+		, t.plan_source_value
+		, t.plan_source_concept_id
+		, t.sponsor_concept_id
+		, t.sponsor_source_value
+		, t.sponsor_source_concept_id
+		, t.family_source_value
+		, t.stop_reason_concept_id
+		, t.stop_reason_source_value
+		, t.stop_reason_source_concept_id
+		FROM {sc}.payer_plan_period t
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND t.PERSON_ID = ch.PERSON_ID
+		order by 2
+	</Query>
+	<PayerPlanPeriods>
+		<PayerPlanPeriodDefinition>
+			<Id>payer_plan_period_id</Id>
+			<PersonId>person_id</PersonId>
+			<StartDate>payer_plan_period_start_date</StartDate>
+			<EndDate>payer_plan_period_end_date</EndDate>
+
+			<Concepts>
+				<!--payer_concept_id-->
+				<Concept>
+					<Fields>
+						<Field conceptId="payer_concept_id" sourceConceptId="payer_source_concept_id" key="payer_source_value" sourceKey="payer_source_value" defaultTypeId="0"/>
+					</Fields>
+				</Concept>
+				<!--plan_concept_id-->
+				<Concept>
+					<Fields>
+						<Field conceptId="plan_concept_id" key="plan_source_value" sourceKey="plan_source_value" defaultTypeId="0"/>
+					</Fields>
+				</Concept>
+				<!--sponsor_concept_id-->
+				<Concept>
+					<Fields>
+						<Field conceptId="sponsor_concept_id" sourceConceptId="sponsor_source_concept_id" key="sponsor_source_value" sourceKey="sponsor_source_value" defaultTypeId="0"/>
+					</Fields>
+				</Concept>
+				<!--stop_reason-->
+				<Concept>
+					<Fields>
+						<Field conceptId="stop_reason_concept_id" sourceConceptId="stop_reason_source_concept_id" key="stop_reason_source_value" sourceKey="stop_reason_source_value" defaultTypeId="0"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+
+			<FamilySource>family_source_value</FamilySource>
+
+		</PayerPlanPeriodDefinition>
+	</PayerPlanPeriods>
+</QueryDefinition>

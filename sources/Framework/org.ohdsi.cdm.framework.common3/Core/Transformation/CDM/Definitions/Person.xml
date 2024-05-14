@@ -1,0 +1,253 @@
+﻿<QueryDefinition>
+	<Query>
+		SELECT distinct
+		t.person_id,
+		t.gender_concept_id,
+		t.year_of_birth,
+		t.month_of_birth,
+		t.day_of_birth,
+		t.birth_datetime,
+		t.race_concept_id,
+		t.ethnicity_concept_id,
+		t.location_id,
+		t.provider_id,
+		t.care_site_id,
+		t.person_source_value,
+		t.gender_source_value,
+		t.gender_source_concept_id,
+		t.race_source_value,
+		t.race_source_concept_id,
+		t.ethnicity_source_value,
+		t.ethnicity_source_concept_id,
+
+		op.observation_period_start_date,
+		op.observation_period_end_date,
+		op.period_type_concept_id,
+
+		1 as fake
+		FROM {sc}.person t
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND t.PERSON_ID = ch.PERSON_ID
+		JOIN {sc}.observation_period op ON t.PERSON_ID = op.PERSON_ID
+		order by 1
+	</Query>
+	<Persons>
+		<PersonDefinition>
+			<PersonId>person_id</PersonId>
+			<PersonSourceValue>person_source_value</PersonSourceValue>
+			<Gender>gender_source_value</Gender>
+			<YearOfBirth>year_of_birth</YearOfBirth>
+			<MonthOfBirth>month_of_birth</MonthOfBirth>
+			<DayOfBirth>day_of_birth</DayOfBirth>
+			<TimeOfBirth>birth_datetime</TimeOfBirth>
+			<RaceConceptId>race_concept_id</RaceConceptId>
+			<EthnicityConceptId>ethnicity_concept_id</EthnicityConceptId>
+			<LocationId>location_id</LocationId>
+			<ProviderId>provider_id</ProviderId>
+			<CareSiteId>care_site_id</CareSiteId>
+			<Race>race_source_value</Race>
+			<RaceSourceConceptId>race_source_concept_id</RaceSourceConceptId>
+			<Ethnicity>ethnicity_source_value</Ethnicity>
+			<EthnicitySourceConceptId>ethnicity_source_concept_id</EthnicitySourceConceptId>
+
+			<StartDate>observation_period_start_date</StartDate>
+			<EndDate>observation_period_end_date</EndDate>
+			<PeriodTypeConceptId>period_type_concept_id</PeriodTypeConceptId>
+		</PersonDefinition>
+	</Persons>
+
+	<VisitOccurrence>
+		<!-- fake definition, only to load lookups  -->
+		<VisitOccurrenceDefinition>
+			<Condition>{fake} = 0</Condition>
+			<PersonId>PERSON_ID</PersonId>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>cpt4</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="fake" typeId="1" sourceKey="fake"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</VisitOccurrenceDefinition>
+		<VisitOccurrenceDefinition>
+			<Condition>{fake} = 0</Condition>
+			<PersonId>PERSON_ID</PersonId>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>hcpcs</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="fake" typeId="1" sourceKey="fake"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</VisitOccurrenceDefinition>
+		<VisitOccurrenceDefinition>
+			<Condition>{fake} = 0</Condition>
+			<PersonId>PERSON_ID</PersonId>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>icd10cm</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="fake" typeId="1" sourceKey="fake"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</VisitOccurrenceDefinition>
+		<VisitOccurrenceDefinition>
+			<Condition>{fake} = 0</Condition>
+			<PersonId>PERSON_ID</PersonId>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>icd10pcs</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="fake" typeId="1" sourceKey="fake"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</VisitOccurrenceDefinition>
+		<VisitOccurrenceDefinition>
+			<Condition>{fake} = 0</Condition>
+			<PersonId>PERSON_ID</PersonId>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>icd9cm</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="fake" typeId="1" sourceKey="fake"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</VisitOccurrenceDefinition>
+		<VisitOccurrenceDefinition>
+			<Condition>{fake} = 0</Condition>
+			<PersonId>PERSON_ID</PersonId>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>icd9proc</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="fake" typeId="1" sourceKey="fake"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</VisitOccurrenceDefinition>
+		<VisitOccurrenceDefinition>
+			<Condition>{fake} = 0</Condition>
+			<PersonId>PERSON_ID</PersonId>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>ndc</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="fake" typeId="1" sourceKey="fake"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</VisitOccurrenceDefinition>
+		<VisitOccurrenceDefinition>
+			<Condition>{fake} = 0</Condition>
+			<PersonId>PERSON_ID</PersonId>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>revenue_code</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="fake" typeId="1" sourceKey="fake"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</VisitOccurrenceDefinition>
+		<VisitOccurrenceDefinition>
+			<Condition>{fake} = 0</Condition>
+			<PersonId>PERSON_ID</PersonId>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>ingredient</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="fake" typeId="1" sourceKey="fake"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</VisitOccurrenceDefinition>
+		<VisitOccurrenceDefinition>
+			<Condition>{fake} = 0</Condition>
+			<PersonId>PERSON_ID</PersonId>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>loinc</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="fake" typeId="1" sourceKey="fake"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</VisitOccurrenceDefinition>
+		<VisitOccurrenceDefinition>
+			<Condition>{fake} = 0</Condition>
+			<PersonId>PERSON_ID</PersonId>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>icd10</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="fake" typeId="1" sourceKey="fake"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</VisitOccurrenceDefinition>
+		<VisitOccurrenceDefinition>
+			<Condition>{fake} = 0</Condition>
+			<PersonId>PERSON_ID</PersonId>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>grr</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="fake" typeId="1" sourceKey="fake"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</VisitOccurrenceDefinition>
+	</VisitOccurrence>
+</QueryDefinition>

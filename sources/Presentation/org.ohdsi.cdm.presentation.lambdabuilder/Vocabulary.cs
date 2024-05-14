@@ -1,11 +1,14 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
 using org.ohdsi.cdm.framework.common.Definitions;
+using org.ohdsi.cdm.framework.common.Helpers;
 using org.ohdsi.cdm.framework.common.Lookups;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
+using System.Text;
 using static org.ohdsi.cdm.framework.common.Enums.Vendor;
 
 namespace org.ohdsi.cdm.presentation.lambdabuilder
@@ -15,6 +18,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
         private readonly Dictionary<string, Lookup> _lookups = [];
         private GenderLookup _genderConcepts;
         private PregnancyConcepts _pregnancyConcepts;
+        private Dictionary<long, Tuple<string, string>> _conceptIdToSourceVocabularyId = [];
 
         public Vendors Vendor { get; } = vendor;
 
@@ -163,6 +167,50 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                 lookup.Fill(client, Settings.Current.Bucket, o.Key);
                 _lookups.Add(o.Key.Split('/')[3].Replace(".txt.gz", ""), lookup);
             }
+
+            if (Vendor == Vendors.CDM)
+            {
+                var getObjectRequest = new GetObjectRequest
+                {
+                    BucketName = Settings.Current.Bucket,
+                    Key = $"{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id}/Lookups/ConceptIdToSourceVocabularyId.txt.gz"
+                };
+                var getObject = client.GetObjectAsync(getObjectRequest);
+                getObject.Wait();
+
+                var spliter = new StringSplitter(3);
+
+                using var responseStream = getObject.Result.ResponseStream;
+                using var bufferedStream = new BufferedStream(responseStream);
+                using var gzipStream = new GZipStream(bufferedStream, CompressionMode.Decompress);
+                using var reader = new StreamReader(gzipStream, Encoding.Default);
+                string line;
+
+                while ((line = reader.ReadLine()) != null)
+                {
+                    if (!string.IsNullOrEmpty(line))
+                    {
+                        spliter.SafeSplit(line, '\t');
+                        _conceptIdToSourceVocabularyId.Add(long.Parse(spliter.Results[0]), new Tuple<string, string>(spliter.Results[1], spliter.Results[2]));
+                    }
+                }
+            }
+        }
+
+        public string GetSourceVocabularyId(long conceptId)
+        {
+            if (_conceptIdToSourceVocabularyId.TryGetValue(conceptId, out Tuple<string, string> value))
+                return value.Item1;                                
+
+            return null;
+        }
+
+        public string GetSourceDomain(long conceptId)
+        {
+            if (_conceptIdToSourceVocabularyId.TryGetValue(conceptId, out Tuple<string, string> value))
+                return value.Item2;
+
+            return null;
         }
 
         public List<LookupValue> Lookup(string sourceValue, string key, DateTime eventDate)

@@ -12,5 +12,8 @@ namespace org.ohdsi.cdm.framework.common.Lookups
 
         int? LookupGender(string genderSourceValue);
         IEnumerable<PregnancyConcept> LookupPregnancyConcept(long conceptId);
+
+        string GetSourceVocabularyId(long conceptId);
+        string GetSourceDomain(long conceptId);
     }
 }

@@ -68,9 +68,8 @@ namespace org.ohdsi.cdm.framework.common.Definitions
 
             foreach (var entity in base.GetConcepts(concept, reader, offset))
             {
-                yield return new Measurement(entity)
+                var m = new Measurement(entity)
                 {
-                    Id = offset.GetKeyOffset(entity.PersonId).MeasurementId,
                     SourceValue = string.IsNullOrWhiteSpace(entity.SourceValue)
                         ? null
                         : entity.SourceValue,
@@ -86,6 +85,18 @@ namespace org.ohdsi.cdm.framework.common.Definitions
                     EventId = reader.GetLong(EventId),
                     EventFieldConceptId = reader.GetInt(EventFieldConceptId)
                 };
+
+                var id = reader.GetLong(Id);
+
+                if (id.HasValue)
+                {
+                    m.Id = id.Value;
+                }
+                else
+                {
+                    m.Id = offset.GetKeyOffset(entity.PersonId).MeasurementId;
+                }
+                yield return m;
             }
         }
     }

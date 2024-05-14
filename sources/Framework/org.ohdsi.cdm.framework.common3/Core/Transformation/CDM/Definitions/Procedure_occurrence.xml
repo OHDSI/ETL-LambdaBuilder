@@ -1,0 +1,49 @@
+﻿<QueryDefinition>
+	<Query>
+		SELECT t.procedure_occurrence_id
+		, t.person_id
+		, t.procedure_concept_id
+		, t.procedure_date
+		, t.procedure_datetime
+		, t.procedure_type_concept_id
+		, t.modifier_concept_id
+		, t.quantity
+		, t.provider_id
+		, t.visit_occurrence_id
+		, t.visit_detail_id
+		, t.procedure_source_value
+		, t.procedure_source_concept_id
+		, t.modifier_source_value
+		, t.procedure_end_date
+		, t.procedure_end_datetime
+		FROM {sc}.procedure_occurrence as t
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND t.PERSON_ID = ch.PERSON_ID
+		order by 2
+	</Query>
+	<ProcedureOccurrence>
+		<ProcedureOccurrenceDefinition>
+			<Id>procedure_occurrence_id</Id>
+			<PersonId>person_id</PersonId>
+			<StartDate>procedure_date</StartDate>
+			<StartTime>procedure_datetime</StartTime>
+			<EndDate>procedure_end_date</EndDate>
+			<EndTime>procedure_end_datetime</EndTime>
+			
+			<ProviderId>provider_id</ProviderId>
+			<VisitOccurrenceId>visit_occurrence_id</VisitOccurrenceId>
+			<VisitDetailId>visit_detail_id</VisitDetailId>
+
+			<ModifierConceptId>modifier_concept_id</ModifierConceptId>
+			<QualifierSourceValue>modifier_source_value</QualifierSourceValue>
+			<Quantity>quantity</Quantity>
+
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field conceptId="procedure_concept_id" sourceConceptId="procedure_source_concept_id" key="procedure_source_value" sourceKey="procedure_source_value" typeId="procedure_type_concept_id"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ProcedureOccurrenceDefinition>
+	</ProcedureOccurrence>
+</QueryDefinition>

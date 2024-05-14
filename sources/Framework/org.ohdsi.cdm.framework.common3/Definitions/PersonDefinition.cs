@@ -46,6 +46,11 @@ namespace org.ohdsi.cdm.framework.common.Definitions
                 locationId = Entity.GetId(locationSourceValue);
             }
 
+            if (!string.IsNullOrEmpty(LocationId))
+            {
+                locationId = reader.GetLong(LocationId);
+            }
+
             var genderSource = reader.GetString(Gender);
             var genderConceptId = Vocabulary.LookupGender(genderSource);
 

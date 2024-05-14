@@ -1,0 +1,39 @@
+﻿<QueryDefinition>
+   <Query>
+		 SELECT provider_id
+		 , provider_name
+		 , npi
+		 , dea
+		 , specialty_concept_id
+		 , care_site_id
+		 , year_of_birth
+		 , gender_concept_id
+		 , provider_source_value
+		 , specialty_source_value
+		 , specialty_source_concept_id
+		 , gender_source_value
+		 , gender_source_concept_id
+		 FROM {sc}.provider
+	 </Query>
+	<Providers>
+		<ProviderDefinition>
+			<Id>provider_id</Id>
+			<Name>provider_name</Name>
+			<NPI>npi</NPI>
+			<DEA>dea</DEA>
+			<CareSiteId>care_site_id</CareSiteId>
+			<YearOfBirth>year_of_birth</YearOfBirth>
+			<GenderConceptId>gender_concept_id</GenderConceptId>
+			<GenderSourceValue>gender_source_value</GenderSourceValue>
+			<GenderSourceConceptId>gender_source_concept_id</GenderSourceConceptId>
+			<ProviderSourceValue>provider_source_value</ProviderSourceValue>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field conceptId="specialty_concept_id" key="specialty_source_value" sourceKey="specialty_source_value" defaultTypeId="0"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ProviderDefinition>
+	</Providers>
+</QueryDefinition>

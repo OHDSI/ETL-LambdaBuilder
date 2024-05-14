@@ -25,27 +25,52 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v53
         {
             if (_enumerator.Current == null) return null;
 
-            return i switch
+            switch (i)
             {
-                0 => _offset.GetId(_enumerator.Current.PersonId, _enumerator.Current.Id),
-                1 => _enumerator.Current.PersonId,
-                2 => _enumerator.Current.StartDate,
-                3 => _enumerator.Current.EndDate,
-                4 => _enumerator.Current.PayerConceptId,
-                5 => _enumerator.Current.PayerSourceValue,
-                6 => _enumerator.Current.PayerSourceConceptId,
-                7 => _enumerator.Current.PlanConceptId,
-                8 => _enumerator.Current.PlanSourceValue,
-                9 => _enumerator.Current.PlanSourceConceptId,
-                10 => _enumerator.Current.SponsorConceptId,
-                11 => _enumerator.Current.SponsorSourceValue,
-                12 => _enumerator.Current.SponsorSourceConceptId,
-                13 => _enumerator.Current.FamilySourceValue,
-                14 => _enumerator.Current.StopReasonConceptId,
-                15 => _enumerator.Current.StopReasonSourceValue,
-                16 => _enumerator.Current.StopReasonSourceConceptId,
-                _ => throw new NotImplementedException(),
-            };
+                case 0:
+                    {
+                        if (_offset.GetKeyOffset(_enumerator.Current.PersonId).PayerPlanPeriodIdChanged)
+                            return _offset.GetId(_enumerator.Current.PersonId, _enumerator.Current.Id);
+                        else
+                            return _enumerator.Current.Id;
+                    }
+                case 1:
+                    return _enumerator.Current.PersonId;
+                case 2:
+                    return _enumerator.Current.StartDate;
+                case 3:
+                    return _enumerator.Current.EndDate;
+                case 4:
+                    return _enumerator.Current.PayerConceptId;
+                case 5:
+                    return _enumerator.Current.PayerSourceValue;
+                case 6:
+                    return _enumerator.Current.PayerSourceConceptId;
+                case 7:
+                    return _enumerator.Current.PlanConceptId;
+                case 8:
+                    return _enumerator.Current.PlanSourceValue;
+                case 9:
+                    return _enumerator.Current.PlanSourceConceptId;
+                case 10:
+                    return _enumerator.Current.SponsorConceptId;
+                case 11:
+                    return _enumerator.Current.SponsorSourceValue;
+                case 12:
+                    return _enumerator.Current.SponsorSourceConceptId;
+                case 13:
+                    return _enumerator.Current.FamilySourceValue;
+                case 14:
+                    return _enumerator.Current.StopReasonConceptId;
+                case 15:
+                    return _enumerator.Current.StopReasonSourceValue;
+                case 16:
+                    return _enumerator.Current.StopReasonSourceConceptId;
+                default:
+                    throw new NotImplementedException();
+            }
+
+           
         }
 
         public string GetName(int i)

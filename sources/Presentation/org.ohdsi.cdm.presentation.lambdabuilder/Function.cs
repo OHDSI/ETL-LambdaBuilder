@@ -4,6 +4,7 @@ using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
 using org.ohdsi.cdm.framework.common.Base;
+using org.ohdsi.cdm.framework.common.Core.Transformation.CDM;
 using org.ohdsi.cdm.framework.common.Core.Transformation.CPRD;
 using org.ohdsi.cdm.framework.common.Core.Transformation.CprdAurum;
 using org.ohdsi.cdm.framework.common.Core.Transformation.CprdHES;
@@ -126,7 +127,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                     Settings.Current.Bucket = bucket;
                     Settings.Current.CDMFolder = folder;
 
-                    Settings.Initialize(buildingId, vendor, true);
+                    Settings.Initialize(buildingId, vendor, false);
 
                     Settings.Current.TimeoutValue = 180000;
                     Settings.Current.WatchdogValue = 100000 * 1000;
@@ -766,6 +767,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                 Vendors.HealthVerity or Vendors.HealthVerityCovid => new HealthVerityPersonBuilder(),
                 Vendors.PregnancyAlgorithm => new PregnancyAlgorithmPersonBuilder(),
                 Vendors.Era => new EraPersonBuilder(),
+                Vendors.CDM => new CdmPersonBuilder(),
                 _ => new PersonBuilder(),
             };
         }

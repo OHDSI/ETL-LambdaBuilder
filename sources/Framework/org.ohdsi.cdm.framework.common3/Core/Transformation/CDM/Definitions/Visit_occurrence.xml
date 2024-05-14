@@ -1,0 +1,54 @@
+﻿<QueryDefinition>
+	<Query>
+		SELECT t.visit_occurrence_id
+		, t.person_id
+		, t.visit_concept_id
+		, t.visit_start_date
+		, t.visit_start_datetime
+		, t.visit_end_date
+		, t.visit_end_datetime
+		, t.visit_type_concept_id
+		, t.provider_id
+		, t.care_site_id
+		, t.visit_source_value
+		, t.visit_source_concept_id
+		, t.admitted_from_concept_id
+		, t.admitted_from_source_value
+		, t.discharged_to_concept_id
+		, t.discharged_to_source_value
+		, t.preceding_visit_occurrence_id
+		FROM {sc}.visit_occurrence t
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND t.PERSON_ID = ch.PERSON_ID
+		order by 2
+	</Query>
+	<VisitOccurrence>
+		<VisitOccurrenceDefinition>
+			<Id>visit_occurrence_id</Id>
+			<PersonId>person_id</PersonId>
+			<StartDate>visit_start_date</StartDate>
+			<EndDate>visit_end_date</EndDate>
+			<StartTime>visit_start_datetime</StartTime>
+			<EndTime>visit_end_datetime</EndTime>
+			<CareSiteId>care_site_id</CareSiteId>
+			<ProviderId>provider_id</ProviderId>
+			<PrecedingVisitOccurrenceId>preceding_visit_occurrence_id</PrecedingVisitOccurrenceId>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field conceptId="visit_concept_id" sourceConceptId="visit_source_concept_id" key="visit_source_value" sourceKey="visit_source_value" typeId="visit_type_concept_id"/>
+					</Fields>
+				</Concept>
+				<Concept>
+					<Fields>
+						<Field conceptId="discharged_to_concept_id" key="discharged_to_source_value" sourceKey="discharged_to_source_value" defaultTypeId="0"/>
+					</Fields>
+				</Concept>
+				<Concept>
+					<Fields>
+						<Field conceptId="admitted_from_concept_id" key="admitted_from_source_value" sourceKey="admitted_from_source_value" defaultTypeId="0"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</VisitOccurrenceDefinition>
+	</VisitOccurrence>
+</QueryDefinition>

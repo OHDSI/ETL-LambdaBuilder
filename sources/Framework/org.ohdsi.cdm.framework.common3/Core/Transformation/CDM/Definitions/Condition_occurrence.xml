@@ -1,0 +1,49 @@
+﻿<QueryDefinition>
+  <Query>
+		SELECT t.condition_occurrence_id
+		, t.person_id
+		, t.condition_concept_id
+		, t.condition_start_date
+		, t.condition_start_datetime
+		, t.condition_end_date
+		, t.condition_end_datetime
+		, t.condition_type_concept_id
+		, t.stop_reason
+		, t.provider_id
+		, t.visit_occurrence_id
+		, t.visit_detail_id
+		, t.condition_source_value
+		, t.condition_source_concept_id
+		, t.condition_status_source_value
+		, t.condition_status_concept_id
+		FROM {sc}.CONDITION_OCCURRENCE as t
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND t.PERSON_ID = ch.PERSON_ID
+		order by 2
+	</Query>
+  <ConditionOccurrence>
+    <ConditionOccurrenceDefinition>
+			<Id>condition_occurrence_id</Id>
+      <PersonId>person_id</PersonId>
+      <StartDate>condition_start_date</StartDate>
+			<StartTime>condition_start_datetime</StartTime>
+      <EndDate>condition_end_date</EndDate>
+			<EndTime>condition_end_datetime</EndTime>
+			<StopReason>stop_reason</StopReason>
+			<ProviderId>provider_id</ProviderId>
+			<VisitOccurrenceId>visit_occurrence_id</VisitOccurrenceId>
+			<VisitDetailId>visit_detail_id</VisitDetailId>
+      <Concepts>
+        <Concept>
+          <Fields>
+            <Field conceptId="condition_concept_id" sourceConceptId="condition_source_concept_id" key="condition_source_value" sourceKey="condition_source_value" typeId="condition_type_concept_id"/>
+          </Fields>
+        </Concept>
+				<Concept>
+					<Fields>
+						<Field conceptId="condition_status_concept_id" key="condition_status_source_value" sourceKey="condition_status_source_value" defaultTypeId="0"/>
+					</Fields>
+				</Concept>
+      </Concepts>
+    </ConditionOccurrenceDefinition>
+  </ConditionOccurrence>
+</QueryDefinition>

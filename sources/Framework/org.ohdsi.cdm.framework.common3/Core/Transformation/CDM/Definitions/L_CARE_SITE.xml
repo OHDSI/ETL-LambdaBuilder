@@ -1,0 +1,21 @@
+﻿<QueryDefinition>
+  <Query>
+		select care_site_id
+		, care_site_name
+		, place_of_service_concept_id
+		, location_id
+		, care_site_source_value
+		, place_of_service_source_value
+		FROM {sc}.care_site
+	</Query>
+  <CareSites>
+    <CareSiteDefinition>
+      <Id>care_site_id</Id>
+			<Name>care_site_name</Name>
+			<PlaceOfSvcConceptId>place_of_service_concept_id</PlaceOfSvcConceptId>
+			<LocationId>location_id</LocationId>
+			<CareSiteSourceValue>care_site_source_value</CareSiteSourceValue>
+			<PlaceOfSvcSourceValue>place_of_service_source_value</PlaceOfSvcSourceValue>
+    </CareSiteDefinition>
+  </CareSites>
+</QueryDefinition>

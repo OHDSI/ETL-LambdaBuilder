@@ -16,6 +16,9 @@ namespace org.ohdsi.cdm.framework.common.Definitions
         [XmlAttribute("conceptId")]
         public string ConceptId { get; set; }
 
+        [XmlAttribute("sourceConceptId")]
+        public string SourceConceptId { get; set; }
+
         [XmlAttribute("eventDate")]
         public string EventDate { get; set; }
 
