@@ -196,13 +196,13 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
 
             if (cdm == CdmVersions.V54)
             {
-                var reader = new CdmSourceDataReader54(_settings.Vendor);
+                var reader = new CdmSourceDataReader54();
                 using var stream = reader.GetStreamCsv();
                 SaveToS3(stream, 0, _settings.CdmFolder, _table, "txt.gz");
             }
             else
             {
-                var reader = new CdmSourceDataReader(_settings.Vendor);
+                var reader = new CdmSourceDataReader();
                 using var stream = reader.GetStreamCsv();
                 SaveToS3(stream, 0, _settings.CdmFolder, _table, "txt.gz");
             }
