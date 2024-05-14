@@ -974,7 +974,7 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.OptumOncology
             }
 
             // there are a small number of patients who have weird observation_period_end_date between 2025 - 6011.
-            // These should be truncated to the current year. I will update the ETL to reflect this
+            // These should be truncated to the current year.
             if (observationPeriodsFinal[0].EndDate.Value.Year > DateTime.Now.Year)
             {
                 observationPeriodsFinal[0].EndDate = new DateTime(DateTime.Now.Year, 
