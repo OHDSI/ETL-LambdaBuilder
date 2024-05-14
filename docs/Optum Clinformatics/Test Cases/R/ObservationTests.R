@@ -167,9 +167,9 @@ createObservationTests <- function()
                                    gdr_cd = 'F', patid = patient$patid, yrdob = 1980)
   add_member_enrollment(patid = patient$patid, eligeff = '2010-05-01', eligend = '2014-10-31')								   
   add_medical_claims(clmid = claim$clmid, clmseq = '001', lst_dt = '2013-07-01', rvnu_cd = '0100', pos = '21', loc_cd = '2',
-                     pat_planid = patient$patid, patid = patient$patid, fst_dt = '2013-07-01', prov = '111111', provcat = '5678', proc_cd = 'A0210')
+                     pat_planid = patient$patid, patid = patient$patid, fst_dt = '2013-07-01', prov = '111111', provcat = '5678', proc_cd = 'A0170')
   expect_visit_occurrence(person_id = patient$person_id, visit_concept_id = 9201)
-  expect_observation(person_id = patient$person_id, observation_source_value = 'A0210')
+  expect_observation(person_id = patient$person_id, observation_source_value = 'A0170')
   
   
   patient <- createPatient()
@@ -179,9 +179,9 @@ createObservationTests <- function()
   add_member_continuous_enrollment(eligeff = '2010-05-01', eligend = '2014-10-31',
                                    gdr_cd = 'F', patid = patient$patid, yrdob = 1980)
   add_member_enrollment(patid = patient$patid, eligeff = '2010-05-01', eligend = '2014-10-31')								   
-  add_inpatient_confinement(patid = patient$patid, pat_planid = patient$patid, admit_date = '2013-08-11', proc2 = 'A0210',
+  add_inpatient_confinement(patid = patient$patid, pat_planid = patient$patid, admit_date = '2013-08-11', proc2 = 'A0170',
                             diag1 = '250.00', disch_date = '2013-08-22', icd_flag = '9', conf_id = '456', pos = '21')
   expect_visit_occurrence(person_id = patient$person_id, visit_concept_id = 9201)
-  expect_observation(person_id = patient$person_id, observation_source_value = 'A0210')
+  expect_observation(person_id = patient$person_id, observation_source_value = 'A0170')
 
 }

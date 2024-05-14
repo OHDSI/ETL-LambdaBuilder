@@ -25,8 +25,8 @@ createDrugExposureTests <- function () {
   add_patient(ptid = patient$ptid, first_month_active = '201005', last_month_active = '201212')
   add_medication_administrations(ptid=patient$ptid, ndc="55111067101", order_date='2011-01-07', encid=enc$encid)
   add_medication_administrations(ptid=patient$ptid, ndc="55111067101", order_date='2011-01-07', encid=enc$encid)
-  expect_count_drug_exposure(rowCount = 2, person_id = patient$person_id, drug_exposure_start_date = '2011-01-07', drug_source_value = '55111067101')
-
+  expect_count_drug_exposure(rowCount = 1, person_id = patient$person_id, drug_exposure_start_date = '2011-01-07', drug_source_value = '55111067101') # distinct was added to the MEDICATION_ADMINISTRATIONS table
+   
   patient <- createPatient();
   enc <- createEncounter();
   enc2 <- createEncounter();
@@ -358,7 +358,7 @@ createDrugExposureTests <- function () {
   declareTest("Patient has PROCEDURE with HCPCS proc_code that maps to a standard concept", id = patient$person_id)
   add_patient(ptid = patient$ptid, first_month_active = '201005', last_month_active = '201212')
   add_procedure(ptid = patient$ptid, proc_date="2011-10-12", proc_code="J9310", proc_code_type="HCPCS")
-  expect_drug_exposure(person_id = patient$person_id, drug_concept_id="43148859", drug_source_value="J9310", drug_source_concept_id="2718907")
+  expect_drug_exposure(person_id = patient$person_id, drug_concept_id="46275081", drug_source_value="J9310", drug_source_concept_id="2718907")
 
   # TODO: provider_id auto generated, need to find way to get correct id
   # patient <- createPatient();

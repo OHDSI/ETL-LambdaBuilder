@@ -93,10 +93,10 @@ createConditionOccurrenceTests <- function()
   add_member_enrollment(patid = patient$patid, eligeff = '2010-05-01', eligend = '2013-10-31')					  								   
   add_medical_claims(clmid = claim$clmid, clmseq = '001', lst_dt = '2013-07-01', loc_cd = '2',
                      pat_planid = patient$patid, patid = patient$patid, fst_dt = '2013-07-01', prov = '111111', provcat = '5678')
-  add_med_diagnosis(patid = patient$patid, pat_planid = patient$patid, icd_flag = "10", diag = 'Z731', 
+  add_med_diagnosis(patid = patient$patid, pat_planid = patient$patid, icd_flag = "10", diag = 'A921', 
                     clmid = claim$clmid, diag_position = '01', loc_cd = '2', fst_dt = '2013-07-01')
-  expect_condition_occurrence(person_id = patient$person_id, condition_source_value = 'Z731', condition_concept_id = 43020481)
-  expect_no_condition_occurrence(person_id = patient$person_id, condition_source_value = 'Z731', condition_source_concept_id = 45581067)
+  expect_condition_occurrence(person_id = patient$person_id, condition_source_value = 'A921', condition_concept_id = 4310683)
+  expect_no_condition_occurrence(person_id = patient$person_id, condition_source_value = 'A921', condition_source_concept_id = 45542543)
   
   poaMappings <- data.frame(
     rawValue = c('Y','N','U','W'),
@@ -124,7 +124,7 @@ createConditionOccurrenceTests <- function()
     add_member_enrollment(patid = patient$patid, eligeff = '2010-05-01', eligend = '2013-10-31')					  									 
     add_medical_claims(clmid = claim$clmid, clmseq = '001', lst_dt = '2013-07-01', loc_cd = '2',
                        pat_planid = patient$patid, patid = patient$patid, fst_dt = '2013-07-01', prov = '111111', provcat = '5678')
-    add_med_diagnosis(patid = patient$patid, pat_planid = patient$patid, icd_flag = "10", diag = 'Z731', poa = poaMappings[i,]$rawValue,
+    add_med_diagnosis(patid = patient$patid, pat_planid = patient$patid, icd_flag = "10", diag = 'A921', poa = poaMappings[i,]$rawValue,
                       clmid = claim$clmid, diag_position = '01', loc_cd = '2', fst_dt = '2013-07-01')
     expect_condition_occurrence(person_id = patient$person_id, 
                                 condition_status_source_value = poaMappings[i,]$sourceValue, 

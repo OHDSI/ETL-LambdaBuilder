@@ -87,8 +87,7 @@ CREATE TABLE immunizations
    ndc                varchar(11),
    ndc_source         varchar(7),
    pt_reported        char(1),
-   sourceid           varchar(5),
-   _gpi               varchar(14)
+   sourceid           varchar(5)
 );
 
 
@@ -147,8 +146,7 @@ CREATE TABLE medication_administrations
    generic_desc        varchar(60),
    drug_class          varchar(150),
    discontinue_reason  varchar(46),
-   sourceid            varchar(5),
-   _gpi                varchar(14)
+   sourceid            varchar(5)
 );
 
 
@@ -349,8 +347,7 @@ CREATE TABLE patient_reported_medications
    dose_frequency    varchar(30),
    generic_desc      varchar(60),
    drug_class        varchar(150),
-   sourceid          varchar(5),
-   _gpi              varchar(14)
+   sourceid          varchar(5)
 );
 
 
@@ -376,8 +373,7 @@ CREATE TABLE prescriptions_written
    generic_desc        varchar(60),
    drug_class          varchar(150),
    discontinue_reason  varchar(46),
-   sourceid            varchar(5),
-   _gpi                varchar(14)
+   sourceid            varchar(5)
 );
 
 

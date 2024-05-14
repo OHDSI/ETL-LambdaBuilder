@@ -8,7 +8,7 @@ createProcedureOccurrenceTests <- function () {
   add_patient(ptid=patient$ptid, birth_yr = 1950, gender = 'Male',
               first_month_active = '200701', last_month_active = '201001')
   add_procedure(ptid=patient$ptid, proc_code = '36415', proc_code_type = 'CPT4', proc_date = '2009-01-01')
-  expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = 2108115, procedure_source_value = '36415')
+  expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = 4102442, procedure_source_value = '36415')
 
 
   patient <- createPatient();

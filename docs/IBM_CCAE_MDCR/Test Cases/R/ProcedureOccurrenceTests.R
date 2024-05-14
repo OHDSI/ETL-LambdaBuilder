@@ -44,15 +44,15 @@ createProcedureOccurrenceTests <- function () {
     add_inpatient_admissions(enrolid = patient$enrolid, admdate = '2012-10-20', caseid = encounter$caseid, year = '2012')
     add_inpatient_services(enrolid = patient$enrolid, caseid = encounter$caseid, svcdate = '2012-10-20', tsvcdat = '2012-10-22', provid = '3456789', proc1 = '50760', stdprov = '220', year = '2012')
     add_inpatient_services(enrolid = patient$enrolid, caseid = encounter$caseid, svcdate = '2012-10-20', tsvcdat = '2012-10-22', provid = '1234567', proc1 = '50760', stdprov = '540', year = '2012')
-    # expect_count_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '2109659', procedure_date = '2012-10-20', procedure_type_concept_id = '32854', rowCount = 2)
-    expect_count_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '2109659', procedure_date = '2012-10-20', rowCount = 2)
+    # expect_count_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '4021253', procedure_date = '2012-10-20', procedure_type_concept_id = '32854', rowCount = 2)
+    expect_count_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '4021253', procedure_date = '2012-10-20', rowCount = 2)
     
     patient <- createPatient()
     encounter <- createEncounter()
     declareTest(id = patient$person_id, "Patient has HCPCS procedure code with value in PROCMOD. Id is PERSON_ID.")
     add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
     add_outpatient_services(enrolid = patient$enrolid, proc1 = 'C9727', procmod = 'P1',svcdate = '2012-05-12', tsvcdat = '2012-05-12')
-    expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '2616464', procedure_date = '2012-05-12', modifier_concept_id = '4320556')
+    expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '4196153', procedure_date = '2012-05-12', modifier_concept_id = '4320556')
     
   } 
   
@@ -64,14 +64,15 @@ createProcedureOccurrenceTests <- function () {
     add_inpatient_admissions(enrolid = patient$enrolid, caseid = encounter$caseid, year = '2012')
     add_inpatient_services(enrolid = patient$enrolid, caseid = encounter$caseid, svcdate = '2012-10-20', tsvcdat = '2012-10-22', prov_id = '3456789', proc1 = '50760', stdprov = '220', year = '2012')
     add_inpatient_services(enrolid = patient$enrolid, caseid = encounter$caseid, svcdate = '2012-10-20', tsvcdat = '2012-10-22', prov_id = '1234567', proc1 = '50760', stdprov = '540', year = '2012')
-    expect_count_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '2109659', procedure_date = '2012-10-20', rowCount = 2)
+    expect_count_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '4021253', procedure_date = '2012-10-20', rowCount = 2)
     
     patient <- createPatient()
     encounter <- createEncounter()
     declareTest(id = patient$person_id, "Patient has procedure in proc1 field in long_term_care table. Id is PERSON_ID.")
     add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
     add_long_term_care(enrolid = patient$enrolid, svcdate = '2012-09-15', tsvcdat = '2012-10-30', proc1 = '92568' )
-    expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '2313736', procedure_date = '2012-09-15')
+    ## expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '2313736', procedure_date = '2012-09-15')
+	expect_measurement(person_id = patient$person_id, measurement_concept_id= '4167674', measurement_date = '2012-09-15')
   }
   
   patient <- createPatient()
@@ -80,9 +81,9 @@ createProcedureOccurrenceTests <- function () {
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_outpatient_services(enrolid = patient$enrolid, fachdid = encounter$caseid, proc1 = '54861', svcdate = '2012-02-15', tsvcdat = '2012-02-15', year = '2012')
   add_facility_header(enrolid = patient$enrolid, fachdid = encounter$caseid, proc1 = '54861', svcdate = '2012-02-15', tsvcdat = '2012-02-15', year = '2012')
-  expect_count_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '2109995', procedure_date = '2012-02-15', procedure_type_concept_id = '32846', rowCount = 2)
-  ## expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '2109995', procedure_date = '2012-02-15', procedure_type_concept_id = '32846')
-  ## expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '2109995', procedure_date = '2012-02-15', procedure_type_concept_id = '32846')
+  expect_count_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '4200063', procedure_date = '2012-02-15', procedure_type_concept_id = '32846', rowCount = 2)
+  ## expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '4200063', procedure_date = '2012-02-15', procedure_type_concept_id = '32846')
+  ## expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '4200063', procedure_date = '2012-02-15', procedure_type_concept_id = '32846')
   
   patient <- createPatient()
   encounter <- createEncounter()
@@ -99,12 +100,12 @@ createProcedureOccurrenceTests <- function () {
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2012-12-31', dtstart = '2012-01-01')
   add_outpatient_services(enrolid = patient$enrolid, fachdid = encounter$caseid, svcdate = '2012-03-03', tsvcdat = '2012-03-03', year = '2012')
   add_facility_header(enrolid = patient$enrolid, fachdid = encounter$caseid, proc1 = '96900', proc2 = '97811', proc3 = '92570',proc4 = '92568',proc5 = '97780', proc6 = '0093U', svcdate = '2012-03-03', tsvcdat = '2012-03-03', year = '2012')
-  expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '2314252', procedure_type_concept_id = '32846' )
+  expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '4180942', procedure_type_concept_id = '32846' )
   expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '2314322', procedure_type_concept_id = '32846' )
   expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '40757149', procedure_type_concept_id = '32846' )
-  expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '2313736', procedure_type_concept_id = '32846' )
   expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '42739018', procedure_type_concept_id = '32846' )
   ## expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = '709845', procedure_type_concept_id = '32846' )
+  expect_measurement(person_id = patient$person_id, measurement_concept_id = '4167674', measurement_type_concept_id = '32846' )
   expect_measurement(person_id = patient$person_id, measurement_concept_id= '709845', measurement_type_concept_id = '32846')
   
   

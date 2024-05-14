@@ -55,7 +55,7 @@ createObservationTests <- function () {
 
   # PATBILL.STD_CHG_CODE JNJ_PMR_PROC_CHRG_CD; JNJ_PMR_PROC_CHRG_CD codes aren't in chgmstr?
 
-  # PATICD_PROC.ICD_CODE ICD9CM; note same code as below, just diff icd version
+  # PATICD_PROC.ICD_CODE ICD9CM;
   patient <- createPatient();
   visit <- createVisit();
   declareTest(description="ICD9CM record from PATICD_PROC to observation table", id = patient$person_id);
@@ -65,15 +65,15 @@ createObservationTests <- function () {
           disc_date    = "2008-05-01");
   add_patbill(pat_key  = visit$pat_key);
   add_paticd_proc(pat_key     = visit$pat_key,
-                  icd_code    = 'V56.3',
+                  icd_code    = 'V56.32',
                   icd_version = 9);
   expect_observation(person_id                = patient$person_id,
                      visit_occurrence_id      = visit$visit_occurrence_id,
-                     observation_concept_id   = 4268532,
+                     observation_concept_id   = 4203722,
                      observation_date         = "2008-05-01",
-                     observation_source_value = "V56.3");
+                     observation_source_value = "V56.32");
 
-  # PATICD_PROC.ICD_CODE ICD10CM; note same code as above, just diff icd version
+  # PATICD_PROC.ICD_CODE ICD10CM;
   patient <- createPatient();
   visit <- createVisit();
   declareTest(description="ICD10CM record from PATICD_PROC to observation table", id = patient$person_id);
@@ -83,13 +83,13 @@ createObservationTests <- function () {
           disc_date    = "2008-10-01");
   add_patbill(pat_key  = visit$pat_key);
   add_paticd_proc(pat_key     = visit$pat_key,
-                  icd_code    = 'V56.3',
+                  icd_code    = 'V80.02',
                   icd_version = 10);
   expect_observation(person_id                = patient$person_id,
                      visit_occurrence_id      = visit$visit_occurrence_id,
-                     observation_concept_id   = 4069060,
+                     observation_concept_id   = 4067275,
                      observation_date         = "2008-10-01",
-                     observation_source_value = "V56.3");
+                     observation_source_value = "V80.02");
 
   # PATICD_DIAG.ICD_CODE ICD9CM
   patient <- createPatient();

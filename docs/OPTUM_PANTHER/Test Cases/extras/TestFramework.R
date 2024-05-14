@@ -73,7 +73,6 @@ initFramework <- function() {
   defaults$drug_class <- 'Intravenous supplies'
   defaults$discontinue_reason <- ''
   defaults$sourceid <- 'S0115'
-  defaults$gpi <- '79750010002021'
   assign('medication_administrations', defaults, envir = frameworkContext$defaultValues)
 
   defaults <- list()
@@ -202,7 +201,6 @@ initFramework <- function() {
   defaults$generic_desc <- ''
   defaults$drug_class <- 'Salicylates'
   defaults$sourceid <- 'S0118'
-  defaults$gpi <- ''
   assign('patient_reported_medications', defaults, envir = frameworkContext$defaultValues)
 
   defaults <- list()
@@ -282,7 +280,6 @@ initFramework <- function() {
   defaults$ndc_source <- 'Derived'
   defaults$pt_reported <- ' '
   defaults$sourceid <- 'S0115'
-  defaults$gpi <- '1710002082E620'
   assign('immunizations', defaults, envir = frameworkContext$defaultValues)
 
   defaults <- list()
@@ -500,7 +497,6 @@ initFramework <- function() {
   defaults$ndc <- ''
   defaults$ndc_source <- 'Derived'
   defaults$sourceid <- 'S0115'
-  defaults$gpi <- ''
   assign('allergy', defaults, envir = frameworkContext$defaultValues)
 
   defaults <- list()
@@ -579,7 +575,6 @@ initFramework <- function() {
   defaults$discontinue_reason <- ''
   defaults$ndc_mapped_attributes <- ''
   defaults$sourceid <- 'S0118'
-  defaults$gpi <- '65991702100356'
   assign('prescriptions_written', defaults, envir = frameworkContext$defaultValues)
 
   frameworkContext$sourceFieldsMapped <- c(
@@ -711,7 +706,7 @@ set_defaults_onc_neoplasm_histology <- function(ptid, note_date, neoplasm_histol
   invisible(defaults)
 }
 
-set_defaults_medication_administrations <- function(ptid, encid, orderid, drug_name, ndc, ndc_source, order_date, order_time, admin_date, admin_time, provid, route, quantity_of_dose, strength, strength_unit, dosage_form, dose_frequency, generic_desc, drug_class, discontinue_reason, sourceid, gpi) {
+set_defaults_medication_administrations <- function(ptid, encid, orderid, drug_name, ndc, ndc_source, order_date, order_time, admin_date, admin_time, provid, route, quantity_of_dose, strength, strength_unit, dosage_form, dose_frequency, generic_desc, drug_class, discontinue_reason, sourceid) {
   defaults <- get('medication_administrations', envir = frameworkContext$defaultValues)
   if (!missing(ptid)) {
     defaults$ptid <- ptid
@@ -775,9 +770,6 @@ set_defaults_medication_administrations <- function(ptid, encid, orderid, drug_n
   }
   if (!missing(sourceid)) {
     defaults$sourceid <- sourceid
-  }
-  if (!missing(gpi)) {
-    defaults$gpi <- gpi
   }
   assign('medication_administrations', defaults, envir = frameworkContext$defaultValues)
   invisible(defaults)
@@ -1089,7 +1081,7 @@ set_defaults_onc_tumor_grade <- function(ptid, note_date, neoplasm_histology_key
   invisible(defaults)
 }
 
-set_defaults_patient_reported_medications <- function(ptid, reported_date, drug_name, ndc, ndc_source, provid, route, quantity_of_dose, strength, strength_unit, dosage_form, dose_frequency, generic_desc, drug_class, sourceid, gpi) {
+set_defaults_patient_reported_medications <- function(ptid, reported_date, drug_name, ndc, ndc_source, provid, route, quantity_of_dose, strength, strength_unit, dosage_form, dose_frequency, generic_desc, drug_class, sourceid) {
   defaults <- get('patient_reported_medications', envir = frameworkContext$defaultValues)
   if (!missing(ptid)) {
     defaults$ptid <- ptid
@@ -1136,9 +1128,7 @@ set_defaults_patient_reported_medications <- function(ptid, reported_date, drug_
   if (!missing(sourceid)) {
     defaults$sourceid <- sourceid
   }
-  if (!missing(gpi)) {
-    defaults$gpi <- gpi
-  }
+
   assign('patient_reported_medications', defaults, envir = frameworkContext$defaultValues)
   invisible(defaults)
 }
@@ -1329,7 +1319,7 @@ set_defaults_nlp_biomarkers <- function(ptid, encid, note_date, biomarker, varia
   invisible(defaults)
 }
 
-set_defaults_immunizations <- function(ptid, immunization_date, immunization_desc, mapped_name, ndc, ndc_source, pt_reported, sourceid, gpi) {
+set_defaults_immunizations <- function(ptid, immunization_date, immunization_desc, mapped_name, ndc, ndc_source, pt_reported, sourceid) {
   defaults <- get('immunizations', envir = frameworkContext$defaultValues)
   if (!missing(ptid)) {
     defaults$ptid <- ptid
@@ -1355,9 +1345,7 @@ set_defaults_immunizations <- function(ptid, immunization_date, immunization_des
   if (!missing(sourceid)) {
     defaults$sourceid <- sourceid
   }
-  if (!missing(gpi)) {
-    defaults$gpi <- gpi
-  }
+
   assign('immunizations', defaults, envir = frameworkContext$defaultValues)
   invisible(defaults)
 }
@@ -1932,7 +1920,7 @@ set_defaults_version <- function() {
   invisible(defaults)
 }
 
-set_defaults_allergy <- function(ptid, onset_date, allergentype, allergendesc, drug_class, ndc, ndc_source, sourceid, gpi) {
+set_defaults_allergy <- function(ptid, onset_date, allergentype, allergendesc, drug_class, ndc, ndc_source, sourceid) {
   defaults <- get('allergy', envir = frameworkContext$defaultValues)
   if (!missing(ptid)) {
     defaults$ptid <- ptid
@@ -1958,9 +1946,7 @@ set_defaults_allergy <- function(ptid, onset_date, allergentype, allergendesc, d
   if (!missing(sourceid)) {
     defaults$sourceid <- sourceid
   }
-  if (!missing(gpi)) {
-    defaults$gpi <- gpi
-  }
+  
   assign('allergy', defaults, envir = frameworkContext$defaultValues)
   invisible(defaults)
 }
@@ -2112,7 +2098,7 @@ set_defaults_onc_tumor_size <- function(ptid, note_date, neoplasm_histology_key,
   invisible(defaults)
 }
 
-set_defaults_prescriptions_written <- function(ptid, rxdate, rxtime, drug_name, ndc, ndc_source, provid, route, quantity_of_dose, strength, strength_unit, dosage_form, daily_dose, dose_frequency, quantity_per_fill, num_refills, days_supply, generic_desc, drug_class, discontinue_reason, ndc_mapped_attributes, sourceid, gpi) {
+set_defaults_prescriptions_written <- function(ptid, rxdate, rxtime, drug_name, ndc, ndc_source, provid, route, quantity_of_dose, strength, strength_unit, dosage_form, daily_dose, dose_frequency, quantity_per_fill, num_refills, days_supply, generic_desc, drug_class, discontinue_reason, ndc_mapped_attributes, sourceid) {
   defaults <- get('prescriptions_written', envir = frameworkContext$defaultValues)
   if (!missing(ptid)) {
     defaults$ptid <- ptid
@@ -2180,9 +2166,7 @@ set_defaults_prescriptions_written <- function(ptid, rxdate, rxtime, drug_name, 
   if (!missing(sourceid)) {
     defaults$sourceid <- sourceid
   }
-  if (!missing(gpi)) {
-    defaults$gpi <- gpi
-  }
+
   assign('prescriptions_written', defaults, envir = frameworkContext$defaultValues)
   invisible(defaults)
 }
@@ -2691,7 +2675,7 @@ add_onc_neoplasm_histology <- function(ptid, note_date, neoplasm_histology_key, 
   invisible(NULL)
 }
 
-add_medication_administrations <- function(ptid, encid, orderid, drug_name, ndc, ndc_source, order_date, order_time, admin_date, admin_time, provid, route, quantity_of_dose, strength, strength_unit, dosage_form, dose_frequency, generic_desc, drug_class, discontinue_reason, sourceid, gpi) {
+add_medication_administrations <- function(ptid, encid, orderid, drug_name, ndc, ndc_source, order_date, order_time, admin_date, admin_time, provid, route, quantity_of_dose, strength, strength_unit, dosage_form, dose_frequency, generic_desc, drug_class, discontinue_reason, sourceid) {
   defaults <- get('medication_administrations', envir = frameworkContext$defaultValues)
   fields <- c()
   values <- c()
@@ -2862,14 +2846,6 @@ add_medication_administrations <- function(ptid, encid, orderid, drug_name, ndc,
   }
   fields <- c(fields, "sourceid")
   values <- c(values, if (is.null(sourceid)) "NULL" else if (is(sourceid, "subQuery")) paste0("(", as.character(sourceid), ")") else paste0("'", as.character(sourceid), "'"))
-
-  if (missing(gpi)) {
-    gpi <- defaults$gpi
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'medication_administrations.gpi')
-  }
-  fields <- c(fields, "_gpi")
-  values <- c(values, if (is.null(gpi)) "NULL" else if (is(gpi, "subQuery")) paste0("(", as.character(gpi), ")") else paste0("'", as.character(gpi), "'"))
 
   inserts <- list(testId = frameworkContext$testId, testDescription = frameworkContext$testDescription, table = "medication_administrations", fields = fields, values = values)
   frameworkContext$inserts[[length(frameworkContext$inserts) + 1]] <- inserts
@@ -3636,7 +3612,7 @@ add_onc_tumor_grade <- function(ptid, note_date, neoplasm_histology_key, tumor_g
   invisible(NULL)
 }
 
-add_patient_reported_medications <- function(ptid, reported_date, drug_name, ndc, ndc_source, provid, route, quantity_of_dose, strength, strength_unit, dosage_form, dose_frequency, generic_desc, drug_class, sourceid, gpi) {
+add_patient_reported_medications <- function(ptid, reported_date, drug_name, ndc, ndc_source, provid, route, quantity_of_dose, strength, strength_unit, dosage_form, dose_frequency, generic_desc, drug_class, sourceid) {
   defaults <- get('patient_reported_medications', envir = frameworkContext$defaultValues)
   fields <- c()
   values <- c()
@@ -3759,14 +3735,6 @@ add_patient_reported_medications <- function(ptid, reported_date, drug_name, ndc
   }
   fields <- c(fields, "sourceid")
   values <- c(values, if (is.null(sourceid)) "NULL" else if (is(sourceid, "subQuery")) paste0("(", as.character(sourceid), ")") else paste0("'", as.character(sourceid), "'"))
-
-  if (missing(gpi)) {
-    gpi <- defaults$gpi
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'patient_reported_medications.gpi')
-  }
-  fields <- c(fields, "_gpi")
-  values <- c(values, if (is.null(gpi)) "NULL" else if (is(gpi, "subQuery")) paste0("(", as.character(gpi), ")") else paste0("'", as.character(gpi), "'"))
 
   inserts <- list(testId = frameworkContext$testId, testDescription = frameworkContext$testDescription, table = "patient_reported_medications", fields = fields, values = values)
   frameworkContext$inserts[[length(frameworkContext$inserts) + 1]] <- inserts
@@ -4227,7 +4195,7 @@ add_nlp_biomarkers <- function(ptid, encid, note_date, biomarker, variation_deta
   invisible(NULL)
 }
 
-add_immunizations <- function(ptid, immunization_date, immunization_desc, mapped_name, ndc, ndc_source, pt_reported, sourceid, gpi) {
+add_immunizations <- function(ptid, immunization_date, immunization_desc, mapped_name, ndc, ndc_source, pt_reported, sourceid) {
   defaults <- get('immunizations', envir = frameworkContext$defaultValues)
   fields <- c()
   values <- c()
@@ -4294,14 +4262,6 @@ add_immunizations <- function(ptid, immunization_date, immunization_desc, mapped
   }
   fields <- c(fields, "sourceid")
   values <- c(values, if (is.null(sourceid)) "NULL" else if (is(sourceid, "subQuery")) paste0("(", as.character(sourceid), ")") else paste0("'", as.character(sourceid), "'"))
-
-  if (missing(gpi)) {
-    gpi <- defaults$gpi
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'immunizations.gpi')
-  }
-  fields <- c(fields, "_gpi")
-  values <- c(values, if (is.null(gpi)) "NULL" else if (is(gpi, "subQuery")) paste0("(", as.character(gpi), ")") else paste0("'", as.character(gpi), "'"))
 
   inserts <- list(testId = frameworkContext$testId, testDescription = frameworkContext$testDescription, table = "immunizations", fields = fields, values = values)
   frameworkContext$inserts[[length(frameworkContext$inserts) + 1]] <- inserts
@@ -5716,7 +5676,7 @@ add_version <- function() {
   invisible(NULL)
 }
 
-add_allergy <- function(ptid, onset_date, allergentype, allergendesc, drug_class, ndc, ndc_source, sourceid, gpi) {
+add_allergy <- function(ptid, onset_date, allergentype, allergendesc, drug_class, ndc, ndc_source, sourceid) {
   defaults <- get('allergy', envir = frameworkContext$defaultValues)
   fields <- c()
   values <- c()
@@ -5783,14 +5743,6 @@ add_allergy <- function(ptid, onset_date, allergentype, allergendesc, drug_class
   }
   fields <- c(fields, "sourceid")
   values <- c(values, if (is.null(sourceid)) "NULL" else if (is(sourceid, "subQuery")) paste0("(", as.character(sourceid), ")") else paste0("'", as.character(sourceid), "'"))
-
-  if (missing(gpi)) {
-    gpi <- defaults$gpi
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'allergy.gpi')
-  }
-  fields <- c(fields, "_gpi")
-  values <- c(values, if (is.null(gpi)) "NULL" else if (is(gpi, "subQuery")) paste0("(", as.character(gpi), ")") else paste0("'", as.character(gpi), "'"))
 
   inserts <- list(testId = frameworkContext$testId, testDescription = frameworkContext$testDescription, table = "allergy", fields = fields, values = values)
   frameworkContext$inserts[[length(frameworkContext$inserts) + 1]] <- inserts
@@ -6161,7 +6113,7 @@ add_onc_tumor_size <- function(ptid, note_date, neoplasm_histology_key, tumor_si
   invisible(NULL)
 }
 
-add_prescriptions_written <- function(ptid, rxdate, rxtime, drug_name, ndc, ndc_source, provid, route, quantity_of_dose, strength, strength_unit, dosage_form, daily_dose, dose_frequency, quantity_per_fill, num_refills, days_supply, generic_desc, drug_class, discontinue_reason, ndc_mapped_attributes, sourceid, gpi) {
+add_prescriptions_written <- function(ptid, rxdate, rxtime, drug_name, ndc, ndc_source, provid, route, quantity_of_dose, strength, strength_unit, dosage_form, daily_dose, dose_frequency, quantity_per_fill, num_refills, days_supply, generic_desc, drug_class, discontinue_reason, ndc_mapped_attributes, sourceid) {
   defaults <- get('prescriptions_written', envir = frameworkContext$defaultValues)
   fields <- c()
   values <- c()
@@ -6340,14 +6292,6 @@ add_prescriptions_written <- function(ptid, rxdate, rxtime, drug_name, ndc, ndc_
   }
   fields <- c(fields, "sourceid")
   values <- c(values, if (is.null(sourceid)) "NULL" else if (is(sourceid, "subQuery")) paste0("(", as.character(sourceid), ")") else paste0("'", as.character(sourceid), "'"))
-
-  if (missing(gpi)) {
-    gpi <- defaults$gpi
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'prescriptions_written.gpi')
-  }
-  fields <- c(fields, "_gpi")
-  values <- c(values, if (is.null(gpi)) "NULL" else if (is(gpi, "subQuery")) paste0("(", as.character(gpi), ")") else paste0("'", as.character(gpi), "'"))
 
   inserts <- list(testId = frameworkContext$testId, testDescription = frameworkContext$testDescription, table = "prescriptions_written", fields = fields, values = values)
   frameworkContext$inserts[[length(frameworkContext$inserts) + 1]] <- inserts
