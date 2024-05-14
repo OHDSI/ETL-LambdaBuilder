@@ -744,6 +744,17 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.OptumExtended
                 }
             }
 
+            var latestEndDate = observationPeriods.Max(op => op.EndDate.Value);
+            foreach (var ob in observations)
+            {
+                if (ob.TypeConceptId != 32813)
+                    continue;
+
+                // From the SES table
+                // Use the latest observation_period_end_date per patient since we do not have dates associated with this data
+                ob.StartDate = latestEndDate;
+            }
+
             // push built entities to ChunkBuilder for further save to CDM database
             AddToChunk(person,
                 death,

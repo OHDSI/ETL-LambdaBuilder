@@ -1,0 +1,109 @@
+﻿<QueryDefinition>
+  <Query database="ses">
+		SELECT distinct patid,
+		32813 type_concept_id,
+		last_day(cast(extract_ym || '01' as date)) date,
+		case
+		when d_education_level_code = 'A' then 'Less than 12th Grade'
+		when d_education_level_code = 'B' then 'High School Diploma'
+		when d_education_level_code = 'C' then 'Less than Bachelor Degree'
+		when d_education_level_code = 'D' then 'Bachelor Degree Plus'
+		when d_education_level_code = 'U' then 'Unknown'
+		end value_as_string_1,
+		case
+		when d_education_level_code = 'A' then 37079293
+		when d_education_level_code = 'B' then 37079292
+		when d_education_level_code = 'C' then 1621239
+		when d_education_level_code = 'D' then 1990213
+		when d_education_level_code = 'U' then 0
+		end value_as_concept_id_1,
+		d_education_level_code source_value_1,
+
+		case
+		when d_home_ownership_code = '1' then 'Probable Homeowner'
+		when d_home_ownership_code = '2' then 'Probable Renter'
+		when d_home_ownership_code = '0' then 'Unknown'
+		end value_as_string_2,
+		case
+		when d_home_ownership_code = '1' then 4201839
+		when d_home_ownership_code = '2' then 4072617
+		when d_home_ownership_code = '0' then 0
+		end value_as_concept_id_2,
+		d_home_ownership_code source_value_2,
+
+		case
+		when d_household_income_range_code = '1' then '&lt;$40K'
+		when d_household_income_range_code = '2' then '$40K-$49K'
+		when d_household_income_range_code = '3' then '$50K-$59K'
+		when d_household_income_range_code = '4' then '$60K-$74K'
+		when d_household_income_range_code = '5' then '$75K-$99K'
+		when d_household_income_range_code = '6' then '$100K+'
+		when d_household_income_range_code = '0' then 'Unknown'
+		end value_as_string_3,
+		case
+		when d_household_income_range_code = '1' then 45883177
+		when d_household_income_range_code = '2' then 46237798
+		when d_household_income_range_code = '3' then 46237437
+		when d_household_income_range_code = '4' then 46237851
+		when d_household_income_range_code = '5' then 46237403
+		when d_household_income_range_code = '6' then 35819437
+		when d_household_income_range_code = '0' then 0
+		end value_as_concept_id_3,
+		d_household_income_range_code source_value_3
+		FROM {sc}.ses
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND ses.PATID = ch.PERSON_ID
+		order by PATID
+	</Query>
+	<Observation>
+		<ObservationDefinition>
+			<PersonId>patid</PersonId>
+			<StartDate>date</StartDate>
+			<ValuesAsString>
+				<string>value_as_string_1</string>
+			</ValuesAsString>
+			<ValueAsConceptId>value_as_concept_id_1</ValueAsConceptId>
+			<ValueSourceValue>source_value_1</ValueSourceValue>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field defaultSource="d_education_level_code" defaultConceptId="42528763" defaultTypeId="32813"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ObservationDefinition>
+
+		<ObservationDefinition>
+			<PersonId>patid</PersonId>
+			<StartDate>date</StartDate>
+			<ValuesAsString>
+				<string>value_as_string_2</string>
+			</ValuesAsString>
+			<ValueAsConceptId>value_as_concept_id_2</ValueAsConceptId>
+			<ValueSourceValue>source_value_2</ValueSourceValue>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field defaultSource="d_home_ownership_code" defaultConceptId="4076206" defaultTypeId="32813"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ObservationDefinition>
+
+		<ObservationDefinition>
+			<PersonId>patid</PersonId>
+			<StartDate>date</StartDate>
+			<ValuesAsString>
+				<string>value_as_string_3</string>
+			</ValuesAsString>
+			<ValueAsConceptId>value_as_concept_id_3</ValueAsConceptId>
+			<ValueSourceValue>source_value_3</ValueSourceValue>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field defaultSource="d_household_income_range_code" defaultConceptId="4076114" defaultTypeId="32813"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ObservationDefinition>
+	</Observation>
+</QueryDefinition>
