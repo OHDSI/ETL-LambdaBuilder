@@ -2,3 +2,4 @@
 FROM {sc}.pat
 WHERE medrec_key is not NULL 
 order by 1
+limit 1000000

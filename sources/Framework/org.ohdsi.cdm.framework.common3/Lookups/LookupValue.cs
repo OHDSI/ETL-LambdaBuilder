@@ -1,5 +1,4 @@
-﻿using org.ohdsi.cdm.framework.common.Omop;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace org.ohdsi.cdm.framework.common.Lookups
@@ -9,12 +8,14 @@ namespace org.ohdsi.cdm.framework.common.Lookups
         public long ConceptId { get; set; }
         public DateTime ValidStartDate { get; set; }
         public DateTime ValidEndDate { get; set; }
+        public char InvalidReason { get; set; }
 
         public bool Equals(SourceConcepts other)
         {
             return this.ConceptId == other.ConceptId &&
                    this.ValidStartDate.Equals(other.ValidStartDate) &&
-                   this.ValidEndDate.Equals(other.ValidEndDate);
+                   this.ValidEndDate.Equals(other.ValidEndDate) &&
+                   this.InvalidReason.Equals(other.InvalidReason);
         }
 
         public override int GetHashCode()

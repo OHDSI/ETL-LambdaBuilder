@@ -179,6 +179,7 @@ namespace org.ohdsi.cdm.framework.common.Lookups
 
                         var sourceValidStartDate = DateTime.MinValue;
                         var sourceValidEndDate = DateTime.MaxValue;
+                        var invalidReason = char.MinValue;
 
                         if (spliter.Results.Length > 6)
                         {
@@ -186,11 +187,18 @@ namespace org.ohdsi.cdm.framework.common.Lookups
                             DateTime.TryParse(spliter.Results[8], out sourceValidEndDate);
                         }
 
+                        if (spliter.Results.Length > 11)
+                        {
+                            if (!IsNullOrEmpty(spliter.Results[11]))
+                                invalidReason = spliter.Results[11][0];
+                        }
+
                         value.SourceConcepts.Add(new SourceConcepts
                         {
                             ConceptId = sourceConceptId,
                             ValidStartDate = sourceValidStartDate,
-                            ValidEndDate = sourceValidEndDate
+                            ValidEndDate = sourceValidEndDate,
+                            InvalidReason = invalidReason
                         });
 
                         if (!IsNullOrEmpty(spliter.Results[9]) &&
