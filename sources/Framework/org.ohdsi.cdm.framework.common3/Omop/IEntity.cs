@@ -1,4 +1,5 @@
 ﻿using org.ohdsi.cdm.framework.common.Enums;
+using org.ohdsi.cdm.framework.common.Lookups;
 using System;
 using System.Collections.Generic;
 
@@ -36,6 +37,8 @@ namespace org.ohdsi.cdm.framework.common.Omop
         string Domain { get; set; }
         string VocabularySourceValue { get; set; }
         long? ValueAsConceptId { get; set; }
+
+        List<SourceConcepts> SourceConcepts { get; set; }
 
         string GetKey();
     }

@@ -1,4 +1,5 @@
 ﻿using org.ohdsi.cdm.framework.common.Enums;
+using org.ohdsi.cdm.framework.common.Lookups;
 using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
@@ -30,13 +31,18 @@ namespace org.ohdsi.cdm.framework.common.Omop
         public string ProviderKey { get; set; }
 
         public Dictionary<string, string> AdditionalFields { get; set; }
+        
         public List<long> Ingredients { get; set; }
+        public List<SourceConcepts> SourceConcepts { get; set; }
 
-        // CDM v5 props
+
         public long SourceConceptId { get; set; }
         public string Domain { get; set; }
         public string VocabularySourceValue { get; set; }
         public long? ValueAsConceptId { get; set; }
+
+        public DateTime ValidStartDate { get; set; }
+        public DateTime ValidEndDate { get; set; }
 
         public Entity()
         {
@@ -74,10 +80,7 @@ namespace org.ohdsi.cdm.framework.common.Omop
         public virtual EntityType GeEntityType()
         {
             return EntityType.Entity;
-        }
-
-        public DateTime ValidStartDate { get; set; }
-        public DateTime ValidEndDate { get; set; }
+        }        
 
         public void Init(IEntity ent)
         {
@@ -102,6 +105,7 @@ namespace org.ohdsi.cdm.framework.common.Omop
             ConceptIdKey = ent.ConceptIdKey;
             VocabularySourceValue = ent.VocabularySourceValue;
             ValueAsConceptId = ent.ValueAsConceptId;
+            SourceConcepts = ent.SourceConcepts;
         }
 
         public static long GetId(string key)

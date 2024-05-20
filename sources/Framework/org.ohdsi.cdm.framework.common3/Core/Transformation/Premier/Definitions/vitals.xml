@@ -64,7 +64,7 @@
         </Concept>
       </Concepts>
     </MeasurementDefinition>
-	<MeasurementDefinition>
+	  <MeasurementDefinition>
 	  <Condition>{isloinc} = 0</Condition>
       <PersonId>medrec_key</PersonId>
       <VisitOccurrenceId>pat_key</VisitOccurrenceId>

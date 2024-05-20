@@ -87,8 +87,6 @@ namespace org.ohdsi.cdm.framework.common.Definitions
                     if (!string.IsNullOrEmpty(field.SourceKey))
                         sourceValue = reader.GetString(field.SourceKey);
 
-                    var result = new List<Entity>();
-                    var newConceptIds = new List<Tuple<long, long, string>>();
                     foreach (var lookupValue in concept.GetConceptIdValues(Vocabulary, field, reader))
                     {
                         var cId = lookupValue.ConceptId;
@@ -97,6 +95,7 @@ namespace org.ohdsi.cdm.framework.common.Definitions
 
                         if (!concept.IdRequired || cId.HasValue)
                         {
+
                             var providerIdKey = reader.GetString(ProviderIdKey);
                             if (!string.IsNullOrEmpty(providerIdKey))
                                 providerIdKey = providerIdKey.TrimStart('0');
@@ -106,6 +105,7 @@ namespace org.ohdsi.cdm.framework.common.Definitions
                             {
                                 ingredients = [.. lookupValue.Ingredients];
                             }
+
 
                             if (!string.IsNullOrEmpty(StartTime))
                             {
@@ -127,35 +127,14 @@ namespace org.ohdsi.cdm.framework.common.Definitions
                             var sourceConceptId = lookupValue.SourceConcepts.Count != 0 ? lookupValue.SourceConcepts[0].ConceptId : 0;
                             if (!string.IsNullOrEmpty(field.SourceConceptId))
                             {
-                                var scId  = reader.GetLong(field.SourceConceptId);
-                                if(scId.HasValue)
+                                var scId = reader.GetLong(field.SourceConceptId);
+                                if (scId.HasValue)
                                 {
                                     sourceConceptId = scId.Value;
                                 }
                             }
 
-                            foreach (var sc in lookupValue.SourceConcepts)
-                            {
-                                if (char.ToLower(sc.InvalidReason) != 'r')
-                                    continue;
-
-                                long newSourceConceptId = 0;
-                                long newConceptId = 0;
-                                if (sc.ConceptId > 0 && startDate.Between(sc.ValidStartDate, sc.ValidEndDate))
-                                {
-                                    newSourceConceptId = sc.ConceptId;
-                                }
-
-                                if (lookupValue.ConceptId.HasValue && 
-                                    lookupValue.ConceptId.Value > 0 && 
-                                    startDate.Between(lookupValue.ValidStartDate, lookupValue.ValidEndDate))
-                                {
-                                    newConceptId = lookupValue.ConceptId.Value;
-                                }
-                                newConceptIds.Add(new Tuple<long, long, string>(newSourceConceptId, newConceptId, lookupValue.Domain));
-                            }
-
-                            result.Add(new Entity
+                            yield return new Entity
                             {
                                 IsUnique = IsUnique,
                                 PersonId = personId.Value,
@@ -177,49 +156,11 @@ namespace org.ohdsi.cdm.framework.common.Definitions
                                 //SourceVocabularyId = lookupValue.SourceVocabularyId,
                                 VocabularySourceValue = lookupValue.SourceCode,
                                 Ingredients = ingredients,
-                                ValueAsConceptId = lookupValue.ValueAsConceptId
-                            });
+                                ValueAsConceptId = lookupValue.ValueAsConceptId,
+                                SourceConcepts = lookupValue.SourceConcepts,
+                            };
+
                         }
-                    }
-
-                    // SourceConceptId, ConceptId, Domain
-                    Tuple<long, long, string> newMap = null;
-                    if (newConceptIds.Count > 0) // Fix for invalid_reason = 'R'
-                    {
-                        // SourceConceptId
-                        var r1 = newConceptIds.Where(c => c.Item1 > 0);
-
-                        if (r1.Any())
-                        {
-                            // ConceptId
-                            var r2 = r1.Where(c => c.Item2 > 0);
-                            if (r2.Any())
-                            {
-                                newMap = r2.FirstOrDefault();
-                            }
-                        }
-                        else
-                        {
-                            var r2 = newConceptIds.Where(c => c.Item2 > 0);
-                            if (r2.Any())
-                            {
-                                newMap = r2.FirstOrDefault();
-                            }
-                        }
-
-                        newMap ??= r1.FirstOrDefault();
-                    }
-
-                    foreach (var item in result)
-                    {
-                        if (newMap != null)
-                        {
-                            item.SourceConceptId = newMap.Item1;
-                            item.ConceptId = newMap.Item2;
-                            item.Domain = newMap.Item3;
-                        }
-
-                        yield return item;
                     }
                 }
             }

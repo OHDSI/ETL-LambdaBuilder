@@ -1141,6 +1141,81 @@ namespace org.ohdsi.cdm.framework.common.Base
             Vocabulary ??= vocabulary;
         }
 
+        public static void UpdateRSourceConcept(IEnumerable<IEntity> records)
+        {
+            foreach (var record in records)
+            {
+                UpdateRSourceConcept(record);
+            }
+        }
+        
+        // Fix for invalid_reason = 'R'
+        private static void UpdateRSourceConcept(IEntity e)
+        {
+            if (e.SourceConcepts == null)
+                return;
+
+            var newConceptIds = new List<Tuple<long, long>>();
+            foreach (var sc in e.SourceConcepts)
+            {
+                if (char.ToLower(sc.InvalidReason) != 'r')
+                    continue;
+
+                long newSourceConceptId = 0;
+                long newConceptId = 0;
+
+                if (sc.ConceptId > 0 && e.StartDate.Between(sc.ValidStartDate, sc.ValidEndDate))
+                {
+                    newSourceConceptId = sc.ConceptId;
+                }
+
+                if (e.ConceptId > 0 && e.StartDate.Between(e.ValidStartDate, e.ValidEndDate))
+                {
+                    newConceptId = e.ConceptId;
+                }
+
+                newConceptIds.Add(new Tuple<long, long>(newSourceConceptId, newConceptId));
+            }
+
+            if (newConceptIds.Count > 0) 
+            {
+                Tuple<long, long> newMap = null;
+                // SourceConceptId
+                var r1 = newConceptIds.Where(c => c.Item1 > 0);
+
+                if (r1.Any())
+                {
+                    // ConceptId
+                    var r2 = r1.Where(c => c.Item2 > 0);
+                    if (r2.Any())
+                    {
+                        newMap = r2.FirstOrDefault();
+                    }
+                }
+                else
+                {
+                    var r2 = newConceptIds.Where(c => c.Item2 > 0);
+                    if (r2.Any())
+                    {
+                        newMap = r2.FirstOrDefault();
+                    }
+                }
+
+                newMap ??= r1.FirstOrDefault();
+
+                if (newMap != null)
+                {
+                    e.SourceConceptId = newMap.Item1;
+                    e.ConceptId = newMap.Item2;
+                }
+                else
+                {
+                    e.SourceConceptId = 0;
+                    e.ConceptId = 0;
+                }
+            }
+        }
+
         #endregion
     }
 }

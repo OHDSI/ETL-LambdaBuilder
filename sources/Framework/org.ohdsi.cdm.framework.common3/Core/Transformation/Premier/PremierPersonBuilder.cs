@@ -235,6 +235,14 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.Premier
             }
 
             ConditionForEra.Clear();
+
+            UpdateRSourceConcept(drugExposures);
+            UpdateRSourceConcept(conditionOccurrences);
+            UpdateRSourceConcept(procedureOccurrences);
+            UpdateRSourceConcept(observations);
+            UpdateRSourceConcept(measurements);
+            UpdateRSourceConcept(deviceExposure);
+
             // push built entities to ChunkBuilder for further save to CDM database
             AddToChunk(person, death,
                 observationPeriods,
