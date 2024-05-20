@@ -42,10 +42,11 @@ The field mapping is performed as follows:
 | PROVIDER_ID | PAT.ADMPHY | NULL |  |
 | VISIT_OCCURRENCE_ID | PAT.PAT_KEY |  |  |
 | DRUG_SOURCE_VALUE |  | For PATBILL table: <br> SELECT SOURCE_VALUE FROM (SELECT CONCAT(STD_CHG_DESC, ' / ', HOSP_CHG_DESC) AS SOURCE_VALUE FROM PATBILL A <br> JOIN CHGMSTR B ON A.STD_CHG_CODE=B.STD_CHG_CODE <br> JOIN hospchg C ON A.hosp_chg_id=C.hosp_chg_id ) A <br><br> for PATCPT table: <br> PATCPT.CPT_CODE|  |
-| DRUG_SOURCE_CONCEPT_ID | - | NULL |  |
+| DRUG_SOURCE_CONCEPT_ID | PATCPT.CPT_CODE| QUERY for PATCPT:  SOURCE TO STANDARD: SELECT SOURCE_CONCEPT_ID FROM CTE_VOCAB_MAP WHERE SOURCE_VOCABULARY_ID IN ('CPT4', 'HCPCS') AND DOMAIN_ID = 'Drug'  | PATBILL.STD_CHG_CODE are codes unique to premier and do not have representation in the vocabulary
 | ROUTE_SOURCE_VALUE | - | NULL |  |
 | DOSE_UNIT_SOURCE_VALUE | - | NULL |  |
 
 ## Change Log:
+* 2024.05.17: Updated DRUG_SOURCE_CONCEPT_ID to be populated by mapping PATCPT.CPT_CODE using CTE_VOCAB_MAP
 * 2021.08.11:  Updated DRUG_TYPE_CONCEPT_ID to leverage standard concept id.
 * 2023.08.29: PATCPT uses ('cpt4', 'hcpcs') as source codes, PATBILL uses 'JNJ_PMR_DRUG_CHRG_CD' as source codes, NO MIXING UP, since there's intersection between ('cpt4', 'hcpcs') and 'JNJ_PMR_DRUG_CHRG_CD' codes. Added PATCPT.CPT_CODE as drug_source_value
