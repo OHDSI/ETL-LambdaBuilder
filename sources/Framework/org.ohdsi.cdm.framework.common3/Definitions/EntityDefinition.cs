@@ -124,7 +124,7 @@ namespace org.ohdsi.cdm.framework.common.Definitions
                             }
 
                             // TMP
-                            var sourceConceptId = lookupValue.SourceConcepts.Count != 0 ? lookupValue.SourceConcepts[0].ConceptId : 0;
+                            var sourceConceptId = lookupValue.SourceConcepts.Count != 0 ? lookupValue.SourceConcepts.First().ConceptId : 0;
                             if (!string.IsNullOrEmpty(field.SourceConceptId))
                             {
                                 var scId = reader.GetLong(field.SourceConceptId);
@@ -157,7 +157,7 @@ namespace org.ohdsi.cdm.framework.common.Definitions
                                 VocabularySourceValue = lookupValue.SourceCode,
                                 Ingredients = ingredients,
                                 ValueAsConceptId = lookupValue.ValueAsConceptId,
-                                SourceConcepts = lookupValue.SourceConcepts,
+                                SourceConcepts = lookupValue.SourceConcepts.ToList(),
                             };
 
                         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using org.ohdsi.cdm.framework.common.Omop;
+using System;
 using System.Collections.Generic;
 
 namespace org.ohdsi.cdm.framework.common.Lookups
@@ -20,7 +21,10 @@ namespace org.ohdsi.cdm.framework.common.Lookups
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return ConceptId.GetHashCode() ^
+              (ValidStartDate.GetHashCode()) ^
+              (ValidEndDate.GetHashCode()) ^
+              InvalidReason.GetHashCode();
         }
     }
 
@@ -32,7 +36,7 @@ namespace org.ohdsi.cdm.framework.common.Lookups
         public DateTime ValidStartDate { get; set; }
         public DateTime ValidEndDate { get; set; }
 
-        public List<SourceConcepts> SourceConcepts { get; set; } = [];
+        public HashSet<SourceConcepts> SourceConcepts { get; set; } = [];
         public HashSet<long> Ingredients { get; set; }
         public long? ValueAsConceptId { get; set; }
 
