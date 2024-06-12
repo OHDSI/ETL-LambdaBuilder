@@ -112,7 +112,7 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.Premier
             // MONTH_OF_BIRTH and DAY_OF_BIRTH are not available in Premier, 
             // because age is the only available field. YEAR_OF_BIRTH is calculated from the first admission. 
             // The admission year minus the age results in the YEAR_OF_BIRTH. 
-            foreach (var personRecord in PersonRecords)
+            foreach (var personRecord in PersonRecords.Where(p => p.YearOfBirth.HasValue))
             {
                 if (!visitsDictionary.ContainsKey(personRecord.SourceRecordGuid)) continue;
 
@@ -134,6 +134,7 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.Premier
                     firstYearOfBirth = yearOfBirth.Value;
                 }
             }
+
 
             // If a person has YEAR_OF_BIRTH that varies over two years then those records are eliminated
             if (maxYearOfBirth - minYearOfBirth > 2)
@@ -234,16 +235,17 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.Premier
             }
 
             ConditionForEra.Clear();
+
             // push built entities to ChunkBuilder for further save to CDM database
             AddToChunk(person, death,
                 observationPeriods,
                 payerPlanPeriods,
-                drugExposures,
-                conditionOccurrences,
-                procedureOccurrences,
-                observations,
-                measurements,
-                [.. visitOccurrences.Values], null, [], deviceExposure,
+                UpdateRSourceConcept(drugExposures).ToArray(),
+                UpdateRSourceConcept(conditionOccurrences).ToArray(),
+                UpdateRSourceConcept(procedureOccurrences).ToArray(),
+                UpdateRSourceConcept(observations).ToArray(),
+                UpdateRSourceConcept(measurements).ToArray(),
+                [.. visitOccurrences.Values], null, [], UpdateRSourceConcept(deviceExposure).ToArray(),
                 [], []);
 
             var pg = new PregnancyAlgorithm.PregnancyAlgorithm();

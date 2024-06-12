@@ -1,4 +1,5 @@
-﻿using org.ohdsi.cdm.framework.common.Builder;
+﻿using Force.DeepCloner;
+using org.ohdsi.cdm.framework.common.Builder;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Helpers;
@@ -1139,6 +1140,68 @@ namespace org.ohdsi.cdm.framework.common.Base
         public void JoinToVocabulary(IVocabulary vocabulary)
         {
             Vocabulary ??= vocabulary;
+        }
+
+        //protected static void AddEntity<T>(T entity, List<T> list) where T : IEntity
+        public static IEnumerable<T> UpdateRSourceConcept<T>(IEnumerable<T> records) where T : IEntity
+        {
+            var r = new List<T>();
+            foreach (var record in records)
+            {
+                if (record.SourceConcepts != null && record.SourceConcepts.Any(r => char.ToLower(r.InvalidReason) == 'r'))
+                {
+                    r.Add(record);
+                }
+                else
+                    yield return record;
+            }
+
+            if (r.Count > 1)
+            {
+                foreach (var byGuid in r.GroupBy(i => i.SourceRecordGuid))
+                {
+                    foreach (var bySource in byGuid.GroupBy(i => i.SourceValue))
+                    {
+                        foreach (var byStartDate in bySource.GroupBy(i => i.StartDate))
+                        {
+                            var e = byStartDate.Where(i => i.StartDate.Between(i.ValidStartDate, i.ValidEndDate)).FirstOrDefault();
+                            e ??= byStartDate.First();
+
+                            long newSourceConceptId = 0;
+                            long newConceptId = 0;
+
+                            foreach (var sc in e.SourceConcepts)
+                            {
+                                if (char.ToLower(sc.InvalidReason) != 'r')
+                                    continue;
+
+                                if (e.StartDate.Between(sc.ValidStartDate, sc.ValidEndDate))
+                                {
+                                    newSourceConceptId = sc.ConceptId;
+                                }
+
+                                if (e.StartDate.Between(e.ValidStartDate, e.ValidEndDate))
+                                {
+                                    newConceptId = e.ConceptId;
+                                }
+                            }
+
+                            if (e.ConceptId != newConceptId || e.SourceConceptId != newSourceConceptId)
+                            {
+                                e.ConceptId = newConceptId;
+                                e.SourceConceptId = newSourceConceptId;
+                            }
+
+                            yield return e;
+
+                            if (e.SourceConcepts.Count != byStartDate.Count())
+                            {
+                               
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         #endregion

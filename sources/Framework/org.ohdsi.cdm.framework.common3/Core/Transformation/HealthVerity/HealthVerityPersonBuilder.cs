@@ -644,12 +644,17 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
             AddToChunk(person, null,
                 observationPeriods,
                 [],
-                drugExposures,
-                conditionOccurrences,
-                procedureOccurrences,
-                observations,
-                measurements,
-                [.. visitOccurrences.Values], visitDetails, [], deviceExposure, [], []);
+                UpdateRSourceConcept(drugExposures).ToArray(),
+                UpdateRSourceConcept(conditionOccurrences).ToArray(),
+                UpdateRSourceConcept(procedureOccurrences).ToArray(),
+                UpdateRSourceConcept(observations).ToArray(),
+                UpdateRSourceConcept(measurements).ToArray(),
+                [.. visitOccurrences.Values], 
+                visitDetails, 
+                [],
+                UpdateRSourceConcept(deviceExposure).ToArray(), 
+                [], 
+                []);
 
             Complete = true;
 

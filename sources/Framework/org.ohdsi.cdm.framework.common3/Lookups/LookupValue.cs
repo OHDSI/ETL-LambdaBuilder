@@ -9,17 +9,22 @@ namespace org.ohdsi.cdm.framework.common.Lookups
         public long ConceptId { get; set; }
         public DateTime ValidStartDate { get; set; }
         public DateTime ValidEndDate { get; set; }
+        public char InvalidReason { get; set; }
 
         public bool Equals(SourceConcepts other)
         {
             return this.ConceptId == other.ConceptId &&
                    this.ValidStartDate.Equals(other.ValidStartDate) &&
-                   this.ValidEndDate.Equals(other.ValidEndDate);
+                   this.ValidEndDate.Equals(other.ValidEndDate) &&
+                   this.InvalidReason.Equals(other.InvalidReason);
         }
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return ConceptId.GetHashCode() ^
+              (ValidStartDate.GetHashCode()) ^
+              (ValidEndDate.GetHashCode()) ^
+              InvalidReason.GetHashCode();
         }
     }
 
@@ -31,7 +36,7 @@ namespace org.ohdsi.cdm.framework.common.Lookups
         public DateTime ValidStartDate { get; set; }
         public DateTime ValidEndDate { get; set; }
 
-        public List<SourceConcepts> SourceConcepts { get; set; } = [];
+        public HashSet<SourceConcepts> SourceConcepts { get; set; } = [];
         public HashSet<long> Ingredients { get; set; }
         public long? ValueAsConceptId { get; set; }
 

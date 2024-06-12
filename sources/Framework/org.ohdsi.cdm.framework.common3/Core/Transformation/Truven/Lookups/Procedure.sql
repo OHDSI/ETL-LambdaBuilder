@@ -7,7 +7,7 @@ AND (TARGET_STANDARD_CONCEPT IS NOT NULL or TARGET_STANDARD_CONCEPT != '')
 AND (TARGET_INVALID_REASON IS NULL or TARGET_INVALID_REASON = '')
 AND lower(TARGET_CONCEPT_CLASS_ID) NOT IN ('hcpcs modifier','cpt4 modifier','cpt4 hierarchy','icd10pcs hierarchy')
 ), Source as (
-SELECT distinct REPLACE(SOURCE_CODE, '.', '') AS SOURCE_CODE, TARGET_CONCEPT_ID, TARGET_DOMAIN_ID
+SELECT distinct REPLACE(SOURCE_CODE, '.', '') AS SOURCE_CODE, TARGET_CONCEPT_ID, TARGET_DOMAIN_ID, SOURCE_INVALID_REASON
 FROM Source_to_Source
 WHERE lower(SOURCE_VOCABULARY_ID) IN ('icd9proc','hcpcs','cpt4','icd10pcs', 'cdt')
 AND lower(TARGET_VOCABULARY_ID) IN ('icd9proc','hcpcs','cpt4','icd10pcs', 'cdt')
@@ -19,7 +19,7 @@ union
 select SOURCE_CODE from Source
 )
 
-select distinct S_S.SOURCE_CODE, Standard.TARGET_CONCEPT_ID, Standard.TARGET_DOMAIN_ID, Standard.VALID_START_DATE, Standard.VALID_END_DATE, Standard.SOURCE_VOCABULARY_ID, Source.TARGET_CONCEPT_ID as SOURCE_TARGET_CONCEPT_ID, cast('1900/1/1' as date) as SOURCE_validStartDate, cast('2100/1/1' as date) as SOURCE_validEndDate, ingredient_level.ingredient_concept_id, Standard.TARGET_VALUE_AS_CONCEPT_ID
+select distinct S_S.SOURCE_CODE, Standard.TARGET_CONCEPT_ID, Standard.TARGET_DOMAIN_ID, Standard.VALID_START_DATE, Standard.VALID_END_DATE, Standard.SOURCE_VOCABULARY_ID, Source.TARGET_CONCEPT_ID as SOURCE_TARGET_CONCEPT_ID, cast('1900/1/1' as date) as SOURCE_validStartDate, cast('2100/1/1' as date) as SOURCE_validEndDate, ingredient_level.ingredient_concept_id, Standard.TARGET_VALUE_AS_CONCEPT_ID, Source.SOURCE_INVALID_REASON
 from S_S
 left join Standard on Standard.SOURCE_CODE = S_S.SOURCE_CODE
 left join Source on Source.SOURCE_CODE = S_S.SOURCE_CODE 

@@ -1058,9 +1058,21 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.OptumOncology
             }
 
             // push built entities to ChunkBuilder for further save to CDM database
-            AddToChunk(person, death, [.. observationPeriodsFinal], payerPlanPeriods, drugExposures,
-                conditionOccurrences, procedureOccurrences, observations, measurements,
-                [.. visitOccurrences.Values], [.. visitDetails.Values], cohort, deviceExposure, notes, episodes);
+            AddToChunk(person, 
+                death, 
+                [.. observationPeriodsFinal], 
+                payerPlanPeriods,
+                UpdateRSourceConcept(drugExposures).ToArray(),
+                UpdateRSourceConcept(conditionOccurrences).ToArray(),
+                UpdateRSourceConcept(procedureOccurrences).ToArray(),
+                UpdateRSourceConcept(observations).ToArray(),
+                UpdateRSourceConcept(measurements).ToArray(),
+                [.. visitOccurrences.Values], 
+                [.. visitDetails.Values], 
+                cohort,
+                UpdateRSourceConcept(deviceExposure).ToArray(), 
+                notes, 
+                episodes);
 
             var pg = new PregnancyAlgorithm.PregnancyAlgorithm();
             foreach (var r in pg.GetPregnancyEpisodes(Vocabulary, person, [.. observationPeriodsFinal],

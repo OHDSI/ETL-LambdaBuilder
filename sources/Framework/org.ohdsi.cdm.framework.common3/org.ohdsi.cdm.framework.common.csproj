@@ -1809,8 +1809,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AWSSDK.S3" Version="3.7.307.23" />
-    <PackageReference Include="CsvHelper" Version="31.0.4" />
+    <PackageReference Include="AWSSDK.S3" Version="3.7.309.3" />
+    <PackageReference Include="CsvHelper" Version="32.0.3" />
     <PackageReference Include="DeepCloner" Version="0.10.4" />
   </ItemGroup>
 

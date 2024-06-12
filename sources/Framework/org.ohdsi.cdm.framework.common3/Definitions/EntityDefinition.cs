@@ -124,11 +124,11 @@ namespace org.ohdsi.cdm.framework.common.Definitions
                             }
 
                             // TMP
-                            var sourceConceptId = lookupValue.SourceConcepts.Count != 0 ? lookupValue.SourceConcepts[0].ConceptId : 0;
+                            var sourceConceptId = lookupValue.SourceConcepts.Count != 0 ? lookupValue.SourceConcepts.First().ConceptId : 0;
                             if (!string.IsNullOrEmpty(field.SourceConceptId))
                             {
-                                var scId  = reader.GetLong(field.SourceConceptId);
-                                if(scId.HasValue)
+                                var scId = reader.GetLong(field.SourceConceptId);
+                                if (scId.HasValue)
                                 {
                                     sourceConceptId = scId.Value;
                                 }
@@ -156,7 +156,8 @@ namespace org.ohdsi.cdm.framework.common.Definitions
                                 //SourceVocabularyId = lookupValue.SourceVocabularyId,
                                 VocabularySourceValue = lookupValue.SourceCode,
                                 Ingredients = ingredients,
-                                ValueAsConceptId = lookupValue.ValueAsConceptId
+                                ValueAsConceptId = lookupValue.ValueAsConceptId,
+                                SourceConcepts = lookupValue.SourceConcepts.ToList(),
                             };
 
                         }
