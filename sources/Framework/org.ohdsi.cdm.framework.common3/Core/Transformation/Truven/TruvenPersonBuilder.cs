@@ -759,11 +759,15 @@ namespace org.ohdsi.cdm.framework.common.Core.Transformation.Truven
                 observationPeriods,
                 payerPlanPeriods,
                 [.. drugExposures],
-                conditionOccurrences,
-                procedureOccurrences,
-                observations,
-                measurements,
-                visitOccurrences, [.. visitDetails], [], deviceExposure, []);
+                UpdateRSourceConcept(conditionOccurrences).ToArray(),
+                UpdateRSourceConcept(procedureOccurrences).ToArray(),
+                UpdateRSourceConcept(observations).ToArray(),
+                UpdateRSourceConcept(measurements).ToArray(),
+                visitOccurrences, 
+                [.. visitDetails], 
+                [],
+                UpdateRSourceConcept(deviceExposure).ToArray(), 
+                []);
 
             Complete = true;
 
