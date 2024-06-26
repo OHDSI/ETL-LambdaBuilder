@@ -1,13 +1,11 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
-using org.ohdsi.cdm.framework.common.Core.Transformation.HealthVerity;
 using org.ohdsi.cdm.framework.common.Enums;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using static org.ohdsi.cdm.framework.common.Enums.Vendor;
@@ -44,33 +42,18 @@ namespace org.ohdsi.cdm.framework.common.Helpers
             return AllChunksWereDone(vendor, buildingId, bucket, "");
         }
 
-        public static string GetBucket(string fullName)
-        {
-            if (fullName.Split('/').Length == 2)
-            {
-                return fullName.Split('/')[0];
-            }
-
-            return fullName;
-        }
-
-        public static string GetPrefix(string fullBucketName, string prefix)
-        {
-            if (fullBucketName.Split('/').Length == 2)
-            {
-                return $"{fullBucketName.Split('/')[1]}/{prefix}";
-            }
-
-            return prefix;
-        }
-
-        public bool AllChunksWereDone(Vendors vendor, int buildingId, string bucketFullName, string prefix)
+        public bool AllChunksWereDone(Vendors vendor, int buildingId, string bucket, string prefix)
         {
             var previousLastModified = DateTime.MinValue;
             var previousCount = 0;
 
-            var bucket = GetBucket(bucketFullName);
-            prefix = GetPrefix(bucketFullName, $"{prefix}{vendor}.{buildingId}.");
+            prefix = $"{prefix}{vendor}.{buildingId}.";
+
+            if (bucket.Contains("/merge"))
+            {
+                bucket = bucket.Replace("/merge", "");
+                prefix = $"merge/{prefix}";
+            }
 
             Console.WriteLine("Awaiting lambda functions");
             Console.WriteLine("BucketName " + bucket);
@@ -159,10 +142,14 @@ namespace org.ohdsi.cdm.framework.common.Helpers
                     {
                         if (!testMode)
                         {
-                            var bucket = GetBucket(BuildMessageBucket);
-                            var prefix = GetPrefix(BuildMessageBucket, $"{vendor}.{buildingId}.{cId}.{slice}.txt");
-
-                            tasks.Add(tu.UploadAsync(new MemoryStream(), bucket, prefix));
+                            tasks.Add(tu.UploadAsync(new TransferUtilityUploadRequest
+                            {
+                                InputStream = new MemoryStream(),
+                                BucketName = BuildMessageBucket,
+                                Key = $"{vendor}.{buildingId}.{cId}.{slice}.txt",
+                                ServerSideEncryptionMethod = ServerSideEncryptionMethod.AES256,
+                                StorageClass = S3StorageClass.Standard,
+                            }));
                         }
 
                         count++;
@@ -192,8 +179,13 @@ namespace org.ohdsi.cdm.framework.common.Helpers
                 {
                     if (!testMode)
                     {
-                        var bucket = GetBucket(MergeMessageBucket);
-                        var prefix = GetPrefix(MergeMessageBucket, $"{vendor}.{buildingId}.{table}.0.{versionId}.txt");
+                        var bucket = MergeMessageBucket;
+                        var prefix = $"{vendor}.{buildingId}.{table}.0.{versionId}.txt";
+                        if (MergeMessageBucket.Contains("/merge"))
+                        {
+                            bucket = bucket.Replace("/merge", "");
+                            prefix = $"merge/{prefix}";
+                        }
 
                         tasks.Add(tu.UploadAsync(new MemoryStream(), bucket, prefix));
                     }
