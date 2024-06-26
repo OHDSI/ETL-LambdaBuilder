@@ -131,6 +131,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                 Load(client, qd.Measurement);
                 Load(client, qd.DeviceExposure);
                 Load(client, qd.Note);
+                Load(client, qd.Episodes);
 
                 Load(client, qd.VisitCost);
                 Load(client, qd.ProcedureCost);
@@ -200,7 +201,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
         public string GetSourceVocabularyId(long conceptId)
         {
             if (_conceptIdToSourceVocabularyId.TryGetValue(conceptId, out Tuple<string, string> value))
-                return value.Item1;                                
+                return value.Item1;
 
             return null;
         }
