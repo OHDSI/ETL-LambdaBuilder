@@ -13,7 +13,6 @@ using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static Amazon.Lambda.S3Events.S3Event;
@@ -98,7 +97,7 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
 
             try
             {
-                _settings.Vendor = Enum.Parse<Vendors>(_s3Event.Object.Key.Split('.')[0].Split('/').Last());
+                _settings.Vendor = Enum.Parse<Vendors>(_s3Event.Object.Key.Split('.')[0].Replace("cdmmerge-messages/", "").Replace("merge/", ""));
                 _settings.BuildingId = int.Parse(_s3Event.Object.Key.Split('.')[1]);
                 _table = _s3Event.Object.Key.Split('.')[2].Trim();
                 _subChunkId = int.Parse(_s3Event.Object.Key.Split('.')[3]);

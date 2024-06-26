@@ -22,7 +22,6 @@
         ConditionEra,
         DrugEra,
         Note,
-        Episode,
-        EpisodeEvent
+        Episode
     }
 }

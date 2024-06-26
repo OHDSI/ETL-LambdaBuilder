@@ -451,16 +451,12 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                             ? null
                             : new Tuple<IDataReader, int>(
                                 new EpisodeDataReader54([.. chunk.Episode], _offsetManager),
-                                chunk.Episode.Count);
+                                chunk.Note.Count);
                         }
 
                     case "EPISODE_EVENT":
                         {
-                            return chunk.EpisodeEvent.Count == 0
-                            ? null
-                            : new Tuple<IDataReader, int>(
-                                new EpisodeEventDataReader([.. chunk.EpisodeEvent], _offsetManager),
-                                chunk.EpisodeEvent.Count);
+                            return null;
                         }
                 }
             }
