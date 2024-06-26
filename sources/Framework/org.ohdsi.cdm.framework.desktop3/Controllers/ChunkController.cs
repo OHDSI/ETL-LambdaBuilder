@@ -16,6 +16,7 @@ using System.Data.Odbc;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -179,10 +180,21 @@ namespace org.ohdsi.cdm.framework.desktop.Controllers
                       {
                           using (var client = new AmazonS3Client(Settings.Settings.Current.MessageS3AwsAccessKeyId, Settings.Settings.Current.MessageS3AwsSecretAccessKey, Amazon.RegionEndpoint.USEast1))
                           {
+                              //var bucket = Settings.Settings.Current.MessageBucket;
+                              //var prefix = $"{Settings.Settings.Current.Building.Vendor}.{Settings.Settings.Current.Building.Id.Value}.";
+                              //if (bucket.Contains("/internal-build"))
+                              //{
+                              //    bucket = bucket.Replace("/internal-build", "");
+                              //    prefix = $"internal-build/{prefix}";
+                              //}
+
+                              var bucket = LambdaUtility.GetBucket(Settings.Settings.Current.MessageBucket);
+                              var prefix = LambdaUtility.GetPrefix(Settings.Settings.Current.MessageBucket, $"{Settings.Settings.Current.Building.Vendor}.{Settings.Settings.Current.Building.Id.Value}.")
+
                               var request = new ListObjectsV2Request
                               {
-                                  BucketName = Settings.Settings.Current.MessageBucket,
-                                  Prefix = $"{Settings.Settings.Current.Building.Vendor}.{Settings.Settings.Current.Building.Id.Value}."
+                                  BucketName = bucket,
+                                  Prefix = prefix
                               };
 
                               Task<ListObjectsV2Response> task;
