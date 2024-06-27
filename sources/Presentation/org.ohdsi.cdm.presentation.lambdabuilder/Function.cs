@@ -216,8 +216,8 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
             {
                 // 0         1        2       3      4      5
                 //vendor.buildingId.chunkId.prefix.attempt.txt
-
-                var vendorName = s3Event.Object.Key.Split('.')[0].Replace("cdmbuilder-messages/", "");
+                
+                var vendorName = s3Event.Object.Key.Split('.')[0].Split('/').Last();
                 vendor = Enum.Parse<Vendors>(vendorName);
 
                 buildingId = int.Parse(s3Event.Object.Key.Split('.')[1]);

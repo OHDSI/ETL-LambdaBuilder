@@ -15,6 +15,7 @@ namespace org.ohdsi.cdm.framework.common.Builder
         public List<Death> Deaths { get; private set; }
         public List<Note> Note { get; private set; }
         public List<Episode> Episode { get; private set; }
+        public List<EpisodeEvent> EpisodeEvent { get; private set; }
         public List<ObservationPeriod> ObservationPeriods { get; private set; }
         public List<PayerPlanPeriod> PayerPlanPeriods { get; private set; }
         public List<ConditionOccurrence> ConditionOccurrences { get; private set; }
@@ -81,6 +82,7 @@ namespace org.ohdsi.cdm.framework.common.Builder
             Cost = [];
             Note = [];
             Episode = [];
+            EpisodeEvent = [];
             FactRelationships = [];
         }
 
@@ -106,6 +108,7 @@ namespace org.ohdsi.cdm.framework.common.Builder
             Cost = null;
             Note = null;
             Episode = null;
+            EpisodeEvent = null;
             FactRelationships = null;
         }
 
@@ -224,6 +227,12 @@ namespace org.ohdsi.cdm.framework.common.Builder
                 case EntityType.Episode:
                     {
                         Episode.Add((Episode)data);
+                        break;
+                    }
+
+                case EntityType.EpisodeEvent:
+                    {
+                        EpisodeEvent.Add((EpisodeEvent)data);
                         break;
                     }
             }
