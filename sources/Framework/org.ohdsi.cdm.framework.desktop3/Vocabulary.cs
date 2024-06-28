@@ -7,6 +7,7 @@ using org.ohdsi.cdm.framework.common.Attributes;
 using org.ohdsi.cdm.framework.common.Definitions;
 using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Lookups;
+using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.desktop.Helpers;
 using System;
 using System.Collections.Generic;
@@ -94,7 +95,7 @@ namespace org.ohdsi.cdm.framework.desktop
 
             if (readFromS3)
             {
-                baseSql = S3ReadAllText($@"{Settings.Settings.Current.VendorSettings}\Core\Lookups\Base.sql");
+                baseSql = S3ReadAllText($@"{Settings.Settings.Current.Vendorettings}\Core\Lookups\Base.sql");
             }
             else
             {
@@ -295,7 +296,7 @@ namespace org.ohdsi.cdm.framework.desktop
             string sql;
             if (readFromS3)
             {
-                sql = S3ReadAllText($@"{Settings.Settings.Current.VendorSettings}\Core\Lookups\PregnancyDrug.sql");
+                sql = S3ReadAllText($@"{Settings.Settings.Current.Vendorettings}\Core\Lookups\PregnancyDrug.sql");
             }
             else
             {
@@ -372,16 +373,16 @@ namespace org.ohdsi.cdm.framework.desktop
                             if (!_lookups.ContainsKey(conceptIdMapper.Lookup))
                             {
                                 string sql = string.Empty;
-                                var vendorFolder = Settings.Settings.Current.Building.Vendor.GetAttribute<FolderAttribute>().Value;
+                                var vendorFolder = Settings.Settings.Current.Building.Vendor.Folder;
 
                                 var baseSql = string.Empty;
                                 var sqlFileDestination = string.Empty;
 
                                 if (readFromS3)
                                 {
-                                    baseSql = S3ReadAllText($@"{Settings.Settings.Current.VendorSettings}\Core\Lookups\Base.sql");
+                                    baseSql = S3ReadAllText($@"{Settings.Settings.Current.Vendorettings}\Core\Lookups\Base.sql");
 
-                                    sqlFileDestination = Path.Combine(Settings.Settings.Current.VendorSettings, "Core", "Transformation",
+                                    sqlFileDestination = Path.Combine(Settings.Settings.Current.Vendorettings, "Core", "Transformation",
                                         vendorFolder, "Lookups", conceptIdMapper.Lookup + ".sql");
 
                                     sql = S3ReadAllText(sqlFileDestination);
@@ -506,7 +507,7 @@ namespace org.ohdsi.cdm.framework.desktop
             }
             LoadPregnancyDrug(readFromS3, false);
 
-            if(Settings.Settings.Current.Building.Vendor == common.Enums.Vendor.Vendors.CDM)
+            if (Settings.Settings.Current.Building.Vendor is etl.Transformation.CDM.CdmPersonBuilder.CdmVendor)
                 LoadConceptIdToSourceVocabularyId();
         }
 
@@ -537,7 +538,7 @@ namespace org.ohdsi.cdm.framework.desktop
             }
             LoadPregnancyDrug(readFromS3, true);
 
-            if (Settings.Settings.Current.Building.Vendor == common.Enums.Vendor.Vendors.CDM)
+            if (Settings.Settings.Current.Building.Vendor is etl.Transformation.CDM.CdmPersonBuilder.CdmVendor)
                 LoadConceptIdToSourceVocabularyId();
 
             _lookups.Clear();

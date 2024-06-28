@@ -10,7 +10,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using static org.ohdsi.cdm.framework.common.Enums.Vendor;
 
 namespace RunETL
 {
@@ -20,7 +19,7 @@ namespace RunETL
         {
             int cnt = 0;
             var tasks = new List<Task>();
-            Vendors vendor = Vendors.None;
+            Vendor vendor = null;
             int chunkscnt = 0;
             int slicescnt = 0;
             int buildingid = 0;
@@ -30,7 +29,7 @@ namespace RunETL
                  {
                      chunkscnt = o.ChunksCnt.Value;
                      slicescnt = o.SlicesCnt.Value;
-                     vendor = Vendor.GetVendorByName(o.Vendor);
+                     vendor = Vendor.CreateVendorInstanceByName(o.Vendor);
                      buildingid = o.Buildingid.Value;
                  });
 
@@ -102,7 +101,7 @@ namespace RunETL
 
         }
 
-        private static int GetNotFinishedCnt(Vendors vendor, int buildingid, AmazonS3Config config, AmazonS3Client client)
+        private static int GetNotFinishedCnt(Vendor vendor, int buildingid, AmazonS3Config config, AmazonS3Client client)
         {
             using var cl = new AmazonS3Client(ConfigurationManager.AppSettings["AwsAccessKeyId"], ConfigurationManager.AppSettings["AwsSecretAccessKey"], config);
             var request = new ListObjectsV2Request

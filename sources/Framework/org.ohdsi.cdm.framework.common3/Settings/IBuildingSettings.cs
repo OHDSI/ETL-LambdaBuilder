@@ -9,7 +9,7 @@ namespace org.ohdsi.cdm.framework.common.Settings
     {
         int? Id { get; set; }
 
-        Vendors Vendor { get; set; }
+        Vendor Vendor { get; set; }
         List<QueryDefinition> SourceQueryDefinitions { get; }
 
         int LoadId { get; set; }

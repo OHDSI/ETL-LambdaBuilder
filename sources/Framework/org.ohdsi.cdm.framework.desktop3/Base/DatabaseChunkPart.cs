@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Data.Odbc;
 using System.Diagnostics;
 using System.Text;
-using static org.ohdsi.cdm.framework.common.Enums.Vendor;
 
 namespace org.ohdsi.cdm.framework.desktop.Base
 {
@@ -171,8 +170,8 @@ namespace org.ohdsi.cdm.framework.desktop.Base
             Console.WriteLine($"Saving chunkId={ChunkId} ...");
             Console.WriteLine("DestinationConnectionString=" + Settings.Settings.Current.Building.DestinationConnectionString);
 
-            if (Settings.Settings.Current.Building.Vendor != Vendors.Era &&
-                Settings.Settings.Current.Building.Vendor != Vendors.PregnancyAlgorithm &&
+            if (Settings.Settings.Current.Building.Vendor is not etl.Transformation.Era.EraPersonBuilder.EraVendor &&
+                Settings.Settings.Current.Building.Vendor is not etl.Transformation.PA.PregnancyAlgorithmPersonBuilder.PregnancyAlgorithmVendor &&
                 ChunkData.Persons.Count == 0)
             {
                 ChunkData.Clean();

@@ -1,5 +1,5 @@
 ﻿using System;
-using static org.ohdsi.cdm.framework.common.Enums.Vendor;
+using org.ohdsi.cdm.framework.common.Enums;
 
 namespace org.ohdsi.cdm.presentation.lambdabuilder
 {
@@ -48,13 +48,13 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
         #endregion
 
         #region Methods
-        public static void Initialize(int buildingId, Vendors vendor, bool readFromS3)
+        public static void Initialize(int buildingId, Vendor vendor, bool readFromS3)
         {
             Current.Building = new BuildingSettings { Id = buildingId, Vendor = vendor };
-            Current.Building.SetVendorSettings(readFromS3);
+            Current.Building.SetVendorettings(readFromS3);
         }
 
-        public static void Initialize(int buildingId, Vendors vendor)
+        public static void Initialize(int buildingId, Vendor vendor)
         {
             Initialize(buildingId, vendor, false);
         }

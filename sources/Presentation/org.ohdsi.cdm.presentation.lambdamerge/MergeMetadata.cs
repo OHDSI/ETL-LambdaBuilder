@@ -15,7 +15,17 @@ using System.IO.Compression;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using static org.ohdsi.cdm.framework.common.Enums.Vendor;
+using org.ohdsi.cdm.framework.common.Enums;
+using org.ohdsi.cdm.framework.etl.Transformation.Truven;
+using org.ohdsi.cdm.framework.etl.Transformation.CPRD;
+using org.ohdsi.cdm.framework.etl.Transformation.Premier;
+using org.ohdsi.cdm.framework.etl.Transformation.JMDC;
+using org.ohdsi.cdm.framework.etl.Transformation.OptumExtended;
+using org.ohdsi.cdm.framework.etl.Transformation.OptumOncology;
+using org.ohdsi.cdm.framework.etl.Transformation.CprdHES;
+using org.ohdsi.cdm.framework.etl.Transformation.Era;
+using org.ohdsi.cdm.framework.etl.Transformation.PA;
+using org.ohdsi.cdm.framework.etl.Transformation.HealthVerity;
 
 namespace org.ohdsi.cdm.presentation.lambdamerge
 {
@@ -28,8 +38,8 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
         {
             _metadata = CreateMetadata();
 
-            _metadata.Add(new MetadataOMOP { MetadataConceptId = 37116952, Name = "Source data citation", ValueAsString = GetCitation(), MetadataDate = DateTime.Now });
-            _metadata.Add(new MetadataOMOP { MetadataConceptId = 4123211, Name = "Publication review requirements", ValueAsString = GetPublication(), MetadataDate = DateTime.Now });
+            _metadata.Add(new MetadataOMOP { MetadataConceptId = 37116952, Name = "Source data citation", ValueAsString = _settings.Vendor.Citation, MetadataDate = DateTime.Now });
+            _metadata.Add(new MetadataOMOP { MetadataConceptId = 4123211, Name = "Publication review requirements", ValueAsString = _settings.Vendor.Publication, MetadataDate = DateTime.Now });
 
             for (int i = 0; i < _metadata.Count; i++)
             {
@@ -37,105 +47,11 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
             }
         }
 
-        private string GetCitation()
-        {
-            var value = string.Empty;
-            switch (_settings.Vendor)
-            {
-                case Vendors.None:
-                    break;
-                case Vendors.Truven_CCAE:
-                case Vendors.Truven_MDCR:
-                case Vendors.Truven_MDCD:
-                    value = "Follow the proper use of trademarks as detailed by IBM. The document with the information on how to do so can be found on the rwe catalog.";
-                    break;
-                case Vendors.CprdV5:
-                case Vendors.CprdCovid:
-                    value = "Cite Data Resource Profile: Clinical Practice Research Datalink (CPRD) DOI: 10.1093/ije/dyv098";
-                    break;
-                case Vendors.PremierV5:
-                    break;
-                case Vendors.PremierFull:
-                    break;
-                case Vendors.PremierCovid:
-                    break;
-                case Vendors.JMDCv5:
-                    break;
-                case Vendors.OptumExtendedSES:
-                    break;
-                case Vendors.OptumExtendedDOD:
-                    break;
-                case Vendors.OptumOncology:
-                    break;
-                case Vendors.OptumPantherFull:
-                    break;
-                case Vendors.OptumPantherCovid:
-                    break;
-                case Vendors.CprdHES:
-                    break;
-                case Vendors.Era:
-                    break;
-                case Vendors.PregnancyAlgorithm:
-                    break;
-                case Vendors.HealthVerity:
-                    break;
-                default:
-                    break;
-            }
-            return value;
-        }
-
-        private string GetPublication()
-        {
-            var value = "No review required";
-            switch (_settings.Vendor)
-            {
-                case Vendors.None:
-                    break;
-                case Vendors.Truven_CCAE:
-                case Vendors.Truven_MDCR:
-                case Vendors.Truven_MDCD:
-                    value = "No review requirements.";
-                    break;
-                case Vendors.CprdV5:
-                case Vendors.CprdCovid:
-                    value = "Must have ISAC approval to conduct study. https://www.cprd.com/research-applications";
-                    break;
-                case Vendors.PremierV5:
-                    break;
-                case Vendors.PremierFull:
-                    break;
-                case Vendors.PremierCovid:
-                    break;
-                case Vendors.JMDCv5:
-                    value = @"When sending a manuscript for publication, the external data disclosure form must be filled out and sent to JMDC for approval. It can be found on the rwe catalog under ""Contracts and Licenses"". https://catalog.rwe.jnj.com/index#jnjexplore?dataSetUri=%2Fdataset%2F06d7e4d1-6000-4779-bdc9-16ace880912a.xml";
-                    break;
-                case Vendors.OptumExtendedSES:
-                case Vendors.OptumExtendedDOD:
-                case Vendors.OptumOncology:
-                case Vendors.OptumPantherFull:
-                case Vendors.OptumPantherCovid:
-                    value = "Any manuscripts submitted for review must be reviewed by Optum prior to publication. Please send to Kuklinski, Alyce M <alyce.kuklinski@optum.com> and Bree Tremain <bree.tremain@optum.com> allowing for a five day turn-around. ";
-                    break;
-                case Vendors.CprdHES:
-                    break;
-                case Vendors.Era:
-                    break;
-                case Vendors.PregnancyAlgorithm:
-                    break;
-                case Vendors.HealthVerity:
-                    break;
-                default:
-                    break;
-            }
-            return value;
-        }
-
         public MemoryStream GetMetadataCsvStream()
         {
-            var cdm = _settings.Vendor.GetAttribute<CdmVersionAttribute>().Value;
+            var cdm = _settings.Vendor.CdmVersion;
 
-            if (cdm == framework.common.Enums.CdmVersions.V54)
+            if (cdm == CdmVersions.V54)
             {
                 var reader = new MetadataOMOPDataReader54(_metadata);
                 return reader.GetStreamCsv();

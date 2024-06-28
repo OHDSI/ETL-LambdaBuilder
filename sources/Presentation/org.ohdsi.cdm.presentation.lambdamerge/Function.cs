@@ -9,6 +9,7 @@ using org.ohdsi.cdm.framework.common.DataReaders.v5;
 using org.ohdsi.cdm.framework.common.DataReaders.v5.v54;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Extensions;
+using org.ohdsi.cdm.framework.etl.Transformation.OptumOncology;
 using System;
 using System.Diagnostics;
 using System.Globalization;
@@ -98,7 +99,7 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
 
             try
             {
-                _settings.Vendor = Enum.Parse<Vendors>(_s3Event.Object.Key.Split('.')[0].Split('/').Last());
+                _settings.Vendor = Vendor.CreateVendorInstanceByName(_s3Event.Object.Key.Split('.')[0].Replace("cdmmerge-messages/", "").Replace("merge/", ""));
                 _settings.BuildingId = int.Parse(_s3Event.Object.Key.Split('.')[1]);
                 _table = _s3Event.Object.Key.Split('.')[2].Trim();
                 _subChunkId = int.Parse(_s3Event.Object.Key.Split('.')[3]);
@@ -180,7 +181,7 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
 
             //_rowGroupSize = 250000;
 
-            _settings.Vendor = Vendors.OptumPantherFull;
+            _settings.Vendor = new OptumOncologyPersonBuilder.OptumOncologyVendor(); //EnumsEtl.OptumPantherFull()
             _settings.BuildingId = 5230;
             _table = "metadata";
             _subChunkId = 0;
@@ -193,7 +194,7 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
 
         private void SaveCdmSource()
         {
-            var cdm = _settings.Vendor.GetAttribute<CdmVersionAttribute>().Value;
+            var cdm = _settings.Vendor.CdmVersion;
 
             if (cdm == CdmVersions.V54)
             {

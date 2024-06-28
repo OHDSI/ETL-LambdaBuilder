@@ -32,10 +32,11 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder.Base
             if (qd.Locations != null) return;
             if (qd.CareSites != null) return;
 
-            //TMP
             var v = Settings.Current.Building.Vendor;
-            if (v == Vendors.OptumOncology)
-                v = Vendors.OptumPantherFull;
+
+            //TMP
+            //if (v is  EnumsEtl.OptumOncology)
+            //    v = new EnumsEtl.OptumPantherFull();
 
             var sql = qd.GetSql(v);
 

@@ -25,7 +25,7 @@ namespace org.ohdsi.cdm.presentation.etl
             _cdmFolderCsv = cdmFolderCsv;
 
             var vocabulary = new Vocabulary();
-            vocabulary.SaveToS3(!string.IsNullOrEmpty(Settings.Current.VendorSettings));
+            vocabulary.SaveToS3(!string.IsNullOrEmpty(Settings.Current.Vendorettings));
             Console.WriteLine("Vocabulary was saved to S3");
 
             Task createLookupTables = null;

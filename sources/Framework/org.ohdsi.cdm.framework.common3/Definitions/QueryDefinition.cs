@@ -131,7 +131,7 @@ namespace org.ohdsi.cdm.framework.common.Definitions
             return result;
         }
 
-        public string GetSql(Vendors vendor, string sourceSchema, string chunkSchema)
+        public string GetSql(Vendor vendor, string sourceSchema, string chunkSchema)
         {
             if (!IsSuitable(Query.Database, vendor))
                 return null;
@@ -151,7 +151,7 @@ namespace org.ohdsi.cdm.framework.common.Definitions
         }
 
 
-        public string GetSql(Vendors vendor)
+        public string GetSql(Vendor vendor)
         {
             if (!IsSuitable(Query.Database, vendor))
                 return null;
@@ -170,7 +170,7 @@ namespace org.ohdsi.cdm.framework.common.Definitions
             return Query.Text;
         }
 
-        public static bool IsSuitable(string databases, Vendors vendor)
+        public static bool IsSuitable(string databases, Vendor vendor)
         {
             if (string.IsNullOrEmpty(databases))
                 return true;

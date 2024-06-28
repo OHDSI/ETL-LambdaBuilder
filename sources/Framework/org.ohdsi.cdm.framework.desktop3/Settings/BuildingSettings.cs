@@ -13,7 +13,6 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using static org.ohdsi.cdm.framework.common.Enums.Vendor;
 
 namespace org.ohdsi.cdm.framework.desktop.Settings
 {
@@ -30,7 +29,7 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
         #region Properties
         public int? Id { get; private set; }
 
-        public Vendors Vendor { get; set; }
+        public Vendor Vendor { get; set; }
         public List<QueryDefinition> SourceQueryDefinitions { get; set; }
         public List<LookupDefinition> LookupDefinitions { get; set; }
 
@@ -121,7 +120,7 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
         {
             get
             {
-                return Vendor.GetAttribute<CdmVersionAttribute>().Value;
+                return Vendor.CdmVersion;
             }
         }
 
@@ -204,10 +203,10 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
             RawDestinationConnectionString = reader.GetString("DestinationConnectionString");
             BatchSize = reader.GetInt("BatchSize") ?? 1000;
 
-            Vendor = (Vendors)Enum.Parse(typeof(Vendors), reader.GetString("Vendor"));
+            this.Vendor = Vendor.CreateVendorInstanceByName(reader.GetString("Vendor"));
             Logger.Write(null, LogMessageTypes.Debug, "Vendor=" + reader.GetString("Vendor"));
 
-            SetVendorSettings();
+            SetVendorettings();
             SetVocabularyVersion();
             SetSourceReleaseDate();
         }
@@ -223,18 +222,17 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
             SourceReleaseDate = dbSource.GetSourceReleaseDate();
         }
 
-        private void SetVendorSettings()
+        private void SetVendorettings()
         {
-            var vendorFolder = Vendor.GetAttribute<FolderAttribute>().Value;
+            var vendorFolder = Vendor.Folder;
             vendorFolder = Path.Combine("Core", "Transformation", vendorFolder);
 
-            var batch = Vendor.GetAttribute<BatchFileAttribute>() == null
-                ? "Batch.sql"
-                : Vendor.GetAttribute<BatchFileAttribute>().Value;
+            var batch = "Batch.sql"; // This attribute was never assigned before conversion from enum to class
+            /* = Vendor.GetAttribute<BatchFileAttribute>() == null
+            ? "Batch.sql"
+            : Vendor.GetAttribute<BatchFileAttribute>().Value;*/
 
-            var cdmSource = Vendor.GetAttribute<CdmSourceAttribute>() == null
-                ? "CdmSource.sql"
-                : Vendor.GetAttribute<CdmSourceAttribute>().Value;
+            var cdmSource = Vendor.CdmSource ?? "CdmSource.sql";
 
             Logger.Write(null, LogMessageTypes.Debug, vendorFolder + ";" + batch + ";" + Vendor.ToString());
 
@@ -323,7 +321,7 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
                    RawVocabularyConnectionString, Vendor, BatchSize);
             }
 
-            SetVendorSettings();
+            SetVendorettings();
         }
         #endregion
     }

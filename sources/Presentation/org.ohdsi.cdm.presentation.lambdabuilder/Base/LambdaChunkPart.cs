@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
-using static org.ohdsi.cdm.framework.common.Enums.Vendor;
 
 namespace org.ohdsi.cdm.presentation.lambdabuilder.Base
 {
@@ -237,8 +236,8 @@ value.IdleTime.TotalSeconds > 10)
                     if (qd.CareSites != null) continue;
 
                     var v = Settings.Current.Building.Vendor;
-                    if (v == Vendors.OptumOncology)
-                        v = Vendors.OptumPantherFull;
+                    //if (v is OptumOncology)
+                    //    v = new OptumPantherFull();
 
                     var sql = qd.GetSql(v);
 

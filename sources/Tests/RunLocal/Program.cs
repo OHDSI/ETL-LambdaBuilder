@@ -3,7 +3,7 @@ using Amazon.S3.Model;
 using System;
 using System.Configuration;
 using System.IO;
-using static org.ohdsi.cdm.framework.common.Enums.Vendor;
+using org.ohdsi.cdm.framework.common.Enums;
 using Function = org.ohdsi.cdm.presentation.lambdabuilder.Function;
 
 namespace RunLocal
@@ -27,19 +27,20 @@ namespace RunLocal
             Console.WriteLine($"{Directory.GetCurrentDirectory()}");
 
             //Process(Vendors.OptumPantherFull, 19140, 178, "0087", true);
-            Process((Vendors)Enum.Parse(typeof(Vendors), args[0]), int.Parse(args[1]), int.Parse(args[2]), args[3], false);
-            
+            bool arg4 = false;
+            Process(Vendor.CreateVendorInstanceByName(args[0]), int.Parse(args[1]), int.Parse(args[2]), args[3], bool.TryParse(args[4], out arg4));
+
             //int[] slicesNum = [24, 40, 48, 96, 192];
 
             //var localTmpPath = "C:\\_tmp";
             //var validation = new Validation(_awsAccessKeyId, _awsSecretAccessKey, _bucket, localTmpPath);
-            //validation.Start((Vendors)Enum.Parse(typeof(Vendors), args[0]), int.Parse(args[1]), slicesNum[0], _cdmFolder);
+            //validation.Start((Vendor)Enum.Parse(typeof(Vendor), args[0]), int.Parse(args[1]), slicesNum[0], _cdmFolder);
 
             Console.WriteLine("DONE");
             Console.ReadLine();
         }
 
-        private static string Process(Vendors vendor, int buildingId, int chunkId, string prefix, bool clean)
+        private static string Process(Vendor vendor, int buildingId, int chunkId, string prefix, bool clean)
         {
             try
             {
@@ -100,7 +101,7 @@ namespace RunLocal
             }
         }
 
-        public static void Clean(Vendors vendor, int buildingId, int chunkId, string table, int slice)
+        public static void Clean(Vendor vendor, int buildingId, int chunkId, string table, int slice)
         {
             var attempt = 0;
             var complete = false;

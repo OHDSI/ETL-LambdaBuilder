@@ -4,7 +4,7 @@ using org.ohdsi.cdm.framework.common.Extensions;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using static org.ohdsi.cdm.framework.common.Enums.Vendor;
+using org.ohdsi.cdm.framework.common.Enums;
 
 namespace org.ohdsi.cdm.presentation.lambdabuilder
 {
@@ -12,24 +12,35 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
     {
         public int? Id { get; set; }
 
-        public Vendors Vendor { get; set; }
+        public Vendor Vendor { get; set; }
         public List<QueryDefinition> SourceQueryDefinitions { get; private set; }
         public List<LookupDefinition> LookupDefinitions { get; private set; }
 
         public int LoadId { get; set; }
 
 
-        public void SetVendorSettings(bool fromS3)
+        public void SetVendorettings(bool fromS3)
         {
             if (fromS3)
             {
-                var vendorFolder = Settings.Current.Building.Vendor.GetAttribute<FolderAttribute>().Value;
-                vendorFolder = Path.Combine("vendorSettings", "Core", "Transformation",
-                    vendorFolder);
+                var files = new List<string>();
 
+                var vendorFolder = Path.Combine("Transformation", Vendor.Folder); //here lie files for org.ohdsi.cdm.framework.etl
                 var folder = Path.Combine(vendorFolder, "Definitions");
+                if (Directory.Exists(folder))
+                {
+                    files = Directory.GetFiles(folder).ToList();
+                }
+                else
+                {
+                    vendorFolder = Path.Combine("Core", "Transformation", Vendor.Folder);
+                    folder = Path.Combine(vendorFolder, "Definitions");
 
-                SourceQueryDefinitions = Helper.GetFiles(folder).ToArray().Select(
+                    files = Directory.GetFiles(folder).ToList();
+                }
+
+
+                SourceQueryDefinitions = files.Select(
                     definition =>
                     {
                         var qd = new QueryDefinition().DeserializeFromXml(Helper.S3ReadAllText(definition));
@@ -59,13 +70,25 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
             }
             else
             {
-                var vendorFolder = Path.Combine("Core", "Transformation", Vendor.GetAttribute<FolderAttribute>().Value);
+                var files = new List<string>();
 
+                var vendorFolder = Path.Combine("Transformation", Vendor.Folder); //here lie files for org.ohdsi.cdm.framework.etl
                 var folder = Path.Combine(vendorFolder, "Definitions");
+                if (Directory.Exists(folder))
+                {
+                    files = Directory.GetFiles(folder).ToList();
+                }
+                else
+                {
+                    vendorFolder = Path.Combine("Core", "Transformation", Vendor.Folder);
+                    folder = Path.Combine(vendorFolder, "Definitions");
+
+                    files = Directory.GetFiles(folder).ToList();
+                }
 
                 SourceQueryDefinitions?.Clear();
 
-                SourceQueryDefinitions = Directory.GetFiles(folder).Select(
+                SourceQueryDefinitions = files.Select(
                     definition =>
                     {
                         var qd = new QueryDefinition().DeserializeFromXml(File.ReadAllText(definition));

@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\org.ohdsi.cdm.framework.common3\org.ohdsi.cdm.framework.common.csproj" />
+    <ProjectReference Include="..\org.ohdsi.cdm.framework.etl\org.ohdsi.cdm.framework.etl.csproj" />
   </ItemGroup>
 
 </Project>
