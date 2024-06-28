@@ -1,7 +1,6 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
-using org.ohdsi.cdm.framework.common.Core.Transformation.HealthVerity;
 using org.ohdsi.cdm.framework.common.Enums;
 using System;
 using System.Collections.Generic;
