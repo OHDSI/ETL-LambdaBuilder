@@ -25,7 +25,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
             {
                 var files = new List<string>();
 
-                var vendorFolder = Path.Combine("Transformation", Vendor.Folder); //here lie files for org.ohdsi.cdm.framework.etl
+                var vendorFolder = Path.Combine("vendorSettings", "Transformation", Vendor.Folder); //here lie files for org.ohdsi.cdm.framework.etl
                 var folder = Path.Combine(vendorFolder, "Definitions");
                 if (Directory.Exists(folder))
                 {
@@ -33,7 +33,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                 }
                 else
                 {
-                    vendorFolder = Path.Combine("Core", "Transformation", Vendor.Folder);
+                    vendorFolder = Path.Combine("vendorSettings", "Core", "Transformation", Vendor.Folder);
                     folder = Path.Combine(vendorFolder, "Definitions");
 
                     files = Directory.GetFiles(folder).ToList();
