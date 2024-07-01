@@ -51,7 +51,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
         public static void Initialize(int buildingId, Vendor vendor, bool readFromS3)
         {
             Current.Building = new BuildingSettings { Id = buildingId, Vendor = vendor };
-            Current.Building.SetVendorettings(readFromS3);
+            Current.Building.SetVendorSettings(readFromS3);
         }
 
         public static void Initialize(int buildingId, Vendor vendor)

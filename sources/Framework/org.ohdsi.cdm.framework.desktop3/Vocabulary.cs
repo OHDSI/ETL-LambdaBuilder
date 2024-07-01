@@ -95,7 +95,7 @@ namespace org.ohdsi.cdm.framework.desktop
 
             if (readFromS3)
             {
-                baseSql = S3ReadAllText($@"{Settings.Settings.Current.Vendorettings}\Core\Lookups\Base.sql");
+                baseSql = S3ReadAllText($@"{Settings.Settings.Current.VendorSettings}\Core\Lookups\Base.sql");
             }
             else
             {
@@ -296,7 +296,7 @@ namespace org.ohdsi.cdm.framework.desktop
             string sql;
             if (readFromS3)
             {
-                sql = S3ReadAllText($@"{Settings.Settings.Current.Vendorettings}\Core\Lookups\PregnancyDrug.sql");
+                sql = S3ReadAllText($@"{Settings.Settings.Current.VendorSettings}\Core\Lookups\PregnancyDrug.sql");
             }
             else
             {
@@ -380,9 +380,9 @@ namespace org.ohdsi.cdm.framework.desktop
 
                                 if (readFromS3)
                                 {
-                                    baseSql = S3ReadAllText($@"{Settings.Settings.Current.Vendorettings}\Core\Lookups\Base.sql");
+                                    baseSql = S3ReadAllText($@"{Settings.Settings.Current.VendorSettings}\Core\Lookups\Base.sql");
 
-                                    sqlFileDestination = Path.Combine(Settings.Settings.Current.Vendorettings, "Core", "Transformation",
+                                    sqlFileDestination = Path.Combine(Settings.Settings.Current.VendorSettings, "Core", "Transformation",
                                         vendorFolder, "Lookups", conceptIdMapper.Lookup + ".sql");
 
                                     sql = S3ReadAllText(sqlFileDestination);

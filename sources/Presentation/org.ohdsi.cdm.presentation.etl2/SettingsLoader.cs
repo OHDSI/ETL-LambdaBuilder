@@ -11,14 +11,14 @@ namespace org.ohdsi.cdm.presentation.etl
 {
     class SettingsLoader
     {
-        public static void LoadVendorettings(IConfigurationRoot config)
+        public static void LoadVendorSettings(IConfigurationRoot config)
         {
             Console.WriteLine();
             Console.WriteLine("loading vendor settings from S3...");
             var vendorFolder = Settings.Current.Building.Vendor.Folder;
 
-            Settings.Current.Vendorettings = config.GetSection("AppSettings")["vendor_settings"];
-            vendorFolder = Path.Combine(Settings.Current.Vendorettings, "Core", "Transformation",
+            Settings.Current.VendorSettings = config.GetSection("AppSettings")["vendor_settings"];
+            vendorFolder = Path.Combine(Settings.Current.VendorSettings, "Core", "Transformation",
                 vendorFolder);
 
             var batch = "Batch.sql";

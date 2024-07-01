@@ -10,18 +10,18 @@ namespace org.ohdsi.cdm.presentation.etl
     {
         public static void Start(string spectrumConnectionString, string iamRole, string db, string schema)
         {
-            var createDestinationSql = Helper.S3ReadAllText(Path.Combine(Settings.Current.Vendorettings, "Common",
+            var createDestinationSql = Helper.S3ReadAllText(Path.Combine(Settings.Current.VendorSettings, "Common",
                 "Spectrum", "CreateDestination.sql"));
 
             createDestinationSql = createDestinationSql.Replace("{sc}", schema);
             createDestinationSql = createDestinationSql.Replace("{db}", schema);
             createDestinationSql = createDestinationSql.Replace("{role}", iamRole);
 
-            var createTables = Helper.S3ReadAllText(Path.Combine(Settings.Current.Vendorettings, "Common", "Spectrum",
+            var createTables = Helper.S3ReadAllText(Path.Combine(Settings.Current.VendorSettings, "Common", "Spectrum",
                 "CreateTables.sql"));
 
             if (Settings.Current.Building.Cdm == CdmVersions.V6)
-                createTables = Helper.S3ReadAllText(Path.Combine(Settings.Current.Vendorettings, "Common", "Spectrum", "v6.0",
+                createTables = Helper.S3ReadAllText(Path.Combine(Settings.Current.VendorSettings, "Common", "Spectrum", "v6.0",
                     "CreateTables.sql"));
 
             createTables = createTables.Replace("{sc}", schema);

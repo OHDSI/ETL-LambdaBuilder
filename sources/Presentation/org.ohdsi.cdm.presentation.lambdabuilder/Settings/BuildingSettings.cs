@@ -19,7 +19,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
         public int LoadId { get; set; }
 
 
-        public void SetVendorettings(bool fromS3)
+        public void SetVendorSettings(bool fromS3)
         {
             if (fromS3)
             {

@@ -206,7 +206,7 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
             this.Vendor = Vendor.CreateVendorInstanceByName(reader.GetString("Vendor"));
             Logger.Write(null, LogMessageTypes.Debug, "Vendor=" + reader.GetString("Vendor"));
 
-            SetVendorettings();
+            SetVendorSettings();
             SetVocabularyVersion();
             SetSourceReleaseDate();
         }
@@ -222,7 +222,7 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
             SourceReleaseDate = dbSource.GetSourceReleaseDate();
         }
 
-        private void SetVendorettings()
+        private void SetVendorSettings()
         {
             var vendorFolder = Vendor.Folder;
             vendorFolder = Path.Combine("Core", "Transformation", vendorFolder);
@@ -321,7 +321,7 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
                    RawVocabularyConnectionString, Vendor, BatchSize);
             }
 
-            SetVendorettings();
+            SetVendorSettings();
         }
         #endregion
     }

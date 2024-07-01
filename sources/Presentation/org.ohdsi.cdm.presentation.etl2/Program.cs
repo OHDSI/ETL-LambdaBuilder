@@ -210,7 +210,7 @@ namespace org.ohdsi.cdm.presentation.etl
                 }
                 else
                 {
-                    SettingsLoader.LoadVendorettings(configuration);
+                    SettingsLoader.LoadVendorSettings(configuration);
                 }
 
                 var lambdaUtility = new LambdaUtility(Settings.Current.S3AwsAccessKeyId,
