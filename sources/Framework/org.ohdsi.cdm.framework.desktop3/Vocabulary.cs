@@ -3,11 +3,8 @@ using Amazon.S3.Model;
 using Amazon.S3.Transfer;
 using CsvHelper;
 using CsvHelper.Configuration;
-using org.ohdsi.cdm.framework.common.Attributes;
 using org.ohdsi.cdm.framework.common.Definitions;
-using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Lookups;
-using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.desktop.Helpers;
 using System;
 using System.Collections.Generic;
@@ -507,7 +504,7 @@ namespace org.ohdsi.cdm.framework.desktop
             }
             LoadPregnancyDrug(readFromS3, false);
 
-            if (Settings.Settings.Current.Building.Vendor is etl.Transformation.CDM.CdmPersonBuilder.CdmVendor)
+            if (Settings.Settings.Current.Building.Vendor.Name == "CDM")
                 LoadConceptIdToSourceVocabularyId();
         }
 
@@ -538,7 +535,7 @@ namespace org.ohdsi.cdm.framework.desktop
             }
             LoadPregnancyDrug(readFromS3, true);
 
-            if (Settings.Settings.Current.Building.Vendor is etl.Transformation.CDM.CdmPersonBuilder.CdmVendor)
+            if (Settings.Settings.Current.Building.Vendor.Name == "CDM")
                 LoadConceptIdToSourceVocabularyId();
 
             _lookups.Clear();

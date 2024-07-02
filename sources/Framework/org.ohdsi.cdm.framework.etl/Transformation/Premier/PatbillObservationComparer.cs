@@ -1,5 +1,4 @@
 ﻿using org.ohdsi.cdm.framework.common.Omop;
-using System.Collections.Generic;
 
 namespace org.ohdsi.cdm.framework.etl.Transformation.Premier
 {

@@ -5,10 +5,7 @@ using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Omop;
 using org.ohdsi.cdm.framework.common.PregnancyAlgorithm;
 using org.ohdsi.cdm.framework.common.Validators;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 
 namespace org.ohdsi.cdm.framework.etl.Transformation.Truven
 {

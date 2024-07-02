@@ -5,9 +5,6 @@ using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Helpers;
 using org.ohdsi.cdm.framework.common.Omop;
 using org.ohdsi.cdm.framework.common.PregnancyAlgorithm;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerity
 {

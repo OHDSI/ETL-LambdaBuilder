@@ -2,9 +2,6 @@
 using org.ohdsi.cdm.framework.common.Builder;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Omop;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace org.ohdsi.cdm.framework.etl.Transformation.CprdAurum
 {
