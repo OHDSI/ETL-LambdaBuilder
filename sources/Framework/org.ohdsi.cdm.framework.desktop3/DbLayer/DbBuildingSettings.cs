@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Odbc;
 using System.Data.SqlClient;
-using static org.ohdsi.cdm.framework.common.Enums.Vendor;
+using org.ohdsi.cdm.framework.common.Enums;
 
 namespace org.ohdsi.cdm.framework.desktop.DbLayer
 {
@@ -13,7 +13,7 @@ namespace org.ohdsi.cdm.framework.desktop.DbLayer
     {
         private readonly string _connectionString = connectionString;
 
-        public int? GetBuildingId(string sourceConnectionString, string vocabularyConnectionString, Vendors vendor)
+        public int? GetBuildingId(string sourceConnectionString, string vocabularyConnectionString, Vendor vendor)
         {
             const string query = "SELECT TOP 1 [BuildingId] FROM [BuildingSettings] where [SourceConnectionString] = '{0}' and [VocabularyConnectionString] = '{1}' and [Vendor] = '{2}' ORDER BY [BuildingId] desc ";
 
@@ -28,7 +28,7 @@ namespace org.ohdsi.cdm.framework.desktop.DbLayer
             return null;
         }
 
-        public int? GetBuildingId(string sourceConnectionString, string destinationConnectionString, string vocabularyConnectionString, Vendors vendor)
+        public int? GetBuildingId(string sourceConnectionString, string destinationConnectionString, string vocabularyConnectionString, Vendor vendor)
         {
             const string query = "SELECT [BuildingId] FROM [BuildingSettings] where [SourceConnectionString] = '{0}' and [DestinationConnectionString] = '{1}' and [VocabularyConnectionString] = '{2}' and [Vendor] = '{3}'";
 
@@ -43,7 +43,7 @@ namespace org.ohdsi.cdm.framework.desktop.DbLayer
             return null;
         }
 
-        public int Create(string sourceConnectionString, string destinationConnectionString, string vocabularyConnectionString, Vendors vendor, int batchSize)
+        public int Create(string sourceConnectionString, string destinationConnectionString, string vocabularyConnectionString, Vendor vendor, int batchSize)
         {
             using var connection = SqlConnectionHelper.OpenMssqlConnection(_connectionString);
             string query = "INSERT INTO [BuildingSettings] " +
@@ -107,7 +107,7 @@ namespace org.ohdsi.cdm.framework.desktop.DbLayer
             }
         }
 
-        public void Update(int buildingId, string sourceConnectionString, string destinationConnectionString, string vocabularyConnectionString, Vendors vendor, int batchSize)
+        public void Update(int buildingId, string sourceConnectionString, string destinationConnectionString, string vocabularyConnectionString, Vendor vendor, int batchSize)
         {
             using var connection = SqlConnectionHelper.OpenMssqlConnection(_connectionString);
             const string query = "UPDATE [BuildingSettings] " +

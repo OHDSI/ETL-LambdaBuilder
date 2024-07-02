@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using static org.ohdsi.cdm.framework.common.Enums.Vendor;
 
 namespace RunLocal
 {
@@ -17,7 +16,7 @@ namespace RunLocal
         private readonly string _tmpFolder = tmpFolder;
         private string _cdmFolder;
 
-        public void Start(Vendors vendor, int buildingId, int slicesNum, string cdmFolder)
+        public void Start(Vendor vendor, int buildingId, int slicesNum, string cdmFolder)
         {
             _cdmFolder = cdmFolder;
 
@@ -84,7 +83,7 @@ namespace RunLocal
 
                 if (missedPersonIds.Count > 0)
                 {
-                    foreach (var r in Helper.FindSlicesByPersonIds(_awsAccessKeyId, _awsSecretAccessKey, _bucket, vendor, buildingId, chunkId, Vendor.GetPersonTableName(vendor), missedPersonIds, GetPersonIdIndex(vendor)))
+                    foreach (var r in Helper.FindSlicesByPersonIds(_awsAccessKeyId, _awsSecretAccessKey, _bucket, vendor, buildingId, chunkId, vendor.PersonTableName, missedPersonIds, vendor.PersonIdIndex))
                     {
                         missed.Add(r);
                         var fileName = r.Replace(@"\", "_").Replace(@"/", "_");

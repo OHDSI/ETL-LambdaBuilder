@@ -17,7 +17,6 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
-using static org.ohdsi.cdm.framework.common.Enums.Vendor;
 
 namespace org.ohdsi.cdm.presentation.etl
 {
@@ -43,7 +42,7 @@ namespace org.ohdsi.cdm.presentation.etl
             var sourceSchema = string.Empty;
 
             var vocabularySchema = string.Empty;
-            Vendors vendor = Vendors.None;
+            Vendor vendor = null;
             int batchSize = 0;
 
             bool createNewBuildingId = true;
@@ -65,7 +64,7 @@ namespace org.ohdsi.cdm.presentation.etl
                       sourceSchema = o.SourceSchema;
                       sourceDb = o.SourceDb;
                       vocabularySchema = o.VocabularySchema;
-                      vendor = Vendor.GetVendorByName(o.Vendor);
+                      vendor = Vendor.CreateVendorInstanceByName(o.Vendor);
                       batchSize = o.BatchSize;
                       createNewBuildingId = o.CreateNewBuildingId.Value;
                       skipCdmsource = o.CdmSource.Value;
@@ -164,8 +163,8 @@ namespace org.ohdsi.cdm.presentation.etl
                     destinationConnectionString.Replace("{db}", "cdm_" + vendor + DateTime.Now.ToString("d_MMM_HHmmss"));
 
 
-                if (vendor == Vendors.None)
-                    throw new Exception("Error: Vendors.None");
+                if (vendor == null)
+                    throw new Exception("Error: Vendor.None");
 
                 if (batchSize <= 0)
                     throw new Exception("Error: batchSize <= 0");
@@ -291,7 +290,7 @@ namespace org.ohdsi.cdm.presentation.etl
             }
         }
 
-        private static void SaveToS3(Stream memoryStream, int index, string folder, string table, string extension, Vendors vendor, int buildingId)
+        private static void SaveToS3(Stream memoryStream, int index, string folder, string table, string extension, Vendor vendor, int buildingId)
         {
             if (memoryStream == null)
                 return;

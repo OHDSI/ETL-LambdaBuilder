@@ -9,18 +9,18 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
-using static org.ohdsi.cdm.framework.common.Enums.Vendor;
+using org.ohdsi.cdm.framework.common.Enums;
 
 namespace org.ohdsi.cdm.presentation.lambdabuilder
 {
-    public class Vocabulary(Vendors vendor) : IVocabulary
+    public class Vocabulary(Vendor vendor) : IVocabulary
     {
         private readonly Dictionary<string, Lookup> _lookups = [];
         private GenderLookup _genderConcepts;
         private PregnancyConcepts _pregnancyConcepts;
         private Dictionary<long, Tuple<string, string>> _conceptIdToSourceVocabularyId = [];
 
-        public Vendors Vendor { get; } = vendor;
+        public Vendor Vendor { get; } = vendor;
 
         private void Load(AmazonS3Client client, IEnumerable<EntityDefinition> definitions)
         {
@@ -116,30 +116,35 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
             using var client = new AmazonS3Client(Settings.Current.S3AwsAccessKeyId,
                 Settings.Current.S3AwsSecretAccessKey, Amazon.RegionEndpoint.USEast1);
             foreach (var qd in Settings.Current.Building.SourceQueryDefinitions)
-            {
-                if (!QueryDefinition.IsSuitable(qd.Query.Database, Settings.Current.Building.Vendor))
-                    continue;
+                try
+                {
+                    if (!QueryDefinition.IsSuitable(qd.Query.Database, Settings.Current.Building.Vendor))
+                        continue;
 
-                Load(client, qd.ConditionOccurrence);
-                Load(client, qd.DrugExposure);
-                Load(client, qd.ProcedureOccurrence);
-                Load(client, qd.Observation);
-                Load(client, qd.VisitOccurrence);
-                Load(client, qd.VisitDetail);
+                    Load(client, qd.ConditionOccurrence);
+                    Load(client, qd.DrugExposure);
+                    Load(client, qd.ProcedureOccurrence);
+                    Load(client, qd.Observation);
+                    Load(client, qd.VisitOccurrence);
+                    Load(client, qd.VisitDetail);
 
-                Load(client, qd.Death);
-                Load(client, qd.Measurement);
-                Load(client, qd.DeviceExposure);
-                Load(client, qd.Note);
-                Load(client, qd.Episodes);
+                    Load(client, qd.Death);
+                    Load(client, qd.Measurement);
+                    Load(client, qd.DeviceExposure);
+                    Load(client, qd.Note);
+                    Load(client, qd.Episodes);
 
-                Load(client, qd.VisitCost);
-                Load(client, qd.ProcedureCost);
-                Load(client, qd.DeviceCost);
-                Load(client, qd.ObservationCost);
-                Load(client, qd.MeasurementCost);
-                Load(client, qd.DrugCost);
-            }
+                    Load(client, qd.VisitCost);
+                    Load(client, qd.ProcedureCost);
+                    Load(client, qd.DeviceCost);
+                    Load(client, qd.ObservationCost);
+                    Load(client, qd.MeasurementCost);
+                    Load(client, qd.DrugCost);
+                }
+                catch (Exception e)
+                {
+
+                }
 
             var lookup = new Lookup();
             var prefix =
@@ -169,7 +174,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                 _lookups.Add(o.Key.Split('/')[3].Replace(".txt.gz", ""), lookup);
             }
 
-            if (Vendor == Vendors.CDM)
+            if (Vendor is framework.etl.Transformation.CDM.CdmPersonBuilder.CdmVendor)
             {
                 var getObjectRequest = new GetObjectRequest
                 {

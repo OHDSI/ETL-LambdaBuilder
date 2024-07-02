@@ -8,7 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
-using static org.ohdsi.cdm.framework.common.Enums.Vendor;
+using org.ohdsi.cdm.framework.common.Enums;
 using Settings = org.ohdsi.cdm.framework.desktop.Settings.Settings;
 
 namespace org.ohdsi.cdm.framework.desktop3.Monitor
@@ -259,7 +259,7 @@ namespace org.ohdsi.cdm.framework.desktop3.Monitor
             }
         }
 
-        private static string ProcessChunkLocally(Vendors vendor, int buildingId, int chunkId, string prefix, bool clean)
+        private static string ProcessChunkLocally(Vendor vendor, int buildingId, int chunkId, string prefix, bool clean)
         {
             try
             {

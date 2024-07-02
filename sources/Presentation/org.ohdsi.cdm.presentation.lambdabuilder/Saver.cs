@@ -33,7 +33,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
         }
         protected Tuple<IDataReader, int> CreateDataReader(ChunkData chunk, string table)
         {
-            var cdm = Settings.Current.Building.Vendor.GetAttribute<CdmVersionAttribute>().Value;
+            var cdm = Settings.Current.Building.Vendor.CdmVersion;
             if (cdm == CdmVersions.V6)
             {
                 switch (table)

@@ -4,18 +4,18 @@ using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
 using org.ohdsi.cdm.framework.common.Base;
-using org.ohdsi.cdm.framework.common.Core.Transformation.CDM;
-using org.ohdsi.cdm.framework.common.Core.Transformation.CPRD;
-using org.ohdsi.cdm.framework.common.Core.Transformation.CprdAurum;
-using org.ohdsi.cdm.framework.common.Core.Transformation.CprdHES;
-using org.ohdsi.cdm.framework.common.Core.Transformation.Era;
-using org.ohdsi.cdm.framework.common.Core.Transformation.HealthVerity;
-using org.ohdsi.cdm.framework.common.Core.Transformation.JMDC;
-using org.ohdsi.cdm.framework.common.Core.Transformation.OptumExtended;
-using org.ohdsi.cdm.framework.common.Core.Transformation.OptumOncology;
-using org.ohdsi.cdm.framework.common.Core.Transformation.PA;
-using org.ohdsi.cdm.framework.common.Core.Transformation.Premier;
-using org.ohdsi.cdm.framework.common.Core.Transformation.Truven;
+using org.ohdsi.cdm.framework.etl.Transformation.CDM;
+using org.ohdsi.cdm.framework.etl.Transformation.CPRD;
+using org.ohdsi.cdm.framework.etl.Transformation.CprdAurum;
+using org.ohdsi.cdm.framework.etl.Transformation.CprdHES;
+using org.ohdsi.cdm.framework.etl.Transformation.Era;
+using org.ohdsi.cdm.framework.etl.Transformation.HealthVerity;
+using org.ohdsi.cdm.framework.etl.Transformation.JMDC;
+using org.ohdsi.cdm.framework.etl.Transformation.OptumExtended;
+using org.ohdsi.cdm.framework.etl.Transformation.OptumOncology;
+using org.ohdsi.cdm.framework.etl.Transformation.PA;
+using org.ohdsi.cdm.framework.etl.Transformation.Premier;
+using org.ohdsi.cdm.framework.etl.Transformation.Truven;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.presentation.lambdabuilder.Base;
 using System;
@@ -28,7 +28,6 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using static Amazon.Lambda.S3Events.S3Event;
-using static org.ohdsi.cdm.framework.common.Enums.Vendor;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
@@ -106,7 +105,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
             }
         }
 
-        public async Task<string> FunctionHandler2(string s3AwsAccessKeyId, string s3AwsSecretAccessKey, string bucket, string folder, Vendors vendor, int buildingId, int chunkId, string prefix,
+        public async Task<string> FunctionHandler2(string s3AwsAccessKeyId, string s3AwsSecretAccessKey, string bucket, string folder, Vendor vendor, int buildingId, int chunkId, string prefix,
             int attempt)
         {
             Dictionary<string, long> restorePoint = null;
@@ -210,7 +209,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
             int buildingId = 0;
             int attempt = 0;
             var getRestorePointDone = false;
-            Vendors vendor;
+            Vendor vendor;
 
             try
             {
@@ -218,7 +217,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                 //vendor.buildingId.chunkId.prefix.attempt.txt
                 
                 var vendorName = s3Event.Object.Key.Split('.')[0].Split('/').Last();
-                vendor = Enum.Parse<Vendors>(vendorName);
+                vendor = Vendor.CreateVendorInstanceByName(vendorName);
 
                 buildingId = int.Parse(s3Event.Object.Key.Split('.')[1]);
                 _chunkId = int.Parse(s3Event.Object.Key.Split('.')[2]);
@@ -282,10 +281,9 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                 var totalPersonConverted = chunkBuilder.TotalPersonConverted;
                 try
                 {
-                    if (Settings.Current.Building.Vendor == Vendors.OptumPantherFull ||
-                        Settings.Current.Building.Vendor == Vendors.OptumPantherCovid ||
-                        Settings.Current.Building.Vendor == Vendors.OptumExtendedDOD ||
-                        Settings.Current.Building.Vendor == Vendors.OptumExtendedSES)
+                    if (Settings.Current.Building.Vendor is OptumOncologyPersonBuilder.OptumOncologyVendor ||
+                        Settings.Current.Building.Vendor is OptumExtendedPersonBuilder.OptumExtendedDODVendor ||
+                        Settings.Current.Building.Vendor is OptumExtendedPersonBuilder.OptumExtendedSESVendor)
                     {
                         _vocabulary.Attach(null);
                         chunkBuilder = null;
@@ -754,22 +752,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
 
         private static PersonBuilder CreatePersonBuilder()
         {
-            return Settings.Current.Building.Vendor switch
-            {
-                Vendors.Truven_CCAE or Vendors.Truven_MDCR or Vendors.Truven_MDCD => new TruvenPersonBuilder(),
-                Vendors.OptumExtendedSES or Vendors.OptumExtendedDOD => new OptumExtendedPersonBuilder(),
-                Vendors.PremierFull or Vendors.PremierCovid or Vendors.PremierV5 => new PremierPersonBuilder(),
-                Vendors.JMDCv5 => new JmdcPersonBuilder(),
-                Vendors.OptumPantherFull or Vendors.OptumPantherCovid or Vendors.OptumOncology => new OptumOncologyPersonBuilder(),
-                Vendors.CprdV5 => new CprdPersonBuilder(),
-                Vendors.CprdHES => new CprdHESPersonBuilder(),
-                Vendors.CprdAurum => new CprdAurumPersonBuilder(),
-                Vendors.HealthVerity or Vendors.HealthVerityCovid => new HealthVerityPersonBuilder(),
-                Vendors.PregnancyAlgorithm => new PregnancyAlgorithmPersonBuilder(),
-                Vendors.Era => new EraPersonBuilder(),
-                Vendors.CDM => new CdmPersonBuilder(),
-                _ => new PersonBuilder(),
-            };
+            return PersonBuilder.CreateBuilder(Settings.Current.Building.Vendor);
         }
     }
 }

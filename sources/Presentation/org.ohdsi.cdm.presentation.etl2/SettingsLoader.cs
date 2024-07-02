@@ -15,19 +15,19 @@ namespace org.ohdsi.cdm.presentation.etl
         {
             Console.WriteLine();
             Console.WriteLine("loading vendor settings from S3...");
-            var vendorFolder = Settings.Current.Building.Vendor.GetAttribute<FolderAttribute>().Value;
+            var vendorFolder = Settings.Current.Building.Vendor.Folder;
 
             Settings.Current.VendorSettings = config.GetSection("AppSettings")["vendor_settings"];
             vendorFolder = Path.Combine(Settings.Current.VendorSettings, "Core", "Transformation",
                 vendorFolder);
 
-            var batch = Settings.Current.Building.Vendor.GetAttribute<BatchFileAttribute>() == null
-                ? "Batch.sql"
-                : Settings.Current.Building.Vendor.GetAttribute<BatchFileAttribute>().Value;
+            var batch = "Batch.sql";
+            /*= Settings.Current.Building.Vendor.GetAttribute<BatchFileAttribute>() == null
+            ? "Batch.sql"
+            : Settings.Current.Building.Vendor.GetAttribute<BatchFileAttribute>().Value;
+            */
 
-            var cdmSource = Settings.Current.Building.Vendor.GetAttribute<CdmSourceAttribute>() == null
-                ? "CdmSource.sql"
-                : Settings.Current.Building.Vendor.GetAttribute<CdmSourceAttribute>().Value;
+            var cdmSource = Settings.Current.Building.Vendor.CdmSource;
 
             Settings.Current.Building.BatchScript = Helper.S3ReadAllText(Path.Combine(vendorFolder, batch));
             Settings.Current.Building.CdmSourceScript = Helper.S3ReadAllText(Path.Combine(vendorFolder, cdmSource));

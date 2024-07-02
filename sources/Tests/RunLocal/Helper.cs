@@ -14,7 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using static org.ohdsi.cdm.framework.common.Enums.Vendor;
+using org.ohdsi.cdm.framework.common.Enums;
 
 namespace RunLocal
 {
@@ -137,7 +137,7 @@ namespace RunLocal
             }
         }
 
-        internal static IEnumerable<List<S3Object>> GetObjectsFromS3(Vendors vendor, int buildingId, string awsAccessKeyId, string awsSecretAccessKey,
+        internal static IEnumerable<List<S3Object>> GetObjectsFromS3(Vendor vendor, int buildingId, string awsAccessKeyId, string awsSecretAccessKey,
             string bucket, string cdmFolder, string table, int chunkId, int slicesNum)
         {
             for (int i = 0; i < slicesNum; i++)
@@ -166,7 +166,7 @@ namespace RunLocal
 
         }
 
-        internal static List<string> FindSlicesByPersonIds(string awsAccessKeyId, string awsSecretAccessKey, string bucket, Vendors vendor, int buildingId, int chunkId, string table, Dictionary<long, bool> personIds, int personIndex)
+        internal static List<string> FindSlicesByPersonIds(string awsAccessKeyId, string awsSecretAccessKey, string bucket, Vendor vendor, int buildingId, int chunkId, string table, Dictionary<long, bool> personIds, int personIndex)
         {
             var prefix = $"{vendor}/{buildingId}/raw/{chunkId}/{table}/{table}";
 
@@ -222,7 +222,7 @@ namespace RunLocal
             return [.. result.Keys];
         }
 
-        internal static IEnumerable<KeyValuePair<int, Dictionary<long, List<string>>>> GetChunksFromS3(string localTmpPath, Vendors vendor, int buildingId,
+        internal static IEnumerable<KeyValuePair<int, Dictionary<long, List<string>>>> GetChunksFromS3(string localTmpPath, Vendor vendor, int buildingId,
             string awsAccessKeyId, string awsSecretAccessKey,
             string bucket)
         {

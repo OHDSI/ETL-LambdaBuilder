@@ -1,7 +1,6 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
-using org.ohdsi.cdm.framework.common.Core.Transformation.HealthVerity;
 using org.ohdsi.cdm.framework.common.Enums;
 using System;
 using System.Collections.Generic;
@@ -39,7 +38,7 @@ namespace org.ohdsi.cdm.framework.common.Helpers
 
         public string MergeMessageBucket { get; } = mergeMessageBucket;
 
-        public bool AllChunksWereDone(Vendors vendor, int buildingId, string bucket)
+        public bool AllChunksWereDone(Vendor vendor, int buildingId, string bucket)
         {
             return AllChunksWereDone(vendor, buildingId, bucket, "");
         }
@@ -64,7 +63,7 @@ namespace org.ohdsi.cdm.framework.common.Helpers
             return prefix;
         }
 
-        public bool AllChunksWereDone(Vendors vendor, int buildingId, string bucketFullName, string prefix)
+        public bool AllChunksWereDone(Vendor vendor, int buildingId, string bucketFullName, string prefix)
         {
             var previousLastModified = DateTime.MinValue;
             var previousCount = 0;
@@ -139,7 +138,7 @@ namespace org.ohdsi.cdm.framework.common.Helpers
             }
         }
 
-        public List<Task> TriggerBuildFunction(Vendors vendor, int buildingId, int? chunkId, bool testMode)
+        public List<Task> TriggerBuildFunction(Vendor vendor, int buildingId, int? chunkId, bool testMode)
         {
             var tasks = new List<Task>();
             int count = 0;
@@ -173,7 +172,7 @@ namespace org.ohdsi.cdm.framework.common.Helpers
             return tasks;
         }
 
-        public void TriggerMergeFunction(Vendors vendor, int buildingId, int versionId, string cdmFolder, bool testMode)
+        public void TriggerMergeFunction(Vendor vendor, int buildingId, int versionId, string cdmFolder, bool testMode)
         {
             var tasks = new List<Task>();
             var count = 0;
@@ -207,7 +206,7 @@ namespace org.ohdsi.cdm.framework.common.Helpers
             Console.WriteLine($"{count} merge lambda functions were triggered");
         }
 
-        private Tuple<List<string>, List<string>> GetChunks(Vendors vendor, int buildingId, int? chunkId, string cdmBucket, string rawFolder)
+        private Tuple<List<string>, List<string>> GetChunks(Vendor vendor, int buildingId, int? chunkId, string cdmBucket, string rawFolder)
         {
             using var client = new AmazonS3Client(_cdmAccessKeyId, _cdmSecretAccessKey, _config);
             var prefix = $"{vendor}/{buildingId}/{rawFolder}";

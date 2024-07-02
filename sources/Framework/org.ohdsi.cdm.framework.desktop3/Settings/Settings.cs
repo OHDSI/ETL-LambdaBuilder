@@ -19,7 +19,7 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
         private bool? _saveOnlyToS3;
         private S3StorageType? _storageType;
 
-        private string _vendorSettings;
+        private string _VendorSettings;
 
 
         #region Properties
@@ -188,8 +188,8 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
 
         public string VendorSettings
         {
-            get => _vendorSettings;
-            set => _vendorSettings = value;
+            get => _VendorSettings;
+            set => _VendorSettings = value;
         }
 
 

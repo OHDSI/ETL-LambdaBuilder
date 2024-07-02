@@ -1,6 +1,5 @@
 ﻿using org.ohdsi.cdm.framework.common.Base;
 using org.ohdsi.cdm.framework.common.Builder;
-using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.desktop.Enums;
 using org.ohdsi.cdm.framework.desktop.Helpers;
 using System;
@@ -8,7 +7,6 @@ using System.Collections.Generic;
 using System.Data.Odbc;
 using System.Diagnostics;
 using System.Text;
-using static org.ohdsi.cdm.framework.common.Enums.Vendor;
 
 namespace org.ohdsi.cdm.framework.desktop.Base
 {
@@ -171,8 +169,8 @@ namespace org.ohdsi.cdm.framework.desktop.Base
             Console.WriteLine($"Saving chunkId={ChunkId} ...");
             Console.WriteLine("DestinationConnectionString=" + Settings.Settings.Current.Building.DestinationConnectionString);
 
-            if (Settings.Settings.Current.Building.Vendor != Vendors.Era &&
-                Settings.Settings.Current.Building.Vendor != Vendors.PregnancyAlgorithm &&
+            if (Settings.Settings.Current.Building.Vendor.Name != "PregnancyAlgorithm" &&
+                Settings.Settings.Current.Building.Vendor.Name != "Era" &&
                 ChunkData.Persons.Count == 0)
             {
                 ChunkData.Clean();
