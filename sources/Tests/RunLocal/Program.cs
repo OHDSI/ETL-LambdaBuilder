@@ -5,6 +5,10 @@ using System.Configuration;
 using System.IO;
 using org.ohdsi.cdm.framework.common.Enums;
 using Function = org.ohdsi.cdm.presentation.lambdabuilder.Function;
+using Amazon.Runtime;
+using Amazon;
+using Amazon.SecurityToken;
+using Amazon.SecurityToken.Model;
 
 namespace RunLocal
 {
@@ -14,6 +18,9 @@ namespace RunLocal
         private static string _awsSecretAccessKey;
         private static string _bucket;
         private static string _cdmFolder;
+        private static string _roleArn;
+        private static string _roleSessionName;
+
 
         static void Main(string[] args)
         {
@@ -21,7 +28,11 @@ namespace RunLocal
             _awsSecretAccessKey = ConfigurationManager.AppSettings["awsSecretAccessKey"];
             _bucket = ConfigurationManager.AppSettings["bucket"];
             _cdmFolder = ConfigurationManager.AppSettings["cdmFolder"];
+            _roleArn = ConfigurationManager.AppSettings["roleArn"];
+            _roleSessionName = ConfigurationManager.AppSettings["roleSessionName"];
+
             Console.WriteLine($"Settings: {_awsAccessKeyId}; {_awsSecretAccessKey}");
+            Console.WriteLine($"Settings: {_roleArn}; {_roleSessionName}");
             Console.WriteLine($"Settings: {_bucket}; {_cdmFolder}");
 
             Console.WriteLine($"{Directory.GetCurrentDirectory()}");
@@ -83,7 +94,7 @@ namespace RunLocal
                     Console.WriteLine($"chunkId={chunkId};prefix={prefix} - CLEANED");
                 }
 
-                var client = new AmazonS3Client(_awsAccessKeyId, _awsSecretAccessKey, config);
+                var client = CreateS3Client();
 
                 var func = new Function(client);
                 var t = func.FunctionHandler2(_awsAccessKeyId, _awsSecretAccessKey, _bucket, _cdmFolder, vendor, buildingId, chunkId, prefix, 0);
@@ -114,8 +125,7 @@ namespace RunLocal
 
                     var perfix = $"{vendor}/{buildingId}/{_cdmFolder}/{table}/{table}.{slice}.{chunkId}.";
 
-                    using (var client = new AmazonS3Client(_awsAccessKeyId, _awsSecretAccessKey,
-                        Amazon.RegionEndpoint.USEast1))
+                    using (var client = CreateS3Client())                        
                     {
                         var request = new ListObjectsV2Request
                         {
@@ -161,6 +171,102 @@ namespace RunLocal
                     }
                 }
             }
+        }
+
+        static AmazonS3Client CreateS3Client(AmazonS3Config amazonS3Config = null)
+        {
+            var config = amazonS3Config ?? new AmazonS3Config
+            {
+                Timeout = TimeSpan.FromMinutes(60),
+                RegionEndpoint = Amazon.RegionEndpoint.USEast1,
+                MaxErrorRetry = 20,
+            };
+
+            //try using IAM role
+            if (!string.IsNullOrEmpty(_roleArn) && !string.IsNullOrEmpty(_roleSessionName))
+                try
+                {
+                    var client = CreateS3ClientViaIamRole(config);
+                    Console.WriteLine("Managed to login to AWS using the specified IAM role!");
+                    return client;
+                }
+                catch (AmazonSecurityTokenServiceException e)
+                {
+                    Console.WriteLine("Failed to login to AWS using the specified IAM role!");
+                    Console.WriteLine(e.Message);
+                    Console.WriteLine("Trying to login to AWS using access keys!");
+                }
+                catch (AmazonAccountIdException e)
+                {
+                    Console.WriteLine("Failed to login to AWS using the specified IAM role!");
+                    Console.WriteLine(e.Message);
+                    Console.WriteLine("Trying to login to AWS using access keys!");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Unexpected error while logging in to AWS using the specified IAM role!");
+                    Console.WriteLine(e.Message);
+                    throw;
+                }
+
+            //go here if no IAM role credentials specified or failed to use them to login
+            //try using access keys
+            if (!string.IsNullOrEmpty(_awsAccessKeyId) && !string.IsNullOrEmpty(_awsSecretAccessKey))
+                try
+                {
+                    var client = CreateS3ClientViaAccessKeys(config);
+                    Console.WriteLine("Managed to login to AWS using the specified access keys!");
+                    return client;
+                }
+                catch (AmazonSecurityTokenServiceException e)
+                {
+                    Console.WriteLine("Failed to login to AWS using the specified access keys!");
+                    Console.WriteLine(e.Message);
+                    throw;
+                }
+                catch (AmazonAccountIdException e)
+                {
+                    Console.WriteLine("Failed to login to AWS using the specified access keys!");
+                    Console.WriteLine(e.Message);
+                    throw;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Unexpected error while logging in to AWS using the specified access keys!");
+                    Console.WriteLine(e.Message);
+                    throw;
+                }
+
+            else
+            {
+                throw new AmazonAccountIdException("AWS credentials are not configured properly.");
+            }
+        }
+
+        static AmazonS3Client CreateS3ClientViaIamRole(AmazonS3Config config)
+        {
+            var stsClient = new AmazonSecurityTokenServiceClient();
+            var assumeRoleRequest = new AssumeRoleRequest
+            {
+                RoleArn = _roleArn,
+                RoleSessionName = _roleSessionName
+            };
+            var assumeRoleResponse = stsClient.AssumeRoleAsync(assumeRoleRequest).GetAwaiter().GetResult();
+            var credentials = assumeRoleResponse.Credentials ?? throw new AmazonAccountIdException("Failed to assume IAM role!");
+            var sessionCredentials = new SessionAWSCredentials(
+                credentials.AccessKeyId,
+                credentials.SecretAccessKey,
+                credentials.SessionToken
+            );
+            var client = new AmazonS3Client(sessionCredentials, config);
+            return client;
+        }
+
+        static AmazonS3Client CreateS3ClientViaAccessKeys(AmazonS3Config config)
+        {
+            var credentials = new BasicAWSCredentials(_awsAccessKeyId, _awsSecretAccessKey);
+            var client = new AmazonS3Client(credentials, config);
+            return client;
         }
     }
 }

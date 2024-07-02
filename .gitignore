@@ -345,3 +345,4 @@ _site
 ETL-LambdaBuilder.Rproj
 sources/Presentation/org.ohdsi.cdm.presentation.lambdabuilder/aws-lambda-tools-defaults.json
 sources/Presentation/org.ohdsi.cdm.presentation.lambdamerge/aws-lambda-tools-defaults.json
+/sources/Tests/RunLocal/App.config
