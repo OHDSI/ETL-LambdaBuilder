@@ -39,6 +39,9 @@ namespace org.ohdsi.cdm.framework.common.Utility
             {
                 try
                 {
+                    if (!assemblyPath.Contains("org.ohdsi.cdm.framework.etl"))
+                        continue;
+
                     var assembly = Assembly.LoadFrom(assemblyPath);
                     loadedAssemblies.Add(assembly);
                     loadedPaths.Add(assembly.Location);

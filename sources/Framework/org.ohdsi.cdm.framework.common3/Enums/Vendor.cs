@@ -28,6 +28,7 @@ namespace org.ohdsi.cdm.framework.common.Enums
             LoadReferencedAssemblies.DoIfNotLoadedAlready();
 
             var vendorTypes = AppDomain.CurrentDomain.GetAssemblies()
+                .Where(a => a.ManifestModule.Name == "org.ohdsi.cdm.framework.etl.dll")
                 .SelectMany(assembly => assembly.GetTypes())
                 .Where(t => t.IsSubclassOf(typeof(Vendor))
                         && !t.IsAbstract);
