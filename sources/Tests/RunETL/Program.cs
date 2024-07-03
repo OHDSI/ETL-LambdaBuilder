@@ -3,6 +3,7 @@ using Amazon.S3.Model;
 using Amazon.S3.Transfer;
 using CommandLine;
 using org.ohdsi.cdm.framework.common.Enums;
+using org.ohdsi.cdm.framework.common.Utility;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -52,7 +53,7 @@ namespace RunETL
             {
                 for (int j = 0; j <= slicescnt; j++)
                 {
-                    using var client = new AmazonS3Client(ConfigurationManager.AppSettings["AwsAccessKeyId"], ConfigurationManager.AppSettings["AwsSecretAccessKey"], config);
+                    using var client = S3ClientFactory.CreateS3Client(config);
                     using var tu = new TransferUtility(client);
                     var t = tu.UploadAsync(new TransferUtilityUploadRequest
                     {
@@ -103,7 +104,7 @@ namespace RunETL
 
         private static int GetNotFinishedCnt(Vendor vendor, int buildingid, AmazonS3Config config, AmazonS3Client client)
         {
-            using var cl = new AmazonS3Client(ConfigurationManager.AppSettings["AwsAccessKeyId"], ConfigurationManager.AppSettings["AwsSecretAccessKey"], config);
+            using var cl = S3ClientFactory.CreateS3Client(config);
             var request = new ListObjectsV2Request
             {
                 BucketName = ConfigurationManager.AppSettings["BucketName"],

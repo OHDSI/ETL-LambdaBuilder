@@ -28,6 +28,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using static Amazon.Lambda.S3Events.S3Event;
+using org.ohdsi.cdm.framework.common.Utility;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
@@ -559,8 +560,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                 MaxErrorRetry = 20
             };
 
-            using var client = new AmazonS3Client(Settings.Current.S3AwsAccessKeyId,
-                Settings.Current.S3AwsSecretAccessKey, config);
+            using var client = S3ClientFactory.CreateS3Client(config);
             using var compressed = Compress(outputStream);
             var prefix = $"{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id}/{Settings.Current.CDMFolder}";
             var putObject = client.PutObjectAsync(new PutObjectRequest

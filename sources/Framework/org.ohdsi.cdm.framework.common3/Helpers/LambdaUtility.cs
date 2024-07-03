@@ -2,6 +2,7 @@
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
 using org.ohdsi.cdm.framework.common.Enums;
+using org.ohdsi.cdm.framework.common.Utility;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -83,7 +84,7 @@ namespace org.ohdsi.cdm.framework.common.Helpers
 
                 var count = 0;
 
-                using (var client = new AmazonS3Client(_messageAccessKeyId, _messageSecretAccessKey, _config))
+                using (var client = S3ClientFactory.CreateS3Client(_config, true))
                 {
                     var request = new ListObjectsV2Request
                     {
@@ -149,7 +150,7 @@ namespace org.ohdsi.cdm.framework.common.Helpers
                 ? $"ChunkId={chunkId.Value}; SlicesCount={tuple.Item2.Count}"
                 : $"ChunksCount={tuple.Item1.Count}; SlicesCount={tuple.Item2.Count}");
 
-            using (var client = new AmazonS3Client(_messageAccessKeyId, _messageSecretAccessKey, _config))
+            using (var client = S3ClientFactory.CreateS3Client(_config, true))
             using (var tu = new TransferUtility(client))
             {
                 foreach (var cId in tuple.Item1)
@@ -184,7 +185,7 @@ namespace org.ohdsi.cdm.framework.common.Helpers
                 "_VERSION"
             };
 
-            using (var client = new AmazonS3Client(_messageAccessKeyId, _messageSecretAccessKey, _config))
+            using (var client = S3ClientFactory.CreateS3Client(_config, true))
             using (var tu = new TransferUtility(client))
             {
                 foreach (var table in tables2)
@@ -208,7 +209,7 @@ namespace org.ohdsi.cdm.framework.common.Helpers
 
         private Tuple<List<string>, List<string>> GetChunks(Vendor vendor, int buildingId, int? chunkId, string cdmBucket, string rawFolder)
         {
-            using var client = new AmazonS3Client(_cdmAccessKeyId, _cdmSecretAccessKey, _config);
+            using var client = S3ClientFactory.CreateS3Client(_config);
             var prefix = $"{vendor}/{buildingId}/{rawFolder}";
             if (chunkId.HasValue)
             {

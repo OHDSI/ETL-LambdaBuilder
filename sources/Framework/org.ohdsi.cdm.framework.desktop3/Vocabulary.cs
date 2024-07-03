@@ -5,6 +5,7 @@ using CsvHelper;
 using CsvHelper.Configuration;
 using org.ohdsi.cdm.framework.common.Definitions;
 using org.ohdsi.cdm.framework.common.Lookups;
+using org.ohdsi.cdm.framework.common.Utility;
 using org.ohdsi.cdm.framework.desktop.Helpers;
 using System;
 using System.Collections.Generic;
@@ -180,15 +181,7 @@ namespace org.ohdsi.cdm.framework.desktop
 
                         Console.WriteLine(lookup.FileName + " - store to S3 | " + fileName);
 
-                        using (var client = new AmazonS3Client(
-                            Settings.Settings.Current.S3AwsAccessKeyId,
-                            Settings.Settings.Current.S3AwsSecretAccessKey,
-                            new AmazonS3Config
-                            {
-                                Timeout = TimeSpan.FromMinutes(60),
-                                RegionEndpoint = Amazon.RegionEndpoint.USEast1,
-                                MaxErrorRetry = 20,
-                            }))
+                        using (var client = S3ClientFactory.CreateS3Client())
                         {
                             using var source = new MemoryStream();
                             using StreamWriter writer = new(source, new UTF8Encoding(false, true));
@@ -271,15 +264,7 @@ namespace org.ohdsi.cdm.framework.desktop
 
                 Console.WriteLine("ConceptIdToSourceVocabularyId - store to S3 | " + fileName);
 
-                using var client = new AmazonS3Client(
-                    Settings.Settings.Current.S3AwsAccessKeyId,
-                    Settings.Settings.Current.S3AwsSecretAccessKey,
-                    new AmazonS3Config
-                    {
-                        Timeout = TimeSpan.FromMinutes(60),
-                        RegionEndpoint = Amazon.RegionEndpoint.USEast1,
-                        MaxErrorRetry = 20,
-                    });
+                using var client = S3ClientFactory.CreateS3Client();
                 AmazonS3Helper.CopyFile(client, Settings.Settings.Current.Bucket,
                     fileName,
                     reader, "\t", '`', "\0");
@@ -316,15 +301,7 @@ namespace org.ohdsi.cdm.framework.desktop
 
                     Console.WriteLine("PregnancyDrug - store to S3 | " + fileName);
 
-                    using var client = new AmazonS3Client(
-                        Settings.Settings.Current.S3AwsAccessKeyId,
-                        Settings.Settings.Current.S3AwsSecretAccessKey,
-                        new AmazonS3Config
-                        {
-                            Timeout = TimeSpan.FromMinutes(60),
-                            RegionEndpoint = Amazon.RegionEndpoint.USEast1,
-                            MaxErrorRetry = 20,
-                        });
+                    using var client = S3ClientFactory.CreateS3Client();
                     AmazonS3Helper.CopyFile(client, Settings.Settings.Current.Bucket,
                         fileName,
                         reader, "\t", '`', "\0");
@@ -412,15 +389,7 @@ namespace org.ohdsi.cdm.framework.desktop
 
                                         Console.WriteLine(conceptIdMapper.Lookup + " - store to S3 | " + fileName);
 
-                                        using (var client = new AmazonS3Client(
-                                            Settings.Settings.Current.S3AwsAccessKeyId,
-                                            Settings.Settings.Current.S3AwsSecretAccessKey,
-                                            new AmazonS3Config
-                                            {
-                                                Timeout = TimeSpan.FromMinutes(60),
-                                                RegionEndpoint = Amazon.RegionEndpoint.USEast1,
-                                                MaxErrorRetry = 20,
-                                            }))
+                                        using (var client = S3ClientFactory.CreateS3Client())
                                         {
                                             AmazonS3Helper.CopyFile(client, Settings.Settings.Current.Bucket,
                                                 fileName,
@@ -570,15 +539,7 @@ namespace org.ohdsi.cdm.framework.desktop
 
             Console.Write($"loading {fileName}");
 
-            var config = new AmazonS3Config
-            {
-                Timeout = TimeSpan.FromMinutes(60),
-                RegionEndpoint = Amazon.RegionEndpoint.USEast1,
-                MaxErrorRetry = 20
-            };
-
-            using var client = new AmazonS3Client(Settings.Settings.Current.S3AwsAccessKeyId,
-                Settings.Settings.Current.S3AwsSecretAccessKey, config);
+            using var client = S3ClientFactory.CreateS3Client();
             var getObjectRequest = new GetObjectRequest
             {
                 BucketName = Settings.Settings.Current.Bucket,

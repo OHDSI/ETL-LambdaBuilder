@@ -2,6 +2,7 @@
 using Amazon.S3.Model;
 using org.ohdsi.cdm.framework.common.Base;
 using org.ohdsi.cdm.framework.common.Definitions;
+using org.ohdsi.cdm.framework.common.Utility;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -46,7 +47,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder.Base
 
             var metadataKey = string.Format("{0}/metadata/{1}", folder, qd.FileName + ".txt");
 
-            using var client = new AmazonS3Client(Settings.Current.S3AwsAccessKeyId, Settings.Current.S3AwsSecretAccessKey, Amazon.RegionEndpoint.USEast1);
+            using var client = S3ClientFactory.CreateS3Client();
             using var stream = new MemoryStream();
             using var sr = new StreamReader(stream);
             var request = new GetObjectRequest { BucketName = Settings.Current.Bucket, Key = metadataKey };

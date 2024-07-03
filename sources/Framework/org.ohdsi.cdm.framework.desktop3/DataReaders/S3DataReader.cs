@@ -1,6 +1,7 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
 using org.ohdsi.cdm.framework.common.Helpers;
+using org.ohdsi.cdm.framework.common.Utility;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -35,14 +36,7 @@ namespace org.ohdsi.cdm.framework.desktop.DataReaders
             _fieldHeaders = fieldHeaders;
             _prefix = prefix;
 
-            var config = new AmazonS3Config
-            {
-                Timeout = TimeSpan.FromMinutes(60),
-                RegionEndpoint = Amazon.RegionEndpoint.USEast1,
-                MaxErrorRetry = 20
-            };
-
-            _client = new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey, config);
+            _client = S3ClientFactory.CreateS3Client();
 
             var data = GetData();
             data.Wait();

@@ -4,6 +4,7 @@ using Amazon.S3.Transfer;
 using CsvHelper;
 using CsvHelper.Configuration;
 using org.ohdsi.cdm.framework.common.Helpers;
+using org.ohdsi.cdm.framework.common.Utility;
 using org.ohdsi.cdm.framework.desktop.Settings;
 using System;
 using System.Collections.Generic;
@@ -72,8 +73,7 @@ namespace org.ohdsi.cdm.framework.desktop3.Monitor
             var slices = new HashSet<string>();
             var prefix = $"{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id.Value}/{_cdmFolder}/PERSON/PERSON.";
             Console.WriteLine("Calculating slices num " + Settings.Current.Bucket + "|" + prefix);
-            using (var client = new AmazonS3Client(Settings.Current.S3AwsAccessKeyId, Settings.Current.S3AwsSecretAccessKey,
-                Amazon.RegionEndpoint.USEast1))
+            using (var client = S3ClientFactory.CreateS3Client())
 
             {
                 var request = new ListObjectsV2Request
@@ -108,8 +108,7 @@ namespace org.ohdsi.cdm.framework.desktop3.Monitor
             var currentChunkId = 0;
             var result = new KeyValuePair<int, Dictionary<long, List<string>>>(0, []);
             var prefix = $"{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id.Value}/_chunks";
-            using (var client = new AmazonS3Client(Settings.Current.S3AwsAccessKeyId, Settings.Current.S3AwsSecretAccessKey,
-                Amazon.RegionEndpoint.USEast1))
+            using (var client = S3ClientFactory.CreateS3Client())
             {
                 var request = new ListObjectsV2Request
                 {
@@ -161,8 +160,7 @@ namespace org.ohdsi.cdm.framework.desktop3.Monitor
             for (int i = 0; i < slicesNum; i++)
             {
                 var prefix = $"{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id.Value}/{_cdmFolder}/{table}/{table}.{i}.{chunkId}.";
-                using var client = new AmazonS3Client(Settings.Current.S3AwsAccessKeyId, Settings.Current.S3AwsSecretAccessKey,
-                    Amazon.RegionEndpoint.USEast1);
+                using var client = S3ClientFactory.CreateS3Client();
                 var request = new ListObjectsV2Request
                 {
                     BucketName = Settings.Current.Bucket,
@@ -352,8 +350,7 @@ namespace org.ohdsi.cdm.framework.desktop3.Monitor
             var prefix = $"{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id.Value}/raw/{chunkId}/{table}/{table}";
 
             var result = new HashSet<string>();
-            using (var client = new AmazonS3Client(Settings.Current.S3AwsAccessKeyId, Settings.Current.S3AwsSecretAccessKey,
-                Amazon.RegionEndpoint.USEast1))
+            using (var client = S3ClientFactory.CreateS3Client())
             {
                 var request = new ListObjectsV2Request
                 {
@@ -400,8 +397,7 @@ namespace org.ohdsi.cdm.framework.desktop3.Monitor
 
                     var perfix = $"{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id.Value}/{_cdmFolder}/{table}/{table}.{slice}.{chunkId}.";
 
-                    using (var client = new AmazonS3Client(Settings.Current.S3AwsAccessKeyId, Settings.Current.S3AwsSecretAccessKey,
-                        Amazon.RegionEndpoint.USEast1))
+                    using (var client = S3ClientFactory.CreateS3Client())
                     {
                         var request = new ListObjectsV2Request
                         {

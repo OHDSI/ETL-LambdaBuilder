@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using org.ohdsi.cdm.framework.common.Enums;
 using Settings = org.ohdsi.cdm.framework.desktop.Settings.Settings;
+using org.ohdsi.cdm.framework.common.Utility;
 
 namespace org.ohdsi.cdm.framework.desktop3.Monitor
 {
@@ -57,7 +58,7 @@ namespace org.ohdsi.cdm.framework.desktop3.Monitor
                 var lastModified = DateTime.MinValue;
 
                 var count = 0;
-                using (var client = new AmazonS3Client(Settings.Current.MessageS3AwsAccessKeyId, Settings.Current.MessageS3AwsSecretAccessKey, _config))
+                using (var client = S3ClientFactory.CreateS3Client(_config, true))
                 {
                     var request = new ListObjectsV2Request
                     {
@@ -77,7 +78,7 @@ namespace org.ohdsi.cdm.framework.desktop3.Monitor
                         if (task.Result.S3Objects.Count == 0)
                         {
                             _timer.Enabled = false;
-                            
+
                             Validate(false);
                             return;
                         }
@@ -203,7 +204,7 @@ namespace org.ohdsi.cdm.framework.desktop3.Monitor
                 Console.WriteLine($"> {DateTime.Now.ToShortTimeString()} | ChunkId={ChunkId} cleaning s3...");
                 var removed = new List<string>();
 
-                using (var client = new AmazonS3Client(Settings.Current.MessageS3AwsAccessKeyId, Settings.Current.MessageS3AwsSecretAccessKey, _config))
+                using (var client = S3ClientFactory.CreateS3Client(_config, true))
                 {
                     var request = new ListObjectsV2Request
                     {

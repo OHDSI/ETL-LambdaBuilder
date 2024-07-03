@@ -5,6 +5,7 @@ using CsvHelper;
 using CsvHelper.Configuration;
 using org.ohdsi.cdm.framework.common.Definitions;
 using org.ohdsi.cdm.framework.common.Helpers;
+using org.ohdsi.cdm.framework.common.Utility;
 using org.ohdsi.cdm.framework.desktop.DbLayer;
 using org.ohdsi.cdm.framework.desktop.Enums;
 using org.ohdsi.cdm.framework.desktop.Helpers;
@@ -178,7 +179,7 @@ namespace org.ohdsi.cdm.framework.desktop.Controllers
                       var unprocessed = 0;
                       do
                       {
-                          using (var client = new AmazonS3Client(Settings.Settings.Current.MessageS3AwsAccessKeyId, Settings.Settings.Current.MessageS3AwsSecretAccessKey, Amazon.RegionEndpoint.USEast1))
+                          using (var client = S3ClientFactory.CreateS3Client(null, true))
                           {
                               var bucket = LambdaUtility.GetBucket(Settings.Settings.Current.MessageBucket);
                               var prefix = LambdaUtility.GetPrefix(Settings.Settings.Current.MessageBucket,
@@ -304,8 +305,7 @@ namespace org.ohdsi.cdm.framework.desktop.Controllers
                 csv.NextRecord();
                 writer.Flush();
 
-                using var client = new AmazonS3Client(Settings.Settings.Current.S3AwsAccessKeyId,
-                    Settings.Settings.Current.S3AwsSecretAccessKey, Amazon.RegionEndpoint.USEast1);
+                using var client = S3ClientFactory.CreateS3Client();
                 using var directoryTransferUtility = new TransferUtility(client);
                 directoryTransferUtility.Upload(new TransferUtilityUploadRequest
                 {

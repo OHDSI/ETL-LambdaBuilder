@@ -8,6 +8,7 @@ using org.ohdsi.cdm.framework.common.DataReaders.v5.v54;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Helpers;
+using org.ohdsi.cdm.framework.common.Utility;
 using org.ohdsi.cdm.framework.desktop.DbLayer;
 using org.ohdsi.cdm.framework.desktop.Settings;
 using org.ohdsi.cdm.framework.desktop3.Monitor;
@@ -121,6 +122,9 @@ namespace org.ohdsi.cdm.presentation.etl
                 var iamRole = configuration.GetSection("AppSettings")["iam_role"];
                 var chunksSchema = configuration.GetSection("AppSettings")["chunks_schema"];
 
+                var roleArn = configuration.GetSection("AppSettings")["roleArn"];
+                var roleSessionName = configuration.GetSection("AppSettings")["roleSessionName"];
+
                 Settings.Initialize(builderConnectionString, Environment.MachineName);
                 Settings.Current.S3AwsAccessKeyId = s3awsAccessKeyId;
                 Settings.Current.S3AwsSecretAccessKey = s3awsSecretAccessKey;
@@ -137,6 +141,17 @@ namespace org.ohdsi.cdm.presentation.etl
                 Settings.Current.ParallelQueries = int.Parse(configuration.GetSection("AppSettings")["parallel_queries"]);
                 Settings.Current.ParallelChunks = int.Parse(configuration.GetSection("AppSettings")["parallel_chunks"]);
                 //Settings.Current.LocalPath = configuration.GetSection("AppSettings")["local_path"];
+
+                S3ClientFactory.SetAppSettings(
+                    awsAccessKeyId: s3awsAccessKeyId,
+                    awsSecretAccessKey: s3awsSecretAccessKey,
+                    awsMessageAccesssKeyId: s3MessagesAccessKeyId,
+                    awsMessageSecretAccessKey: s3MessagesSecretAccessKey,
+                    bucket: bucket,
+                    cdmFolder: cdmFolder,
+                    roleArn: roleArn,
+                    roleSessionName: roleSessionName
+                    );
 
                 Console.WriteLine($"ParallelQueries {Settings.Current.ParallelQueries}; ParallelChunks {Settings.Current.ParallelChunks}");
 
@@ -310,7 +325,7 @@ namespace org.ohdsi.cdm.presentation.etl
             Console.WriteLine($"Bucket={Settings.Current.Bucket}");
             Console.WriteLine("Key=" + fileName);
 
-            using (var c = new AmazonS3Client(Settings.Current.S3AwsAccessKeyId, Settings.Current.S3AwsSecretAccessKey, config))
+            using (var c = S3ClientFactory.CreateS3Client(config))
             {
                 var putObject = c.PutObjectAsync(new PutObjectRequest
                 {

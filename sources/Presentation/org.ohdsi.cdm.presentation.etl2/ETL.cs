@@ -2,6 +2,7 @@
 using org.ohdsi.cdm.framework.common.Definitions;
 using org.ohdsi.cdm.framework.common.Helpers;
 using org.ohdsi.cdm.framework.common.Omop;
+using org.ohdsi.cdm.framework.common.Utility;
 using org.ohdsi.cdm.framework.desktop;
 using org.ohdsi.cdm.framework.desktop.Controllers;
 using org.ohdsi.cdm.framework.desktop.Helpers;
@@ -100,14 +101,7 @@ namespace org.ohdsi.cdm.presentation.etl
                         $"{Settings.Current.Building.Vendor}/" +
                         $"{Settings.Current.Building.Id}/{Settings.Current.CDMFolder}";
 
-                    var config = new AmazonS3Config
-                    {
-                        Timeout = TimeSpan.FromMinutes(60),
-                        RegionEndpoint = Amazon.RegionEndpoint.USEast1,
-                        MaxErrorRetry = 20,
-                    };
-
-                    using (var currentClient = new AmazonS3Client(Settings.Current.S3AwsAccessKeyId, Settings.Current.S3AwsSecretAccessKey, config))
+                    using (var currentClient = S3ClientFactory.CreateS3Client())
                     using (var connection = SqlConnectionHelper.OpenOdbcConnection(Settings.Current.Building.VocabularyConnectionString))
                     using (var c = new OdbcCommand(query, connection))
                     {

@@ -5,6 +5,7 @@ using CsvHelper;
 using org.ohdsi.cdm.framework.common.DataReaders.v5;
 using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Omop;
+using org.ohdsi.cdm.framework.common.Utility;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -37,7 +38,7 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
             };
             int count = 0;
             Console.WriteLine("Reading from METADATA_TMP CSVs...");
-            using (var client = new AmazonS3Client(_settings.AwsAccessKeyId, _settings.AwsSecretAccessKey, Amazon.RegionEndpoint.USEast1))
+            using (var client = S3ClientFactory.CreateS3Client())
             {
                 Task<ListObjectsV2Response> task;
 
@@ -137,7 +138,7 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
             };
 
             Console.WriteLine("Reading from FACT_RELATIONSHIP_TMP CSVs...");
-            using (var client = new AmazonS3Client(_settings.AwsAccessKeyId, _settings.AwsSecretAccessKey, Amazon.RegionEndpoint.USEast1))
+            using (var client = S3ClientFactory.CreateS3Client())
             {
                 Task<ListObjectsV2Response> task;
 

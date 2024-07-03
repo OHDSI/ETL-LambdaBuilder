@@ -10,6 +10,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using org.ohdsi.cdm.framework.common.Enums;
+using org.ohdsi.cdm.framework.common.Utility;
 
 namespace org.ohdsi.cdm.presentation.lambdabuilder
 {
@@ -113,8 +114,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
             Console.WriteLine(Settings.Current.S3AwsAccessKeyId);
             Console.WriteLine(Settings.Current.S3AwsSecretAccessKey);
 
-            using var client = new AmazonS3Client(Settings.Current.S3AwsAccessKeyId,
-                Settings.Current.S3AwsSecretAccessKey, Amazon.RegionEndpoint.USEast1);
+            using var client = S3ClientFactory.CreateS3Client();
             foreach (var qd in Settings.Current.Building.SourceQueryDefinitions)
                 try
                 {

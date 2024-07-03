@@ -9,6 +9,7 @@ using org.ohdsi.cdm.framework.common.DataReaders.v5;
 using org.ohdsi.cdm.framework.common.DataReaders.v5.v54;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Extensions;
+using org.ohdsi.cdm.framework.common.Utility;
 using org.ohdsi.cdm.framework.etl.Transformation.OptumOncology;
 using System;
 using System.Diagnostics;
@@ -251,9 +252,7 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
             };
 
             var fileName = $"{table}/{table}.{_subChunkId}.{index}.{extension}";
-            using (var c = new AmazonS3Client(_settings.AwsAccessKeyId,
-                _settings.AwsSecretAccessKey,
-                config))
+            using (var c = S3ClientFactory.CreateS3Client(config))
             {
                 var putObject = c.PutObjectAsync(new PutObjectRequest
                 {

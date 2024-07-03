@@ -1,5 +1,6 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
+using org.ohdsi.cdm.framework.common.Utility;
 using org.ohdsi.cdm.framework.desktop.Settings;
 using System;
 using System.Collections.Generic;
@@ -20,15 +21,7 @@ namespace org.ohdsi.cdm.presentation.etl
                 Prefix = prefix
             };
 
-            var config = new AmazonS3Config
-            {
-                Timeout = TimeSpan.FromMinutes(60),
-                RegionEndpoint = Amazon.RegionEndpoint.USEast1,
-                MaxErrorRetry = 20
-            };
-
-            using var client = new AmazonS3Client(Settings.Current.S3AwsAccessKeyId,
-                Settings.Current.S3AwsSecretAccessKey, config);
+            using var client = S3ClientFactory.CreateS3Client();
             using var listObjects = client.ListObjectsV2Async(request);
             listObjects.Wait();
 
@@ -48,15 +41,7 @@ namespace org.ohdsi.cdm.presentation.etl
 
             Console.Write($"loading {fileName}");
 
-            var config = new AmazonS3Config
-            {
-                Timeout = TimeSpan.FromMinutes(60),
-                RegionEndpoint = Amazon.RegionEndpoint.USEast1,
-                MaxErrorRetry = 20
-            };
-
-            using var client = new AmazonS3Client(Settings.Current.S3AwsAccessKeyId,
-                Settings.Current.S3AwsSecretAccessKey, config);
+            using var client = S3ClientFactory.CreateS3Client();
             var getObjectRequest = new GetObjectRequest
             {
                 BucketName = Settings.Current.Bucket,

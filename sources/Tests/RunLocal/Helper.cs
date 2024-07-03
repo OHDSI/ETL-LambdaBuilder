@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using org.ohdsi.cdm.framework.common.Enums;
+using org.ohdsi.cdm.framework.common.Utility;
 
 namespace RunLocal
 {
@@ -59,7 +60,7 @@ namespace RunLocal
                             try
                             {
                                 loadAttempt++;
-                                using (var client = new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey, config))
+                                using (var client = S3ClientFactory.CreateS3Client(config))
                                 using (var transferUtility = new TransferUtility(client))
                                 {
                                     transferUtility.Download($@"{localTmpPath}\{o.Key}", bucket, o.Key);
@@ -144,8 +145,7 @@ namespace RunLocal
             {
                 var prefix = $"{vendor}/{buildingId}/{cdmFolder}/{table}/{table}.{i}.{chunkId}.";
 
-                using var client = new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey,
-                    Amazon.RegionEndpoint.USEast1);
+                using var client = S3ClientFactory.CreateS3Client();
                 var request = new ListObjectsV2Request
                 {
                     BucketName = bucket,
@@ -178,8 +178,7 @@ namespace RunLocal
             }
 
             var result = new ConcurrentDictionary<string, bool>();
-            using (var client = new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey,
-                Amazon.RegionEndpoint.USEast1))
+            using (var client = S3ClientFactory.CreateS3Client())
             {
                 var request = new ListObjectsV2Request
                 {
@@ -229,8 +228,7 @@ namespace RunLocal
             var currentChunkId = 0;
             var result = new KeyValuePair<int, Dictionary<long, List<string>>>(0, []);
             var prefix = $"{vendor}/{buildingId}/_chunks";
-            using (var client = new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey,
-                Amazon.RegionEndpoint.USEast1))
+            using (var client = S3ClientFactory.CreateS3Client())
             {
                 var request = new ListObjectsV2Request
                 {

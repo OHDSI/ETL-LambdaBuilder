@@ -1,6 +1,7 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Transfer;
 using org.ohdsi.cdm.framework.common.Helpers;
+using org.ohdsi.cdm.framework.common.Utility;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -109,7 +110,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
 
             Console.WriteLine(_localFileName + " " + initRow);
 
-            using (var client = new AmazonS3Client(_awsAccessKeyId, _awsSecretAccessKey, config))
+            using (var client = S3ClientFactory.CreateS3Client(config))
             using (var transferUtility = new TransferUtility(client))
             {
                 transferUtility.Download($"{TmpFolder}/raw/{_localFileName}", _bucket, $"{_folder}/{_chunkId}/{_fileName}/{_fileName}{_prefix}_part_00.gz");

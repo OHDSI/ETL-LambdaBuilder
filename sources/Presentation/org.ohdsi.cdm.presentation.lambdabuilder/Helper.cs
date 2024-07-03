@@ -1,5 +1,6 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
+using org.ohdsi.cdm.framework.common.Utility;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,15 +20,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                 Prefix = prefix
             };
 
-            var config = new AmazonS3Config
-            {
-                Timeout = TimeSpan.FromMinutes(60),
-                RegionEndpoint = Amazon.RegionEndpoint.USEast1,
-                MaxErrorRetry = 20
-            };
-
-            using var client = new AmazonS3Client(Settings.Current.S3AwsAccessKeyId,
-                Settings.Current.S3AwsSecretAccessKey, config);
+            using var client = S3ClientFactory.CreateS3Client();
             using var listObjects = client.ListObjectsV2Async(request);
             listObjects.Wait();
 
@@ -43,15 +36,8 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
         public static string S3ReadAllText(string key)
         {
             key = key.Replace("\\", "/");
-            var config = new AmazonS3Config
-            {
-                Timeout = TimeSpan.FromMinutes(60),
-                RegionEndpoint = Amazon.RegionEndpoint.USEast1,
-                MaxErrorRetry = 20
-            };
 
-            using var client = new AmazonS3Client(Settings.Current.S3AwsAccessKeyId,
-                Settings.Current.S3AwsSecretAccessKey, config);
+            using var client = S3ClientFactory.CreateS3Client();
             var getObjectRequest = new GetObjectRequest
             {
                 BucketName = Settings.Current.Bucket,

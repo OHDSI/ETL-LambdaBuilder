@@ -1,5 +1,6 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
+using org.ohdsi.cdm.framework.common.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -169,8 +170,7 @@ namespace org.ohdsi.cdm.framework.desktop3.Monitor
             var prefix = $"{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id.Value}/raw/{chunkId}/{personDefinition.FileName}/{personDefinition.FileName}";
 
             Console.WriteLine("Calculating slices num " + Settings.Current.Bucket + "|" + prefix);
-            using var client = new AmazonS3Client(Settings.Current.S3AwsAccessKeyId, Settings.Current.S3AwsSecretAccessKey,
-                Amazon.RegionEndpoint.USEast1);
+            using var client = S3ClientFactory.CreateS3Client();
 
             var responseTask = client.ListObjectsV2Async(new ListObjectsV2Request
             {

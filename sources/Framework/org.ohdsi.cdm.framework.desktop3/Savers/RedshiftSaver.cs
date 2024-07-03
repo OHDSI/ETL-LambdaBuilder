@@ -6,6 +6,7 @@ using org.ohdsi.cdm.framework.common.DataReaders.v5.v54;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Omop;
+using org.ohdsi.cdm.framework.common.Utility;
 using org.ohdsi.cdm.framework.desktop.DataReaders;
 using org.ohdsi.cdm.framework.desktop.Enums;
 using org.ohdsi.cdm.framework.desktop.Helpers;
@@ -25,16 +26,7 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
 
         public override ISaver Create(string connectionString)
         {
-            var config = new AmazonS3Config
-            {
-                Timeout = TimeSpan.FromMinutes(60),
-                RegionEndpoint = Amazon.RegionEndpoint.USEast1,
-                MaxErrorRetry = 20,
-            };
-
-            _currentClient = new AmazonS3Client(Settings.Settings.Current.S3AwsAccessKeyId,
-                Settings.Settings.Current.S3AwsSecretAccessKey,
-                config);
+            _currentClient = S3ClientFactory.CreateS3Client();
 
             _connectionString = connectionString;
 

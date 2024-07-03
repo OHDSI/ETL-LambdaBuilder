@@ -26,6 +26,7 @@ using org.ohdsi.cdm.framework.etl.Transformation.CprdHES;
 using org.ohdsi.cdm.framework.etl.Transformation.Era;
 using org.ohdsi.cdm.framework.etl.Transformation.PA;
 using org.ohdsi.cdm.framework.etl.Transformation.HealthVerity;
+using org.ohdsi.cdm.framework.common.Utility;
 
 namespace org.ohdsi.cdm.presentation.lambdamerge
 {
@@ -77,7 +78,7 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
             };
             int count = 0;
             Console.WriteLine("Reading from METADATA_TMP CSVs...");
-            using (var client = new AmazonS3Client(_settings.AwsAccessKeyId, _settings.AwsSecretAccessKey, Amazon.RegionEndpoint.USEast1))
+            using (var client = S3ClientFactory.CreateS3Client())
             {
                 Task<ListObjectsV2Response> task;
 

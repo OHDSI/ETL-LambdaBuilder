@@ -613,6 +613,7 @@
 
   <ItemGroup>
     <PackageReference Include="AWSSDK.S3" Version="3.7.309.3" />
+    <PackageReference Include="AWSSDK.SecurityToken" Version="3.7.300.113" />
     <PackageReference Include="CsvHelper" Version="32.0.3" />
     <PackageReference Include="DeepCloner" Version="0.10.4" />
   </ItemGroup>
