@@ -147,8 +147,6 @@ namespace org.ohdsi.cdm.presentation.etl
                     awsSecretAccessKey: s3awsSecretAccessKey,
                     awsMessageAccesssKeyId: s3MessagesAccessKeyId,
                     awsMessageSecretAccessKey: s3MessagesSecretAccessKey,
-                    bucket: bucket,
-                    cdmFolder: cdmFolder,
                     roleArn: roleArn,
                     roleSessionName: roleSessionName
                     );

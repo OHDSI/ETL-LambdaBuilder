@@ -37,8 +37,6 @@ namespace RunLocal
                 awsSecretAccessKey: _awsSecretAccessKey,
                 awsMessageAccesssKeyId: null,
                 awsMessageSecretAccessKey: null,
-                bucket: _bucket,
-                cdmFolder: _cdmFolder,
                 roleArn: _roleArn,
                 roleSessionName: _roleSessionName
                 );
