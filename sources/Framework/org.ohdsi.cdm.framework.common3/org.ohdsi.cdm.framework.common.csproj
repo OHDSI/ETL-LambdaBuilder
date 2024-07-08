@@ -159,453 +159,453 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Common\MSSQL\AddUsers.sql">
+    <EmbeddedResource Include="Common\MSSQL\AddUsers.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MSSQL\CreateChunkTable.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MSSQL\CreateChunkTable.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MSSQL\CreateDestination.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MSSQL\CreateDestination.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MSSQL\CreateIndexesChunkTable.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MSSQL\CreateIndexesChunkTable.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MSSQL\DropChunkTable.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MSSQL\DropChunkTable.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MSSQL\v5.2\CopyVocabulary.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MSSQL\v5.2\CopyVocabulary.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MSSQL\v5.2\CreateIndexes.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MSSQL\v5.2\CreateIndexes.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MSSQL\v5.2\CreateTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MSSQL\v5.2\CreateTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MSSQL\v5.2\DropTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MSSQL\v5.2\DropTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MSSQL\v5.2\DropVocabularyTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MSSQL\v5.2\DropVocabularyTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MSSQL\v5.2\TruncateLookup.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MSSQL\v5.2\TruncateLookup.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MSSQL\v5.2\TruncateTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MSSQL\v5.2\TruncateTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MSSQL\v5.2\TruncateWithoutLookupTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MSSQL\v5.2\TruncateWithoutLookupTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MSSQL\v5.3\CopyVocabulary.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MSSQL\v5.3\CopyVocabulary.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MSSQL\v5.3\CreateIndexes.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MSSQL\v5.3\CreateIndexes.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MSSQL\v5.3\CreateTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MSSQL\v5.3\CreateTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MSSQL\v5.3\DropTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MSSQL\v5.3\DropTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MSSQL\v5.3\DropVocabularyTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MSSQL\v5.3\DropVocabularyTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MSSQL\v5.3\TruncateLookup.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MSSQL\v5.3\TruncateLookup.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MSSQL\v5.3\TruncateTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MSSQL\v5.3\TruncateTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MSSQL\v5.3\TruncateWithoutLookupTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MSSQL\v5.3\TruncateWithoutLookupTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MSSQL\v6.0\CopyVocabulary.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MSSQL\v6.0\CopyVocabulary.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MSSQL\v6.0\CreateIndexes.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MSSQL\v6.0\CreateIndexes.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MSSQL\v6.0\CreateTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MSSQL\v6.0\CreateTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MSSQL\v6.0\DropTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MSSQL\v6.0\DropTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MSSQL\v6.0\DropVocabularyTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MSSQL\v6.0\DropVocabularyTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MSSQL\v6.0\TruncateLookup.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MSSQL\v6.0\TruncateLookup.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MSSQL\v6.0\TruncateTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MSSQL\v6.0\TruncateTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MSSQL\v6.0\TruncateWithoutLookupTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MSSQL\v6.0\TruncateWithoutLookupTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MySql\AddUsers.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MySql\AddUsers.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MySql\CreateChunkTable.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MySql\CreateChunkTable.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MySql\CreateDestination.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MySql\CreateDestination.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MySql\CreateIndexesChunkTable.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MySql\CreateIndexesChunkTable.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MySql\DropChunkTable.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MySql\DropChunkTable.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MySql\v5.3\CopyVocabulary.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MySql\v5.3\CopyVocabulary.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MySql\v5.3\CreateIndexes.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MySql\v5.3\CreateIndexes.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MySql\v5.3\CreateTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MySql\v5.3\CreateTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MySql\v5.3\DropTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MySql\v5.3\DropTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MySql\v5.3\DropVocabularyTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MySql\v5.3\DropVocabularyTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MySql\v5.3\TruncateLookup.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MySql\v5.3\TruncateLookup.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MySql\v5.3\TruncateTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MySql\v5.3\TruncateTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\MySql\v5.3\TruncateWithoutLookupTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\MySql\v5.3\TruncateWithoutLookupTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\AddUsers.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\AddUsers.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\CreateChunkTable.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\CreateChunkTable.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\CreateDestination.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\CreateDestination.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\CreateIndexesChunkTable.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\CreateIndexesChunkTable.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\DropChunkTable.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\DropChunkTable.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\v5.3\CopyVocabulary.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\v5.3\CopyVocabulary.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\v5.3\CreateIndexes.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\v5.3\CreateIndexes.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\v5.3\CreateTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\v5.3\CreateTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\v5.3\DropTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\v5.3\DropTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\v5.3\DropVocabularyTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\v5.3\DropVocabularyTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\v5.3\TruncateLookup.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\v5.3\TruncateLookup.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\v5.3\TruncateTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\v5.3\TruncateTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\v5.3\TruncateWithoutLookupTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\v5.3\TruncateWithoutLookupTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\v5.3\Vocabulary\concept.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\v5.3\Vocabulary\concept.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\v5.3\Vocabulary\concept_ancestor.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\v5.3\Vocabulary\concept_ancestor.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\v5.3\Vocabulary\concept_class.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\v5.3\Vocabulary\concept_class.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\v5.3\Vocabulary\concept_relationship.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\v5.3\Vocabulary\concept_relationship.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\v5.3\Vocabulary\concept_synonym.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\v5.3\Vocabulary\concept_synonym.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\v5.3\Vocabulary\domain.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\v5.3\Vocabulary\domain.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\v5.3\Vocabulary\drug_strength.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\v5.3\Vocabulary\drug_strength.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\v5.3\Vocabulary\relationship.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\v5.3\Vocabulary\relationship.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\v5.3\Vocabulary\source_to_concept_map.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\v5.3\Vocabulary\source_to_concept_map.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\v5.3\Vocabulary\vocabulary.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\v5.3\Vocabulary\vocabulary.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\v6.0\CopyVocabulary.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\v6.0\CopyVocabulary.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\v6.0\CreateIndexes.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\v6.0\CreateIndexes.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\v6.0\CreateTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\v6.0\CreateTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\v6.0\DropTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\v6.0\DropTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\v6.0\DropVocabularyTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\v6.0\DropVocabularyTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\v6.0\TruncateLookup.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\v6.0\TruncateLookup.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\v6.0\TruncateTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\v6.0\TruncateTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\v6.0\TruncateWithoutLookupTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\v6.0\TruncateWithoutLookupTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\v6.0\Vocabulary\concept.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\v6.0\Vocabulary\concept.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\v6.0\Vocabulary\concept_ancestor.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\v6.0\Vocabulary\concept_ancestor.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\v6.0\Vocabulary\concept_class.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\v6.0\Vocabulary\concept_class.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\v6.0\Vocabulary\concept_relationship.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\v6.0\Vocabulary\concept_relationship.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\v6.0\Vocabulary\concept_synonym.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\v6.0\Vocabulary\concept_synonym.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\v6.0\Vocabulary\domain.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\v6.0\Vocabulary\domain.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\v6.0\Vocabulary\drug_strength.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\v6.0\Vocabulary\drug_strength.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\v6.0\Vocabulary\relationship.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\v6.0\Vocabulary\relationship.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\v6.0\Vocabulary\source_to_concept_map.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\v6.0\Vocabulary\source_to_concept_map.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Postgre\v6.0\Vocabulary\vocabulary.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Postgre\v6.0\Vocabulary\vocabulary.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\AddUsers.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\AddUsers.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\CreateChunkTable.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\CreateChunkTable.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\CreateDestination.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\CreateDestination.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\CreateIndexesChunkTable.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\CreateIndexesChunkTable.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\DropChunkTable.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\DropChunkTable.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v5.2\CopyVocabulary.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v5.2\CopyVocabulary.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v5.2\CreateIndexes.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v5.2\CreateIndexes.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v5.2\CreateTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v5.2\CreateTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v5.2\DropTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v5.2\DropTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v5.2\DropVocabularyTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v5.2\DropVocabularyTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v5.2\TruncateLookup.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v5.2\TruncateLookup.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v5.2\TruncateTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v5.2\TruncateTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v5.2\TruncateWithoutLookupTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v5.2\TruncateWithoutLookupTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v5.2\Vocabulary\concept.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v5.2\Vocabulary\concept.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v5.2\Vocabulary\concept_ancestor.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v5.2\Vocabulary\concept_ancestor.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v5.2\Vocabulary\concept_class.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v5.2\Vocabulary\concept_class.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v5.2\Vocabulary\concept_relationship.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v5.2\Vocabulary\concept_relationship.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v5.2\Vocabulary\concept_synonym.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v5.2\Vocabulary\concept_synonym.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v5.2\Vocabulary\domain.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v5.2\Vocabulary\domain.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v5.2\Vocabulary\drug_strength.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v5.2\Vocabulary\drug_strength.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v5.2\Vocabulary\relationship.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v5.2\Vocabulary\relationship.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v5.2\Vocabulary\source_to_concept_map.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v5.2\Vocabulary\source_to_concept_map.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v5.2\Vocabulary\vocabulary.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v5.2\Vocabulary\vocabulary.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v5.3\CopyVocabulary.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v5.3\CopyVocabulary.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v5.3\CreateIndexes.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v5.3\CreateIndexes.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v5.3\CreateTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v5.3\CreateTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v5.3\DropTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v5.3\DropTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v5.3\DropVocabularyTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v5.3\DropVocabularyTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v5.3\TruncateLookup.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v5.3\TruncateLookup.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v5.3\TruncateTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v5.3\TruncateTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v5.3\TruncateWithoutLookupTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v5.3\TruncateWithoutLookupTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v5.3\Vocabulary\concept.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v5.3\Vocabulary\concept.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v5.3\Vocabulary\concept_ancestor.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v5.3\Vocabulary\concept_ancestor.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v5.3\Vocabulary\concept_class.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v5.3\Vocabulary\concept_class.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v5.3\Vocabulary\concept_relationship.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v5.3\Vocabulary\concept_relationship.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v5.3\Vocabulary\concept_synonym.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v5.3\Vocabulary\concept_synonym.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v5.3\Vocabulary\domain.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v5.3\Vocabulary\domain.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v5.3\Vocabulary\drug_strength.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v5.3\Vocabulary\drug_strength.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v5.3\Vocabulary\relationship.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v5.3\Vocabulary\relationship.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v5.3\Vocabulary\source_to_concept_map.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v5.3\Vocabulary\source_to_concept_map.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v5.3\Vocabulary\vocabulary.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v5.3\Vocabulary\vocabulary.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v6.0\CopyVocabulary.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v6.0\CopyVocabulary.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v6.0\CreateIndexes.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v6.0\CreateIndexes.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v6.0\CreateTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v6.0\CreateTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v6.0\DropTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v6.0\DropTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v6.0\DropVocabularyTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v6.0\DropVocabularyTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v6.0\TruncateLookup.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v6.0\TruncateLookup.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v6.0\TruncateTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v6.0\TruncateTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v6.0\TruncateWithoutLookupTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v6.0\TruncateWithoutLookupTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v6.0\Vocabulary\concept.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v6.0\Vocabulary\concept.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v6.0\Vocabulary\concept_ancestor.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v6.0\Vocabulary\concept_ancestor.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v6.0\Vocabulary\concept_class.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v6.0\Vocabulary\concept_class.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v6.0\Vocabulary\concept_relationship.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v6.0\Vocabulary\concept_relationship.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v6.0\Vocabulary\concept_synonym.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v6.0\Vocabulary\concept_synonym.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v6.0\Vocabulary\domain.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v6.0\Vocabulary\domain.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v6.0\Vocabulary\drug_strength.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v6.0\Vocabulary\drug_strength.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v6.0\Vocabulary\relationship.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v6.0\Vocabulary\relationship.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v6.0\Vocabulary\source_to_concept_map.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v6.0\Vocabulary\source_to_concept_map.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Redshift\v6.0\Vocabulary\vocabulary.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Redshift\v6.0\Vocabulary\vocabulary.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Spectrum\CreateDestination.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Spectrum\CreateDestination.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Spectrum\CreateTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Spectrum\CreateTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Spectrum\DropTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Spectrum\DropTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Common\Spectrum\v6.0\CreateTables.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Spectrum\v6.0\CreateTables.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Core\Lookups\Base.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\Lookups\Base.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Core\Lookups\ConceptIdToSourceVocabularyId.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\Lookups\ConceptIdToSourceVocabularyId.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Core\Lookups\PregnancyDrug.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Core\Lookups\PregnancyDrug.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </EmbeddedResource>
     <EmbeddedResource Include="PregnancyAlgorithm\npa_pregnancy_concepts.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
