@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using org.ohdsi.cdm.framework.common.Enums;
+using System;
+using org.ohdsi.cdm.framework.common.Utility;
+using Amazon.S3.Model;
 
 namespace org.ohdsi.cdm.presentation.lambdabuilder
 {
@@ -14,113 +17,85 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
 
         public Vendor Vendor { get; set; }
         public List<QueryDefinition> SourceQueryDefinitions { get; private set; }
-        public List<LookupDefinition> LookupDefinitions { get; private set; }
+        public List<LookupDefinition> CombinedLookupDefinitions { get; private set; }
 
         public int LoadId { get; set; }
 
 
-        public void SetVendorSettings(bool fromS3)
+        public void SetVendorSettings()
         {
-            if (fromS3)
+            LoadReferencedAssemblies.DoIfNotLoadedAlready();
+            SourceQueryDefinitions = ReadSourceQueryDefinitions();
+            CombinedLookupDefinitions = ReadSourceQueryCombinedLookups();
+        }
+
+        List<QueryDefinition> ReadSourceQueryDefinitions()
+        {
+            var loadedAssembly = AppDomain.CurrentDomain.GetAssemblies()
+                  .Where(s => !s.FullName.Contains("System."))
+                  .Where(s => !s.FullName.Contains("Microsoft."))
+                  .Where(s => !s.FullName.Contains("netstandard"))
+                  .First(s => s.FullName.Contains("etl"));
+
+            var resources = loadedAssembly.GetManifestResourceNames()
+                .Where(s => s.Contains(this.Vendor.Folder))
+                .Where(s => s.Contains(".Definitions."))
+                .ToList();
+
+            var sourceQueryDefinitions = new List<QueryDefinition>();
+            foreach (var resource in resources)
             {
-                var files = new List<string>();
-
-                var vendorFolder = Path.Combine("vendorSettings", "Transformation", Vendor.Folder); //here lie files for org.ohdsi.cdm.framework.etl
-                var folder = Path.Combine(vendorFolder, "Definitions");
-                if (Directory.Exists(folder))
+                var txt = ReadResources.TryReadResource(loadedAssembly, resource);
+                if (!string.IsNullOrWhiteSpace(txt))
                 {
-                    files = Directory.GetFiles(folder).ToList();
-                }
-                else
-                {
-                    vendorFolder = Path.Combine("vendorSettings", "Core", "Transformation", Vendor.Folder);
-                    folder = Path.Combine(vendorFolder, "Definitions");
+                    var qd = new QueryDefinition().DeserializeFromXml(txt);
+                    qd.FileName = resource.Split(new[] { "." }, StringSplitOptions.None).SkipLast(1).Last();
+                    qd.ProcessedPersonIds = [];
 
-                    files = Directory.GetFiles(folder).ToList();
-                }
-
-
-                SourceQueryDefinitions = files.Select(
-                    definition =>
-                    {
-                        var qd = new QueryDefinition().DeserializeFromXml(Helper.S3ReadAllText(definition));
-                        var fileInfo = new FileInfo(definition);
-                        qd.FileName = fileInfo.Name.Replace(fileInfo.Extension, "");
-
-                        return qd;
-                    }).ToList();
-
-                folder = Path.Combine(vendorFolder, "CombinedLookups");
-                //if (Directory.Exists(folder))
-                {
-                    var lookups = Helper.GetFiles(folder).ToArray();
-                    if (lookups.Length > 0)
-                    {
-                        LookupDefinitions = lookups.Select(
-                            definition =>
-                            {
-                                var ld = new LookupDefinition().DeserializeFromXml(Helper.S3ReadAllText(definition));
-                                var fileInfo = new FileInfo(definition);
-                                ld.FileName = fileInfo.Name.Replace(fileInfo.Extension, "");
-
-                                return ld;
-                            }).ToList();
-                    }
+                    sourceQueryDefinitions.Add(qd);
                 }
             }
+
+            if (sourceQueryDefinitions.Count > 0)
+                return sourceQueryDefinitions;
             else
+                throw new FileNotFoundException("Resources for SourceQueryDefinitions not found!");
+        }
+
+        List<LookupDefinition> ReadSourceQueryCombinedLookups()
+        {
+            var loadedAssembly = AppDomain.CurrentDomain.GetAssemblies()
+                  .Where(s => !s.FullName.Contains("System."))
+                  .Where(s => !s.FullName.Contains("Microsoft."))
+                  .Where(s => !s.FullName.Contains("netstandard"))
+                  .First(s => s.FullName.Contains("etl"));
+
+            var resources = loadedAssembly.GetManifestResourceNames()
+                .Where(s => s.Contains(this.Vendor.Folder))
+                .Where(s => s.Contains(".CombinedLookups."))
+                .ToList();
+            //folder = Path.Combine(vendorFolder, "CombinedLookups");
+
+            if (resources.Count == 0)
+                return new List<LookupDefinition>();
+
+            var lookupDefinitions = new List<LookupDefinition>();
+            foreach (var resource in resources)
             {
-                var files = new List<string>();
-
-                var vendorFolder = Path.Combine("Transformation", Vendor.Folder); //here lie files for org.ohdsi.cdm.framework.etl
-                var folder = Path.Combine(vendorFolder, "Definitions");
-                if (Directory.Exists(folder))
+                var txt = ReadResources.TryReadResource(loadedAssembly, resource);
+                if (!string.IsNullOrWhiteSpace(txt))
                 {
-                    files = Directory.GetFiles(folder).ToList();
-                }
-                else
-                {
-                    vendorFolder = Path.Combine("Core", "Transformation", Vendor.Folder);
-                    folder = Path.Combine(vendorFolder, "Definitions");
+                    var ld = new LookupDefinition().DeserializeFromXml(txt);
+                    ld.FileName = resource.Split(new[] { "." }, StringSplitOptions.None).SkipLast(1).Last();
 
-                    files = Directory.GetFiles(folder).ToList();
-                }
-
-                SourceQueryDefinitions?.Clear();
-
-                SourceQueryDefinitions = files.Select(
-                    definition =>
-                    {
-                        var qd = new QueryDefinition().DeserializeFromXml(File.ReadAllText(definition));
-                        var fileInfo = new FileInfo(definition);
-                        qd.FileName = fileInfo.Name.Replace(fileInfo.Extension, "");
-                        qd.ProcessedPersonIds = [];
-
-                        return qd;
-                    }).ToList();
-
-                folder = Path.Combine(vendorFolder, "CombinedLookups");
-
-                LookupDefinitions?.Clear();
-
-                if (Directory.Exists(folder))
-                {
-                    var lookups = Directory.GetFiles(folder).ToArray();
-                    if (lookups.Length > 0)
-                    {
-                        LookupDefinitions = lookups.Select(
-                        definition =>
-                        {
-                            var ld = new LookupDefinition().DeserializeFromXml(File.ReadAllText(definition));
-
-                            var fileInfo = new FileInfo(definition);
-                            ld.FileName = fileInfo.Name.Replace(fileInfo.Extension, "");
-
-                            return ld;
-                        }).ToList();
-                    }
+                    lookupDefinitions.Add(ld);
                 }
             }
+
+            if (lookupDefinitions.Count > 0)
+                return lookupDefinitions;
+            else
+                throw new FileNotFoundException("Resources for lookupDefinitions not found!");
         }
     }
 }

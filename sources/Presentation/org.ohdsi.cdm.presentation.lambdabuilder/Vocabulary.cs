@@ -26,41 +26,36 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
         {
             if (definitions == null) return;
 
-            foreach (var ed in definitions)
+            var conceptIdMappers = definitions
+                .Where(a => a.Concepts != null)
+                .SelectMany(a => a.Concepts)
+                .Where(a => a.ConceptIdMappers != null)
+                .SelectMany(a => a.ConceptIdMappers)
+                .Where(a => !string.IsNullOrEmpty(a.Lookup))
+                .ToList();
+
+            foreach (var conceptIdMapper in conceptIdMappers)
             {
-                if (ed.Concepts == null) continue;
-
-                foreach (var c in ed.Concepts)
+                if (!_lookups.ContainsKey(conceptIdMapper.Lookup))
                 {
-                    if (c.ConceptIdMappers == null) continue;
+                    var lookup = new Lookup();
 
-                    foreach (var conceptIdMapper in c.ConceptIdMappers)
+                    var prefix = $"{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id}/Lookups/{conceptIdMapper.Lookup}.txt";
+                    Console.WriteLine(Settings.Current.Bucket + "/" + prefix);
+                    try
                     {
-                        if (!string.IsNullOrEmpty(conceptIdMapper.Lookup))
-                        {
-                            if (!_lookups.ContainsKey(conceptIdMapper.Lookup))
-                            {
-                                var lookup = new Lookup();
-
-                                var prefix = $"{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id}/Lookups/{conceptIdMapper.Lookup}.txt";
-                                Console.WriteLine(Settings.Current.Bucket + "/" + prefix);
-                                try
-                                {
-                                    lookup.Fill(client, Settings.Current.Bucket, prefix);
-                                    Console.WriteLine(lookup.KeysCount);
-                                    _lookups.Add(conceptIdMapper.Lookup, lookup);
-                                }
-                                catch (Exception e)
-                                {
-                                    Console.WriteLine(e.Message);
-                                    Console.WriteLine(e.StackTrace);
-                                    throw;
-                                }
-
-
-                            }
-                        }
+                        lookup.Fill(client, Settings.Current.Bucket, prefix);
+                        Console.WriteLine(lookup.KeysCount);
+                        _lookups.Add(conceptIdMapper.Lookup, lookup);
                     }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                        Console.WriteLine(e.StackTrace);
+                        throw;
+                    }
+
+
                 }
             }
         }
@@ -143,7 +138,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                 }
                 catch (Exception e)
                 {
-
+                    
                 }
 
             var lookup = new Lookup();

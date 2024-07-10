@@ -126,7 +126,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                     Settings.Current.Bucket = bucket;
                     Settings.Current.CDMFolder = folder;
 
-                    Settings.Initialize(buildingId, vendor, false);
+                    Settings.Initialize(buildingId, vendor);
 
                     Settings.Current.TimeoutValue = 180000;
                     Settings.Current.WatchdogValue = 100000 * 1000;

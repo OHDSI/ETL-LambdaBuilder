@@ -48,15 +48,11 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
         #endregion
 
         #region Methods
-        public static void Initialize(int buildingId, Vendor vendor, bool readFromS3)
-        {
-            Current.Building = new BuildingSettings { Id = buildingId, Vendor = vendor };
-            Current.Building.SetVendorSettings(readFromS3);
-        }
 
         public static void Initialize(int buildingId, Vendor vendor)
         {
-            Initialize(buildingId, vendor, false);
+            Current.Building = new BuildingSettings { Id = buildingId, Vendor = vendor };
+            Current.Building.SetVendorSettings();
         }
 
         #endregion

@@ -5,6 +5,7 @@ using org.ohdsi.cdm.framework.common.Definitions;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using static org.ohdsi.cdm.framework.common.Enums.Vendor;
 
@@ -44,36 +45,44 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder.Base
 
             qd.FieldHeaders = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
 
-            var metadataKey = string.Format("{0}/metadata/{1}", folder, qd.FileName + ".txt");
-
-            using var client = new AmazonS3Client(Settings.Current.S3AwsAccessKeyId, Settings.Current.S3AwsSecretAccessKey, Amazon.RegionEndpoint.USEast1);
-            using var stream = new MemoryStream();
-            using var sr = new StreamReader(stream);
-            var request = new GetObjectRequest { BucketName = Settings.Current.Bucket, Key = metadataKey };
-            Task<GetObjectResponse> getObject = client.GetObjectAsync(request);
-            getObject.Wait();
-            using (var response = getObject.Result)
+            try
             {
-                response.ResponseStream.CopyTo(stream);
+                var metadataKey = string.Format("{0}/metadata/{1}", folder, qd.FileName + ".txt");
+
+                using var client = new AmazonS3Client(Settings.Current.S3AwsAccessKeyId, Settings.Current.S3AwsSecretAccessKey, Amazon.RegionEndpoint.USEast1);
+
+                using var stream = new MemoryStream();
+                using var sr = new StreamReader(stream);
+                var request = new GetObjectRequest { BucketName = Settings.Current.Bucket, Key = metadataKey };
+                Task<GetObjectResponse> getObject = client.GetObjectAsync(request);
+                getObject.Wait();
+                using (var response = getObject.Result)
+                {
+                    response.ResponseStream.CopyTo(stream);
+                }
+                stream.Position = 0;
+                var index = 0;
+                foreach (var fieldName in sr.ReadLine().Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    try
+                    {
+                        qd.FieldHeaders.Add(fieldName, index);
+                        index++;
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("WARN_EXC - ReadMetadata - throw");
+                        Console.WriteLine(e.Message);
+                        Console.WriteLine(e.StackTrace);
+                        Console.WriteLine("[RestoreMetadataFromS3] fieldName duplication: " + fieldName + " - " + qd.FileName);
+                        throw;
+                    }
+                }
             }
-            stream.Position = 0;
-
-            var index = 0;
-            foreach (var fieldName in sr.ReadLine().Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            catch (Exception ex)
             {
-                try
-                {
-                    qd.FieldHeaders.Add(fieldName, index);
-                    index++;
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("WARN_EXC - ReadMetadata - throw");
-                    Console.WriteLine(e.Message);
-                    Console.WriteLine(e.StackTrace);
-                    Console.WriteLine("[RestoreMetadataFromS3] fieldName duplication: " + fieldName + " - " + qd.FileName);
-                    throw;
-                }
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
             }
         }
 
