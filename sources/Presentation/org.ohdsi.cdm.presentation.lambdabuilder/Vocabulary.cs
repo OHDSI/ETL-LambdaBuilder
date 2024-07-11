@@ -10,6 +10,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using org.ohdsi.cdm.framework.common.Enums;
+using org.ohdsi.cdm.framework.common.Utility;
 
 namespace org.ohdsi.cdm.presentation.lambdabuilder
 {
@@ -21,6 +22,30 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
         private Dictionary<long, Tuple<string, string>> _conceptIdToSourceVocabularyId = [];
 
         public Vendor Vendor { get; } = vendor;
+
+        public string ToXML()
+        {
+            string lookupValues = string.Join("",
+                this._lookups
+                    .OrderBy(a => a.Key)
+                    .Select(a => "<" + a.Key + ">" + a.Value.GetHashCodeSha256() + "</" + a.Key + ">"));
+
+            string res = "<Vocabulary>"
+                    + " \r\n" + "<_lookups>" + lookupValues + "</_lookups>"
+                    //TODO add these fields:
+                    //_genderConcepts
+                    //_pregnancyConcepts
+                    //_conceptIdToSourceVocabularyId
+                    + " \r\n" + "</Vocabulary>"
+                    ;
+
+            return res;
+        }
+
+        public int GetHashCodeSha256()
+        {
+            return GetStableHashCode.GetHashCodeSha256(this.ToXML());
+        }
 
         private void Load(AmazonS3Client client, IEnumerable<EntityDefinition> definitions)
         {

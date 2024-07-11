@@ -5,6 +5,7 @@ using CsvHelper;
 using CsvHelper.Configuration;
 using org.ohdsi.cdm.framework.common.Definitions;
 using org.ohdsi.cdm.framework.common.Lookups;
+using org.ohdsi.cdm.framework.common.Utility;
 using org.ohdsi.cdm.framework.desktop.Helpers;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,29 @@ namespace org.ohdsi.cdm.framework.desktop
         private readonly Dictionary<string, Lookup> _lookups = [];
         private GenderLookup _genderConcepts;
         private PregnancyConcepts _pregnancyConcepts;
+
+        public string ToXML()
+        {
+            string lookupValues = string.Join("",
+                this._lookups
+                    .OrderBy(a => a.Key)
+                    .Select(a => "<" + a.Key + ">" + a.Value.GetHashCodeSha256() + "</" + a.Key + ">"));
+
+            string res = "<Vocabulary>"
+                    + " \r\n" + "<_lookups>" + lookupValues + "</_lookups>"
+                    //TODO add these fields:
+                    //_genderConcepts
+                    //_pregnancyConcepts
+                    + " \r\n" + "</Vocabulary>"
+                    ;
+            
+            return res;
+        }
+
+        public int GetHashCodeSha256()
+        {
+            return GetStableHashCode.GetHashCodeSha256(this.ToXML());
+        }
 
         private static LookupValue CreateLookupValue(IDataRecord reader)
         {

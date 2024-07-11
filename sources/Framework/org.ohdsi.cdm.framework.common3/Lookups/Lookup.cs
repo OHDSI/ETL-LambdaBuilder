@@ -2,6 +2,7 @@
 using Amazon.S3.Model;
 using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Helpers;
+using org.ohdsi.cdm.framework.common.Utility;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -34,6 +35,35 @@ namespace org.ohdsi.cdm.framework.common.Lookups
         public Lookup()
         {
             _lookup = new Dictionary<string, Dictionary<long, LookupValue>>(StringComparer.OrdinalIgnoreCase);
+        }
+
+
+        string ToXML()
+        {
+            string lookupValues = string.Join("\r\n",
+                this._lookup
+                    .OrderBy(a => a.Key)
+                    .Select(a =>
+                        "<" + a.Key + ">"
+                        + GetStableHashCode.GetHashCodeSha256(
+                            string.Join("\r\n", a.Value.Keys
+                                                .OrderBy(b => a.Value[b].ConceptId)
+                                                .Select(b => "<" + b + ">"
+                                                             + a.Value[b].GetHashCodeSha256()
+                                                             + "</" + b + ">"))
+                            )
+                        + "</" + a.Key + ">"));
+            string res = "<Lookup>"
+                    + " \r\n" + "<_lookup>" + lookupValues + "</_lookup>"
+                    + " \r\n" + "</Lookup>"
+                    ;
+            return res;
+        }
+
+
+        public int GetHashCodeSha256()
+        {
+            return GetStableHashCode.GetHashCodeSha256(this.ToXML());
         }
 
         public void Add(LookupValue lv)

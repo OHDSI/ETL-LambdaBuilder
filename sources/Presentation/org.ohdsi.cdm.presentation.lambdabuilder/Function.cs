@@ -154,6 +154,8 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
 
                     _vocabulary.Attach(_vocabulary);
 
+                    //int hashCode = _vocabulary.GetHashCodeSha256(); //debug
+
                     CleanupTmp();
                     var chunkBuilder = new LambdaChunkBuilder(CreatePersonBuilder, _tmpFolder);
                     _lastSavedPersonIdOutput = chunkBuilder.Process(chunkId, prefix, _restorePoint, attempt);
