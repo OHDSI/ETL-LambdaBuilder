@@ -3,7 +3,9 @@ using Amazon.S3.Model;
 using Amazon.S3.Transfer;
 using CsvHelper;
 using CsvHelper.Configuration;
+using org.ohdsi.cdm.framework.common.Attributes;
 using org.ohdsi.cdm.framework.common.Definitions;
+using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Lookups;
 using org.ohdsi.cdm.framework.common.Utility;
 using org.ohdsi.cdm.framework.desktop.Helpers;
@@ -38,7 +40,7 @@ namespace org.ohdsi.cdm.framework.desktop
                     //_pregnancyConcepts
                     + " \r\n" + "</Vocabulary>"
                     ;
-            
+
             return res;
         }
 
@@ -249,20 +251,19 @@ namespace org.ohdsi.cdm.framework.desktop
                     else
                     {
                         Console.WriteLine(lookup.FileName + " - filling");
-                        var l = new Lookup();
-                        foreach (var item in finalLookup)
-                        {
-                            l.Add(new LookupValue
+
+                        var finalLookupValues = finalLookup
+                            .Select(a => new LookupValue()
                             {
-                                ConceptId = int.Parse(item.Value),
-                                SourceCode = item.Key,
+                                ConceptId = int.Parse(a.Value),
+                                SourceCode = a.Key,
                                 ValidStartDate = DateTime.MinValue,
                                 ValidEndDate = DateTime.MaxValue,
                                 Ingredients = []
-                            });
-                        }
+                            })
+                            ;
+                        _lookups.Add(lookup.FileName, new Lookup(finalLookupValues));
 
-                        _lookups.Add(lookup.FileName, l);
                         Console.WriteLine(lookup.FileName + " - Done (" + _lookups[lookup.FileName].KeysCount + ")");
                     }
 
@@ -356,17 +357,15 @@ namespace org.ohdsi.cdm.framework.desktop
                 else
                 {
                     Console.WriteLine("PregnancyDrug - filling");
-                    var lookup = new Lookup();
+
+                    var readerLookupValues = new List<LookupValue>();
                     while (reader.Read())
-                    {
-                        lookup.Add(new LookupValue
+                        readerLookupValues.Add(new LookupValue()
                         {
                             ConceptId = int.Parse(reader[0].ToString()),
                             SourceCode = reader[0].ToString()
                         });
-                    }
-
-                    _lookups.Add("PregnancyDrug", lookup);
+                    _lookups.Add("PregnancyDrug", new Lookup(readerLookupValues));
                 }
             }
             Console.WriteLine("PregnancyDrug - Done");
@@ -455,14 +454,12 @@ namespace org.ohdsi.cdm.framework.desktop
                                     else
                                     {
                                         Console.WriteLine(conceptIdMapper.Lookup + " - filling");
-                                        var lookup = new Lookup();
-                                        while (reader.Read())
-                                        {
-                                            var lv = CreateLookupValue(reader);
-                                            lookup.Add(lv);
-                                        }
 
-                                        _lookups.Add(conceptIdMapper.Lookup, lookup);
+                                        var readerLookupValues = new List<LookupValue>();
+                                        while (reader.Read())
+                                            readerLookupValues.Add(CreateLookupValue(reader));
+                                        _lookups.Add(conceptIdMapper.Lookup, new Lookup(readerLookupValues));
+
                                         Console.WriteLine(conceptIdMapper.Lookup + " - Done (" + _lookups[conceptIdMapper.Lookup].KeysCount + ")");
                                     }
 

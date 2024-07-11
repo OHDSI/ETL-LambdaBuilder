@@ -163,14 +163,13 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                 }
                 catch (Exception e)
                 {
-                    
+
                 }
 
-            var lookup = new Lookup();
             var prefix =
                 $"{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id}/Lookups/PregnancyDrug.txt";
             Console.WriteLine(Settings.Current.Bucket + "/" + prefix);
-            lookup.Fill(client, Settings.Current.Bucket, prefix);
+            var lookup = new Lookup(client, Settings.Current.Bucket, prefix);
             _lookups.Add("PregnancyDrug", lookup);
 
 
@@ -194,7 +193,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                 _lookups.Add(o.Key.Split('/')[3].Replace(".txt.gz", ""), lookup);
             }
 
-            if (Vendor is framework.etl.Transformation.CDM.CdmPersonBuilder.CdmVendor)
+            if (Vendor.Name == "CDM")
             {
                 var getObjectRequest = new GetObjectRequest
                 {
