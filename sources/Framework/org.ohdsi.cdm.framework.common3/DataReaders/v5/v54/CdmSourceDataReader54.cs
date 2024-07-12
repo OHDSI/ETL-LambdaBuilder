@@ -3,6 +3,7 @@ using org.ohdsi.cdm.framework.common.Omop;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Runtime.Intrinsics.Arm;
 using static org.ohdsi.cdm.framework.common.Enums.Vendor;
 
 namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
@@ -21,7 +22,14 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
         {
             _enumerator = new List<CdmSource>
             {
-                new() {SourceReleaseDate = sourceReleaseDate, VocabularyVersion = vocabularyVersion}
+                new() 
+                {
+                    SourceReleaseDate = sourceReleaseDate, 
+                    VocabularyVersion = vocabularyVersion,
+                    CdmSourceName = "",
+                    CdmVersionConceptId = 756265  //OMOP CDM Version 5.4.0
+                }
+                
             }.GetEnumerator();
         }
 
