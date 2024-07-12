@@ -5,18 +5,18 @@ using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Omop;
 using org.ohdsi.cdm.framework.common.PregnancyAlgorithm;
 
-namespace org.ohdsi.cdm.framework.etl.Transformation.OptumOncology
+namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
 {
     /// <summary>
     ///  Implementation of PersonBuilder for Optum, based on CDM Build spec
     /// </summary>
-    public class OptumOncologyPersonBuilder : PersonBuilder
+    public class OptumPantherPersonBuilder : PersonBuilder
     {
         #region Classes
 
-        public class OptumOncologyVendor : Vendor
+        public class OptumPantherVendor : Vendor
         {
-            public override string Name => "OptumPantherFull";
+            public override string Name => "OptumPanther";
             public override string Folder => "OptumPanther";
             public override string Description => "Optum Panther v5.4";
             public override string CdmSource => "";
@@ -42,11 +42,11 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumOncology
 
         #region Constructors
 
-        public OptumOncologyPersonBuilder(Vendor vendor)
+        public OptumPantherPersonBuilder(Vendor vendor)
             : base(vendor)
         {
             if (
-                vendor is not OptumOncologyVendor
+                vendor is not OptumPantherVendor
                 )
                 throw new Exception($"Unsupported vendor type: {vendor.GetType().Name}");
         }

@@ -11,7 +11,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.JMDC
 
         public class JmdcVendor : Vendor
         {
-            public override string Name => "JMDCv5";
+            public override string Name => "JMDC";
             public override string Folder => "JMDC";
             public override string Description => "JMDC v5.4";
             public override string CdmSource => "";

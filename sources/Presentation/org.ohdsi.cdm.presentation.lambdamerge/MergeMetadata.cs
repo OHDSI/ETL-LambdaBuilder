@@ -21,7 +21,7 @@ using org.ohdsi.cdm.framework.etl.Transformation.CPRD;
 using org.ohdsi.cdm.framework.etl.Transformation.Premier;
 using org.ohdsi.cdm.framework.etl.Transformation.JMDC;
 using org.ohdsi.cdm.framework.etl.Transformation.OptumExtended;
-using org.ohdsi.cdm.framework.etl.Transformation.OptumOncology;
+using org.ohdsi.cdm.framework.etl.Transformation.OptumPanther;
 using org.ohdsi.cdm.framework.etl.Transformation.CprdHES;
 using org.ohdsi.cdm.framework.etl.Transformation.Era;
 using org.ohdsi.cdm.framework.etl.Transformation.PA;
