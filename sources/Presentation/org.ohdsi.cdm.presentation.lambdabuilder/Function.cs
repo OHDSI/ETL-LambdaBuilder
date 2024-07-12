@@ -12,7 +12,7 @@ using org.ohdsi.cdm.framework.etl.Transformation.Era;
 using org.ohdsi.cdm.framework.etl.Transformation.HealthVerity;
 using org.ohdsi.cdm.framework.etl.Transformation.JMDC;
 using org.ohdsi.cdm.framework.etl.Transformation.OptumExtended;
-using org.ohdsi.cdm.framework.etl.Transformation.OptumOncology;
+using org.ohdsi.cdm.framework.etl.Transformation.OptumPanther;
 using org.ohdsi.cdm.framework.etl.Transformation.PA;
 using org.ohdsi.cdm.framework.etl.Transformation.Premier;
 using org.ohdsi.cdm.framework.etl.Transformation.Truven;
@@ -281,7 +281,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                 var totalPersonConverted = chunkBuilder.TotalPersonConverted;
                 try
                 {
-                    if (Settings.Current.Building.Vendor is OptumOncologyPersonBuilder.OptumOncologyVendor ||
+                    if (Settings.Current.Building.Vendor is OptumPantherPersonBuilder.OptumPantherVendor ||
                         Settings.Current.Building.Vendor is OptumExtendedPersonBuilder.OptumExtendedDODVendor ||
                         Settings.Current.Building.Vendor is OptumExtendedPersonBuilder.OptumExtendedSESVendor)
                     {

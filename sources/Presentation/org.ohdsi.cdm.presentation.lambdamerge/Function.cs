@@ -9,7 +9,7 @@ using org.ohdsi.cdm.framework.common.DataReaders.v5;
 using org.ohdsi.cdm.framework.common.DataReaders.v5.v54;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Extensions;
-using org.ohdsi.cdm.framework.etl.Transformation.OptumOncology;
+using org.ohdsi.cdm.framework.etl.Transformation.OptumPanther;
 using System;
 using System.Diagnostics;
 using System.Globalization;
@@ -181,7 +181,7 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
 
             //_rowGroupSize = 250000;
 
-            _settings.Vendor = new OptumOncologyPersonBuilder.OptumOncologyVendor(); //EnumsEtl.OptumPantherFull()
+            _settings.Vendor = new OptumPantherPersonBuilder.OptumPantherVendor(); //EnumsEtl.OptumPantherFull()
             _settings.BuildingId = 5230;
             _table = "metadata";
             _subChunkId = 0;

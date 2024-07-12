@@ -33,7 +33,14 @@ namespace org.ohdsi.cdm.framework.common.Enums
                 .Where(t => t.IsSubclassOf(typeof(Vendor))
                         && !t.IsAbstract);
 
-            var vendorType = vendorTypes.First(a => a.Name.Contains(name, StringComparison.CurrentCultureIgnoreCase));
+            var vendorType = vendorTypes.FirstOrDefault(a => a.Name.Contains(name, StringComparison.CurrentCultureIgnoreCase));
+
+            if (vendorType == null)
+            {
+                name = name.ToLower().Replace("v5", "").Replace("full", "");
+
+                vendorType = vendorTypes.FirstOrDefault(a => a.Name.Contains(name, StringComparison.CurrentCultureIgnoreCase));
+            }
 
             var handle = (Vendor)Activator.CreateInstance(vendorType);
 
