@@ -15,7 +15,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Premier
 
         public class PremierVendor : Vendor
         {
-            public override string Name => "PremierFull";
+            public override string Name => "Premier";
             public override string Folder => "Premier";
             public override string Description => "Premier v5.4";
             public override string CdmSource => "";
