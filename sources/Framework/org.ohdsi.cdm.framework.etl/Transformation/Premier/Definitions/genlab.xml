@@ -20,7 +20,7 @@
 		end as operator_concept_id,
 		lab_test_loinc_code,
 		collection_datetime,
-		result_unit,
+		replace(replace(replace(result_unit, chr(9), ' '), chr(10), ' '), chr(13), ' ') result_unit,
 		numeric_value,
 		pat.adm_phy
 		from {sc}.pat pat
