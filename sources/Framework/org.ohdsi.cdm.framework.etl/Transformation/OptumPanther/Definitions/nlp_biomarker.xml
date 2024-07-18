@@ -1,5 +1,5 @@
 ﻿<QueryDefinition>
-  <Query database="full">
+  <Query>
     select distinct
     ch.person_id as PersonId,
     n.note_date,

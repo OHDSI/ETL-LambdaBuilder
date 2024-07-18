@@ -18,6 +18,7 @@ namespace org.ohdsi.cdm.framework.common.Enums
         public abstract string PersonTableName { get; }
         public abstract string Citation { get; }
         public abstract string Publication { get; }
+        public abstract DateTime? SourceReleaseDate { get; set; }
 
         #endregion
 

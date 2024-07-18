@@ -15,6 +15,9 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Era
 
         public class EraVendor : Vendor
         {
+            DateTime? _sourceReleaseDate;
+            public override DateTime? SourceReleaseDate { get => _sourceReleaseDate; set => _sourceReleaseDate = value; }
+
             public override string Name => "Era";
             public override string Folder => "Era";
             public override string Description => "Era v5.4";

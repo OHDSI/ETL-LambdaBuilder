@@ -11,6 +11,9 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CprdAurum
 
         public class CprdAurumVendor : Vendor
         {
+            DateTime? _sourceReleaseDate;
+            public override DateTime? SourceReleaseDate { get => _sourceReleaseDate; set => _sourceReleaseDate = value; }
+
             public override string Name => "CprdAurum";
             public override string Folder => "CprdAurum";
             public override string Description => "CPRD Aurum v5.4";

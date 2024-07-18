@@ -1,5 +1,5 @@
 ﻿<QueryDefinition>
-  <Query database="full">
+  <Query>
     select
     ch.person_id as PersonId,
     coalesce(n.measurement_date, n.note_date) as measurement_date,

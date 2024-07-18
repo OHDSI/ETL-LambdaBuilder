@@ -1,5 +1,5 @@
 ﻿<QueryDefinition>
-  <Query database="full">
+  <Query>
     SELECT provid, specialty
     FROM (
     select provid, specialty, prim_spec_ind, row_number() over (      partition by provid order by prim_spec_ind desc, specialty) ordinal

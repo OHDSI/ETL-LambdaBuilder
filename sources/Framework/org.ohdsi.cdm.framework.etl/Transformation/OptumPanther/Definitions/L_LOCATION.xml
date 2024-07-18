@@ -1,5 +1,5 @@
 ﻿<QueryDefinition>
-   <Query database="full">
+   <Query>
 	   SELECT distinct region + '_' + division as location_source_value,
 	   42046186 country_conceptId
 	   FROM {sc}.patient

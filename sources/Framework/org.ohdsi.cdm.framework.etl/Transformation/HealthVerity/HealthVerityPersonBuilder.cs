@@ -31,6 +31,9 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerity
 
         public class HealthVerityVendor : Vendor
         {
+            DateTime? _sourceReleaseDate;
+            public override DateTime? SourceReleaseDate { get => _sourceReleaseDate; set => _sourceReleaseDate = value; }
+
             public override string Name => "HealthVerity";
             public override string Folder => "HealthVerity";
             public override string Description => "HealthVerity v5.4";

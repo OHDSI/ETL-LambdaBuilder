@@ -1,5 +1,5 @@
 ﻿<QueryDefinition>
-  <Query database="full">
+  <Query>
     with a as
     (
     SELECT distinct

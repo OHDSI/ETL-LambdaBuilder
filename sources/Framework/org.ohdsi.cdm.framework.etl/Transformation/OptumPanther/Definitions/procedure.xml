@@ -1,5 +1,5 @@
 ﻿<QueryDefinition>
-  <Query database="full">
+  <Query>
 		select
 		p.encid,
 		ch.person_id as PersonId,

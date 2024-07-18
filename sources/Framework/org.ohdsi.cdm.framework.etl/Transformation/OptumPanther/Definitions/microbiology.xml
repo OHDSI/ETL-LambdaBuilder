@@ -1,5 +1,5 @@
 ﻿<QueryDefinition>
-  <Query database="full">
+  <Query>
     select
     ch.person_id as PersonId,
 	coalesce(m.collect_date, m.result_date) as collect_date,

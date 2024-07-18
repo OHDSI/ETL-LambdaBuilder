@@ -1,5 +1,5 @@
 ﻿<QueryDefinition>
-  <Query database="full">
+  <Query>
     select distinct
     ch.person_id as PersonId,
     trim(trim(coalesce(stage_prefix, '')||' '|| coalesce(t_prefix, '')||'T'||t|| coalesce(t_suffix, ''))) as source_value_1,

@@ -18,6 +18,9 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CDM
 
         public class CdmVendor : Vendor
         {
+            DateTime? _sourceReleaseDate;
+            public override DateTime? SourceReleaseDate { get => _sourceReleaseDate; set => _sourceReleaseDate = value; }
+
             public override string Name => "CDM";
             public override string Folder => "CDM";
             public override string Description => "CDM v5.4";

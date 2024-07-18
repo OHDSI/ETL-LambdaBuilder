@@ -11,6 +11,9 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.JMDC
 
         public class JmdcVendor : Vendor
         {
+            DateTime? _sourceReleaseDate;
+            public override DateTime? SourceReleaseDate { get => _sourceReleaseDate; set => _sourceReleaseDate = value; }
+
             public override string Name => "JMDC";
             public override string Folder => "JMDC";
             public override string Description => "JMDC v5.4";
