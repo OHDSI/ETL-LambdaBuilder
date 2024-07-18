@@ -199,7 +199,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
             {
                 var key = $"{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id}/{Settings.Current.CDMFolder}/CDM_SOURCE/CDM_SOURCE.0.0.gz";
                 
-                Console.Write("GetSourceReleaseDate: " + key);
+                Console.WriteLine("GetSourceReleaseDate: " + key);
 
                 using var transferUtility = new TransferUtility(Settings.Current.S3AwsAccessKeyId, Settings.Current.S3AwsSecretAccessKey,
                     Amazon.RegionEndpoint.USEast1);
@@ -218,13 +218,13 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                 while (csv.Read())
                 {
                     var dateString = csv.GetField(6);
-                    Console.Write("GetSourceReleaseDate: " + dateString);
+                    Console.WriteLine("GetSourceReleaseDate: " + dateString);
                     return DateTime.Parse(dateString);
                 }
             }
             catch (Exception ex)
             {
-                Console.Write("GetSourceReleaseDate: " + ex.Message);
+                Console.WriteLine("GetSourceReleaseDate: " + ex.Message);
                 return null;
             }
 
