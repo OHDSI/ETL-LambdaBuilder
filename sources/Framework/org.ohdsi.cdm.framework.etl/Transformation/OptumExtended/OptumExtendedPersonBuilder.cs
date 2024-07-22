@@ -830,6 +830,13 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
                 ob.StartDate = latestEndDate;
             }
 
+            if(death != null)
+            {
+                // If the death_date occurs before the observation_period_start_date then drop the death record.
+                if (death.StartDate.Date < observationPeriods.Min(op => op.StartDate.Date))
+                    death = null;
+            }
+
             // push built entities to ChunkBuilder for further save to CDM database
             AddToChunk(person,
                 death,
