@@ -38,7 +38,11 @@ The information in the PERSON table is sourced from the  **Member_Continuous_Enr
 
 #### **Mapping Race**
 
-Per our Optum representative, the race and ethnicity attribute is derived. An external vendor utilizes the member’s name and geography to derive the member’s ethnicity (e.g. Chinese, Irish, Somali, Mexican etc.). Once the ethnicity is determined, the member is mapped to one of five race categories: A-Asian, B-Black, H-Hispanic, W-White or Unknown/Other.
+**Prior to the 202406 Optum Release, the race was derived.** An external vendor utilized the member’s name and geography to derive the member’s ethnicity (e.g. Chinese, Irish, Somali, Mexican etc.). Once the ethnicity was determined, the member was mapped to one of five race categories: A-Asian, B-Black, H-Hispanic, W-White or Unknown/Other.
+
+**Release 202406 and after** Optum Extended now uses the same methodology as EHR and Market Clarity, relying on self-reported race/ethnicity data. Most of the information is sourced from vendor providing self-reported race/ethnicity data and additional data is brought in from Optum EHR. 
+
+Optum generally prioritizes the most recently received self-reported race value for a patient. If multiple race values are received for a patient at the same time, Optum first prioritize the race with the highest frequency of reporting and if there are equal numbers of reported records for each different race value, the patient is considered multi-race and mapped to 'Unknown' race.
 
 |**Race**|**DESCRIPTION**|**OMOP Concept_Id**|
 |:-----:|:-----:|:-----:|

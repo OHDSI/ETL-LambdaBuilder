@@ -9,12 +9,11 @@ description: "Optum SES table mapping to CDM STEM table"
 ---
 
 
-
-
 ## **Mapping from SES**
 
 The SES table in the Optum Extended SES data contains additional socio-economic variables that are not available in the DOD (date of death) version. It does not have a date associated to the information and when it was asked of the patient so we will use the last day of the most recent observation period.Use the following to set the `value_as_string` and `value_as_concept_id` for each variable. 
 
+Optum updates the socio-economic status variables within the Optum CDM SES view quarterly with the most up-to-date information about each member. Please note only the most recent value received is populated and historic values are not retained. 
 
 ### d_education_level_code - Highest level of education
 
