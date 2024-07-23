@@ -15,8 +15,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Premier
 
         public class PremierVendor : Vendor
         {
-            DateTime? _sourceReleaseDate;
-            public override DateTime? SourceReleaseDate { get => _sourceReleaseDate; set => _sourceReleaseDate = value; }
+            public override DateTime? SourceReleaseDate { get; set; }
 
             public override string Name => "Premier";
             public override string Folder => "Premier";

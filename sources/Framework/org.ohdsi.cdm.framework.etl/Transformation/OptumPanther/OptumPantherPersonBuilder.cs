@@ -16,8 +16,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
 
         public class OptumPantherVendor : Vendor
         {
-            DateTime? _sourceReleaseDate;
-            public override DateTime? SourceReleaseDate { get => _sourceReleaseDate; set => _sourceReleaseDate = value; }
+            public override DateTime? SourceReleaseDate { get; set; }
 
             public override string Name => "OptumPanther";
             public override string Folder => "OptumPanther";

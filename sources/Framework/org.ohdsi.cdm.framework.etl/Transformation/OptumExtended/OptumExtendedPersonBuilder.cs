@@ -41,8 +41,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
 
         public class OptumExtendedSESVendor : Vendor
         {
-            DateTime? _sourceReleaseDate;
-            public override DateTime? SourceReleaseDate { get => _sourceReleaseDate; set => _sourceReleaseDate = value; }
+            public override DateTime? SourceReleaseDate { get; set; }
 
             public override string Name => "OptumExtendedSES";
             public override string Folder => "OptumExtended";
@@ -56,8 +55,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
         }
         public class OptumExtendedDODVendor : Vendor
         {
-            DateTime? _sourceReleaseDate;
-            public override DateTime? SourceReleaseDate { get => _sourceReleaseDate; set => _sourceReleaseDate = value; }
+            public override DateTime? SourceReleaseDate { get; set; }
 
             public override string Name => "OptumExtendedDOD";
             public override string Folder => "OptumExtended";
