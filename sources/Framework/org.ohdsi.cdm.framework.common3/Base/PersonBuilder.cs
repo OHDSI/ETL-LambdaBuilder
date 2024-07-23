@@ -79,7 +79,7 @@ namespace org.ohdsi.cdm.framework.common.Base
                 .Where(t => t.IsSubclassOf(typeof(PersonBuilder))
                         && !t.IsAbstract);
 
-            var vendorTypePersonBuilder = builderTypes.First(a => a.Name.Replace("PersonBuilder", "").Contains(vendor.Name, StringComparison.CurrentCultureIgnoreCase));
+            var vendorTypePersonBuilder = builderTypes.First(a => NormalizeVendorName(a.Name).Contains(NormalizeVendorName(vendor.Name), StringComparison.CurrentCultureIgnoreCase));
 
             var constructor = vendorTypePersonBuilder.GetConstructor(new[] { typeof(Vendor) });
             if (constructor == null)
@@ -1249,6 +1249,16 @@ namespace org.ohdsi.cdm.framework.common.Base
                     }
                 }
             }
+        }
+
+        static string NormalizeVendorName(string vendorName)
+        {
+            string result = vendorName
+                .ToLower()
+                .Replace("optumPantherFull".ToLower(), "OptumOncology".ToLower())
+                .Replace("PersonBuilder".ToLower(), "")                
+                ;
+            return result;
         }
 
         #endregion

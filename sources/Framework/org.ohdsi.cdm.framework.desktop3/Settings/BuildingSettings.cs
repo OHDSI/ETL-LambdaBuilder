@@ -2,7 +2,6 @@
 using org.ohdsi.cdm.framework.common.Definitions;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Extensions;
-using org.ohdsi.cdm.framework.common.Definitions;
 using org.ohdsi.cdm.framework.desktop.Databases;
 using org.ohdsi.cdm.framework.desktop.DbLayer;
 using org.ohdsi.cdm.framework.desktop.Enums;
@@ -13,6 +12,11 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Amazon.Auth.AccessControlPolicy;
+using System.Reflection;
+using System.Data.Common;
+using Amazon.S3.Model;
+using org.ohdsi.cdm.framework.common.Utility;
 
 namespace org.ohdsi.cdm.framework.desktop.Settings
 {
@@ -192,105 +196,11 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
         }
 
         #endregion
-        #region Constructor
+        
+        #region Constructors
         #endregion
 
         #region Methods
-        private void SetFrom(IDataReader reader)
-        {
-            RawVocabularyConnectionString = reader.GetString("VocabularyConnectionString");
-            RawSourceConnectionString = reader.GetString("SourceConnectionString");
-            RawDestinationConnectionString = reader.GetString("DestinationConnectionString");
-            BatchSize = reader.GetInt("BatchSize") ?? 1000;
-
-            this.Vendor = Vendor.CreateVendorInstanceByName(reader.GetString("Vendor"));
-            Logger.Write(null, LogMessageTypes.Debug, "Vendor=" + reader.GetString("Vendor"));
-
-            SetVendorSettings();
-            SetVocabularyVersion();
-            SetSourceReleaseDate();
-        }
-
-        private void SetVocabularyVersion()
-        {
-            VocabularyVersion = DbBuildingSettings.GetVocabularyVersion(VocabularyConnectionString, VocabularySchemaName);
-        }
-
-        private void SetSourceReleaseDate()
-        {
-            var dbSource = new DbSource(SourceConnectionString, null, SourceSchemaName);
-            SourceReleaseDate = dbSource.GetSourceReleaseDate();
-        }
-
-        private void SetVendorSettings()
-        {
-            var vendorFolder = Vendor.Folder;
-            vendorFolder = Path.Combine("Core", "Transformation", vendorFolder);
-
-            var batch = "Batch.sql"; // This attribute was never assigned before conversion from enum to class
-            /* = Vendor.GetAttribute<BatchFileAttribute>() == null
-            ? "Batch.sql"
-            : Vendor.GetAttribute<BatchFileAttribute>().Value;*/
-
-            var cdmSource = Vendor.CdmSource ?? "CdmSource.sql";
-
-            Logger.Write(null, LogMessageTypes.Debug, vendorFolder + ";" + batch + ";" + Vendor.ToString());
-
-
-
-            if (File.Exists(Path.Combine(vendorFolder, batch)))
-            {
-                BatchScript = File.ReadAllText(Path.Combine(vendorFolder, batch));
-            }
-
-            if (File.Exists(Path.Combine(vendorFolder, cdmSource)))
-            {
-                CdmSourceScript = File.ReadAllText(Path.Combine(vendorFolder, cdmSource));
-            }
-
-            if (File.Exists(Path.Combine(vendorFolder, "CohortDefinition.sql")))
-            {
-                CohortDefinitionScript = File.ReadAllText(Path.Combine(vendorFolder, "CohortDefinition.sql"));
-            }
-
-            var folder = Path.Combine(vendorFolder, "Definitions");
-            Console.WriteLine(folder);
-            if (Directory.Exists(folder))
-            {
-                var files = Directory.GetFiles(folder);
-                if (files.Length > 0)
-                {
-                    SourceQueryDefinitions = files.Select(
-                        definition =>
-                        {
-                            var qd = new QueryDefinition().DeserializeFromXml(File.ReadAllText(definition));
-                            var fileInfo = new FileInfo(definition);
-                            qd.FileName = fileInfo.Name.Replace(fileInfo.Extension, "");
-
-                            return qd;
-                        }).ToList();
-                }
-            }
-
-            folder = Path.Combine(vendorFolder, "CombinedLookups");
-            Console.WriteLine(folder);
-            if (Directory.Exists(folder))
-            {
-                var lookups = Directory.GetFiles(folder).ToArray();
-                if (lookups.Length > 0)
-                {
-                    LookupDefinitions = lookups.Select(
-                    definition =>
-                    {
-                        var ld = new LookupDefinition().DeserializeFromXml(File.ReadAllText(definition));
-                        var fileInfo = new FileInfo(definition);
-                        ld.FileName = fileInfo.Name.Replace(fileInfo.Extension, "");
-
-                        return ld;
-                    }).ToList();
-                }
-            }
-        }
 
         public bool Load(int buildingId)
         {
@@ -323,6 +233,95 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
 
             SetVendorSettings();
         }
+
+        private void SetFrom(IDataReader reader)
+        {
+            RawVocabularyConnectionString = reader.GetString("VocabularyConnectionString");
+            RawSourceConnectionString = reader.GetString("SourceConnectionString");
+            RawDestinationConnectionString = reader.GetString("DestinationConnectionString");
+            BatchSize = reader.GetInt("BatchSize") ?? 1000;
+
+            this.Vendor = Vendor.CreateVendorInstanceByName(reader.GetString("Vendor"));
+            Logger.Write(null, LogMessageTypes.Debug, "Vendor=" + reader.GetString("Vendor"));
+
+            SetVendorSettings();
+            SetVocabularyVersion();
+            SetSourceReleaseDate();
+        }
+
+        private void SetVocabularyVersion()
+        {
+            VocabularyVersion = DbBuildingSettings.GetVocabularyVersion(VocabularyConnectionString, VocabularySchemaName);
+        }
+
+        private void SetSourceReleaseDate()
+        {
+            var dbSource = new DbSource(SourceConnectionString, null, SourceSchemaName);
+            SourceReleaseDate = dbSource.GetSourceReleaseDate();
+        }
+
+        private void SetVendorSettings()
+        {
+            var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies()
+                  .Where(s => !s.FullName.Contains("System."))
+                  .Where(s => !s.FullName.Contains("Microsoft."))
+                  .Where(s => !s.FullName.Contains("netstandard"));
+
+            var vendorFolder = Vendor.Folder;
+
+            var batch = "Batch.sql";
+            var cdmSource = Vendor.CdmSource ?? "CdmSource.sql";
+            var cohortDefinition = "CohortDefinition.sql";
+
+            Logger.Write(null, LogMessageTypes.Debug, vendorFolder + ";" + batch + ";" + Vendor.ToString());
+
+            SourceQueryDefinitions = new List<QueryDefinition>();
+            LookupDefinitions = new List<LookupDefinition>();
+            foreach (var assembly in loadedAssemblies)
+            {
+                BatchScript ??= ReadResources.TryReadResource(assembly, vendorFolder + "." + batch);
+                CdmSourceScript ??= ReadResources.TryReadResource(assembly, vendorFolder + "." + cdmSource);
+                CohortDefinitionScript ??= ReadResources.TryReadResource(assembly, vendorFolder + "." + cohortDefinition);
+
+                var folder = vendorFolder + ".Definitions.";
+                Console.WriteLine(folder);
+                var definitionResources = assembly.GetManifestResourceNames()
+                    .Where(s => s.Contains(this.Vendor.Folder))
+                    .Where(s => s.Contains(folder))
+                    .ToList();
+
+                foreach (var resource in definitionResources)
+                {
+                    var txt = ReadResources.TryReadResource(assembly, resource);
+                    if (!string.IsNullOrWhiteSpace(txt))
+                    {
+                        var qd = new QueryDefinition().DeserializeFromXml(txt);
+                        qd.FileName = resource.Split(new[] { "." }, StringSplitOptions.None).SkipLast(1).Last();
+                        SourceQueryDefinitions.Add(qd);
+                    }
+                }
+
+
+                folder = vendorFolder + ".CombinedLookups.";
+                Console.WriteLine(folder);
+                var lookupResources = assembly.GetManifestResourceNames()
+                    .Where(s => s.Contains(this.Vendor.Folder))
+                    .Where(s => s.Contains(folder))
+                    .ToList();
+
+                foreach (var resource in lookupResources)
+                {
+                    var txt = ReadResources.TryReadResource(assembly, resource);
+                    if (!string.IsNullOrWhiteSpace(txt))
+                    {
+                        var ld = new LookupDefinition().DeserializeFromXml(txt);
+                        ld.FileName = resource.Split(new[] { "." }, StringSplitOptions.None).SkipLast(1).Last();
+                        LookupDefinitions.Add(ld);
+                    }
+                }
+            }
+        }
+
         #endregion
     }
 }

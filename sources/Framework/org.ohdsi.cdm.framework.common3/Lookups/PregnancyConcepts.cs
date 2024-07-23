@@ -3,6 +3,8 @@ using CsvHelper.Configuration;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace org.ohdsi.cdm.framework.common.Lookups
@@ -19,7 +21,9 @@ namespace org.ohdsi.cdm.framework.common.Lookups
         {
             _dictionary = [];
 
-            using var stream = File.Open(Path.Combine(folder, "PregnancyAlgorithm", "npa_pregnancy_concepts.csv"), FileMode.Open, FileAccess.Read, FileShare.Read);
+            string[] resourceNames = Assembly.GetExecutingAssembly().GetManifestResourceNames();
+            var pregnancyConceptsResource = resourceNames.First(a => a.EndsWith("npa_pregnancy_concepts.csv"));
+            using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(pregnancyConceptsResource);
             using var reader = new StreamReader(stream, Encoding.Default);
             using var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
             {
