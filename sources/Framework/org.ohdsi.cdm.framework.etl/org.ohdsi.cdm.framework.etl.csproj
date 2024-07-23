@@ -24,6 +24,7 @@
     <None Remove="Transformation\CDM\Definitions\Visit_detail.xml" />
     <None Remove="Transformation\CDM\Definitions\Visit_occurrence.xml" />
     <None Remove="Transformation\CDM\Lookups\cpt4.sql" />
+    <None Remove="Transformation\CDM\Lookups\grr.sql" />
     <None Remove="Transformation\CDM\Lookups\hcpcs.sql" />
     <None Remove="Transformation\CDM\Lookups\icd10.sql" />
     <None Remove="Transformation\CDM\Lookups\icd10cm.sql" />
@@ -307,894 +308,899 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Transformation\CDM\Batch.sql">
+    <EmbeddedResource Include="Transformation\CDM\Batch.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CDM\Definitions\Condition_occurrence.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CDM\Definitions\Condition_occurrence.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CDM\Definitions\Death.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CDM\Definitions\Death.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CDM\Definitions\Device_exposure.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CDM\Definitions\Device_exposure.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CDM\Definitions\Drug_exposure.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CDM\Definitions\Drug_exposure.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CDM\Definitions\L_CARE_SITE.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CDM\Definitions\L_CARE_SITE.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CDM\Definitions\L_LOCATION.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CDM\Definitions\L_LOCATION.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CDM\Definitions\L_PROVIDER.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CDM\Definitions\L_PROVIDER.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CDM\Definitions\Measurement.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CDM\Definitions\Measurement.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CDM\Definitions\Observation.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CDM\Definitions\Observation.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CDM\Definitions\Payer_plan_period.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CDM\Definitions\Payer_plan_period.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CDM\Definitions\Person.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CDM\Definitions\Person.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CDM\Definitions\Procedure_occurrence.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CDM\Definitions\Procedure_occurrence.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CDM\Definitions\Visit_detail.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CDM\Definitions\Visit_detail.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CDM\Definitions\Visit_occurrence.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CDM\Definitions\Visit_occurrence.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CDM\Lookups\cpt4.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CDM\Lookups\cpt4.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CDM\Lookups\hcpcs.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CDM\Lookups\hcpcs.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CDM\Lookups\icd10.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CDM\Lookups\icd10.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CDM\Lookups\icd10cm.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CDM\Lookups\icd10cm.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CDM\Lookups\icd10pcs.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CDM\Lookups\icd10pcs.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CDM\Lookups\icd9cm.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CDM\Lookups\icd9cm.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CDM\Lookups\icd9proc.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CDM\Lookups\icd9proc.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CDM\Lookups\ingredient.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CDM\Lookups\ingredient.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CDM\Lookups\loinc.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CDM\Lookups\loinc.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CDM\Lookups\ndc.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CDM\Lookups\ndc.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CDM\Lookups\revenue_code.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CDM\Lookups\revenue_code.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CprdAurum\Batch.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CprdAurum\Batch.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CprdAurum\Definitions\consultation.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CprdAurum\Definitions\consultation.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CprdAurum\Definitions\drug.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CprdAurum\Definitions\drug.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CprdAurum\Definitions\L_CARE_SITE.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CprdAurum\Definitions\L_CARE_SITE.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CprdAurum\Definitions\L_LOCATION.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CprdAurum\Definitions\L_LOCATION.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CprdAurum\Definitions\L_PROVIDER.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CprdAurum\Definitions\L_PROVIDER.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CprdAurum\Definitions\observation.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CprdAurum\Definitions\observation.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CprdAurum\Definitions\patient.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CprdAurum\Definitions\patient.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CprdAurum\Definitions\referral.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CprdAurum\Definitions\referral.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CprdAurum\Lookups\Drug.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CprdAurum\Lookups\Drug.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CprdAurum\Lookups\Read_Snomed.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CprdAurum\Lookups\Read_Snomed.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CprdAurum\Lookups\Units.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CprdAurum\Lookups\Units.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CprdHES\Batch.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CprdHES\Batch.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CprdHES\Definitions\augmented_care_periods.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CprdHES\Definitions\augmented_care_periods.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CprdHES\Definitions\critical_care.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CprdHES\Definitions\critical_care.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CprdHES\Definitions\diagnoses_episode.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CprdHES\Definitions\diagnoses_episode.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CprdHES\Definitions\diagnoses_hospitalisation.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CprdHES\Definitions\diagnoses_hospitalisation.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CprdHES\Definitions\diagnoses_primary_hospitalisation.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CprdHES\Definitions\diagnoses_primary_hospitalisation.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CprdHES\Definitions\episodes.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CprdHES\Definitions\episodes.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CprdHES\Definitions\hospital.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CprdHES\Definitions\hospital.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CprdHES\Definitions\L_PROVIDER.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CprdHES\Definitions\L_PROVIDER.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CprdHES\Definitions\patient.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CprdHES\Definitions\patient.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CprdHES\Definitions\procedures.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CprdHES\Definitions\procedures.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CprdHES\Lookups\icd10.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CprdHES\Lookups\icd10.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CprdHES\Lookups\opcs.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CprdHES\Lookups\opcs.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CPRD\Batch.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CPRD\Batch.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CPRD\CdmSource.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CPRD\CdmSource.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CPRD\CohortDefinition.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CPRD\CohortDefinition.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CPRD\Definitions\Additional.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CPRD\Definitions\Additional.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CPRD\Definitions\Clinical.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CPRD\Definitions\Clinical.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CPRD\Definitions\Immunisation.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CPRD\Definitions\Immunisation.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CPRD\Definitions\L_CARE_SITE.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CPRD\Definitions\L_CARE_SITE.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CPRD\Definitions\L_LOCATION.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CPRD\Definitions\L_LOCATION.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CPRD\Definitions\L_PROVIDER.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CPRD\Definitions\L_PROVIDER.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CPRD\Definitions\Patient.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CPRD\Definitions\Patient.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CPRD\Definitions\Referral.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CPRD\Definitions\Referral.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CPRD\Definitions\Test.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CPRD\Definitions\Test.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CPRD\Definitions\Therapy.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CPRD\Definitions\Therapy.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CPRD\Lookups\Additional.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CPRD\Lookups\Additional.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CPRD\Lookups\Drug.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CPRD\Lookups\Drug.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CPRD\Lookups\Read_Code.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CPRD\Lookups\Read_Code.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CPRD\Lookups\Specialty.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CPRD\Lookups\Specialty.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CPRD\Lookups\Test_Ent.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CPRD\Lookups\Test_Ent.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CPRD\Lookups\Units.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CPRD\Lookups\Units.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\CPRD\Lookups\ValueAsConceptId.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CPRD\Lookups\ValueAsConceptId.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\ERA\Batch.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\ERA\Batch.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\ERA\Definitions\ConditionOccurrence.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\ERA\Definitions\ConditionOccurrence.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\ERA\Definitions\DrugExposures.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\ERA\Definitions\DrugExposures.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\ERA\Definitions\Person.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\ERA\Definitions\Person.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\ERA\Lookups\Ingredient.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\ERA\Lookups\Ingredient.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\HealthVerity\Batch.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\HealthVerity\Batch.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\HealthVerity\CdmSource.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\HealthVerity\CdmSource.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\HealthVerity\Definitions\cdm_diag.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\HealthVerity\Definitions\cdm_diag.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\HealthVerity\Definitions\cdm_enc_dtl.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\HealthVerity\Definitions\cdm_enc_dtl.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\HealthVerity\Definitions\emr_clin_obsn.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\HealthVerity\Definitions\emr_clin_obsn.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\HealthVerity\Definitions\emr_diag.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\HealthVerity\Definitions\emr_diag.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\HealthVerity\Definitions\emr_enc.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\HealthVerity\Definitions\emr_enc.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\HealthVerity\Definitions\emr_lab_test.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\HealthVerity\Definitions\emr_lab_test.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\HealthVerity\Definitions\emr_medctn.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\HealthVerity\Definitions\emr_medctn.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\HealthVerity\Definitions\emr_proc.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\HealthVerity\Definitions\emr_proc.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\HealthVerity\Definitions\enrollment.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\HealthVerity\Definitions\enrollment.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\HealthVerity\Definitions\lab_tests.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\HealthVerity\Definitions\lab_tests.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\HealthVerity\Definitions\L_PROVIDER.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\HealthVerity\Definitions\L_PROVIDER.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\HealthVerity\Definitions\medical_claims.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\HealthVerity\Definitions\medical_claims.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\HealthVerity\Definitions\pharmacy_claims.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\HealthVerity\Definitions\pharmacy_claims.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\HealthVerity\Definitions\pharmacy_claims_vaccine.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\HealthVerity\Definitions\pharmacy_claims_vaccine.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\HealthVerity\Lookups\cms.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\HealthVerity\Lookups\cms.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\HealthVerity\Lookups\CMSPlaceOfService.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\HealthVerity\Lookups\CMSPlaceOfService.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\HealthVerity\Lookups\cvx.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\HealthVerity\Lookups\cvx.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\HealthVerity\Lookups\icd10.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\HealthVerity\Lookups\icd10.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\HealthVerity\Lookups\icd9.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\HealthVerity\Lookups\icd9.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\HealthVerity\Lookups\loinc.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\HealthVerity\Lookups\loinc.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\HealthVerity\Lookups\ndc.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\HealthVerity\Lookups\ndc.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\HealthVerity\Lookups\procedure.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\HealthVerity\Lookups\procedure.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\HealthVerity\Lookups\rxnorm.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\HealthVerity\Lookups\rxnorm.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\HealthVerity\Lookups\Specialty.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\HealthVerity\Lookups\Specialty.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\HealthVerity\Lookups\ub04.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\HealthVerity\Lookups\ub04.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\HealthVerity\Lookups\units.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\HealthVerity\Lookups\units.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\HealthVerity\Lookups\ValueAsConceptId.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\HealthVerity\Lookups\ValueAsConceptId.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\JMDC\Batch.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\JMDC\Batch.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\JMDC\CdmSource.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\JMDC\CdmSource.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\JMDC\Definitions\Annual_health_checkups.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\JMDC\Definitions\Annual_health_checkups.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\JMDC\Definitions\Claim.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\JMDC\Definitions\Claim.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\JMDC\Definitions\Diagnosis.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\JMDC\Definitions\Diagnosis.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\JMDC\Definitions\Drug.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\JMDC\Definitions\Drug.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\JMDC\Definitions\Enrollment.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\JMDC\Definitions\Enrollment.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\JMDC\Definitions\L_CARE_SITE.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\JMDC\Definitions\L_CARE_SITE.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\JMDC\Definitions\L_PROVIDER.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\JMDC\Definitions\L_PROVIDER.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\JMDC\Definitions\Procedure.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\JMDC\Definitions\Procedure.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\JMDC\Lookups\JMDC-ICD10-MapsToValue.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\JMDC\Lookups\JMDC-ICD10-MapsToValue.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\JMDC\Lookups\JMDC-ICD10-SNOMED.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\JMDC\Lookups\JMDC-ICD10-SNOMED.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\JMDC\Lookups\JMDC-ICDProcedure.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\JMDC\Lookups\JMDC-ICDProcedure.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\JMDC\Lookups\JMDC-JNJProcedure.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\JMDC\Lookups\JMDC-JNJProcedure.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\JMDC\Lookups\JMDC_DRUGCODE_RXNORM.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\JMDC\Lookups\JMDC_DRUGCODE_RXNORM.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\JMDC\Lookups\JMDC_SPECIALTY.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\JMDC\Lookups\JMDC_SPECIALTY.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumExtended\Batch.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumExtended\Batch.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumExtended\CdmSourceDOD.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CDM\Lookups\grr.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumExtended\CdmSourceSES.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumExtended\CdmSourceDOD.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumExtended\Definitions\DEATH.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumExtended\CdmSourceSES.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumExtended\Definitions\HRA.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumExtended\Definitions\DEATH.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumExtended\Definitions\INPATIENT_CONFINEMENT.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumExtended\Definitions\HRA.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumExtended\Definitions\LAB_RESULTS.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumExtended\Definitions\INPATIENT_CONFINEMENT.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumExtended\Definitions\L_CARE_SITE.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumExtended\Definitions\LAB_RESULTS.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumExtended\Definitions\L_LOCATION.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumExtended\Definitions\L_CARE_SITE.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumExtended\Definitions\L_PROVIDER.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumExtended\Definitions\L_LOCATION.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumExtended\Definitions\MEDICAL_CLAIMS.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumExtended\Definitions\L_PROVIDER.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumExtended\Definitions\MED_DIAGNOSIS.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumExtended\Definitions\MEDICAL_CLAIMS.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumExtended\Definitions\MED_PROCEDURE.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumExtended\Definitions\MED_DIAGNOSIS.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumExtended\Definitions\MEMBER_CONTINUOUS_ENROLLMENT.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumExtended\Definitions\MED_PROCEDURE.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumExtended\Definitions\RX_CLAIMS.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumExtended\Definitions\MEMBER_CONTINUOUS_ENROLLMENT.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumExtended\Definitions\SES.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumExtended\Definitions\RX_CLAIMS.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumExtended\Lookups\CMS.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumExtended\Definitions\SES.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumExtended\Lookups\CMSPlaceOfService.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumExtended\Lookups\CMS.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumExtended\Lookups\ConditionICD10.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumExtended\Lookups\CMSPlaceOfService.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumExtended\Lookups\ConditionICD9.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumExtended\Lookups\ConditionICD10.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumExtended\Lookups\DeathCodes.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumExtended\Lookups\ConditionICD9.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumExtended\Lookups\DeathCodesICD10.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumExtended\Lookups\DeathCodes.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumExtended\Lookups\DischargeTo.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumExtended\Lookups\DeathCodesICD10.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumExtended\Lookups\DRG.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumExtended\Lookups\DischargeTo.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumExtended\Lookups\DrgDeathCodes.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumExtended\Lookups\DRG.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumExtended\Lookups\DrugRx.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumExtended\Lookups\DrgDeathCodes.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumExtended\Lookups\Lab.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumExtended\Lookups\DrugRx.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumExtended\Lookups\Lab_Units.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumExtended\Lookups\Lab.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumExtended\Lookups\Modifier.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumExtended\Lookups\Lab_Units.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumExtended\Lookups\Procedure.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumExtended\Lookups\Modifier.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumExtended\Lookups\ProcedureICD10.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumExtended\Lookups\Procedure.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumExtended\Lookups\ProcedureICD9.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumExtended\Lookups\ProcedureICD10.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumExtended\Lookups\RevenueCode.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumExtended\Lookups\ProcedureICD9.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumExtended\Lookups\SourcetoValue.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumExtended\Lookups\RevenueCode.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumExtended\Lookups\Specialty.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumExtended\Lookups\SourcetoValue.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumExtended\Lookups\ValueAsConcept.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumExtended\Lookups\Specialty.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Batch.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumExtended\Lookups\ValueAsConcept.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\CdmSource.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Batch.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\CombinedLookups\DaysSupply.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\CdmSource.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Definitions\care_area.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\CombinedLookups\DaysSupply.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Definitions\diagnosis.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\care_area.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Definitions\encounter.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\diagnosis.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Definitions\immunization.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\encounter.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Definitions\insurance.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\immunization.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Definitions\labs.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\insurance.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Definitions\L_LOCATION.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\labs.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Definitions\L_PROVIDER.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\L_LOCATION.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Definitions\medication_administrations.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\L_PROVIDER.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Definitions\microbiology.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\medication_administrations.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Definitions\nlp_biomarker.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\microbiology.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Definitions\nlp_drug_rationale.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\nlp_biomarker.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Definitions\nlp_measurements.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\nlp_drug_rationale.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Definitions\nlp_sds.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\nlp_measurements.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Definitions\nlp_sds_family.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\nlp_sds.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Definitions\observations.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\nlp_sds_family.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Definitions\onc_biomarker.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\observations.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Definitions\onc_characteristic.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\onc_biomarker.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Definitions\onc_evaluation_system.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\onc_characteristic.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Definitions\onc_lines_of_therapy.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\onc_evaluation_system.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Definitions\onc_metastatic_location.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\onc_lines_of_therapy.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Definitions\onc_neoplasm_histology.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\onc_metastatic_location.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Definitions\onc_stage.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\onc_neoplasm_histology.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Definitions\onc_treatment_response.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\onc_stage.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Definitions\onc_tumor_grade.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\onc_treatment_response.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Definitions\onc_tumor_node_metastasis.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\onc_tumor_grade.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Definitions\onc_tumor_progression.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\onc_tumor_node_metastasis.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Definitions\onc_tumor_size.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\onc_tumor_progression.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Definitions\patient.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\onc_tumor_size.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Transformation\OptumPanther\Definitions\patient_reported_meds.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\patient.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Definitions\prescriptions_written.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\patient_reported_meds.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Definitions\procedure.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\prescriptions_written.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Lookups\Admitting.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\procedure.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Lookups\CMSPlaceOfService.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Lookups\Admitting.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Lookups\ConditionFromProcedure.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Lookups\CMSPlaceOfService.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Lookups\ConditionIcd10.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Lookups\ConditionFromProcedure.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Lookups\ConditionIcd9.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Lookups\ConditionIcd10.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Lookups\ConditionSNOMED.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Lookups\ConditionIcd9.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Lookups\DischargeTo.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Lookups\ConditionSNOMED.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Lookups\Drug.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Lookups\DischargeTo.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Lookups\DrugNlp.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Lookups\Drug.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Lookups\EhrOncbm.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Lookups\DrugNlp.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Lookups\EhrOncchr.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Lookups\EhrOncbm.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Lookups\EhrOncevs.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Lookups\EhrOncchr.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Lookups\EhrOnclot.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Lookups\EhrOncevs.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Lookups\EhrOncmet.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Lookups\EhrOnclot.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Lookups\EhrOncnhc.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Lookups\EhrOncmet.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Lookups\EhrOncstg.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Lookups\EhrOncnhc.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Lookups\EhrOnctgr.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Lookups\EhrOncstg.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Lookups\EhrOnctnm.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Lookups\EhrOnctgr.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Lookups\EhrVax.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Lookups\EhrOnctnm.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Lookups\Icd9Proc.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Lookups\EhrVax.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Lookups\LabNam.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Lookups\Icd9Proc.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Lookups\LabRes.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Lookups\LabNam.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Lookups\Lab_Units.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Lookups\LabRes.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Lookups\Nlpm.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Lookups\Lab_Units.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Lookups\Obtype.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Lookups\Nlpm.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Lookups\Operators.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Lookups\Obtype.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Lookups\RevenueCode.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Lookups\Operators.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Lookups\Route.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Lookups\RevenueCode.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Lookups\Specialty.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Lookups\Route.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Lookups\Visits.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Lookups\Specialty.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\OncoBatch.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Lookups\Visits.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\PregnancyAlgorithm\Batch.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\OncoBatch.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\PregnancyAlgorithm\Definitions\ConditionOccurrence.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\PregnancyAlgorithm\Batch.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\PregnancyAlgorithm\Definitions\DrugExposures.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\PregnancyAlgorithm\Definitions\ConditionOccurrence.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\PregnancyAlgorithm\Definitions\Measurements.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\PregnancyAlgorithm\Definitions\DrugExposures.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\PregnancyAlgorithm\Definitions\Observations.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\PregnancyAlgorithm\Definitions\Measurements.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\PregnancyAlgorithm\Definitions\Person.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\PregnancyAlgorithm\Definitions\Observations.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\PregnancyAlgorithm\Definitions\ProcedureOccurrences.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\PregnancyAlgorithm\Definitions\Person.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Premier\Batch.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\PregnancyAlgorithm\Definitions\ProcedureOccurrences.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Premier\CdmSource.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Premier\Batch.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Premier\Definitions\genlab.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Premier\CdmSource.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Premier\Definitions\lab_result.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Premier\Definitions\genlab.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Premier\Definitions\L_CARE_SITE.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Premier\Definitions\lab_result.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Premier\Definitions\L_LOCATION.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Premier\Definitions\L_CARE_SITE.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Premier\Definitions\L_PROVIDER.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Premier\Definitions\L_LOCATION.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Premier\Definitions\pat.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Premier\Definitions\L_PROVIDER.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Premier\Definitions\patbill.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Premier\Definitions\pat.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Premier\Definitions\patcpt.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Premier\Definitions\patbill.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Premier\Definitions\paticd_diag.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Premier\Definitions\patcpt.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Premier\Definitions\paticd_proc.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Premier\Definitions\paticd_diag.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Premier\Definitions\payor.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Premier\Definitions\paticd_proc.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Premier\Definitions\vitals.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Premier\Definitions\payor.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Premier\Lookups\Condition.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Premier\Definitions\vitals.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Premier\Lookups\ConditionIcd.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Premier\Lookups\Condition.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Premier\Lookups\DeathCodes.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Premier\Lookups\ConditionIcd.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Premier\Lookups\Device.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Premier\Lookups\DeathCodes.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Premier\Lookups\Drg.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Premier\Lookups\Device.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Premier\Lookups\Drug.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Premier\Lookups\Drg.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Premier\Lookups\DrugCpt.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Premier\Lookups\Drug.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Premier\Lookups\Lab.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Premier\Lookups\DrugCpt.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Premier\Lookups\Lab_Result.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Premier\Lookups\Lab.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Premier\Lookups\Lab_Units.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Premier\Lookups\Lab_Result.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Premier\Lookups\Measurement.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Premier\Lookups\Lab_Units.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Premier\Lookups\Observation.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Premier\Lookups\Measurement.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Premier\Lookups\ObservationICD10.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Premier\Lookups\Observation.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Premier\Lookups\ObservationICD9.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Premier\Lookups\ObservationICD10.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Premier\Lookups\Procedure.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Premier\Lookups\ObservationICD9.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Premier\Lookups\RevenueCode.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Premier\Lookups\Procedure.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Premier\Lookups\Snomed.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Premier\Lookups\RevenueCode.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Premier\Lookups\Specialty.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Premier\Lookups\Snomed.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Truven\Batch.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Premier\Lookups\Specialty.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Truven\CdmSourceCCAE.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Truven\Batch.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Truven\CdmSourceMDCD.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Truven\CdmSourceCCAE.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Truven\CdmSourceMDCR.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Truven\CdmSourceMDCD.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Truven\Definitions\DRUG_CLAIMS.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Truven\CdmSourceMDCR.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Truven\Definitions\ENROLLMENT_DETAIL.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Truven\Definitions\DRUG_CLAIMS.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Truven\Definitions\ENROLLMENT_DETAIL_MDCD.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Truven\Definitions\ENROLLMENT_DETAIL.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Truven\Definitions\FACILITY_HEADER.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Truven\Definitions\ENROLLMENT_DETAIL_MDCD.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Truven\Definitions\HEALTH_RISK_ASSESSMENT.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Truven\Definitions\FACILITY_HEADER.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Truven\Definitions\INPATIENT_ADMISSIONS.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Truven\Definitions\HEALTH_RISK_ASSESSMENT.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Truven\Definitions\INPATIENT_SERVICES.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Truven\Definitions\INPATIENT_ADMISSIONS.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Truven\Definitions\LAB.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Truven\Definitions\INPATIENT_SERVICES.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Truven\Definitions\LONG_TERM_CARE.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Truven\Definitions\LAB.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Truven\Definitions\L_LOCATION.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Truven\Definitions\LONG_TERM_CARE.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Truven\Definitions\L_PROVIDER.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Truven\Definitions\L_LOCATION.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Truven\Definitions\L_PROVIDER_MDCD.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Truven\Definitions\L_PROVIDER.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Truven\Definitions\OUTPATIENT_SERVICES.xml">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Truven\Definitions\L_PROVIDER_MDCD.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Truven\Lookups\CMS.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Truven\Definitions\OUTPATIENT_SERVICES.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Truven\Lookups\CMSPlaceOfService.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Truven\Lookups\CMS.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Truven\Lookups\Condition.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Truven\Lookups\CMSPlaceOfService.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Truven\Lookups\Condition_icd10.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Truven\Lookups\Condition.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Truven\Lookups\Death.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Truven\Lookups\Condition_icd10.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Truven\Lookups\DischargeTo.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Truven\Lookups\Death.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Truven\Lookups\Drg.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Truven\Lookups\DischargeTo.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Truven\Lookups\Drug.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Truven\Lookups\Drg.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Truven\Lookups\HRA.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Truven\Lookups\Drug.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Truven\Lookups\Lab.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Truven\Lookups\HRA.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Truven\Lookups\Modifier.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Truven\Lookups\Lab.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Truven\Lookups\Procedure.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Truven\Lookups\Modifier.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Truven\Lookups\Revenue.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Truven\Lookups\Procedure.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Truven\Lookups\Specialty.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Truven\Lookups\Revenue.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Truven\Lookups\Units.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Truven\Lookups\Specialty.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Truven\Lookups\ValueAsConcept.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Truven\Lookups\Units.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\Truven\Lookups\Visits.sql">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Truven\Lookups\ValueAsConcept.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\Truven\Lookups\Visits.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>

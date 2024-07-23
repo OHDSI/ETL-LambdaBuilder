@@ -26,9 +26,9 @@ namespace RunLocal
 
             Console.WriteLine($"{Directory.GetCurrentDirectory()}");
 
-            //Process(Vendors.OptumPantherFull, 19140, 178, "0087", true);
-            bool arg4 = false; 
-            Process(Vendor.CreateVendorInstanceByName(args[0]), int.Parse(args[1]), int.Parse(args[2]), args[3], bool.TryParse(args[4], out arg4));
+            Process(Vendor.CreateVendorInstanceByName("OptumOncology"), 19140, 178, "0087", true);
+            bool arg4 = false;
+            //Process(Vendor.CreateVendorInstanceByName(args[0]), int.Parse(args[1]), int.Parse(args[2]), args[3], bool.TryParse(args[4], out arg4));
 
             //int[] slicesNum = [24, 40, 48, 96, 192];
 
