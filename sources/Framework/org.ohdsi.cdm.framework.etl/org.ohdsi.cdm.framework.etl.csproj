@@ -874,8 +874,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Transformation\OptumPanther\Definitions\onc_tumor_size.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Transformation\OptumPanther\Definitions\patient_reported_meds.xml">
     </EmbeddedResource>
     <EmbeddedResource Include="Transformation\OptumPanther\Definitions\patient.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
