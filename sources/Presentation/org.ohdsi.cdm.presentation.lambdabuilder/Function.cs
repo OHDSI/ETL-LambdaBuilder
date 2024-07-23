@@ -28,6 +28,9 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using static Amazon.Lambda.S3Events.S3Event;
+using CsvHelper;
+using CsvHelper.Configuration;
+using System.Globalization;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
@@ -85,6 +88,8 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
             _attemptFileRemoved = false;
             _lastSavedPersonIdOutput = null;
             _restorePoint.Clear();
+
+            Settings.Current.Building.Vendor.SourceReleaseDate = GetSourceReleaseDate();
 
             if (_vocabulary != null && _vocabulary.Vendor == Settings.Current.Building.Vendor) return;
             try
@@ -186,6 +191,44 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                     restorePoint = new Dictionary<string, long>(_restorePoint);
                 }
             }
+        }
+
+        private static DateTime? GetSourceReleaseDate()
+        {
+            try
+            {
+                var key = $"{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id}/{Settings.Current.CDMFolder}/CDM_SOURCE/CDM_SOURCE.0.0.gz";
+                
+                Console.WriteLine("GetSourceReleaseDate: " + key);
+
+                using var transferUtility = new TransferUtility(Settings.Current.S3AwsAccessKeyId, Settings.Current.S3AwsSecretAccessKey,
+                    Amazon.RegionEndpoint.USEast1);
+                using var responseStream = transferUtility.OpenStream(Settings.Current.Bucket, key);
+                using var bufferedStream = new BufferedStream(responseStream);
+                using var gzipStream = new GZipStream(bufferedStream, CompressionMode.Decompress);
+                using var reader = new StreamReader(gzipStream, Encoding.Default);
+                using var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
+                {
+                    HasHeaderRecord = false,
+                    Delimiter = ",",
+                    Encoding = Encoding.UTF8,
+                    BadDataFound = null
+                });
+
+                while (csv.Read())
+                {
+                    var dateString = csv.GetField(6);
+                    Console.WriteLine("GetSourceReleaseDate: " + dateString);
+                    return DateTime.Parse(dateString);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("GetSourceReleaseDate: " + ex.Message);
+                return null;
+            }
+
+            return null;
         }
 
         /// <summary>

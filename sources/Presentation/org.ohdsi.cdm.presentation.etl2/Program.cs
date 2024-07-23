@@ -218,6 +218,32 @@ namespace org.ohdsi.cdm.presentation.etl
                     s3MessagesAccessKeyId, s3MessagesSecretAccessKey, msgBucket, Settings.Current.Bucket,
                     msgBucketMerge, rawFolder);
 
+                if (skipCdmsource)
+                {
+                    Console.WriteLine("Update CDM_SOURCE table step was skipped");
+                }
+                else
+                {
+                    var dbSource = new DbSource(sourceConnectionString, null, sourceSchema);
+                    var sourceReleaseDate = dbSource.GetSourceReleaseDate();
+                    var vocabularyVersion = DbBuildingSettings.GetVocabularyVersion(vocabularyConnectionString, vocabularySchema);
+
+                    if (Settings.Current.Building.Cdm == CdmVersions.V54)
+                    {
+                        var reader = new CdmSourceDataReader54(DateTime.Parse(sourceReleaseDate), vocabularyVersion);
+                        using var stream = reader.GetStreamCsv();
+                        SaveToS3(stream, 0, "cdmCSV", "CDM_SOURCE", "gz", vendor, Settings.Current.Building.Id.Value);
+                    }
+                    else
+                    {
+                        var reader = new CdmSourceDataReader(DateTime.Parse(sourceReleaseDate), vocabularyVersion);
+                        using var stream = reader.GetStreamCsv();
+                        SaveToS3(stream, 0, "cdmCSV", "CDM_SOURCE", "gz", vendor, Settings.Current.Building.Id.Value);
+                    }
+
+                    Console.WriteLine($"****************************************************************");
+                }
+
                 if (skipETL)
                 {
                     Console.WriteLine("ETL step was skipped");
@@ -253,31 +279,7 @@ namespace org.ohdsi.cdm.presentation.etl
                     checkMerging.Wait();
                 }
 
-                if (skipCdmsource)
-                {
-                    Console.WriteLine("Update CDM_SOURCE table step was skipped");
-                }
-                else
-                {
-                    var dbSource = new DbSource(sourceConnectionString, null, sourceSchema);
-                    var sourceReleaseDate = dbSource.GetSourceReleaseDate();
-                    var vocabularyVersion = DbBuildingSettings.GetVocabularyVersion(vocabularyConnectionString, vocabularySchema);
-
-                    if (Settings.Current.Building.Cdm == CdmVersions.V54)
-                    {
-                        var reader = new CdmSourceDataReader54(DateTime.Parse(sourceReleaseDate), vocabularyVersion);
-                        using var stream = reader.GetStreamCsv();
-                        SaveToS3(stream, 0, "cdmCSV", "CDM_SOURCE", "gz", vendor, Settings.Current.Building.Id.Value);
-                    }
-                    else
-                    {
-                        var reader = new CdmSourceDataReader(DateTime.Parse(sourceReleaseDate), vocabularyVersion);
-                        using var stream = reader.GetStreamCsv();
-                        SaveToS3(stream, 0, "cdmCSV", "CDM_SOURCE", "gz", vendor, Settings.Current.Building.Id.Value);
-                    }
-
-                    Console.WriteLine($"****************************************************************");
-                }
+                
 
                 Console.WriteLine("DONE.");
                 return Settings.Current.Building.Id.Value;

@@ -12,6 +12,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.PA
 
         public class PregnancyAlgorithmVendor : Vendor
         {
+            public override DateTime? SourceReleaseDate { get; set; }
+
             public override string Name => "PregnancyAlgorithm";
             public override string Folder => "PregnancyAlgorithm";
             public override string Description => "PregnancyAlgorithm v5.4";

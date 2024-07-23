@@ -198,7 +198,6 @@
     <None Remove="Transformation\OptumPanther\Definitions\onc_tumor_progression.xml" />
     <None Remove="Transformation\OptumPanther\Definitions\onc_tumor_size.xml" />
     <None Remove="Transformation\OptumPanther\Definitions\patient.xml" />
-    <None Remove="Transformation\OptumPanther\Definitions\patient_onco.xml" />
     <None Remove="Transformation\OptumPanther\Definitions\patient_reported_meds.xml" />
     <None Remove="Transformation\OptumPanther\Definitions\prescriptions_written.xml" />
     <None Remove="Transformation\OptumPanther\Definitions\procedure.xml" />
@@ -877,9 +876,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Transformation\OptumPanther\Definitions\patient.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\patient_onco.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Transformation\OptumPanther\Definitions\patient_reported_meds.xml">

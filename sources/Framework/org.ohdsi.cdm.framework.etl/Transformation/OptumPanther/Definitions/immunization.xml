@@ -1,5 +1,5 @@
 ﻿<QueryDefinition>
-  <Query database="full">
+  <Query>
     select
     ch.person_id as PersonId,
     i.immunization_date,

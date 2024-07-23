@@ -16,6 +16,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
 
         public class OptumPantherVendor : Vendor
         {
+            public override DateTime? SourceReleaseDate { get; set; }
+
             public override string Name => "OptumPanther";
             public override string Folder => "OptumPanther";
             public override string Description => "Optum Panther v5.4";
@@ -851,7 +853,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
         {
             this.Offset = om;
             this.ChunkData = data;
-
+            
             var result = BuildPerson([.. PersonRecords]);
             var person = result.Key;
             if (person == null)
@@ -953,6 +955,15 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
             List<DateTime> mins = [];
             List<DateTime> maxs = [];
 
+            FixDates(drugExposures);
+            FixDates(conditionOccurrences);
+            FixDates(procedureOccurrences);
+            FixDates(observations);
+            FixDates(deviceExposure);
+            FixDates(measurements);
+            FixDates(visitOccurrences.Values);
+            FixDates(visitDetails.Values);
+
             GetMinDate(drugExposures, mins);
             GetMinDate(conditionOccurrences, mins);
             GetMinDate(procedureOccurrences, mins);
@@ -1015,6 +1026,11 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                 observationPeriodsFinal[0].EndDate = new DateTime(DateTime.Now.Year, 
                     observationPeriodsFinal[0].EndDate.Value.Month,
                     observationPeriodsFinal[0].EndDate.Value.Day);
+            }
+
+            if(Vendor.SourceReleaseDate.HasValue && observationPeriodsFinal[0].EndDate.Value.Date > Vendor.SourceReleaseDate.Value.Date)
+            {
+                observationPeriodsFinal[0].EndDate = Vendor.SourceReleaseDate;
             }
 
             // set corresponding ProviderIds
@@ -1122,6 +1138,20 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
             }
 
             return Attrition.None;
+        }
+        protected void FixDates<T>(IEnumerable<T> inputRecords) where T : class, IEntity
+        {
+            if (inputRecords == null || !inputRecords.Any() || !Vendor.SourceReleaseDate.HasValue)
+                return;
+            
+            foreach (var i in inputRecords)
+            {
+                if (i.StartDate.Date > Vendor.SourceReleaseDate.Value.Date)
+                    i.StartDate = Vendor.SourceReleaseDate.Value;
+
+                if (i.EndDate.HasValue && i.EndDate.Value.Date > Vendor.SourceReleaseDate.Value.Date)
+                    i.EndDate = Vendor.SourceReleaseDate.Value;
+            }
         }
 
         protected static void GetMinDate<T>(IEnumerable<T> inputRecords, List<DateTime> result) where T : class, IEntity

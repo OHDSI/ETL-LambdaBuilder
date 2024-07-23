@@ -57,6 +57,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Truven
 
         public class Truven_CCAEVendor : Vendor
         {
+            public override DateTime? SourceReleaseDate { get; set; }
+
             public override string Name => "Truven_CCAE";
             public override string Folder => "Truven";
             public override string Description => "Truven CCAE v5.4";
@@ -70,6 +72,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Truven
 
         public class Truven_MDCDVendor : Vendor
         {
+            public override DateTime? SourceReleaseDate { get; set; }
+
             public override string Name => "Truven_MDCD";
             public override string Folder => "Truven";
             public override string Description => "Truven MDCD v5.4";
@@ -83,6 +87,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Truven
 
         public class Truven_MDCRVendor : Vendor
         {
+            public override DateTime? SourceReleaseDate { get; set; }
+
             public override string Name => "Truven_MDCR";
             public override string Folder => "Truven";
             public override string Description => "Truven MDCR v5.4";

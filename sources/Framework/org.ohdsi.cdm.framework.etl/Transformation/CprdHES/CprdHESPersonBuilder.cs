@@ -15,6 +15,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CprdHES
 
         public class CprdHESVendor : Vendor
         {
+            public override DateTime? SourceReleaseDate { get; set; }
+
             public override string Name => "CprdHES";
             public override string Folder => "CPRD";
             public override string Description => "CPRD HES v5.4";
