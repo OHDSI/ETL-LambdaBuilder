@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\org.ohdsi.cdm.framework.common3\org.ohdsi.cdm.framework.common.csproj" />
+    <ProjectReference Include="..\..\Framework\org.ohdsi.cdm.framework\org.ohdsi.cdm.framework.csproj" />
     <ProjectReference Include="..\..\Presentation\org.ohdsi.cdm.presentation.lambdabuilder\org.ohdsi.cdm.presentation.lambdabuilder.csproj" />
   </ItemGroup>
 

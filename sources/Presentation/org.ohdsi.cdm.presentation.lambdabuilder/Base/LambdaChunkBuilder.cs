@@ -5,9 +5,7 @@ using org.ohdsi.cdm.framework.common.Definitions;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
-using static org.ohdsi.cdm.framework.common.Enums.Vendor;
 
 namespace org.ohdsi.cdm.presentation.lambdabuilder.Base
 {

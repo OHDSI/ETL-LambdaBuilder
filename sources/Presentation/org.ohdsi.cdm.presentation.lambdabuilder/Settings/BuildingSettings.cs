@@ -1,5 +1,4 @@
-﻿using org.ohdsi.cdm.framework.common.Attributes;
-using org.ohdsi.cdm.framework.common.Definitions;
+﻿using org.ohdsi.cdm.framework.common.Definitions;
 using org.ohdsi.cdm.framework.common.Extensions;
 using System.Collections.Generic;
 using System.IO;
@@ -7,7 +6,6 @@ using System.Linq;
 using org.ohdsi.cdm.framework.common.Enums;
 using System;
 using org.ohdsi.cdm.framework.common.Utility;
-using Amazon.S3.Model;
 
 namespace org.ohdsi.cdm.presentation.lambdabuilder
 {

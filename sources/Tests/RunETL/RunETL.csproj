@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\org.ohdsi.cdm.framework.common3\org.ohdsi.cdm.framework.common.csproj" />
+    <ProjectReference Include="..\..\Framework\org.ohdsi.cdm.framework\org.ohdsi.cdm.framework.csproj" />
   </ItemGroup>
 
 </Project>

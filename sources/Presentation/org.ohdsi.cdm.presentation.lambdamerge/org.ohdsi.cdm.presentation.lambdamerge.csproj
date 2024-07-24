@@ -39,7 +39,7 @@
     <DotNetCliToolReference Include="Amazon.Lambda.Tools" Version="2.2.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\org.ohdsi.cdm.framework.common3\org.ohdsi.cdm.framework.common.csproj" />
     <ProjectReference Include="..\..\Framework\org.ohdsi.cdm.framework.etl\org.ohdsi.cdm.framework.etl.csproj" />
+    <ProjectReference Include="..\..\Framework\org.ohdsi.cdm.framework\org.ohdsi.cdm.framework.csproj" />
   </ItemGroup>
 </Project>

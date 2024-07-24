@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Configuration;
-using org.ohdsi.cdm.framework.common.Attributes;
 using org.ohdsi.cdm.framework.common.Definitions;
 using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.desktop.Settings;

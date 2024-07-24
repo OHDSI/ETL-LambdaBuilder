@@ -1202,7 +1202,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\org.ohdsi.cdm.framework.common3\org.ohdsi.cdm.framework.common.csproj" />
+    <ProjectReference Include="..\org.ohdsi.cdm.framework\org.ohdsi.cdm.framework.csproj" />
   </ItemGroup>
 
 </Project>

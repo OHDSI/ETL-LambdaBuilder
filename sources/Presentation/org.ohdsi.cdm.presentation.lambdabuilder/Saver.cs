@@ -1,5 +1,4 @@
-﻿using org.ohdsi.cdm.framework.common.Attributes;
-using org.ohdsi.cdm.framework.common.Builder;
+﻿using org.ohdsi.cdm.framework.common.Builder;
 using org.ohdsi.cdm.framework.common.DataReaders.v5;
 using org.ohdsi.cdm.framework.common.DataReaders.v5.v52;
 using org.ohdsi.cdm.framework.common.DataReaders.v5.v53;
@@ -10,7 +9,6 @@ using System;
 using System.Data;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using cdm6 = org.ohdsi.cdm.framework.common.DataReaders.v6;
 
