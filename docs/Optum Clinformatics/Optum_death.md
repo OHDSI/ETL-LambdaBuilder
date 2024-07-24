@@ -18,9 +18,10 @@ description: "DEATH table mapping from DOD DEATH table, MEDICAL_CLAIMS and MED_D
 
 ### **Deriving date of death in DOD**
 
+- If the observation_period_start_date occurs prior to the death date, delete the death record
+- If the death date occurs before the patient's date of birth, then delete the death record.
 - If there are outpatient or pharmacy visits (VISIT_CONCEPT_ID in 9202, 581458) with visit start date after 30 days of death date, delete the visit record. 
 - If there are inpatient or ER visits (VISIT_CONCEPT_ID in 9201, 9203) with visit start date after 30 days of death date, delete the death record. 
-- If the death date occurs before the patient's date of birth, then delete the death record.
 - If person is absent in **Death** table, but the fact of death is confirmed by the SES logic (see below), populate the DEATH table as well.
 
 ### **Deriving date of death in SES**
