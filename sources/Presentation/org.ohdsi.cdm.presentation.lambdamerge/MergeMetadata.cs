@@ -2,7 +2,6 @@
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
 using CsvHelper;
-using org.ohdsi.cdm.framework.common.Attributes;
 using org.ohdsi.cdm.framework.common.DataReaders.v5;
 using org.ohdsi.cdm.framework.common.DataReaders.v5.v54;
 using org.ohdsi.cdm.framework.common.Extensions;
@@ -16,16 +15,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using org.ohdsi.cdm.framework.common.Enums;
-using org.ohdsi.cdm.framework.etl.Transformation.Truven;
-using org.ohdsi.cdm.framework.etl.Transformation.CPRD;
-using org.ohdsi.cdm.framework.etl.Transformation.Premier;
-using org.ohdsi.cdm.framework.etl.Transformation.JMDC;
-using org.ohdsi.cdm.framework.etl.Transformation.OptumExtended;
-using org.ohdsi.cdm.framework.etl.Transformation.OptumPanther;
-using org.ohdsi.cdm.framework.etl.Transformation.CprdHES;
-using org.ohdsi.cdm.framework.etl.Transformation.Era;
-using org.ohdsi.cdm.framework.etl.Transformation.PA;
-using org.ohdsi.cdm.framework.etl.Transformation.HealthVerity;
 
 namespace org.ohdsi.cdm.presentation.lambdamerge
 {

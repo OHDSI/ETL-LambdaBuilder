@@ -22,14 +22,13 @@
 
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
-    <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.6" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.7" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Framework\org.ohdsi.cdm.framework.common3\org.ohdsi.cdm.framework.common.csproj" />
-    <ProjectReference Include="..\..\Framework\org.ohdsi.cdm.framework.desktop3\org.ohdsi.cdm.framework.desktop.csproj" />
     <ProjectReference Include="..\..\Framework\org.ohdsi.cdm.framework.etl\org.ohdsi.cdm.framework.etl.csproj" />
+    <ProjectReference Include="..\..\Framework\org.ohdsi.cdm.framework\org.ohdsi.cdm.framework.csproj" />
   </ItemGroup>
 
 </Project>

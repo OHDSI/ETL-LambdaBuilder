@@ -4,7 +4,6 @@ using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
 using CsvHelper.Configuration;
-using org.ohdsi.cdm.framework.common.Attributes;
 using org.ohdsi.cdm.framework.common.DataReaders.v5;
 using org.ohdsi.cdm.framework.common.DataReaders.v5.v54;
 using org.ohdsi.cdm.framework.common.Enums;
@@ -18,7 +17,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static Amazon.Lambda.S3Events.S3Event;
-using static org.ohdsi.cdm.framework.common.Enums.Vendor;
 
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
