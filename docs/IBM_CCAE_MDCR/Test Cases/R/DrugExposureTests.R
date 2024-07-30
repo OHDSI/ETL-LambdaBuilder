@@ -78,6 +78,14 @@ createDrugExposureTests <- function () {
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2014-12-31', dtstart = '2014-01-01')
   add_drug_claims(enrolid = patient$enrolid, ndcnum = '00069100101', year = '2019', svcdate = '2019-09-18')
   expect_drug_exposure(person_id = patient$person_id, drug_exposure_start_date = '2019-09-18')
+  
+  patient <- createPatient()
+  encounter <- createEncounter()
+  declareTest(id = patient$person_id, "Source_concept_ids must be different for different dates")
+  add_enrollment_detail(enrolid=patient$enrolid, dtend = '2023-06-30', dtstart = '1970-01-01')
+  add_inpatient_services(enrolid = patient$enrolid, proc1 = 'J9350', svcdate = '1970-01-01', tsvcdat = '1970-01-01', caseid = encounter$caseid, year = '1970')
+  add_inpatient_services(enrolid = patient$enrolid, proc1 = 'J9350', svcdate = '2014-11-11', tsvcdat = '2014-11-11', caseid = encounter$caseid, year = '2014')
+  add_inpatient_services(enrolid = patient$enrolid, proc1 = 'J9350', svcdate = '2023-07-01', tsvcdat = '2023-07-01', caseid = encounter$caseid, year = '2023')
 }
 
 
