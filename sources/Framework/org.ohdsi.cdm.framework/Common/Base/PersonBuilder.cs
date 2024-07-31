@@ -4,7 +4,6 @@ using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Helpers;
 using org.ohdsi.cdm.framework.common.Lookups;
 using org.ohdsi.cdm.framework.common.Omop;
-using org.ohdsi.cdm.framework.common.Utility;
 using System.Collections.Concurrent;
 
 namespace org.ohdsi.cdm.framework.common.Base
@@ -58,34 +57,6 @@ namespace org.ohdsi.cdm.framework.common.Base
         public PersonBuilder(Vendor vendor)
         {
             this.Vendor = vendor;
-        }
-
-        /// <summary>
-        /// Create an instance of an heir of PersonBuilder matching the specified vendor
-        /// </summary>
-        /// <param name="vendor"></param>
-        /// <returns></returns>
-        /// <exception cref="InvalidOperationException"></exception>
-        public static PersonBuilder CreateBuilder(Vendor vendor)
-        {
-            LoadReferencedAssemblies.DoIfNotLoadedAlready();
-
-            var builderTypes = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(assembly => assembly.GetTypes())
-                .Where(t => t.IsSubclassOf(typeof(PersonBuilder))
-                        && !t.IsAbstract);
-
-            var vendorTypePersonBuilder = builderTypes.First(a => NormalizeVendorName(a.Name).Contains(NormalizeVendorName(vendor.Name), StringComparison.CurrentCultureIgnoreCase));
-
-            var constructor = vendorTypePersonBuilder.GetConstructor(new[] { typeof(Vendor) });
-            if (constructor == null)
-            {
-                throw new InvalidOperationException($"No suitable constructor found for type {vendorTypePersonBuilder.Name}");
-            }
-
-            var handle = (PersonBuilder)constructor.Invoke(new object[] { vendor });
-
-            return handle;
         }
 
         #endregion
@@ -1247,15 +1218,7 @@ namespace org.ohdsi.cdm.framework.common.Base
             }
         }
 
-        static string NormalizeVendorName(string vendorName)
-        {
-            string result = vendorName
-                .ToLower()
-                .Replace("optumPantherFull".ToLower(), "OptumOncology".ToLower())
-                .Replace("PersonBuilder".ToLower(), "")                
-                ;
-            return result;
-        }
+  
 
         #endregion
     }

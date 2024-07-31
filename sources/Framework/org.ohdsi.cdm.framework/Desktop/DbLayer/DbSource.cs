@@ -7,10 +7,10 @@ using System.Text;
 
 namespace org.ohdsi.cdm.framework.desktop.DbLayer
 {
-    public class DbSource(string connectionString, string folder, string schemaName)
+    public class DbSource(string connectionString, string dbType, string schemaName)
     {
         private readonly string _connectionString = connectionString;
-        private readonly string _folder = folder;
+        private readonly string _dbType = dbType;
         private readonly string _schemaName = schemaName;
 
         private void CreateChunkSchema(string name)
@@ -30,18 +30,26 @@ namespace org.ohdsi.cdm.framework.desktop.DbLayer
             }
         }
 
+        private string GetQuery(string name)
+        {
+            string[] resourceNames = Assembly.GetExecutingAssembly().GetManifestResourceNames();
+            var resource = resourceNames.First(a => a.EndsWith(name) && a.Contains(_dbType, StringComparison.OrdinalIgnoreCase));
+            Console.WriteLine(resource);
+
+            using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resource);
+            using var reader = new StreamReader(stream, Encoding.Default);
+            var query = reader.ReadToEnd();
+            query = query.Replace("{sc}", schemaName);
+
+            return query;
+        }
+
         public void CreateChunkTable(string schemaName)
         {
             CreateChunkSchema(schemaName);
             DropChunkTable(schemaName);
 
-            string[] resourceNames = Assembly.GetExecutingAssembly().GetManifestResourceNames();
-            var resource = resourceNames.First(a => a.EndsWith("CreateChunkTable.sql"));
-            using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resource);
-            using var reader = new StreamReader(stream, Encoding.Default);
-            var query = reader.ReadToEnd();
-
-            query = query.Replace("{sc}", schemaName);
+            var query = GetQuery("CreateChunkTable.sql");
             using var connection = SqlConnectionHelper.OpenOdbcConnection(_connectionString);
             using var cmd = new OdbcCommand(query, connection);
             cmd.ExecuteNonQuery();
@@ -51,13 +59,8 @@ namespace org.ohdsi.cdm.framework.desktop.DbLayer
         {
             CreateChunkSchema(schemaName);
 
-            string[] resourceNames = Assembly.GetExecutingAssembly().GetManifestResourceNames();
-            var resource = resourceNames.First(a => a.EndsWith("DropChunkTable.sql"));
-            using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resource);
-            using var reader = new StreamReader(stream, Encoding.Default);
-            var query = reader.ReadToEnd();
+            var query = GetQuery("DropChunkTable.sql");
 
-            query = query.Replace("{sc}", schemaName);
             using var connection = SqlConnectionHelper.OpenOdbcConnection(_connectionString);
             using var cmd = new OdbcCommand(query, connection);
             cmd.ExecuteNonQuery();
@@ -77,14 +80,10 @@ namespace org.ohdsi.cdm.framework.desktop.DbLayer
 
         public void CreateIndexesChunkTable(string schemaName)
         {
-            string[] resourceNames = Assembly.GetExecutingAssembly().GetManifestResourceNames();
-            var resource = resourceNames.First(a => a.EndsWith("CreateIndexesChunkTable.sql"));
-            using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resource);
-            using var reader = new StreamReader(stream, Encoding.Default);
-            var query = reader.ReadToEnd();
+            var query = GetQuery("CreateIndexesChunkTable.sql");
 
-            query = query.Replace("{sc}", schemaName);
-            if (string.IsNullOrEmpty(query.Trim())) return;
+            if (string.IsNullOrEmpty(query.Trim())) 
+                return;
 
             using var connection = SqlConnectionHelper.OpenOdbcConnection(_connectionString);
             foreach (var subQuery in query.Split(new[] { "GO" + "\r\n", "GO" + "\n" },

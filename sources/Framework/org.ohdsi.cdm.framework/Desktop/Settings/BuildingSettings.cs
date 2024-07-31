@@ -3,22 +3,20 @@ using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.desktop.Databases;
 using org.ohdsi.cdm.framework.desktop.DbLayer;
-using org.ohdsi.cdm.framework.desktop.Enums;
 using System.Configuration;
 using System.Data;
 using System.Text.RegularExpressions;
 using org.ohdsi.cdm.framework.common.Utility;
+using org.ohdsi.cdm.framework.Common.Base;
 
 namespace org.ohdsi.cdm.framework.desktop.Settings
 {
-    public class BuildingSettings(string builderConnectionString)
+    public class BuildingSettings(string builderConnectionString) : IVendorSettings
     {
         #region Variables
         private readonly DbBuildingSettings _dbBuildingSettings = new(builderConnectionString);
         private IDatabaseEngine _sourceEngine;
         private IDatabaseEngine _destinationEngine;
-        private string _cdmSourceScript;
-
         #endregion
 
         #region Properties
@@ -26,7 +24,7 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
 
         public Vendor Vendor { get; set; }
         public List<QueryDefinition> SourceQueryDefinitions { get; set; }
-        public List<LookupDefinition> LookupDefinitions { get; set; }
+        public List<LookupDefinition> CombinedLookupDefinitions { get; set; }
 
         public string RawSourceConnectionString { get; set; }
         public string RawDestinationConnectionString { get; set; }
@@ -42,10 +40,9 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
 
         public int Batches { get; set; }
         public int BatchSize { get; set; }
-        public SaveType SaveType { get; set; }
 
         public string BatchScript { get; set; }
-        public string CohortDefinitionScript { get; set; }
+        public string EtlLibraryPath { get; set; }
 
         public int LoadId
         {
@@ -93,22 +90,6 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
             {
                 return Regex.Replace(RawVocabularyConnectionString, "sc=" + VocabularySchemaName + ";", "", RegexOptions.IgnoreCase);
             }
-        }
-
-        public string CdmSourceScript
-        {
-            get
-            {
-                if (_cdmSourceScript == null || SourceReleaseDate == null || VocabularyVersion == null)
-                    return null;
-
-                _cdmSourceScript = _cdmSourceScript.Replace("{0}", SourceReleaseDate);
-                _cdmSourceScript = _cdmSourceScript.Replace("{1}", VocabularyVersion);
-                _cdmSourceScript = _cdmSourceScript.Replace("{3}", DateTime.Now.ToShortDateString());
-
-                return _cdmSourceScript;
-            }
-            set { _cdmSourceScript = value; }
         }
 
         public CdmVersions Cdm
@@ -187,15 +168,13 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
         }
 
         #endregion
-        
-        #region Constructors
-        #endregion
 
         #region Methods
 
         public bool Load(int buildingId)
         {
             Id = null;
+            Console.WriteLine("buildingId:" + buildingId);
             foreach (var dataReader in _dbBuildingSettings.Load(buildingId))
             {
                 Id = buildingId;
@@ -232,8 +211,10 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
             RawDestinationConnectionString = reader.GetString("DestinationConnectionString");
             BatchSize = reader.GetInt("BatchSize") ?? 1000;
 
-            this.Vendor = Vendor.CreateVendorInstanceByName(reader.GetString("Vendor"));
-            Logger.Write(null, LogMessageTypes.Debug, "Vendor=" + reader.GetString("Vendor"));
+            Console.WriteLine("Vendor: " + reader.GetString("Vendor"));
+            Console.WriteLine("EtlLibraryPath: " + EtlLibraryPath);
+
+            this.Vendor = EtlLibrary.CreateVendorInstance(EtlLibraryPath, reader.GetString("Vendor"));
 
             SetVendorSettings();
             SetVocabularyVersion();
@@ -253,64 +234,8 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
 
         private void SetVendorSettings()
         {
-            var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies()
-                  .Where(s => !s.FullName.Contains("System."))
-                  .Where(s => !s.FullName.Contains("Microsoft."))
-                  .Where(s => !s.FullName.Contains("netstandard"));
-
-            var vendorFolder = Vendor.Folder;
-
-            var batch = "Batch.sql";
-            var cdmSource = Vendor.CdmSource ?? "CdmSource.sql";
-            var cohortDefinition = "CohortDefinition.sql";
-
-            Logger.Write(null, LogMessageTypes.Debug, vendorFolder + ";" + batch + ";" + Vendor.ToString());
-
-            SourceQueryDefinitions = new List<QueryDefinition>();
-            LookupDefinitions = new List<LookupDefinition>();
-            foreach (var assembly in loadedAssemblies)
-            {
-                BatchScript ??= ReadResources.TryReadResource(assembly, vendorFolder + "." + batch);
-                CdmSourceScript ??= ReadResources.TryReadResource(assembly, vendorFolder + "." + cdmSource);
-                CohortDefinitionScript ??= ReadResources.TryReadResource(assembly, vendorFolder + "." + cohortDefinition);
-
-                var folder = vendorFolder + ".Definitions.";
-                Console.WriteLine(folder);
-                var definitionResources = assembly.GetManifestResourceNames()
-                    .Where(s => s.Contains(this.Vendor.Folder))
-                    .Where(s => s.Contains(folder))
-                    .ToList();
-
-                foreach (var resource in definitionResources)
-                {
-                    var txt = ReadResources.TryReadResource(assembly, resource);
-                    if (!string.IsNullOrWhiteSpace(txt))
-                    {
-                        var qd = new QueryDefinition().DeserializeFromXml(txt);
-                        qd.FileName = resource.Split(new[] { "." }, StringSplitOptions.None).SkipLast(1).Last();
-                        SourceQueryDefinitions.Add(qd);
-                    }
-                }
-
-
-                folder = vendorFolder + ".CombinedLookups.";
-                Console.WriteLine(folder);
-                var lookupResources = assembly.GetManifestResourceNames()
-                    .Where(s => s.Contains(this.Vendor.Folder))
-                    .Where(s => s.Contains(folder))
-                    .ToList();
-
-                foreach (var resource in lookupResources)
-                {
-                    var txt = ReadResources.TryReadResource(assembly, resource);
-                    if (!string.IsNullOrWhiteSpace(txt))
-                    {
-                        var ld = new LookupDefinition().DeserializeFromXml(txt);
-                        ld.FileName = resource.Split(new[] { "." }, StringSplitOptions.None).SkipLast(1).Last();
-                        LookupDefinitions.Add(ld);
-                    }
-                }
-            }
+            Console.WriteLine("etlLibraryPath: " + EtlLibraryPath);
+            EtlLibrary.LoadVendorSettings(EtlLibraryPath, this); 
         }
 
         #endregion

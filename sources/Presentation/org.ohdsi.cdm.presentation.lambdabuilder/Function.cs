@@ -21,6 +21,7 @@ using static Amazon.Lambda.S3Events.S3Event;
 using CsvHelper;
 using CsvHelper.Configuration;
 using System.Globalization;
+using org.ohdsi.cdm.framework.common.Utility;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
@@ -37,6 +38,8 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
         private int _chunkId;
         private string _prefix;
         private static string _tmpFolder = null;
+        private static PersonBuilder _personBuilder;
+        private const string EtlLibraryPath = "/opt";
 
         public static string TmpFolder
         {
@@ -74,6 +77,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
         {
             Settings.Current.Started = DateTime.Now;
             Settings.Current.Error = false;
+            _personBuilder = null;
 
             _attemptFileRemoved = false;
             _lastSavedPersonIdOutput = null;
@@ -121,7 +125,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                     Settings.Current.Bucket = bucket;
                     Settings.Current.CDMFolder = folder;
 
-                    Settings.Initialize(buildingId, vendor);
+                    Settings.Initialize(buildingId, vendor, EtlLibraryPath);
 
                     Settings.Current.TimeoutValue = 180000;
                     Settings.Current.WatchdogValue = 100000 * 1000;
@@ -248,9 +252,14 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
             {
                 // 0         1        2       3      4      5
                 //vendor.buildingId.chunkId.prefix.attempt.txt
+
+                //foreach (var item in Directory.GetFiles("/opt"))
+                //{
+                //    Console.WriteLine(item);
+                //}
                 
                 var vendorName = s3Event.Object.Key.Split('.')[0].Split('/').Last();
-                vendor = Vendor.CreateVendorInstanceByName(vendorName);
+                vendor = EtlLibrary.CreateVendorInstance(EtlLibraryPath, vendorName);
 
                 buildingId = int.Parse(s3Event.Object.Key.Split('.')[1]);
                 _chunkId = int.Parse(s3Event.Object.Key.Split('.')[2]);
@@ -261,7 +270,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                     attempt = int.Parse(s3Event.Object.Key.Split('.')[4]);
                 }
 
-                Settings.Initialize(buildingId, vendor);
+                Settings.Initialize(buildingId, vendor, EtlLibraryPath); 
 
                 //Settings.Current.TimeoutValue = 150; // TMP
                 Settings.Current.TimeoutValue = 600; // TMP
@@ -785,7 +794,10 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
 
         private static PersonBuilder CreatePersonBuilder()
         {
-            return PersonBuilder.CreateBuilder(Settings.Current.Building.Vendor);
+            if(_personBuilder == null)
+                _personBuilder = EtlLibrary.CreateBuilder(EtlLibraryPath, Settings.Current.Building.Vendor);
+
+            return _personBuilder;
         }
     }
 }

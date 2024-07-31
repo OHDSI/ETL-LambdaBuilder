@@ -30,8 +30,10 @@ namespace org.ohdsi.cdm.framework.desktop.Base
                 timer.Start();
 
                 part.Load();
-                Logger.Write(_chunkId, LogMessageTypes.Info,
-                    $"Loaded - {timer.ElapsedMilliseconds} ms | {(GC.GetTotalMemory(false) / 1024f) / 1024f} Mb");
+                //Logger.Write(_chunkId, LogMessageTypes.Info,
+                //    $"Loaded - {timer.ElapsedMilliseconds} ms | {(GC.GetTotalMemory(false) / 1024f) / 1024f} Mb");
+
+                Console.WriteLine($"Loaded - {timer.ElapsedMilliseconds} ms | {(GC.GetTotalMemory(false) / 1024f) / 1024f} Mb");
 
                 part.Build();
                 part.Save();
@@ -41,7 +43,8 @@ namespace org.ohdsi.cdm.framework.desktop.Base
             }
             catch (Exception e)
             {
-                Logger.WriteError(_chunkId, e);
+                //Logger.WriteError(_chunkId, e);
+                Console.WriteLine(Logger.CreateExceptionString(e));
 
                 throw;
             }

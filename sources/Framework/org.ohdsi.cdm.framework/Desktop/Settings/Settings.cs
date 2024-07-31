@@ -1,6 +1,5 @@
 ﻿using org.ohdsi.cdm.framework.common.Enums;
 using System.Configuration;
-using static System.Boolean;
 
 namespace org.ohdsi.cdm.framework.desktop.Settings
 {
@@ -14,16 +13,13 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
         private string _bucket;
 
         private string _cdmFolder;
-        private bool? _saveOnlyToS3;
-        private S3StorageType? _storageType;
-
-        private string _VendorSettings;
+        private string _vendorSettings;
 
 
         #region Properties
         public static Settings Current { get; set; }
         public BuildingSettings Building { get; set; }
-        public BuilderSettings Builder { get; set; }
+        public string Folder { get; set; }
 
         public int ParallelQueries { get; set; }
         public int ParallelChunks { get; set; }
@@ -40,36 +36,36 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
         }
 
         public string DropVocabularyTablesScript => File.ReadAllText(
-            Path.Combine(Builder.Folder, "Common", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "DropVocabularyTables.sql"));
+            Path.Combine(Folder, "Common", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "DropVocabularyTables.sql"));
 
         public string TruncateWithoutLookupTablesScript => File.ReadAllText(
-            Path.Combine(Builder.Folder, "Common", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "TruncateWithoutLookupTables.sql"));
+            Path.Combine(Folder, "Common", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "TruncateWithoutLookupTables.sql"));
 
         public string TruncateTablesScript => File.ReadAllText(
-            Path.Combine(Builder.Folder, "Common", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "TruncateTables.sql"));
+            Path.Combine(Folder, "Common", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "TruncateTables.sql"));
 
         public string DropTablesScript => File.ReadAllText(
-            Path.Combine(Builder.Folder, "Common", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "DropTables.sql"));
+            Path.Combine(Folder, "Common", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "DropTables.sql"));
 
         public string TruncateLookupScript => File.ReadAllText(
-            Path.Combine(Builder.Folder, "Common", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "TruncateLookup.sql"));
+            Path.Combine(Folder, "Common", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "TruncateLookup.sql"));
 
         public string CreateCdmTablesScript => File.ReadAllText(
-            Path.Combine(Builder.Folder, "Common", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "CreateTables.sql"));
+            Path.Combine(Folder, "Common", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "CreateTables.sql"));
 
         public string CreateCdmDatabaseScript => File.ReadAllText(
             Path.Combine([
-                Builder.Folder,
+                Folder,
                 "Common",
                 Building.DestinationEngine.Database.ToString(),
                 "CreateDestination.sql"
             ]));
 
         public string CopyVocabularyScript => File.ReadAllText(
-            Path.Combine(Builder.Folder, "Common", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "CopyVocabulary.sql"));
+            Path.Combine(Folder, "Common", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "CopyVocabulary.sql"));
 
         public string CreateIndexesScript => File.ReadAllText(
-            Path.Combine(Builder.Folder, "Common", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "CreateIndexes.sql"));
+            Path.Combine(Folder, "Common", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "CreateIndexes.sql"));
 
         public string S3AwsAccessKeyId
         {
@@ -148,46 +144,10 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
             set => _cdmFolder = value;
         }
 
-        public bool SaveOnlyToS3
-        {
-            get
-            {
-                if (_saveOnlyToS3.HasValue)
-                    return _saveOnlyToS3.Value;
-
-                return Parse(ConfigurationManager.AppSettings["SaveOnlyToS3"]);
-            }
-            set => _saveOnlyToS3 = value;
-        }
-
-        public S3StorageType StorageType
-        {
-            get
-            {
-                if (_storageType.HasValue)
-                    return _storageType.Value;
-
-                Enum.TryParse(ConfigurationManager.AppSettings["S3StorageType"], out S3StorageType type);
-                return type;
-            }
-            set => _storageType = value;
-        }
-
-        public static string HixConnectionString
-        {
-            get
-            {
-                if (ConfigurationManager.ConnectionStrings["HIX"] != null)
-                    return ConfigurationManager.ConnectionStrings["HIX"].ConnectionString;
-
-                return null;
-            }
-        }
-
         public string VendorSettings
         {
-            get => _VendorSettings;
-            set => _VendorSettings = value;
+            get => _vendorSettings;
+            set => _vendorSettings = value;
         }
 
 
@@ -197,18 +157,6 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
         public static void Initialize(string builderConnectionString, string machineName)
         {
             Current.Building = new BuildingSettings(builderConnectionString);
-            Current.Builder = new BuilderSettings(machineName);
-            Current.Builder.Load();
-
-            if (Current.Builder.BuildingId.HasValue)
-                Current.Building.Load(Current.Builder.BuildingId.Value);
-        }
-
-        public static void Save()
-        {
-            Current.Building.Save();
-            Current.Builder.BuildingId = Current.Building.Id;
-            Current.Builder.Save();
         }
 
         private string GetCdmVersionFolder()

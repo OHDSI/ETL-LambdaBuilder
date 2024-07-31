@@ -77,7 +77,7 @@ namespace org.ohdsi.cdm.framework.desktop
 
         private void LoadCombinedLookups(bool readFromS3, bool storeToS3)
         {
-            if (Settings.Settings.Current.Building.LookupDefinitions == null || Settings.Settings.Current.Building.LookupDefinitions.Count == 0)
+            if (Settings.Settings.Current.Building.CombinedLookupDefinitions == null || Settings.Settings.Current.Building.CombinedLookupDefinitions.Count == 0)
             {
                 Console.WriteLine("CombinedLookups - empty");
                 return;
@@ -92,11 +92,11 @@ namespace org.ohdsi.cdm.framework.desktop
             }
             else
             {
-                baseSql = File.ReadAllText(Path.Combine(Settings.Settings.Current.Builder.Folder,
+                baseSql = File.ReadAllText(Path.Combine(Settings.Settings.Current.Folder,
                     @"Core\Lookups\Base.sql"));
             }
 
-            foreach (var lookup in Settings.Settings.Current.Building.LookupDefinitions)
+            foreach (var lookup in Settings.Settings.Current.Building.CombinedLookupDefinitions)
             {
                 var sourceQuery = lookup.SourceLookup.Query.Replace("{sc}", Settings.Settings.Current.Building.SourceSchemaName);
                 var vocabularyQuery = lookup.VocabularyLookup.Query;
@@ -252,7 +252,7 @@ namespace org.ohdsi.cdm.framework.desktop
         {
             Console.WriteLine("ConceptIdToSourceVocabularyId - Loading...");
 
-            var sql = File.ReadAllText(Path.Combine(Settings.Settings.Current.Builder.Folder,
+            var sql = File.ReadAllText(Path.Combine(Settings.Settings.Current.Folder,
                 @"Core\Lookups\ConceptIdToSourceVocabularyId.sql"));
 
             sql = sql.Replace("{sc}", Settings.Settings.Current.Building.VocabularySchemaName);
@@ -293,7 +293,7 @@ namespace org.ohdsi.cdm.framework.desktop
             }
             else
             {
-                sql = File.ReadAllText(Path.Combine(Settings.Settings.Current.Builder.Folder,
+                sql = File.ReadAllText(Path.Combine(Settings.Settings.Current.Folder,
                     @"Core\Lookups\PregnancyDrug.sql"));
             }
 
@@ -382,10 +382,10 @@ namespace org.ohdsi.cdm.framework.desktop
                                 }
                                 else
                                 {
-                                    baseSql = File.ReadAllText(Path.Combine(Settings.Settings.Current.Builder.Folder,
+                                    baseSql = File.ReadAllText(Path.Combine(Settings.Settings.Current.Folder,
                                         @"Core\Lookups\Base.sql"));
 
-                                    sqlFileDestination = Path.Combine(Settings.Settings.Current.Builder.Folder, "Core", "Transformation",
+                                    sqlFileDestination = Path.Combine(Settings.Settings.Current.Folder, "Core", "Transformation",
                                         vendorFolder, "Lookups", conceptIdMapper.Lookup + ".sql");
 
                                     sql = File.ReadAllText(sqlFileDestination);
@@ -443,8 +443,8 @@ namespace org.ohdsi.cdm.framework.desktop
                                 {
                                     Console.WriteLine("Lookup error [file]: " + sqlFileDestination);
                                     Console.WriteLine("Lookup error [query]: " + sql);
-                                    Logger.WriteWarning("Lookup error [file]: " + sqlFileDestination);
-                                    Logger.WriteWarning("Lookup error [query]: " + sql);
+                                    //Logger.WriteWarning("Lookup error [file]: " + sqlFileDestination);
+                                    //Logger.WriteWarning("Lookup error [query]: " + sql);
                                     throw;
                                 }
                             }
@@ -464,7 +464,7 @@ namespace org.ohdsi.cdm.framework.desktop
             _genderConcepts = new GenderLookup();
             _genderConcepts.Load();
 
-            _pregnancyConcepts = new PregnancyConcepts(Settings.Settings.Current.Builder.Folder);
+            _pregnancyConcepts = new PregnancyConcepts(Settings.Settings.Current.Folder);
 
             LoadCombinedLookups(readFromS3, false);
 

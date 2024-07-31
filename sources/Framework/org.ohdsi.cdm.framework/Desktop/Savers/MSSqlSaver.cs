@@ -60,11 +60,5 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
             _transaction.Dispose();
             _connection.Dispose();
         }
-
-        public override void CopyVocabulary()
-        {
-            var dbDestination = new DbDestination(Settings.Settings.Current.Building.DestinationConnectionString, Settings.Settings.Current.Building.DestinationSchemaName);
-            dbDestination.CopyVocabulary(Settings.Settings.Current.CopyVocabularyScript, Settings.Settings.Current.Building.VocabularyConnectionString);
-        }
     }
 }

@@ -26,12 +26,10 @@ namespace org.ohdsi.cdm.framework.desktop.Controllers
         public ChunkController(string chunksSchema)
         {
             _dbChunk = new DbChunk(Settings.Settings.Current.Building.BuilderConnectionString);
-            _dbSource = new DbSource(Settings.Settings.Current.Building.SourceConnectionString, Path.Combine(
-            [
-                Settings.Settings.Current.Builder.Folder,
-                "Common",
-                Settings.Settings.Current.Building.SourceEngine.Database.ToString()
-            ]), Settings.Settings.Current.Building.SourceSchemaName);
+            _dbSource = new DbSource(
+                Settings.Settings.Current.Building.SourceConnectionString, 
+                Settings.Settings.Current.Building.SourceEngine.Database.ToString(), 
+                Settings.Settings.Current.Building.SourceSchemaName);
 
             _chunksSchema = chunksSchema;
         }
@@ -340,6 +338,10 @@ namespace org.ohdsi.cdm.framework.desktop.Controllers
         public IEnumerable<List<KeyValuePair<string, string>>> GetPersonKeys(long batches, int batchSize)
         {
             var batch = new List<KeyValuePair<string, string>>(batchSize);
+
+            Console.WriteLine("SourceEngine.Database: " + Settings.Settings.Current.Building.SourceEngine.Database);
+            Console.WriteLine("BatchScript: " + Settings.Settings.Current.Building.BatchScript);
+            Console.WriteLine("SourceSchemaName: " + Settings.Settings.Current.Building.SourceSchemaName);
 
             var query = GetSqlHelper.GetSql(Settings.Settings.Current.Building.SourceEngine.Database,
                 Settings.Settings.Current.Building.BatchScript, Settings.Settings.Current.Building.SourceSchemaName);

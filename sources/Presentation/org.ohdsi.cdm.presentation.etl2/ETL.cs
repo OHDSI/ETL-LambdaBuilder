@@ -84,7 +84,7 @@ namespace org.ohdsi.cdm.presentation.etl
 
                 Console.WriteLine("Copying vocabulary tables...");
 
-                var vocabQueriesPath = Path.Combine(Settings.Current.Builder.Folder, "Common", "Redshift", "v5.2",
+                var vocabQueriesPath = Path.Combine(Settings.Current.Folder, "Common", "Redshift", "v5.2",
                     "Vocabulary");
 
                 foreach (var filePath in Directory.GetFiles(vocabQueriesPath))

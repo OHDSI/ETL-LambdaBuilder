@@ -8,6 +8,7 @@ using org.ohdsi.cdm.framework.common.DataReaders.v5;
 using org.ohdsi.cdm.framework.common.DataReaders.v5.v54;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Extensions;
+using org.ohdsi.cdm.framework.common.Utility;
 using org.ohdsi.cdm.framework.etl.Transformation.OptumPanther;
 using System;
 using System.Diagnostics;
@@ -42,6 +43,7 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
         private long? _lastSavedId;
         //private int _rowGroupSize;
         private bool _chunkComplete;
+        private const string EtlLibraryPath = "/opt";
 
         public Function()
         {
@@ -97,7 +99,8 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
 
             try
             {
-                _settings.Vendor = Vendor.CreateVendorInstanceByName(_s3Event.Object.Key.Split('.')[0].Split('/').Last());
+                var vendorName = _s3Event.Object.Key.Split('.')[0].Split('/').Last();
+                _settings.Vendor = EtlLibrary.CreateVendorInstance(EtlLibraryPath, vendorName);
                 _settings.BuildingId = int.Parse(_s3Event.Object.Key.Split('.')[1]);
                 _table = _s3Event.Object.Key.Split('.')[2].Trim();
                 _subChunkId = int.Parse(_s3Event.Object.Key.Split('.')[3]);
