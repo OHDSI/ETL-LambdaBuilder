@@ -56,8 +56,10 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
                 {
                     if (attempt <= 5)
                     {
-                        Logger.Write(chunk.ChunkId, LogMessageTypes.Warning,
-                            "MoveToS3 attempt=" + attempt + ") | " + table + " | " + Logger.CreateExceptionString(e));
+                        //Logger.Write(chunk.ChunkId, LogMessageTypes.Warning,
+                        //    "MoveToS3 attempt=" + attempt + ") | " + table + " | " + Logger.CreateExceptionString(e));
+
+                        Console.WriteLine("MoveToS3 attempt=" + attempt + ") | " + table + " | " + Logger.CreateExceptionString(e));
                     }
                     else
                     {
@@ -145,8 +147,8 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                Logger.WriteError(e);
+                Console.WriteLine(Logger.CreateExceptionString(e));
+                //Logger.WriteError(e);
                 Rollback();
             }
         }
@@ -197,29 +199,6 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
 
                 SaveToS3Csv(Settings.Settings.Current.Bucket, folder + apsFolder, tableName, new ProviderDataReader(provider));
             }
-        }
-
-        public override void CopyVocabulary()
-        {
-            // Move data to S3 and then copy to Redshift
-            var vocabQueriesPath = Path.Combine(Settings.Settings.Current.Builder.Folder, "Common", "Redshift", "v5.2",
-                "Vocabulary");
-            Parallel.ForEach(Directory.GetFiles(vocabQueriesPath), filePath =>
-            {
-                var tableName = Path.GetFileNameWithoutExtension(filePath);
-
-                using var connection =
-                    SqlConnectionHelper.OpenOdbcConnection(
-                        Settings.Settings.Current.Building.VocabularyConnectionString);
-                var schemaName = Settings.Settings.Current.Building.VocabularySchemaName;
-                var query = File.ReadAllText(filePath);
-                query = query.Replace("{sc}", schemaName);
-
-                using var c = new OdbcCommand(query, connection);
-                c.CommandTimeout = 0;
-                using var reader = c.ExecuteReader();
-                Write(null, null, reader, tableName);
-            });
         }
 
         public override void Dispose()

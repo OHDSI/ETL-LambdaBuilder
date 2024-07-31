@@ -136,7 +136,8 @@ namespace org.ohdsi.cdm.framework.desktop.Base
 
                 Parallel.ForEach(GetParts(), new ParallelOptions { MaxDegreeOfParallelism = 2 }, p =>
                 {
-                    Logger.Write(_chunkId, LogMessageTypes.Info, "load part=" + p);
+                    //Logger.Write(_chunkId, LogMessageTypes.Info, "load part=" + p);
+                    Console.WriteLine("load part=" + p);
                     var part = new DatabaseChunkPart(_chunkId, _createPersonBuilder, p, 0);
 
                     LoadPart(part, p);
@@ -147,16 +148,19 @@ namespace org.ohdsi.cdm.framework.desktop.Base
                 });
 
 
-                Logger.Write(_chunkId, LogMessageTypes.Info,
-                    $"Loaded - {timer.ElapsedMilliseconds} ms | {(GC.GetTotalMemory(false) / 1024f) / 1024f} Mb");
+                //Logger.Write(_chunkId, LogMessageTypes.Info,
+                //    $"Loaded - {timer.ElapsedMilliseconds} ms | {(GC.GetTotalMemory(false) / 1024f) / 1024f} Mb");
+
+                Console.WriteLine($"Loaded - {timer.ElapsedMilliseconds} ms | {(GC.GetTotalMemory(false) / 1024f) / 1024f} Mb");
 
                 dbChunk.ChunkComplete(_chunkId, Settings.Settings.Current.Building.Id.Value);
             }
             catch (Exception e)
             {
-                Logger.WriteError(_chunkId, e);
+                //Logger.WriteError(_chunkId, e);
+                Console.WriteLine(Logger.CreateExceptionString(e));
 
-                throw;
+               throw;
             }
         }
 
@@ -177,8 +181,10 @@ namespace org.ohdsi.cdm.framework.desktop.Base
                 {
                     if (loadAttempt <= 11)
                     {
-                        Logger.Write(_chunkId, LogMessageTypes.Warning,
-                           p + ") load attempt=" + loadAttempt + ") " + Logger.CreateExceptionString(ex));
+                        //Logger.Write(_chunkId, LogMessageTypes.Warning,
+                        //   p + ") load attempt=" + loadAttempt + ") " + Logger.CreateExceptionString(ex));
+
+                        Console.WriteLine(p + ") load attempt=" + loadAttempt + ") " + Logger.CreateExceptionString(ex));
                         part.Reset();
                     }
                     else
@@ -205,8 +211,10 @@ namespace org.ohdsi.cdm.framework.desktop.Base
                 {
                     if (saveAttempt <= 11)
                     {
-                        Logger.Write(_chunkId, LogMessageTypes.Warning,
-                           p + ") save attempt=" + saveAttempt + ") " + Logger.CreateExceptionString(ex));
+                        //Logger.Write(_chunkId, LogMessageTypes.Warning,
+                        //   p + ") save attempt=" + saveAttempt + ") " + Logger.CreateExceptionString(ex));
+
+                        Console.WriteLine(p + ") save attempt=" + saveAttempt + ") " + Logger.CreateExceptionString(ex));
                     }
                     else
                     {

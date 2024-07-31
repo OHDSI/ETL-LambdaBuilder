@@ -6,42 +6,6 @@ namespace org.ohdsi.cdm.framework.desktop
 {
     public class Logger
     {
-        private static DbLog _dbLog;
-        private static DbLog DbLog
-        {
-            get
-            {
-                _dbLog ??= new DbLog(Settings.Settings.Current.Building.BuilderConnectionString);
-
-                return _dbLog;
-            }
-        }
-
-        public static void WriteError(Exception e)
-        {
-            Write(null, LogMessageTypes.Error, CreateExceptionString(e));
-        }
-
-        public static void WriteWarning(string message)
-        {
-            Write(null, LogMessageTypes.Warning, message);
-        }
-
-        public static void WriteError(int? chunkId, Exception e)
-        {
-            Write(chunkId, LogMessageTypes.Error, CreateExceptionString(e));
-        }
-
-        public static void Write(int? chunkId, LogMessageTypes type, string message)
-        {
-            Write(Settings.Settings.Current.Builder.Id, Settings.Settings.Current.Building.Id, chunkId, type, message);
-        }
-
-        public static void Write(int? builderId, int? buildingId, int? chunkId, LogMessageTypes type, string message)
-        {
-            DbLog.Add(builderId, buildingId, chunkId, type, message);
-        }
-
         public static string CreateExceptionString(Exception e)
         {
             var sb = new StringBuilder();

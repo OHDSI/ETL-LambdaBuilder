@@ -587,11 +587,6 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
 
         }
 
-        public virtual void CopyVocabulary()
-        {
-            throw new NotImplementedException();
-        }
-
         public virtual void Dispose()
         {
             GC.SuppressFinalize(this);

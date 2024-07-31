@@ -9,18 +9,21 @@ using System.Threading.Tasks;
 
 namespace org.ohdsi.cdm.presentation.lambdabuilder.Base
 {
-    public class LambdaChunkBuilder(Func<IPersonBuilder> createPersonBuilder, string tmpFolder)
+    public class LambdaChunkBuilder
     {
         #region Variables
-
-        private Func<IPersonBuilder> _createPersonBuilder = createPersonBuilder;
-        private readonly string _tmpFolder = tmpFolder;
-
+        private Func<IPersonBuilder> _createPersonBuilder ;
+        private readonly string _tmpFolder;
         #endregion
 
         public int TotalPersonConverted { get; private set; }
 
         #region Constructors
+        public LambdaChunkBuilder(Func<PersonBuilder> createPersonBuilder, string tmpFolder)
+        {
+            _createPersonBuilder = createPersonBuilder;
+            _tmpFolder = tmpFolder;
+        }
         #endregion
 
         #region Methods

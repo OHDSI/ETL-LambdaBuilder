@@ -3,6 +3,7 @@ using Amazon.S3.Model;
 using Amazon.S3.Transfer;
 using CommandLine;
 using org.ohdsi.cdm.framework.common.Enums;
+using org.ohdsi.cdm.framework.common.Utility;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -29,7 +30,7 @@ namespace RunETL
                  {
                      chunkscnt = o.ChunksCnt.Value;
                      slicescnt = o.SlicesCnt.Value;
-                     vendor = Vendor.CreateVendorInstanceByName(o.Vendor);
+                     vendor = EtlLibrary.CreateVendorInstance(ConfigurationManager.AppSettings["etlLibraryPath"], o.Vendor);
                      buildingid = o.Buildingid.Value;
                  });
 

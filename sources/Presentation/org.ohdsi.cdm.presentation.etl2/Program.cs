@@ -8,10 +8,12 @@ using org.ohdsi.cdm.framework.common.DataReaders.v5.v54;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Helpers;
+using org.ohdsi.cdm.framework.common.Utility;
 using org.ohdsi.cdm.framework.desktop.DbLayer;
 using org.ohdsi.cdm.framework.desktop.Settings;
 using org.ohdsi.cdm.framework.desktop3.Monitor;
 using System;
+using System.Configuration;
 using System.Data.Odbc;
 using System.Data.SqlClient;
 using System.IO;
@@ -43,6 +45,7 @@ namespace org.ohdsi.cdm.presentation.etl
 
             var vocabularySchema = string.Empty;
             Vendor vendor = null;
+            string vendorName = null;
             int batchSize = 0;
 
             bool createNewBuildingId = true;
@@ -64,7 +67,7 @@ namespace org.ohdsi.cdm.presentation.etl
                       sourceSchema = o.SourceSchema;
                       sourceDb = o.SourceDb;
                       vocabularySchema = o.VocabularySchema;
-                      vendor = Vendor.CreateVendorInstanceByName(o.Vendor);
+                      vendorName = o.Vendor;
                       batchSize = o.BatchSize;
                       createNewBuildingId = o.CreateNewBuildingId.Value;
                       skipCdmsource = o.CdmSource.Value;
@@ -82,6 +85,8 @@ namespace org.ohdsi.cdm.presentation.etl
                     .AddJsonFile("appsettings.json");
 
                 IConfigurationRoot configuration = builder.Build();
+
+                vendor = EtlLibrary.CreateVendorInstance(configuration.GetSection("AppSettings")["etlLibraryPath"], vendorName);
 
                 var builderConnectionString = configuration.GetConnectionString("Builder");
 
@@ -131,8 +136,7 @@ namespace org.ohdsi.cdm.presentation.etl
                 Settings.Current.MessageBucket = msgBucket;
 
                 Settings.Current.CDMFolder = cdmFolder;
-                Settings.Current.SaveOnlyToS3 = true;
-                Settings.Current.Builder.Folder = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+                Settings.Current.Folder = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
                 Settings.Current.ParallelQueries = int.Parse(configuration.GetSection("AppSettings")["parallel_queries"]);
                 Settings.Current.ParallelChunks = int.Parse(configuration.GetSection("AppSettings")["parallel_chunks"]);
@@ -174,6 +178,7 @@ namespace org.ohdsi.cdm.presentation.etl
                 Settings.Current.Building.RawVocabularyConnectionString = vocabularyConnectionString;
                 Settings.Current.Building.RawDestinationConnectionString = destinationConnectionString;
                 Settings.Current.Building.Vendor = vendor;
+                Settings.Current.Building.EtlLibraryPath = configuration.GetSection("AppSettings")["etlLibraryPath"];
 
                 if (!createNewBuildingId)
                 {
@@ -204,14 +209,14 @@ namespace org.ohdsi.cdm.presentation.etl
 
                 var useLocalSettings = string.IsNullOrEmpty(configuration.GetSection("AppSettings")["vendor_settings"]);
 
-                if (useLocalSettings)
-                {
-                    Console.WriteLine("vendor settings loaded from local");
-                }
-                else
-                {
-                    SettingsLoader.LoadVendorSettings(configuration);
-                }
+                //if (useLocalSettings)
+                //{
+                //    Console.WriteLine("vendor settings loaded from local");
+                //}
+                //else
+                //{
+                //    SettingsLoader.LoadVendorSettings(configuration);
+                //}
 
                 var lambdaUtility = new LambdaUtility(Settings.Current.S3AwsAccessKeyId,
                     Settings.Current.S3AwsSecretAccessKey,

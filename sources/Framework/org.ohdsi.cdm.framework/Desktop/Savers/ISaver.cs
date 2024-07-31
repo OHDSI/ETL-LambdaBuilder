@@ -15,6 +15,5 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
         void Write(ChunkData chunk, string table);
         void Commit();
         void Rollback();
-        void CopyVocabulary();
     }
 }

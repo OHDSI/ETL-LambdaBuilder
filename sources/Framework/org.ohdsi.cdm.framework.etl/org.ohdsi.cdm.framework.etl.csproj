@@ -61,8 +61,6 @@
     <None Remove="Transformation\CprdHES\Lookups\icd10.sql" />
     <None Remove="Transformation\CprdHES\Lookups\opcs.sql" />
     <None Remove="Transformation\CPRD\Batch.sql" />
-    <None Remove="Transformation\CPRD\CdmSource.sql" />
-    <None Remove="Transformation\CPRD\CohortDefinition.sql" />
     <None Remove="Transformation\CPRD\Definitions\Additional.xml" />
     <None Remove="Transformation\CPRD\Definitions\Clinical.xml" />
     <None Remove="Transformation\CPRD\Definitions\Immunisation.xml" />
@@ -86,7 +84,6 @@
     <None Remove="Transformation\ERA\Definitions\Person.xml" />
     <None Remove="Transformation\ERA\Lookups\Ingredient.sql" />
     <None Remove="Transformation\HealthVerity\Batch.sql" />
-    <None Remove="Transformation\HealthVerity\CdmSource.sql" />
     <None Remove="Transformation\HealthVerity\Definitions\cdm_diag.xml" />
     <None Remove="Transformation\HealthVerity\Definitions\cdm_enc_dtl.xml" />
     <None Remove="Transformation\HealthVerity\Definitions\emr_clin_obsn.xml" />
@@ -115,7 +112,6 @@
     <None Remove="Transformation\HealthVerity\Lookups\units.sql" />
     <None Remove="Transformation\HealthVerity\Lookups\ValueAsConceptId.sql" />
     <None Remove="Transformation\JMDC\Batch.sql" />
-    <None Remove="Transformation\JMDC\CdmSource.sql" />
     <None Remove="Transformation\JMDC\Definitions\Annual_health_checkups.xml" />
     <None Remove="Transformation\JMDC\Definitions\Claim.xml" />
     <None Remove="Transformation\JMDC\Definitions\Diagnosis.xml" />
@@ -131,8 +127,6 @@
     <None Remove="Transformation\JMDC\Lookups\JMDC_DRUGCODE_RXNORM.sql" />
     <None Remove="Transformation\JMDC\Lookups\JMDC_SPECIALTY.sql" />
     <None Remove="Transformation\OptumExtended\Batch.sql" />
-    <None Remove="Transformation\OptumExtended\CdmSourceDOD.sql" />
-    <None Remove="Transformation\OptumExtended\CdmSourceSES.sql" />
     <None Remove="Transformation\OptumExtended\Definitions\DEATH.xml" />
     <None Remove="Transformation\OptumExtended\Definitions\HRA.xml" />
     <None Remove="Transformation\OptumExtended\Definitions\INPATIENT_CONFINEMENT.xml" />
@@ -167,7 +161,6 @@
     <None Remove="Transformation\OptumExtended\Lookups\Specialty.sql" />
     <None Remove="Transformation\OptumExtended\Lookups\ValueAsConcept.sql" />
     <None Remove="Transformation\OptumPanther\Batch.sql" />
-    <None Remove="Transformation\OptumPanther\CdmSource.sql" />
     <None Remove="Transformation\OptumPanther\CombinedLookups\DaysSupply.xml" />
     <None Remove="Transformation\OptumPanther\Definitions\care_area.xml" />
     <None Remove="Transformation\OptumPanther\Definitions\diagnosis.xml" />
@@ -231,7 +224,6 @@
     <None Remove="Transformation\OptumPanther\Lookups\Route.sql" />
     <None Remove="Transformation\OptumPanther\Lookups\Specialty.sql" />
     <None Remove="Transformation\OptumPanther\Lookups\Visits.sql" />
-    <None Remove="Transformation\OptumPanther\OncoBatch.sql" />
     <None Remove="Transformation\PregnancyAlgorithm\Batch.sql" />
     <None Remove="Transformation\PregnancyAlgorithm\Definitions\ConditionOccurrence.xml" />
     <None Remove="Transformation\PregnancyAlgorithm\Definitions\DrugExposures.xml" />
@@ -240,7 +232,6 @@
     <None Remove="Transformation\PregnancyAlgorithm\Definitions\Person.xml" />
     <None Remove="Transformation\PregnancyAlgorithm\Definitions\ProcedureOccurrences.xml" />
     <None Remove="Transformation\Premier\Batch.sql" />
-    <None Remove="Transformation\Premier\CdmSource.sql" />
     <None Remove="Transformation\Premier\Definitions\genlab.xml" />
     <None Remove="Transformation\Premier\Definitions\lab_result.xml" />
     <None Remove="Transformation\Premier\Definitions\L_CARE_SITE.xml" />
@@ -272,9 +263,6 @@
     <None Remove="Transformation\Premier\Lookups\Snomed.sql" />
     <None Remove="Transformation\Premier\Lookups\Specialty.sql" />
     <None Remove="Transformation\Truven\Batch.sql" />
-    <None Remove="Transformation\Truven\CdmSourceCCAE.sql" />
-    <None Remove="Transformation\Truven\CdmSourceMDCD.sql" />
-    <None Remove="Transformation\Truven\CdmSourceMDCR.sql" />
     <None Remove="Transformation\Truven\Definitions\DRUG_CLAIMS.xml" />
     <None Remove="Transformation\Truven\Definitions\ENROLLMENT_DETAIL.xml" />
     <None Remove="Transformation\Truven\Definitions\ENROLLMENT_DETAIL_MDCD.xml" />
@@ -464,12 +452,6 @@
     <EmbeddedResource Include="Transformation\CPRD\Batch.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\CPRD\CdmSource.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\CPRD\CohortDefinition.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
     <EmbeddedResource Include="Transformation\CPRD\Definitions\Additional.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -537,9 +519,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Transformation\HealthVerity\Batch.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\HealthVerity\CdmSource.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Transformation\HealthVerity\Definitions\cdm_diag.xml">
@@ -626,9 +605,6 @@
     <EmbeddedResource Include="Transformation\JMDC\Batch.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\JMDC\CdmSource.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
     <EmbeddedResource Include="Transformation\JMDC\Definitions\Annual_health_checkups.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -675,12 +651,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Transformation\CDM\Lookups\grr.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\OptumExtended\CdmSourceDOD.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\OptumExtended\CdmSourceSES.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Transformation\OptumExtended\Definitions\DEATH.xml">
@@ -783,9 +753,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Transformation\OptumPanther\Batch.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\OptumPanther\CdmSource.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Transformation\OptumPanther\CombinedLookups\DaysSupply.xml">
@@ -977,9 +944,6 @@
     <EmbeddedResource Include="Transformation\OptumPanther\Lookups\Visits.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\OptumPanther\OncoBatch.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
     <EmbeddedResource Include="Transformation\PregnancyAlgorithm\Batch.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -1002,9 +966,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Transformation\Premier\Batch.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\Premier\CdmSource.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Transformation\Premier\Definitions\genlab.xml">
@@ -1098,15 +1059,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Transformation\Truven\Batch.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\Truven\CdmSourceCCAE.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\Truven\CdmSourceMDCD.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\Truven\CdmSourceMDCR.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Transformation\Truven\Definitions\DRUG_CLAIMS.xml">

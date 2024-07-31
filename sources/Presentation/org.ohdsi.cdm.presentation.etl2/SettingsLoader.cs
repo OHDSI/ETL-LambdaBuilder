@@ -8,63 +8,58 @@ using System.Linq;
 
 namespace org.ohdsi.cdm.presentation.etl
 {
-    class SettingsLoader
-    {
-        public static void LoadVendorSettings(IConfigurationRoot config)
-        {
-            Console.WriteLine();
-            Console.WriteLine("loading vendor settings from S3...");
-            var vendorFolder = Settings.Current.Building.Vendor.Folder;
+    //class SettingsLoader
+    //{
+    //    public static void LoadVendorSettings(IConfigurationRoot config)
+    //    {
+    //        Console.WriteLine();
+    //        Console.WriteLine("loading vendor settings from S3...");
+    //        var vendorFolder = Settings.Current.Building.Vendor.Folder;
 
-            Settings.Current.VendorSettings = config.GetSection("AppSettings")["vendor_settings"];
-            vendorFolder = Path.Combine(Settings.Current.VendorSettings, "Core", "Transformation",
-                vendorFolder);
+    //        Settings.Current.VendorSettings = config.GetSection("AppSettings")["vendor_settings"];
+    //        vendorFolder = Path.Combine(Settings.Current.VendorSettings, "Core", "Transformation",
+    //            vendorFolder);
 
-            var batch = "Batch.sql";
-            /*= Settings.Current.Building.Vendor.GetAttribute<BatchFileAttribute>() == null
-            ? "Batch.sql"
-            : Settings.Current.Building.Vendor.GetAttribute<BatchFileAttribute>().Value;
-            */
+    //        var batch = "Batch.sql";
+    //        var cdmSource = Settings.Current.Building.Vendor.CdmSource;
 
-            var cdmSource = Settings.Current.Building.Vendor.CdmSource;
+    //        Settings.Current.Building.BatchScript = Helper.S3ReadAllText(Path.Combine(vendorFolder, batch));
+    //        Settings.Current.Building.CdmSourceScript = Helper.S3ReadAllText(Path.Combine(vendorFolder, cdmSource));
+    //        Settings.Current.Building.CohortDefinitionScript =
+    //            Helper.S3ReadAllText(Path.Combine(vendorFolder, "CohortDefinition.sql"));
 
-            Settings.Current.Building.BatchScript = Helper.S3ReadAllText(Path.Combine(vendorFolder, batch));
-            Settings.Current.Building.CdmSourceScript = Helper.S3ReadAllText(Path.Combine(vendorFolder, cdmSource));
-            Settings.Current.Building.CohortDefinitionScript =
-                Helper.S3ReadAllText(Path.Combine(vendorFolder, "CohortDefinition.sql"));
+    //        var folder = Path.Combine(vendorFolder, "Definitions");
+    //        Settings.Current.Building.SourceQueryDefinitions = Helper.GetFiles(folder).ToArray().Select(
+    //            definition =>
+    //            {
+    //                var qd = new QueryDefinition().DeserializeFromXml(Helper.S3ReadAllText(definition));
+    //                var fileInfo = new FileInfo(definition);
+    //                qd.FileName = fileInfo.Name.Replace(fileInfo.Extension, "");
 
-            var folder = Path.Combine(vendorFolder, "Definitions");
-            Settings.Current.Building.SourceQueryDefinitions = Helper.GetFiles(folder).ToArray().Select(
-                definition =>
-                {
-                    var qd = new QueryDefinition().DeserializeFromXml(Helper.S3ReadAllText(definition));
-                    var fileInfo = new FileInfo(definition);
-                    qd.FileName = fileInfo.Name.Replace(fileInfo.Extension, "");
+    //                return qd;
+    //            }).ToList();
 
-                    return qd;
-                }).ToList();
+    //        folder = Path.Combine(vendorFolder, "CombinedLookups");
 
-            folder = Path.Combine(vendorFolder, "CombinedLookups");
+    //        //if (Directory.Exists(folder))
+    //        {
+    //            var lookups = Helper.GetFiles(folder).ToArray();
+    //            if (lookups.Length > 0)
+    //            {
+    //                Settings.Current.Building.LookupDefinitions = lookups.Select(
+    //                    definition =>
+    //                    {
+    //                        var ld = new LookupDefinition().DeserializeFromXml(Helper.S3ReadAllText(definition));
 
-            //if (Directory.Exists(folder))
-            {
-                var lookups = Helper.GetFiles(folder).ToArray();
-                if (lookups.Length > 0)
-                {
-                    Settings.Current.Building.LookupDefinitions = lookups.Select(
-                        definition =>
-                        {
-                            var ld = new LookupDefinition().DeserializeFromXml(Helper.S3ReadAllText(definition));
+    //                        var fileInfo = new FileInfo(definition);
+    //                        ld.FileName = fileInfo.Name.Replace(fileInfo.Extension, "");
 
-                            var fileInfo = new FileInfo(definition);
-                            ld.FileName = fileInfo.Name.Replace(fileInfo.Extension, "");
+    //                        return ld;
+    //                    }).ToList();
+    //            }
+    //        }
 
-                            return ld;
-                        }).ToList();
-                }
-            }
-
-            Console.WriteLine("vendor settings - loaded successfully");
-        }
-    }
+    //        Console.WriteLine("vendor settings - loaded successfully");
+    //    }
+    //}
 }
