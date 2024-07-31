@@ -22,6 +22,7 @@ using CsvHelper;
 using CsvHelper.Configuration;
 using System.Globalization;
 using org.ohdsi.cdm.framework.common.Utility;
+using System.Reflection;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
@@ -38,8 +39,9 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
         private int _chunkId;
         private string _prefix;
         private static string _tmpFolder = null;
-        private static PersonBuilder _personBuilder;
-        private const string EtlLibraryPath = "/opt";
+        private static ConstructorInfo _personBuilderConstructor;
+        
+        public static string EtlLibraryPath { get; set; }
 
         public static string TmpFolder
         {
@@ -77,7 +79,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
         {
             Settings.Current.Started = DateTime.Now;
             Settings.Current.Error = false;
-            _personBuilder = null;
+            _personBuilderConstructor = null;
 
             _attemptFileRemoved = false;
             _lastSavedPersonIdOutput = null;
@@ -105,7 +107,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
         }
 
         public async Task<string> FunctionHandler2(string s3AwsAccessKeyId, string s3AwsSecretAccessKey, string bucket, string folder, Vendor vendor, int buildingId, int chunkId, string prefix,
-            int attempt)
+            int attempt, string etlLibraryPath)
         {
             Dictionary<string, long> restorePoint = null;
 
@@ -119,6 +121,8 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                         Console.WriteLine("Too many attempts");
                         return null;
                     }
+
+                    EtlLibraryPath = etlLibraryPath;
 
                     Settings.Current.S3AwsAccessKeyId = s3AwsAccessKeyId;
                     Settings.Current.S3AwsSecretAccessKey = s3AwsSecretAccessKey;
@@ -241,6 +245,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                 return null;
             }
 
+            EtlLibraryPath = "/opt";
             _chunkId = 0;
             _prefix = string.Empty;
             int buildingId = 0;
@@ -794,10 +799,11 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
 
         private static PersonBuilder CreatePersonBuilder()
         {
-            if(_personBuilder == null)
-                _personBuilder = EtlLibrary.CreateBuilder(EtlLibraryPath, Settings.Current.Building.Vendor);
+            if(_personBuilderConstructor == null)
+                _personBuilderConstructor = EtlLibrary.GetBuilderConstructor(EtlLibraryPath, Settings.Current.Building.Vendor);
 
-            return _personBuilder;
+            var handle = (PersonBuilder)_personBuilderConstructor.Invoke([Settings.Current.Building.Vendor]);
+            return handle;
         }
     }
 }
