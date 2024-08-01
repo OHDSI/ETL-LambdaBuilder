@@ -27,4 +27,4 @@ jobs:
     - name: Display Output
       run: dir output
     - name: Push to NuGet
-      run: dotnet nuget push output/org.ohdsi.cdm.framework.${{ steps.gitversion.outputs.version }}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.LAMBDABUILDER }}
+      run: dotnet nuget push output/org.ohdsi.cdm.framework.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.LAMBDABUILDER }}
