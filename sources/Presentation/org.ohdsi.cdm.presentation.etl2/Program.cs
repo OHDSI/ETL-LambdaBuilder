@@ -86,7 +86,7 @@ namespace org.ohdsi.cdm.presentation.etl
 
                 IConfigurationRoot configuration = builder.Build();
 
-                vendor = EtlLibrary.CreateVendorInstance(configuration.GetSection("AppSettings")["etlLibraryPath"], vendorName);
+                vendor = EtlLibrary.CreateVendorInstance(configuration.GetSection("AppSettings")["etlLibraryFolderPath"], vendorName);
 
                 var builderConnectionString = configuration.GetConnectionString("Builder");
 
@@ -178,7 +178,7 @@ namespace org.ohdsi.cdm.presentation.etl
                 Settings.Current.Building.RawVocabularyConnectionString = vocabularyConnectionString;
                 Settings.Current.Building.RawDestinationConnectionString = destinationConnectionString;
                 Settings.Current.Building.Vendor = vendor;
-                Settings.Current.Building.EtlLibraryPath = configuration.GetSection("AppSettings")["etlLibraryPath"];
+                Settings.Current.Building.EtlLibraryPath = configuration.GetSection("AppSettings")["etlLibraryFolderPath"];
 
                 if (!createNewBuildingId)
                 {
