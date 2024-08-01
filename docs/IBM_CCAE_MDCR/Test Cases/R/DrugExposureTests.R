@@ -81,11 +81,15 @@ createDrugExposureTests <- function () {
   
   patient <- createPatient()
   encounter <- createEncounter()
-  declareTest(id = patient$person_id, "Source_concept_ids must be different for different dates")
+  declareTest(id = patient$person_id, "Source_concept_ids must vary for different dates")
   add_enrollment_detail(enrolid=patient$enrolid, dtend = '2023-06-30', dtstart = '1970-01-01')
   add_inpatient_services(enrolid = patient$enrolid, proc1 = 'J9350', svcdate = '1970-01-01', tsvcdat = '1970-01-01', caseid = encounter$caseid, year = '1970')
   add_inpatient_services(enrolid = patient$enrolid, proc1 = 'J9350', svcdate = '2014-11-11', tsvcdat = '2014-11-11', caseid = encounter$caseid, year = '2014')
   add_inpatient_services(enrolid = patient$enrolid, proc1 = 'J9350', svcdate = '2023-07-01', tsvcdat = '2023-07-01', caseid = encounter$caseid, year = '2023')
+  expect_drug_exposure(person_id = patient$person_id, drug_concept_id = '19124326', drug_source_concept_id = '2718911', drug_exposure_start_date = '1970-01-01', drug_exposure_end_date = '2014-11-10')
+  expect_drug_exposure(person_id = patient$person_id, drug_concept_id = '0', drug_source_concept_id = '0', drug_exposure_start_date = '2014-11-11', drug_exposure_end_date = '2023-06-30')
+  expect_drug_exposure(person_id = patient$person_id, drug_concept_id = '1302318', drug_source_concept_id = '2100003123', drug_exposure_start_date = '2023-07-01', drug_exposure_end_date = '2099-12-31')
+  
 }
 
 
