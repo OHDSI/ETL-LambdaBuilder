@@ -17,14 +17,14 @@ jobs:
       with:
         dotnet-version: 8.0.x
     - name: Restore dependencies
-      run: dotnet restore .\sources\Framework\org.ohdsi.cdm.framework\org.ohdsi.cdm.framework.csproj
+      run: dotnet restore sources/Framework/org.ohdsi.cdm.framework/org.ohdsi.cdm.framework.csproj
     - name: Build
-      run: dotnet build -c Release .\sources\Framework\org.ohdsi.cdm.framework\org.ohdsi.cdm.framework.csproj
+      run: dotnet build -c Release sources/Framework/org.ohdsi.cdm.framework/org.ohdsi.cdm.framework.csproj
     - name: Test
-      run: dotnet test -c Release --no-build .\sources\Framework\org.ohdsi.cdm.framework\org.ohdsi.cdm.framework.csproj
+      run: dotnet test -c Release --no-build sources/Framework/org.ohdsi.cdm.framework/org.ohdsi.cdm.framework.csproj
     - name: Create NuGet Package
       run: >
-          dotnet pack -c Release --no-build .\sources\Framework\org.ohdsi.cdm.framework\org.ohdsi.cdm.framework.csproj
+          dotnet pack -c Release --no-build sources/Framework/org.ohdsi.cdm.framework/org.ohdsi.cdm.framework.csproj
           -o output
           -p:AssemblyVersion=${{ steps.gitversion.outputs.major }}.0.0.0
           -p:FileVersion=${{ steps.gitversion.outputs.version }}.${{ github.run_number }}
