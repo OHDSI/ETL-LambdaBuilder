@@ -5,6 +5,7 @@ using System.Configuration;
 using System.IO;
 using org.ohdsi.cdm.framework.common.Enums;
 using Function = org.ohdsi.cdm.presentation.lambdabuilder.Function;
+using org.ohdsi.cdm.framework.common.Utility;
 
 namespace RunLocal
 {
@@ -26,9 +27,8 @@ namespace RunLocal
 
             Console.WriteLine($"{Directory.GetCurrentDirectory()}");
 
-            //Process(Vendor.CreateVendorInstanceByName("OptumOncology"), 19140, 178, "0087", true);
-            bool arg4 = false;
-            //Process(Vendor.CreateVendorInstanceByName(args[0]), int.Parse(args[1]), int.Parse(args[2]), args[3], bool.TryParse(args[4], out arg4));
+            var etlLibraryPath = "";
+            Process(EtlLibrary.CreateVendorInstance(etlLibraryPath, args[0]), int.Parse(args[1]), int.Parse(args[2]), args[3], bool.Parse(args[4]), etlLibraryPath);
 
             //int[] slicesNum = [24, 40, 48, 96, 192];
 
@@ -40,7 +40,7 @@ namespace RunLocal
             Console.ReadLine();
         }
 
-        private static string Process(Vendor vendor, int buildingId, int chunkId, string prefix, bool clean)
+        private static string Process(Vendor vendor, int buildingId, int chunkId, string prefix, bool clean, string etlLibraryPath)
         {
             try
             {
@@ -86,7 +86,7 @@ namespace RunLocal
                 var client = new AmazonS3Client(_awsAccessKeyId, _awsSecretAccessKey, config);
 
                 var func = new Function(client);
-                var t = func.FunctionHandler2(_awsAccessKeyId, _awsSecretAccessKey, _bucket, _cdmFolder, vendor, buildingId, chunkId, prefix, 0);
+                var t = func.FunctionHandler2(_awsAccessKeyId, _awsSecretAccessKey, _bucket, _cdmFolder, vendor, buildingId, chunkId, prefix, 0, etlLibraryPath);
                 t.Wait();
 
                 Console.WriteLine($"chunkId={chunkId};prefix={prefix} - DONE");

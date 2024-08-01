@@ -136,25 +136,22 @@ namespace org.ohdsi.cdm.framework.common.Utility
             throw new KeyNotFoundException($"CreateVendorInstance | Vendor: {name}; LibraryPath: {etlLibraryPath} - not exists");
         }
 
-        public static PersonBuilder CreateBuilder(string etlLibraryPath, Vendor vendor)
+        public static ConstructorInfo GetBuilderConstructor(string etlLibraryPath, Vendor vendor)
         {
             foreach (var assembly in GetETLAssemblies(etlLibraryPath))
             {
                 var builderTypes = assembly.GetTypes().
                     Where(t => t.IsSubclassOf(typeof(PersonBuilder)) && !t.IsAbstract);
 
-                var vendorTypePersonBuilder = builderTypes.First(a => NormalizeVendorName(a.Name).Contains(NormalizeVendorName(vendor.Name), StringComparison.CurrentCultureIgnoreCase));
+                var vendorTypePersonBuilder = builderTypes.FirstOrDefault(a => NormalizeVendorName(a.Name).Contains(NormalizeVendorName(vendor.Name), StringComparison.CurrentCultureIgnoreCase));
 
-                var constructor = vendorTypePersonBuilder.GetConstructor([typeof(Vendor)]) ?? throw new InvalidOperationException($"No suitable constructor found for type {vendorTypePersonBuilder.Name}");
-                var handle = (PersonBuilder)constructor.Invoke([vendor]);
-
-                Console.WriteLine("CreateBuilder | assembly: " + assembly.FullName);
-                Console.WriteLine("CreateBuilder | handle: " + handle);
-
-                return handle;
+                if (vendorTypePersonBuilder != null)
+                {
+                    return vendorTypePersonBuilder.GetConstructor([typeof(Vendor)]) ?? throw new InvalidOperationException($"No suitable constructor found for type {vendorTypePersonBuilder.Name}");
+                }
             }
 
-            throw new KeyNotFoundException($"CreateBuilder | Vendor: {vendor}; LibraryPath: {etlLibraryPath} - not exists");
+            throw new KeyNotFoundException($"GetBuilderConstructor | Vendor: {vendor}; LibraryPath: {etlLibraryPath} - not exists");
         }        
     }
 }

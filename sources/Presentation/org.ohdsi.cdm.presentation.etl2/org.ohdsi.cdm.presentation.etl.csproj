@@ -8,14 +8,14 @@
 
   <ItemGroup>
     <None Remove="appsettings.json" />
-    <None Remove="builderdll.sql" />
+    <None Remove="builderddl.sql" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <EmbeddedResource Include="builderdll.sql">
+    <EmbeddedResource Include="builderddl.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
