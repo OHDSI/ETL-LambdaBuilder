@@ -1,0 +1,36 @@
+name: Release to NuGet
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+    - name: Restore dependencies
+      run: dotnet restore dotnet restore .\sources\Framework\org.ohdsi.cdm.framework\org.ohdsi.cdm.framework.csproj
+    - name: Build
+      run: dotnet build -c Release .\sources\Framework\org.ohdsi.cdm.framework\org.ohdsi.cdm.framework.csproj
+    - name: Test
+      run: dotnet test -c Release --no-build .\sources\Framework\org.ohdsi.cdm.framework\org.ohdsi.cdm.framework.csproj
+    - name: Create NuGet Package
+      run: >
+          dotnet pack -c Release --no-build .\sources\Framework\org.ohdsi.cdm.framework\org.ohdsi.cdm.framework.csproj
+          -o output
+          -p:AssemblyVersion=${{ steps.gitversion.outputs.major }}.0.0.0
+          -p:FileVersion=${{ steps.gitversion.outputs.version }}.${{ github.run_number }}
+          -p:InformationalVersion=${{ steps.gitversion.outputs.version }}
+          -p:PackageVersion=${{ steps.gitversion.outputs.version }}
+    - name: Display Output
+      run: dir output
+    - name: Push to NuGet
+      run: dotnet nuget push output/org.ohdsi.cdm.framework.${{ steps.gitversion.outputs.version }}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.LAMBDABUILDER }}
