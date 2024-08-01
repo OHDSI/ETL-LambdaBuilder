@@ -23,13 +23,7 @@ jobs:
     - name: Test
       run: dotnet test -c Release --no-build sources/Framework/org.ohdsi.cdm.framework/org.ohdsi.cdm.framework.csproj
     - name: Create NuGet Package
-      run: >
-          dotnet pack -c Release --no-build sources/Framework/org.ohdsi.cdm.framework/org.ohdsi.cdm.framework.csproj
-          -o output
-          -p:AssemblyVersion=${{ steps.gitversion.outputs.major }}.0.0.0
-          -p:FileVersion=${{ steps.gitversion.outputs.version }}.${{ github.run_number }}
-          -p:InformationalVersion=${{ steps.gitversion.outputs.version }}
-          -p:PackageVersion=${{ steps.gitversion.outputs.version }}
+      run: dotnet pack -c Release --no-build sources/Framework/org.ohdsi.cdm.framework/org.ohdsi.cdm.framework.csproj -o output
     - name: Display Output
       run: dir output
     - name: Push to NuGet
