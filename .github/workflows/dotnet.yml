@@ -23,8 +23,6 @@ jobs:
     - name: Test
       run: dotnet test -c Release --no-build sources/Framework/org.ohdsi.cdm.framework/org.ohdsi.cdm.framework.csproj
     - name: Create NuGet Package
-      run: dotnet pack -c Release --no-build sources/Framework/org.ohdsi.cdm.framework/org.ohdsi.cdm.framework.csproj -o output
-    - name: Display Output
-      run: dir output
+      run: dotnet pack -c Release --no-build sources/Framework/org.ohdsi.cdm.framework/org.ohdsi.cdm.framework.csproj
     - name: Push to NuGet
-      run: dotnet nuget push output/org.ohdsi.cdm.framework.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.LAMBDABUILDER }}
+      run: dotnet nuget push **/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.LAMBDABUILDER }}
