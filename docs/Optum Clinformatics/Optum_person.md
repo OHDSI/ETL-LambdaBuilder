@@ -100,6 +100,9 @@ Race is also now split into two variables such that patients can denote both the
 
 ## Change log
 
+### 2-Aug-2024
+- Race and ethnicity now self-reported as two separate columns
+
 ### 3-Nov-2023
 - Race now included in Member_Enrollment table instead of SES table 
 - Race added to DOD
