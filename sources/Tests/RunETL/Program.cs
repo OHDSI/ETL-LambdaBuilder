@@ -30,7 +30,7 @@ namespace RunETL
                  {
                      chunkscnt = o.ChunksCnt.Value;
                      slicescnt = o.SlicesCnt.Value;
-                     vendor = EtlLibrary.CreateVendorInstance(ConfigurationManager.AppSettings["etlLibraryPath"], o.Vendor);
+                     vendor = EtlLibrary.CreateVendorInstance(ConfigurationManager.AppSettings["etlLibraryFolderPath"], o.Vendor);
                      buildingid = o.Buildingid.Value;
                  });
 

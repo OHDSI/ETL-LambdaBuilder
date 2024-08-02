@@ -27,8 +27,8 @@ namespace RunLocal
 
             Console.WriteLine($"{Directory.GetCurrentDirectory()}");
 
-            var etlLibraryPath = "";
-            Process(EtlLibrary.CreateVendorInstance(etlLibraryPath, args[0]), int.Parse(args[1]), int.Parse(args[2]), args[3], bool.Parse(args[4]), etlLibraryPath);
+            var vendor = EtlLibrary.CreateVendorInstance(args[5], args[0]);
+            Process(vendor, int.Parse(args[1]), int.Parse(args[2]), args[3], bool.Parse(args[4]), args[5]);
 
             //int[] slicesNum = [24, 40, 48, 96, 192];
 
@@ -40,7 +40,7 @@ namespace RunLocal
             Console.ReadLine();
         }
 
-        private static string Process(Vendor vendor, int buildingId, int chunkId, string prefix, bool clean, string etlLibraryPath)
+        private static string Process(Vendor vendor, int buildingId, int chunkId, string prefix, bool clean, string etlLibraryFolderPath)
         {
             try
             {
@@ -86,7 +86,7 @@ namespace RunLocal
                 var client = new AmazonS3Client(_awsAccessKeyId, _awsSecretAccessKey, config);
 
                 var func = new Function(client);
-                var t = func.FunctionHandler2(_awsAccessKeyId, _awsSecretAccessKey, _bucket, _cdmFolder, vendor, buildingId, chunkId, prefix, 0, etlLibraryPath);
+                var t = func.FunctionHandler2(_awsAccessKeyId, _awsSecretAccessKey, _bucket, _cdmFolder, vendor, buildingId, chunkId, prefix, 0, etlLibraryFolderPath);
                 t.Wait();
 
                 Console.WriteLine($"chunkId={chunkId};prefix={prefix} - DONE");

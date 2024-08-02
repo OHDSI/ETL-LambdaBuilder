@@ -107,7 +107,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
         }
 
         public async Task<string> FunctionHandler2(string s3AwsAccessKeyId, string s3AwsSecretAccessKey, string bucket, string folder, Vendor vendor, int buildingId, int chunkId, string prefix,
-            int attempt, string etlLibraryPath)
+            int attempt, string etlLibraryFolderPath)
         {
             Dictionary<string, long> restorePoint = null;
 
@@ -122,7 +122,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                         return null;
                     }
 
-                    EtlLibraryPath = etlLibraryPath;
+                    EtlLibraryPath = etlLibraryFolderPath;
 
                     Settings.Current.S3AwsAccessKeyId = s3AwsAccessKeyId;
                     Settings.Current.S3AwsSecretAccessKey = s3AwsSecretAccessKey;

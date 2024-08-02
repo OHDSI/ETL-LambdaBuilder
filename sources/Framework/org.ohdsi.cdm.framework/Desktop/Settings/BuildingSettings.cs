@@ -234,7 +234,7 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
 
         private void SetVendorSettings()
         {
-            Console.WriteLine("etlLibraryPath: " + EtlLibraryPath);
+            Console.WriteLine("etlLibraryFolderPath: " + EtlLibraryPath);
             EtlLibrary.LoadVendorSettings(EtlLibraryPath, this); 
         }
 

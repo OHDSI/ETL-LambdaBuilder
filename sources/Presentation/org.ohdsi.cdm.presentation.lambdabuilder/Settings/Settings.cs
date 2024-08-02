@@ -49,10 +49,10 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
 
         #region Methods
 
-        public static void Initialize(int buildingId, Vendor vendor, string etlLibraryPath)
+        public static void Initialize(int buildingId, Vendor vendor, string etlLibraryFolderPath)
         {
             Current.Building = new BuildingSettings { Id = buildingId, Vendor = vendor };
-            Current.Building.SetVendorSettings(etlLibraryPath);
+            Current.Building.SetVendorSettings(etlLibraryFolderPath);
         }
 
         #endregion

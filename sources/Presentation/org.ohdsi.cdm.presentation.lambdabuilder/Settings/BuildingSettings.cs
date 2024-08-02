@@ -18,9 +18,9 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
 
         public string BatchScript { get; set; }
 
-        public void SetVendorSettings(string etlLibraryPath)
+        public void SetVendorSettings(string etlLibraryFolderPath)
         {
-            EtlLibrary.LoadVendorSettings(etlLibraryPath, this);
+            EtlLibrary.LoadVendorSettings(etlLibraryFolderPath, this);
         }
     }
 }
