@@ -44,11 +44,12 @@ The information in the PERSON table is sourced from the  **Member_Continuous_Enr
 
 Optum generally prioritizes the most recently received self-reported race value for a patient. If multiple race values are received for a patient at the same time, Optum first prioritize the race with the highest frequency of reporting and if there are equal numbers of reported records for each different race value, the patient is considered multi-race and mapped to 'Unknown' race.
 
+Race is also now split into two variables such that patients can denote both their race and ethnicity rather than the two being combined.
+
 |**Race**|**DESCRIPTION**|**OMOP Concept_Id**|
 |:-----:|:-----:|:-----:|
 |A|Asian|8515|
 |B|Black|8516|
-|H|Hispanic|0|
 |W|White|8527|
 |U, Blank, or *NULL*|Unknown|0|
 
@@ -56,10 +57,8 @@ Optum generally prioritizes the most recently received self-reported race value 
 
 |Race|DESCRIPTION|OMOP Concept_Id|
 |:-----:|:-----:|:-----:|
-|A|Asian|38003564|
-|B|Black|38003564|
+|N|Not Hispanic|38003564|
 |H|Hispanic|38003563|
-|W|White|38003564|
 |U, Blank, or *NULL*|Unknown|0|
 
 
