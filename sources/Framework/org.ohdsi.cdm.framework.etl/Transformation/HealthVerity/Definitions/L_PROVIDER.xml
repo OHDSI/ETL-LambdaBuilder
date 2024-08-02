@@ -3,7 +3,7 @@
 		select distinct enc_prov_taxnmy_id as specialty_source_value,
 		enc_prov_id provider_source_value,
 		coalesce(enc_prov_id, '') || ';' || coalesce(enc_prov_taxnmy_id, '') ProviderIdKey
-		from cdm_health_verity_cc_ehr_cce_v2776.emr_enc
+		from {sc}.emr_enc
 	</Query>
 	<Providers>
 		<ProviderDefinition>

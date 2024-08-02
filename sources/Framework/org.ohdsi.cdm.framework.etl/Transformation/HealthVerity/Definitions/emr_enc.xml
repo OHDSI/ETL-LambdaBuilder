@@ -6,7 +6,7 @@
 		hv_enc_dt,
 		hv_enc_id,
 		coalesce(enc_prov_id, '') || ';' || coalesce(enc_prov_taxnmy_id, '') ProviderIdKey
-		from cdm_health_verity_cc_ehr_cce_v2776.emr_enc
+		from {sc}.emr_enc
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
 		where hv_enc_dt is not null
 		order by ch.person_id

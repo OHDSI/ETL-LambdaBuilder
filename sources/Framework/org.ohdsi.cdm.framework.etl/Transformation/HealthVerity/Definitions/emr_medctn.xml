@@ -19,7 +19,7 @@
 		else '4'
 		end as type,
 		32833 type_concept_id
-		from cdm_health_verity_cc_ehr_cce_v2776.emr_medctn
+		from {sc}.emr_medctn
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
 		where coalesce(hv_medctn_dt, medctn_start_dt, medctn_admin_dt, medctn_ord_dt) is not null
 		order by 1
