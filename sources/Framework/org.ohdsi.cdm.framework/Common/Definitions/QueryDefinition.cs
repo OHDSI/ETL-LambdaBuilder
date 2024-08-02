@@ -170,6 +170,9 @@ namespace org.ohdsi.cdm.framework.common.Definitions
             if (string.IsNullOrEmpty(databases))
                 return true;
 
+            if (databases.Equals("none", StringComparison.OrdinalIgnoreCase))
+                return false;
+
             return
                databases.Split(separator, StringSplitOptions.RemoveEmptyEntries)
                   .Any(db => vendor.ToString().Contains(db.Trim(), StringComparison.CurrentCultureIgnoreCase));

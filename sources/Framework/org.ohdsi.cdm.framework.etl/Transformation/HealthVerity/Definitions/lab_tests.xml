@@ -1,5 +1,5 @@
 ﻿<QueryDefinition>
-	<Query>
+	<Query database="none">
 		SELECT
 		ch.person_id as PersonId,
 		coalesce(date_service, date_specimen) as date_service,

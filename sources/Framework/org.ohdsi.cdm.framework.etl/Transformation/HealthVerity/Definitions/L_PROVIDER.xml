@@ -1,5 +1,5 @@
 ﻿<QueryDefinition>
-	<Query>
+	<Query database="none">
 		select distinct enc_prov_taxnmy_id as specialty_source_value,
 		enc_prov_id provider_source_value,
 		coalesce(enc_prov_id, '') || ';' || coalesce(enc_prov_taxnmy_id, '') ProviderIdKey

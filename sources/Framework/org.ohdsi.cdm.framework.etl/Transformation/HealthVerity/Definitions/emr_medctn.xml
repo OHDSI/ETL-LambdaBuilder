@@ -1,5 +1,5 @@
 ﻿<QueryDefinition>
-	<Query>
+	<Query database="none">
 		SELECT
 		ch.person_id as PersonId,
 		hvid,
