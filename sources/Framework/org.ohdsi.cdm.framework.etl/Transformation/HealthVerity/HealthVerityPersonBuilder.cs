@@ -713,9 +713,9 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
         {
             foreach (var de in base.BuildDrugExposures(drugExposures, visitOccurrences, observationPeriods))
             {
-                int? daysSupply = 1;
                 if (de.AdditionalFields != null && de.AdditionalFields.ContainsKey("medctn_days_supply_cnt"))
                 {
+                    int? daysSupply = 1;
                     var daysSupplyValue = de.AdditionalFields["medctn_days_supply_cnt"];
 
                     if (!string.IsNullOrEmpty(daysSupplyValue))
@@ -730,10 +730,10 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
                                 daysSupply = 365;
                         }
                     }
-                }
 
-                de.EndDate = de.StartDate.AddDays(daysSupply.Value - 1);
-                de.DaysSupply = daysSupply;
+                    de.EndDate = de.StartDate.AddDays(daysSupply.Value - 1);
+                    de.DaysSupply = daysSupply;
+                }
 
                 yield return de;
             }
