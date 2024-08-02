@@ -127,7 +127,7 @@
                   </Mapper>
                </ConceptIdMappers>
                <Fields>
-                  <Field key="CLAIM_TYPE" defaultTypeId="38004277"/>
+                  <Field key="CLAIM_TYPE" defaultTypeId="32844"/>
                </Fields>
             </Concept>
          </Concepts>

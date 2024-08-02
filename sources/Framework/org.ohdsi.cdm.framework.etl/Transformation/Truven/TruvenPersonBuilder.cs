@@ -575,7 +575,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Truven
                             break;
 
                         // LONG TERM CARE
-                        case 38004277:
+                        case 32844:
                             visitDetail.ConceptId = 42898160;
                             break;
 
