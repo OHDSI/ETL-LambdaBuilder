@@ -1,0 +1,22 @@
+name: Release to NuGet
+on:
+  workflow_dispatch:
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+    - name: Restore dependencies
+      run: dotnet restore sources/Framework/org.ohdsi.cdm.framework/org.ohdsi.cdm.framework.csproj
+    - name: Build
+      run: dotnet build -c Release sources/Framework/org.ohdsi.cdm.framework/org.ohdsi.cdm.framework.csproj
+    - name: Create NuGet Package
+      run: dotnet pack -c Release --no-build sources/Framework/org.ohdsi.cdm.framework/org.ohdsi.cdm.framework.csproj -p:PackageVersion=${{ github.event.release.tag_name }}
+    - name: Push to NuGet
+      run: dotnet nuget push **/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.LAMBDABUILDER }}
