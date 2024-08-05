@@ -17,10 +17,21 @@
 		ELSE me.eligeff
 		END as startDate,
 		32813 as PeriodTypeConceptId,
-		CASE me.race WHEN 'W' THEN 8527 WHEN 'A' THEN 8515 WHEN 'U' THEN 0 WHEN 'H' THEN 0 WHEN 'B' THEN 8516 ELSE 0 END as RaceConceptId,
-		CASE me.race WHEN 'W' THEN 38003564 WHEN 'A' THEN 38003564 WHEN 'U' THEN 0 WHEN 'H' THEN 38003563 WHEN 'B' THEN 38003564 ELSE 0 END as EthnicityConceptId,
-		CASE me.race WHEN 'W' THEN me.race WHEN 'A' THEN me.race WHEN 'B' THEN me.race ELSE NULL END AS RACE,
-		CASE me.race WHEN 'H' THEN me.race ELSE NULL END AS ETHNICITY,
+		case
+		when me.race is null or me.race = '' or lower(me.race) = 'u' then 0
+		when lower(me.race) = 'a' then 8515
+		when lower(me.race) = 'b' then 8516
+		when lower(me.race) = 'w' then 8527
+		else 0
+		end as RaceConceptId,
+		case
+		when me.ethnicity is null or me.ethnicity = '' or lower(me.ethnicity) = 'u' then 0
+		when lower(me.ethnicity) = 'n' then 38003564
+		when lower(me.ethnicity) = 'h' then 38003563
+		else 0
+		end as EthnicityConceptId,
+		me.race AS RACE,
+		me.ethnicity AS ETHNICITY,
 		{location},
 
 		case
