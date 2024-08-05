@@ -55,7 +55,7 @@ Race is also now split into two variables such that patients can denote both the
 
 #### **Mapping Ethnicity**
 
-|Race|DESCRIPTION|OMOP Concept_Id|
+|**Ethnicity**|**DESCRIPTION**|**OMOP Concept_Id**|
 |:-----:|:-----:|:-----:|
 |N|Not Hispanic|38003564|
 |H|Hispanic|38003563|
