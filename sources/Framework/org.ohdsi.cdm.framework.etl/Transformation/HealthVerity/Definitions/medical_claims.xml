@@ -4,7 +4,7 @@
 		ch.person_id as PersonId,
 		hvid,
 		date_service,
-		diagnosis_code,
+		trim(replace(replace(replace(diagnosis_code, chr(9), ' '), chr(10), ' '), chr(13), ' ')) diagnosis_code,
 		procedure_code,
 		ndc_code,
 		claim_type,
