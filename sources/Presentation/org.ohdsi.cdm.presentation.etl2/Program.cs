@@ -233,6 +233,9 @@ namespace org.ohdsi.cdm.presentation.etl
                     var sourceReleaseDate = dbSource.GetSourceReleaseDate();
                     var vocabularyVersion = DbBuildingSettings.GetVocabularyVersion(vocabularyConnectionString, vocabularySchema);
 
+                    Console.WriteLine("SourceReleaseDate:" + sourceReleaseDate);
+                    Console.WriteLine("VocabularyVersion:" + vocabularyVersion);
+
                     if (Settings.Current.Building.Cdm == CdmVersions.V54)
                     {
                         var reader = new CdmSourceDataReader54(DateTime.Parse(sourceReleaseDate), vocabularyVersion);

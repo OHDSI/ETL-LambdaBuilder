@@ -30,7 +30,7 @@ namespace org.ohdsi.cdm.framework.desktop.DbLayer
             }
         }
 
-        private string GetQuery(string name)
+        private string GetQuery(string name, string schema)
         {
             string[] resourceNames = Assembly.GetExecutingAssembly().GetManifestResourceNames();
             var resource = resourceNames.First(a => a.EndsWith(name) && a.Contains(_dbType, StringComparison.OrdinalIgnoreCase));
@@ -39,7 +39,7 @@ namespace org.ohdsi.cdm.framework.desktop.DbLayer
             using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resource);
             using var reader = new StreamReader(stream, Encoding.Default);
             var query = reader.ReadToEnd();
-            query = query.Replace("{sc}", schemaName);
+            query = query.Replace("{sc}", schema);
 
             return query;
         }
@@ -49,7 +49,10 @@ namespace org.ohdsi.cdm.framework.desktop.DbLayer
             CreateChunkSchema(schemaName);
             DropChunkTable(schemaName);
 
-            var query = GetQuery("CreateChunkTable.sql");
+            var query = GetQuery("CreateChunkTable.sql", schemaName);
+
+            Console.WriteLine("CreateChunkTable:" + query);
+
             using var connection = SqlConnectionHelper.OpenOdbcConnection(_connectionString);
             using var cmd = new OdbcCommand(query, connection);
             cmd.ExecuteNonQuery();
@@ -59,8 +62,9 @@ namespace org.ohdsi.cdm.framework.desktop.DbLayer
         {
             CreateChunkSchema(schemaName);
 
-            var query = GetQuery("DropChunkTable.sql");
+            var query = GetQuery("DropChunkTable.sql", schemaName);
 
+            Console.WriteLine("DropChunkTable:" + query);
             using var connection = SqlConnectionHelper.OpenOdbcConnection(_connectionString);
             using var cmd = new OdbcCommand(query, connection);
             cmd.ExecuteNonQuery();
@@ -80,7 +84,7 @@ namespace org.ohdsi.cdm.framework.desktop.DbLayer
 
         public void CreateIndexesChunkTable(string schemaName)
         {
-            var query = GetQuery("CreateIndexesChunkTable.sql");
+            var query = GetQuery("CreateIndexesChunkTable.sql", schemaName);
 
             if (string.IsNullOrEmpty(query.Trim())) 
                 return;
