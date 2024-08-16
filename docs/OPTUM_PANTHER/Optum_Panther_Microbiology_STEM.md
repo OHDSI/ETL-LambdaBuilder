@@ -23,7 +23,7 @@ description: "OPTUM EHR Microbiology table to STEM"
 | end_date | coalesce(collect_date, result_date) | | | 
 | start_datetime | coalesce(collect_date, result_date) collect_time | Combine the coalesce(collect_date, result_date) and collect_time to create a datetime| |
 | end_datetime | coalesce(collect_date, result_date) collect_time | Combine the coalesce(collect_date, result_date) and collect_time to create a datetime| |
-| concept_id | 4155370 | Microbiology | |
+| concept_id | 4252364 | Clinical microbiology | |
 |source_value|specimen_source|||
 | source_concept_id |0 || |
 | type_concept_id | 32835  | EHR Pathology report| | 
