@@ -53,7 +53,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerity
         private readonly Dictionary<string, List<VisitDetail>> _visitDetailsByHvEncId = [];
         private readonly Dictionary<string, HashSet<DateTime>> _minsMaxs = [];
         private readonly DateTime _minDate = new(2009, 1, 1);
-
+        
+        private int _personYoB;
         #endregion
 
         #region Constructors
@@ -453,19 +454,29 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
 
                 foreach (var item in g.ToArray())
                 {
-                    if (item.StartDate.Year < _minDate.Year)
+                    if (item.StartDate.Year < _minDate.Year ||
+                        item.StartDate.Date > Vendor.SourceReleaseDate.Value.Date)
                     {
                         //item.StartDate = min.Value;
                         var key = GetDateKey(table, vendor.Value, AggregationType.Min);
                         if (_minsMaxs.ContainsKey(key))
                             item.StartDate = _minsMaxs[key].Min();
+                        else
+                        {
+                            if (_minDate > new DateTime(_personYoB, 1, 1))
+                                item.StartDate = _minDate;
+                            else
+                                item.StartDate = new DateTime(_personYoB, 1, 1);
+                        }
                     }
 
-                    if (item.EndDate.Value.Year > DateTime.Now.Year)
+                    if (item.EndDate.Value.Date > Vendor.SourceReleaseDate.Value.Date)
                     {
                         var key = GetDateKey(table, vendor.Value, AggregationType.Max);
                         if (_minsMaxs.ContainsKey(key))
                             item.EndDate = _minsMaxs[key].Max();
+                        else
+                            item.EndDate = Vendor.SourceReleaseDate.Value.Date;
                     }
                 }
             }
@@ -484,6 +495,12 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
                 Complete = true;
                 return result.Value;
             }
+
+            _personYoB = person.YearOfBirth.Value;
+            //if (person.PersonId == 1828138)
+            //{
+
+            //}
 
             GetMinMaxDates(DrugExposuresRaw, _minsMaxs);
             GetMinMaxDates(ConditionOccurrencesRaw, _minsMaxs);
@@ -508,8 +525,8 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
             {
                 op.Id = Offset.GetKeyOffset(op.PersonId).ObservationPeriodId;
 
-                if (op.EndDate > new DateTime(2023, 2, 1))
-                    op.EndDate = new DateTime(2023, 2, 1);
+                if (op.EndDate.Value.Date > Vendor.SourceReleaseDate.Value.Date)
+                    op.EndDate = Vendor.SourceReleaseDate.Value;
             }
 
             if (observationPeriods.Length == 0)
