@@ -53,7 +53,10 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerity
         private readonly Dictionary<string, List<VisitDetail>> _visitDetailsByHvEncId = [];
         private readonly Dictionary<string, HashSet<DateTime>> _minsMaxs = [];
         private readonly DateTime _minDate = new(2009, 1, 1);
-        
+
+        List<DateTime> _mins = [];
+        //List<DateTime> _maxs = [];
+
         private int _personYoB;
         #endregion
 
@@ -441,45 +444,64 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
 
         private void FixObservationPeriodDates(IEnumerable<EraEntity> observationPeriods, Table table)
         {
-            foreach (var g in observationPeriods.GroupBy(m => m.AdditionalFields["data_vendor"]))
+            foreach (var op in observationPeriods)
             {
-                DataVendor? vendor = null;
+                if (op.StartDate.Year < _minDate.Year)
+                    op.StartDate = _mins.Min();
 
-                if (g.First().AdditionalFields["data_vendor"].StartsWith("private source 17", StringComparison.CurrentCultureIgnoreCase))
-                    vendor = DataVendor.PrivateSource17;
-                else if (g.First().AdditionalFields["data_vendor"].StartsWith("private source 20", StringComparison.CurrentCultureIgnoreCase))
-                    vendor = DataVendor.PrivateSource20;
-                else
-                    continue;
+                if (op.EndDate.Value.Date > Vendor.SourceReleaseDate)
+                    op.EndDate = Vendor.SourceReleaseDate;
 
-                foreach (var item in g.ToArray())
-                {
-                    if (item.StartDate.Year < _minDate.Year ||
-                        item.StartDate.Date > Vendor.SourceReleaseDate.Value.Date)
-                    {
-                        //item.StartDate = min.Value;
-                        var key = GetDateKey(table, vendor.Value, AggregationType.Min);
-                        if (_minsMaxs.ContainsKey(key))
-                            item.StartDate = _minsMaxs[key].Min();
-                        else
-                        {
-                            if (_minDate > new DateTime(_personYoB, 1, 1))
-                                item.StartDate = _minDate;
-                            else
-                                item.StartDate = new DateTime(_personYoB, 1, 1);
-                        }
-                    }
+                if(op.StartDate.Date > op.EndDate.Value.Date)
+                    op.EndDate = Vendor.SourceReleaseDate.Value.Date;
 
-                    if (item.EndDate.Value.Date > Vendor.SourceReleaseDate.Value.Date)
-                    {
-                        var key = GetDateKey(table, vendor.Value, AggregationType.Max);
-                        if (_minsMaxs.ContainsKey(key))
-                            item.EndDate = _minsMaxs[key].Max();
-                        else
-                            item.EndDate = Vendor.SourceReleaseDate.Value.Date;
-                    }
-                }
+                if (op.StartDate.Date > op.EndDate.Value.Date)
+                    op.StartDate = _mins.Min();
             }
+            //foreach (var g in observationPeriods.GroupBy(m => m.AdditionalFields["data_vendor"]))
+            //{
+            //    DataVendor? vendor = null;
+
+            //    if (g.First().AdditionalFields["data_vendor"].StartsWith("private source 17", StringComparison.CurrentCultureIgnoreCase))
+            //        vendor = DataVendor.PrivateSource17;
+            //    else if (g.First().AdditionalFields["data_vendor"].StartsWith("private source 20", StringComparison.CurrentCultureIgnoreCase))
+            //        vendor = DataVendor.PrivateSource20;
+            //    else
+            //        continue;
+
+            //    foreach (var item in g.ToArray())
+            //    {
+            //        if (item.StartDate.Year < _minDate.Year ||
+            //            item.StartDate.Date > Vendor.SourceReleaseDate.Value.Date)
+            //        {
+            //            //item.StartDate = min.Value;
+            //            var key = GetDateKey(table, vendor.Value, AggregationType.Min);
+            //            if (_minsMaxs.ContainsKey(key))
+            //                item.StartDate = _minsMaxs[key].Min();
+            //            else
+            //            {
+            //                if (_minDate > new DateTime(_personYoB, 1, 1))
+            //                    item.StartDate = _minDate;
+            //                else
+            //                    item.StartDate = new DateTime(_personYoB, 1, 1);
+            //            }
+            //        }
+
+            //        if (item.EndDate.Value.Date > Vendor.SourceReleaseDate.Value.Date)
+            //        {
+            //            var key = GetDateKey(table, vendor.Value, AggregationType.Max);
+            //            if (_minsMaxs.ContainsKey(key))
+            //            {
+            //                item.EndDate = _minsMaxs[key].Max();
+
+            //                if(item.StartDate.Date > item.EndDate.Value.Date)
+            //                    item.EndDate = Vendor.SourceReleaseDate.Value.Date;
+            //            }
+            //            else
+            //                item.EndDate = Vendor.SourceReleaseDate.Value.Date;
+            //        }
+            //    }
+            //}
         }
 
         public override Attrition Build(ChunkData data, KeyMasterOffsetManager o)
@@ -497,19 +519,34 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
             }
 
             _personYoB = person.YearOfBirth.Value;
-            //if (person.PersonId == 1828138)
-            //{
 
-            //}
+            //GetMinMaxDates(DrugExposuresRaw, _minsMaxs);
+            //GetMinMaxDates(ConditionOccurrencesRaw, _minsMaxs);
+            //GetMinMaxDates(ProcedureOccurrencesRaw, _minsMaxs);
+            //GetMinMaxDates(ObservationsRaw, _minsMaxs);
+            //GetMinMaxDates(DeviceExposureRaw, _minsMaxs);
+            //GetMinMaxDates(MeasurementsRaw, _minsMaxs);
+            //GetMinMaxDates(VisitOccurrencesRaw, _minsMaxs);
+            //GetMinMaxDates(VisitDetailsRaw, _minsMaxs);
 
-            GetMinMaxDates(DrugExposuresRaw, _minsMaxs);
-            GetMinMaxDates(ConditionOccurrencesRaw, _minsMaxs);
-            GetMinMaxDates(ProcedureOccurrencesRaw, _minsMaxs);
-            GetMinMaxDates(ObservationsRaw, _minsMaxs);
-            GetMinMaxDates(DeviceExposureRaw, _minsMaxs);
-            GetMinMaxDates(MeasurementsRaw, _minsMaxs);
-            GetMinMaxDates(VisitOccurrencesRaw, _minsMaxs);
-            GetMinMaxDates(VisitDetailsRaw, _minsMaxs);
+            
+            GetMinDate(DrugExposuresRaw, _mins);
+            GetMinDate(ConditionOccurrencesRaw, _mins);
+            GetMinDate(ProcedureOccurrencesRaw, _mins);
+            GetMinDate(ObservationsRaw, _mins);
+            GetMinDate(DeviceExposureRaw, _mins);
+            GetMinDate(MeasurementsRaw, _mins);
+            GetMinDate(VisitOccurrencesRaw, _mins);
+            GetMinDate(VisitDetailsRaw, _mins);
+
+            //GetMaxDate(DrugExposuresRaw, _maxs);
+            //GetMaxDate(ConditionOccurrencesRaw, _maxs);
+            //GetMaxDate(ProcedureOccurrencesRaw, _maxs);
+            //GetMaxDate(ObservationsRaw, _maxs);
+            //GetMaxDate(DeviceExposureRaw, _maxs);
+            //GetMaxDate(MeasurementsRaw, _maxs);
+            //GetMaxDate(VisitOccurrencesRaw, _maxs);
+            //GetMaxDate(VisitDetailsRaw, _maxs);
 
             if (VisitOccurrencesRaw.Count > 1000 * 1000)
             {
@@ -837,6 +874,32 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
                 GetMinMaxDates(result, table, DataVendor.PrivateSource17, at, ps17);
                 GetMinMaxDates(result, table, DataVendor.PrivateSource20, at, ps20);
             }
+        }
+
+        protected static void GetMinDate<T>(IEnumerable<T> inputRecords, List<DateTime> result) where T : class, IEntity
+        {
+            if (inputRecords == null || !inputRecords.Any())
+                return;
+            
+            var dates = inputRecords.Where(e => e.StartDate != DateTime.MinValue);
+            if (dates != null && dates.Any())
+                result.Add(dates.Min(e => e.StartDate));
+        }
+
+        protected static void GetMaxDate<T>(IEnumerable<T> inputRecords, List<DateTime> result) where T : class, IEntity
+        {
+            if (inputRecords == null || !inputRecords.Any())
+                return;
+
+            var dates = new HashSet<DateTime>();
+            foreach (var i in inputRecords)
+            {
+                if (i.StartDate != DateTime.MinValue)
+                    dates.Add(i.StartDate);
+            }
+
+            if (dates != null && dates.Count != 0)
+                result.Add(dates.Max());
         }
 
         private void SetUnitConceptId(IEntity e)
