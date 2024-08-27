@@ -13,7 +13,7 @@ namespace org.ohdsi.cdm.framework.desktop.DbLayer
 
         public int? GetBuildingId(string sourceConnectionString, string vocabularyConnectionString, Vendor vendor)
         {
-            const string query = "SELECT TOP 1 [BuildingId] FROM [BuildingSettings] where [SourceConnectionString] = '{0}' and [VocabularyConnectionString] = '{1}' and [Vendor] = '{2}' ORDER BY [BuildingId] desc ";
+            const string query = "SELECT [BuildingId] FROM [BuildingSettings] where [SourceConnectionString] = '{0}' and [VocabularyConnectionString] = '{1}' and [Vendor] = '{2}' ORDER BY [BuildingId] desc ";
 
             using var connection = SqlConnectionHelper.OpenMssqlConnection(_connectionString);
             using var cmd = SqlConnectionHelper.CreateCommand(string.Format(query, sourceConnectionString, vocabularyConnectionString, vendor), connection);
