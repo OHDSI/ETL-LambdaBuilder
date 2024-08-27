@@ -18,7 +18,7 @@
 		t.race_source_value,
 		t.race_source_concept_id,
 		t.ethnicity_source_value,
-		t.ethnicity_source_concept_id
+		t.ethnicity_source_concept_id,
 		1 as fake
 		FROM {sc}.person t
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND t.PERSON_ID = ch.PERSON_ID
