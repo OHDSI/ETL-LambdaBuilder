@@ -1,0 +1,20 @@
+﻿<QueryDefinition>
+	<Query>
+		SELECT distinct
+		op.observation_period_id,
+		op.observation_period_start_date,
+		op.observation_period_end_date,
+		op.period_type_concept_id
+		FROM {sc}.observation_period op
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND op.PERSON_ID = ch.PERSON_ID
+		order by 1
+	</Query>
+	<ObservationPeriods>
+		<ObservationPeriodDefinition>
+			<Id>observation_period_id</Id>
+			<StartDate>observation_period_start_date</StartDate>
+			<EndDate>observation_period_end_date</EndDate>
+			<TypeConceptId>period_type_concept_id</TypeConceptId>
+		</ObservationPeriodDefinition>
+	</ObservationPeriods>
+</QueryDefinition>

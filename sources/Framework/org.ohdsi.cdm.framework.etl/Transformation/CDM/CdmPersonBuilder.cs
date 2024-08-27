@@ -94,11 +94,6 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CDM
                 return result.Value;
             }
 
-            //if(person.PersonId == 136899754)
-            //{
-
-            //}
-
             if(ObservationPeriodsRaw.Count == 0)
                 return Attrition.InvalidObservationTime;
 

@@ -640,6 +640,15 @@ value.IdleTime.TotalSeconds > 10)
                             _personBuilders[episode.PersonId].Value.AddEpisode(episode);
                         }
                     }
+                    else if (d is ObservationPeriodDefinition)
+                    {
+                        foreach (var op in ((ObservationPeriodDefinition)d).GetObservationPeriods(conceptDef, reader, _offsetManager))
+                        {
+                            if (op == null) continue;
+
+                            _personBuilders[op.PersonId].Value.AddObservationPeriod(op);
+                        }
+                    }
                     else
                     {
                         foreach (var entity in d.GetConcepts(conceptDef, reader, _offsetManager))
