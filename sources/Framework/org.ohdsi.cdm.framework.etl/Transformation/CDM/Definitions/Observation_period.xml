@@ -2,6 +2,7 @@
 	<Query>
 		SELECT distinct
 		op.observation_period_id,
+		op.person_id,
 		op.observation_period_start_date,
 		op.observation_period_end_date,
 		op.period_type_concept_id
@@ -12,6 +13,7 @@
 	<ObservationPeriods>
 		<ObservationPeriodDefinition>
 			<Id>observation_period_id</Id>
+			<PersonId>person_id</PersonId>
 			<StartDate>observation_period_start_date</StartDate>
 			<EndDate>observation_period_end_date</EndDate>
 			<TypeConceptId>period_type_concept_id</TypeConceptId>
