@@ -321,6 +321,7 @@ value.IdleTime.TotalSeconds > 10)
 
                             AddEntity(qd, qd.Note, reader, recordGuid, personIdsToSave);
                             AddEntity(qd, qd.Episodes, reader, recordGuid, personIdsToSave);
+                            AddEntity(qd, qd.ObservationPeriods, reader, recordGuid, personIdsToSave);
 
                             if (reader.Paused)
                                 break;
