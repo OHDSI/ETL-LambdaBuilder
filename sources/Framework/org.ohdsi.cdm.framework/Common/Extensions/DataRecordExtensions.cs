@@ -16,9 +16,14 @@ namespace org.ohdsi.cdm.framework.common.Extensions
                 if (string.IsNullOrEmpty(fieldName))
                     return null;
 
-                var value = GetValue(reader, fieldName).ToString();
+                var value = GetValue(reader, fieldName);
 
-                return string.Intern(value.Trim());
+                if (value is null || value is DBNull)
+                    return null;
+
+                var strValue = value.ToString();
+
+                return string.Intern(strValue.Trim());
             }
             catch (Exception e)
             {

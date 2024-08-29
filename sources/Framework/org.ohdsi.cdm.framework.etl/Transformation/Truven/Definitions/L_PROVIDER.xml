@@ -31,7 +31,7 @@
                   </Mapper>
                </ConceptIdMappers>
                <Fields>
-                  <Field key="SPECIALTY_SOURCE_VALUE"/>
+                  <Field key="SPECIALTY_SOURCE_VALUE" defaultConceptId="38004514"/>
                </Fields>
             </Concept>
          </Concepts>

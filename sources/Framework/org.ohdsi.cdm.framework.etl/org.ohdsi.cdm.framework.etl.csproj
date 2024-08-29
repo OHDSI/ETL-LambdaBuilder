@@ -18,6 +18,7 @@
     <None Remove="Transformation\CDM\Definitions\L_PROVIDER.xml" />
     <None Remove="Transformation\CDM\Definitions\Measurement.xml" />
     <None Remove="Transformation\CDM\Definitions\Observation.xml" />
+    <None Remove="Transformation\CDM\Definitions\Observation_period.xml" />
     <None Remove="Transformation\CDM\Definitions\Payer_plan_period.xml" />
     <None Remove="Transformation\CDM\Definitions\Person.xml" />
     <None Remove="Transformation\CDM\Definitions\Procedure_occurrence.xml" />
@@ -327,6 +328,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Transformation\CDM\Definitions\Payer_plan_period.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CDM\Definitions\Observation_period.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Transformation\CDM\Definitions\Person.xml">

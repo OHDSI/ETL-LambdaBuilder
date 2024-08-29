@@ -30,7 +30,7 @@
 			<Concepts>
 				<Concept>
 					<Fields>
-						<Field conceptId="specialty_concept_id" key="specialty_source_value" sourceKey="specialty_source_value" defaultTypeId="0"/>
+						<Field conceptId="specialty_concept_id" key="specialty_source_value" sourceKey="specialty_source_value" sourceConceptId="specialty_source_concept_id" defaultTypeId="0"/>
 					</Fields>
 				</Concept>
 			</Concepts>

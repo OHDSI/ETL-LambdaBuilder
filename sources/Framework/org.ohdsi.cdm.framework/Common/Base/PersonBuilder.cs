@@ -284,6 +284,11 @@ namespace org.ohdsi.cdm.framework.common.Base
             EpisodeRecords.Add(data);
         }
 
+        public void AddObservationPeriod(EraEntity data)
+        {
+            ObservationPeriodsRaw.Add(data);
+        }
+
         /// <summary>
         /// Add raw entities to builder for further build
         /// </summary>
@@ -295,15 +300,19 @@ namespace org.ohdsi.cdm.framework.common.Base
                 case EntityType.Person:
                     {
                         AddEntity((Person)data, PersonRecords);
-                        AddEntity(
-                            new EraEntity
-                            {
-                                PersonId = data.PersonId,
-                                StartDate = data.StartDate,
-                                EndDate = data.EndDate,
-                                TypeConceptId = data.TypeConceptId,
-                                AdditionalFields = data.AdditionalFields
-                            }, ObservationPeriodsRaw);
+
+                        if (data.TypeConceptId.HasValue)
+                        {
+                            AddEntity(
+                                new EraEntity
+                                {
+                                    PersonId = data.PersonId,
+                                    StartDate = data.StartDate,
+                                    EndDate = data.EndDate,
+                                    TypeConceptId = data.TypeConceptId,
+                                    AdditionalFields = data.AdditionalFields
+                                }, ObservationPeriodsRaw);
+                        }
                         break;
                     }
 
