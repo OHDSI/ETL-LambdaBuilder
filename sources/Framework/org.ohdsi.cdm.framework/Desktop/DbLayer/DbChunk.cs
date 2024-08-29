@@ -73,7 +73,7 @@ namespace org.ohdsi.cdm.framework.desktop.DbLayer
             using var connection = SqlConnectionHelper.OpenMssqlConnection(_connectionString);
             using var transaction = connection.BeginTransaction();
             var query =
-                $"SELECT TOP 1 Id FROM Chunk WHERE BuildingId = {buildingId} AND Started is null";
+                $"SELECT Id FROM Chunk WHERE BuildingId = {buildingId} AND Started is null";
             using var cmd = SqlConnectionHelper.CreateCommand(query, connection, transaction);
             using var reader = cmd.ExecuteReader();
             while (reader.Read())
@@ -89,7 +89,7 @@ namespace org.ohdsi.cdm.framework.desktop.DbLayer
             using var connection = SqlConnectionHelper.OpenMssqlConnection(_connectionString);
             using var transaction = connection.BeginTransaction();
             var query =
-                $"SELECT TOP 1 Id FROM Chunk WHERE BuildingId = {buildingId} AND Ended is null";
+                $"SELECT Id FROM Chunk WHERE BuildingId = {buildingId} AND Ended is null";
             using var cmd = SqlConnectionHelper.CreateCommand(query, connection, transaction);
             using var reader = cmd.ExecuteReader();
             while (reader.Read())
@@ -154,7 +154,7 @@ namespace org.ohdsi.cdm.framework.desktop.DbLayer
             {
                 var orderBy = orderByDesc ? " ORDER BY 1 DESC" : "";
                 var query =
-                    $"SELECT TOP 1 Id FROM Chunk with (updlock) WHERE BuildingId = {buildingId} AND Started is null{orderBy}";
+                    $"SELECT Id FROM Chunk with (updlock) WHERE BuildingId = {buildingId} AND Started is null{orderBy}";
 
                 using (var cmd = SqlConnectionHelper.CreateCommand(query, connection, transaction))
                 {
