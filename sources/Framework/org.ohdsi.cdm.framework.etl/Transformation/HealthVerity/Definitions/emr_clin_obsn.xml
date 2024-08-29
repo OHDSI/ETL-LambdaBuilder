@@ -1,5 +1,5 @@
 ﻿<QueryDefinition>
-	<Query>
+	<Query database="none">
 		SELECT
 		ch.person_id as PersonId,
 		hvid,
@@ -11,7 +11,7 @@
 		clin_obsn_uom,
 		32827 type_concept_id,
 		coalesce(clin_obsn_prov_id, '') || ';' || coalesce(clin_obsn_prov_taxnmy_id, '') ProviderIdKey
-		from cdm_health_verity_cc_ehr_cce_v2776.emr_clin_obsn
+		from {sc}.emr_clin_obsn
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
 		order by ch.person_id
 	</Query>

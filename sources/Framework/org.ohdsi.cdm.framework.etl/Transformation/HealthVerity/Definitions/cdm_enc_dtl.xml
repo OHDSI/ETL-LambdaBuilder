@@ -1,5 +1,5 @@
 ﻿<QueryDefinition>
-	<Query>
+	<Query database="none">
 		SELECT distinct
 		ch.person_id as PersonId,
 		d.hvid,
@@ -15,9 +15,9 @@
 		when enc_grp_txt LIKE '%ENCOUNTER_VISIT_TYPE: Inpatient%' and los_day_cnt > 1 then 9201
 		else 9202
 		end defaultConceptId
-		FROM cdm_health_verity_cc_ehr_cce_v2776.cdm_enc_dtl d
+		FROM {sc}.cdm_enc_dtl d
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND d.hvid = ch.PERSON_SOURCE_VALUE
-		JOIN cdm_health_verity_cc_ehr_cce_v2776.cdm_enc e ON d.hvid = e.hvid and d.hv_enc_id = e.hv_enc_id
+		JOIN {sc}.cdm_enc e ON d.hvid = e.hvid and d.hv_enc_id = e.hv_enc_id
 		where d.proc_dt is not null
 		order by ch.person_id
 	</Query>

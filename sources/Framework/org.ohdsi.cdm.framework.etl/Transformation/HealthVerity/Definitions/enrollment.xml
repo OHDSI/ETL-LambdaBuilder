@@ -11,7 +11,7 @@
 		date_end,
 		1 as benefit_type,
 		data_vendor
-		FROM cdm_health_verity_cc_ehr_cce_v2776.enrollment
+		FROM {sc}.enrollment
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
 		where lower(benefit_type) = 'medical'
 
@@ -26,7 +26,7 @@
 		date_end,
 		2 as benefit_type,
 		data_vendor
-		FROM cdm_health_verity_cc_ehr_cce_v2776.enrollment
+		FROM {sc}.enrollment
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
 		where lower(benefit_type) = 'pharmacy' or benefit_type is null
 		)

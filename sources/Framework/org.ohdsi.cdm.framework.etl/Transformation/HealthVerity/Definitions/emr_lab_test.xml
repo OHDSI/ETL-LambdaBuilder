@@ -1,5 +1,5 @@
 ﻿<QueryDefinition>
-	<Query>
+	<Query database="none">
 		SELECT
 		ch.person_id as PersonId,
 		hvid,
@@ -11,7 +11,7 @@
 		lab_result_uom,
 		lab_result_msrmt,
 		coalesce(lab_test_prov_id, '') || ';' || coalesce(lab_test_prov_taxnmy_id, '') ProviderIdKey
-		from cdm_health_verity_cc_ehr_cce_v2776.emr_lab_test
+		from {sc}.emr_lab_test
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
 		where upper(prmy_src_tbl_nm) in
 		(
