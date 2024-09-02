@@ -37,7 +37,7 @@ createProviderTests <- function () {
     declareTest(id = provider$provid, description = "Even when PROVID IS NULL create a PROVIDER (HIX-1404). Id is PROVIDER_SOURCE_VALUE")
     patient<-createPatient();
     add_facility_header(enrolid=patient$enrolid, provid=NULL, stdprov="220")
-    expect_provider(provider_source_value ="", specialty_source_value="220")
+    expect_provider(provider_source_value =NULL, specialty_source_value="220")
   }
   
   if (tolower(frameworkType) == "mdcd")
@@ -70,7 +70,7 @@ createProviderTests <- function () {
     declareTest(id = provider$provid, description = "Even when PROVID IS NULL create a PROVIDER (HIX-1404)")
     patient<-createPatient();
     add_facility_header(enrolid=patient$enrolid, prov_id=NULL, stdprov="220")
-    expect_provider( provider_source_value = '', specialty_source_value="220")
+    expect_provider( provider_source_value = NULL, specialty_source_value="220")
   }
   
 }
