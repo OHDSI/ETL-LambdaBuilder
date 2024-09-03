@@ -184,7 +184,7 @@ The **VISIT_DETAIL** table will have 1:1 record level referential integrity to *
 | VISIT_DETAIL_START_DATETIME | SVCDATE | - | Set time to 00:00:00. |
 | VISIT_DETAIL_END_DATE | TSVCDAT (See *Logic* column for exceptions)| If STDPLAC is blank, NULL, does not have a mapping or is equal to 02, 08, 17, 53, 57, 71, 72, 11, 01, 95, 12, 20, 49, 60, 15, 81, 42, 41, 14, 04, 18, 09, 03, 65 or 16 then set visit_detail_end_date equal to visit_detail_start_date. <br><br>If STDPLAC is equal to 23, 24, 19, 25, 50, 62 and TSVCDAT - SVCDATE > 1 then set visit_detail_end_date equal to visit_detail_start_date <br><br>If STDPLAC = 22 and TSVCDAT - SVCDATE > 1 then set VISIT_DETAIL_CONCEPT_ID to 9201  | - |
 | VISIT_DETAIL_END_DATETIME | VISIT_DETAIL_END_DATE | - | Set time to 00:00:00. |
-| VISIT_DETAIL_TYPE_CONCEPT_ID | - | Set all to `38004277` (Long Term Care Hospital) | Strictly speaking, this is not a type concept. However, there is not type concept that corresponds with long term care so a visit concept was used instead.|
+| VISIT_DETAIL_TYPE_CONCEPT_ID | - | Set all to `32844` (Facility Claim) | |
 | PROVIDER_ID | PROVID<br>STDPROV | Look up the PROVIDER_ID from the PROVIDER table using PROVID as the PROVIDER_SOURCE_VALUE and STDPROV as the SPECIALITY_SOURCE_VALUE | If there is no associated PROVIDER_ID this should be NULL, not 0 |
 | CARE_SITE_ID | - | NULL | - |
 | VISIT_DETAIL_SOURCE_VALUE | STPLAC | | - |
