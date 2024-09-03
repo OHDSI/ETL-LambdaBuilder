@@ -18,7 +18,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CPRD
         {
             public override DateTime? SourceReleaseDate { get; set; }
 
-            public override string Name => "CprdV5";
+            public override string Name => "Cprd";
             public override string Folder => "CPRD";
             public override string Description => "Cprd v5.4";
             public override string CdmSource => "";
