@@ -46,9 +46,9 @@ createConditionOccurrenceTests <- function () {
 	declareTest(707, "Condition concept ID and source values")
 	add_enrollment(member_id = "M000000707")
 	add_claim(member_id = "M000000707", claim_id = "C000000000709")
-	add_diagnosis(member_id = "M000000707", claim_id = "C000000000709", standard_disease_code = 1)
-	add_diagnosis_master(standard_disease_code = 1, icd10_level4_code = "I10-")
-	expect_condition_occurrence(person_id = 707, visit_occurrence_id = 709, condition_concept_id =  320128, condition_source_value = "I10-", condition_source_concept_id = 45591453)
+	add_diagnosis(member_id = "M000000707", claim_id = "C000000000709", standard_disease_code = 8842488, standard_disease_name = "hypertensive urgency")
+	add_diagnosis_master(standard_disease_code = 8842488, icd10_level4_code = "I10-")
+	expect_condition_occurrence(person_id = 707, visit_occurrence_id = 709, condition_concept_id =  320128, condition_source_value = "8842488|hypertensive urgency", condition_source_concept_id = 45591453)
 
 	# declareTest(708, "Condition occurrence that are era-like")
 	# add_enrollment(member_id = "M000000708", observation_start = "201001", observation_end = "201212")

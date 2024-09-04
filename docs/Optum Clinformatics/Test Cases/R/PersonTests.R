@@ -97,43 +97,57 @@ createPersonTests <- function()
   add_member_enrollment(patid = patient$patid, eligeff = '2010-03-01', eligend = '2012-12-31')  					
   expect_person(person_id = patient$person_id, day_of_birth = NULL)
 
-    patient <- createPatient()
-    declareTest("PERSON - Person who has Asian race", id = patient$person_id)
-    add_member_continuous_enrollment(eligeff = '2000-05-01', eligend = '2000-12-31',
-                      gdr_cd = 'M', patid = patient$patid, yrdob = 1987)
-    add_member_enrollment(patid = patient$patid, eligeff = '2000-05-01', eligend = '2000-12-31', race = 'A')  										  
-    expect_person(person_id = patient$person_id, ethnicity_concept_id = 38003564, race_concept_id = 8515)
+  patient <- createPatient()
+  declareTest("PERSON - Person who has Asian race", id = patient$person_id)
+  add_member_continuous_enrollment(eligeff = '2000-05-01', eligend = '2000-12-31',
+                    gdr_cd = 'M', patid = patient$patid, yrdob = 1987)
+  add_member_enrollment(patid = patient$patid, eligeff = '2000-05-01', eligend = '2000-12-31', race = 'A')  										  
+  expect_person(person_id = patient$person_id, race_concept_id = 8515)
 
 
-    patient <- createPatient()
-    declareTest("PERSON - Person who has Black race", id = patient$person_id)
-    add_member_continuous_enrollment(eligeff = '2000-05-01', eligend = '2000-12-31',
-                      gdr_cd = 'M', patid = patient$patid, yrdob = 1987)
-    add_member_enrollment(patid = patient$patid, eligeff = '2000-05-01', eligend = '2000-12-31', race = 'B')  										  					  
-    expect_person(person_id = patient$person_id, ethnicity_concept_id = 38003564, race_concept_id = 8516)
+  patient <- createPatient()
+  declareTest("PERSON - Person who has Black race", id = patient$person_id)
+  add_member_continuous_enrollment(eligeff = '2000-05-01', eligend = '2000-12-31',
+                    gdr_cd = 'M', patid = patient$patid, yrdob = 1987)
+  add_member_enrollment(patid = patient$patid, eligeff = '2000-05-01', eligend = '2000-12-31', race = 'B')  										  					  
+  expect_person(person_id = patient$person_id, race_concept_id = 8516)
 
 
-    patient <- createPatient()
-    declareTest("PERSON - Person who has White race", id = patient$person_id)
-    add_member_continuous_enrollment(eligeff = '2000-05-01', eligend = '2000-12-31',
-                      gdr_cd = 'M', patid = patient$patid, yrdob = 1987)
-    add_member_enrollment(patid = patient$patid, eligeff = '2000-05-01', eligend = '2000-12-31', race = 'W')  										  					  
-    expect_person(person_id = patient$person_id, ethnicity_concept_id = 38003564, race_concept_id = 8527)
+  patient <- createPatient()
+  declareTest("PERSON - Person who has White race", id = patient$person_id)
+  add_member_continuous_enrollment(eligeff = '2000-05-01', eligend = '2000-12-31',
+                    gdr_cd = 'M', patid = patient$patid, yrdob = 1987)
+  add_member_enrollment(patid = patient$patid, eligeff = '2000-05-01', eligend = '2000-12-31', race = 'W')  										  					  
+  expect_person(person_id = patient$person_id, race_concept_id = 8527)
 
 
-    patient <- createPatient()
-    declareTest("PERSON - Person who has Unknown race", id = patient$person_id)
-    add_member_continuous_enrollment(eligeff = '2000-05-01', eligend = '2000-12-31',
-                      gdr_cd = 'M', patid = patient$patid, yrdob = 1987)
-    add_member_enrollment(patid = patient$patid, eligeff = '2000-05-01', eligend = '2000-12-31', race = 'U')  										  					  
-    expect_person(person_id = patient$person_id, ethnicity_concept_id = 0, race_concept_id = 0)
+  patient <- createPatient()
+  declareTest("PERSON - Person who has Unknown race", id = patient$person_id)
+  add_member_continuous_enrollment(eligeff = '2000-05-01', eligend = '2000-12-31',
+                    gdr_cd = 'M', patid = patient$patid, yrdob = 1987)
+  add_member_enrollment(patid = patient$patid, eligeff = '2000-05-01', eligend = '2000-12-31', race = 'U')  										  					  
+  expect_person(person_id = patient$person_id, ethnicity_concept_id = 0, race_concept_id = 0)
 
 
-    patient <- createPatient()
-    declareTest("PERSON - Person who has Hispanic ethnicity", id = patient$person_id)
-    add_member_continuous_enrollment(eligeff = '2000-05-01', eligend = '2000-12-31',
-                      gdr_cd = 'M', patid = patient$patid, yrdob = 1987)
-    add_member_enrollment(patid = patient$patid, eligeff = '2000-05-01', eligend = '2000-12-31', race = 'H')  										  					  
-    expect_person(person_id = patient$person_id, ethnicity_concept_id = 38003563, race_concept_id = 0)
+  patient <- createPatient()
+  declareTest("PERSON - Person who has Hispanic ethnicity", id = patient$person_id)
+  add_member_continuous_enrollment(eligeff = '2000-05-01', eligend = '2000-12-31',
+                    gdr_cd = 'M', patid = patient$patid, yrdob = 1987)
+  add_member_enrollment(patid = patient$patid, eligeff = '2000-05-01', eligend = '2000-12-31', ethnicity = 'H')  										  					  
+  expect_person(person_id = patient$person_id, ethnicity_concept_id = 38003563)
+  
+  patient <- createPatient()
+  declareTest("PERSON - Person who has Not Hispanic ethnicity", id = patient$person_id)
+  add_member_continuous_enrollment(eligeff = '2000-05-01', eligend = '2000-12-31',
+                    gdr_cd = 'M', patid = patient$patid, yrdob = 1987)
+  add_member_enrollment(patid = patient$patid, eligeff = '2000-05-01', eligend = '2000-12-31', ethnicity = 'N')  										  					  
+  expect_person(person_id = patient$person_id, ethnicity_concept_id = 38003564)
+  
+  patient <- createPatient()
+  declareTest("PERSON - Person who has Not Unknown ethnicity", id = patient$person_id)
+  add_member_continuous_enrollment(eligeff = '2000-05-01', eligend = '2000-12-31',
+                    gdr_cd = 'M', patid = patient$patid, yrdob = 1987)
+  add_member_enrollment(patid = patient$patid, eligeff = '2000-05-01', eligend = '2000-12-31', ethnicity = 'U')  										  					  
+  expect_person(person_id = patient$person_id, ethnicity_concept_id = 0)
   
 }
