@@ -1,10 +1,11 @@
 name: Release to NuGet
+
 on:
   workflow_dispatch:
     inputs:
       packageVersion:
-      required: true
-      type: string
+        required: true
+        type: string
 jobs:
   publish:
     runs-on: ubuntu-latest
