@@ -1,6 +1,10 @@
 name: Release to NuGet
 on:
   workflow_dispatch:
+    inputs:
+      packageVersion:
+      required: true
+      type: string
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -17,12 +21,8 @@ jobs:
     - name: Build
       run: dotnet build -c Release sources/Framework/org.ohdsi.cdm.framework/org.ohdsi.cdm.framework.csproj
     - name: Test
-      run: echo "VERSION=${{ github.event.release.tag_name }}"
+      run: echo "VERSION=${{ github.event.inputs.packageVersion }}"
     - name: Create NuGet Package
-      run: |
-        TAG=${{ github.event.release.tag_name }}
-        echo "VERSION=${TAG#v}" >> $GITHUB_ENV
-        echo Version: $VERSION
-        dotnet pack -c Release --no-build sources/Framework/org.ohdsi.cdm.framework/org.ohdsi.cdm.framework.csproj -p:PackageVersion=$VERSION
+      run: dotnet pack -c Release --no-build sources/Framework/org.ohdsi.cdm.framework/org.ohdsi.cdm.framework.csproj -p:PackageVersion=${{ github.event.inputs.packageVersion }}
     - name: Push to NuGet
       run: dotnet nuget push **/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.LAMBDABUILDER }}
