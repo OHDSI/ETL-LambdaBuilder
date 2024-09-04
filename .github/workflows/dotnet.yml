@@ -16,6 +16,8 @@ jobs:
       run: dotnet restore sources/Framework/org.ohdsi.cdm.framework/org.ohdsi.cdm.framework.csproj
     - name: Build
       run: dotnet build -c Release sources/Framework/org.ohdsi.cdm.framework/org.ohdsi.cdm.framework.csproj
+    - name: Test
+      run: echo "VERSION=${{ github.event.release.tag_name }}"
     - name: Create NuGet Package
       run: |
         TAG=${{ github.event.release.tag_name }}
