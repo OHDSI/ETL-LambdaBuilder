@@ -2,9 +2,12 @@
 {
     public class Cost(long personId)
     {
+        public long? Id { get; set; }
+        public long CostId { get; set; }
+
         public long PersonId { get; set; } = personId;
         public string Domain { get; set; }
-        public long CostId { get; set; }
+        
         public long EventId { get; set; }
 
         public long? TypeId { get; set; }

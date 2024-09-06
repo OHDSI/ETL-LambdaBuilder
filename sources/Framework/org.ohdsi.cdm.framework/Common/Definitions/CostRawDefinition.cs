@@ -42,9 +42,11 @@ namespace org.ohdsi.cdm.framework.common.Definitions
             var presonId = reader.GetLong(PersonId);
             yield return new Cost(presonId.Value)
             {
+                Id = reader.GetLong(Id),
+
                 PersonId = presonId.Value,
                 TypeId = reader.GetLong(TypeConceptId),
-                CostId = reader.GetLong(Id) ?? 0,
+                
                 EventId = reader.GetLong(EventId) ?? 0,
                 Domain = reader.GetString(DomainId),
                 CurrencyConceptId = reader.GetLong(CurrencyConceptId) ?? 0,
