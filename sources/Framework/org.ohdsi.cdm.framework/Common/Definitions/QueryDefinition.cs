@@ -92,6 +92,8 @@ namespace org.ohdsi.cdm.framework.common.Definitions
         public EpisodeEventDefinition[] EpisodeEvents { get; set; }
         public ObservationPeriodDefinition[] ObservationPeriods { get; set; }
 
+        public CostRawDefinition[] Costs { get; set; }
+
         private static readonly string[] separator = [","];
 
         public void RowProcessed()
@@ -259,6 +261,11 @@ namespace org.ohdsi.cdm.framework.common.Definitions
             if (ObservationPeriods != null && ObservationPeriods.Length != 0)
             {
                 return ObservationPeriods[0].PersonId;
+            }
+
+            if (Costs != null && Costs.Length != 0)
+            {
+                return Costs[0].PersonId;
             }
 
             throw new Exception("Cant find PersonId FieldName " + this.FileName);

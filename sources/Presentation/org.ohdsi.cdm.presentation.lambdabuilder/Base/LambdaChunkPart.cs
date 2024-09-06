@@ -322,6 +322,7 @@ value.IdleTime.TotalSeconds > 10)
                             AddEntity(qd, qd.Note, reader, recordGuid, personIdsToSave);
                             AddEntity(qd, qd.Episodes, reader, recordGuid, personIdsToSave);
                             AddEntity(qd, qd.ObservationPeriods, reader, recordGuid, personIdsToSave);
+                            AddEntity(qd, qd.Costs, reader, recordGuid, personIdsToSave);
 
                             if (reader.Paused)
                                 break;
@@ -648,6 +649,15 @@ value.IdleTime.TotalSeconds > 10)
                             if (op == null) continue;
 
                             _personBuilders[op.PersonId].Value.AddObservationPeriod(op);
+                        }
+                    }
+                    else if (d is CostRawDefinition)
+                    {
+                        foreach (var c in ((CostRawDefinition)d).GetCost(conceptDef, reader, _offsetManager))
+                        {
+                            if (c == null) continue;
+
+                            _personBuilders[c.PersonId].Value.AddCost(c);
                         }
                     }
                     else

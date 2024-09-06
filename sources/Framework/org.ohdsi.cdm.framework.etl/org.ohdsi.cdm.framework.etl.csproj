@@ -10,6 +10,7 @@
   <ItemGroup>
     <None Remove="Transformation\CDM\Batch.sql" />
     <None Remove="Transformation\CDM\Definitions\Condition_occurrence.xml" />
+    <None Remove="Transformation\CDM\Definitions\Cost.xml" />
     <None Remove="Transformation\CDM\Definitions\Death.xml" />
     <None Remove="Transformation\CDM\Definitions\Device_exposure.xml" />
     <None Remove="Transformation\CDM\Definitions\Drug_exposure.xml" />
@@ -301,6 +302,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Transformation\CDM\Definitions\Condition_occurrence.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\CDM\Definitions\Cost.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Transformation\CDM\Definitions\Death.xml">

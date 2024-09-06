@@ -239,6 +239,11 @@ namespace org.ohdsi.cdm.framework.common.Base
             return ChunkData.AddCostData(cost);
         }
 
+        public void AddCost(Cost data)
+        {
+            ChunkData.AddCostData(data);
+        }
+
         public ChunkData Result => ChunkData;
 
         public bool Complete { get; set; }

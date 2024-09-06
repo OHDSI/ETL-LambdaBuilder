@@ -1,0 +1,71 @@
+﻿<QueryDefinition>
+	<Query>
+		SELECT   cost_id
+		, cost_event_id
+		, cost_domain_id
+		, cost_type_concept_id
+		, currency_concept_id
+		, total_charge
+		, total_cost
+		, total_paid
+		
+		, paid_by_payer
+		, paid_by_patient
+		, paid_patient_copay
+		, paid_patient_coinsurance
+		, paid_patient_deductible
+		, paid_by_primary
+		, paid_ingredient_cost
+		, paid_dispensing_fee
+		
+		, payer_plan_period_id
+		
+		, amount_allowed
+		, revenue_code_concept_id
+		, revenue_code_source_value
+		, drg_concept_id
+		, drg_source_value
+		, coalesce(po.person_id, o.person_id, d.person_id, dev.person_id, m.person_id, v.person_id) person_id
+		FROM {sc}.cost
+		left join {sc}.procedure_occurrence po on cost_domain_id = 'Procedure' and cost_event_id = po.procedure_occurrence_id
+		left join {sc}.observation o on cost_domain_id = 'Observation' and cost_event_id = o.observation_id
+		left join {sc}.drug_exposure d on cost_domain_id = 'Drug' and cost_event_id = d.drug_exposure_id
+		left join {sc}.device_exposure dev on cost_domain_id = 'Device' and cost_event_id = dev.device_exposure_id
+		left join {sc}.measurement m on cost_domain_id = 'Measurement' and cost_event_id = m.measurement_id
+		left join {sc}.visit_occurrence v on cost_domain_id = 'Visit' and cost_event_id = v.visit_occurrence_id
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND coalesce(po.person_id, o.person_id, d.person_id, dev.person_id, m.person_id, v.person_id) = ch.PERSON_ID
+		order by 1
+	</Query>
+	<Costs>
+		<CostRawDefinition>
+			<PersonId>person_id</PersonId>
+			
+			<Id>cost_id</Id>
+			<EventId>cost_event_id</EventId>
+			<DomainId>cost_domain_id</DomainId>
+			<TypeConceptId>cost_type_concept_id</TypeConceptId>
+			<CurrencyConceptId>currency_concept_id</CurrencyConceptId>
+			<TotalCharge>total_charge</TotalCharge>
+			<TotalCost>total_cost</TotalCost>
+			<TotalPaid>total_paid</TotalPaid>
+
+			<PaidByPayer>paid_by_payer</PaidByPayer>
+			<PaidByPatient>paid_by_patient</PaidByPatient>
+			<PaidPatientCopay>paid_patient_copay</PaidPatientCopay>
+			<PaidPatientCoinsurance>paid_patient_coinsurance</PaidPatientCoinsurance>
+			<PaidPatientDeductible>paid_patient_deductible</PaidPatientDeductible>
+			<PaidIngredientCost>paid_ingredient_cost</PaidIngredientCost>
+			<PaidDispensingFee>paid_dispensing_fee</PaidDispensingFee>
+
+			<PayerPlanPeriodId>payer_plan_period_id</PayerPlanPeriodId>
+
+			<AmountAllowed>amount_allowed</AmountAllowed>
+
+			<RevenueCodeConceptId>revenue_code_concept_id</RevenueCodeConceptId>
+			<RevenueCodeSourceValue>revenue_code_source_value</RevenueCodeSourceValue>
+
+			<DrgConceptId>drg_concept_id</DrgConceptId>
+			<DrgSourceValue>drg_source_value</DrgSourceValue>
+		</CostRawDefinition>
+	</Costs>
+</QueryDefinition>
