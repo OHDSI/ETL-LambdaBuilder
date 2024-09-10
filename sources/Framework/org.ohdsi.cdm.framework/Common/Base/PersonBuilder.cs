@@ -35,6 +35,8 @@ namespace org.ohdsi.cdm.framework.common.Base
         protected List<DeviceExposure> DeviceExposureRaw = [];
         protected List<DeviceCost> DeviceCostRaw = [];
 
+        protected List<Cost> CostRaw = [];
+
         protected List<DrugExposure> DrugForEra = [];
         protected List<ConditionOccurrence> ConditionForEra = [];
         protected List<Note> NoteRecords = [];
@@ -226,6 +228,9 @@ namespace org.ohdsi.cdm.framework.common.Base
 
             EpisodeRecords.Clear();
             EpisodeRecords = null;
+
+            CostRaw.Clear();
+            CostRaw = null;
         }
 
         protected virtual bool AddCost(long eventId, Func<ICostV5, Cost> createCost, IEntity entity, ICostV5 entityCost)
@@ -237,6 +242,11 @@ namespace org.ohdsi.cdm.framework.common.Base
             cost.EventId = eventId;
 
             return ChunkData.AddCostData(cost);
+        }
+
+        public void AddCost(Cost data)
+        {
+            CostRaw.Add(data);
         }
 
         public ChunkData Result => ChunkData;
@@ -922,6 +932,9 @@ namespace org.ohdsi.cdm.framework.common.Base
             AddToChunk(person, death, observationPeriods, payerPlanPeriods, drugExposures,
                 conditionOccurrences, procedureOccurrences, observations, measurements,
                 [.. visitOccurrences.Values], visitDetails, cohort, deviceExposure, notes, episode);
+            
+            foreach(var c in CostRaw)
+                ChunkData.AddCostData(c);
 
             Complete = true;
 

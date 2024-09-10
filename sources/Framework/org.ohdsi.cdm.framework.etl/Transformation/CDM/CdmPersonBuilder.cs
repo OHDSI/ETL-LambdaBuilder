@@ -228,6 +228,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CDM
                 [.. conditionOccurrences], [.. procedureOccurrences], [.. observations], [.. measurements],
                 [.. visitOccurrences.Values], [.. visitDetails], null, [.. deviceExposure], null, null);
 
+            foreach (var c in CostRaw)
+                ChunkData.AddCostData(c);
 
             Complete = true;
 

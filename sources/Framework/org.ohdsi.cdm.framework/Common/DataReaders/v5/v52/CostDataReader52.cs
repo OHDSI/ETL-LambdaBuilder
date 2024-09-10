@@ -27,17 +27,41 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v52
             switch (i)
             {
                 case 0:
+                    {
+                        if (_enumerator.Current.Id.HasValue)
+                            return _enumerator.Current.Id.Value;
 
-                    return _offset.GetId(_enumerator.Current.PersonId,
-                        _enumerator.Current.CostId); //TODO VisitCostOffset -> CostOffset
+                        return _offset.GetId(_enumerator.Current.PersonId, _enumerator.Current.CostId);
+                    }
 
                 case 1:
+                    {
+                        if (_enumerator.Current.Domain == "Procedure" && !_offset
+                                .GetKeyOffset(_enumerator.Current.PersonId).ProcedureOccurrenceIdChanged)
+                            return _enumerator.Current.EventId;
 
-                    if (_enumerator.Current.Domain == "Visit" && !_offset
-                            .GetKeyOffset(_enumerator.Current.PersonId).VisitOccurrenceIdChanged)
-                        return _enumerator.Current.EventId;
+                        if (_enumerator.Current.Domain == "Observation" && !_offset
+                                .GetKeyOffset(_enumerator.Current.PersonId).ObservationIdChanged)
+                            return _enumerator.Current.EventId;
 
-                    return _offset.GetId(_enumerator.Current.PersonId, _enumerator.Current.EventId);
+                        if (_enumerator.Current.Domain == "Drug" && !_offset
+                                .GetKeyOffset(_enumerator.Current.PersonId).DrugExposureIdChanged)
+                            return _enumerator.Current.EventId;
+
+                        if (_enumerator.Current.Domain == "Device" && !_offset
+                                .GetKeyOffset(_enumerator.Current.PersonId).DeviceExposureIdChanged)
+                            return _enumerator.Current.EventId;
+
+                        if (_enumerator.Current.Domain == "Measurement" && !_offset
+                                .GetKeyOffset(_enumerator.Current.PersonId).MeasurementIdChanged)
+                            return _enumerator.Current.EventId;
+
+                        if (_enumerator.Current.Domain == "Visit" && !_offset
+                                .GetKeyOffset(_enumerator.Current.PersonId).VisitOccurrenceIdChanged)
+                            return _enumerator.Current.EventId;
+
+                        return _offset.GetId(_enumerator.Current.PersonId, _enumerator.Current.EventId);
+                    }
                 case 2:
                     return _enumerator.Current.Domain;
 

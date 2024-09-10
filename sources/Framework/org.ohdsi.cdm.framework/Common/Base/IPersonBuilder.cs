@@ -30,6 +30,8 @@ namespace org.ohdsi.cdm.framework.common.Base
 
         void AddObservationPeriod(EraEntity data);
 
+        void AddCost(Cost data);
+
         //void Build(ChunkData chunkData);
         Attrition Build(ChunkData data, KeyMasterOffsetManager offset);
 
