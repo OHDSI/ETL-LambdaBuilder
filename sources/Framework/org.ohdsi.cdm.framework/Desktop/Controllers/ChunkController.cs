@@ -242,8 +242,9 @@ namespace org.ohdsi.cdm.framework.desktop.Controllers
                     var unloadQuery = string.Format(@"create table {0} sortkey ({1}) distkey ({1}) as {2}; " +
                                                     @"UNLOAD ('select * from {0} order by {1}') to 's3://{3}' " +
                                                     @"DELIMITER AS '\t' " +
+                                                    @"NULL AS '\\N' " +
                                                     @"credentials 'aws_access_key_id={4};aws_secret_access_key={5}' " +
-                                                    @"GZIP ALLOWOVERWRITE PARALLEL ON",
+                                                    @"ZSTD ALLOWOVERWRITE PARALLEL ON",
                         tmpTableName, //0
                         personIdField, //1
                         sql, //2

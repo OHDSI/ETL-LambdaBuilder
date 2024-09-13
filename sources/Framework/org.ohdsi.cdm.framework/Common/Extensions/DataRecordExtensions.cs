@@ -6,7 +6,7 @@ namespace org.ohdsi.cdm.framework.common.Extensions
     {
         private static string GetErrorMeassge(IDataRecord reader, string fieldName, string methodName)
         {
-            return $"DataRecordExtensions.{methodName} | {fieldName}={GetValue(reader, fieldName)}";
+            return $"DataRecordExtensions.{methodName} | {fieldName}={GetValueString(reader, fieldName)}";
         }
 
         public static string GetString(this IDataRecord reader, string fieldName)
@@ -16,38 +16,17 @@ namespace org.ohdsi.cdm.framework.common.Extensions
                 if (string.IsNullOrEmpty(fieldName))
                     return null;
 
-                var value = GetValue(reader, fieldName);
+                var value = GetValueString(reader, fieldName);
 
-                if (value is null || value is DBNull)
+                if (value is null)
                     return null;
 
-                var strValue = value.ToString();
-
-                return string.Intern(strValue.Trim());
+                //return value;
+                return string.Intern(value);
             }
             catch (Exception e)
             {
                 throw new Exception(GetErrorMeassge(reader, fieldName, "GetString()"), e);
-            }
-        }
-
-        public static TimeSpan? GetTime(this IDataRecord reader, string fieldName)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(fieldName))
-                    return null;
-
-                if (DateTime.TryParse(reader.GetString(fieldName), out var dt))
-                {
-                    return dt.TimeOfDay;
-                }
-
-                return null;
-            }
-            catch (Exception e)
-            {
-                throw new Exception(GetErrorMeassge(reader, fieldName, "GetTime()"), e);
             }
         }
 
@@ -58,11 +37,11 @@ namespace org.ohdsi.cdm.framework.common.Extensions
                 if (string.IsNullOrEmpty(fieldName))
                     return null;
 
-                var value = GetValue(reader, fieldName);
-                if (value is DBNull || string.IsNullOrEmpty(value.ToString()))
+                var value = GetValueString(reader, fieldName);
+                if (value is null)
                     return null;
 
-                if (int.TryParse(value.ToString(), out var result))
+                if (int.TryParse(value, out var result))
                     return result;
 
                 return null;
@@ -80,8 +59,9 @@ namespace org.ohdsi.cdm.framework.common.Extensions
                 if (string.IsNullOrEmpty(fieldName))
                     return null;
 
-                var value = GetValue(reader, fieldName);
-                if (value is DBNull || string.IsNullOrEmpty(value.ToString()))
+                var value = GetValueString(reader, fieldName);
+                
+                if (string.IsNullOrEmpty(value))
                     return null;
 
                 return Convert.ToInt32(value);
@@ -99,11 +79,11 @@ namespace org.ohdsi.cdm.framework.common.Extensions
                 if (string.IsNullOrEmpty(fieldName))
                     return null;
 
-                var value = GetValue(reader, fieldName);
-                if (value is DBNull || string.IsNullOrEmpty(value.ToString()))
+                var value = GetValueString(reader, fieldName);
+                if (value is null)
                     return null;
 
-                int.TryParse(value.ToString(), out var res);
+                int.TryParse(value, out var res);
 
                 return res;
             }
@@ -120,12 +100,12 @@ namespace org.ohdsi.cdm.framework.common.Extensions
                 if (string.IsNullOrEmpty(fieldName))
                     return null;
 
-                var value = GetValue(reader, fieldName);
+                var value = GetValueString(reader, fieldName);
 
-                if (value is DBNull || string.IsNullOrEmpty(value.ToString()))
+                if (value is null)
                     return null;
 
-                decimal.TryParse(value.ToString(), out var res);
+                decimal.TryParse(value, out var res);
 
                 return res;
             }
@@ -142,11 +122,11 @@ namespace org.ohdsi.cdm.framework.common.Extensions
                 if (string.IsNullOrEmpty(fieldName))
                     return DateTime.MinValue;
 
-                var result = GetValue(reader, fieldName) as DateTime?;
+                var result = reader[fieldName] as DateTime?;
 
                 if (!result.HasValue)
                 {
-                    var dateTimeString = GetValue(reader, fieldName).ToString();
+                    var dateTimeString = GetValueString(reader, fieldName);
 
                     if (!string.IsNullOrEmpty(dateTimeString) && DateTime.TryParse(dateTimeString, out var dateTime))
                     {
@@ -173,9 +153,9 @@ namespace org.ohdsi.cdm.framework.common.Extensions
                 if (string.IsNullOrEmpty(fieldName))
                     return null;
 
-                var value = GetValue(reader, fieldName);
+                var value = GetValueString(reader, fieldName);
 
-                if (value is DBNull || string.IsNullOrEmpty(value.ToString()))
+                if (string.IsNullOrEmpty(value))
                     return null;
 
                 return Convert.ToInt64(value);
@@ -186,11 +166,20 @@ namespace org.ohdsi.cdm.framework.common.Extensions
             }
         }
 
-        private static object GetValue(IDataRecord reader, string fieldName)
+        private static string GetValueString(IDataRecord reader, string fieldName)
         {
             try
             {
-                return reader[fieldName];
+                var value = reader[fieldName];
+
+                if (value is DBNull || value is null)
+                    return null;
+
+                var valStr = value.ToString().Trim();
+                if (valStr == "\\N")
+                    return null;
+
+                return valStr;
             }
             catch (Exception e)
             {

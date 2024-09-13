@@ -5,12 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
-using System.IO.Compression;
 using System.Text;
+using ZstdSharp;
 
 namespace org.ohdsi.cdm.presentation.lambdabuilder
 {
-    public class S3DataReader3 : IDataReader
+    public class S3DataReaderZstd : IDataReader
     {
         private string[] _currentLine;
 
@@ -25,7 +25,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
 
         private FileStream _stream;
         private BufferedStream _bufferedStream;
-        private GZipStream _gzipStream;
+        private DecompressionStream _zstdStream;
         private StreamReader _reader;
         private readonly string _tmpFolder;
         private long _rowIndex;
@@ -73,7 +73,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
             Paused = false;
         }
 
-        public S3DataReader3(string bucket, string folder, string awsAccessKeyId,
+        public S3DataReaderZstd(string bucket, string folder, string awsAccessKeyId,
            string awsSecretAccessKey, int chunkId, string fileName, Dictionary<string, int> fieldHeaders, string prefix, long initRow, string tmpFolder)
         {
             _chunkId = chunkId;
@@ -105,22 +105,22 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                 MaxErrorRetry = 20
             };
 
-            _localFileName = $"{_fileName}{_prefix}_part_00.gz";
+            _localFileName = $"{_fileName}{_prefix}_part_00.zst";
 
             Console.WriteLine(_localFileName + " " + initRow);
 
             using (var client = new AmazonS3Client(_awsAccessKeyId, _awsSecretAccessKey, config))
             using (var transferUtility = new TransferUtility(client))
             {
-                transferUtility.Download($"{TmpFolder}/raw/{_localFileName}", _bucket, $"{_folder}/{_chunkId}/{_fileName}/{_fileName}{_prefix}_part_00.gz");
+                transferUtility.Download($"{TmpFolder}/raw/{_localFileName}", _bucket, $"{_folder}/{_chunkId}/{_fileName}/{_fileName}{_prefix}_part_00.zst");
                 Console.WriteLine(_localFileName + " MOVED");
             }
 
             _stream = File.Open($"{TmpFolder}/raw/{_localFileName}", FileMode.Open, FileAccess.Read);
 
             _bufferedStream = new BufferedStream(_stream);
-            _gzipStream = new GZipStream(_bufferedStream, CompressionMode.Decompress);
-            _reader = new StreamReader(_gzipStream, Encoding.Default);
+            _zstdStream = new DecompressionStream(_bufferedStream);
+            _reader = new StreamReader(_zstdStream, Encoding.Default);
 
             _rowIndex = initRow;
             for (var i = 0; i < initRow; i++)
@@ -129,7 +129,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
             }
 
             if (initRow > 0)
-                Console.WriteLine($"{_fileName}{_prefix}_part_00.gz; Rows skipped={initRow}");
+                Console.WriteLine($"{_fileName}{_prefix}_part_00.zst; Rows skipped={initRow}");
 
             _lastReadTime = DateTime.MinValue;
 
@@ -139,7 +139,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
         {
             _stream?.Close();
             _bufferedStream?.Close();
-            _gzipStream?.Close();
+            _zstdStream?.Close();
             _reader?.Close();
         }
 
@@ -147,7 +147,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
         {
             _stream?.Dispose();
             _bufferedStream?.Dispose();
-            _gzipStream?.Dispose();
+            _zstdStream?.Dispose();
 
             _reader?.Dispose();
 

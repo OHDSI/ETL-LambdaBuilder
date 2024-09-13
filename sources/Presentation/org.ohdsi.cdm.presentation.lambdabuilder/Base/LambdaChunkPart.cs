@@ -29,7 +29,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder.Base
         private long? _lastSavedPersonId;
 
         private readonly System.Timers.Timer _watchdog;
-        private readonly Dictionary<string, S3DataReader3> _readers = [];
+        private readonly Dictionary<string, S3DataReaderZstd> _readers = [];
         private Dictionary<string, long> _restorePoint = [];
         private readonly string _tmpFolder;
         private bool _readRestarted;
@@ -54,7 +54,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder.Base
 
         private void Watchdog_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(_currentReaderName) && _readers != null && _readers.Count > 0 && _readers.TryGetValue(_currentReaderName, out S3DataReader3 value))
+            if (!string.IsNullOrEmpty(_currentReaderName) && _readers != null && _readers.Count > 0 && _readers.TryGetValue(_currentReaderName, out S3DataReaderZstd value))
             {
                 if (value.IdleTime != TimeSpan.Zero &&
 value.IdleTime.TotalSeconds > 10)
@@ -105,7 +105,7 @@ value.IdleTime.TotalSeconds > 10)
                     if (_restorePoint.TryGetValue(qd.FileName, out long valueFileName))
                         initRow = valueFileName;
 
-                    _readers.Add(qd.FileName, new S3DataReader3(Settings.Current.Bucket, folder,
+                    _readers.Add(qd.FileName, new S3DataReaderZstd(Settings.Current.Bucket, folder,
                         Settings.Current.S3AwsAccessKeyId,
                         Settings.Current.S3AwsSecretAccessKey, _chunkId, qd.FileName, qd.FieldHeaders, _prefix,
                         initRow, _tmpFolder));
@@ -251,7 +251,7 @@ value.IdleTime.TotalSeconds > 10)
                     if (_restorePoint.ContainsKey(qd.FileName))
                         initRow = _restorePoint[qd.FileName];
 
-                    _readers.Add(qd.FileName, new S3DataReader3(Settings.Current.Bucket, folder,
+                    _readers.Add(qd.FileName, new S3DataReaderZstd(Settings.Current.Bucket, folder,
                         Settings.Current.S3AwsAccessKeyId,
                         Settings.Current.S3AwsSecretAccessKey, _chunkId, qd.FileName, qd.FieldHeaders, _prefix,
                         initRow, _tmpFolder));
@@ -593,17 +593,17 @@ value.IdleTime.TotalSeconds > 10)
                 else
                 {
                     if (personIdsToSave.Contains(personId.Value))
-                        ((S3DataReader3)reader).Resume();
+                        ((S3DataReaderZstd)reader).Resume();
                     else
                     {
-                        ((S3DataReader3)reader).Pause();
+                        ((S3DataReaderZstd)reader).Pause();
                         return;
                     }
                 }
 
 
                 queryDefinition.ProcessedPersonIds.TryAdd(personId.Value, 0);
-                queryDefinition.ProcessedPersonIds[personId.Value] = ((S3DataReader3)reader).RowIndex;
+                queryDefinition.ProcessedPersonIds[personId.Value] = ((S3DataReaderZstd)reader).RowIndex;
 
                 if (_readRestarted)
                 {
