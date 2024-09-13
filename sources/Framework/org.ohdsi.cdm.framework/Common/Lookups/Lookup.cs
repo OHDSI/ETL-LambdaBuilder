@@ -217,9 +217,14 @@ namespace org.ohdsi.cdm.framework.common.Lookups
             {
                 foreach (var v2 in v1.Values)
                 {
+                    v2.SourceConcepts?.TrimExcess();
                     v2.Ingredients?.TrimExcess();
                 }
+
+                v1.TrimExcess();
             }
+
+            _lookup.TrimExcess();
 
             GC.Collect();
         }

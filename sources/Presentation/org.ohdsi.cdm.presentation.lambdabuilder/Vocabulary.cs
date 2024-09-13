@@ -195,6 +195,8 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                         _conceptIdToSourceVocabularyId.Add(long.Parse(spliter.Results[0]), new Tuple<string, string>(spliter.Results[1], spliter.Results[2]));
                     }
                 }
+
+                _conceptIdToSourceVocabularyId.TrimExcess();
             }
         }
 

@@ -57,7 +57,7 @@ namespace org.ohdsi.cdm.framework.common.Lookups
                         GestValue = gestValue
                     });
             }
-
+            _dictionary.TrimExcess();
         }
 
         public IEnumerable<PregnancyConcept> GetConcepts(long conceptId)
