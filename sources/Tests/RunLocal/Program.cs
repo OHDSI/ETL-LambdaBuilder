@@ -27,8 +27,7 @@ namespace RunLocal
 
             Console.WriteLine($"{Directory.GetCurrentDirectory()}");
 
-            var etlLibraryPath = "";
-            Process(EtlLibrary.CreateVendorInstance(etlLibraryPath, args[0]), int.Parse(args[1]), int.Parse(args[2]), args[3], bool.Parse(args[4]), etlLibraryPath);
+            Process(EtlLibrary.CreateVendorInstance(args[5], args[0]), int.Parse(args[1]), int.Parse(args[2]), args[3], bool.Parse(args[4]), args[5]);
 
             //int[] slicesNum = [24, 40, 48, 96, 192];
 
