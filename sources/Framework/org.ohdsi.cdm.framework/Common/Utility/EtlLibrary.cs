@@ -23,9 +23,9 @@ namespace org.ohdsi.cdm.framework.common.Utility
             }
         }
 
-        private static IEnumerable<Tuple<Assembly, string>> FindAssemblyAndResource(string etlLibraryPath, string name)
+        private static IEnumerable<Tuple<Assembly, string>> FindAssemblyAndResource(string etlLibraryFolderPath, string name)
         {
-            foreach (var assembly in GetETLAssemblies(etlLibraryPath))
+            foreach (var assembly in GetETLAssemblies(etlLibraryFolderPath))
             {
                 foreach (var resourceName in assembly.GetManifestResourceNames())
                 {
@@ -46,11 +46,11 @@ namespace org.ohdsi.cdm.framework.common.Utility
             return new Resource(resourceName.Split('.').TakeLast(2).First(), value);
         }
 
-        private static Resource GetResource(string etlLibraryPath, string name)
+        private static Resource GetResource(string etlLibraryFolderPath, string name)
         {
             Console.WriteLine("GetResource: " + name);
 
-            var result = FindAssemblyAndResource(etlLibraryPath, name).FirstOrDefault();
+            var result = FindAssemblyAndResource(etlLibraryFolderPath, name).FirstOrDefault();
             if (result != null)
             {
                 var resource = ReadResource(result.Item1, result.Item2);
@@ -58,14 +58,14 @@ namespace org.ohdsi.cdm.framework.common.Utility
                     return resource;
             }
 
-            throw new KeyNotFoundException($"GetResource | Resource: {name}; LibraryPath: {etlLibraryPath} - not exists");
+            throw new KeyNotFoundException($"GetResource | Resource: {name}; LibraryPath: {etlLibraryFolderPath} - not exists");
         }
 
-        private static IEnumerable<Resource> GetResources(string etlLibraryPath, string name)
+        private static IEnumerable<Resource> GetResources(string etlLibraryFolderPath, string name)
         {
             Console.WriteLine("GetResources: " + name);
 
-            foreach (var ar in FindAssemblyAndResource(etlLibraryPath, name))
+            foreach (var ar in FindAssemblyAndResource(etlLibraryFolderPath, name))
             {
                 var resource = ReadResource(ar.Item1, ar.Item2);
                 if (resource != null)
@@ -82,7 +82,7 @@ namespace org.ohdsi.cdm.framework.common.Utility
             return result;
         }
 
-        public static void LoadVendorSettings(string etlLibraryPath, IVendorSettings settings)
+        public static void LoadVendorSettings(string etlLibraryFolderPath, IVendorSettings settings)
         {
             Console.WriteLine("LoadVendorSettings | Vendor: " + settings.Vendor);
 
@@ -93,16 +93,16 @@ namespace org.ohdsi.cdm.framework.common.Utility
 
             settings.SourceQueryDefinitions = [];
             settings.CombinedLookupDefinitions = [];
-            settings.BatchScript ??= EtlLibrary.GetResource(etlLibraryPath, vendorFolder + "." + batch).Value;
+            settings.BatchScript ??= EtlLibrary.GetResource(etlLibraryFolderPath, vendorFolder + "." + batch).Value;
 
-            foreach (var definition in GetResources(etlLibraryPath, vendorFolder + ".Definitions."))
+            foreach (var definition in GetResources(etlLibraryFolderPath, vendorFolder + ".Definitions."))
             {
                 var qd = new QueryDefinition().DeserializeFromXml(definition.Value);
                 qd.FileName = definition.Name;
                 settings.SourceQueryDefinitions.Add(qd);
             }
 
-            foreach (var lookup in GetResources(etlLibraryPath, vendorFolder + ".CombinedLookups."))
+            foreach (var lookup in GetResources(etlLibraryFolderPath, vendorFolder + ".CombinedLookups."))
             {
                 var ld = new LookupDefinition().DeserializeFromXml(lookup.Value);
                 ld.FileName = lookup.Name;
@@ -110,9 +110,9 @@ namespace org.ohdsi.cdm.framework.common.Utility
             }
         }
 
-        public static Vendor CreateVendorInstance(string etlLibraryPath, string name)
+        public static Vendor CreateVendorInstance(string etlLibraryFolderPath, string name)
         {
-            foreach (var assembly in GetETLAssemblies(etlLibraryPath))
+            foreach (var assembly in GetETLAssemblies(etlLibraryFolderPath))
             {
                 var vendorTypes = assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(Vendor)) && !t.IsAbstract);
                 var vendorType = vendorTypes.FirstOrDefault(a => a.Name.Contains(name, StringComparison.CurrentCultureIgnoreCase));
@@ -133,12 +133,12 @@ namespace org.ohdsi.cdm.framework.common.Utility
                 }
             }
 
-            throw new KeyNotFoundException($"CreateVendorInstance | Vendor: {name}; LibraryPath: {etlLibraryPath} - not exists");
+            throw new KeyNotFoundException($"CreateVendorInstance | Vendor: {name}; LibraryPath: {etlLibraryFolderPath} - not exists");
         }
 
-        public static ConstructorInfo GetBuilderConstructor(string etlLibraryPath, Vendor vendor)
+        public static ConstructorInfo GetBuilderConstructor(string etlLibraryFolderPath, Vendor vendor)
         {
-            foreach (var assembly in GetETLAssemblies(etlLibraryPath))
+            foreach (var assembly in GetETLAssemblies(etlLibraryFolderPath))
             {
                 var builderTypes = assembly.GetTypes().
                     Where(t => t.IsSubclassOf(typeof(PersonBuilder)) && !t.IsAbstract);
@@ -151,7 +151,7 @@ namespace org.ohdsi.cdm.framework.common.Utility
                 }
             }
 
-            throw new KeyNotFoundException($"GetBuilderConstructor | Vendor: {vendor}; LibraryPath: {etlLibraryPath} - not exists");
+            throw new KeyNotFoundException($"GetBuilderConstructor | Vendor: {vendor}; LibraryPath: {etlLibraryFolderPath} - not exists");
         }        
     }
 }
