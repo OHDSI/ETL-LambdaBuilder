@@ -8,7 +8,7 @@ layout: default
 
 # Table Name: Observation
 
-The observation table houses additional demographic and visit data that is housed in Premier. Certain ICD9, CPT, and standard charge codes map to standardized observation table concept. Marital status, admission information, discharge status, and patient type records are specific to Premier and map to non-standard observation table concepts. 
+The observation table houses additional demographic and visit data that is housed in Premier. Certain ICD9, CPT, and standard charge codes map to standardized observation table concept. Marital status and patient type records are specific to Premier and map to non-standard observation table concepts. 
 
 Additionally, procedures that occur on the same day as billing records for operation time will have operation time calculated and recorded in the observation table.
 
