@@ -433,7 +433,7 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
                             {
                                 StartDate = overlap.StartDate,
                                 EndDate = overlap.EndDate,
-                                TypeConceptId = 32875,
+                                TypeConceptId = 32813,
                                 PersonId = observationPeriods[0].PersonId
                             };
                         }
