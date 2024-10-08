@@ -131,7 +131,7 @@ namespace org.ohdsi.cdm.framework.common.Definitions
                                 }
                             }
 
-                            yield return new Entity
+                            var entity =  new Entity
                             {
                                 IsUnique = IsUnique,
                                 PersonId = personId.Value,
@@ -150,13 +150,25 @@ namespace org.ohdsi.cdm.framework.common.Definitions
                                 ValidEndDate = lookupValue.ValidEndDate,
                                 SourceConceptId = sourceConceptId,
                                 Domain = lookupValue.Domain,
-                                //SourceVocabularyId = lookupValue.SourceVocabularyId,
                                 VocabularySourceValue = lookupValue.SourceCode,
                                 Ingredients = ingredients,
-                                ValueAsConceptId = lookupValue.ValueAsConceptId,
+                                ValueAsConceptId = null,
                                 SourceConcepts = lookupValue.SourceConcepts.ToList(),
                             };
 
+
+                            if (lookupValue.ValueAsConceptIds == null || lookupValue.ValueAsConceptIds.Count == 0)
+                            {
+                                yield return entity;
+                            }
+                            else
+                            {
+                                foreach (var valueAsConceptId in lookupValue.ValueAsConceptIds)
+                                {
+                                    entity.ValueAsConceptId = valueAsConceptId;
+                                    yield return entity;
+                                }
+                            }
                         }
                     }
                 }

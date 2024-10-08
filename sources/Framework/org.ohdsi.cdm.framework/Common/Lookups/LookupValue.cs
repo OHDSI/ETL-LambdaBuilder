@@ -34,7 +34,7 @@
 
         public HashSet<SourceConcepts> SourceConcepts { get; set; } = [];
         public HashSet<long> Ingredients { get; set; }
-        public long? ValueAsConceptId { get; set; }
+        public HashSet<long> ValueAsConceptIds { get; set; }
 
         public bool Equals(LookupValue other)
         {
