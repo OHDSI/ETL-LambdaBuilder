@@ -1,4 +1,5 @@
-﻿using org.ohdsi.cdm.framework.common.Builder;
+﻿using Force.DeepCloner;
+using org.ohdsi.cdm.framework.common.Builder;
 using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Lookups;
 using org.ohdsi.cdm.framework.common.Omop;
@@ -165,8 +166,9 @@ namespace org.ohdsi.cdm.framework.common.Definitions
                             {
                                 foreach (var valueAsConceptId in lookupValue.ValueAsConceptIds)
                                 {
-                                    entity.ValueAsConceptId = valueAsConceptId;
-                                    yield return entity;
+                                    var ent = entity.DeepClone();
+                                    ent.ValueAsConceptId = valueAsConceptId;
+                                    yield return ent;
                                 }
                             }
                         }
