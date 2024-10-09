@@ -1,4 +1,5 @@
-﻿using org.ohdsi.cdm.framework.common.Builder;
+﻿using Force.DeepCloner;
+using org.ohdsi.cdm.framework.common.Builder;
 using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Lookups;
 using org.ohdsi.cdm.framework.common.Omop;
@@ -131,7 +132,7 @@ namespace org.ohdsi.cdm.framework.common.Definitions
                                 }
                             }
 
-                            yield return new Entity
+                            var entity =  new Entity
                             {
                                 IsUnique = IsUnique,
                                 PersonId = personId.Value,
@@ -150,13 +151,26 @@ namespace org.ohdsi.cdm.framework.common.Definitions
                                 ValidEndDate = lookupValue.ValidEndDate,
                                 SourceConceptId = sourceConceptId,
                                 Domain = lookupValue.Domain,
-                                //SourceVocabularyId = lookupValue.SourceVocabularyId,
                                 VocabularySourceValue = lookupValue.SourceCode,
                                 Ingredients = ingredients,
-                                ValueAsConceptId = lookupValue.ValueAsConceptId,
+                                ValueAsConceptId = null,
                                 SourceConcepts = lookupValue.SourceConcepts.ToList(),
                             };
 
+
+                            if (lookupValue.ValueAsConceptIds == null || lookupValue.ValueAsConceptIds.Count == 0)
+                            {
+                                yield return entity;
+                            }
+                            else
+                            {
+                                foreach (var valueAsConceptId in lookupValue.ValueAsConceptIds)
+                                {
+                                    var ent = entity.DeepClone();
+                                    ent.ValueAsConceptId = valueAsConceptId;
+                                    yield return ent;
+                                }
+                            }
                         }
                     }
                 }
