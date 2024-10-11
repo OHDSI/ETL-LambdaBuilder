@@ -88,4 +88,28 @@ createDrugExposureTests <- function()
                             diag1 = '250.00', disch_date = '2013-08-22', icd_flag = '9', conf_id = '456', pos = '21', proc1 = '90651')
   expect_drug_exposure(person_id = patient$person_id, drug_concept_id = 45892510, drug_source_value = '90651')
   
+  
+  patient <- createPatient()
+  claim <- createClaim()
+  declareTest("DRUG_EXPOSURE - do not set end date for Drugs.", 
+              id = patient$person_id)
+  add_member_continuous_enrollment(eligeff = '2010-05-01', eligend = '2013-10-31',
+                                   gdr_cd = 'F', patid = patient$patid, yrdob = 1969)
+  add_member_enrollment(patid = patient$patid, eligeff = '2010-05-01', eligend = '2013-10-31')								   
+  add_medical_claims(clmid = claim$clmid, clmseq = '001', lst_dt = '2013-07-01', proc_cd = NULL,
+                     pat_planid = patient$patid, patid = patient$patid, fst_dt = '2013-07-01', prov = '111111', provcat = '5678')
+  add_med_procedure(patid = patient$patid, pat_planid = patient$patid, proc = 'XW043K7', proc_position = 1, clmid = claim$clmid, fst_dt = '2013-07-01')
+  expect_drug_exposure(person_id = patient$person_id, drug_source_value = 'XW043K7', drug_exposure_end_date = NULL)
+  
+  patient <- createPatient()
+  claim <- createClaim()
+  declareTest("DRUG_EXPOSURE - do not set end date for Drugs 2", 
+              id = patient$person_id)
+  add_member_continuous_enrollment(eligeff = '2010-05-01', eligend = '2014-10-31',
+                                   gdr_cd = 'F', patid = patient$patid, yrdob = 1980)
+  add_member_enrollment(patid = patient$patid, eligeff = '2010-05-01', eligend = '2014-10-31')								   
+  add_inpatient_confinement(patid = patient$patid, pat_planid = patient$patid, admit_date = '2013-08-11', 
+                            diag1 = '250.00', disch_date = '2013-08-22', icd_flag = '9', conf_id = '456', pos = '21', proc1 = 'XW043K7')
+  expect_drug_exposure(person_id = patient$person_id, drug_source_value = 'XW043K7', drug_exposure_end_date = NULL)
+    
 }
