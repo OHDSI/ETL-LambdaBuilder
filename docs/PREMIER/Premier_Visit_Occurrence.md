@@ -28,13 +28,14 @@ Admitting and discharge information is captured in Premier as the place of servi
 |CARE_SITE_ID|PAT.PROV_ID|||
 |VISIT_SOURCE_VALUE|PAT.I_O_IND|||
 |VISIT_SOURCE_CONCEPT_ID|-|||
-|ADMITTING_SOURCE_CONCEPT_ID|PAT.POINT_OF_ORIGIN|if POINT_OF_ORIGIN then ADMITTING_SOURCE_CONCEPT_ID<br>0 then 8976<br>1 then 8844<br>2 then 8716<br>3 then 8844<br>4 then 8717<br>45 then 581384<br>46 then 8650<br>5 then 8863<br>6 then 8844<br>7 then 8870<br>8 then 8844<br>9 then 8844<br>A then 8761<br>B then 8536<br>C then 8536<br>D then 8717<br>E then 8883<br>F then 8546<br>G then 8844<br>||
+|ADMITTING_SOURCE_CONCEPT_ID|PAT.POINT_OF_ORIGIN|if POINT_OF_ORIGIN then ADMITTING_SOURCE_CONCEPT_ID<br>0 then 8976<br>1 then 8844<br>2 then 8716<br>3 then 8844<br>4 then 8717<br>45 then 581384<br>46 then 8844<br>5 then 8863<br>6 then 8844<br>7 then 8870<br>8 then 8844<br>9 then 0<br>A then 8761<br>B then 8536<br>C then 8536<br>D then 8717<br>E then 8883<br>F then 8546<br>G then 8844<br>||
 |ADMITTING_SOURCE_VALUE|PAT. POINT_OF_ORIGIN|PAT. POINT_OF_ORIGIN||
 |DISCHARGE_TO_CONCEPT_ID|PAT.DISC_STATUS|If DISC_STATUS then DISCHARGE_TO_CONCEPT_ID<br>1 then 8536, 2 then 8844<br>3 then 8863, 4 then 8863<br>5 then 8844, 6 then 8536<br>7 then 8844, 8 then 8536<br>9 then 8717, 20 then NULL<br>21 then 8844, 30 then 8844<br>40 then 0, 41 then 0<br>42 then 0, 43 then 8544<br>50 then 8546, 51 then 8546<br>61 then 8863, 62 then 8920<br>63 then 8970, 64 then 8676<br>65 then 8971, 66 then 581379<br>69 then 8844, 70 then 8844<br>71 then 8844, 72 then 8717<br>81 then 8536, 82 then 581379<br>83 then 8863, 84 then 8827<br>85 then 8844, 86 then 8536<br>87 then 8844, 88 then 8844<br>89 then 8863, 90 then 581379<br>91 then 581379, 92 then 8676<br>93 then 8971, 94 then 581379<br>95 then 8844, 99 then 0<br>||
 |DISCHARGE_TO_SOURCE_VALUE|PAT.DISC_STATUS|PAT.DISC_STATUS||
 |PRECEDING_VISIT_OCCURRENCE_ID|VISIT_OCCURRENCE.VISIT_OCCURRENCE_ID|For a given person, find the visit prior to this one and reference it here|A foreign key to the VISIT_OCCURRENCE table of the visit immediately preceding this visit|
 
 ## Change Log:
+* 2024.10.16:  Updated mappings for discharge_to and admitted_from concept_ids to better represent source data.
 * 2024.03.12:  Updated VISIT_CONCEPT_ID  
 * 2023.10.23:  Updated visit logic, the exact date of visits is now available.
 * 2021.08.11:  Updated VISIT_TYPE_CONCEPT_ID to leverage standard concept id.
