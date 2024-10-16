@@ -50,7 +50,7 @@ The **annual_health_checkup** table is a wide table with one row per date and ma
 |     person_id    |     member_id    |     Remove 'M' prefix    |          |
 |     observation_type_concept_id    |          |          Coming from the **annual_health_checkup** table set to 32836 (EHR physical examination)         |
 |     observation_date    |     date_of_health_checkup    |          |          |
-|     observation_concept_id    |    smoking_habit<br>mastication<br>sleep      |          |  See the mapping file [here]([Vocab Updates/Annual_Health_Checkup_Mapping.xlsx](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/JMDC/Vocab%20Updates/Annual_Health_Checkup_Mapping.xlsx)) for how to map these columns to standard concepts        |
+|     observation_concept_id    |    smoking_habit<br>mastication<br>sleep<br>ecg      |          |  See the mapping file [here]([Vocab Updates/Annual_Health_Checkup_Mapping.xlsx](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/JMDC/Vocab%20Updates/Annual_Health_Checkup_Mapping.xlsx)) for how to map these columns to standard concepts        |
 |     observation_source_concept_id    |          |       Set to 0     |
 |     observation_source_value    |          |          |          |
 |     provider_id    |          |          |          |
