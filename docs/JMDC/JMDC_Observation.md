@@ -66,6 +66,8 @@ The **annual_health_checkup** table is a wide table with one row per date and ma
 
 ## Change Log
 
+### October 16, 2024
+- Added ecg mappings
 ### April 6, 2022
 - Added more text around how to handle records from the annual_health_checkup table.
 ### July 30, 2023
