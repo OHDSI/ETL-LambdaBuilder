@@ -176,70 +176,36 @@
          </Concepts>
       </DeathDefinition>
    </Death>
-   <Observation>
-    
-     <ObservationDefinition>
-       <PersonId>medrec_key</PersonId>
-       <VisitOccurrenceId>pat_key</VisitOccurrenceId>
-       <ProviderId>adm_phy</ProviderId>
-       <ValuesAsString>
-         <string>mart_status</string>
-       </ValuesAsString>
-       <Concepts>
-         <Concept>
-           <Fields>
-             <Field defaultConceptId="4053609" defaultSource=" " defaultTypeId="38000281"/>
-           </Fields>
-         </Concept>
-       </Concepts>
-     </ObservationDefinition>
-
-     <ObservationDefinition>
-       <PersonId>medrec_key</PersonId>
-       <VisitOccurrenceId>pat_key</VisitOccurrenceId>
-       <ProviderId>adm_phy</ProviderId>
-       <ValuesAsString>
-         <string>point_of_origin_desc</string>
-       </ValuesAsString>
-       <Concepts>
-         <Concept>
-           <Fields>
-             <Field defaultConceptId="40757183" defaultSource=" " defaultTypeId="38000281"/>
-           </Fields>
-         </Concept>
-       </Concepts>
-     </ObservationDefinition>
-
-     <ObservationDefinition>
-       <PersonId>medrec_key</PersonId>
-       <VisitOccurrenceId>pat_key</VisitOccurrenceId>
-       <ProviderId>adm_phy</ProviderId>
-       <ValuesAsString>
-         <string>disc_status_desc</string>
-       </ValuesAsString>
-       <Concepts>
-         <Concept>
-           <Fields>
-             <Field defaultConceptId="40757177" defaultSource=" " defaultTypeId="38000281"/>
-           </Fields>
-         </Concept>
-       </Concepts>
-     </ObservationDefinition>
-
-     <ObservationDefinition>
-       <PersonId>medrec_key</PersonId>
-       <VisitOccurrenceId>pat_key</VisitOccurrenceId>
-       <ProviderId>adm_phy</ProviderId>
-       <ValuesAsString>
-         <string>pat_type_desc</string>
-       </ValuesAsString>
-       <Concepts>
-         <Concept>
-           <Fields>
-             <Field defaultConceptId="40769091" defaultSource=" " defaultTypeId="38000281"/>
-           </Fields>
-         </Concept>
-       </Concepts>
-     </ObservationDefinition>
-   </Observation>
+	<Observation>
+		<ObservationDefinition>
+			<PersonId>medrec_key</PersonId>
+			<VisitOccurrenceId>pat_key</VisitOccurrenceId>
+			<ProviderId>adm_phy</ProviderId>
+			<ValuesAsString>
+				<string>mart_status</string>
+			</ValuesAsString>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field defaultConceptId="4053609" defaultSource=" " defaultTypeId="38000281"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ObservationDefinition>
+		<ObservationDefinition>
+			<PersonId>medrec_key</PersonId>
+			<VisitOccurrenceId>pat_key</VisitOccurrenceId>
+			<ProviderId>adm_phy</ProviderId>
+			<ValuesAsString>
+				<string>pat_type_desc</string>
+			</ValuesAsString>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field defaultConceptId="40769091" defaultSource=" " defaultTypeId="38000281"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ObservationDefinition>
+	</Observation>
 </QueryDefinition>
