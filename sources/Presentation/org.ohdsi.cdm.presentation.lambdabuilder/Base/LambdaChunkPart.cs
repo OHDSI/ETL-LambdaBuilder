@@ -667,6 +667,7 @@ value.IdleTime.TotalSeconds > 10)
                             if (entity == null) continue;
 
                             entity.SourceRecordGuid = recordGuid;
+                            entity.SourceFile = queryDefinition.FileName;
                             AddEntity(entity);
 
                             switch (entity.GeEntityType())
