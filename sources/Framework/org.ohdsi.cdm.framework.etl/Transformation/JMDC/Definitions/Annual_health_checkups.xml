@@ -892,10 +892,8 @@
 				</Concept>
 			</Concepts>
 		</ObservationDefinition>
-	</Observation>
 
-	<ConditionOccurrence>
-		<ConditionOccurrenceDefinition>
+		<ObservationDefinition>
 			<Condition>{Condition} = 1</Condition>
 			<PersonId>PERSON_ID</PersonId>
 			<IsUnique>true</IsUnique>
@@ -907,7 +905,6 @@
 					</Fields>
 				</Concept>
 			</Concepts>
-		</ConditionOccurrenceDefinition>
-	</ConditionOccurrence>
-
+		</ObservationDefinition>
+	</Observation>
 </QueryDefinition>
