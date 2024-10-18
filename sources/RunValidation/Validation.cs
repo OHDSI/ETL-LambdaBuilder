@@ -5,22 +5,34 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Numerics;
+using System.Runtime.InteropServices;
 
 namespace RunValidation
 {
 
-    public class Validation1(string awsAccessKeyId, string awsSecretAccessKey, string bucket, string tmpFolder)
+    public class Validation(string awsAccessKeyId, string awsSecretAccessKey, string bucket, string tmpFolder, string cdmFolder)
     {
+        #region Fields 
+
         private readonly string _awsAccessKeyId = awsAccessKeyId;
         private readonly string _awsSecretAccessKey = awsSecretAccessKey;
         private readonly string _bucket = bucket;
         private readonly string _tmpFolder = tmpFolder;
-        private string _cdmFolder;
+        private readonly string _cdmFolder = cdmFolder;
 
-        public void Start(Vendor vendor, int buildingId, int slicesNum, string cdmFolder)
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Method to check the correctness of person ids for specified groups of vendor + buildingId + chunkId + slicesNum
+        /// </summary>
+        /// <param name="vendor"></param>
+        /// <param name="buildingId"></param>
+        /// <param name="chunkIds">If omitted or null, all chunkIds on S3 are checked</param>
+        /// <param name="slices">Slices within a chunk to process</param>
+        public void ValidateBuildingId(Vendor vendor, int buildingId, IEnumerable<int> chunkIds, IEnumerable<int> slices)
         {
-            _cdmFolder = cdmFolder;
-
             Console.WriteLine($"{vendor}.{buildingId}");
             List<string> wrong = [];
             HashSet<string> missed = [];
@@ -34,24 +46,36 @@ namespace RunValidation
             foreach (var chunk in Helper.GetChunksFromS3(_tmpFolder, vendor, buildingId, _awsAccessKeyId, _awsSecretAccessKey, _bucket))
             {
                 var chunkId = chunk.Key;
+                if (chunkIds != null && chunkIds.Any() && !chunkIds.Any(s => s == chunkId))
+                {
+                    Console.WriteLine("Skip chunkId " + chunkId);
+                    continue;
+                }
 
+                #region var objects = new List<S3Object>(); from PERSON and METADATA_TMP
                 var objects = new List<S3Object>();
+
+                var slices2process = (slices == null || !slices.Any())
+                    ? Enumerable.Range(1, 100).ToList()
+                    : slices.Distinct().OrderBy(s => s).ToList()
+                    ;
+
                 foreach (var o in Helper.GetObjectsFromS3(vendor, buildingId, _awsAccessKeyId, _awsSecretAccessKey, _bucket,
-                    _cdmFolder, "PERSON", chunkId, slicesNum))
+                        _cdmFolder, "PERSON", chunkId, slices2process))
                 {
                     objects.AddRange(o);
                 }
 
+                //this is to exclude slices, which definetely won't be in metadata
+                //is such a case possible when there's no file in PERSON, but a file in METADATA for a single slice?
+                var slices2processInMetadata = objects.Select(s => int.Parse(s.Key.Split(new[] { '/' }).Last().Split(new[] { '.' })[1])).ToList();
+
                 foreach (var o in Helper.GetObjectsFromS3(vendor, buildingId, _awsAccessKeyId, _awsSecretAccessKey, _bucket,
-                    _cdmFolder, "METADATA_TMP", chunkId, slicesNum))
+                    _cdmFolder, "METADATA_TMP", chunkId, slices2process, true))
                 {
                     objects.AddRange(o);
                 }
-
-                if (objects.Count == 0)
-                {
-                    wrong.Add($"chunkId={chunkId} - MISSED");
-                }
+                #endregion
 
                 Helper.CheckChunk(_tmpFolder, objects, _awsAccessKeyId, _awsSecretAccessKey, _bucket, chunk);
 
@@ -92,12 +116,26 @@ namespace RunValidation
                         Console.WriteLine(fileName);
                     }
                 }
-            }
 
-            Console.WriteLine();
-            timer.Stop();
-            Console.WriteLine($"Total={timer.ElapsedMilliseconds}ms");
-            timer.Restart();
+                Console.WriteLine();
+                timer.Stop();
+                Console.WriteLine($"Total={timer.ElapsedMilliseconds}ms");
+                timer.Restart();
+            }
         }
+
+        int ParseSliceIdFromKey(string key)
+        {
+            var parts = key.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+            // Assuming sliceId is at a specific position in the parts array
+            if (parts.Length == 6 && int.TryParse(parts[1], out int sliceId))
+            {
+                return sliceId;
+            }
+            throw new FormatException($"Invalid S3 object key format: {key}");
+        }
+
+        #endregion
+
     }
 }

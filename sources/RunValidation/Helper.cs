@@ -139,11 +139,16 @@ namespace RunValidation
         }
 
         internal static IEnumerable<List<S3Object>> GetObjectsFromS3(Vendor vendor, int buildingId, string awsAccessKeyId, string awsSecretAccessKey,
-            string bucket, string cdmFolder, string table, int chunkId, int slicesNum)
+            string bucket, string cdmFolder, string table, int chunkId, IEnumerable<int> slices, bool skipObjectCountChecking = false)
         {
-            for (int i = 0; i < slicesNum; i++)
+            var orderedSlices = slices.OrderBy(s => s).ToList();
+            bool stop = false;
+            for (int i = 0; i < orderedSlices.Count; i++)
             {
-                var prefix = $"{vendor}/{buildingId}/{cdmFolder}/{table}/{table}.{i}.{chunkId}.";
+                if (stop)
+                    break;
+
+                var prefix = $"{vendor}/{buildingId}/{cdmFolder}/{table}/{table}.{orderedSlices[i]}.{chunkId}.";
 
                 using var client = new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey,
                     Amazon.RegionEndpoint.USEast1);
@@ -157,11 +162,18 @@ namespace RunValidation
                 {
                     var responseTask = client.ListObjectsV2Async(request);
                     responseTask.Wait();
-                    response = responseTask.Result;
+                    response = responseTask.Result;                    
 
                     yield return response.S3Objects;
 
                     request.ContinuationToken = response.NextContinuationToken;
+
+                    //assume that all objects are not sparse, so no other object is expected with number more that the previous one
+                    if (!skipObjectCountChecking && response.S3Objects.Count == 0)
+                    {
+                        stop = true;
+                        break;
+                    }
                 } while (response.IsTruncated);
             }
 
@@ -197,7 +209,7 @@ namespace RunValidation
                 {
                     using var transferUtility = new TransferUtility(awsAccessKeyId, awsSecretAccessKey, Amazon.RegionEndpoint.USEast1);
                     using var responseStream = transferUtility.OpenStream(bucket, o.Key);
-                    using var bufferedStream = new BufferedStream(responseStream);
+                    using var bufferedStream = new BufferedStream(responseStream);                    
                     using var gzipStream = new GZipStream(bufferedStream, CompressionMode.Decompress);
                     using var reader = new StreamReader(gzipStream, Encoding.Default);
                     string line;

@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="2.9.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Framework\org.ohdsi.cdm.framework\org.ohdsi.cdm.framework.csproj" />
   </ItemGroup>
 

@@ -12,6 +12,7 @@ using System.Text;
 
 namespace RunValidation
 {
+    [Obsolete] //it's here for a reference; //todo delete //copy from Presentation
     public class Validation2
     {
         private string _cdmFolder = "cdmCSV";
