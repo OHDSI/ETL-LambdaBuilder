@@ -66,9 +66,9 @@ namespace RunValidation
                     objects.AddRange(o);
                 }
 
-                //this is to exclude slices, which definetely won't be in metadata
-                //is such a case possible when there's no file in PERSON, but a file in METADATA for a single slice?
-                var slices2processInMetadata = objects.Select(s => int.Parse(s.Key.Split(new[] { '/' }).Last().Split(new[] { '.' })[1])).ToList();
+                // this is to exclude slices, which definetely won't be in metadata
+                // is such a case possible when there's no file in PERSON, but a file in METADATA for a single slice?
+                var slices2processInMetadata = objects.Select(s => parseSliceIdFromKey(s.Key)).ToList();
 
                 foreach (var o in Helper.GetObjectsFromS3(vendor, buildingId, _awsAccessKeyId, _awsSecretAccessKey, _bucket,
                     _cdmFolder, "METADATA_TMP", chunkId, slices2process, true))
@@ -101,7 +101,7 @@ namespace RunValidation
                         foreach (var v in c.Value)
                         {
                             f.Add(v);
-                            s.Add($@"done.Add(Process(vendor, buildingId, {chunkId}, ""{Int32.Parse(v.Split('/')[4].Split('.')[1]):0000}"", true));");
+                            s.Add($@"done.Add(Process(vendor, buildingId, {chunkId}, ""{parseSliceIdFromKey(v):0000}"", true));");
                         }
                     }
                 }
@@ -124,10 +124,10 @@ namespace RunValidation
             }
         }
 
-        int ParseSliceIdFromKey(string key)
+        int parseSliceIdFromKey(string key)
         {
             var parts = key.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
-            // Assuming sliceId is at a specific position in the parts array
+            // assuming sliceId is at a specific position in the parts array
             if (parts.Length == 6 && int.TryParse(parts[1], out int sliceId))
             {
                 return sliceId;
