@@ -50,7 +50,7 @@ namespace RunValidation
         private static string _awsAccessKeyId => ConfigurationManager.AppSettings["awsAccessKeyId"] ?? throw new NullReferenceException("awsAccessKeyId");
         private static string _awsSecretAccessKey => ConfigurationManager.AppSettings["awsSecretAccessKey"] ?? throw new NullReferenceException("awsSecretAccessKey");
         private static string _bucket => ConfigurationManager.AppSettings["bucket"] ?? throw new NullReferenceException("bucket");
-        private static string _cdmFolder => ConfigurationManager.AppSettings["cdmFolder"] ?? throw new NullReferenceException("cdmFolder");
+        private static string _cdmFolder => ConfigurationManager.AppSettings["cdmFolder"] ?? "cdmCSV";
 
         static void Main(string[] args)
         {
