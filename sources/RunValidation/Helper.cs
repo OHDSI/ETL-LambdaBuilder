@@ -15,6 +15,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using org.ohdsi.cdm.framework.common.Enums;
+using org.ohdsi.cdm.presentation.lambdabuilder;
+using ZstdSharp;
+using Amazon.Runtime.Internal.Util;
 
 namespace RunValidation
 {
@@ -209,25 +212,26 @@ namespace RunValidation
                 {
                     using var transferUtility = new TransferUtility(awsAccessKeyId, awsSecretAccessKey, Amazon.RegionEndpoint.USEast1);
                     using var responseStream = transferUtility.OpenStream(bucket, o.Key);
-                    using var bufferedStream = new BufferedStream(responseStream);                    
-                    using var gzipStream = new GZipStream(bufferedStream, CompressionMode.Decompress);
-                    using var reader = new StreamReader(gzipStream, Encoding.Default);
-                    string line;
-                    while ((line = reader.ReadLine()) != null)
+                    using var bufferedStream = new BufferedStream(responseStream);
+                    using Stream stream = o.Key.EndsWith(".gz")
+                        ? new GZipStream(bufferedStream, CompressionMode.Decompress)
+                        : new DecompressionStream(bufferedStream) //.zst
+                        ;
+                    using var reader = new StreamReader(stream, Encoding.Default);                    
+                    string? line = reader.ReadLine();
+                    while (!string.IsNullOrEmpty(line))
                     {
                         if (input.IsEmpty)
                             break;
 
-                        if (!string.IsNullOrEmpty(line))
+                        long personId = long.Parse(line.Split('\t')[personIndex]);
+                        if (personIds.ContainsKey(personId))
                         {
-                            long personId = long.Parse(line.Split('\t')[personIndex]);
-                            if (personIds.ContainsKey(personId))
-                            {
-                                result.TryAdd(o.Key, false);
-                                input.TryRemove(personId, out var res);
-                                break;
-                            }
+                            result.TryAdd(o.Key, false);
+                            input.TryRemove(personId, out var res);
+                            break;
                         }
+                        line = reader.ReadLine();
                     }
                 });
             }

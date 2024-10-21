@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Framework\org.ohdsi.cdm.framework\org.ohdsi.cdm.framework.csproj" />
+    <ProjectReference Include="..\Presentation\org.ohdsi.cdm.presentation.lambdabuilder\org.ohdsi.cdm.presentation.lambdabuilder.csproj" />
   </ItemGroup>
 
 </Project>

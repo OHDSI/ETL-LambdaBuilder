@@ -128,6 +128,7 @@ namespace org.ohdsi.cdm.framework.common.Utility
                 {
                     Console.WriteLine("CreateVendorInstance | assembly: " + assembly.GetName().Name);
                     Console.WriteLine("CreateVendorInstance | vendorType: " + vendorType);
+                    Console.WriteLine();
 
                     return Activator.CreateInstance(vendorType) as Vendor;
                 }

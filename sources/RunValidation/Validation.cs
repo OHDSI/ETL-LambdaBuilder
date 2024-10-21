@@ -25,7 +25,7 @@ namespace RunValidation
         #region Methods
 
         /// <summary>
-        /// Method to check the correctness of person ids for specified groups of vendor + buildingId + chunkId + slicesNum
+        /// Method to check the correctness of person ids for specified groups of vendor + buildingId + chunkId + slices
         /// </summary>
         /// <param name="vendor"></param>
         /// <param name="buildingId"></param>
@@ -65,10 +65,6 @@ namespace RunValidation
                 {
                     objects.AddRange(o);
                 }
-
-                // this is to exclude slices, which definetely won't be in metadata
-                // is such a case possible when there's no file in PERSON, but a file in METADATA for a single slice?
-                var slices2processInMetadata = objects.Select(s => parseSliceIdFromKey(s.Key)).ToList();
 
                 foreach (var o in Helper.GetObjectsFromS3(vendor, buildingId, _awsAccessKeyId, _awsSecretAccessKey, _bucket,
                     _cdmFolder, "METADATA_TMP", chunkId, slices2process, true))
