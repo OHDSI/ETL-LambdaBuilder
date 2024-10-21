@@ -100,7 +100,6 @@ namespace RunValidation
             var prefix = $"{vendorName}/{buildingId}/{_cdmFolder}/PERSON/PERSON.";
             Console.WriteLine("Calculating slices " + _bucket + "|" + prefix);
             using (var client = new AmazonS3Client(_awsAccessKeyId, _awsSecretAccessKey, Amazon.RegionEndpoint.USEast1))
-
             {
                 var request = new ListObjectsV2Request
                 {
@@ -351,62 +350,6 @@ namespace RunValidation
             }
 
             Console.WriteLine($"chunkId={chunkId} was cleaned");
-        }
-
-        private IEnumerable<string> GetLines(Stream stream, string filePath)
-        {
-            using var bufferedStream = new BufferedStream(stream);
-            using Stream compressedStream = filePath.EndsWith(".gz")
-                ? new GZipStream(bufferedStream, CompressionMode.Decompress)
-                : new DecompressionStream(bufferedStream) //.zst
-                ;
-            using var reader = new StreamReader(compressedStream, Encoding.Default);
-            string? line;
-            while ((line = reader.ReadLine()) != null)
-            {
-                if (!string.IsNullOrEmpty(line))
-                {
-                    yield return line;
-                }
-            }
-        }
-
-        private List<string> FindSlice(Vendor vendor, int buildingId, int chunkId, string table, Dictionary<long, bool> personIds, int personIndex)
-        {
-            var prefix = $"{vendor}/{buildingId}/raw/{chunkId}/{table}/{table}";
-
-            var result = new HashSet<string>();
-            using (var client = new AmazonS3Client(_awsAccessKeyId, _awsSecretAccessKey, Amazon.RegionEndpoint.USEast1))
-            {
-                var request = new ListObjectsV2Request
-                {
-                    BucketName = _bucket,
-                    Prefix = prefix
-                };
-
-                var r = client.ListObjectsV2Async(request);
-                r.Wait();
-                var response = r.Result;
-                var rows = new List<string>();
-                foreach (var o in response.S3Objects)
-                {
-                    using var transferUtility = new TransferUtility(_awsAccessKeyId, _awsSecretAccessKey, Amazon.RegionEndpoint.USEast1);
-                    using var responseStream = transferUtility.OpenStream(_bucket, o.Key);
-                    {
-                        foreach (var line in GetLines(responseStream, o.Key))
-                        {
-                            long personId = long.Parse(line.Split('\t')[personIndex]);
-                            if (personIds.ContainsKey(personId))
-                            {
-                                result.Add(o.Key);
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-
-            return [.. result];
         }
 
         private void Clean(Vendor vendor, int buildingId, int chunkId, string table, int slice)

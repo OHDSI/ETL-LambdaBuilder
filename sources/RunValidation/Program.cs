@@ -54,6 +54,7 @@ namespace RunValidation
 
         static void Main(string[] args)
         {
+            //for some reason it returns more errors with partial scanning than with full scanning
             Parser.Default.ParseArguments<Options>(args)
                 .WithParsed(RunWithOptions)
                 .WithNotParsed(HandleParseError);
