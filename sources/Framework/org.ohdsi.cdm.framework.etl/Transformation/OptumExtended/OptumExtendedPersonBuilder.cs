@@ -498,7 +498,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
             return null;
         }
 
-        private void SetVisitDetailId(IEnumerable<IEntity> entities, bool updateDates)
+        private void SetVisitDetailId(IEnumerable<IEntity> entities)
         {
             foreach (var e in entities)
             {
@@ -559,10 +559,14 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
                         e.VisitDetailId = vd.Id;
                         e.ProviderId = vd.ProviderId;
 
-                        if (updateDates)
+                        if (e.Domain != "Drug")
                         {
                             e.StartDate = vd.StartDate;
-                            e.EndDate = vd.EndDate;
+
+                            if (e.SourceFile.Equals("MEDICAL_CLAIMS", StringComparison.OrdinalIgnoreCase))
+                            {
+                                e.EndDate = vd.EndDate;
+                            }
                         }
 
                         e.VisitOccurrenceId = vd.VisitOccurrenceId;
@@ -794,12 +798,12 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
                 }
             }
 
-            SetVisitDetailId(drugExposures, false);
-            SetVisitDetailId(conditionOccurrences, true);
-            SetVisitDetailId(procedureOccurrences, true);
-            SetVisitDetailId(measurements, true);
-            SetVisitDetailId(observations, true);
-            SetVisitDetailId(deviceExposure, true);
+            SetVisitDetailId(drugExposures);
+            SetVisitDetailId(conditionOccurrences);
+            SetVisitDetailId(procedureOccurrences);
+            SetVisitDetailId(measurements);
+            SetVisitDetailId(observations);
+            SetVisitDetailId(deviceExposure);
 
             var vos = visitOccurrences.Values.Where(v => v.ConceptId >= 0).ToArray();
             var vds = visitDetails.Where(v => v.ConceptId >= 0).ToDictionary(v => v.Id, v => v);

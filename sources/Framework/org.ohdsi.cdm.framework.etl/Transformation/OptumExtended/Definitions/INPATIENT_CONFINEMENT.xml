@@ -112,7 +112,6 @@
       <Condition>{icd_flag} = 9</Condition>
       <PersonId>PERSON_ID</PersonId>
       <StartDate>START_DATE</StartDate>
-      <EndDate>END_DATE</EndDate>
       <ProviderId>PROVIDER_ID</ProviderId>
       <AdditionalFields>
         <string>pat_planid</string>
@@ -138,7 +137,6 @@
       <Condition>{icd_flag} = 10</Condition>
       <PersonId>PERSON_ID</PersonId>
       <StartDate>START_DATE</StartDate>
-      <EndDate>END_DATE</EndDate>
       <ProviderId>PROVIDER_ID</ProviderId>
       <AdditionalFields>
         <string>pat_planid</string>

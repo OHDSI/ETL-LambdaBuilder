@@ -11,6 +11,7 @@ namespace org.ohdsi.cdm.framework.common.Omop
         public bool IsUnique { get; set; }
 
         public Guid SourceRecordGuid { get; set; }
+        public string SourceFile { get; set; }
 
         public long Id { get; set; }
         public long PersonId { get; set; }
@@ -41,6 +42,7 @@ namespace org.ohdsi.cdm.framework.common.Omop
 
         public DateTime ValidStartDate { get; set; }
         public DateTime ValidEndDate { get; set; }
+        
 
         public Entity()
         {
