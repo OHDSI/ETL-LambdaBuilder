@@ -1,11 +1,8 @@
-﻿using Amazon.S3.Model;
-using CommandLine.Text;
+﻿using CommandLine.Text;
 using CommandLine;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Utility;
 using System.Configuration;
-using System.ComponentModel.Design;
-using System.Linq;
 
 namespace RunValidation
 {

@@ -5,19 +5,11 @@ using CsvHelper.Configuration;
 using CsvHelper;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Helpers;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using System.IO;
 using System.IO.Compression;
-using System.Numerics;
-using System.Runtime.InteropServices;
 using System.Text;
 using ZstdSharp;
-using org.ohdsi.cdm.framework.desktop.DbLayer;
-using Microsoft.VisualBasic;
-using CsvHelper.Configuration.Attributes;
 
 namespace RunValidation
 {
