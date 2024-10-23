@@ -15,6 +15,9 @@ using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text;
 using ZstdSharp;
+using org.ohdsi.cdm.framework.desktop.DbLayer;
+using Microsoft.VisualBasic;
+using CsvHelper.Configuration.Attributes;
 
 namespace RunValidation
 {
@@ -31,101 +34,62 @@ namespace RunValidation
         private readonly LambdaUtility _lambdaUtility = 
             new LambdaUtility(awsAccessKeyId, awsSecretAccessKey, awsAccessKeyId, awsSecretAccessKey, bucket, bucket, bucket, cdmFolder);
 
+
         #endregion
 
         #region Methods
 
-        public void ValidateBuildingId(Vendor vendor, int buildingIdToCheck, IEnumerable<int> chunkIdsToCheck, IEnumerable<int> slicesToCheck)
+        public void ValidateBuildingId(Vendor vendor, int buildingId, List<(int ChunkId, int? SliceId)> chunkSlicePairs)
         {
-            var wrong = new List<string>();
+            var _wrong = new List<string>();
             var timer = new Stopwatch();
             timer.Start();
 
-            foreach (var chunk in GetChunks(vendor, buildingIdToCheck))
+            foreach (var awsChunk in GetChunks(vendor, buildingId))
             {
-                var chunkId = chunk.Key;
-                if (chunkIdsToCheck != null && chunkIdsToCheck.Any() && !chunkIdsToCheck.Any(s => s == chunkId))
+                var awsChunkId = awsChunk.Key;
+
+                if (chunkSlicePairs.Any() && !chunkSlicePairs.Any(s => s.ChunkId == awsChunkId))
                 {
-                    Console.WriteLine("Skip chunkId " + chunkId);
+                    Console.WriteLine("Skip chunkId " + awsChunkId);
                     continue;
                 }
 
-                var actualSlices = GetActualSlices(vendor.Name, buildingIdToCheck);
-
-                var slices2process = (slicesToCheck == null || !slicesToCheck.Any())
-                    ? actualSlices
-                        .OrderBy(s => s)
-                        .ToList()
-                    : slicesToCheck
-                        .Distinct()
-                        .Where(s => actualSlices.Any(a => a == s))
-                        .OrderBy(s => s)
-                        .ToList()
-                    ;
-
-                var objects = new List<S3Object>();
-                foreach (var o in GetObjects(vendor, buildingIdToCheck, "PERSON", chunkId, slices2process))
-                {
-                    objects.AddRange(o);
-                }
-
-                foreach (var o in GetObjects(vendor, buildingIdToCheck, "METADATA_TMP", chunkId, slices2process))
-                {
-                    objects.AddRange(o);
-                }
-
-                if (objects.Count == 0)
-                {
-                    wrong.Add($"chunkId={chunkId} - MISSED");
-                }
-
-                ProcessChunk(vendor, buildingIdToCheck, objects, chunk, slices2process, true);
-
-                foreach (var c in chunk.Value)
-                {
-                    if (c.Value.Count != 1)
-                        wrong.Add($"chunkId={chunkId};person_id={c.Key};files={string.Join(',', [.. c.Value])}");
-                }
+                var slices = chunkSlicePairs
+                    .Where(s => s.ChunkId == awsChunkId)
+                    .Where(s => s.SliceId != null)
+                    .Select(s => s.SliceId ?? -1) //change type int? to int
+                    .ToList();
+                
+                ValidateChunkId(vendor, buildingId, awsChunkId, slices);
             }
 
             Console.WriteLine();
             timer.Stop();
-            Console.WriteLine($"Total={timer.ElapsedMilliseconds}ms");
+            Console.WriteLine($"Done. Total seconds={timer.ElapsedMilliseconds/1000}s");
             timer.Restart();
         }
 
-        private HashSet<int> GetActualSlices(string vendorName, int buildingId)
+        private void ValidateChunkId(Vendor vendor, int buildingId, int chunkId, IEnumerable<int> slices)
         {
-            var slices = new HashSet<int>();
-            var prefix = $"{vendorName}/{buildingId}/{_cdmFolder}/PERSON/PERSON.";
-            Console.WriteLine("Calculating slices " + _bucket + "|" + prefix);
-            using (var client = new AmazonS3Client(_awsAccessKeyId, _awsSecretAccessKey, Amazon.RegionEndpoint.USEast1))
+            var actualSlices = GetActualSlices(vendor.Name, buildingId);
+            var slices2process = (!slices.Any())
+                ? actualSlices
+                    .OrderBy(s => s)
+                    .ToList()
+                : slices
+                    .Distinct()
+                    .Where(s => actualSlices.Any(a => a == s))
+                    .OrderBy(s => s)
+                    .ToList()
+                ;
+
+            var s3ObjectsBySlice = GetS3ObjectsBySlice(vendor, buildingId, chunkId, slices2process);
+
+            Parallel.ForEach(s3ObjectsBySlice, slice =>
             {
-                var request = new ListObjectsV2Request
-                {
-                    BucketName = _bucket,
-                    Prefix = prefix
-                };
-                ListObjectsV2Response response;
-
-                do
-                {
-                    var responseTask = client.ListObjectsV2Async(request);
-                    responseTask.Wait();
-                    response = responseTask.Result;
-
-                    foreach (var o in response.S3Objects)
-                    {
-                        slices.Add(int.Parse(o.Key.Split('.')[1]));
-                    }
-
-                    request.ContinuationToken = response.NextContinuationToken;
-                } while (response.IsTruncated);
-            }
-
-            Console.WriteLine("slices.Count=" + slices.Count);
-
-            return slices;
+                ValidateSliceId(vendor, buildingId, chunkId, slice.Key, slice.Value.personObjects, slice.Value.metadataObjects);
+            });
         }
 
         private IEnumerable<KeyValuePair<int, Dictionary<long, List<string>>>> GetChunks(Vendor vendor, int buildingId)
@@ -178,7 +142,78 @@ namespace RunValidation
                 yield return result;
         }
 
-        private IEnumerable<List<S3Object>> GetObjects(Vendor vendor, int buildingId, string table, int chunkId, List<int> slices)
+        private HashSet<int> GetActualSlices(string vendorName, int buildingId)
+        {
+            var slices = new HashSet<int>();
+            var prefix = $"{vendorName}/{buildingId}/{_cdmFolder}/PERSON/PERSON.";
+            Console.WriteLine("Calculating slices " + _bucket + "|" + prefix);
+            using (var client = new AmazonS3Client(_awsAccessKeyId, _awsSecretAccessKey, Amazon.RegionEndpoint.USEast1))
+            {
+                var request = new ListObjectsV2Request
+                {
+                    BucketName = _bucket,
+                    Prefix = prefix
+                };
+                ListObjectsV2Response response;
+
+                do
+                {
+                    var responseTask = client.ListObjectsV2Async(request);
+                    responseTask.Wait();
+                    response = responseTask.Result;
+
+                    foreach (var o in response.S3Objects)
+                    {
+                        slices.Add(int.Parse(o.Key.Split('.')[1]));
+                    }
+
+                    request.ContinuationToken = response.NextContinuationToken;
+                } while (response.IsTruncated);
+            }
+
+            Console.WriteLine("slices.Count=" + slices.Count);
+            Console.WriteLine();
+
+            return slices;
+        }
+
+        private Dictionary<int, (List<S3Object> personObjects, List<S3Object> metadataObjects)> GetS3ObjectsBySlice(Vendor vendor, 
+            int buildingId, int chunkId, List<int> slices2process)
+        {
+            var s3ObjectsBySlice = new Dictionary<int, (List<S3Object> PersonObjects, List<S3Object> MetadataObjects)>();
+
+            foreach (var tuple in GetObjects(vendor, buildingId, "PERSON", chunkId, slices2process))
+            {
+                int sliceId = tuple.Item1;
+                List<S3Object> personObjects = tuple.Item2;
+
+                if (!s3ObjectsBySlice.ContainsKey(sliceId))
+                    s3ObjectsBySlice[sliceId] = (new List<S3Object>(), new List<S3Object>());
+
+                s3ObjectsBySlice[sliceId].PersonObjects.AddRange(personObjects);
+            }
+
+            foreach (var tuple in GetObjects(vendor, buildingId, "METADATA_TMP", chunkId, slices2process))
+            {
+                int sliceId = tuple.Item1;
+                List<S3Object> metadataObjects = tuple.Item2;
+
+                if (!s3ObjectsBySlice.ContainsKey(sliceId))
+                    s3ObjectsBySlice[sliceId] = (new List<S3Object>(), new List<S3Object>());
+
+                s3ObjectsBySlice[sliceId].MetadataObjects.AddRange(metadataObjects);
+            }
+
+            if (s3ObjectsBySlice.Count == 0)
+            {
+                var msg = $"chunkId={chunkId} - MISSED";
+                Console.WriteLine(msg);
+            }
+
+            return s3ObjectsBySlice;
+        }
+
+        private IEnumerable<Tuple<int, List<S3Object>>> GetObjects(Vendor vendor, int buildingId, string table, int chunkId, List<int> slices)
         {
             var orderedSlices = slices.Distinct().OrderBy(s => s).ToList();
             for (int i = 0; i < orderedSlices.Count; i++)
@@ -194,15 +229,15 @@ namespace RunValidation
                 do
                 {
                     response = client.ListObjectsV2Async(request).GetAwaiter().GetResult();
-                    yield return response.S3Objects;
+                    yield return Tuple.Create(orderedSlices[i], response.S3Objects);
                     request.ContinuationToken = response.NextContinuationToken;
                 } 
                 while (response.IsTruncated);
             }
         }
 
-        private Dictionary<long, bool> ProcessChunk(Vendor vendor, int buildingId, List<S3Object> objects, KeyValuePair<int, 
-            Dictionary<long, List<string>>> chunk, List<int> slices, bool onlyCheck = true)
+        private HashSet<long> ValidateSliceId(Vendor vendor, int buildingId, int chunkId, int sliceId, 
+            List<S3Object> personObjects, List<S3Object> metadataObjects)
         {
             var attempt = 0;
             var complete = false;
@@ -212,21 +247,19 @@ namespace RunValidation
                 try
                 {
                     attempt++;
-                    var missed = 0;
-                    var dups = 0;
-
-                    foreach (var ci in chunk.Value)
-                    {
-                        ci.Value.Clear();
-                    }
+                    var appearenceStatsByPersonId = new Dictionary<long, (int InPersonCount, int InMetadataCount)>();
 
                     var timer = new Stopwatch();
                     timer.Start();
 
+                    #region get personAppearenceStats
+
                     var cnt = 0;
                     var attempt1 = attempt;
 
-                    Parallel.ForEach(objects, o =>
+                    var allObjects = personObjects.Union(metadataObjects).ToList();
+
+                    Parallel.ForEach(allObjects, o =>
                     {
                         using var transferUtility = new TransferUtility(_awsAccessKeyId, _awsSecretAccessKey, Amazon.RegionEndpoint.USEast1);
                         using var responseStream = transferUtility.OpenStream(_bucket, o.Key);
@@ -245,56 +278,54 @@ namespace RunValidation
                         while (csv.Read())
                         {
                             var personId = (long)csv.GetField(typeof(long), 0);
+                            lock (appearenceStatsByPersonId)
+                            {
+                                if (!appearenceStatsByPersonId.ContainsKey(personId))
+                                    appearenceStatsByPersonId[personId] = (0, 0);
 
-                            chunk.Value[personId].Add(o.Key);
+                                var tuple = appearenceStatsByPersonId[personId];
+
+                                if (o.Key.Contains("PERSON"))
+                                    tuple.InPersonCount++;
+                                else if (o.Key.Contains("METADATA_TMP"))
+                                    tuple.InMetadataCount++;
+
+                                appearenceStatsByPersonId[personId] = tuple;
+                            }
                         }
                         Interlocked.Increment(ref cnt);
                     });
 
-                    int wrngCnt = 0;
-                    var wrongPersonIds = new Dictionary<long, bool>();
-                    foreach (var ci in chunk.Value)
+                    #endregion
+
+                    int wrongCount = 0;
+                    var dups = 0;
+                    var wrongPersonIds = new HashSet<long>();
+
+                    foreach (var kvp in appearenceStatsByPersonId)
                     {
-                        if (ci.Value.Count == 0)
-                        {
-                            missed++;
-                        }
-                        else if (ci.Value.Count > 1)
-                        {
-                            dups++;
-                        }
+                        var personId = kvp.Key;
+                        var stats = kvp.Value;
 
-                        if (ci.Value.Count != 1)
+                        //check InPersonCount just in case, InMetadataCount should actually suffice
+                        if (stats.InPersonCount > 1 || stats.InMetadataCount > 0)
                         {
-                            wrngCnt++;
+                            wrongCount++;
+                                                        
+                            if (stats.InPersonCount > 1 || stats.InMetadataCount > 1)
+                                dups++;
 
-                            if (wrngCnt == 1 || wrngCnt % 500 == 0)
-                                wrongPersonIds.Add(ci.Key, false);
+                            if(!wrongPersonIds.Contains(personId))
+                                wrongPersonIds.Add(personId);
                         }
                     }
 
                     timer.Stop();
 
-                    if (missed > 0 || dups > 0)
+                    if (wrongCount > 0)
                     {
-                        Console.WriteLine($"XXX ChunkId={chunk.Key} | missed={missed}; dups={dups} | {wrongPersonIds.Keys.Count}");
-                        if (!onlyCheck)
-                        {
-                            Cleanup(vendor, buildingId, chunk.Key, slices);
-                            var tasks = _lambdaUtility.TriggerBuildFunction(vendor, buildingId, chunk.Key, false);
-                            Task.WaitAll([.. tasks]);
-
-                            var checkCreation = Task.Run(() => _lambdaUtility.AllChunksWereDone(vendor, buildingId, _lambdaUtility.BuildMessageBucket));
-
-                            checkCreation.Wait();
-
-                            foreach (var personId in chunk.Value.Keys)
-                            {
-                                chunk.Value[personId].Clear();
-                            }
-
-                            throw new Exception("restart");
-                        }
+                        var msg = $"BuildingId={buildingId} ChunkId={chunkId} SliceId={sliceId} | WrongCount={wrongCount}; Duplicates={dups} | Wrong Person Id Example={wrongPersonIds.First()}";
+                        Console.WriteLine(msg);
                     }
 
                     complete = true;
@@ -310,109 +341,6 @@ namespace RunValidation
                 }
             }
             return null;
-        }
-
-        private void Cleanup(Vendor vendor, int buildingId, int chunkId, List<int> slices)
-        {
-            var tables = new[]
-            {
-                "PERSON",
-                "OBSERVATION_PERIOD",
-                "PAYER_PLAN_PERIOD",
-                "DEATH",
-                "DRUG_EXPOSURE",
-                "OBSERVATION",
-                "VISIT_OCCURRENCE",
-                "VISIT_DETAIL",
-                "PROCEDURE_OCCURRENCE",
-                "DRUG_ERA",
-                "CONDITION_ERA",
-                "DEVICE_EXPOSURE",
-                "MEASUREMENT",
-                "COHORT",
-                "CONDITION_OCCURRENCE",
-                "COST",
-                "NOTE",
-                "METADATA_TMP",
-                "FACT_RELATIONSHIP"
-            };
-
-            Console.WriteLine("Cleaning chunkId=" + chunkId);
-
-            foreach (var table in tables)
-            {
-                Console.WriteLine("Cleaning table=" + table);
-
-                for (var i = 0; i < slices.Count; i++)
-                {
-                    Clean(vendor, buildingId, chunkId, table, slices[i]);
-                }
-            }
-
-            Console.WriteLine($"chunkId={chunkId} was cleaned");
-        }
-
-        private void Clean(Vendor vendor, int buildingId, int chunkId, string table, int slice)
-        {
-            var attempt = 0;
-            var complete = false;
-
-            while (!complete)
-            {
-                try
-                {
-                    attempt++;
-
-                    var perfix = $"{vendor}/{buildingId}/{_cdmFolder}/{table}/{table}.{slice}.{chunkId}.";
-
-                    using (var client = new AmazonS3Client(_awsAccessKeyId, _awsSecretAccessKey, Amazon.RegionEndpoint.USEast1))
-                    {
-                        var request = new ListObjectsV2Request
-                        {
-                            BucketName = _bucket,
-                            Prefix = perfix
-                        };
-                        ListObjectsV2Response response;
-                        do
-                        {
-                            using var getListObjects = client.ListObjectsV2Async(request);
-                            getListObjects.Wait();
-                            response = getListObjects.Result;
-
-                            var multiObjectDeleteRequest = new DeleteObjectsRequest
-                            {
-                                BucketName = _bucket
-                            };
-
-                            foreach (var o in response.S3Objects)
-                            {
-                                multiObjectDeleteRequest.AddKey(o.Key, null);
-                            }
-
-                            if (response.S3Objects.Count > 0)
-                            {
-                                using var deleteObjects = client.DeleteObjectsAsync(multiObjectDeleteRequest);
-                                deleteObjects.Wait();
-
-                                //Console.WriteLine(response.S3Objects.Count + " files deleted");
-                            }
-
-                            request.ContinuationToken = response.NextContinuationToken;
-                        } while (response.IsTruncated == true);
-                    }
-
-                    complete = true;
-                }
-                catch (Exception ex)
-                {
-                    Console.Write(" | [Clean] Exception | new attempt | " + attempt);
-                    Console.WriteLine(ex.Message);
-                    if (attempt > 3)
-                    {
-                        throw;
-                    }
-                }
-            }
         }
 
         #endregion
