@@ -251,7 +251,7 @@ namespace RunValidation
                     var timer = new Stopwatch();
                     timer.Start();
 
-                    #region get personAppearenceStats
+                    #region get appearenceStatsByPersonId
 
                     var cnt = 0;
                     var attempt1 = attempt;
