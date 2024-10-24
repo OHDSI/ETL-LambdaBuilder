@@ -37,23 +37,41 @@ namespace RunValidation
             var timer = new Stopwatch();
             timer.Start();
 
+            var actualSlices = GetActualSlices(vendor.Name, buildingId);
+
             foreach (var awsChunk in GetChunks(vendor, buildingId))
             {
                 var awsChunkId = awsChunk.Key;
 
                 if (chunkSlicePairs.Any() && !chunkSlicePairs.Any(s => s.ChunkId == awsChunkId))
                 {
-                    Console.WriteLine("Skip chunkId " + awsChunkId);
+                    Console.WriteLine();
+                    Console.WriteLine($"BuildingId {buildingId} ChunkId {awsChunkId} skipped");
                     continue;
                 }
+                Console.WriteLine();
+                Console.WriteLine($"BuildingId {buildingId} ChunkId {awsChunkId} validation start");
 
                 var slices = chunkSlicePairs
                     .Where(s => s.ChunkId == awsChunkId)
                     .Where(s => s.SliceId != null)
                     .Select(s => s.SliceId ?? -1) //change type int? to int
                     .ToList();
-                
-                ValidateChunkId(vendor, buildingId, awsChunkId, slices);
+
+                var slices2process = (!slices.Any())
+                    ? actualSlices
+                        .OrderBy(s => s)
+                        .ToList()
+                    : slices
+                        .Distinct()
+                        .Where(s => actualSlices.Any(a => a == s))
+                        .OrderBy(s => s)
+                        .ToList()
+                    ;
+
+                ValidateChunkId(vendor, buildingId, awsChunkId, slices2process);
+
+                Console.WriteLine($"BuildingId {buildingId} ChunkId {awsChunkId} is validated");
             }
 
             Console.WriteLine();
@@ -62,21 +80,10 @@ namespace RunValidation
             timer.Restart();
         }
 
-        private void ValidateChunkId(Vendor vendor, int buildingId, int chunkId, IEnumerable<int> slices)
+        private void ValidateChunkId(Vendor vendor, int buildingId, int chunkId, List<int> slices)
         {
-            var actualSlices = GetActualSlices(vendor.Name, buildingId);
-            var slices2process = (!slices.Any())
-                ? actualSlices
-                    .OrderBy(s => s)
-                    .ToList()
-                : slices
-                    .Distinct()
-                    .Where(s => actualSlices.Any(a => a == s))
-                    .OrderBy(s => s)
-                    .ToList()
-                ;
 
-            var s3ObjectsBySlice = GetS3ObjectsBySlice(vendor, buildingId, chunkId, slices2process);
+            var s3ObjectsBySlice = GetS3ObjectsBySlice(vendor, buildingId, chunkId, slices);
 
             Parallel.ForEach(s3ObjectsBySlice, slice =>
             {
@@ -316,7 +323,7 @@ namespace RunValidation
 
                     if (wrongCount > 0)
                     {
-                        var msg = $"BuildingId={buildingId} ChunkId={chunkId} SliceId={sliceId} | WrongCount={wrongCount}; Duplicates={dups} | Wrong Person Id Example={wrongPersonIds.First()}";
+                        var msg = $"--BuildingId={buildingId} ChunkId={chunkId} SliceId={sliceId} | WrongCount={wrongCount}; Duplicates={dups} | Wrong Person Id Example={wrongPersonIds.First()}";
                         Console.WriteLine(msg);
                     }
 
@@ -325,7 +332,7 @@ namespace RunValidation
                 }
                 catch (Exception ex)
                 {
-                    Console.Write(ex.Message + " | [ProcessChunk] Exception | new attempt | attempt=" + attempt);
+                    Console.Write("--" + ex.Message + " | [ProcessChunk] Exception | new attempt | attempt=" + attempt);
                     if (attempt > 3)
                     {
                         throw;
