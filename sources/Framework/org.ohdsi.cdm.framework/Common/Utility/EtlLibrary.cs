@@ -15,12 +15,13 @@ namespace org.ohdsi.cdm.framework.common.Utility
 
     public static class EtlLibrary
     {
-        private static IEnumerable<Assembly> GetETLAssemblies(string path)
+        private static IEnumerable<Assembly> GetETLAssemblies(string path)        
         {
-            foreach (var assemblyFile in Directory.GetFiles(path, "*.dll"))
-            {
-                yield return Assembly.LoadFile(assemblyFile);
-            }
+            if (!string.IsNullOrEmpty(path))
+                foreach (var assemblyFile in Directory.GetFiles(path, "*.dll"))
+                {
+                    yield return Assembly.LoadFile(assemblyFile);
+                }
         }
 
         private static IEnumerable<Tuple<Assembly, string>> FindAssemblyAndResource(string etlLibraryPath, string name)
@@ -112,26 +113,28 @@ namespace org.ohdsi.cdm.framework.common.Utility
 
         public static Vendor CreateVendorInstance(string etlLibraryPath, string name)
         {
-            foreach (var assembly in GetETLAssemblies(etlLibraryPath))
+            var currentAssemblies = GetETLAssemblies(Directory.GetCurrentDirectory());
+            var externalAssemblies = GetETLAssemblies(etlLibraryPath);
+            var allAssemblies = currentAssemblies.Union(externalAssemblies);
+            var vendorTypes = allAssemblies
+                .SelectMany(s => s.GetTypes()
+                .Where(t => t.IsSubclassOf(typeof(Vendor)) && !t.IsAbstract));
+            var vendorType = vendorTypes.FirstOrDefault(a => a.Name.Contains(name, StringComparison.CurrentCultureIgnoreCase));
+
+            if (vendorType == null)
             {
-                var vendorTypes = assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(Vendor)) && !t.IsAbstract);
-                var vendorType = vendorTypes.FirstOrDefault(a => a.Name.Contains(name, StringComparison.CurrentCultureIgnoreCase));
+                name = name.ToLower().Replace("v5", "").Replace("full", "");
 
-                if (vendorType == null)
-                {
-                    name = name.ToLower().Replace("v5", "").Replace("full", "");
+                vendorType = vendorTypes.FirstOrDefault(a => a.Name.Contains(name, StringComparison.CurrentCultureIgnoreCase));
+            }
 
-                    vendorType = vendorTypes.FirstOrDefault(a => a.Name.Contains(name, StringComparison.CurrentCultureIgnoreCase));
-                }
+            if (vendorType != null)
+            {
+                Console.WriteLine("CreateVendorInstance | source path: " + etlLibraryPath);
+                Console.WriteLine("CreateVendorInstance | vendorType: " + vendorType);
+                Console.WriteLine();
 
-                if (vendorType != null)
-                {
-                    Console.WriteLine("CreateVendorInstance | assembly: " + assembly.GetName().Name);
-                    Console.WriteLine("CreateVendorInstance | vendorType: " + vendorType);
-                    Console.WriteLine();
-
-                    return Activator.CreateInstance(vendorType) as Vendor;
-                }
+                return Activator.CreateInstance(vendorType) as Vendor;
             }
 
             throw new KeyNotFoundException($"CreateVendorInstance | Vendor: {name}; LibraryPath: {etlLibraryPath} - not exists");
