@@ -46,7 +46,7 @@ namespace RunValidation
                 if (chunkSlicePairs.Any() && !chunkSlicePairs.Any(s => s.ChunkId == awsChunkId))
                 {
                     Console.WriteLine();
-                    Console.WriteLine($"BuildingId {buildingId} ChunkId {awsChunkId} skipped");
+                    Console.WriteLine($"BuildingId {buildingId} ChunkId {awsChunkId} is skipped");
                     continue;
                 }
                 Console.WriteLine();
