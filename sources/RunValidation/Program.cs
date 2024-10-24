@@ -79,9 +79,9 @@ namespace RunValidation
 
             Console.WriteLine($"Vendor: {opts.Vendor}");
             Console.WriteLine($"Building ID: {opts.BuildingId}");
+            Console.WriteLine($"ChunkSlicePairs: {string.Join(", ", chunkSlicePairsStrings)}");
             Console.WriteLine($"EtlLibraryPath: {opts.EtlLibraryPath}");
             Console.WriteLine($"LocalTmpPath: {opts.LocalTmpPath}");
-            Console.WriteLine($"ChunkSlicePairs: {string.Join(", ", chunkSlicePairsStrings)}");
             Console.WriteLine($"Current directory: {Directory.GetCurrentDirectory()}");
             Console.WriteLine();
 
