@@ -111,7 +111,7 @@ namespace org.ohdsi.cdm.framework.common.Utility
             }
         }
 
-        public static Vendor CreateVendorInstance(string etlLibraryPath, string name)
+        public static Vendor CreateVendorInstance(string name, string etlLibraryPath)
         {
             foreach (var assembly in GetETLAssemblies(etlLibraryPath))
             {
