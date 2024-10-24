@@ -11,6 +11,7 @@ using System.IO.Compression;
 using System.Text;
 using ZstdSharp;
 using Spectre.Console;
+using System.Collections.Concurrent;
 
 namespace RunValidation
 {
@@ -136,6 +137,8 @@ namespace RunValidation
 
         private void ProcessChunksWithProgress(Vendor vendor, int buildingId, List<int> chunks, List<int> actualSlices, List<KeyValuePair<int, Dictionary<long, List<string>>>> actualChunks)
         {
+            AnsiConsole.MarkupLine("\n");
+
             AnsiConsole.Progress()
                 .AutoClear(false)
                 .HideCompleted(false)
@@ -147,32 +150,45 @@ namespace RunValidation
                     new SpinnerColumn())
                 .Start(ctx =>
                 {
+                    var tasks = new ConcurrentDictionary<int, ProgressTask>();
+
                     foreach (var awsChunk in actualChunks)
                     {
                         var awsChunkId = awsChunk.Key;
 
                         if (chunks.Any() && !chunks.Contains(awsChunkId))
                         {
-                            AnsiConsole.MarkupLine($"[yellow]BuildingId {buildingId} ChunkId {awsChunkId} is skipped[/]");
                             continue;
                         }
 
-
                         var task = ctx.AddTask($"Chunk {awsChunkId}", maxValue: actualSlices.Count);
-
-                        ValidateChunkIdWithProgress(vendor, buildingId, awsChunkId, actualSlices, task);
+                        tasks[awsChunkId] = task;
                     }
+
+                    Parallel.ForEach(actualChunks
+                        , new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount == 1 ? 1 : Environment.ProcessorCount - 1 } // leave 1 core for UI and OS
+                        , awsChunk =>
+                    {
+                        var awsChunkId = awsChunk.Key;
+                        var awsChunkPersonIds = awsChunk.Value.Keys.ToHashSet();
+
+                        if (tasks.TryGetValue(awsChunkId, out var task))
+                        {
+                            ValidateChunkIdWithProgress(vendor, buildingId, awsChunkId, awsChunkPersonIds, actualSlices, task);
+                        }
+                    });
                 });
         }
 
 
-        private void ValidateChunkIdWithProgress(Vendor vendor, int buildingId, int chunkId, List<int> slices, ProgressTask task)
+
+        private void ValidateChunkIdWithProgress(Vendor vendor, int buildingId, int chunkId, HashSet<long> chunkPersonIds, List<int> slices, ProgressTask task)
         {
             var s3ObjectsBySlice = GetS3ObjectsBySlice(vendor, buildingId, chunkId, slices);
 
             foreach (var slice in s3ObjectsBySlice)
             {
-                ValidateSliceId(vendor, buildingId, chunkId, slice.Key, slice.Value.personObjects, slice.Value.metadataObjects);
+                ValidateSliceId(vendor, buildingId, chunkId, slice.Key, chunkPersonIds, slice.Value.personObjects, slice.Value.metadataObjects);
 
                 task.Increment(1);
             }
@@ -273,7 +289,7 @@ namespace RunValidation
             }
         }
 
-        private HashSet<long> ValidateSliceId(Vendor vendor, int buildingId, int chunkId, int sliceId, 
+        private HashSet<long> ValidateSliceId(Vendor vendor, int buildingId, int chunkId, int sliceId, HashSet<long> chunkPersonIds,
             List<S3Object> personObjects, List<S3Object> metadataObjects)
         {
             var attempt = 0;
