@@ -10,6 +10,7 @@ using System.Globalization;
 using System.IO.Compression;
 using System.Text;
 using ZstdSharp;
+using Spectre.Console;
 
 namespace RunValidation
 {
@@ -37,48 +38,48 @@ namespace RunValidation
             var timer = new Stopwatch();
             timer.Start();
 
-            var actualSlices = GetActualSlices(vendor.Name, buildingId).ToList().OrderBy(s => s).ToList();
+            var actualSlices = GetActualSlices(vendor.Name, buildingId).OrderBy(s => s).ToList();
 
-            foreach (var awsChunk in GetChunks(vendor, buildingId))
-            {
-                var awsChunkId = awsChunk.Key;
+            int chunkCount = 0;
+            var actualChunks = new List<KeyValuePair<int, Dictionary<long, List<string>>>>();
 
-                if (chunks.Any() && !chunks.Any(s => s == awsChunkId))
+            AnsiConsole.Status()
+                .Spinner(Spinner.Known.Dots)
+                .Start("Getting all chunks...", ctx =>
                 {
-                    Console.WriteLine();
-                    Console.WriteLine($"BuildingId {buildingId} ChunkId {awsChunkId} is skipped");
-                    continue;
-                }
-                Console.WriteLine();
-                Console.WriteLine($"BuildingId {buildingId} ChunkId {awsChunkId} validation start");
+                    var progress = new Progress<int>(count =>
+                    {
+                        chunkCount = count;
+                        ctx.Status($"Getting all chunks... (Chunks obtained: {chunkCount})");
+                    });
 
-                ValidateChunkId(vendor, buildingId, awsChunkId, actualSlices);
+                    foreach (var chunk in GetChunks(vendor, buildingId, progress))
+                    {
+                        actualChunks.Add(chunk);
+                    }
+                });
 
-                Console.WriteLine($"BuildingId {buildingId} ChunkId {awsChunkId} is validated");
-            }
-
-            Console.WriteLine();
             timer.Stop();
-            Console.WriteLine($"Done. Total seconds={timer.ElapsedMilliseconds/1000}s");
+            AnsiConsole.MarkupLine($"[green]Getting all {actualChunks.Count} chunks done. It took {timer.ElapsedMilliseconds / 1000}s[/]");
+            timer.Restart();
+
+            ProcessChunksWithProgress(vendor, buildingId, chunks, actualSlices, actualChunks);
+
+            timer.Stop();
+            AnsiConsole.MarkupLine($"[bold]Done. Total seconds={timer.ElapsedMilliseconds / 1000}s[/]");
             timer.Restart();
         }
 
-        private void ValidateChunkId(Vendor vendor, int buildingId, int chunkId, List<int> slices)
-        {
 
-            var s3ObjectsBySlice = GetS3ObjectsBySlice(vendor, buildingId, chunkId, slices);
 
-            Parallel.ForEach(s3ObjectsBySlice, slice =>
-            {
-                ValidateSliceId(vendor, buildingId, chunkId, slice.Key, slice.Value.personObjects, slice.Value.metadataObjects);
-            });
-        }
 
-        private IEnumerable<KeyValuePair<int, Dictionary<long, List<string>>>> GetChunks(Vendor vendor, int buildingId)
+        private IEnumerable<KeyValuePair<int, Dictionary<long, List<string>>>> GetChunks(Vendor vendor, int buildingId, IProgress<int> progress)
         {
             var currentChunkId = 0;
-            var result = new KeyValuePair<int, Dictionary<long, List<string>>>(0, []);
+            var result = new KeyValuePair<int, Dictionary<long, List<string>>>(0, new Dictionary<long, List<string>>());
             var prefix = $"{vendor}/{buildingId}/_chunks";
+            int chunkCount = 0;
+
             using (var client = new AmazonS3Client(_awsAccessKeyId, _awsSecretAccessKey, Amazon.RegionEndpoint.USEast1))
             {
                 var request = new ListObjectsV2Request
@@ -105,15 +106,18 @@ namespace RunValidation
                         if (currentChunkId != chunkId)
                         {
                             if (result.Value.Count > 0)
+                            {
                                 yield return result;
+                                chunkCount++;
+                                progress?.Report(chunkCount);
+                            }
 
-                            result = new KeyValuePair<int, Dictionary<long, List<string>>>(chunkId,
-                                []);
+                            result = new KeyValuePair<int, Dictionary<long, List<string>>>(chunkId, new Dictionary<long, List<string>>());
                             currentChunkId = chunkId;
                         }
 
                         var personId = long.Parse(line.Split('\t')[1]);
-                        result.Value.Add(personId, []);
+                        result.Value.Add(personId, new List<string>());
 
                         line = reader.ReadLine();
                     }
@@ -121,8 +125,59 @@ namespace RunValidation
             }
 
             if (result.Value.Count > 0)
+            {
                 yield return result;
+                chunkCount++;
+                progress?.Report(chunkCount);
+            }
         }
+
+
+
+        private void ProcessChunksWithProgress(Vendor vendor, int buildingId, List<int> chunks, List<int> actualSlices, List<KeyValuePair<int, Dictionary<long, List<string>>>> actualChunks)
+        {
+            AnsiConsole.Progress()
+                .AutoClear(false)
+                .HideCompleted(false)
+                .Columns(
+                    new TaskDescriptionColumn(),
+                    new ProgressBarColumn(),
+                    new PercentageColumn(),
+                    new RemainingTimeColumn(),
+                    new SpinnerColumn())
+                .Start(ctx =>
+                {
+                    foreach (var awsChunk in actualChunks)
+                    {
+                        var awsChunkId = awsChunk.Key;
+
+                        if (chunks.Any() && !chunks.Contains(awsChunkId))
+                        {
+                            AnsiConsole.MarkupLine($"[yellow]BuildingId {buildingId} ChunkId {awsChunkId} is skipped[/]");
+                            continue;
+                        }
+
+
+                        var task = ctx.AddTask($"Chunk {awsChunkId}", maxValue: actualSlices.Count);
+
+                        ValidateChunkIdWithProgress(vendor, buildingId, awsChunkId, actualSlices, task);
+                    }
+                });
+        }
+
+
+        private void ValidateChunkIdWithProgress(Vendor vendor, int buildingId, int chunkId, List<int> slices, ProgressTask task)
+        {
+            var s3ObjectsBySlice = GetS3ObjectsBySlice(vendor, buildingId, chunkId, slices);
+
+            foreach (var slice in s3ObjectsBySlice)
+            {
+                ValidateSliceId(vendor, buildingId, chunkId, slice.Key, slice.Value.personObjects, slice.Value.metadataObjects);
+
+                task.Increment(1);
+            }
+        }
+
 
         private HashSet<int> GetActualSlices(string vendorName, int buildingId)
         {
