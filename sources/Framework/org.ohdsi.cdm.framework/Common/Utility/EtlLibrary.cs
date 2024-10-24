@@ -115,7 +115,7 @@ namespace org.ohdsi.cdm.framework.common.Utility
         {
             var currentAssemblies = GetETLAssemblies(Directory.GetCurrentDirectory());
             var externalAssemblies = GetETLAssemblies(etlLibraryPath);
-            var allAssemblies = currentAssemblies.Union(externalAssemblies);    
+            var allAssemblies = externalAssemblies.Union(currentAssemblies); //type from external library will be the first
             var vendorTypes = allAssemblies
                 .SelectMany(s => s.GetTypes()
                 .Where(t => t.IsSubclassOf(typeof(Vendor)) && !t.IsAbstract));
