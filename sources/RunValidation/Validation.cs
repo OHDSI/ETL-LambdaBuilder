@@ -31,19 +31,19 @@ namespace RunValidation
 
         #region Methods
 
-        public void ValidateBuildingId(Vendor vendor, int buildingId, List<(int ChunkId, int? SliceId)> chunkSlicePairs)
+        public void ValidateBuildingId(Vendor vendor, int buildingId, List<int> chunks)
         {
             var _wrong = new List<string>();
             var timer = new Stopwatch();
             timer.Start();
 
-            var actualSlices = GetActualSlices(vendor.Name, buildingId);
+            var actualSlices = GetActualSlices(vendor.Name, buildingId).ToList().OrderBy(s => s).ToList();
 
             foreach (var awsChunk in GetChunks(vendor, buildingId))
             {
                 var awsChunkId = awsChunk.Key;
 
-                if (chunkSlicePairs.Any() && !chunkSlicePairs.Any(s => s.ChunkId == awsChunkId))
+                if (chunks.Any() && !chunks.Any(s => s == awsChunkId))
                 {
                     Console.WriteLine();
                     Console.WriteLine($"BuildingId {buildingId} ChunkId {awsChunkId} is skipped");
@@ -52,24 +52,7 @@ namespace RunValidation
                 Console.WriteLine();
                 Console.WriteLine($"BuildingId {buildingId} ChunkId {awsChunkId} validation start");
 
-                var slices = chunkSlicePairs
-                    .Where(s => s.ChunkId == awsChunkId)
-                    .Where(s => s.SliceId != null)
-                    .Select(s => s.SliceId ?? -1) //change type int? to int
-                    .ToList();
-
-                var slices2process = (!slices.Any())
-                    ? actualSlices
-                        .OrderBy(s => s)
-                        .ToList()
-                    : slices
-                        .Distinct()
-                        .Where(s => actualSlices.Any(a => a == s))
-                        .OrderBy(s => s)
-                        .ToList()
-                    ;
-
-                ValidateChunkId(vendor, buildingId, awsChunkId, slices2process);
+                ValidateChunkId(vendor, buildingId, awsChunkId, actualSlices);
 
                 Console.WriteLine($"BuildingId {buildingId} ChunkId {awsChunkId} is validated");
             }

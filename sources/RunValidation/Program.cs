@@ -23,7 +23,7 @@ namespace RunValidation
             public string LocalTmpPath { get; set; } = "C:\\_tmp";
 
             [Option('c', "chunks", Separator = ',', HelpText = "(Optional) Comma-separated list of chunk IDs to process. All of them, if omitted.")]
-            public IEnumerable<string> ChunkSlicePairs { get; set; } = new List<string>();
+            public IEnumerable<int> Chunks { get; set; } = new List<int>();
 
             [Usage(ApplicationAlias = "RunValidation")]
             public static IEnumerable<Example> Examples
@@ -35,9 +35,7 @@ namespace RunValidation
                     yield return new Example("Process all chunks for an external .dll", new Options 
                         { Vendor = "ExternalVendorName", BuildingId = 123, EtlLibraryPath = "C:\\PathToExternalDllFolder"});
                     yield return new Example("Process specified chunks", new Options 
-                        { Vendor = "VendorName", BuildingId = 123, ChunkSlicePairs = new List<string> { "1", "2", "3" } });
-                    yield return new Example("Process specified pairs chunk:slice. If : omitted, then process all slices for a given chunk", new Options
-                    { Vendor = "VendorName", BuildingId = 123, ChunkSlicePairs = new List<string> { "1", "2:1", "2:2", "3" } });
+                        { Vendor = "VendorName", BuildingId = 123, Chunks = new List<int> { 1, 2, 3 } });
                 }
             }
         }
@@ -58,20 +56,7 @@ namespace RunValidation
 
         static void RunWithOptions(Options opts)
         {
-            var chunkSlicePairs = new List<(int Chunk, int? Slice)>();
-            foreach (var raw in opts.ChunkSlicePairs)
-            {
-                var parts = raw.Replace(" ", "").Split(':');
-
-                int chunkId = int.Parse(parts[0]);
-
-                int? sliceId = null;
-                if (parts.Length > 1 && int.TryParse(parts[1], out int sliceIdTmp))
-                    sliceId = sliceIdTmp;
-
-                chunkSlicePairs.Add((chunkId, sliceId));
-            }
-            var chunkSlicePairsStrings = chunkSlicePairs.Select(s => s.Chunk + (s.Slice.HasValue ? ":" + s.Slice : "")).ToList();
+            var chunks = opts.Chunks.ToList() ?? new List<int>();
 
             Console.WriteLine("Options:");
             //Console.WriteLine($"Keys: {_awsAccessKeyId} - {_awsSecretAccessKey}");
@@ -79,7 +64,7 @@ namespace RunValidation
 
             Console.WriteLine($"Vendor: {opts.Vendor}");
             Console.WriteLine($"Building ID: {opts.BuildingId}");
-            Console.WriteLine($"ChunkSlicePairs: {string.Join(", ", chunkSlicePairsStrings)}");
+            Console.WriteLine($"Chunks: {string.Join(", ", chunks)}");
             Console.WriteLine($"EtlLibraryPath: {opts.EtlLibraryPath}");
             Console.WriteLine($"LocalTmpPath: {opts.LocalTmpPath}");
             Console.WriteLine($"Current directory: {Directory.GetCurrentDirectory()}");
@@ -87,7 +72,7 @@ namespace RunValidation
 
             Vendor vendor = EtlLibrary.CreateVendorInstance(opts.Vendor, opts.EtlLibraryPath);            
             var validation = new Validation(_awsAccessKeyId, _awsSecretAccessKey, _bucket, opts.LocalTmpPath, _cdmFolder);
-            validation.ValidateBuildingId(vendor, opts.BuildingId, chunkSlicePairs);
+            validation.ValidateBuildingId(vendor, opts.BuildingId, chunks);
         }
 
         static void HandleParseError(IEnumerable<Error> errs)
