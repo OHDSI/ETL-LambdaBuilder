@@ -16,76 +16,12 @@ namespace org.ohdsi.cdm.framework.common.Utility
 
     public static class EtlLibrary
     {
-        public static Vendor CreateVendorInstance(string name, string? etlLibraryPath = null)
+        private static IEnumerable<Assembly> GetETLAssemblies(string path)
         {
-            var allAssemblies = new List<Assembly>();
-            allAssemblies.AddRange(GetETLAssemblies(etlLibraryPath));
-            allAssemblies.AddRange(GetETLAssemblies(Directory.GetCurrentDirectory()));
-            var vendorTypes = allAssemblies
-                .Where(s => !s.FullName!.ToLower().Contains("System") 
-                         && !s.FullName!.ToLower().Contains("sql"))
-                .SelectMany(s => s.GetTypes()
-                .Where(t => t.IsSubclassOf(typeof(Vendor)) && !t.IsAbstract))
-                .ToList();
-            //type from external library will be the first
-            var vendorType = vendorTypes.FirstOrDefault(a => a.Name.Contains(name, StringComparison.CurrentCultureIgnoreCase));
-
-            if (vendorType == null)
+            foreach (var assemblyFile in Directory.GetFiles(path, "*.dll"))
             {
-                name = name.ToLower().Replace("v5", "").Replace("full", "");
-
-                vendorType = vendorTypes.FirstOrDefault(a => a.Name.Contains(name, StringComparison.CurrentCultureIgnoreCase));
+                yield return Assembly.LoadFile(assemblyFile);
             }
-
-            if (vendorType != null)
-            {
-                Console.WriteLine("CreateVendorInstance | source path: " + etlLibraryPath);
-                Console.WriteLine("CreateVendorInstance | vendorType: " + vendorType);
-                Console.WriteLine();
-
-                return Activator.CreateInstance(vendorType) as Vendor;
-            }
-
-            throw new KeyNotFoundException($"CreateVendorInstance | Vendor: {name}; LibraryPath: {etlLibraryPath} - not exists");
-        }
-
-        public static ConstructorInfo GetBuilderConstructor(string etlLibraryPath, Vendor vendor)
-        {
-            foreach (var assembly in GetETLAssemblies(etlLibraryPath))
-            {
-                var builderTypes = assembly.GetTypes().
-                    Where(t => t.IsSubclassOf(typeof(PersonBuilder)) && !t.IsAbstract);
-
-                var vendorTypePersonBuilder = builderTypes.FirstOrDefault(a => NormalizeVendorName(a.Name).Contains(NormalizeVendorName(vendor.Name), StringComparison.CurrentCultureIgnoreCase));
-
-                if (vendorTypePersonBuilder != null)
-                {
-                    return vendorTypePersonBuilder.GetConstructor([typeof(Vendor)]) ?? throw new InvalidOperationException($"No suitable constructor found for type {vendorTypePersonBuilder.Name}");
-                }
-            }
-
-            throw new KeyNotFoundException($"GetBuilderConstructor | Vendor: {vendor}; LibraryPath: {etlLibraryPath} - not exists");
-        }
-
-        private static List<Assembly> GetETLAssemblies(string? path)        
-        {
-            List<Assembly> assemblies = new List<Assembly>();
-            if (!string.IsNullOrEmpty(path))
-            {
-                var files = Directory.GetFiles(path, "*.dll");
-                foreach (var file in files)
-                    try
-                    {                        
-                        var assembly = Assembly.LoadFrom(file);
-                        assemblies.Add(assembly);
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine($"Failed to extract assebly from file {file}!");
-                        Console.WriteLine(e.Message);
-                    }
-            }
-            return assemblies;
         }
 
         private static IEnumerable<Tuple<Assembly, string>> FindAssemblyAndResource(string etlLibraryPath, string name)
@@ -173,6 +109,51 @@ namespace org.ohdsi.cdm.framework.common.Utility
                 ld.FileName = lookup.Name;
                 settings.CombinedLookupDefinitions.Add(ld);
             }
-        }     
+        }
+
+        public static Vendor CreateVendorInstance(string etlLibraryPath, string name)
+        {
+            foreach (var assembly in GetETLAssemblies(etlLibraryPath))
+            {
+                var vendorTypes = assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(Vendor)) && !t.IsAbstract);
+                var vendorType = vendorTypes.FirstOrDefault(a => a.Name.Contains(name, StringComparison.CurrentCultureIgnoreCase));
+
+                if (vendorType == null)
+                {
+                    name = name.ToLower().Replace("v5", "").Replace("full", "");
+
+                    vendorType = vendorTypes.FirstOrDefault(a => a.Name.Contains(name, StringComparison.CurrentCultureIgnoreCase));
+                }
+
+                if (vendorType != null)
+                {
+                    Console.WriteLine("CreateVendorInstance | assembly: " + assembly.GetName().Name);
+                    Console.WriteLine("CreateVendorInstance | vendorType: " + vendorType);
+                    Console.WriteLine();
+
+                    return Activator.CreateInstance(vendorType) as Vendor;
+                }
+            }
+
+            throw new KeyNotFoundException($"CreateVendorInstance | Vendor: {name}; LibraryPath: {etlLibraryPath} - not exists");
+        }
+
+        public static ConstructorInfo GetBuilderConstructor(string etlLibraryPath, Vendor vendor)
+        {
+            foreach (var assembly in GetETLAssemblies(etlLibraryPath))
+            {
+                var builderTypes = assembly.GetTypes().
+                    Where(t => t.IsSubclassOf(typeof(PersonBuilder)) && !t.IsAbstract);
+
+                var vendorTypePersonBuilder = builderTypes.FirstOrDefault(a => NormalizeVendorName(a.Name).Contains(NormalizeVendorName(vendor.Name), StringComparison.CurrentCultureIgnoreCase));
+
+                if (vendorTypePersonBuilder != null)
+                {
+                    return vendorTypePersonBuilder.GetConstructor([typeof(Vendor)]) ?? throw new InvalidOperationException($"No suitable constructor found for type {vendorTypePersonBuilder.Name}");
+                }
+            }
+
+            throw new KeyNotFoundException($"GetBuilderConstructor | Vendor: {vendor}; LibraryPath: {etlLibraryPath} - not exists");
+        }        
     }
 }
