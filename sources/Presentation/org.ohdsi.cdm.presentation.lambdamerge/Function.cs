@@ -100,7 +100,7 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
             try
             {
                 var vendorName = _s3Event.Object.Key.Split('.')[0].Split('/').Last();
-                _settings.Vendor = EtlLibrary.CreateVendorInstance(EtlLibraryPath, vendorName);
+                _settings.Vendor = EtlLibrary.CreateVendorInstance(vendorName, EtlLibraryPath);
                 _settings.BuildingId = int.Parse(_s3Event.Object.Key.Split('.')[1]);
                 _table = _s3Event.Object.Key.Split('.')[2].Trim();
                 _subChunkId = int.Parse(_s3Event.Object.Key.Split('.')[3]);

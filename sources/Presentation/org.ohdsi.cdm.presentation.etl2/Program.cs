@@ -86,7 +86,7 @@ namespace org.ohdsi.cdm.presentation.etl
 
                 IConfigurationRoot configuration = builder.Build();
 
-                vendor = EtlLibrary.CreateVendorInstance(configuration.GetSection("AppSettings")["etlLibraryPath"], vendorName);
+                vendor = EtlLibrary.CreateVendorInstance(vendorName, configuration.GetSection("AppSettings")["etlLibraryPath"]);
 
                 var builderConnectionString = configuration.GetConnectionString("Builder");
 

@@ -15,7 +15,7 @@ namespace org.ohdsi.cdm.framework.common.Utility
 
     public static class EtlLibrary
     {
-        private static IEnumerable<Assembly> GetETLAssemblies(string path)        
+        private static IEnumerable<Assembly> GetETLAssemblies(string? path)        
         {
             if (!string.IsNullOrEmpty(path))
                 foreach (var assemblyFile in Directory.GetFiles(path, "*.dll"))
@@ -111,11 +111,11 @@ namespace org.ohdsi.cdm.framework.common.Utility
             }
         }
 
-        public static Vendor CreateVendorInstance(string etlLibraryPath, string name)
+        public static Vendor CreateVendorInstance(string name, string? etlLibraryPath = null)
         {
             var currentAssemblies = GetETLAssemblies(Directory.GetCurrentDirectory());
             var externalAssemblies = GetETLAssemblies(etlLibraryPath);
-            var allAssemblies = currentAssemblies.Union(externalAssemblies);
+            var allAssemblies = currentAssemblies.Union(externalAssemblies);    
             var vendorTypes = allAssemblies
                 .SelectMany(s => s.GetTypes()
                 .Where(t => t.IsSubclassOf(typeof(Vendor)) && !t.IsAbstract));

@@ -85,7 +85,7 @@ namespace RunValidation
             Console.WriteLine($"Current directory: {Directory.GetCurrentDirectory()}");
             Console.WriteLine();
 
-            Vendor vendor = EtlLibrary.CreateVendorInstance(opts.EtlLibraryPath, opts.Vendor);            
+            Vendor vendor = EtlLibrary.CreateVendorInstance(opts.Vendor, opts.EtlLibraryPath);            
             var validation = new Validation(_awsAccessKeyId, _awsSecretAccessKey, _bucket, opts.LocalTmpPath, _cdmFolder);
             validation.ValidateBuildingId(vendor, opts.BuildingId, chunkSlicePairs);
         }

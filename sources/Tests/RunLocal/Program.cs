@@ -27,7 +27,7 @@ namespace RunLocal
 
             Console.WriteLine($"{Directory.GetCurrentDirectory()}");
 
-            Process(EtlLibrary.CreateVendorInstance(args[5], args[0]), int.Parse(args[1]), int.Parse(args[2]), args[3], bool.Parse(args[4]), args[5]);
+            Process(EtlLibrary.CreateVendorInstance(args[0], args[5]), int.Parse(args[1]), int.Parse(args[2]), args[3], bool.Parse(args[4]), args[5]);
 
             Console.WriteLine("DONE");
             Console.ReadLine();
