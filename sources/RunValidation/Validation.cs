@@ -67,7 +67,7 @@ namespace RunValidation
             ProcessChunksWithProgress(vendor, buildingId, chunks, actualSlices, actualChunks);
 
             timer.Stop();
-            AnsiConsole.MarkupLine($"[bold]Done. Total seconds={timer.ElapsedMilliseconds / 1000}s[/]");
+            AnsiConsole.MarkupLine($"[green]Done. Problematic chunks, if any, are described above the chunk progress. Total seconds={timer.ElapsedMilliseconds / 1000}s[/]");
             timer.Restart();
         }
 
@@ -182,16 +182,30 @@ namespace RunValidation
 
 
 
-        private void ValidateChunkIdWithProgress(Vendor vendor, int buildingId, int chunkId, HashSet<long> chunkPersonIds, List<int> slices, ProgressTask task)
+        private void  ValidateChunkIdWithProgress(Vendor vendor, int buildingId, int chunkId, HashSet<long> chunkPersonIds, List<int> slices, ProgressTask task)
         {
             var s3ObjectsBySlice = GetS3ObjectsBySlice(vendor, buildingId, chunkId, slices);
 
+            var personIdsInBatchAndPersonOrMetadata = new HashSet<long>();
+
             foreach (var slice in s3ObjectsBySlice)
             {
-                ValidateSliceId(vendor, buildingId, chunkId, slice.Key, chunkPersonIds, slice.Value.personObjects, slice.Value.metadataObjects);
-
+                var slicePersonIdsInBatchAndPersonOrMetadata = ValidateSliceId(vendor, buildingId, chunkId, slice.Key, chunkPersonIds, slice.Value.personObjects, slice.Value.metadataObjects);
+                foreach (var slicePersonId in slicePersonIdsInBatchAndPersonOrMetadata)
+                    personIdsInBatchAndPersonOrMetadata.Add(slicePersonId);
                 task.Increment(1);
             }
+
+            var inBatchOnlyPersonIds = chunkPersonIds
+                .Where(s => !personIdsInBatchAndPersonOrMetadata.TryGetValue(s,  out long actualValue))
+                .ToHashSet();
+
+            if (inBatchOnlyPersonIds.Count > 0)
+            {
+                var msg = $"[red]BuildingId={buildingId} ChunkId={chunkId} | InBatchOnlyIdsCount={inBatchOnlyPersonIds.Count} | Id Example={inBatchOnlyPersonIds.First()}[/]";
+                AnsiConsole.MarkupLine(msg);
+            }
+
         }
 
 
@@ -300,12 +314,12 @@ namespace RunValidation
                 try
                 {
                     attempt++;
-                    var appearenceStatsByPersonId = new Dictionary<long, (int InPersonCount, int InMetadataCount)>();
-
                     var timer = new Stopwatch();
                     timer.Start();
 
-                    #region get appearenceStatsByPersonId
+                    #region var appearanceStatsByPersonId = new Dictionary<long, (int InPersonCount, int InMetadataCount)>();
+                    var appearanceStatsByPersonId = new Dictionary<long, (int InPersonCount, int InMetadataCount)>();
+
 
                     var cnt = 0;
                     var attempt1 = attempt;
@@ -331,19 +345,19 @@ namespace RunValidation
                         while (csv.Read())
                         {
                             var personId = (long)csv.GetField(typeof(long), 0);
-                            lock (appearenceStatsByPersonId)
+                            lock (appearanceStatsByPersonId)
                             {
-                                if (!appearenceStatsByPersonId.ContainsKey(personId))
-                                    appearenceStatsByPersonId[personId] = (0, 0);
+                                if (!appearanceStatsByPersonId.ContainsKey(personId))
+                                    appearanceStatsByPersonId[personId] = (0, 0);
 
-                                var tuple = appearenceStatsByPersonId[personId];
+                                var tuple = appearanceStatsByPersonId[personId];
 
                                 if (o.Key.Contains("PERSON"))
                                     tuple.InPersonCount++;
                                 else if (o.Key.Contains("METADATA_TMP"))
                                     tuple.InMetadataCount++;
 
-                                appearenceStatsByPersonId[personId] = tuple;
+                                appearanceStatsByPersonId[personId] = tuple;
                             }
                         }
                         Interlocked.Increment(ref cnt);
@@ -351,14 +365,24 @@ namespace RunValidation
 
                     #endregion
 
+                    var appearanceStatsByChunkPersonId = chunkPersonIds
+                        .Select(s => appearanceStatsByPersonId.ContainsKey(s)
+                                     ? KeyValuePair.Create(s, Tuple.Create(appearanceStatsByPersonId[s].InPersonCount, appearanceStatsByPersonId[s].InMetadataCount))
+                                     : KeyValuePair.Create(s, Tuple.Create(0, 0)))
+                        .ToDictionary();
+
                     int wrongCount = 0;
                     var dups = 0;
+                    var personIdsInBatchAndPersonOrMetadata = new HashSet<long>();
                     var wrongPersonIds = new HashSet<long>();
 
-                    foreach (var kvp in appearenceStatsByPersonId)
+                    foreach (var kvp in appearanceStatsByPersonId)
                     {
                         var personId = kvp.Key;
                         var stats = kvp.Value;
+
+                        if(stats.InPersonCount > 0 || stats.InMetadataCount > 0)
+                            personIdsInBatchAndPersonOrMetadata.Add(personId);
 
                         //check InPersonCount just in case, InMetadataCount should actually suffice
                         if (stats.InPersonCount > 1 || stats.InMetadataCount > 0)
@@ -377,16 +401,17 @@ namespace RunValidation
 
                     if (wrongCount > 0)
                     {
-                        var msg = $"--BuildingId={buildingId} ChunkId={chunkId} SliceId={sliceId} | WrongCount={wrongCount}; Duplicates={dups} | Wrong Person Id Example={wrongPersonIds.First()}";
-                        Console.WriteLine(msg);
+                        var msg = $"[red]BuildingId={buildingId} ChunkId={chunkId} SliceId={sliceId} | WrongCount={wrongCount}; Duplicates={dups} | Wrong Person Id Example={wrongPersonIds.First()}[/]";
+                        AnsiConsole.MarkupLine(msg);
                     }
 
                     complete = true;
-                    return wrongPersonIds;
+                    return personIdsInBatchAndPersonOrMetadata;
                 }
                 catch (Exception ex)
                 {
-                    Console.Write("--" + ex.Message + " | [ProcessChunk] Exception | new attempt | attempt=" + attempt);
+                    var msg = $"[red]{ex.Message} | ProcessChunk Exception | new attempt | attempt={attempt}[/]";
+                    AnsiConsole.MarkupLine(msg);
                     if (attempt > 3)
                     {
                         throw;
