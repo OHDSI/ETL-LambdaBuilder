@@ -51,6 +51,7 @@ namespace RunValidation
                 .WithParsed(RunWithOptions)
                 .WithNotParsed(HandleParseError);
 
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Aggressive, true, true);
             Console.ReadLine();
         }
 

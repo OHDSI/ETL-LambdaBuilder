@@ -18,6 +18,37 @@ namespace RunValidation
 
     public class Validation(string awsAccessKeyId, string awsSecretAccessKey, string bucket, string tmpFolder, string cdmFolder)
     {
+        #region classes
+
+        public class PersonInS3Chunk(long PersonId, int ChunkId, bool IsFromBatch = true)
+        {
+            public long PersonId { get; set; } = PersonId;
+            public int ChunkId { get; set; } = ChunkId;
+            public bool IsFromBatch { get; set; } = IsFromBatch;
+            public int? SliceId { get; set; }
+            public int? InPersonFilesCount { get; set; } = 0;
+            public int? InMetadataFilesCount { get; set; } = 0;
+
+            public override int GetHashCode()
+            {
+                return PersonId.GetHashCode(); //assumming that a single PersonId is never duplicated in a single ChunkId
+            }
+
+            public override bool Equals(object? obj)
+            {
+                if (obj is not PersonInS3Chunk)
+                    return false;
+                return ((PersonInS3Chunk)obj).GetHashCode() == this.GetHashCode();                
+            }
+
+            public override string ToString()
+            {
+                return $"{ChunkId} - {SliceId?.ToString() ?? "???"} - {PersonId}";
+            }
+        }
+
+        #endregion
+
         #region Fields 
 
         private readonly string _awsAccessKeyId = awsAccessKeyId;
@@ -42,7 +73,7 @@ namespace RunValidation
             var actualSlices = GetActualSlices(vendor.Name, buildingId).OrderBy(s => s).ToList();
 
             int chunkCount = 0;
-            var actualChunks = new List<KeyValuePair<int, Dictionary<long, List<string>>>>();
+            var personsByChunkId = new Dictionary<int, HashSet<PersonInS3Chunk>>();
 
             AnsiConsole.Status()
                 .Spinner(Spinner.Known.Dots)
@@ -54,17 +85,14 @@ namespace RunValidation
                         ctx.Status($"Getting all chunks... (Chunks obtained: {chunkCount})");
                     });
 
-                    foreach (var chunk in GetChunks(vendor, buildingId, progress))
-                    {
-                        actualChunks.Add(chunk);
-                    }
+                    personsByChunkId = GetPersonsByChunkId(vendor, buildingId, chunks, progress);
                 });
 
             timer.Stop();
-            AnsiConsole.MarkupLine($"[green]Getting all {actualChunks.Count} chunks done. It took {timer.ElapsedMilliseconds / 1000}s[/]");
+            AnsiConsole.MarkupLine($"[green]Getting all {personsByChunkId.Keys.Count} chunks done. It took {timer.ElapsedMilliseconds / 1000}s[/]");
             timer.Restart();
 
-            ProcessChunksWithProgress(vendor, buildingId, chunks, actualSlices, actualChunks);
+            ProcessChunksWithProgress(vendor, buildingId, chunks, actualSlices, personsByChunkId);
 
             timer.Stop();
             AnsiConsole.MarkupLine($"[green]Done. Problematic chunks, if any, are described above the chunk progress. Total seconds={timer.ElapsedMilliseconds / 1000}s[/]");
@@ -74,12 +102,13 @@ namespace RunValidation
 
 
 
-        private IEnumerable<KeyValuePair<int, Dictionary<long, List<string>>>> GetChunks(Vendor vendor, int buildingId, IProgress<int> progress)
-        {
-            var currentChunkId = 0;
-            var result = new KeyValuePair<int, Dictionary<long, List<string>>>(0, new Dictionary<long, List<string>>());
+        private Dictionary<int, HashSet<PersonInS3Chunk>> GetPersonsByChunkId(Vendor vendor, int buildingId, List<int> chunks, IProgress<int> progress)
+        {            
+            var persons = new Dictionary<int, HashSet<PersonInS3Chunk>>();
+
             var prefix = $"{vendor}/{buildingId}/_chunks";
             int chunkCount = 0;
+            int previousChunk = -1;
 
             using (var client = new AmazonS3Client(_awsAccessKeyId, _awsSecretAccessKey, Amazon.RegionEndpoint.USEast1))
             {
@@ -97,45 +126,42 @@ namespace RunValidation
                     using var transferUtility = new TransferUtility(_awsAccessKeyId, _awsSecretAccessKey, Amazon.RegionEndpoint.USEast1);
                     using var responseStream = transferUtility.OpenStream(_bucket, o.Key);
                     using var bufferedStream = new BufferedStream(responseStream);
-                    using var gzipStream = new GZipStream(bufferedStream, CompressionMode.Decompress);
-                    using var reader = new StreamReader(gzipStream, Encoding.Default);
+                    using Stream compressedStream = o.Key.EndsWith(".gz")
+                        ? new GZipStream(bufferedStream, CompressionMode.Decompress)
+                        : new DecompressionStream(bufferedStream) //.zst
+                        ;
+                    using var reader = new StreamReader(compressedStream, Encoding.Default);
                     string? line = reader.ReadLine();
                     while (!string.IsNullOrEmpty(line))
                     {
-                        var chunkId = int.Parse(line.Split('\t')[0]);
+                        var splits = line.Split('\t');
+                        var chunkId = int.Parse(splits[0]);
+                        var personId = long.Parse(splits[1]);
 
-                        if (currentChunkId != chunkId)
+                        if (chunkId != previousChunk)
                         {
-                            if (result.Value.Count > 0)
-                            {
-                                yield return result;
-                                chunkCount++;
-                                progress?.Report(chunkCount);
-                            }
-
-                            result = new KeyValuePair<int, Dictionary<long, List<string>>>(chunkId, new Dictionary<long, List<string>>());
-                            currentChunkId = chunkId;
+                            previousChunk = chunkId;
+                            chunkCount++;
+                            progress?.Report(chunkCount);
                         }
+                        if (chunks.Any() && !chunks.Any(s => s == chunkId))
+                            break;
 
-                        var personId = long.Parse(line.Split('\t')[1]);
-                        result.Value.Add(personId, new List<string>());
+                        if (!persons.ContainsKey(chunkId))
+                            persons.Add(chunkId, new HashSet<PersonInS3Chunk>());
+                        persons[chunkId].Add(new PersonInS3Chunk(personId, chunkId));
 
                         line = reader.ReadLine();
                     }
                 }
             }
 
-            if (result.Value.Count > 0)
-            {
-                yield return result;
-                chunkCount++;
-                progress?.Report(chunkCount);
-            }
+            return persons;
         }
 
 
 
-        private void ProcessChunksWithProgress(Vendor vendor, int buildingId, List<int> chunks, List<int> actualSlices, List<KeyValuePair<int, Dictionary<long, List<string>>>> actualChunks)
+        private void ProcessChunksWithProgress(Vendor vendor, int buildingId, List<int> chunks, List<int> actualSlices, Dictionary<int, HashSet<PersonInS3Chunk>> personsByChunkId)
         {
             AnsiConsole.MarkupLine("\n");
 
@@ -152,10 +178,8 @@ namespace RunValidation
                 {
                     var tasks = new ConcurrentDictionary<int, ProgressTask>();
 
-                    foreach (var awsChunk in actualChunks)
+                    foreach (var awsChunkId in personsByChunkId.Keys)
                     {
-                        var awsChunkId = awsChunk.Key;
-
                         if (chunks.Any() && !chunks.Contains(awsChunkId))
                         {
                             continue;
@@ -165,44 +189,47 @@ namespace RunValidation
                         tasks[awsChunkId] = task;
                     }
 
-                    Parallel.ForEach(actualChunks
-                        , new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount == 1 ? 1 : Environment.ProcessorCount - 1 } // leave 1 core for UI and OS
-                        , awsChunk =>
+                    Parallel.ForEach(personsByChunkId.Keys.OrderBy(s => s)
+                        , new ParallelOptions {MaxDegreeOfParallelism = Environment.ProcessorCount == 1 ? 1 : Environment.ProcessorCount - 1 } // leave 1 core for UI and OS
+                        , awsChunkId =>
                     {
-                        var awsChunkId = awsChunk.Key;
-                        var awsChunkPersonIds = awsChunk.Value.Keys.ToHashSet();
+                        var awsChunkPersonIds = personsByChunkId[awsChunkId];
 
                         if (tasks.TryGetValue(awsChunkId, out var task))
                         {
-                            ValidateChunkIdWithProgress(vendor, buildingId, awsChunkId, awsChunkPersonIds, actualSlices, task);
+                            ValidateChunkIdWithProgress(vendor, buildingId, awsChunkPersonIds, actualSlices, task);
                         }
+
+                        personsByChunkId[awsChunkId].Clear();
+                        awsChunkPersonIds = null;
+                        GC.Collect();
                     });
+                    GC.KeepAlive(personsByChunkId);
                 });
         }
 
 
 
-        private void  ValidateChunkIdWithProgress(Vendor vendor, int buildingId, int chunkId, HashSet<long> chunkPersonIds, List<int> slices, ProgressTask task)
+        private void  ValidateChunkIdWithProgress(Vendor vendor, int buildingId, HashSet<PersonInS3Chunk> chunkPersonIds, List<int> slices, ProgressTask task)
         {
-            var s3ObjectsBySlice = GetS3ObjectsBySlice(vendor, buildingId, chunkId, slices);
+            var chunkId = chunkPersonIds.First().ChunkId;
 
-            var personIdsInBatchAndPersonOrMetadata = new HashSet<long>();
+            var s3ObjectsBySlice = GetS3ObjectsBySlice(vendor, buildingId, chunkId, slices);
 
             foreach (var slice in s3ObjectsBySlice)
             {
-                var slicePersonIdsInBatchAndPersonOrMetadata = ValidateSliceId(vendor, buildingId, chunkId, slice.Key, chunkPersonIds, slice.Value.personObjects, slice.Value.metadataObjects);
-                foreach (var slicePersonId in slicePersonIdsInBatchAndPersonOrMetadata)
-                    personIdsInBatchAndPersonOrMetadata.Add(slicePersonId);
+                var slicePersonIds = ValidateSliceId(chunkPersonIds, vendor, buildingId, chunkId, slice.Key, slice.Value.personObjects, slice.Value.metadataObjects);    
                 task.Increment(1);
             }
 
             var inBatchOnlyPersonIds = chunkPersonIds
-                .Where(s => !personIdsInBatchAndPersonOrMetadata.TryGetValue(s,  out long actualValue))
+                .Where(s => s.InMetadataFilesCount + s.InPersonFilesCount == 0)
                 .ToHashSet();
+            
 
             if (inBatchOnlyPersonIds.Count > 0)
             {
-                var msg = $"[red]BuildingId={buildingId} ChunkId={chunkId} | InBatchOnlyIdsCount={inBatchOnlyPersonIds.Count} | Id Example={inBatchOnlyPersonIds.First()}[/]";
+                var msg = $"[red]BuildingId={buildingId} ChunkId={chunkId} | InBatchOnlyPersonIdsCount={inBatchOnlyPersonIds.Count} | Id Example={inBatchOnlyPersonIds.First().PersonId}[/]";
                 AnsiConsole.MarkupLine(msg);
             }
 
@@ -303,7 +330,18 @@ namespace RunValidation
             }
         }
 
-        private HashSet<long> ValidateSliceId(Vendor vendor, int buildingId, int chunkId, int sliceId, HashSet<long> chunkPersonIds,
+        /// <summary>
+        /// This method alters members of chunkPersonIds collection
+        /// </summary>
+        /// <param name="chunkPersonIds"></param>
+        /// <param name="vendor"></param>
+        /// <param name="buildingId"></param>
+        /// <param name="chunkId"></param>
+        /// <param name="sliceId"></param>
+        /// <param name="personObjects"></param>
+        /// <param name="metadataObjects"></param>
+        /// <returns>Subset of chunkPersonIds for the specified sliceId</returns>
+        private HashSet<PersonInS3Chunk> ValidateSliceId(HashSet<PersonInS3Chunk> chunkPersonIds, Vendor vendor, int buildingId, int chunkId, int sliceId, 
             List<S3Object> personObjects, List<S3Object> metadataObjects)
         {
             var attempt = 0;
@@ -317,9 +355,7 @@ namespace RunValidation
                     var timer = new Stopwatch();
                     timer.Start();
 
-                    #region var appearanceStatsByPersonId = new Dictionary<long, (int InPersonCount, int InMetadataCount)>();
-                    var appearanceStatsByPersonId = new Dictionary<long, (int InPersonCount, int InMetadataCount)>();
-
+                    #region chunkPersonIds -> set counts
 
                     var cnt = 0;
                     var attempt1 = attempt;
@@ -345,19 +381,20 @@ namespace RunValidation
                         while (csv.Read())
                         {
                             var personId = (long)csv.GetField(typeof(long), 0);
-                            lock (appearanceStatsByPersonId)
+                            lock (chunkPersonIds)
                             {
-                                if (!appearanceStatsByPersonId.ContainsKey(personId))
-                                    appearanceStatsByPersonId[personId] = (0, 0);
+                                var localPersonInS3 = new PersonInS3Chunk(personId, chunkId, false);
+                                if (chunkPersonIds.TryGetValue(localPersonInS3, out var actual))                                
+                                    localPersonInS3 = actual;                                
+                                else
+                                    chunkPersonIds.Add(localPersonInS3);
 
-                                var tuple = appearanceStatsByPersonId[personId];
+                                localPersonInS3.SliceId ??= sliceId;
 
                                 if (o.Key.Contains("PERSON"))
-                                    tuple.InPersonCount++;
+                                    localPersonInS3.InPersonFilesCount++;
                                 else if (o.Key.Contains("METADATA_TMP"))
-                                    tuple.InMetadataCount++;
-
-                                appearanceStatsByPersonId[personId] = tuple;
+                                    localPersonInS3.InMetadataFilesCount++;
                             }
                         }
                         Interlocked.Increment(ref cnt);
@@ -365,48 +402,30 @@ namespace RunValidation
 
                     #endregion
 
-                    var appearanceStatsByChunkPersonId = chunkPersonIds
-                        .Select(s => appearanceStatsByPersonId.ContainsKey(s)
-                                     ? KeyValuePair.Create(s, Tuple.Create(appearanceStatsByPersonId[s].InPersonCount, appearanceStatsByPersonId[s].InMetadataCount))
-                                     : KeyValuePair.Create(s, Tuple.Create(0, 0)))
-                        .ToDictionary();
+                    var slicePersonIds = chunkPersonIds
+                        .Where(s => s.SliceId == sliceId)
+                        .ToHashSet();
 
-                    int wrongCount = 0;
-                    var dups = 0;
-                    var personIdsInBatchAndPersonOrMetadata = new HashSet<long>();
-                    var wrongPersonIds = new HashSet<long>();
+                    var slicePersonIdsDuplicated = slicePersonIds
+                        .Where(s => s.InPersonFilesCount + s.InMetadataFilesCount > 1)
+                        .ToHashSet();
 
-                    foreach (var kvp in appearanceStatsByPersonId)
-                    {
-                        var personId = kvp.Key;
-                        var stats = kvp.Value;
-
-                        if(stats.InPersonCount > 0 || stats.InMetadataCount > 0)
-                            personIdsInBatchAndPersonOrMetadata.Add(personId);
-
-                        //check InPersonCount just in case, InMetadataCount should actually suffice
-                        if (stats.InPersonCount > 1 || stats.InMetadataCount > 0)
-                        {
-                            wrongCount++;
-                                                        
-                            if (stats.InPersonCount > 1 || stats.InMetadataCount > 1)
-                                dups++;
-
-                            if(!wrongPersonIds.Contains(personId))
-                                wrongPersonIds.Add(personId);
-                        }
-                    }
+                    var slicePersonIdsWrongCount = slicePersonIds
+                        .Where(s => s.InPersonFilesCount != 1 || s.InMetadataFilesCount != 0 || !s.IsFromBatch)
+                        .ToHashSet();
 
                     timer.Stop();
 
-                    if (wrongCount > 0)
+                    if (slicePersonIdsWrongCount.Count > 0)
                     {
-                        var msg = $"[red]BuildingId={buildingId} ChunkId={chunkId} SliceId={sliceId} | WrongCount={wrongCount}; Duplicates={dups} | Wrong Person Id Example={wrongPersonIds.First()}[/]";
+                        var msg = $"[red]BuildingId={buildingId} ChunkId={chunkId} SliceId={sliceId} " +
+                            $"| WrongCount={slicePersonIdsWrongCount.Count}; Duplicates={slicePersonIdsDuplicated.Count} " +
+                            $"| Wrong Person Id Example={slicePersonIdsWrongCount.First().PersonId}[/]";
                         AnsiConsole.MarkupLine(msg);
                     }
 
                     complete = true;
-                    return personIdsInBatchAndPersonOrMetadata;
+                    return slicePersonIds;
                 }
                 catch (Exception ex)
                 {
@@ -418,7 +437,7 @@ namespace RunValidation
                     }
                 }
             }
-            return null;
+            return new HashSet<PersonInS3Chunk>();
         }
 
         #endregion
