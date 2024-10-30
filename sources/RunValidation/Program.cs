@@ -3,6 +3,7 @@ using CommandLine;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Utility;
 using System.Configuration;
+using org.ohdsi.cdm.framework.common.Omop;
 
 namespace RunValidation
 {
@@ -25,17 +26,22 @@ namespace RunValidation
             [Option('c', "chunks", Separator = ',', HelpText = "(Optional) Comma-separated list of chunk IDs to process. All of them, if omitted.")]
             public IEnumerable<int> Chunks { get; set; } = new List<int>();
 
+            [Option('p', "personId", Default = null, HelpText = "(Optional) If specified, the usual check changes to finding SliceId for the given PersonId within the first specified ChunkId.")]
+            public long? PersonId { get; set; } = null;
+
             [Usage(ApplicationAlias = "RunValidation")]
             public static IEnumerable<Example> Examples
             {
                 get
                 {
-                    yield return new Example("Process all chunks", new Options 
+                    yield return new Example("Process all chunks of a vendor", new Options 
                         { Vendor = "VendorName", BuildingId = 123});
-                    yield return new Example("Process all chunks for an external .dll", new Options 
+                    yield return new Example("Process all vendor's chunks from an external .dll", new Options 
                         { Vendor = "ExternalVendorName", BuildingId = 123, EtlLibraryPath = "C:\\PathToExternalDllFolder"});
-                    yield return new Example("Process specified chunks", new Options 
+                    yield return new Example("Process specified chunks of a vendor", new Options 
                         { Vendor = "VendorName", BuildingId = 123, Chunks = new List<int> { 1, 2, 3 } });
+                    yield return new Example("Get SliceId within the given vendor's chunk containing the given PersonId", new Options
+                    { Vendor = "VendorName", BuildingId = 123, Chunks = new List<int> { 1 }, PersonId = 123 });
                 }
             }
         }
@@ -69,11 +75,15 @@ namespace RunValidation
             Console.WriteLine($"EtlLibraryPath: {opts.EtlLibraryPath}");
             Console.WriteLine($"LocalTmpPath: {opts.LocalTmpPath}");
             Console.WriteLine($"Current directory: {Directory.GetCurrentDirectory()}");
+            Console.WriteLine($"PersonId: {opts.PersonId.ToString() ?? ""}");
             Console.WriteLine();
 
             Vendor vendor = EtlLibrary.CreateVendorInstance(opts.Vendor, opts.EtlLibraryPath);            
             var validation = new Validation(_awsAccessKeyId, _awsSecretAccessKey, _bucket, opts.LocalTmpPath, _cdmFolder);
-            validation.ValidateBuildingId(vendor, opts.BuildingId, chunks);
+            if (opts.PersonId.HasValue)
+                validation.ValidatePersonIdInSlice(vendor, opts.BuildingId, opts.Chunks.First(), opts.PersonId.Value);
+            else
+                validation.ValidateBuildingId(vendor, opts.BuildingId, chunks);
         }
 
         static void HandleParseError(IEnumerable<Error> errs)

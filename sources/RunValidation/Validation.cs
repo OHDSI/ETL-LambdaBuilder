@@ -13,6 +13,7 @@ using ZstdSharp;
 using Spectre.Console;
 using System.Collections.Concurrent;
 using System.IO;
+using System.Diagnostics.Eventing.Reader;
 
 namespace RunValidation
 {
@@ -21,7 +22,7 @@ namespace RunValidation
     {
         #region classes
 
-        public class PersonInS3Chunk(long PersonId, Vendor Vendor, int BuildingId, int ChunkId, bool IsFromBatch = true)
+        class PersonInS3Chunk(long PersonId, Vendor Vendor, int BuildingId, int ChunkId, bool IsFromBatch = true)
         {
             public long PersonId { get; set; } = PersonId;
             public Vendor Vendor { get; set; } = Vendor;
@@ -102,7 +103,26 @@ namespace RunValidation
             timer.Restart();
         }
 
-
+        /// <summary>
+        /// Short version to quickly get sliceId for a given personId
+        /// </summary>
+        /// <param name="vendor"></param>
+        /// <param name="buildingId"></param>
+        /// <param name="chunkId"></param>
+        /// <param name="personId"></param>
+        public void ValidatePersonIdInSlice(Vendor vendor, int buildingId, int chunkId, long personId)
+        {
+            var person = new PersonInS3Chunk(personId, vendor, buildingId, chunkId) { IsFromBatch = false };
+            person.SliceId = FindSlice(person, vendor.PersonTableName, vendor.PersonIdIndex);
+            if (person.SliceId.HasValue)
+            {
+                AnsiConsole.MarkupLine($"[green]PersonId {person.PersonId} was found in raw SliceId {person.SliceId}![/]");
+            }
+            else
+            {
+                AnsiConsole.MarkupLine($"[red]PersonId {person.PersonId} was not found in raw Vendor {vendor.Name} - BuildingId {buildingId} - ChunkId {chunkId}![/]");
+            }
+        }
 
 
         private Dictionary<int, HashSet<PersonInS3Chunk>> GetPersonsByChunkId(Vendor vendor, int buildingId, List<int> chunks, IProgress<int> progress)
@@ -221,7 +241,7 @@ namespace RunValidation
 
             foreach (var slice in s3ObjectsBySlice)
             {
-                var slicePersonIds = ValidateSliceId(chunkPersonIds, vendor, buildingId, chunkId, slice.Key, slice.Value.personObjects, slice.Value.metadataObjects);    
+                var slicePersonIds = ValidateSliceId(chunkPersonIds, vendor, buildingId, chunkId, slice.Key, slice.Value.PersonObjects, slice.Value.MetadataObjects);    
                 task.Increment(1);
             }
 
@@ -236,7 +256,7 @@ namespace RunValidation
                 inBatchOnlyExample.SliceId = FindSlice(inBatchOnlyExample, vendor.PersonTableName, vendor.PersonIdIndex);
 
                 var msg = $"[red]BuildingId={buildingId} ChunkId={chunkId} | InBatchOnlyPersonIdsCount={inBatchOnlyPersonIds.Count} " +
-                    $"| Id Example={inBatchOnlyExample.PersonId}, SliceId = {inBatchOnlyExample.SliceId.ToString() ?? "???"}[/]";
+                    $"| PersonId Example={inBatchOnlyExample.PersonId}, SliceId = {inBatchOnlyExample.SliceId.ToString() ?? "???"}[/]";
                 AnsiConsole.MarkupLine(msg);
             }
 
@@ -278,7 +298,7 @@ namespace RunValidation
             return slices;
         }
 
-        private Dictionary<int, (List<S3Object> personObjects, List<S3Object> metadataObjects)> GetS3ObjectsBySlice(Vendor vendor, 
+        private Dictionary<int, (List<S3Object> PersonObjects, List<S3Object> MetadataObjects)> GetS3ObjectsBySlice(Vendor vendor, 
             int buildingId, int chunkId, List<int> slices2process)
         {
             var s3ObjectsBySlice = new Dictionary<int, (List<S3Object> PersonObjects, List<S3Object> MetadataObjects)>();
@@ -286,23 +306,23 @@ namespace RunValidation
             foreach (var tuple in GetObjects(vendor, buildingId, "PERSON", chunkId, slices2process))
             {
                 int sliceId = tuple.Item1;
-                List<S3Object> personObjects = tuple.Item2;
+                List<S3Object> PersonObjects = tuple.Item2;
 
                 if (!s3ObjectsBySlice.ContainsKey(sliceId))
                     s3ObjectsBySlice[sliceId] = (new List<S3Object>(), new List<S3Object>());
 
-                s3ObjectsBySlice[sliceId].PersonObjects.AddRange(personObjects);
+                s3ObjectsBySlice[sliceId].PersonObjects.AddRange(PersonObjects);
             }
 
             foreach (var tuple in GetObjects(vendor, buildingId, "METADATA_TMP", chunkId, slices2process))
             {
                 int sliceId = tuple.Item1;
-                List<S3Object> metadataObjects = tuple.Item2;
+                List<S3Object> MetadataObjects = tuple.Item2;
 
                 if (!s3ObjectsBySlice.ContainsKey(sliceId))
                     s3ObjectsBySlice[sliceId] = (new List<S3Object>(), new List<S3Object>());
 
-                s3ObjectsBySlice[sliceId].MetadataObjects.AddRange(metadataObjects);
+                s3ObjectsBySlice[sliceId].MetadataObjects.AddRange(MetadataObjects);
             }
 
             if (s3ObjectsBySlice.Count == 0)
@@ -345,11 +365,11 @@ namespace RunValidation
         /// <param name="buildingId"></param>
         /// <param name="chunkId"></param>
         /// <param name="sliceId"></param>
-        /// <param name="personObjects"></param>
-        /// <param name="metadataObjects"></param>
+        /// <param name="PersonObjects"></param>
+        /// <param name="MetadataObjects"></param>
         /// <returns>Subset of chunkPersonIds for the specified sliceId</returns>
         private HashSet<PersonInS3Chunk> ValidateSliceId(HashSet<PersonInS3Chunk> chunkPersonIds, Vendor vendor, int buildingId, int chunkId, int sliceId, 
-            List<S3Object> personObjects, List<S3Object> metadataObjects)
+            List<S3Object> PersonObjects, List<S3Object> MetadataObjects)
         {
             var attempt = 0;
             var complete = false;
@@ -367,7 +387,7 @@ namespace RunValidation
                     var cnt = 0;
                     var attempt1 = attempt;
 
-                    var allObjects = personObjects.Union(metadataObjects).ToList();
+                    var allObjects = PersonObjects.Union(MetadataObjects).ToList();
 
                     Parallel.ForEach(allObjects, o =>
                     {
@@ -448,7 +468,7 @@ namespace RunValidation
         }
 
         /// <summary>
-        /// 
+        /// Try to get sliceId which contains given PersonId and other parameters
         /// </summary>
         /// <param name="person">This should have Vendor, BuildingId, ChunkId, and PersonId information</param>
         /// <param name="table"></param>
