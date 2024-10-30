@@ -256,7 +256,7 @@ namespace RunValidation
                 inBatchOnlyExample.SliceId = FindSlice(inBatchOnlyExample, vendor.PersonTableName, vendor.PersonIdIndex);
 
                 var msg = $"[red]BuildingId={buildingId} ChunkId={chunkId} | InBatchOnlyPersonIdsCount={inBatchOnlyPersonIds.Count} " +
-                    $"| PersonId Example={inBatchOnlyExample.PersonId}, SliceId = {inBatchOnlyExample.SliceId.ToString() ?? "???"}[/]";
+                    $"| Example PersonId = {inBatchOnlyExample.PersonId}, SliceId = {inBatchOnlyExample.SliceId.ToString() ?? "???"}[/]";
                 AnsiConsole.MarkupLine(msg);
             }
 
@@ -447,7 +447,7 @@ namespace RunValidation
                     {
                         var msg = $"[red]BuildingId={buildingId} ChunkId={chunkId} SliceId={sliceId} " +
                             $"| WrongCount={slicePersonIdsWrongCount.Count}; Duplicates={slicePersonIdsDuplicated.Count} " +
-                            $"| Wrong Person Id Example={slicePersonIdsWrongCount.First().PersonId}[/]";
+                            $"| Example Wrong Person Id = {slicePersonIdsWrongCount.First().PersonId}[/]";
                         AnsiConsole.MarkupLine(msg);
                     }
 
