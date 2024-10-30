@@ -12,6 +12,7 @@ using System.Text;
 using ZstdSharp;
 using Spectre.Console;
 using System.Collections.Concurrent;
+using System.IO;
 
 namespace RunValidation
 {
@@ -20,9 +21,11 @@ namespace RunValidation
     {
         #region classes
 
-        public class PersonInS3Chunk(long PersonId, int ChunkId, bool IsFromBatch = true)
+        public class PersonInS3Chunk(long PersonId, Vendor Vendor, int BuildingId, int ChunkId, bool IsFromBatch = true)
         {
             public long PersonId { get; set; } = PersonId;
+            public Vendor Vendor { get; set; } = Vendor;
+            public int BuildingId { get; set; } = BuildingId;
             public int ChunkId { get; set; } = ChunkId;
             public bool IsFromBatch { get; set; } = IsFromBatch;
             public int? SliceId { get; set; }
@@ -31,7 +34,7 @@ namespace RunValidation
 
             public override int GetHashCode()
             {
-                return PersonId.GetHashCode(); //assumming that a single PersonId is never duplicated in a single ChunkId
+                return Vendor.GetHashCode() ^ BuildingId.GetHashCode() ^ ChunkId.GetHashCode() ^ PersonId.GetHashCode(); //assumming that a single PersonId is never duplicated in a single ChunkId
             }
 
             public override bool Equals(object? obj)
@@ -43,7 +46,7 @@ namespace RunValidation
 
             public override string ToString()
             {
-                return $"{ChunkId} - {SliceId?.ToString() ?? "???"} - {PersonId}";
+                return $"{Vendor} - {BuildingId} - {ChunkId} - {SliceId?.ToString() ?? "???"} - {PersonId}";
             }
         }
 
@@ -149,7 +152,7 @@ namespace RunValidation
 
                         if (!persons.ContainsKey(chunkId))
                             persons.Add(chunkId, new HashSet<PersonInS3Chunk>());
-                        persons[chunkId].Add(new PersonInS3Chunk(personId, chunkId));
+                        persons[chunkId].Add(new PersonInS3Chunk(personId, vendor, buildingId, chunkId));
 
                         line = reader.ReadLine();
                     }
@@ -229,7 +232,11 @@ namespace RunValidation
 
             if (inBatchOnlyPersonIds.Count > 0)
             {
-                var msg = $"[red]BuildingId={buildingId} ChunkId={chunkId} | InBatchOnlyPersonIdsCount={inBatchOnlyPersonIds.Count} | Id Example={inBatchOnlyPersonIds.First().PersonId}[/]";
+                var inBatchOnlyExample = inBatchOnlyPersonIds.First();
+                inBatchOnlyExample.SliceId = FindSlice(inBatchOnlyExample, vendor.PersonTableName, vendor.PersonIdIndex);
+
+                var msg = $"[red]BuildingId={buildingId} ChunkId={chunkId} | InBatchOnlyPersonIdsCount={inBatchOnlyPersonIds.Count} " +
+                    $"| Id Example={inBatchOnlyExample.PersonId}, SliceId = {inBatchOnlyExample.SliceId.ToString() ?? "???"}[/]";
                 AnsiConsole.MarkupLine(msg);
             }
 
@@ -383,7 +390,7 @@ namespace RunValidation
                             var personId = (long)csv.GetField(typeof(long), 0);
                             lock (chunkPersonIds)
                             {
-                                var localPersonInS3 = new PersonInS3Chunk(personId, chunkId, false);
+                                var localPersonInS3 = new PersonInS3Chunk(personId, vendor, buildingId, chunkId, false);
                                 if (chunkPersonIds.TryGetValue(localPersonInS3, out var actual))                                
                                     localPersonInS3 = actual;                                
                                 else
@@ -438,6 +445,126 @@ namespace RunValidation
                 }
             }
             return new HashSet<PersonInS3Chunk>();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="person">This should have Vendor, BuildingId, ChunkId, and PersonId information</param>
+        /// <param name="table"></param>
+        /// <returns></returns>
+        private int? FindSlice(PersonInS3Chunk person, string table, int personIndex)
+        {            
+            var prefix = $"{person.Vendor.Name}/{person.BuildingId}/raw/{person.ChunkId}/{table}/{table}";
+
+            using (var client = new AmazonS3Client(_awsAccessKeyId, _awsSecretAccessKey, Amazon.RegionEndpoint.USEast1))
+            {
+                var request = new ListObjectsV2Request
+                {
+                    BucketName = _bucket,
+                    Prefix = prefix
+                };
+
+                var r = client.ListObjectsV2Async(request);
+                r.Wait();
+                var response = r.Result;
+                var rows = new List<string>();
+                foreach (var o in response.S3Objects)
+                {
+                    using var transferUtility = new TransferUtility(_awsAccessKeyId, _awsSecretAccessKey, Amazon.RegionEndpoint.USEast1);
+                    using var responseStream = transferUtility.OpenStream(_bucket, o.Key);
+                    {
+                        using var bufferedStream = new BufferedStream(responseStream);
+                        using Stream compressedStream = o.Key.EndsWith(".gz")
+                            ? new GZipStream(bufferedStream, CompressionMode.Decompress)
+                            : new DecompressionStream(bufferedStream) //.zst
+                            ;
+                        using var reader = new StreamReader(compressedStream, Encoding.Default);
+                        string? line = reader.ReadLine();
+                        while (!string.IsNullOrEmpty(line))
+                        {
+                            var personId = long.Parse(line.Split('\t')[personIndex]);
+                            if (person.PersonId == personId)
+                            {
+                                var chars = o.Key
+                                            .Split('/')
+                                            .Last()
+                                            .SkipWhile(s => !char.IsDigit(s))
+                                            .TakeWhile(s => char.IsDigit(s))
+                                            .ToArray();
+                                var sliceId = int.Parse(new string(chars));
+                                return sliceId;
+                            }
+                            line = reader.ReadLine();
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        private void Clean(Vendor vendor, int buildingId, int chunkId, string table, int slice)
+        {
+            var attempt = 0;
+            var complete = false;
+
+            while (!complete)
+            {
+                try
+                {
+                    attempt++;
+
+                    var perfix = $"{vendor}/{buildingId}/{_cdmFolder}/{table}/{table}.{slice}.{chunkId}.";
+
+                    using (var client = new AmazonS3Client(_awsAccessKeyId, _awsSecretAccessKey, Amazon.RegionEndpoint.USEast1))
+                    {
+                        var request = new ListObjectsV2Request
+                        {
+                            BucketName = _bucket,
+                            Prefix = perfix
+                        };
+                        ListObjectsV2Response response;
+                        do
+                        {
+                            using var getListObjects = client.ListObjectsV2Async(request);
+                            getListObjects.Wait();
+                            response = getListObjects.Result;
+
+                            var multiObjectDeleteRequest = new DeleteObjectsRequest
+                            {
+                                BucketName = _bucket
+                            };
+
+                            foreach (var o in response.S3Objects)
+                            {
+                                multiObjectDeleteRequest.AddKey(o.Key, null);
+                            }
+
+                            if (response.S3Objects.Count > 0)
+                            {
+                                using var deleteObjects = client.DeleteObjectsAsync(multiObjectDeleteRequest);
+                                deleteObjects.Wait();
+
+                                //Console.WriteLine(response.S3Objects.Count + " files deleted");
+                            }
+
+                            request.ContinuationToken = response.NextContinuationToken;
+                        } while (response.IsTruncated == true);
+                    }
+
+                    complete = true;
+                }
+                catch (Exception ex)
+                {
+                    Console.Write(" | [Clean] Exception | new attempt | " + attempt);
+                    Console.WriteLine(ex.Message);
+                    if (attempt > 3)
+                    {
+                        throw;
+                    }
+                }
+            }
         }
 
         #endregion
