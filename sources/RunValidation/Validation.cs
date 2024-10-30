@@ -257,7 +257,7 @@ namespace RunValidation
 
             var personsInBatchOnly = chunkPersonIds
                 .First(s => s.Key == -1).Value.Values // Sliceid -1 contains copies from all other SliceId HashSets 
-                .Where(s => !personIdsInPersonOrMetadata.Any(a => a == s.PersonId))
+                .Where(s => !personIdsInPersonOrMetadata.TryGetValue(s.PersonId, out long matchedPersonId))
                 .ToHashSet();
             
             if (personsInBatchOnly.Count > 0)
