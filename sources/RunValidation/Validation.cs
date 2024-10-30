@@ -250,18 +250,22 @@ namespace RunValidation
                 task.Increment(1);
             }
 
-            var inBatchOnlyPersons = chunkPersonIds
-                .Where(s => s.Key != -1) // this SliceId contains copies from all other SliceId HashSets
-                .SelectMany(s => s.Value.Values)
-                .Where(s => s.InMetadataFilesCount + s.InPersonFilesCount == 0)
+            var personIdsInPersonOrMetadata = chunkPersonIds
+                .Where(s => s.Key != -1) // Sliceid -1 contains copies from all other SliceId HashSets
+                .SelectMany(s => s.Value.Keys)
+                .ToHashSet();
+
+            var personsInBatchOnly = chunkPersonIds
+                .First(s => s.Key == -1).Value.Values // Sliceid -1 contains copies from all other SliceId HashSets 
+                .Where(s => !personIdsInPersonOrMetadata.Any(a => a == s.PersonId))
                 .ToHashSet();
             
-            if (inBatchOnlyPersons.Count > 0)
+            if (personsInBatchOnly.Count > 0)
             {
-                var inBatchOnlyExample = inBatchOnlyPersons.First();
+                var inBatchOnlyExample = personsInBatchOnly.First();
                 inBatchOnlyExample.SliceId = FindSlice(inBatchOnlyExample, vendor.PersonTableName, vendor.PersonIdIndex);
 
-                var msg = $"[red]BuildingId={buildingId} ChunkId={chunkId} | InBatchOnlyPersonIdsCount={inBatchOnlyPersons.Count} " +
+                var msg = $"[red]BuildingId={buildingId} ChunkId={chunkId} | InBatchOnlyPersonIdsCount={personsInBatchOnly.Count} " +
                     $"| Example PersonId = {inBatchOnlyExample.PersonId}, SliceId = {inBatchOnlyExample.SliceId.ToString() ?? "???"}[/]";
                 AnsiConsole.MarkupLine(msg);
             }
