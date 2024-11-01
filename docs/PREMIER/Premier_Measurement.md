@@ -860,6 +860,31 @@ WHERE PAT.PAT_KEY = GEN_LAB.PAT_KEY
 </tbody></table>
 
 
+## Reading from LAB_SENS
+
+The field mapping is performed as follows:
+
+| Destination Field | Source Field | Applied Rule | Comment |
+| --- | --- | --- | --- |
+| MEASUREMENT_ID | pat_key <br> specimen_id <br> observation | System generated. Consistent with the measurement_id attribute creation. <br> System-generated. Consistent with the current schema design.  |  |
+| PERSON_ID | pat_key |  | Lookup of PAT.MEDREC_KEY leveraging the PAT_KEY. <br><code> SELECT PAT.MEDREC_KEY FROM PAT,LAB_RES WHERE PAT.PAT_KEY = LAB_RES.PAT_KEY</code> |
+| MEASUREMENT_CONCEPT_ID | susc_test_method_code | When susc_test_method_code_type = 'LOINC' <br> <code>SELECT TARGET_CONCEPT_ID FROM CTE_VOCAB_MAP WHERE SOURCE_VOCABULARY_ID IN ('LOINC') AND TARGET_DOMAIN_ID = 'Measurement'</code> |  |
+| MEASUREMENT_DATE | collection_datetime |  |  |
+| MEASUREMENT_DATETIME | collection_datetime | |  |
+| MEASUREMENT_TYPE_CONCEPT_ID | 32836 |  | Lab Result |
+| OPERATOR_CONCEPT_ID | - | NULL |  |
+| VALUE_AS_NUMBER | - | See query below |  |
+| VALUE_AS_CONCEPT_ID | - | NULL |  |
+| UNIT_CONCEPT_ID | - | |Set UNIT_CONCEPT_ID = NULL when the source unit value is NULL;<br>Set UNIT_CONCEPT_ID = 0 when source unit value is not NULL but doesn't have a mapping  |
+| RANGE_LOW | - | NULL |  |
+| RANGE_HIGH | - | NULL |  |
+| PROVIDER_ID | PATICD_PROC.PROC_PHY<br>PAT.ADMPHY |  |  |
+| VISIT_OCCURRENCE_ID | PAT.PAT_KEY |  |  |
+| MEASUREMENT_SOURCE_VALUE |  | <code>SELECT SOURCE_VALUE FROM (SELECT CONCAT(STD_CHG_DESC, ' / ', HOSP_CHG_DESC) AS SOURCE_VALUE FROM PATBILL A JOIN CHGMSTR B ON A.STD_CHG_CODE=B.STD_CHG_CODE JOIN hospchg C ON A.hosp_chg_id=C.hosp_chg_id ) A UNION(SELECT CPT_CODE AS SOURCE_VALUE FROM PATCPT)</code> |  |
+| MEASUREMENT_SOURCE_CONCEPT_ID | - | QUERY: SOURCE TO SOURCE <br> <code>SELECT SOURCE_CONCEPT_ID FROM CTE_VOCAB_MAP WHERE SOURCE_VOCABULARY_ID IN ('CPT4', 'HCPCS') AND TARGET_VOCABULARY_ID IN ('CPT4', 'HCPCS') AND DOMAIN_ID='Measurement'</code> | Only populated for standard coding CPT4, and HCPCS codes |
+| UNIT_SOURCE_VALUE | - | NULL |  |
+| VALUE_SOURCE_VALUE | - | NULL |  |
+
 ## Change Log:
 ### 2024.03.21: 
  Added mapping for genlab.lab_test_loinc_code ('LP17803-5-15' and 'LP30736-0-3')
