@@ -82,7 +82,7 @@ Race is also now split into two variables such that patients can denote both the
 |BIRTH_DATETIME|**Member_Continuous_Enrollment** YRDOB <br> **PERSON** MONTH_OF_BIRTH <br> **PERSON** DAY_OF_BIRTH <br> UTC tz midnight|Concatenate the source field values into datetime value with UTC Timezone|
 |DEATH_DATETIME|**(DOD only) DEATH** YMDOD|Set the day to the last day of the month and set time to UTC tz midnight|
 |RACE_CONCEPT_ID|**Member_Enrollment** Race|[See Race mapping](#Mapping-Race)||
-|ETHNICITY_CONCEPT_ID|**Member_Enrollment** Race|[See Ethnicity mapping](#Mapping-Race)||
+|ETHNICITY_CONCEPT_ID|**Member_Enrollment** Ethnicity|[See Ethnicity mapping](#Mapping-Ethnicity)||
 |LOCATION_ID|FK to Location table.|Represents the last known location for person in **Member_Continuous_Enrollment**. For **SES** the field is REGION, and **DOD** it is STATE||
 |PROVIDER_ID||| |
 |CARE_SITE_ID|| | |
