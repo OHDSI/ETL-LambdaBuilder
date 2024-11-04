@@ -563,7 +563,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
                         {
                             e.StartDate = vd.StartDate;
 
-                            if (e.SourceFile.Equals("MEDICAL_CLAIMS", StringComparison.OrdinalIgnoreCase))
+                            if (string.Equals(e.SourceFile, "MEDICAL_CLAIMS", StringComparison.OrdinalIgnoreCase))
                             {
                                 e.EndDate = vd.EndDate;
                             }
