@@ -7,6 +7,7 @@ namespace org.ohdsi.cdm.framework.common.Omop
     {
         bool IsUnique { get; set; }
         Guid SourceRecordGuid { get; set; }
+        string SourceFile { get; set; }
         long Id { get; set; }
 
         long PersonId { get; set; }

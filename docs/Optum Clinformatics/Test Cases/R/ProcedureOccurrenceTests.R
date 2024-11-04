@@ -183,4 +183,25 @@ createProcedureOccurrenceTests <- function()
                   loinc_cd = '', proc_cd = '70481')
   expect_procedure_occurrence(person_id = patient$person_id, procedure_concept_id = 2211331)
   
+  patient <- createPatient()
+  claim <- createClaim()
+  declareTest("PROCEDURE_OCCURRENCE - do not set end date for not Medical procedures.", id = patient$person_id)
+  add_member_continuous_enrollment(eligeff = '2010-05-01', eligend = '2013-10-31',
+                                   gdr_cd = 'F', patid = patient$patid, yrdob = 1969)
+  add_member_enrollment(patid = patient$patid, eligeff = '2010-05-01', eligend = '2013-10-31')								   
+  add_medical_claims(clmid = claim$clmid, clmseq = '001', lst_dt = '2013-07-01', proc_cd = NULL,
+                     pat_planid = patient$patid, patid = patient$patid, fst_dt = '2013-07-01', prov = '111111', provcat = '5678')
+  add_med_procedure(patid = patient$patid, pat_planid = patient$patid, proc = 'V5789', proc_position = 1, clmid = claim$clmid, fst_dt = '2013-07-01')
+  expect_procedure_occurrence(person_id = patient$person_id, procedure_end_date = NULL)
+  
+  patient <- createPatient()
+  claim <- createClaim()
+  declareTest("PROCEDURE_OCCURRENCE - set end date for Medical procedures.", id = patient$person_id)
+  add_member_continuous_enrollment(eligeff = '2010-05-01', eligend = '2013-10-31',
+                                   gdr_cd = 'F', patid = patient$patid, yrdob = 1969)
+  add_member_enrollment(patid = patient$patid, eligeff = '2010-05-01', eligend = '2013-10-31')								   
+  add_medical_claims(clmid = claim$clmid, clmseq = '001', proc_cd = '92928', lst_dt = '2013-07-01',
+                     pat_planid = patient$patid, patid = patient$patid, fst_dt = '2013-07-01', prov = '111111', provcat = '5678')
+  expect_procedure_occurrence(person_id = patient$person_id, procedure_end_date = '2013-07-01')
+  
 }
