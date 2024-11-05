@@ -213,7 +213,7 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
 
         private void SaveMetadata()
         {
-            var mergeMetadata = new MergeMetadata(_settings);
+            var mergeMetadata = new MergeMetadata(_settings, _versionId);
             mergeMetadata.Start();
             using var stream = mergeMetadata.GetMetadataCsvStream();
             SaveToS3(stream, 0, _settings.CdmFolder, _table, "txt.gz");

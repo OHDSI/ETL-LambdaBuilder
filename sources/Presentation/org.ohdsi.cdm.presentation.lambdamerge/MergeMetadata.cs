@@ -18,15 +18,17 @@ using org.ohdsi.cdm.framework.common.Enums;
 
 namespace org.ohdsi.cdm.presentation.lambdamerge
 {
-    class MergeMetadata(Settings settings)
+    class MergeMetadata(Settings settings, int versionId)
     {
         private readonly Settings _settings = settings;
         private List<MetadataOMOP> _metadata;
+        private readonly int _versionId = versionId;
 
         public void Start()
         {
             _metadata = CreateMetadata();
 
+            _metadata.Add(new MetadataOMOP { MetadataConceptId = 0, Name = "Loadid", ValueAsString = _versionId.ToString(), MetadataDate = DateTime.Now });
             _metadata.Add(new MetadataOMOP { MetadataConceptId = 37116952, Name = "Source data citation", ValueAsString = _settings.Vendor.Citation, MetadataDate = DateTime.Now });
             _metadata.Add(new MetadataOMOP { MetadataConceptId = 4123211, Name = "Publication review requirements", ValueAsString = _settings.Vendor.Publication, MetadataDate = DateTime.Now });
 
