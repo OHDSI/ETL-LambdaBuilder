@@ -141,5 +141,28 @@ namespace org.ohdsi.cdm.framework.desktop.DbLayer
 
             return DateTime.MinValue.ToShortDateString();
         }
+
+        public string GetSourceVersionId()
+        {
+            try
+            {
+                string query = "SELECT version_id FROM " + _schemaName + "._Version";
+                using var connection = SqlConnectionHelper.OpenOdbcConnection(_connectionString);
+                using var c = new OdbcCommand(query, connection);
+                using var reader = c.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    return reader.GetString("version_id");
+                }
+
+            }
+            catch (Exception)
+            {
+                return "unknown";
+            }
+
+            return "unknown";
+        }
     }
 }

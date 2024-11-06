@@ -28,13 +28,13 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
         {
             _metadata = CreateMetadata();
 
-            _metadata.Add(new MetadataOMOP { MetadataConceptId = 0, Name = "Loadid", ValueAsString = _versionId.ToString(), MetadataDate = DateTime.Now });
-            _metadata.Add(new MetadataOMOP { MetadataConceptId = 37116952, Name = "Source data citation", ValueAsString = _settings.Vendor.Citation, MetadataDate = DateTime.Now });
-            _metadata.Add(new MetadataOMOP { MetadataConceptId = 4123211, Name = "Publication review requirements", ValueAsString = _settings.Vendor.Publication, MetadataDate = DateTime.Now });
+            _metadata.Add(new MetadataOMOP { MetadataConceptId = 0, Name = "CDMLoadId", ValueAsString = _versionId.ToString(), MetadataDate = DateTime.Now.Date });
+            _metadata.Add(new MetadataOMOP { MetadataConceptId = 37116952, Name = "Source data citation", ValueAsString = _settings.Vendor.Citation, MetadataDate = DateTime.Now.Date });
+            _metadata.Add(new MetadataOMOP { MetadataConceptId = 4123211, Name = "Publication review requirements", ValueAsString = _settings.Vendor.Publication, MetadataDate = DateTime.Now.Date });
 
             for (int i = 0; i < _metadata.Count; i++)
             {
-                _metadata[i].Id = i;
+                _metadata[i].Id = i + 1; // Starts with 1
             }
         }
 

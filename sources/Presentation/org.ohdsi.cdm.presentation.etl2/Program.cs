@@ -8,11 +8,13 @@ using org.ohdsi.cdm.framework.common.DataReaders.v5.v54;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Helpers;
+using org.ohdsi.cdm.framework.common.Omop;
 using org.ohdsi.cdm.framework.common.Utility;
 using org.ohdsi.cdm.framework.desktop.DbLayer;
 using org.ohdsi.cdm.framework.desktop.Settings;
 using org.ohdsi.cdm.framework.desktop3.Monitor;
 using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Odbc;
 using System.Data.SqlClient;
@@ -231,6 +233,7 @@ namespace org.ohdsi.cdm.presentation.etl
                 {
                     var dbSource = new DbSource(sourceConnectionString, null, sourceSchema);
                     var sourceReleaseDate = dbSource.GetSourceReleaseDate();
+                    var sourceVersionId = dbSource.GetSourceVersionId();
                     var vocabularyVersion = DbBuildingSettings.GetVocabularyVersion(vocabularyConnectionString, vocabularySchema);
 
                     Console.WriteLine("SourceReleaseDate:" + sourceReleaseDate);
@@ -241,6 +244,12 @@ namespace org.ohdsi.cdm.presentation.etl
                         var reader = new CdmSourceDataReader54(DateTime.Parse(sourceReleaseDate), vocabularyVersion);
                         using var stream = reader.GetStreamCsv();
                         SaveToS3(stream, 0, "cdmCSV", "CDM_SOURCE", "gz", vendor, Settings.Current.Building.Id.Value);
+
+                        List<MetadataOMOP> metadata = [];
+                        metadata.Add(new MetadataOMOP { Id = 0, MetadataConceptId = 0, Name = "NativeLoadId", ValueAsString = sourceVersionId, MetadataDate = DateTime.Now.Date });
+                        var metadataReader = new MetadataOMOPDataReader54(metadata);
+
+                        SaveToS3(metadataReader.GetStreamCsv(), 1, "cdmCSV", "METADATA", "gz", vendor, Settings.Current.Building.Id.Value);
                     }
                     else
                     {
