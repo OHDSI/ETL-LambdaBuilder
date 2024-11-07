@@ -201,29 +201,29 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
             {
                 var reader = new CdmSourceDataReader54();
                 using var stream = reader.GetStreamCsv();
-                SaveToS3(stream, 0, _settings.CdmFolder, _table, "txt.gz");
+                SaveToS3(stream, 0, _settings.CdmFolder, _table, "gz");
             }
             else
             {
                 var reader = new CdmSourceDataReader();
                 using var stream = reader.GetStreamCsv();
-                SaveToS3(stream, 0, _settings.CdmFolder, _table, "txt.gz");
+                SaveToS3(stream, 0, _settings.CdmFolder, _table, "gz");
             }
         }
 
         private void SaveMetadata()
         {
-            var mergeMetadata = new MergeMetadata(_settings);
+            var mergeMetadata = new MergeMetadata(_settings, _versionId);
             mergeMetadata.Start();
             using var stream = mergeMetadata.GetMetadataCsvStream();
-            SaveToS3(stream, 0, _settings.CdmFolder, _table, "txt.gz");
+            SaveToS3(stream, 0, _settings.CdmFolder, _table, "gz");
         }
 
         private void SaveVersion()
         {
             var reader = new VersionDataReader(_versionId);
             using var stream = reader.GetStreamCsv();
-            SaveToS3(stream, 0, _settings.CdmFolder, _table, "txt.gz");
+            SaveToS3(stream, 0, _settings.CdmFolder, _table, "gz");
         }
 
         private void SaveFactRelationship()
@@ -231,7 +231,7 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
             var mergeFactRelationship = new MergeFactRelationship(_settings);
 
             using var stream = mergeFactRelationship.GetFactRelationshipCsvStream();
-            SaveToS3(stream, 0, _settings.CdmFolder, _table, "txt.gz");
+            SaveToS3(stream, 0, _settings.CdmFolder, _table, "gz");
         }
 
         private void SaveToS3(Stream memoryStream, int index, string folder, string table, string extension)
