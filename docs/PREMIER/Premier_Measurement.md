@@ -12,6 +12,10 @@ The MEASUREMENT table will house records from PATBILL, PATCPT, VITALS, GENLAB, L
 
 Measurements are recorded in the PATBILL table as standard charges.  Premier captures the date the measurement is made in the SERV_DATE field thus, the MEASUREMENT_DATE is determined from the VISIT_START_DATE from VISIT_OCCURRENCE and PATBILL.SERV_DATE unless the start date is greater than the end of the month, then it’s truncated to the end of month. For measurements recorded in the PATCPT table, the date the measurement was made is unknown so MEASUREMENT_DATE is recorded as VISIT_END_DATE. 
 
+The MEASUREMENT table contains data from after 2016 only. Data prior to 2016 is not associated with a standard code (LOINC, etc.). Records mapped from LAB_RESULT have a column named data_source_ind, with a value of 3 or 4. Records with a data_source_ind of 4 are part of the current dataset, and have a LOINC code available. Records with a data_source_ind of 3 are historical records (prior to 2016), with no LOINC available.
+
+The LAB_SENS table contains Microbiology Sensitivty Results. THis data has not yet been mapped.
+
 ## Reading from PATBILL, PATCPT, PATICD_DIAG
 
 The field mapping is performed as follows:
