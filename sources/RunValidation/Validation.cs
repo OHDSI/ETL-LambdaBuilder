@@ -28,27 +28,58 @@ namespace RunValidation
             public Vendor Vendor { get; set; } = Vendor;
             public int BuildingId { get; set; } = BuildingId;
             public int ChunkId { get; set; } = ChunkId;
+
             public bool IsFromBatch { get; set; } = IsFromBatch;
             public int? SliceId { get; set; }
             public int? InPersonFilesCount { get; set; } = 0;
             public int? InMetadataFilesCount { get; set; } = 0;
 
-            public override int GetHashCode()
-            {
-                return Vendor.GetHashCode() ^ BuildingId.GetHashCode() ^ ChunkId.GetHashCode() ^ PersonId.GetHashCode(); //assumming that a single PersonId is never duplicated in a single ChunkId
-            }
-
-            public override bool Equals(object? obj)
-            {
-                if (obj is not PersonInS3Chunk)
-                    return false;
-                return ((PersonInS3Chunk)obj).GetHashCode() == this.GetHashCode();                
-            }
-
             public override string ToString()
             {
                 return $"{Vendor} - {BuildingId} - {ChunkId} - {SliceId?.ToString() ?? "???"} - {PersonId}";
             }
+            
+            public override bool Equals(object? obj)
+            {
+                if (obj is not PersonInS3Chunk other || other == null)
+                    return false;
+
+                return EqualityComparer<Vendor>.Default.Equals(this.Vendor, other.Vendor)
+                    && BuildingId == other.BuildingId
+                    && ChunkId == other.ChunkId
+                    && PersonId == other.PersonId;
+            }
+
+            public override int GetHashCode()
+            {
+                unchecked // prevents overflow exceptions
+                {
+                    int hash = 17;
+                    hash = hash * 23 + (Vendor != null ? Vendor.GetHashCode() : 0);
+                    hash = hash * 23 + BuildingId.GetHashCode();
+                    hash = hash * 23 + ChunkId.GetHashCode();
+                    hash = hash * 23 + PersonId.GetHashCode(); // assuming each PersonId is unique within a ChunkId
+                    return hash;
+                }
+            }
+        }
+        
+        class ChunkReport
+        {
+            public int BuildingId { get; set; }
+            public int ChunkId { get; set; }
+            public int OnlyInBatchIdsCount { get; set; }
+            public List<int> AllSlicesWithOnlyInBatchIds { get; set; } = new List<int>();
+            public PersonInS3Chunk? ExamplePersonWithCalculatedSlice { get; set; }
+            public List<SliceReport> SliceReports { get; set; } = new List<SliceReport>();
+        }
+
+        class SliceReport
+        {
+            public int SliceId { get; set; }
+            public int WrongCount { get; set; }
+            public int Duplicates { get; set; }
+            public long ExampleWrongPersonId { get; set; }
         }
 
         #endregion
@@ -62,15 +93,13 @@ namespace RunValidation
         private readonly string _cdmFolder = cdmFolder;
         private readonly LambdaUtility _lambdaUtility = 
             new LambdaUtility(awsAccessKeyId, awsSecretAccessKey, awsAccessKeyId, awsSecretAccessKey, bucket, bucket, bucket, cdmFolder);
-
-        List<string> _dataErrorMessages = new List<string>();
+        private readonly List<ChunkReport> _chunkReports = new List<ChunkReport>();
 
         #endregion
 
         #region Methods
         public void ValidateBuildingId(Vendor vendor, int buildingId, List<int> chunks)
         {
-            _dataErrorMessages = new List<string>();
 
             var timer = Stopwatch.StartNew();
 
@@ -78,8 +107,31 @@ namespace RunValidation
 
             ProcessChunks(vendor, buildingId, chunks, actualSlices);
 
-            foreach (var msg in _dataErrorMessages)
-                AnsiConsole.MarkupLine(msg);
+            foreach (var chunkReport in _chunkReports.OrderBy(c => c.ChunkId))
+            {
+                string msg = $"[red]chunkId - {chunkReport.ChunkId}";
+                if (chunkReport.OnlyInBatchIdsCount > 0)
+                    msg += $" | OnlyInBatchIdsCount={chunkReport.OnlyInBatchIdsCount} | " +
+                    $"allSlicesWithOnlyInBatchIds={string.Join(",", chunkReport.AllSlicesWithOnlyInBatchIds)} | " +
+                    $"Example PersonId={chunkReport.ExamplePersonWithCalculatedSlice?.PersonId}, Calculated SliceId={chunkReport.ExamplePersonWithCalculatedSlice?.SliceId}";
+
+                if (!chunkReport.SliceReports.Any(s => s.WrongCount > 0) && chunkReport.OnlyInBatchIdsCount == 0)
+                    continue;
+
+                AnsiConsole.MarkupLine($"{msg}[/]");
+
+                foreach (var sliceReport in chunkReport.SliceReports.OrderBy(s => s.SliceId))
+                {
+                    if (sliceReport.WrongCount == 0)
+                        continue;
+
+                    AnsiConsole.MarkupLine($"[red]\tsliceId - {sliceReport.SliceId} | WrongCount={sliceReport.WrongCount}; Duplicates={sliceReport.Duplicates} | " +
+                        $"Example Wrong Person Id = {sliceReport.ExampleWrongPersonId}[/]");
+                }
+
+                AnsiConsole.WriteLine();
+            }
+
 
             timer.Stop();
             AnsiConsole.MarkupLine($"[green]Done. Total seconds={timer.ElapsedMilliseconds / 1000}s[/]");
@@ -220,47 +272,60 @@ namespace RunValidation
             }
         }
 
-        private void  ValidateChunkIdWithProgress(Vendor vendor, int buildingId, int chunkId, ConcurrentDictionary<int, ConcurrentDictionary<long, PersonInS3Chunk>> chunkPersonIds, List<int> slices, ProgressTask task)
+        private void ValidateChunkIdWithProgress(
+            Vendor vendor,
+            int buildingId,
+            int chunkId,
+            ConcurrentDictionary<int, ConcurrentDictionary<long, PersonInS3Chunk>> chunkPersonIds,
+            List<int> slices,
+            ProgressTask task)
         {
+            var chunkReport = new ChunkReport
+            {
+                BuildingId = buildingId,
+                ChunkId = chunkId
+            };
+
             var s3ObjectsBySlice = GetS3ObjectsBySlice(vendor, buildingId, chunkId, slices);
 
             foreach (var slice in s3ObjectsBySlice)
             {
-                ValidateSliceId(chunkPersonIds, vendor, buildingId, chunkId, slice.Key, slice.Value.PersonObjects, slice.Value.MetadataObjects);                
+                ValidateSliceId(chunkPersonIds, vendor, buildingId, chunkId, slice.Key, slice.Value.PersonObjects, slice.Value.MetadataObjects, chunkReport);
                 task.Increment(1);
             }
 
             var personIdsInPersonOrMetadata = chunkPersonIds
-                .Where(s => s.Key != -1) // Sliceid -1 contains copies from all other SliceId HashSets
+                .Where(s => s.Key != -1) // -1 has copies of all the personIds, even without assigned SliceId
                 .SelectMany(s => s.Value.Keys)
                 .ToHashSet();
 
             var personsInBatchOnly = chunkPersonIds
-                .First(s => s.Key == -1).Value.Values // Sliceid -1 contains copies from all other SliceId HashSets 
-                .Where(s => !personIdsInPersonOrMetadata.TryGetValue(s.PersonId, out long matchedPersonId))
+                .First(s => s.Key == -1).Value.Values
+                .Where(s => !personIdsInPersonOrMetadata.Contains(s.PersonId))
                 .ToHashSet();
 
             if (personsInBatchOnly.Count > 0)
-            {                
-                //var inBatchOnlyExamples = personsInBatchOnly.Where((s, i) => i == 0 || i % 500 == 0).ToList();
-                //GetSlicesFromS3(inBatchOnlyExamples, vendor.PersonTableName, vendor.PersonIdIndex);
+            {
                 GetSlicesFromS3(personsInBatchOnly, vendor.PersonTableName, vendor.PersonIdIndex);
 
                 var slicesToCheck = personsInBatchOnly
-                    .Select(s => s.SliceId)
+                    .Where(s => s.SliceId.HasValue)
+                    .Select(s => s.SliceId!.Value)
                     .Distinct()
                     .OrderBy(s => s)
                     .ToList();
 
-                var example1 = personsInBatchOnly.First();
-
-                var msg = $"[red]BuildingId={buildingId} ChunkId={chunkId} SliceId=??? | InBatchOnlyPersonIdsCount={personsInBatchOnly.Count} " +
-                    $"| Example PersonId={example1.PersonId}, Calculalted SliceId={example1.SliceId.ToString() ?? "???"} " +
-                    $"| All slices with missing PersonIds={string.Join(",", slicesToCheck)}[/]";
-                _dataErrorMessages.Add(msg);
+                chunkReport.OnlyInBatchIdsCount = personsInBatchOnly.Count;
+                chunkReport.AllSlicesWithOnlyInBatchIds = slicesToCheck;
+                chunkReport.ExamplePersonWithCalculatedSlice = personsInBatchOnly.First();
             }
 
+            lock (_chunkReports)
+            {
+                _chunkReports.Add(chunkReport);
+            }
         }
+
 
 
         private HashSet<int> GetActualSlices(string vendorName, int buildingId)
@@ -368,8 +433,15 @@ namespace RunValidation
         /// <param name="PersonObjects"></param>
         /// <param name="MetadataObjects"></param>
         /// <returns>Subset of chunkPersonIds for the specified sliceId</returns>
-        private void ValidateSliceId(ConcurrentDictionary<int, ConcurrentDictionary<long, PersonInS3Chunk>> chunkPersonIds, Vendor vendor, int buildingId, int chunkId, int sliceId, 
-            List<S3Object> PersonObjects, List<S3Object> MetadataObjects)
+        private void ValidateSliceId(
+            ConcurrentDictionary<int, ConcurrentDictionary<long, PersonInS3Chunk>> chunkPersonIds,
+            Vendor vendor,
+            int buildingId,
+            int chunkId,
+            int sliceId,
+            List<S3Object> PersonObjects,
+            List<S3Object> MetadataObjects,
+            ChunkReport chunkReport)
         {
             var attempt = 0;
             var complete = false;
@@ -382,12 +454,7 @@ namespace RunValidation
                     var timer = new Stopwatch();
                     timer.Start();
 
-                    #region chunkPersonIds -> set counts. After this chunkPersonIds will have a HashSet for each SliceId and all of them are also in Sliceid -1.
-
-                    var attempt1 = attempt;
-
                     var allObjects = PersonObjects.Union(MetadataObjects).ToList();
-                                        
 
                     allObjects.ForEach(o =>
                     {
@@ -396,8 +463,7 @@ namespace RunValidation
                         using var bufferedStream = new BufferedStream(responseStream);
                         using Stream compressedStream = o.Key.EndsWith(".gz")
                             ? new GZipStream(bufferedStream, CompressionMode.Decompress)
-                            : new DecompressionStream(bufferedStream) //.zst
-                            ;
+                            : new DecompressionStream(bufferedStream);
                         using var reader = new StreamReader(compressedStream, Encoding.Default);
                         using var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
                         {
@@ -409,7 +475,7 @@ namespace RunValidation
                         {
                             var personId = (long)csv.GetField(typeof(long), 0);
 
-                            var sliceIdDictionary = chunkPersonIds.GetOrAdd(sliceId, new ConcurrentDictionary<long, PersonInS3Chunk>());                             
+                            var sliceIdDictionary = chunkPersonIds.GetOrAdd(sliceId, new ConcurrentDictionary<long, PersonInS3Chunk>());
                             var personToProcess = sliceIdDictionary.GetOrAdd(personId, chunkPersonIds[-1][personId]);
                             personToProcess.SliceId ??= sliceId;
 
@@ -424,10 +490,7 @@ namespace RunValidation
                             else
                                 throw new NotImplementedException("o.Key=" + o.Key);
                         }
-
                     });
-
-                    #endregion
 
                     if (!chunkPersonIds.TryGetValue(sliceId, out var slicePersonIds))
                         return;
@@ -444,10 +507,15 @@ namespace RunValidation
 
                     if (slicePersonIdsWrongCount.Count > 0)
                     {
-                        var msg = $"[red]BuildingId={buildingId} ChunkId={chunkId} SliceId={sliceId} " +
-                            $"| WrongCount={slicePersonIdsWrongCount.Count}; Duplicates={slicePersonIdsDuplicated.Count} " +
-                            $"| Example Wrong Person Id = {slicePersonIdsWrongCount.First().PersonId}[/]";
-                        _dataErrorMessages.Add(msg);
+                        var sliceReport = new SliceReport
+                        {
+                            SliceId = sliceId,
+                            WrongCount = slicePersonIdsWrongCount.Count,
+                            Duplicates = slicePersonIdsDuplicated.Count,
+                            ExampleWrongPersonId = slicePersonIdsWrongCount.First().PersonId
+                        };
+
+                        chunkReport.SliceReports.Add(sliceReport);
                     }
 
                     complete = true;
@@ -463,6 +531,7 @@ namespace RunValidation
                 }
             }
         }
+
 
         /// <summary>
         /// Try to get sliceId which contains given PersonId and other parameters
