@@ -214,7 +214,7 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
             Console.WriteLine("Vendor: " + reader.GetString("Vendor"));
             Console.WriteLine("EtlLibraryPath: " + EtlLibraryPath);
 
-            this.Vendor = EtlLibrary.CreateVendorInstance(reader.GetString("Vendor"), EtlLibraryPath);
+            this.Vendor = EtlLibrary.CreateVendorInstance(EtlLibraryPath, reader.GetString("Vendor"));
 
             SetVendorSettings();
             SetVocabularyVersion();

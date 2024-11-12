@@ -112,7 +112,7 @@ namespace RunValidation
 
             foreach (var chunkReport in _chunkReports.OrderBy(c => c.ChunkId))
             {
-                var sliceIdPersons = chunkReport.PersonsWithCalculatedSlice.DistinctBy(s => s.SliceId).ToList();
+                var sliceIdPersons = chunkReport.PersonsWithCalculatedSlice.DistinctBy(s => s.SliceId).OrderBy(s => s.SliceId).ToList();
                 foreach (var person in sliceIdPersons)
                 {
                     var chunkMsg = $"chunkId={chunkReport.ChunkId}" +

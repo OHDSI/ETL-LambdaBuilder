@@ -264,7 +264,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                 //}
                 
                 var vendorName = s3Event.Object.Key.Split('.')[0].Split('/').Last();
-                vendor = EtlLibrary.CreateVendorInstance(vendorName, EtlLibraryPath);
+                vendor = EtlLibrary.CreateVendorInstance(EtlLibraryPath, vendorName);
 
                 buildingId = int.Parse(s3Event.Object.Key.Split('.')[1]);
                 _chunkId = int.Parse(s3Event.Object.Key.Split('.')[2]);
