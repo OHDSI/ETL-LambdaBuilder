@@ -14,6 +14,7 @@ using Spectre.Console;
 using System.Collections.Concurrent;
 using System.IO;
 using System.Diagnostics.Eventing.Reader;
+using org.ohdsi.cdm.framework.common.Omop;
 
 namespace RunValidation
 {
@@ -70,12 +71,14 @@ namespace RunValidation
             public int ChunkId { get; set; }
             public int OnlyInBatchIdsCount { get; set; }
             public List<int> AllSlicesWithOnlyInBatchIds { get; set; } = new List<int>();
-            public PersonInS3Chunk? ExamplePersonWithCalculatedSlice { get; set; }
+            public List<PersonInS3Chunk> PersonsWithCalculatedSlice { get; set; } = new List<PersonInS3Chunk>();
             public List<SliceReport> SliceReports { get; set; } = new List<SliceReport>();
         }
 
         class SliceReport
         {
+            public int BuildingId { get; set; }
+            public int ChunkId { get; set; }
             public int SliceId { get; set; }
             public int WrongCount { get; set; }
             public int Duplicates { get; set; }
@@ -109,29 +112,29 @@ namespace RunValidation
 
             foreach (var chunkReport in _chunkReports.OrderBy(c => c.ChunkId))
             {
-                string chunkMsg = $"[red]chunkId={chunkReport.ChunkId}";
-                if (chunkReport.OnlyInBatchIdsCount > 0)
-                    chunkMsg += $" | PersonsOnlyInBatch={chunkReport.OnlyInBatchIdsCount} | " +
-                    $"SlicesWithPersonsOnlyInBatch={string.Join(",", chunkReport.AllSlicesWithOnlyInBatchIds)} | " +
-                    $"Example PersonId={chunkReport.ExamplePersonWithCalculatedSlice?.PersonId}, Calculated SliceId={chunkReport.ExamplePersonWithCalculatedSlice?.SliceId}";
-
-                if (!chunkReport.SliceReports.Any(s => s.WrongCount > 0) && chunkReport.OnlyInBatchIdsCount == 0)
-                    continue;
-
-                AnsiConsole.MarkupLine($"{chunkMsg}[/]");
+                var sliceIdPersons = chunkReport.PersonsWithCalculatedSlice.DistinctBy(s => s.SliceId).ToList();
+                foreach (var person in sliceIdPersons)
+                {
+                    var chunkMsg = $"chunkId={chunkReport.ChunkId}" +
+                        $" sliceId={person.SliceId}" +
+                        $" (personId={person.PersonId})" +
+                        $" | {vendor.Name} {buildingId} {chunkReport.ChunkId} {person.SliceId.ToString()!.PadLeft(4, '0')} true" +
+                        $" | Info: LostPersonCount={chunkReport.PersonsWithCalculatedSlice.Where(s => s.SliceId == person.SliceId).Count()})";
+                    AnsiConsole.MarkupLine($"[red]{chunkMsg}[/]");
+                }
 
                 foreach (var sliceReport in chunkReport.SliceReports.OrderBy(s => s.SliceId))
                 {
-                    if (sliceReport.WrongCount == 0)
+                    if (sliceReport.WrongCount == 0 || sliceIdPersons.Any(s => s.SliceId == sliceReport.SliceId))
                         continue;
-                    string sliceMsg = $"[red]\tsliceId={sliceReport.SliceId} " +
-                        $"| WrongCount={sliceReport.WrongCount}; Duplicates={sliceReport.Duplicates} " +
-                        $"| Example Person Id={sliceReport.ExampleWrongPersonId}" +
-                        $"| {vendor.Name} {buildingId} {chunkReport.ChunkId} {sliceReport.SliceId} true";
-                    AnsiConsole.MarkupLine($"{sliceMsg}[/]");
-                }
 
-                AnsiConsole.WriteLine();
+                    string sliceMsg = $"chunkId={sliceReport.ChunkId}" +
+                        $" sliceId={sliceReport.SliceId}" +
+                        $" (personId={sliceReport.ExampleWrongPersonId})" +
+                        $" | {vendor.Name} {buildingId} {chunkReport.ChunkId} {sliceReport.SliceId.ToString().PadLeft(4, '0')} true" +
+                        $" | Info: Duplicates={sliceReport.Duplicates}";
+                    AnsiConsole.MarkupLine($"[red]{sliceMsg}[/]");
+                }
             }
 
 
@@ -319,7 +322,7 @@ namespace RunValidation
 
                 chunkReport.OnlyInBatchIdsCount = personsInBatchOnly.Count;
                 chunkReport.AllSlicesWithOnlyInBatchIds = slicesToCheck;
-                chunkReport.ExamplePersonWithCalculatedSlice = personsInBatchOnly.First();
+                chunkReport.PersonsWithCalculatedSlice = personsInBatchOnly.ToList();
             }
 
             lock (_chunkReports)
@@ -511,6 +514,8 @@ namespace RunValidation
                     {
                         var sliceReport = new SliceReport
                         {
+                            BuildingId = buildingId,
+                            ChunkId =  chunkId,
                             SliceId = sliceId,
                             WrongCount = slicePersonIdsWrongCount.Count,
                             Duplicates = slicePersonIdsDuplicated.Count,
