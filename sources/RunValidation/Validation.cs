@@ -109,24 +109,26 @@ namespace RunValidation
 
             foreach (var chunkReport in _chunkReports.OrderBy(c => c.ChunkId))
             {
-                string msg = $"[red]chunkId - {chunkReport.ChunkId}";
+                string chunkMsg = $"[red]chunkId={chunkReport.ChunkId}";
                 if (chunkReport.OnlyInBatchIdsCount > 0)
-                    msg += $" | OnlyInBatchIdsCount={chunkReport.OnlyInBatchIdsCount} | " +
-                    $"allSlicesWithOnlyInBatchIds={string.Join(",", chunkReport.AllSlicesWithOnlyInBatchIds)} | " +
+                    chunkMsg += $" | PersonsOnlyInBatch={chunkReport.OnlyInBatchIdsCount} | " +
+                    $"SlicesWithPersonsOnlyInBatch={string.Join(",", chunkReport.AllSlicesWithOnlyInBatchIds)} | " +
                     $"Example PersonId={chunkReport.ExamplePersonWithCalculatedSlice?.PersonId}, Calculated SliceId={chunkReport.ExamplePersonWithCalculatedSlice?.SliceId}";
 
                 if (!chunkReport.SliceReports.Any(s => s.WrongCount > 0) && chunkReport.OnlyInBatchIdsCount == 0)
                     continue;
 
-                AnsiConsole.MarkupLine($"{msg}[/]");
+                AnsiConsole.MarkupLine($"{chunkMsg}[/]");
 
                 foreach (var sliceReport in chunkReport.SliceReports.OrderBy(s => s.SliceId))
                 {
                     if (sliceReport.WrongCount == 0)
                         continue;
-
-                    AnsiConsole.MarkupLine($"[red]\tsliceId - {sliceReport.SliceId} | WrongCount={sliceReport.WrongCount}; Duplicates={sliceReport.Duplicates} | " +
-                        $"Example Wrong Person Id = {sliceReport.ExampleWrongPersonId}[/]");
+                    string sliceMsg = $"[red]\tsliceId={sliceReport.SliceId} " +
+                        $"| WrongCount={sliceReport.WrongCount}; Duplicates={sliceReport.Duplicates} " +
+                        $"| Example Person Id={sliceReport.ExampleWrongPersonId}" +
+                        $"| {vendor.Name} {buildingId} {chunkReport.ChunkId} {sliceReport.SliceId} true";
+                    AnsiConsole.MarkupLine($"{sliceMsg}[/]");
                 }
 
                 AnsiConsole.WriteLine();
