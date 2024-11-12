@@ -255,7 +255,7 @@ namespace RunValidation
                 var example1 = personsInBatchOnly.First();
 
                 var msg = $"[red]BuildingId={buildingId} ChunkId={chunkId} SliceId=??? | InBatchOnlyPersonIdsCount={personsInBatchOnly.Count} " +
-                    $"| Example PersonId={example1.PersonId}, Calculalted SliceId={example1.SliceId.ToString() ?? "???"}" +
+                    $"| Example PersonId={example1.PersonId}, Calculalted SliceId={example1.SliceId.ToString() ?? "???"} " +
                     $"| All slices with missing PersonIds={string.Join(",", slicesToCheck)}[/]";
                 _dataErrorMessages.Add(msg);
             }
