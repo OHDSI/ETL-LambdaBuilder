@@ -53,15 +53,10 @@ namespace RunValidation
 
             public override int GetHashCode()
             {
-                unchecked // prevents overflow exceptions
-                {
-                    int hash = 17;
-                    hash = hash * 23 + (Vendor != null ? Vendor.GetHashCode() : 0);
-                    hash = hash * 23 + BuildingId.GetHashCode();
-                    hash = hash * 23 + ChunkId.GetHashCode();
-                    hash = hash * 23 + PersonId.GetHashCode(); // assuming each PersonId is unique within a ChunkId
-                    return hash;
-                }
+                return HashCode.Combine(Vendor != null ? Vendor.GetHashCode() : 0,
+                    BuildingId,
+                    ChunkId,
+                    PersonId);
             }
         }
         

@@ -35,12 +35,7 @@
 
         public override int GetHashCode()
         {
-            unchecked // prevents overflow exceptions
-            {
-                int hash = 17;
-                hash = hash * 23 + this.Name.GetHashCode();
-                return hash;
-            }
+            return HashCode.Combine(this.Name);
         }
 
         #endregion
