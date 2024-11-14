@@ -393,7 +393,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Premier
                             }
                         }
 
-                        if (p.ConceptId == 0 && _covid.Any(code => p.SourceValue.StartsWith(code)))
+                        if (p.ConceptId == 0 && _covid.Any(code => !string.IsNullOrEmpty(p.SourceValue) && p.SourceValue.StartsWith(code)))
                         {
                             var m = new Measurement(entity)
                             {
