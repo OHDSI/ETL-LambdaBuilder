@@ -21,7 +21,7 @@ We apply this imputation strategy after data has been moved to the DRUG_EXPOSURE
 
 <ins>**Optum EHR Days Supply Filtering**</ins> <br>
 Some records from source tables for cdm.DRUG_EXPOSURE have very high days_supply values, which are likely inaccurate (most states in the US require prescriptions to be renewed at least annually). 
-Reocrds with days_supply > 365 are excluded from cdm.DRUG_EXPOSURE.
+Reocrds with days_supply >= 365 are excluded from cdm.DRUG_EXPOSURE.
 
 ## Table name: drug_exposure
 
