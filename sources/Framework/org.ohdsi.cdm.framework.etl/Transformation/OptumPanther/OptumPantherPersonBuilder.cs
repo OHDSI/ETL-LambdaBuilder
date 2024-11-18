@@ -182,6 +182,9 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                 if (drugExposure.StartDate.Year < _person.YearOfBirth)
                     continue;
 
+                if (drugExposure.DaysSupply.HasValue && drugExposure.DaysSupply >= 365)
+                    continue;
+
                 if (!drugExposure.Quantity.HasValue && drugExposure.AdditionalFields != null)
                 {
                     int? quantity = null;
