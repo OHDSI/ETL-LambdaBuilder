@@ -19,6 +19,10 @@ Code he uses to do this: https://github.com/schuemie/MethodsLibraryPleEvaluation
 
 We apply this imputation strategy after data has been moved to the DRUG_EXPOSURE table from the STEM table as detailed below. Once completed the DRUG_ERA logic is run to create DRUG_ERAs using the imputed dates.
 
+<ins>**Optum EHR Days Supply Filtering**</ins> <br>
+Some records from source tables for cdm.DRUG_EXPOSURE have very high days_supply values, which are likely inaccurate (most states in the US require prescriptions to be renewed at least annually). 
+Reocrds with days_supply >= 365 are excluded from cdm.DRUG_EXPOSURE.
+
 ## Table name: drug_exposure
 
 | Destination Field | Source field | Logic | Comment field |
