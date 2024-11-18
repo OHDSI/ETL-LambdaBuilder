@@ -451,6 +451,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
                     yield return visitDetail;
             }
 
+
             foreach (var patplanidGroup in mcVisits.Values.GroupBy(v => v.AdditionalFields["pat_planid"]))
             {
                 foreach (var clmidGroup in patplanidGroup.GroupBy(v => v.AdditionalFields["clmid"]))
@@ -474,7 +475,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
             foreach (var visitDetail in mcVisits.Values)
             {
                 var confId = visitDetail.AdditionalFields["conf_id"];
-                if (inConfVisits.ContainsKey(confId))
+                if (confId != null && inConfVisits.ContainsKey(confId))
                     visitDetail.VisitDetailParentId = inConfVisits[confId];
 
                 yield return visitDetail;
@@ -1105,6 +1106,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
 
         private long? GetValueAsConceptId(string value)
         {
+            if (string.IsNullOrEmpty(value)) return null;
+
             var result = Vocabulary.Lookup(value, "Lab", DateTime.MinValue);
             return result[0].ConceptId;
         }
