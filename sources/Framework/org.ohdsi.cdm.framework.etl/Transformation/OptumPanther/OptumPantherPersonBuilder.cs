@@ -319,7 +319,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                     }
                 }
 
-                if (observation.AdditionalFields != null && observation.AdditionalFields.ContainsKey("test_result"))
+                if (observation.AdditionalFields != null && observation.AdditionalFields.ContainsKey("test_result") && observation.AdditionalFields["test_result"] != null)
                 {
                     if (decimal.TryParse(observation.AdditionalFields["test_result"], out var value))
                         observation.ValueAsNumber = value;
@@ -357,11 +357,12 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                 if (measurement.StartDate < new DateTime(2007, 1, 1))
                     continue;
 
+
                 if (measurement.AdditionalFields != null && measurement.AdditionalFields.ContainsKey("neoplasm_histology_key"))
                 {
                     ConditionOccurrence conditionOccurrenceEvent = null;
                     var histologyKey = measurement.AdditionalFields["neoplasm_histology_key"];
-                    if (_oncConditions.ContainsKey(histologyKey))
+                    if (histologyKey != null && _oncConditions.ContainsKey(histologyKey))
                     {
                         conditionOccurrenceEvent = _oncConditions[histologyKey];
                     }
@@ -377,52 +378,57 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                         var numericResult = measurement.AdditionalFields["numeric_result"];
                         var operatorValue = string.Empty;
                         var units = string.Empty;
-                        if (numericResult.Contains("=>"))
-                        {
-                            operatorValue = "=>";
-                            numericResult = numericResult.Replace("=>", "");
-                        }
-                        else if (numericResult.Contains('>'))
-                        {
-                            operatorValue = ">";
-                            numericResult = numericResult.Replace(">", "");
-                        }
-                        else if (numericResult.Contains("<="))
-                        {
-                            operatorValue = "<=";
-                            numericResult = numericResult.Replace("<=", "");
-                        }
-                        else if (numericResult.Contains('<'))
-                        {
-                            operatorValue = "<";
-                            numericResult = numericResult.Replace("<", "");
-                        }
 
-                        if (numericResult.Contains('%'))
+                        if (!string.IsNullOrEmpty(numericResult))
                         {
-                            units = "%";
-                            numericResult = numericResult.Replace("%", "");
-                        }
-
-                        if (numericResult.Contains("Muts/Mb"))
-                        {
-                            units = "Muts/Mb";
-                            numericResult = numericResult.Replace("Muts/Mb", "");
-                        }
-
-                        if (numericResult.Contains('+'))
-                        {
-                            var result = Vocabulary.Lookup(numericResult.Trim(), "LabRes", DateTime.MinValue);
-
-                            if (result.Count != 0 && result[0].ConceptId.HasValue && result[0].ConceptId > 0)
+                            if (numericResult.Contains("=>"))
                             {
-                                measurement.ValueAsConceptId = result[0].ConceptId.Value;
+                                operatorValue = "=>";
+                                numericResult = numericResult.Replace("=>", "");
+                            }
+                            else if (numericResult.Contains('>'))
+                            {
+                                operatorValue = ">";
+                                numericResult = numericResult.Replace(">", "");
+                            }
+                            else if (numericResult.Contains("<="))
+                            {
+                                operatorValue = "<=";
+                                numericResult = numericResult.Replace("<=", "");
+                            }
+                            else if (numericResult.Contains('<'))
+                            {
+                                operatorValue = "<";
+                                numericResult = numericResult.Replace("<", "");
+                            }
+
+                            if (numericResult.Contains('%'))
+                            {
+                                units = "%";
+                                numericResult = numericResult.Replace("%", "");
+                            }
+
+                            if (numericResult.Contains("Muts/Mb"))
+                            {
+                                units = "Muts/Mb";
+                                numericResult = numericResult.Replace("Muts/Mb", "");
+                            }
+
+                            if (numericResult.Contains('+'))
+                            {
+                                var result = Vocabulary.Lookup(numericResult.Trim(), "LabRes", DateTime.MinValue);
+
+                                if (result.Count != 0 && result[0].ConceptId.HasValue && result[0].ConceptId > 0)
+                                {
+                                    measurement.ValueAsConceptId = result[0].ConceptId.Value;
+                                }
+                            }
+                            else if (decimal.TryParse(numericResult, out decimal value))
+                            {
+                                measurement.ValueAsNumber = value;
                             }
                         }
-                        else if (decimal.TryParse(numericResult, out decimal value))
-                        {
-                            measurement.ValueAsNumber = value;
-                        }
+
 
                         if (!string.IsNullOrEmpty(operatorValue))
                         {
@@ -452,14 +458,17 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                     {
                         var numericResult = measurement.AdditionalFields["result_numeric"];
 
-                        if (numericResult.Contains('/'))
+                        if (!string.IsNullOrEmpty(numericResult))
                         {
-                            numericResult = numericResult.Split('/')[0];
-                        }
+                            if (numericResult.Contains('/'))
+                            {
+                                numericResult = numericResult.Split('/')[0];
+                            }
 
-                        if (decimal.TryParse(numericResult, out decimal value))
-                        {
-                            measurement.ValueAsNumber = value;
+                            if (decimal.TryParse(numericResult, out decimal value))
+                            {
+                                measurement.ValueAsNumber = value;
+                            }
                         }
                     }
                 }
@@ -487,6 +496,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                     }
                 }
 
+
                 // onc
                 if (measurement.TypeConceptId == 32882)
                 {
@@ -513,6 +523,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
             {
                 yield return item.First();
             }
+
 
             foreach (var byDate in tumorSize.GroupBy(t => t.StartDate))
             {
@@ -937,8 +948,10 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                     .ToArray();
             var observations = BuildObservations([.. ObservationsRaw], visitOccurrences, observationPeriods)
                 .ToArray();
+
             var measurements = BuildMeasurement([.. MeasurementsRaw], visitOccurrences, observationPeriods)
                 .ToArray();
+
             var deviceExposure =
                 BuildDeviceExposure([.. DeviceExposureRaw], visitOccurrences, observationPeriods)
                 .Where(d => d.StartDate >= new DateTime(2007, 1, 1))
