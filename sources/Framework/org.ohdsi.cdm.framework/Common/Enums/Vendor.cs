@@ -25,6 +25,19 @@
             return this.Name;
         }
 
+        public override bool Equals(object? obj)
+        {
+            if (obj is not Vendor other || other == null)
+                return false;
+
+            return this.Name == other.Name;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(this.Name);
+        }
+
         #endregion
     }
 }

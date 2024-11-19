@@ -29,12 +29,6 @@ namespace RunLocal
 
             Process(EtlLibrary.CreateVendorInstance(args[5], args[0]), int.Parse(args[1]), int.Parse(args[2]), args[3], bool.Parse(args[4]), args[5]);
 
-            //int[] slicesNum = [24, 40, 48, 96, 192];
-
-            //var localTmpPath = "C:\\_tmp";
-            //var validation = new Validation(_awsAccessKeyId, _awsSecretAccessKey, _bucket, localTmpPath);
-            //validation.Start((Vendor)Enum.Parse(typeof(Vendor), args[0]), int.Parse(args[1]), slicesNum[0], _cdmFolder);
-
             Console.WriteLine("DONE");
             Console.ReadLine();
         }
