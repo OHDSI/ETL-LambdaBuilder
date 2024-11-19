@@ -342,7 +342,8 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
                 var visitDetail =
                     new VisitDetail(visitOccurrence)
                     {
-                        Id = Offset.GetKeyOffset(visitOccurrence.PersonId).VisitDetailId
+                        Id = Offset.GetKeyOffset(visitOccurrence.PersonId).VisitDetailId,
+                        AdmittingSourceValue = visitOccurrence.AdmittingSourceValue
                     };
 
                 if (!visitDetail.EndDate.HasValue)
