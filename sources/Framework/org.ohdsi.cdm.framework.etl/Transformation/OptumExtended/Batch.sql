@@ -1,3 +1,4 @@
 ﻿SELECT DISTINCT {0}  patid, patid
 FROM {sc}.MEMBER_CONTINUOUS_ENROLLMENT
 order by 1
+limit 1000000
