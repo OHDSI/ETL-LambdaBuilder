@@ -682,9 +682,14 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
                     visitIds.Add(visitOccurrence.Id);
                 }
             }
-
+            VisitDetail mostRecentVisit = null;
             foreach (var visitDetail in visitDetails)
             {
+                if(mostRecentVisit == null)
+                    mostRecentVisit = visitDetail;
+                else if(mostRecentVisit.StartDate.Date < visitDetail.StartDate.Date)
+                    mostRecentVisit = visitDetail;
+
                 var vo = GetVisitOccurrence(visitDetail);
                 visitDetail.VisitOccurrenceId = vo?.Id ?? 0;
 
@@ -746,7 +751,7 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
             {
                 ob.Id = Offset.GetKeyOffset(ob.PersonId).ObservationId;
             }
-
+                        
             if(_racesConceptId.Count > 1)
             {
                 foreach (var conceptId in _racesConceptId)
@@ -754,12 +759,12 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
                     var oRace = new Observation(person);
                     oRace.Id = Offset.GetKeyOffset(person.PersonId).ObservationId;
                     oRace.ConceptId = 4013886; // (Race)
+                    oRace.SourceValue = "Multiple Races";
                     oRace.ValueAsConceptId = conceptId;
-                    oRace.SourceValue = "Multiple Races"; // ??
-                    oRace.ValueSourceValue = GetRace(conceptId); // ??
-                    oRace.ValueAsString = oRace.ValueSourceValue; // ??
-                    // oRace.StartDate ??
+                    oRace.ValueAsString = GetRace(conceptId);
+                    oRace.StartDate = mostRecentVisit.StartDate;
 
+                    // oRace.ValueSourceValue = GetRace(conceptId); // ??
                     observations.Add(oRace);
                 }
             }
