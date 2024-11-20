@@ -1,6 +1,17 @@
 ﻿<QueryDefinition>
   <Query>
-		with a as
+		with l as
+		(
+		SELECT distinct patient_state, patient_zip3
+		FROM {sc}.enrollment
+		where patient_zip3 is not null and patient_zip3 != ''
+		),
+		location as
+		(
+		SELECT distinct ROW_NUMBER() OVER(ORDER BY patient_state, patient_zip3) AS Id, patient_state, patient_zip3
+		FROM l
+		),
+		a as
 		(
 		SELECT
 		ch.person_id as PersonId,
@@ -10,7 +21,9 @@
 		date_start,
 		date_end,
 		1 as benefit_type,
-		data_vendor
+		data_vendor,
+		patient_zip3,
+		patient_state
 		FROM {sc}.enrollment
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
 		where lower(benefit_type) = 'medical'
@@ -25,14 +38,17 @@
 		date_start,
 		date_end,
 		2 as benefit_type,
-		data_vendor
+		data_vendor,
+		patient_zip3,
+		patient_state
 		FROM {sc}.enrollment
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
 		where lower(benefit_type) = 'pharmacy' or benefit_type is null
 		)
 
-		select *
+		select a.*, l.Id as LocationId
 		from a
+		left join location l on l.patient_zip3 = a.patient_zip3 and coalesce(l.patient_state, '') = coalesce(a.patient_state, '')
 		order by 1
 	</Query>
   <Persons>
@@ -44,7 +60,8 @@
       <StartDate>date_start</StartDate>
       <EndDate>date_end</EndDate>
       <PeriodTypeConceptId>benefit_type</PeriodTypeConceptId>
-      <AdditionalFields>
+			<LocationId>LocationId</LocationId>
+			<AdditionalFields>
         <string>data_vendor</string>
       </AdditionalFields>
     </PersonDefinition>

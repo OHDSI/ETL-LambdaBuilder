@@ -1,0 +1,20 @@
+﻿<QueryDefinition>
+	<Query>
+		with l as
+		(
+		SELECT distinct patient_state, patient_zip3
+		FROM {sc}.enrollment
+		where patient_zip3 is not null and patient_zip3 != ''
+		)
+
+		select ROW_NUMBER() OVER(ORDER BY patient_state, patient_zip3) AS Id, patient_state, patient_zip3
+		from l
+	</Query>
+	<Locations>
+		<LocationDefinition>
+			<Id>Id</Id>
+			<State>patient_state</State>
+			<SourceValue>patient_zip3</SourceValue>
+		</LocationDefinition>
+	</Locations>
+</QueryDefinition>
