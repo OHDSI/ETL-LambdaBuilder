@@ -612,6 +612,7 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
             foreach (var visitOccurrence in BuildVisitOccurrences([.. VisitOccurrencesRaw], observationPeriods))
             {
                 visitOccurrence.Id = Offset.GetKeyOffset(visitOccurrence.PersonId).VisitOccurrenceId;
+                visitOccurrence.AdmittingSourceValue = null;
 
                 if (visitOccurrences.TryAdd(visitOccurrence.Id, visitOccurrence))
                 {
