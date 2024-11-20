@@ -9,3 +9,4 @@ where lower(benefit_type) = 'pharmacy' or benefit_type is null
 ) a 
 where hvid != '' and hvid is not null
 order by 1
+limit 100000;
