@@ -418,8 +418,8 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
 
                 if (medical.Count > 0 && pharmacy.Count > 0)
                 {
-                    FixObservationPeriodDates(medical, Table.Medical);
-                    FixObservationPeriodDates(pharmacy, Table.Pharmacy);
+                    FixStartEndDates(medical, Table.Medical);
+                    FixStartEndDates(pharmacy, Table.Pharmacy);
 
                     var medicalPeriods = EraHelper.GetEras(medical.Where(i => i.StartDate <= i.EndDate
                     && i.StartDate.Year >= _minDate.Year && i.EndDate.Value.Year <= DateTime.Now.Year), 30, 0);
@@ -468,21 +468,21 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
             }
         }
 
-        private void FixObservationPeriodDates(IEnumerable<EraEntity> observationPeriods, Table table)
+        private void FixStartEndDates(IEnumerable<EraEntity> input, Table? table)
         {
-            foreach (var op in observationPeriods)
+            foreach (var i in input)
             {
-                if (op.StartDate.Year < _minDate.Year)
-                    op.StartDate = _mins.Min();
+                if (i.StartDate.Year < _minDate.Year)
+                    i.StartDate = _mins.Min();
 
-                if (op.EndDate.Value.Date > Vendor.SourceReleaseDate)
-                    op.EndDate = Vendor.SourceReleaseDate;
+                if (i.EndDate.Value.Date > Vendor.SourceReleaseDate)
+                    i.EndDate = Vendor.SourceReleaseDate;
 
-                if(op.StartDate.Date > op.EndDate.Value.Date)
-                    op.EndDate = Vendor.SourceReleaseDate.Value.Date;
+                if(i.StartDate.Date > i.EndDate.Value.Date)
+                    i.EndDate = Vendor.SourceReleaseDate.Value.Date;
 
-                if (op.StartDate.Date > op.EndDate.Value.Date)
-                    op.StartDate = _mins.Min();
+                if (i.StartDate.Date > i.EndDate.Value.Date)
+                    i.StartDate = _mins.Min();
             }
             //foreach (var g in observationPeriods.GroupBy(m => m.AdditionalFields["data_vendor"]))
             //{
@@ -530,7 +530,7 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
             //}
         }
 
-        private string GetRace(long raceConceptId)
+        private static string GetRace(long raceConceptId)
         {
             switch (raceConceptId)
             {
@@ -812,10 +812,13 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
                 SetVisitDetailId(deviceExposure, visitByStart);
             }
 
+            FixStartEndDates(PayerPlanPeriodsRaw, null);
+            var payerPlanPeriods = BuildPayerPlanPeriods([.. PayerPlanPeriodsRaw], visitOccurrences).ToArray();
+
             // push built entities to ChunkBuilder for further save to CDM database
             AddToChunk(person, null,
                 observationPeriods,
-                [],
+                payerPlanPeriods,
                 UpdateRSourceConcept(drugExposures).ToArray(),
                 UpdateRSourceConcept(conditionOccurrences).ToArray(),
                 UpdateRSourceConcept(procedureOccurrences).ToArray(),
