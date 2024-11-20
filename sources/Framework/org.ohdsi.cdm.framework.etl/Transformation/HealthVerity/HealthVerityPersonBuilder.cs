@@ -5,6 +5,9 @@ using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Helpers;
 using org.ohdsi.cdm.framework.common.Omop;
 using org.ohdsi.cdm.framework.common.PregnancyAlgorithm;
+using System;
+using System.Diagnostics;
+using static Amazon.S3.Util.S3EventNotification;
 
 namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerity
 {
@@ -53,6 +56,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerity
         private readonly Dictionary<string, List<VisitDetail>> _visitDetailsByHvEncId = [];
         private readonly Dictionary<string, HashSet<DateTime>> _minsMaxs = [];
         private readonly DateTime _minDate = new(2009, 1, 1);
+        private readonly HashSet<string> _races = [];
+        private readonly HashSet<long> _racesConceptId = [];
 
         List<DateTime> _mins = [];
         //List<DateTime> _maxs = [];
@@ -101,6 +106,26 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerity
 
             if (filtered.Length == 0)
                 return new KeyValuePair<Person, Attrition>(null, Attrition.UnacceptablePatientQuality);
+
+            foreach (var item in filtered)
+            {
+                if(item.AdditionalFields != null)
+                {
+                    if(item.AdditionalFields.ContainsKey("race") && !string.IsNullOrEmpty(item.AdditionalFields["race"]))
+                    {
+                        _races.Add(item.AdditionalFields["race"]);
+                    }
+
+                    if (item.AdditionalFields.ContainsKey("race_concept_id") && !string.IsNullOrEmpty(item.AdditionalFields["race_concept_id"]))
+                    {
+                        if (long.TryParse(item.AdditionalFields["race_concept_id"], out long raceConceptId))
+                        {
+                            if(raceConceptId != 0)
+                                _racesConceptId.Add(raceConceptId);
+                        }
+                    }
+                }
+            }
 
             var ordered = filtered.OrderByDescending(p => p.StartDate).ToArray();
             var person = ordered.Take(1).First();
@@ -505,6 +530,21 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
             //}
         }
 
+        private string GetRace(long raceConceptId)
+        {
+            switch (raceConceptId)
+            {
+                case 8527:
+                    return "White";
+                case 8515:
+                    return "Asian";
+                case 8516:
+                    return "Black";
+                default:
+                    return null;
+            }
+        }
+
         public override Attrition Build(ChunkData data, KeyMasterOffsetManager o)
         {
             this.Offset = o;
@@ -517,6 +557,29 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
             {
                 Complete = true;
                 return result.Value;
+            }
+
+            if(string.IsNullOrEmpty(person.RaceSourceValue))
+            {
+                if(_racesConceptId.Count == 1)
+                {
+                    person.RaceConceptId = _racesConceptId.First();
+                    person.RaceSourceValue = GetRace(person.RaceConceptId.Value);
+                }
+                else
+                {
+                    person.RaceSourceValue = "Multiple Races";
+                    person.RaceConceptId = 44814659; //(Multiple Races)
+                }
+            }
+
+            if (person.EthnicityConceptId.HasValue && person.EthnicityConceptId == 0)
+            {
+                if (_races.Any(r => r.Equals("Hispanic", StringComparison.OrdinalIgnoreCase)))
+                {
+                    person.EthnicityConceptId = 38003563;
+                    person.EthnicitySourceValue = "Hispanic";
+                }
             }
 
             _personYoB = person.YearOfBirth.Value;
@@ -678,10 +741,27 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
             }
 
             var observations = BuildObservations([.. ObservationsRaw], visitOccurrences, observationPeriods)
-                .ToArray();
+                .ToList();
             foreach (var ob in observations)
             {
                 ob.Id = Offset.GetKeyOffset(ob.PersonId).ObservationId;
+            }
+
+            if(_racesConceptId.Count > 1)
+            {
+                foreach (var conceptId in _racesConceptId)
+                {
+                    var oRace = new Observation(person);
+                    oRace.Id = Offset.GetKeyOffset(person.PersonId).ObservationId;
+                    oRace.ConceptId = 4013886; // (Race)
+                    oRace.ValueAsConceptId = conceptId;
+                    oRace.SourceValue = "Multiple Races"; // ??
+                    oRace.ValueSourceValue = GetRace(conceptId); // ??
+                    oRace.ValueAsString = oRace.ValueSourceValue; // ??
+                    // oRace.StartDate ??
+
+                    observations.Add(oRace);
+                }
             }
 
             var drugExposures =
