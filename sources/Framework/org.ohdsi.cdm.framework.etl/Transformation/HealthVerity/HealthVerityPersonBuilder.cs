@@ -763,7 +763,19 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
                     oRace.SourceValue = "Multiple Races";
                     oRace.ValueAsConceptId = conceptId;
                     oRace.ValueAsString = GetRace(conceptId);
-                    oRace.StartDate = mostRecentVisit.StartDate;
+
+                    if (mostRecentVisit != null)
+                    {
+                        oRace.StartDate = mostRecentVisit.StartDate;
+                    }
+                    else if (observationPeriods.Length > 0)
+                    {
+                        oRace.StartDate = observationPeriods.Max(op => op.EndDate.Value.Date);
+                    }
+                    else
+                    {
+                        oRace.StartDate = Vendor.SourceReleaseDate.Value;
+                    }
 
                     // oRace.ValueSourceValue = GetRace(conceptId); // ??
                     observations.Add(oRace);
