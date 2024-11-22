@@ -472,18 +472,19 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
         {
             foreach (var i in input)
             {
-                if (i.StartDate.Year < _minDate.Year)
+                if (_mins.Count > 0 && i.StartDate.Year < _minDate.Year)
                     i.StartDate = _mins.Min();
 
                 if (i.EndDate.Value.Date > Vendor.SourceReleaseDate)
                     i.EndDate = Vendor.SourceReleaseDate;
 
-                if(i.StartDate.Date > i.EndDate.Value.Date)
+                if (i.StartDate.Date > i.EndDate.Value.Date)
                     i.EndDate = Vendor.SourceReleaseDate.Value.Date;
 
-                if (i.StartDate.Date > i.EndDate.Value.Date)
+                if (_mins.Count > 0 && i.StartDate.Date > i.EndDate.Value.Date)
                     i.StartDate = _mins.Min();
             }
+
             //foreach (var g in observationPeriods.GroupBy(m => m.AdditionalFields["data_vendor"]))
             //{
             //    DataVendor? vendor = null;
