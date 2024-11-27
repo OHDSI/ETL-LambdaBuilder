@@ -287,13 +287,23 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerity
                 {
                     foreach (var byCareSiteId in byEnd.GroupBy(v => v.CareSiteId))
                     {
-                        var visit = byCareSiteId.OrderBy(v => v.ConceptId).First();
-                        foreach (var vo in byCareSiteId)
+                        foreach (var byConceptId in byCareSiteId.GroupBy(v => v.ConceptId))
                         {
-                            AddRawVisitOccurrence(vo, visit);
+                            var visit = byConceptId.First();
+                            foreach (var vo in byConceptId)
+                            {
+                                AddRawVisitOccurrence(vo, visit);
+                            }
+                            yield return visit;
                         }
 
-                        yield return visit;
+                        //var visit = byCareSiteId.OrderBy(v => v.ConceptId).First();
+                        //foreach (var vo in byCareSiteId)
+                        //{
+                        //    AddRawVisitOccurrence(vo, visit);
+                        //}
+
+                        //yield return visit;
                     }
                 }
             }
