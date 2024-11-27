@@ -567,7 +567,7 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
                     person.RaceConceptId = _racesConceptId.First();
                     person.RaceSourceValue = GetRace(person.RaceConceptId.Value);
                 }
-                else
+                else if (_racesConceptId.Count > 1)
                 {
                     person.RaceSourceValue = "Multiple Races";
                     person.RaceConceptId = 44814659; //(Multiple Races)
@@ -763,6 +763,7 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
                     oRace.SourceValue = "Multiple Races";
                     oRace.ValueAsConceptId = conceptId;
                     oRace.ValueAsString = GetRace(conceptId);
+                    oRace.TypeConceptId = 32810;
 
                     if (mostRecentVisit != null)
                     {
