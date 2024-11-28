@@ -2,6 +2,7 @@
 using org.ohdsi.cdm.framework.common.Builder;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Helpers;
+using org.ohdsi.cdm.framework.common.Lookups;
 using org.ohdsi.cdm.framework.common.Omop;
 using org.ohdsi.cdm.framework.common.PregnancyAlgorithm;
 
@@ -385,8 +386,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CPRD
             switch (e.AdditionalFields["data"].ToLower().Trim())
             {
                 case "read code for condition":
-                    var result = Vocabulary.Lookup(value, "Read_Code", DateTime.MinValue);
-                    return result.Count != 0 ? result[0].ConceptId : null;
+                    var result = GetReadCodeConceptId(value, DateTime.MinValue);
+                    return result?.ConceptId;
 
                 case "drug code":
                     var result1 = Vocabulary.Lookup(value, "Drug", DateTime.MinValue);
@@ -441,15 +442,12 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CPRD
 
                         if (!string.IsNullOrEmpty(mes.SourceValue))
                         {
-                            var result = Vocabulary.Lookup(mes.SourceValue, "Read_Code", mes.StartDate);
+                            var result = GetReadCodeConceptId(mes.SourceValue, mes.StartDate);
 
-                            if (result.Count != 0
-                                && result.Count > 0
-                                && result[0].SourceConcepts.Count > 0
-                                && result[0].SourceConcepts.First().ConceptId > 0
-                                /*&& result[0].Domain == "Measurement"*/)
+                            if(result != null && result.SourceConcepts.Count > 0
+                                && result.SourceConcepts.First().ConceptId > 0)
                             {
-                                mes.SourceConceptId = result[0].SourceConcepts.First().ConceptId;
+                                mes.SourceConceptId = result.SourceConcepts.First().ConceptId;
                             }
                         }
 
@@ -509,14 +507,12 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CPRD
 
                             if (obs.TypeConceptId == 32856 && !string.IsNullOrEmpty(obs.SourceValue))
                             {
-                                var result = Vocabulary.Lookup(obs.SourceValue, "Read_Code", obs.StartDate);
+                                var result = GetReadCodeConceptId(obs.SourceValue, obs.StartDate);
 
-                                if (result.Count != 0
-                                    && result.Count > 0
-                                    && result[0].SourceConcepts.Count > 0
-                                    && result[0].SourceConcepts.First().ConceptId > 0)
+                                if (result != null && result.SourceConcepts.Count > 0
+                                    && result.SourceConcepts.First().ConceptId > 0)
                                 {
-                                    obs.SourceConceptId = result[0].SourceConcepts.First().ConceptId;
+                                    obs.SourceConceptId = result.SourceConcepts.First().ConceptId;
                                 }
                             }
 
@@ -614,12 +610,6 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CPRD
         {
             foreach (var mes in BuildEntities(measurements, visitOccurrences, observationPeriods, false))
             {
-                //if (!string.IsNullOrEmpty(mes.SourceValue))
-                //{
-                //    var result = Vocabulary.Lookup(mes.SourceValue, "Read_Code", mes.StartDate);
-                //    mes.SourceConceptId = result.Any() ? result[0].ConceptId ?? 0 : 0;
-                //}
-
                 yield return mes;
             }
         }
@@ -649,6 +639,18 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CPRD
             ObservationPeriod[] observationPeriods)
         {
             return BuildEntities(devExposure, visitOccurrences, observationPeriods, false);
+        }
+
+        private LookupValue? GetReadCodeConceptId(string sourceValue, DateTime date)
+        {
+            var result = Vocabulary.Lookup(sourceValue, "Read_Code", date);
+
+            if (result != null && result.Count > 0)
+            {
+                return result.FirstOrDefault(r => r.SourceCode.Equals(sourceValue, StringComparison.Ordinal));
+            }
+
+            return null;
         }
 
         #endregion
