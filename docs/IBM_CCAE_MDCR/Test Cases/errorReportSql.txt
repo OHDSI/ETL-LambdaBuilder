@@ -1,0 +1,27 @@
+DBMS:
+redshift
+
+Error:
+com.amazon.redshift.util.RedshiftException: ERROR: column "medadv" of relation "outpatient_services" does not exist
+
+SQL:
+INSERT INTO ccae_tests_native.outpatient_services(_flag, age, agegrp, cap_svc, cob, coins, copay, datatyp, deduct, dobyr, dx1, dx2, dx3, dx4, dx5, dxver, eeclass, eestatu, efamid, egeoloc, eidflag, emprel, enrflag, enrolid, fachdid, facprof, hlthplan, indstry, mdc, mhsacovg, msa, netpay, ntwkprov, paidntwk, pay, pddate, phyflag, plankey, plantyp, proc1, procgrp, procmod, proctyp, provid, qty, region, revcode, rx, seqnum, sex, stdplac, stdprov, svcdate, svcscat, tsvcdat, version, wgtkey, year, units, npi, msclmid, medadv) VALUES ('0', '30', 'A', 'N', '100', '50', '25', '2', '0', '1993', '37613', 'B22222', 'C33333', 'D44444', 'E55555', '9', 'C', 'E', '12345', 'CA', 'Y', 'S', 'N', '3', '1234567890', 'P', 'H', 'M', '02', 'Y', '101', '200', 'N', 'N', '300', '2024-11-28', 'Y', '55', '3', 'P12345', '12', '01', 'R', '789456', '1', 'N', '9999', 'N', '1122334455', 'F', '7', '66', '2012-07-01', 'S1234', '2024-11-28', '01', '100', '2024', '2', '1234567890', '987654', '')
+
+R version:
+R version 4.3.3 (2024-02-29 ucrt)
+
+Platform:
+x86_64-w64-mingw32
+
+Attached base packages:
+- stats
+- graphics
+- grDevices
+- utils
+- datasets
+- methods
+- base
+
+Other attached packages:
+- SqlRender (1.18.0)
+- DatabaseConnector (6.3.2)
