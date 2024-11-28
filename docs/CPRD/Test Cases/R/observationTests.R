@@ -7,7 +7,8 @@ createObservationTests <- function()
   add_medical(medcode = 14612, read_code = '657E.00')
   add_medical(medcode = 1942, read_code = 'M240012', description = 'Hair loss')
   add_medical(medcode = 28844, read_code = '66Ya.00')
-
+  add_medical(medcode = 14231, read_code = '339A.00')
+  add_medical(medcode = 23237, read_code = '339a.00')
 
   # 1) -- clinical procedure with visit
   
@@ -219,6 +220,40 @@ createObservationTests <- function()
                      value_as_number=3.7, observation_source_value='66Ya.00', qualifier_concept_id=4172703,
                      unit_source_value='%')
   expect_count_observation(rowCount = 1, person_id = lookup_person("person_id", person_source_value = patient$person_id))
+  
+  patient <- createPatient();
+  declareTest(id = patient$person_id, 'Read code case-sensitive test #1 339A.00')
+  add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid = patient$pracid)
+  add_test(patid = patient$patid, eventdate = '2012-01-01', medcode = 14231, staffid = 1001, enttype = 380,
+           data1 = 9, data2 = 28.800,data3 = 114.000 ,data4 = 0.000, data5 = NULL, data6 = NULL,
+           data7 =0 ,data8_value = NULL,data8_date = NULL)
+  add_entity(code = 380, description = 'Pulmonary function tests', filetype = 'Test', category = 'Haematology',
+             data_fields = 4, data1 = 'Qualifier', data1lkup = 'TQU',
+             data2 = 'Normal range from', data2lkup = NULL,
+             data3 = 'Normal range to', data3lkup = NULL,
+             data4 = 'Normal range basis', data4lkup = NULL)
+  add_lookup(lookup_id = 1156,lookup_type_id = 85, code = 9, text = 'Normal')
+  expect_observation(person_id = lookup_person("person_id", person_source_value = patient$person_id), observation_source_concept_id=45455049,
+                     observation_date='2012-01-01',
+                     observation_type_concept_id=32856,
+                     observation_source_value='339A.00')
+					 
+  patient <- createPatient();
+  declareTest(id = patient$person_id, 'Read code case-sensitive test #2 339a.00')
+  add_patient(patid = patient$patid, gender = 1, yob = 199, mob = 1, accept = 1, crd = '2010-01-01', pracid = patient$pracid)
+  add_test(patid = patient$patid, eventdate = '2012-01-01', medcode = 23237, staffid = 1001, enttype = 380,
+           data1 = 9, data2 = 28.800,data3 = 114.000 ,data4 = 0.000, data5 = NULL, data6 = NULL,
+           data7 =0 ,data8_value = NULL,data8_date = NULL)
+  add_entity(code = 380, description = 'Pulmonary function tests', filetype = 'Test', category = 'Haematology',
+             data_fields = 4, data1 = 'Qualifier', data1lkup = 'TQU',
+             data2 = 'Normal range from', data2lkup = NULL,
+             data3 = 'Normal range to', data3lkup = NULL,
+             data4 = 'Normal range basis', data4lkup = NULL)
+  add_lookup(lookup_id = 1156,lookup_type_id = 85, code = 9, text = 'Normal')
+  expect_observation(person_id = lookup_person("person_id", person_source_value = patient$person_id), observation_source_concept_id=45421972,
+                     observation_date='2012-01-01',
+                     observation_type_concept_id=32856,
+                     observation_source_value='339a.00')
 
   #========================================================================
   # DONE TESTS UP TO HERE
