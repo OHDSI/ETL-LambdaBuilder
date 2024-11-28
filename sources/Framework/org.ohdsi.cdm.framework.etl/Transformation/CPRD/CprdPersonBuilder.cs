@@ -647,7 +647,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CPRD
 
             if (result != null && result.Count > 0)
             {
-                return result.FirstOrDefault(r => r.SourceCode.Equals(sourceValue, StringComparison.Ordinal));
+                return result.FirstOrDefault(r => sourceValue.Equals(r.SourceCode, StringComparison.Ordinal));
             }
 
             return null;
