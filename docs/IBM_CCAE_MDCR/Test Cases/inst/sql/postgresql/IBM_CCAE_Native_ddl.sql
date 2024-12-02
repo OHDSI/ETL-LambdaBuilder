@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS ccae_tests_native.drug_claims
 	,thergrp CHAR(2)   ENCODE zstd
 	,version CHAR(2)   ENCODE zstd
 	,wgtkey SMALLINT   ENCODE az64
-	,"year" SMALLINT   ENCODE az64	
+	,"year" SMALLINT   ENCODE az64
 	,medadv VARCHAR(50) ENCODE zstd
 )
 DISTSTYLE KEY

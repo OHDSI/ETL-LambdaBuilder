@@ -32,8 +32,8 @@ if (frameworkType == "MDCD" ){
 
 sequencer <- getSequence();
 initFramework();
-setDefaults();
-createTests();
+setDefaults(frameworkType);
+createTests(frameworkType);
 
 connectionDetails <- DatabaseConnector::createConnectionDetails(
   dbms     = "redshift",

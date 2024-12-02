@@ -1,8 +1,12 @@
 source('R/CareSiteTests.R')
+source('R/CostTests.R')
  
 
-createTests <- function() {
+createTests <- function(frameworkType) {
   #declareTestGroup("Care Site", 1)
-  createCareSiteTests();
+  createCareSiteTests(frameworkType);
+  
+  #declareTestGroup("Cost", 2)
+  createCostTests(frameworkType);
   
 }

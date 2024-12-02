@@ -1,6 +1,6 @@
 #Use this to set pertinent default values for the test cases
 #' @export
-setDefaults <- function (){
+setDefaults <- function (frameworkType){
   set_defaults_drug_claims(metqty = '0', daysupp = '30')
   set_defaults_inpatient_admissions(admdate = '2012-01-01', disdate = '2012-12-31', year = '2012', proc2 = NULL)
   
@@ -12,13 +12,20 @@ setDefaults <- function (){
   
   if (tolower(frameworkType) == "ccae")
   {
-    set_defaults_enrollment_detail(indstry = '1')
-    set_defaults_enrollment_detail(efamid = '0')
+    set_defaults_enrollment_detail(
+      indstry = '1',
+      efamid = '0'
+      )
     
-    set_defaults_enrollment_detail(wgtkey = '0')
-    set_defaults_enrollment_detail(seqnum = '0')
-    set_defaults_enrollment_detail(plankey = '0')
-    set_defaults_facility_header(stdprov = '0')
+    set_defaults_enrollment_detail(
+      wgtkey = '0',
+      seqnum = '0',
+      plankey = '0'
+      )
+    
+    set_defaults_facility_header(
+      stdprov = '0'
+      )
     
     set_defaults_inpatient_services(
       flag = 0, 
@@ -156,6 +163,166 @@ setDefaults <- function (){
       msclmid = 987654, 
       medadv = 'abc'
     )
+    
+    
+    set_defaults_drug_claims(
+      flag = 0, 
+      age = 35, 
+      agegrp = 'A', 
+      awp = 150.00, 
+      cap_svc = 'N', 
+      cob = 120.00, 
+      coins = 30.00, 
+      copay = 15.00, 
+      datatyp = 1, 
+      dawind = 'DA', 
+      daysupp = 30, 
+      deaclas = 'R', 
+      deduct = 0.0, 
+      dispfee = 5.00, 
+      dobyr = 1990, 
+      eeclass = 'E', 
+      eestatu = 'S', 
+      efamid = 12345, 
+      egeoloc = 'CA', 
+      eidflag = 'Y', 
+      emprel = 'S', 
+      enrflag = 'N', 
+      enrolid = 9876543210, 
+      generid = 101, 
+      genind = 'Y', 
+      hlthplan = 'H', 
+      indstry = 'M', 
+      ingcost = 200.00, 
+      maintin = 'Y', 
+      metqty = 10.0, 
+      mhsacovg = 'Y', 
+      msa = 101, 
+      ndcnum = '12345678901', 
+      netpay = 180.00, 
+      ntwkprov = 'N', 
+      paidntwk = 'Y', 
+      pay = 250.00, 
+      pddate = '2024-11-28', 
+      pharmid = 789456, 
+      phyflag = 'N', 
+      plankey = 77, 
+      plantyp = 4, 
+      qty = 2, 
+      refill = 1, 
+      region = 'W', 
+      rxmr = 'R', 
+      saletax = 7.50, 
+      seqnum = 1122334455, 
+      sex = 'F', 
+      svcdate = '2024-11-27', 
+      thercls = 12, 
+      thergrp = 'TG', 
+      version = '01', 
+      wgtkey = 90, 
+      year = 2024, 
+      medadv = 'AdvancedMedPlan'
+    )
+    
+    set_defaults_inpatient_admissions(
+      flag = 0, 
+      admdate = '2024-11-28', 
+      admtyp = 'A', 
+      age = 35, 
+      agegrp = 'M', 
+      caseid = 123456, 
+      datatyp = 2, 
+      days = 3, 
+      disdate = '2024-12-01', 
+      dobyr = 1989, 
+      drg = 123, 
+      dstatus = 'DC', 
+      dx1 = 'A123', 
+      dx10 = 'A345', 
+      dx11 = 'A567', 
+      dx12 = 'A678', 
+      dx13 = 'A789', 
+      dx14 = 'A890', 
+      dx15 = 'A910', 
+      dx2 = 'B123', 
+      dx3 = 'B234', 
+      dx4 = 'B345', 
+      dx5 = 'B456', 
+      dx6 = 'B567', 
+      dx7 = 'B678', 
+      dx8 = 'B789', 
+      dx9 = 'B890', 
+      dxver = '9', 
+      eeclass = 'E', 
+      eestatu = 'S', 
+      efamid = 112233, 
+      egeoloc = 'CA', 
+      eidflag = 'Y', 
+      emprel = 'S', 
+      enrflag = 'N', 
+      enrolid = 9876543210, 
+      hlthplan = 'P', 
+      hospnet = 5000.00, 
+      hosppay = 4500.00, 
+      indstry = 'M', 
+      mdc = '05', 
+      mhsacovg = 'Y', 
+      msa = 101, 
+      pdx = 'C123', 
+      phyflag = 'Y', 
+      physid = 654321, 
+      physnet = 1000.00, 
+      physpay = 950.00, 
+      plankey = 22, 
+      plantyp = 3, 
+      pproc = 'D123', 
+      proc1 = 'E123', 
+      proc10 = 'E345', 
+      proc11 = 'E567', 
+      proc12 = 'E678', 
+      proc13 = 'E789', 
+      proc14 = 'E890', 
+      proc15 = 'E910', 
+      proc2 = 'F123', 
+      proc3 = 'F234', 
+      proc4 = 'F345', 
+      proc5 = 'F456', 
+      proc6 = 'F567', 
+      proc7 = 'F678', 
+      proc8 = 'F789', 
+      proc9 = 'F890', 
+      region = 'W', 
+      rx = 'N', 
+      seqnum = 102030405060, 
+      sex = 'M', 
+      state = 'NY', 
+      totcob = 200.00, 
+      totcoins = 50.00, 
+      totcopay = 25.00, 
+      totded = 100.00, 
+      totnet = 4500.00, 
+      totpay = 5000.00, 
+      version = '01', 
+      wgtkey = 77, 
+      year = 2024, 
+      poapdx = 'Z123', 
+      poadx1 = 'Z234', 
+      poadx2 = 'Z345', 
+      poadx3 = 'Z456', 
+      poadx4 = 'Z567', 
+      poadx5 = 'Z678', 
+      poadx6 = 'Z789', 
+      poadx7 = 'Z890', 
+      poadx8 = 'Z910', 
+      poadx9 = 'Y123', 
+      poadx10 = 'Y234', 
+      poadx11 = 'Y345', 
+      poadx12 = 'Y456', 
+      poadx13 = 'Y567', 
+      poadx14 = 'Y678', 
+      poadx15 = 'Y789', 
+      medadv = 'Standard'
+      )
     
   }
 }
