@@ -263,20 +263,26 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
 
         public override IEnumerable<Episode> BuildEpisode(Episode[] episodes, Dictionary<long, VisitOccurrence> visitOccurrences, ObservationPeriod[] observationPeriods)
         {
-            foreach (var e in episodes)
+            foreach (var groupByType in episodes.GroupBy(e => e.AdditionalFields["cancer_type"]))
             {
-                if (e.StartDate < new DateTime(2007, 1, 1))
-                    continue;
-
-                //if (e.StartDate.Year + 1 <= _person.YearOfBirth)
-                //    continue;
-
-                if (e.StartDate.Year < _person.YearOfBirth)
-                    continue;
-
-                if (e.VisitOccurrenceId == null || visitOccurrences.ContainsKey(e.VisitOccurrenceId.Value))
+                foreach (var groupBySourceValue in groupByType.GroupBy(t => t.SourceValue))
                 {
-                    yield return e;
+                    foreach (var groupByEpisodeNumber in groupBySourceValue.GroupBy(s => s.EpisodeNumber))
+                    {
+                        var filterd = groupByEpisodeNumber.Where(e =>
+                        e.StartDate >= new DateTime(2007, 1, 1) &&
+                        e.StartDate.Year + 1 > _person.YearOfBirth &&
+                        (!e.VisitOccurrenceId.HasValue || visitOccurrences.ContainsKey(e.VisitOccurrenceId.Value)));
+
+                        if (filterd.Any())
+                        {
+                            var episode = filterd.First();
+                            episode.StartDate = filterd.Min(e => e.StartDate);
+                            episode.EndDate = filterd.Max(e => e.EndDate);
+
+                            yield return episode;
+                        }
+                    }
                 }
             }
         }
