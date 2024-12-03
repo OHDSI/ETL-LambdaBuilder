@@ -32,6 +32,8 @@ namespace org.ohdsi.cdm.framework.common.Definitions
                 if (!string.IsNullOrEmpty(Location))
                 {
                     locationId = Entity.GetId(locationSourceValue);
+                    if (locationId == 0)
+                        locationId = null;
                 }
             }
 
