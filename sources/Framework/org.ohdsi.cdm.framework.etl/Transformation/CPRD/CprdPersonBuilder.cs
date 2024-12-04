@@ -425,7 +425,6 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CPRD
                                        {
                                            Id = Offset.GetKeyOffset(entity.PersonId).ConditionOccurrenceId
                                        };
-                            //cond.TypeConceptId = 32020; //EHR encounter diagnosis
                             ConditionForEra.Add(cond);
                             ChunkData.AddData(cond);
                         }
@@ -437,8 +436,6 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CPRD
                         {
                             Id = Offset.GetKeyOffset(entity.PersonId).MeasurementId
                         };
-
-                        //mes.TypeConceptId = 44818702; //Lab result;
 
                         if (!string.IsNullOrEmpty(mes.SourceValue))
                         {
@@ -483,7 +480,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CPRD
                             {
                                 Id = Offset.GetKeyOffset(entity.PersonId).ObservationId
                             };
-                            //obs.TypeConceptId = 38000280; //Observation recorded from EHR
+                            
                             var valueAsConceptId = GetValueAsConceptId(obs, obs.ValueAsString);
                             if (valueAsConceptId.HasValue)
                                 obs.ValueAsConceptId = valueAsConceptId.Value;
@@ -537,7 +534,6 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CPRD
                                        Id = Offset.GetKeyOffset(entity.PersonId)
                                            .ProcedureOccurrenceId
                                    };
-                        //proc.TypeConceptId = 38000275; //EHR order list entry
                         ChunkData.AddData(proc);
                         break;
 
@@ -556,13 +552,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CPRD
                                       Id = Offset.GetKeyOffset(entity.PersonId).DrugExposureId
                                   };
 
-                        //drg.TypeConceptId = 38000177;
-
-                        //Drug|CVX
-                        //if (entity.Domain != null && entity.Domain.EndsWith("CVX", StringComparison.OrdinalIgnoreCase))
-                        //{
-                        //    drg.TypeConceptId = 38000179; // Physician administered drug (identified as procedure)
-                        //}
+                        if (!drg.EndDate.HasValue)
+                            drg.EndDate = drg.StartDate;
 
                         DrugForEra.Add(drg);
                         ChunkData.AddData(drg);
