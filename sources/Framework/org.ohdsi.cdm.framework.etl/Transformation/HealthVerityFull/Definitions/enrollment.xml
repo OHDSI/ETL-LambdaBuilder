@@ -1,0 +1,52 @@
+﻿<QueryDefinition>
+  <Query>
+		with a as
+		(
+		SELECT
+		ch.person_id as PersonId,
+		hvid,
+		patient_gender,
+		patient_year_of_birth,
+		date_start,
+		date_end,
+		1 as benefit_type,
+		data_vendor
+		FROM {sc}.enrollment
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
+		where lower(benefit_type) = 'medical'
+
+		union
+
+		SELECT
+		ch.person_id as PersonId,
+		hvid,
+		patient_gender,
+		patient_year_of_birth,
+		date_start,
+		date_end,
+		2 as benefit_type,
+		data_vendor
+		FROM {sc}.enrollment
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
+		where lower(benefit_type) = 'pharmacy' or benefit_type is null
+		)
+
+		select *
+		from a
+		order by 1
+	</Query>
+  <Persons>
+    <PersonDefinition>
+      <PersonId>PersonId</PersonId>
+      <PersonSourceValue>hvid</PersonSourceValue>
+      <Gender>patient_gender</Gender>
+      <YearOfBirth>patient_year_of_birth</YearOfBirth>
+      <StartDate>date_start</StartDate>
+      <EndDate>date_end</EndDate>
+      <PeriodTypeConceptId>benefit_type</PeriodTypeConceptId>
+      <AdditionalFields>
+        <string>data_vendor</string>
+      </AdditionalFields>
+    </PersonDefinition>
+  </Persons>
+</QueryDefinition>

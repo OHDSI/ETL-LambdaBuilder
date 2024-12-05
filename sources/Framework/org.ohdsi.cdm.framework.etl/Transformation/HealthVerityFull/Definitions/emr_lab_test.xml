@@ -1,0 +1,67 @@
+﻿<QueryDefinition>
+	<Query database="none">
+		SELECT
+		ch.person_id as PersonId,
+		hvid,
+		hv_lab_test_dt,
+		hv_enc_id,
+		lab_test_loinc_cd,
+		lab_result_nm,
+		coalesce(lab_test_loinc_cd, '') || '_' || coalesce(lab_result_nm, '') as source,
+		lab_result_uom,
+		lab_result_msrmt,
+		coalesce(lab_test_prov_id, '') || ';' || coalesce(lab_test_prov_taxnmy_id, '') ProviderIdKey
+		from {sc}.emr_lab_test
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
+		where upper(prmy_src_tbl_nm) in
+		(
+		'RESULTS'
+		)
+		and lab_result_msrmt is not null and
+		(lab_result_nm is not null OR lab_test_loinc_cd is not null)
+		order by ch.person_id
+	</Query>
+	<Measurement>
+		<MeasurementDefinition>
+			<PersonId>PersonId</PersonId>
+			<StartDate>hv_lab_test_dt</StartDate>
+			<ProviderIdKey>ProviderIdKey</ProviderIdKey>
+			<ValueAsNumber>lab_result_msrmt</ValueAsNumber>
+			<AdditionalFields>
+				<string>hv_enc_id</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>loinc</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="lab_test_loinc_cd" sourceKey="source" defaultTypeId="32856"/>
+					</Fields>
+				</Concept>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>units</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="lab_result_uom"  defaultTypeId="0" />
+					</Fields>
+				</Concept>
+			  <Concept>
+          <ConceptIdMappers>
+            <Mapper>
+              <Lookup>ValueAsConceptId</Lookup>
+            </Mapper>
+          </ConceptIdMappers>
+          <Fields>
+            <Field key="lab_result_msrmt" defaultTypeId="0" />
+          </Fields>
+        </Concept>
+			</Concepts>
+		</MeasurementDefinition>
+	</Measurement>
+</QueryDefinition>

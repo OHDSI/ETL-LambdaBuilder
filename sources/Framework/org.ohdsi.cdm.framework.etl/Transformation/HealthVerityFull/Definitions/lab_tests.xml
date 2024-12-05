@@ -1,0 +1,57 @@
+﻿<QueryDefinition>
+	<Query database="none">
+		SELECT
+		ch.person_id as PersonId,
+		coalesce(date_service, date_specimen) as date_service,
+		case
+		when loinc_code is null or loinc_code = '' then test_ordered_name || '_' || result_name
+		else loinc_code
+		end as source,
+		result_unit_of_measure,
+		replace(result, chr(9), ' ') as result,
+		data_vendor
+		from {sc}.lab_tests
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
+		where loinc_code is not null and test_ordered_name is not null and result_name is not null and coalesce(date_service, date_specimen) is not null
+		order by ch.person_id
+	</Query>
+	<Measurement>
+		<MeasurementDefinition>
+			<PersonId>PersonId</PersonId>
+			<StartDate>date_service</StartDate>
+			<ValueAsNumber>result</ValueAsNumber>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>loinc</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="source" defaultTypeId="32856"/>
+					</Fields>
+				</Concept>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>units</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="result_unit_of_measure" defaultTypeId="0" />
+					</Fields>
+				</Concept>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>ValueAsConceptId</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="result" defaultTypeId="0" />
+					</Fields>
+				</Concept>
+			</Concepts>
+		</MeasurementDefinition>
+	</Measurement>
+</QueryDefinition>
