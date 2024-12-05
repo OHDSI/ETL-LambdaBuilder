@@ -23,3 +23,4 @@ select a.patid, yob,
     join {sc}.practice b on a.pracid = b.pracid
 ) as pat
 order by 1
+limit 1000000;
