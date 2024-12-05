@@ -12,12 +12,12 @@
     end YEAR_OF_BIRTH,
     case
     when mob &gt; 0 then mob
-    else null
-    end as MONTH_OF_BIRTH,
-    null DAY_OF_BIRTH,
-    coalesce(gender, 0) gender,
-    Right(cast(a.patid as varchar),3) CARE_SITE_ID,
-    case when a.crd &gt; b.uts then a.crd
+		else null
+		end as MONTH_OF_BIRTH,
+		null DAY_OF_BIRTH,
+		coalesce(gender, 0) gender,
+		a.pracid CARE_SITE_ID,
+		case when a.crd &gt; b.uts then a.crd
     else b.uts end as observation_period_start_date,
     case
     when a.tod is null then b.lcd

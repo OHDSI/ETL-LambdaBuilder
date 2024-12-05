@@ -2,7 +2,7 @@
   <Query>
     select
     staffid as PROVIDER_ID,
-    cast(Right(cast(staffid as varchar), 3) as int) as CARE_SITE_ID,
+    cast(Right(cast(staffid as varchar), 5) as int) as CARE_SITE_ID,
     cast(staffid as varchar) as PROVIDER_SOURCE_VALUE,
     l.text as SPECIALTY_SOURCE_VALUE,
     cast(coalesce(role, 0) as varchar) as SPECIALTY_SOURCE_KEY,

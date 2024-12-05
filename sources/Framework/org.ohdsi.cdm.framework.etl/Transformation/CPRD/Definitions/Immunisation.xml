@@ -9,7 +9,7 @@
     (cast(date_part('year',i.eventdate) as bigint) * 1000000) +
     (cast(date_part('month',i.eventdate) as bigint) * 10000) +
     (cast(date_part('day',i.eventdate) as bigint) * 100) + coalesce(c.constype, 99) as visit_occurrence_id,
-    right(cast(i.patid as varchar),3) as care_site_id,
+    right(cast(i.patid as varchar),5) as care_site_id,
     case
     when c.constype = 0 then 'Data Not Entered'
     when c.constype = 1 then 'Clinic'

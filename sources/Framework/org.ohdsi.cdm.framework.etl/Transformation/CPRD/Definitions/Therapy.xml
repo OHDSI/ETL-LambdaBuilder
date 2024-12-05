@@ -14,7 +14,7 @@
     a.consid,
     d.dosage_text,
     coalesce(a.numpacks, 0) numpacks,
-    right(cast(a.patid as varchar),3) as care_site_id,
+    right(cast(a.patid as varchar),5) as care_site_id,
     coalesce(coalesce(case when a.numdays = 0 or a.numdays &gt; 365 then null else a.numdays end, coalesce(dd.numdays, dm.numdays)), 1) days_supply,
     case
     when c.constype = 0 then 'Data Not Entered'
