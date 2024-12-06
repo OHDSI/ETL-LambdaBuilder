@@ -3,7 +3,6 @@
     select
     ch.person_id as patid,
     a.staffid,
-    a.issueseq,
     a.eventdate,
     product.gemscriptcode,
     round(case when a.qty &lt; 0 then null else a.qty end, 0) qty,
@@ -98,7 +97,6 @@
       <EndDate>eventdate</EndDate>
       <DaysSupply>days_supply</DaysSupply>
       <VisitDetailId>visit_occurrence_id</VisitDetailId>
-      <Refill>issueseq</Refill>
       <Sig>dosage_text</Sig>
       <Quantity>qty</Quantity>
       <ProviderId>staffid</ProviderId>
