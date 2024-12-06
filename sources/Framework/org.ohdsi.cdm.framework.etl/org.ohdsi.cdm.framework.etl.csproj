@@ -140,7 +140,7 @@
     <None Remove="Transformation\HealthVerityFull\Lookups\Specialty.sql" />
     <None Remove="Transformation\HealthVerityFull\Lookups\ub04.sql" />
     <None Remove="Transformation\HealthVerityFull\Lookups\units.sql" />
-    <None Remove="Transformation\HealthVerityFull\Lookups\ValueAsConceptId.sql" />s
+    <None Remove="Transformation\HealthVerityFull\Lookups\ValueAsConceptId.sql" />
     <None Remove="Transformation\JMDC\Batch.sql" />
     <None Remove="Transformation\JMDC\Definitions\Annual_health_checkups.xml" />
     <None Remove="Transformation\JMDC\Definitions\Claim.xml" />
