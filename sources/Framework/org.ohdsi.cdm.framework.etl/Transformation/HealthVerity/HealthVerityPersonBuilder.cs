@@ -844,19 +844,29 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
             FixStartEndDates(PayerPlanPeriodsRaw, null);
             var payerPlanPeriods = BuildPayerPlanPeriods([.. PayerPlanPeriodsRaw], visitOccurrences).ToArray();
 
+            var death = BuildDeath([.. DeathRecords], visitOccurrences, observationPeriods);
+
+            if (death != null)
+            {
+                if (death.StartDate.Date < observationPeriods.Min(op => op.StartDate.Date))
+                    death = null;
+                else if (person.YearOfBirth.HasValue && person.YearOfBirth.Value > 0 && person.YearOfBirth > death.StartDate.Year)
+                    death = null;
+            }
+
             // push built entities to ChunkBuilder for further save to CDM database
-            AddToChunk(person, null,
+            AddToChunk(person, death,
                 observationPeriods,
                 payerPlanPeriods,
-                UpdateRSourceConcept(drugExposures).ToArray(),
-                UpdateRSourceConcept(conditionOccurrences).ToArray(),
-                UpdateRSourceConcept(procedureOccurrences).ToArray(),
-                UpdateRSourceConcept(observations).ToArray(),
-                UpdateRSourceConcept(measurements).ToArray(),
-                [.. visitOccurrences.Values], 
-                visitDetails, 
+                UpdateRSourceConcept(FilterByDeathDate(drugExposures, death, 60)).ToArray(),
+                UpdateRSourceConcept(FilterByDeathDate(conditionOccurrences, death, 60)).ToArray(),
+                UpdateRSourceConcept(FilterByDeathDate(procedureOccurrences, death, 60)).ToArray(),
+                UpdateRSourceConcept(FilterByDeathDate(observations, death, 60)).ToArray(),
+                UpdateRSourceConcept(FilterByDeathDate(measurements, death, 60)).ToArray(),
+                FilterByDeathDate(visitOccurrences.Values, death, 60).ToArray(),
+                FilterByDeathDate(visitDetails, death, 60).ToArray(), 
                 [],
-                UpdateRSourceConcept(deviceExposure).ToArray(), 
+                UpdateRSourceConcept(FilterByDeathDate(deviceExposure, death, 60)).ToArray(), 
                 [], 
                 []);
 
@@ -875,6 +885,19 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
             }
 
             return Attrition.None;
+        }
+
+        //public static IEnumerable<T> UpdateRSourceConcept<T>(IEnumerable<T> records) where T : IEntity
+
+        private static IEnumerable<T> FilterByDeathDate<T>(IEnumerable<T> items, Death death, int gap) where T : IEntity
+        {
+            foreach (var item in items)
+            {
+                if (death == null)
+                    yield return item;
+                else if (item.StartDate.Date <= death.StartDate.AddDays(gap))
+                    yield return item;
+            }
         }
 
         public override IEnumerable<DrugExposure> BuildDrugExposures(DrugExposure[] drugExposures, Dictionary<long, VisitOccurrence> visitOccurrences, ObservationPeriod[] observationPeriods)
