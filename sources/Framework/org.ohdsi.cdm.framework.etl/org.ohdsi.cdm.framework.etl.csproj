@@ -95,6 +95,7 @@
     <None Remove="Transformation\HealthVerity\Definitions\emr_medctn.xml" />
     <None Remove="Transformation\HealthVerity\Definitions\emr_proc.xml" />
     <None Remove="Transformation\HealthVerity\Definitions\enrollment.xml" />
+    <None Remove="Transformation\HealthVerity\Definitions\events.xml" />
     <None Remove="Transformation\HealthVerity\Definitions\lab_tests.xml" />
     <None Remove="Transformation\HealthVerity\Definitions\L_LOCATION.xml" />
     <None Remove="Transformation\HealthVerity\Definitions\L_PROVIDER.xml" />
@@ -555,6 +556,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Transformation\HealthVerity\Definitions\enrollment.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\HealthVerity\Definitions\events.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Transformation\HealthVerity\Definitions\lab_tests.xml">
