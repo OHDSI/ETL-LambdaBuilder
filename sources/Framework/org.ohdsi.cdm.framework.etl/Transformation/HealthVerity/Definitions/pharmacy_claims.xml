@@ -8,8 +8,14 @@
 		procedure_code,
 		diagnosis_code,
 		ndc_code,
-
-		days_supply,
+		
+		CASE
+		WHEN days_supply &lt; 0 THEN 0
+    WHEN days_supply &gt; 365 THEN 365
+    WHEN days_supply IS NULL THEN 0
+    ELSE days_supply
+    END as days_supply,
+		
 		dispensed_quantity,
 		fill_number,
 		unit_of_measure,
@@ -26,7 +32,16 @@
 		FROM {sc}.pharmacy_claims
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
 		where date_service is not null and date_part('year', date_service) &gt;= 2009 and
-		(logical_delete_reason is null or logical_delete_reason = '' or logical_delete_reason = 'null')
+		(
+		logical_delete_reason is null
+		and (upper(response_code_std) != 'R' or response_code_std is null)
+		and (upper(response_code_vendor) != 'R' or response_code_vendor  is null)
+		and reject_reason_code_1 is null
+		and reject_reason_code_2 is null
+		and reject_reason_code_3 is null
+		and reject_reason_code_4 is null
+		and reject_reason_code_5 is null
+		)
 		order by 1
 	</Query>
 	<DrugExposure>
