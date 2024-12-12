@@ -953,19 +953,14 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
                 switch (entityDomain)
                 {
                     case "Condition":
-                        var obs = entity as Observation;
-                        if (obs == null || obs.ValueAsNumber == 1)
-                        {
-                            var cond = entity as ConditionOccurrence ??
-                                       new ConditionOccurrence(entity)
-                                       {
-                                           Id = Offset.GetKeyOffset(entity.PersonId)
-                                               .ConditionOccurrenceId
-                                       };
-                            ConditionForEra.Add(cond);
-                            ChunkData.AddData(cond);
-                        }
-
+                        var cond = entity as ConditionOccurrence ??
+                                   new ConditionOccurrence(entity)
+                                   {
+                                       Id = Offset.GetKeyOffset(entity.PersonId)
+                                           .ConditionOccurrenceId
+                                   };
+                        ConditionForEra.Add(cond);
+                        ChunkData.AddData(cond);
                         break;
 
                     case "Measurement":

@@ -1080,18 +1080,14 @@ namespace org.ohdsi.cdm.framework.common.Base
                 switch (entityDomain)
                 {
                     case "Condition":
-                        if (entity is not Observation obs || obs.ValueAsNumber == 1)
-                        {
-                            var cond = entity as ConditionOccurrence ??
-                                       new ConditionOccurrence(entity)
-                                       {
-                                           Id = Offset.GetKeyOffset(entity.PersonId).ConditionOccurrenceId
-                                       };
+                        var cond = entity as ConditionOccurrence ??
+                                   new ConditionOccurrence(entity)
+                                   {
+                                       Id = Offset.GetKeyOffset(entity.PersonId).ConditionOccurrenceId
+                                   };
 
-                            ConditionForEra.Add(cond);
-                            ChunkData.AddData(cond);
-                        }
-
+                        ConditionForEra.Add(cond);
+                        ChunkData.AddData(cond);
                         break;
 
                     case "Measurement":
