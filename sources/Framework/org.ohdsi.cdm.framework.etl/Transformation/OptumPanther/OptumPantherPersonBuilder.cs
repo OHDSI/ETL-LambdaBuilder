@@ -1226,6 +1226,11 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
             {
                 var entityDomain = GetDomain(domain, entity.Domain);
 
+                // Move records from not Condition domain (Unit, Geography, Race, Relationship, Language, Route, Provider, Gender, Specimen, Ethnicity)
+                // from the diagnosis table to the Observation table
+                if (entity.TypeConceptId == 32840 && entityDomain == "Condition" && entity.Domain != "Condition")
+                    entityDomain = "Observation";
+
                 switch (entityDomain)
                 {
                     case "Condition":
