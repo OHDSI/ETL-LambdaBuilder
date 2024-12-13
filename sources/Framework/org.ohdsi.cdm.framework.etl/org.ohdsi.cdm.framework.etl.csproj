@@ -123,6 +123,7 @@
     <None Remove="Transformation\HealthVerityFull\Definitions\emr_medctn.xml" />
     <None Remove="Transformation\HealthVerityFull\Definitions\emr_proc.xml" />
     <None Remove="Transformation\HealthVerityFull\Definitions\enrollment.xml" />
+    <None Remove="Transformation\HealthVerityFull\Definitions\events.xml" />
     <None Remove="Transformation\HealthVerityFull\Definitions\lab_tests.xml" />
     <None Remove="Transformation\HealthVerityFull\Definitions\L_PROVIDER.xml" />
     <None Remove="Transformation\HealthVerityFull\Definitions\medical_claims.xml" />
