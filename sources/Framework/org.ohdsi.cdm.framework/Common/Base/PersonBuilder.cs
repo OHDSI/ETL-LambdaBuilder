@@ -1062,20 +1062,33 @@ namespace org.ohdsi.cdm.framework.common.Base
             }
         }
 
-        public static string GetDomain(string entityDomain, string conceptDomain)
+        public string GetDomain(string entityDomain, string conceptDomain, string defaultDomain)
         {
-            return conceptDomain switch
+            switch (conceptDomain)
             {
-                "Condition" or "Measurement" or "Meas Value" or "Observation" or "Procedure" or "Device" or "Drug" => conceptDomain,
-                _ => entityDomain,
-            };
+                case "Condition":
+                case "Measurement":
+                case "Observation":
+                case "Procedure":
+                case "Device":
+                case "Drug":
+                    return conceptDomain;
+
+                default:
+                    {
+                        if(string.IsNullOrEmpty(defaultDomain))
+                            return entityDomain;
+
+                        return defaultDomain;
+                    }
+            }
         }
 
         public virtual void AddToChunk(string domain, IEnumerable<IEntity> entities)
         {
             foreach (var entity in entities)
             {
-                var entityDomain = GetDomain(domain, entity.Domain);
+                var entityDomain = GetDomain(domain, entity.Domain, "Observation");
 
                 switch (entityDomain)
                 {

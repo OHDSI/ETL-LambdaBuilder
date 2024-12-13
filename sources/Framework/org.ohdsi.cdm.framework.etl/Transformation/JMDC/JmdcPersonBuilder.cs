@@ -493,7 +493,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.JMDC
         {
             foreach (var entity in entities)
             {
-                var entityDomain = GetDomain(domain, entity.Domain);
+                var entityDomain = GetDomain(domain, entity.Domain, "Observation");
 
                 switch (entityDomain)
                 {

@@ -1016,7 +1016,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Truven
                 if (!entity.VisitDetailId.HasValue)
                     SetVisitDetailId(entity, false);
 
-                var entityDomain = GetDomain(domain, entity.Domain);
+                var entityDomain = GetDomain(domain, entity.Domain, "Observation");
 
                 switch (entityDomain)
                 {

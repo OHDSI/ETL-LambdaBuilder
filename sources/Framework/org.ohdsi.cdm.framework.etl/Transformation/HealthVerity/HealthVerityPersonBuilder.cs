@@ -948,7 +948,7 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
         {
             foreach (var entity in entities)
             {
-                var entityDomain = GetDomain(domain, entity.Domain);
+                var entityDomain = GetDomain(domain, entity.Domain, "Observation");
 
                 switch (entityDomain)
                 {
