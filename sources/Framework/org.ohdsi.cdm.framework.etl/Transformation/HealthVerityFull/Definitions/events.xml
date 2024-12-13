@@ -1,4 +1,4 @@
-﻿﻿<QueryDefinition>
+﻿<QueryDefinition>
   <Query>
     SELECT distinct
     ch.person_id as PersonId,
