@@ -668,6 +668,9 @@
 		<EmbeddedResource Include="Transformation\HealthVerityFull\Definitions\enrollment.xml">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</EmbeddedResource>
+		<EmbeddedResource Include="Transformation\HealthVerityFull\Definitions\events.xml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</EmbeddedResource>
 		<EmbeddedResource Include="Transformation\HealthVerityFull\Definitions\lab_tests.xml">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</EmbeddedResource>
