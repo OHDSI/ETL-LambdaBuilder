@@ -499,22 +499,22 @@ namespace RunValidation
                         .Where(s => s.InPersonFilesCount + s.InMetadataFilesCount > 1)
                         .ToHashSet();
 
-                    var slicePersonIdsWrongCount = slicePersonIds.Values
-                        .Where(s => s.InPersonFilesCount != 1 || s.InMetadataFilesCount != 0 || !s.IsFromBatch)
+                    var slicePersonIdsZero = slicePersonIds.Values
+                        .Where(s => s.InPersonFilesCount + s.InMetadataFilesCount == 0 || !s.IsFromBatch)
                         .ToHashSet();
 
                     timer.Stop();
 
-                    if (slicePersonIdsWrongCount.Count > 0)
+                    if (slicePersonIdsZero.Count > 0)
                     {
                         var sliceReport = new SliceReport
                         {
                             BuildingId = buildingId,
                             ChunkId =  chunkId,
                             SliceId = sliceId,
-                            WrongCount = slicePersonIdsWrongCount.Count,
+                            WrongCount = slicePersonIdsZero.Count,
                             Duplicates = slicePersonIdsDuplicated.Count,
-                            ExampleWrongPersonId = slicePersonIdsWrongCount.First().PersonId
+                            ExampleWrongPersonId = slicePersonIdsZero.First().PersonId
                         };
 
                         chunkReport.SliceReports.Add(sliceReport);
