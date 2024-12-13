@@ -500,7 +500,7 @@ namespace RunValidation
                         .ToHashSet();
 
                     var slicePersonIdsWrongCount = slicePersonIds.Values
-                        .Where(s => s.InPersonFilesCount != 1 || s.InMetadataFilesCount != 0 || !s.IsFromBatch)
+                        .Where(s => s.InPersonFilesCount + s.InMetadataFilesCount == 0 || !s.IsFromBatch)
                         .ToHashSet();
 
                     timer.Stop();
