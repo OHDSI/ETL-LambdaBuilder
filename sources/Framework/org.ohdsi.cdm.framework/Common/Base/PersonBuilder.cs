@@ -4,6 +4,7 @@ using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Helpers;
 using org.ohdsi.cdm.framework.common.Lookups;
 using org.ohdsi.cdm.framework.common.Omop;
+using System;
 using System.Collections.Concurrent;
 
 namespace org.ohdsi.cdm.framework.common.Base
@@ -917,6 +918,7 @@ namespace org.ohdsi.cdm.framework.common.Base
             SetProviderIds(observations);
 
             var death = BuildDeath([.. DeathRecords], visitOccurrences, observationPeriods);
+            death = UpdateDeath(death, person, observationPeriods);
 
             // TODO: TMP
             var drugCosts = BuildDrugCosts(drugExposures).ToArray();
@@ -929,11 +931,24 @@ namespace org.ohdsi.cdm.framework.common.Base
             var episode = BuildEpisode([.. EpisodeRecords], visitOccurrences, observationPeriods).ToArray();
 
             // push built entities to ChunkBuilder for further save to CDM database
-            AddToChunk(person, death, observationPeriods, payerPlanPeriods, drugExposures,
-                conditionOccurrences, procedureOccurrences, observations, measurements,
-                [.. visitOccurrences.Values], visitDetails, cohort, deviceExposure, notes, episode);
-            
-            foreach(var c in CostRaw)
+            AddToChunk(
+                person, 
+                death, 
+                observationPeriods, 
+                payerPlanPeriods,
+                FilterByDeathDate(drugExposures, death, 60).ToArray(),
+                FilterByDeathDate(conditionOccurrences, death, 60).ToArray(),
+                FilterByDeathDate(procedureOccurrences, death, 60).ToArray(),
+                FilterByDeathDate(observations, death, 60).ToArray(),
+                FilterByDeathDate(measurements, death, 60).ToArray(),
+                FilterByDeathDate(visitOccurrences.Values, death, 60).ToArray(),
+                FilterByDeathDate(visitDetails, death, 60).ToArray(), 
+                cohort,
+                FilterByDeathDate(deviceExposure, death, 60).ToArray(), 
+                notes, 
+                episode);
+
+            foreach (var c in CostRaw)
                 ChunkData.AddCostData(c);
 
             Complete = true;
@@ -1232,7 +1247,7 @@ namespace org.ohdsi.cdm.framework.common.Base
 
                             if (e.SourceConcepts.Count != byStartDate.Count())
                             {
-                               
+
                             }
                         }
                     }
@@ -1240,8 +1255,29 @@ namespace org.ohdsi.cdm.framework.common.Base
             }
         }
 
-  
+        public static IEnumerable<T> FilterByDeathDate<T>(IEnumerable<T> items, Death death, int gap) where T : IEntity
+        {
+            foreach (var item in items)
+            {
+                if (death == null)
+                    yield return item;
+                else if (item.StartDate.Date <= death.StartDate.AddDays(gap))
+                    yield return item;
+            }
+        }
 
+        public static Death UpdateDeath(Death death, Person person, ObservationPeriod[] observationPeriods)
+        {
+            if (death == null)
+                return null;
+
+            if (death.StartDate.Date < observationPeriods.Min(op => op.StartDate.Date))
+                return null;
+            else if (person.YearOfBirth.HasValue && person.YearOfBirth.Value > 0 && person.YearOfBirth > death.StartDate.Year)
+                return null;
+
+            return death;
+        }
         #endregion
     }
 }
