@@ -1076,7 +1076,10 @@ namespace org.ohdsi.cdm.framework.common.Base
 
                 default:
                     {
-                        if(string.IsNullOrEmpty(defaultDomain))
+                        if (string.IsNullOrEmpty(conceptDomain) && !string.IsNullOrEmpty(entityDomain))
+                            return entityDomain;
+
+                        if (string.IsNullOrEmpty(defaultDomain))
                             return entityDomain;
 
                         return defaultDomain;
