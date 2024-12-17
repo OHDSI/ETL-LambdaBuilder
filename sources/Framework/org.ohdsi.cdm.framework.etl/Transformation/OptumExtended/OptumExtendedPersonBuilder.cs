@@ -511,10 +511,10 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
                 var locCd = string.Empty;
 
                 if (e.AdditionalFields.ContainsKey("clmid"))
-                    clmid = e.AdditionalFields["clmid"];
+                    clmid = e.AdditionalFields["clmid"] ?? string.Empty;
 
                 if (e.AdditionalFields.ContainsKey("loc_cd"))
-                    locCd = e.AdditionalFields["loc_cd"];
+                    locCd = e.AdditionalFields["loc_cd"] ?? string.Empty;
 
                 if (_rawVisitDetails.ContainsKey(patPlanid) && _rawVisitDetails[patPlanid].ContainsKey(clmid))
                 {
