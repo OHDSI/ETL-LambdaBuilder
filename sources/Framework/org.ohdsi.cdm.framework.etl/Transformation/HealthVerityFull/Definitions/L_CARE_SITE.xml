@@ -1,44 +1,52 @@
 ﻿<QueryDefinition>
    <Query>
-    select ROW_NUMBER() OVER(ORDER BY care_site_source_value) AS care_site_id, *  from
-    (
-    WITH ranked_facilities AS (
-        SELECT 
-            prov_facility_npi, 
-            prov_facility_name_1, 
-            place_of_service_std_id,
-            ROW_NUMBER() OVER (PARTITION BY prov_facility_npi, prov_facility_name_1 ORDER BY prov_facility_name_1) AS name_row,
-            ROW_NUMBER() OVER (PARTITION BY prov_facility_npi, place_of_service_std_id ORDER BY place_of_service_std_id) AS service_row,
-            ROW_NUMBER() OVER (PARTITION BY prov_facility_npi ORDER BY prov_facility_name_1, place_of_service_std_id) AS rn
-        FROM 
-            {sc}.medical_claims
-        WHERE 
-            prov_facility_npi IS NOT NULL
-    )
-    SELECT 
-        prov_facility_npi as care_site_source_value,
-        CASE 
-            WHEN MAX(name_row) OVER (PARTITION BY prov_facility_npi) = 1 THEN prov_facility_name_1
-            ELSE NULL
-        END as care_site_name,
-        CASE 
-            WHEN MAX(service_row) OVER (PARTITION BY prov_facility_npi) = 1 THEN place_of_service_std_id
-            ELSE NULL
-        END AS place_of_service_source_value
-    FROM 
-        ranked_facilities
-    WHERE 
-        rn = 1
-    union ALL
-    select distinct
-      'Pharmacy NPI: ' || cast(pharmacy_npi as VARCHAR) as care_site_source_value,
-      null as care_site_name,
-      '01' as place_of_service_source_value
-    from
-      {sc}.pharmacy_claims
-    where
-      pharmacy_npi is not null
-    )
+		select
+		cast(care_site_source_value as INT) as care_site_id, care_site_source_value, care_site_name, place_of_service_source_value
+		from
+		(
+		select ROW_NUMBER() OVER(PARTITION BY care_site_source_value ORDER BY rnk) AS rn2, *  from
+		(
+		WITH ranked_facilities AS (
+			SELECT 
+				prov_facility_npi, 
+				prov_facility_name_1, 
+				place_of_service_std_id,
+				ROW_NUMBER() OVER (PARTITION BY prov_facility_npi, prov_facility_name_1 ORDER BY prov_facility_name_1) AS name_row,
+				ROW_NUMBER() OVER (PARTITION BY prov_facility_npi, place_of_service_std_id ORDER BY place_of_service_std_id) AS service_row,
+				ROW_NUMBER() OVER (PARTITION BY prov_facility_npi ORDER BY prov_facility_name_1, place_of_service_std_id) AS rn
+			FROM 
+				{sc}.medical_claims
+			WHERE 
+				prov_facility_npi IS NOT NULL
+		)
+		SELECT 
+			prov_facility_npi as care_site_source_value,
+			CASE 
+				WHEN MAX(name_row) OVER (PARTITION BY prov_facility_npi) = 1 THEN prov_facility_name_1
+				ELSE NULL
+			END as care_site_name,
+			CASE 
+				WHEN MAX(service_row) OVER (PARTITION BY prov_facility_npi) = 1 THEN place_of_service_std_id
+				ELSE NULL
+			END AS place_of_service_source_value,
+			1 as rnk
+		FROM 
+			ranked_facilities
+		WHERE 
+			rn = 1
+		union ALL
+		select distinct
+		  pharmacy_npi as care_site_source_value,
+		  null as care_site_name,
+		  '01' as place_of_service_source_value,
+		  2 as rnk
+		from
+		  {sc}.pharmacy_claims
+		where
+		  pharmacy_npi is not null
+		)
+		)
+		where rn2 = 1
    </Query>
    <CareSites>
       <CareSiteDefinition>

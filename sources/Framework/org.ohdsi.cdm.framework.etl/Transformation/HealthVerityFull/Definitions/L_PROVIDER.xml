@@ -1,14 +1,71 @@
 ﻿<QueryDefinition>
-	<Query database="none">
-		select distinct enc_prov_taxnmy_id as specialty_source_value,
-		enc_prov_id provider_source_value,
-		coalesce(enc_prov_id, '') || ';' || coalesce(enc_prov_taxnmy_id, '') ProviderIdKey
-		from {sc}.emr_enc
+	<Query>
+		WITH cte_union AS (
+		select distinct prov_rendering_npi as provider_npi, prov_rendering_vendor_specialty as provider_specialty, prov_facility_npi, created
+		from {sc}.medical_claims
+		where prov_rendering_npi is not null
+		union
+		select distinct prov_billing_npi as provider_npi,  prov_billing_vendor_specialty as provider_specialty, prov_facility_npi, created
+		from {sc}.medical_claims
+		where prov_billing_npi is not null
+		union
+		select distinct prov_referring_npi as provider_npi,  prov_referring_vendor_specialty as provider_specialty, prov_facility_npi, created
+		from {sc}.medical_claims
+		where prov_referring_npi is not null
+		union
+		select distinct prov_prescribing_npi as provider_npi, prov_prescribing_vendor_specialty as provider_specialty, null as prov_facility_npi, '1900-01-01'::DATE as created
+		from {sc}.pharmacy_claims
+		where prov_prescribing_npi is not null
+		),
+		cte_facility AS (
+			SELECT 
+				provider_npi,
+				CASE 
+					WHEN COUNT(DISTINCT prov_facility_npi) > 1 THEN NULL
+					ELSE MAX(prov_facility_npi)
+				END AS prov_facility_npi
+			FROM cte_union
+			WHERE created = (
+				SELECT MAX(created)
+				FROM cte_union t2
+				WHERE t2.provider_npi = cte_union.provider_npi
+			)
+			GROUP BY provider_npi
+		),
+		cte_specialty AS (
+		  select provider_npi, provider_specialty from
+		  (
+			  SELECT 
+				  provider_npi,
+				  provider_specialty,
+				  ROW_NUMBER() OVER (PARTITION BY provider_npi ORDER BY freq DESC, provider_specialty) AS rn
+			  FROM (
+				  SELECT 
+					  provider_npi,
+					  provider_specialty,
+					  COUNT(*) AS freq
+				  FROM cte_union
+				  WHERE provider_specialty != 'UNDEFINED'
+				  GROUP BY provider_npi, provider_specialty
+			  ) t
+			)
+			where rn = 1
+		)
+		select
+			CAST(u.provider_npi as INT) AS provider_id,
+			u.provider_npi as provider_source_value,
+			cast(f.prov_facility_npi as INT) as care_site_id,
+			s.provider_specialty as specialty_source_value
+		FROM (SELECT DISTINCT provider_npi FROM cte_union) u
+		LEFT JOIN cte_facility f ON u.provider_npi = f.provider_npi
+		LEFT JOIN cte_specialty s ON u.provider_npi = s.provider_npi
 	</Query>
 	<Providers>
 		<ProviderDefinition>
-			<ProviderIdKey>ProviderIdKey</ProviderIdKey>
+			<Id>provider_id</Id>
+			<NPI>provider_source_value</NPI>
 			<ProviderSourceValue>provider_source_value</ProviderSourceValue>
+			<CareSiteId>care_site_id</CareSiteId>
 			<Concepts>
 				<Concept>
 					<ConceptIdMappers>
