@@ -33,7 +33,7 @@
     select distinct
       'Pharmacy NPI: ' || cast(pharmacy_npi as VARCHAR) as care_site_source_value,
       null as care_site_name,
-      'Pharmacy' as place_of_service_source_value
+      '01' as place_of_service_source_value
     from
       {sc}.pharmacy_claims
     where
@@ -44,9 +44,19 @@
       <CareSiteDefinition>
          <Id>care_site_id</Id>
          <Name>care_site_name</Name>
-         <PlaceOfSvcSourceValue>place_of_service_source_value</PlaceOfSvcSourceValue>
          <CareSiteSourceValue>care_site_source_value</CareSiteSourceValue>
-         <PlaceOfSvcConceptId>PlaceOfSvcConceptId</PlaceOfSvcConceptId>
+         <Concepts>
+            <Concept>
+                 <ConceptIdMappers>
+                     <Mapper>
+                         <Lookup>cms</Lookup>
+                     </Mapper>
+                 </ConceptIdMappers>
+                 <Fields>
+                     <Field key="place_of_service_source_value"/>
+                 </Fields>
+             </Concept>
+         </Concepts>
       </CareSiteDefinition>
    </CareSites>
 </QueryDefinition>
