@@ -1,11 +1,16 @@
 ﻿SELECT DISTINCT {0} row_number() over (order by hvid) person_id, hvid
 from 
 (
-SELECT DISTINCT hvid FROM {sc}.enrollment 
-where lower(benefit_type) = 'medical'
+SELECT DISTINCT hvid FROM {sc}.events 
+where hvid != '' and hvid is not null
 union
 SELECT DISTINCT hvid FROM {sc}.enrollment 
-where lower(benefit_type) = 'pharmacy' or benefit_type is null
-) a 
 where hvid != '' and hvid is not null
+union
+SELECT DISTINCT hvid FROM {sc}.medical_claims
+where hvid != '' and hvid is not null
+union
+SELECT DISTINCT hvid FROM {sc}.pharmacy_claims
+where hvid != '' and hvid is not null
+) a 
 order by 1
