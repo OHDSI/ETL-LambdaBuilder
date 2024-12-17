@@ -79,10 +79,10 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerityFull
             if (records == null || records.Count == 0)
                 return new KeyValuePair<Person, Attrition>(null, Attrition.UnacceptablePatientQuality);
 
-            if (records.All(p => p.GenderConceptId == 8551))
+            /*if (records.All(p => p.GenderConceptId == 8551))
             {
                 return new KeyValuePair<Person, Attrition>(null, Attrition.UnknownGender);
-            }
+            }*/
 
             if (records.All(p => p.YearOfBirth < 1900))
             {
