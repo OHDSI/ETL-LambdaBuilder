@@ -95,7 +95,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerityFull
             }
 
             var filtered = records.Where(p =>
-                p.GenderConceptId != 8551 &&
+                //p.GenderConceptId != 8551 &&
                 p.YearOfBirth >= 1900 &&
                 p.YearOfBirth <= DateTime.Now.Year).ToArray();
 
@@ -106,12 +106,13 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerityFull
             var person = ordered.Take(1).First();
             person.StartDate = ordered.Take(1).Last().StartDate;
 
-            if (person.GenderConceptId == 8551)
+            /*if (person.GenderConceptId == 8551)
             {
                 return new KeyValuePair<Person, Attrition>(null, Attrition.UnknownGender);
-            }
+            }*/
 
-            if (records.Any(r => r.GenderConceptId != 8551 && r.GenderConceptId != person.GenderConceptId))
+            //if (records.Any(r => r.GenderConceptId != 8551 && r.GenderConceptId != person.GenderConceptId))
+            if (records.Any(r => r.GenderConceptId != person.GenderConceptId))
             {
                 return new KeyValuePair<Person, Attrition>(null, Attrition.GenderChanges); // Gender changed over different enrollment period 
             }
