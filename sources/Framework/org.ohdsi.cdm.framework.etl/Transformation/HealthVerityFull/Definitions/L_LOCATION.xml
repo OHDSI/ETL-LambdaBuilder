@@ -2,19 +2,19 @@
 	<Query>
 		with l as
 		(
-		SELECT distinct patient_state, patient_zip3
+		SELECT patient_state, patient_zip3
 		FROM {sc}.enrollment
 		where COALESCE(NULLIF(patient_state, ''), NULLIF(patient_zip3, '')) is not null
 		UNION
-		SELECT distinct patient_state, patient_zip3
+		SELECT patient_state, patient_zip3
 		FROM {sc}.medical_claims
 		where COALESCE(NULLIF(patient_state, ''), NULLIF(patient_zip3, '')) is not null
 		UNION
-		SELECT distinct patient_state, patient_zip3
+		SELECT patient_state, patient_zip3
 		FROM {sc}.pharmacy_claims
 		where COALESCE(NULLIF(patient_state, ''), NULLIF(patient_zip3, '')) is not null
 		UNION
-		SELECT distinct patient_state, patient_zip3
+		SELECT patient_state, patient_zip3
 		FROM {sc}.events
 		where COALESCE(NULLIF(patient_state, ''), NULLIF(patient_zip3, '')) is not null
 		)

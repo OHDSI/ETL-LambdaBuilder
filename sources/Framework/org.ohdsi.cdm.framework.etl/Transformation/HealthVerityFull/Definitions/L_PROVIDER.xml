@@ -1,29 +1,26 @@
 ﻿<QueryDefinition>
 	<Query>
 		WITH cte_union AS (
-		select distinct prov_rendering_npi as provider_npi, prov_rendering_vendor_specialty as provider_specialty, prov_facility_npi, created
+		select prov_rendering_npi as provider_npi, prov_rendering_vendor_specialty as provider_specialty, prov_facility_npi, created
 		from {sc}.medical_claims
 		where prov_rendering_npi is not null
 		union
-		select distinct prov_billing_npi as provider_npi,  prov_billing_vendor_specialty as provider_specialty, prov_facility_npi, created
+		select prov_billing_npi as provider_npi,  prov_billing_vendor_specialty as provider_specialty, prov_facility_npi, created
 		from {sc}.medical_claims
 		where prov_billing_npi is not null
 		union
-		select distinct prov_referring_npi as provider_npi,  prov_referring_vendor_specialty as provider_specialty, prov_facility_npi, created
+		select prov_referring_npi as provider_npi,  prov_referring_vendor_specialty as provider_specialty, prov_facility_npi, created
 		from {sc}.medical_claims
 		where prov_referring_npi is not null
 		union
-		select distinct prov_prescribing_npi as provider_npi, prov_prescribing_vendor_specialty as provider_specialty, null as prov_facility_npi, '1900-01-01'::DATE as created
+		select prov_prescribing_npi as provider_npi, prov_prescribing_vendor_specialty as provider_specialty, null as prov_facility_npi, '1900-01-01'::DATE as created
 		from {sc}.pharmacy_claims
 		where prov_prescribing_npi is not null
 		),
 		cte_facility AS (
 			SELECT 
 				provider_npi,
-				CASE 
-					WHEN COUNT(DISTINCT prov_facility_npi) > 1 THEN NULL
-					ELSE MAX(prov_facility_npi)
-				END AS prov_facility_npi
+				MAX(prov_facility_npi) AS prov_facility_npi
 			FROM cte_union
 			WHERE created = (
 				SELECT MAX(created)
@@ -31,6 +28,7 @@
 				WHERE t2.provider_npi = cte_union.provider_npi
 			)
 			GROUP BY provider_npi
+			HAVING COUNT(DISTINCT prov_facility_npi) = 1
 		),
 		cte_specialty AS (
 		  select provider_npi, provider_specialty from
