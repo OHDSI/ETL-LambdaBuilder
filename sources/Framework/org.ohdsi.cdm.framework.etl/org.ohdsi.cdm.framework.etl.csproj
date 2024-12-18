@@ -125,6 +125,7 @@
     <None Remove="Transformation\HealthVerityFull\Definitions\enrollment.xml" />
     <None Remove="Transformation\HealthVerityFull\Definitions\events.xml" />
     <None Remove="Transformation\HealthVerityFull\Definitions\lab_tests.xml" />
+	<None Remove="Transformation\HealthVerityFull\Definitions\person.xml" />
     <None Remove="Transformation\HealthVerityFull\Definitions\L_PROVIDER.xml" />
 	<None Remove="Transformation\HealthVerityFull\Definitions\L_LOCATION.xml" />
 	<None Remove="Transformation\HealthVerityFull\Definitions\L_CARE_SITE.xml" />
@@ -675,6 +676,9 @@
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</EmbeddedResource>
 		<EmbeddedResource Include="Transformation\HealthVerityFull\Definitions\lab_tests.xml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</EmbeddedResource>
+		<EmbeddedResource Include="Transformation\HealthVerityFull\Definitions\person.xml">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</EmbeddedResource>
 		<EmbeddedResource Include="Transformation\HealthVerityFull\Definitions\L_PROVIDER.xml">

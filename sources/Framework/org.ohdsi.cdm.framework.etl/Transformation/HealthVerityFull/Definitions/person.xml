@@ -1,6 +1,6 @@
 ﻿<QueryDefinition>
-  <Query database="none">
-		with a as
+  <Query>
+	with a as
 		(
 		SELECT
 		ch.person_id as PersonId,
@@ -9,11 +9,12 @@
 		patient_year_of_birth,
 		date_start,
 		date_end,
-		1 as benefit_type,
+		case when lower(benefit_type) = 'medical' then 1
+		   when lower(benefit_type) = 'pharmacy' or benefit_type is null then 2
+		end as benefit_type,
 		data_vendor
 		FROM {sc}.enrollment
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
-		where lower(benefit_type) = 'medical'
 
 		union
 
@@ -22,19 +23,46 @@
 		hvid,
 		patient_gender,
 		patient_year_of_birth,
-		date_start,
-		date_end,
-		2 as benefit_type,
+		null as date_start,
+		null as date_end,
+		NULL as benefit_type,
 		data_vendor
-		FROM {sc}.enrollment
+		FROM {sc}.medical_claims
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
-		where lower(benefit_type) = 'pharmacy' or benefit_type is null
-		)
+		
+		union
 
-		select *
+		SELECT
+		ch.person_id as PersonId,
+		hvid,
+		patient_gender,
+		patient_year_of_birth,
+		null as date_start,
+		null as date_end,
+		NULL as benefit_type,
+		data_vendor
+		FROM {sc}.pharmacy_claims
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
+		
+		union
+
+		SELECT
+		ch.person_id as PersonId,
+		hvid,
+		patient_gender,
+		patient_year_of_birth,
+		null as date_start,
+		null as date_end,
+		NULL as benefit_type,
+		data_vendor
+		FROM {sc}.events
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
+		)
+		select
+		  a.*
 		from a
 		order by 1
-	</Query>
+    </Query>
   <Persons>
     <PersonDefinition>
       <PersonId>PersonId</PersonId>
