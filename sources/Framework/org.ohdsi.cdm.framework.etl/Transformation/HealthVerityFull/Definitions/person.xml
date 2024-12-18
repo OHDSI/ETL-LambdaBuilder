@@ -9,7 +9,6 @@
 		patient_year_of_birth,
 		null as date_start,
 		null as date_end,
-		null as period_type_concept_id,
 		data_vendor
 		FROM {sc}.enrollment
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
@@ -37,11 +36,6 @@
 		  or lower(logical_delete_reason) not in ('denied claims', 'reversal to original claim')) 
 			then coalesce(date_service_end, date_service)
 		end as date_end,
-		case
-		  when lower(claim_type) = 'p' then 32871
-		  when lower(claim_type) = 'i' then 32810
-		  else 32811
-		end as period_type_concept_id,
 		data_vendor
 		FROM {sc}.medical_claims
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
@@ -67,7 +61,6 @@
 		  or logical_delete_reason = 'null')
 			then date_service
 		end as date_end,
-		32869 as period_type_concept_id,
 		data_vendor
 		FROM {sc}.pharmacy_claims
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
@@ -79,9 +72,8 @@
 		hvid,
 		patient_gender,
 		patient_year_of_birth,
-		null as date_start,
-		null as date_end,
-		NULL as period_type_concept_id,
+		event_date as date_start,
+		event_date as date_end,
 		data_vendor
 		FROM {sc}.events
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
@@ -99,7 +91,6 @@
       <YearOfBirth>patient_year_of_birth</YearOfBirth>
       <StartDate>date_start</StartDate>
       <EndDate>date_end</EndDate>
-      <PeriodTypeConceptId>period_type_concept_id</PeriodTypeConceptId>
       <AdditionalFields>
         <string>data_vendor</string>
       </AdditionalFields>

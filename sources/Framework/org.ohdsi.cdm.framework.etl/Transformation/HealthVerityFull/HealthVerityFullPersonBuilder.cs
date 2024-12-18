@@ -359,6 +359,26 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
         {
             if (observationPeriods.Length > 1)
             {
+                if (observationPeriods.Any(op => op.StartDate != DateTime.MinValue && (op.EndDate.HasValue && op.EndDate.Value != DateTime.MinValue)))
+                {
+                    var minStartDate = observationPeriods.Where(op => op.StartDate != DateTime.MinValue).Min(op => op.StartDate);
+                    var maxEndDate = observationPeriods.Where(op => op.EndDate.HasValue && op.EndDate.Value != DateTime.MinValue).Max(op => op.EndDate.Value);
+
+                    yield return new ObservationPeriod
+                    {
+                        StartDate = minStartDate,
+                        EndDate = maxEndDate,
+                        TypeConceptId = 32815,
+                        PersonId = observationPeriods[0].PersonId
+                    };
+                }
+            }
+        }
+
+        /*public override IEnumerable<ObservationPeriod> BuildObservationPeriods(int gap, EraEntity[] observationPeriods)
+        {
+            if (observationPeriods.Length > 1)
+            {
                 List<EraEntity> medical = []; //observationPeriods.Where(op => op.TypeConceptId == 1).ToArray();
                 List<EraEntity> pharmacy = []; //observationPeriods.Where(op => op.TypeConceptId == 2).ToArray();
 
@@ -442,9 +462,9 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
                     }
                 }
             }
-        }
+        }*/
 
-        private void FixObservationPeriodDates(IEnumerable<EraEntity> observationPeriods, Table table)
+        /*private void FixObservationPeriodDates(IEnumerable<EraEntity> observationPeriods, Table table)
         {
             foreach (var op in observationPeriods)
             {
@@ -504,7 +524,7 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
             //        }
             //    }
             //}
-        }
+        }*/
 
         public override Attrition Build(ChunkData data, KeyMasterOffsetManager o)
         {
@@ -560,13 +580,13 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
                    BuildObservationPeriods(person.ObservationPeriodGap, [.. ObservationPeriodsRaw])
                        .ToArray();
 
-            foreach (var op in observationPeriods)
+            /*foreach (var op in observationPeriods)
             {
                 op.Id = Offset.GetKeyOffset(op.PersonId).ObservationPeriodId;
 
                 if (op.EndDate.Value.Date > Vendor.SourceReleaseDate.Value.Date)
                     op.EndDate = Vendor.SourceReleaseDate.Value;
-            }
+            }*/
 
             if (observationPeriods.Length == 0)
             {

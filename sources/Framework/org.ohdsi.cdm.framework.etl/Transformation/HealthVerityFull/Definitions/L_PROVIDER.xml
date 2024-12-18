@@ -43,7 +43,7 @@
 					  provider_specialty,
 					  COUNT(*) AS freq
 				  FROM cte_union
-				  WHERE provider_specialty != 'UNDEFINED'
+				  WHERE LOWER(provider_specialty) NOT IN ('undefined', 'unknown physician specialty', '')
 				  GROUP BY provider_npi, provider_specialty
 			  ) t
 			)
