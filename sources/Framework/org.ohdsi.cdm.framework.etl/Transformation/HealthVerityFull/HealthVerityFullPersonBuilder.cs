@@ -591,7 +591,7 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
                     op.EndDate = Vendor.SourceReleaseDate.Value;
             }*/
 
-            if (observationPeriods.Length == 0) // && payerPlanPeriods.Length == 0)
+            if (observationPeriods.Length == 0 && payerPlanPeriods.Length == 0)
             {
                 return Attrition.InvalidObservationTime;
             }
@@ -711,12 +711,15 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
                 BuildDrugExposures([.. DrugExposuresRaw], visitOccurrences, observationPeriods)
                     .ToArray();
 
-            var maxEndDate = observationPeriods.Max(op => op.EndDate.Value);
-            foreach (var de in drugExposures)
+            if (observationPeriods.Length > 0)
             {
-                if (de.EndDate > DateTime.Now)
+                var maxEndDate = observationPeriods.Max(op => op.EndDate.Value);
+                foreach (var de in drugExposures)
                 {
-                    de.EndDate = maxEndDate;
+                    if (de.EndDate > DateTime.Now)
+                    {
+                        de.EndDate = maxEndDate;
+                    }
                 }
             }
 
