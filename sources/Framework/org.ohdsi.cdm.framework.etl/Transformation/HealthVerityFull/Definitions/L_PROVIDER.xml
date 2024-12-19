@@ -26,6 +26,7 @@
 				SELECT MAX(created)
 				FROM cte_union t2
 				WHERE t2.provider_npi = cte_union.provider_npi
+				and prov_facility_npi is not null
 			)
 			GROUP BY provider_npi
 			HAVING COUNT(DISTINCT prov_facility_npi) = 1
