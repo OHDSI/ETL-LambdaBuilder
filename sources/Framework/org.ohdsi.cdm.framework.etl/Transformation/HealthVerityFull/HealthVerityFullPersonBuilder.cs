@@ -591,7 +591,7 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
                     op.EndDate = Vendor.SourceReleaseDate.Value;
             }*/
 
-            if (observationPeriods.Length == 0 && payerPlanPeriods.Length == 0)
+            if (observationPeriods.Length == 0) // && payerPlanPeriods.Length == 0)
             {
                 return Attrition.InvalidObservationTime;
             }
