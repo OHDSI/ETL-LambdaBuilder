@@ -111,8 +111,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerityFull
                 return new KeyValuePair<Person, Attrition>(null, Attrition.UnknownGender);
             }*/
 
-            //if (records.Any(r => r.GenderConceptId != 8551 && r.GenderConceptId != person.GenderConceptId))
-            if (records.Any(r => r.GenderConceptId != person.GenderConceptId))
+            if (records.Any(r => r.GenderConceptId != 8551 && r.GenderConceptId != person.GenderConceptId))
             {
                 return new KeyValuePair<Person, Attrition>(null, Attrition.GenderChanges); // Gender changed over different enrollment period 
             }
@@ -576,8 +575,10 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
                 return Attrition.UnacceptablePatientQuality;
             }
 
+            var observationPeriodRawNew = BuildObservationPeriodRawNew();
+
             var observationPeriods =
-                   BuildObservationPeriods(person.ObservationPeriodGap, [.. ObservationPeriodsRaw])
+                   BuildObservationPeriods(person.ObservationPeriodGap, [.. observationPeriodRawNew])
                        .ToArray();
 
             /*foreach (var op in observationPeriods)
@@ -722,6 +723,8 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
             var deviceExposure = BuildDeviceExposure([.. DeviceExposureRaw], visitOccurrences, observationPeriods)
                 .ToArray();
 
+            var death = BuildDeath([.. DeathRecords], visitOccurrences, observationPeriods);
+
             //// set corresponding ProviderIds
             //SetProviderIds(drugExposures);
             //SetProviderIds(conditionOccurrences);
@@ -753,7 +756,7 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
             }
 
             // push built entities to ChunkBuilder for further save to CDM database
-            AddToChunk(person, null,
+            AddToChunk(person, death,
                 observationPeriods,
                 [],
                 UpdateRSourceConcept(drugExposures).ToArray(),
@@ -1043,6 +1046,37 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
 
                 }
             }
+        }
+        public List<EraEntity> BuildObservationPeriodRawNew()
+        {
+            var observationPeriodRawNew = new List<EraEntity>();
+
+            void AddObservationPeriod(List<IEntity> entities)
+            {
+                if (entities == null || entities.Count == 0) return;
+
+                var minStartDate = entities.Min(e => e.StartDate);
+                var maxEndDate = entities.Max(e => e.GetEndDate() != DateTime.MinValue ? e.GetEndDate() : e.StartDate);
+
+                observationPeriodRawNew.Add(new EraEntity
+                {
+                    StartDate = minStartDate,
+                    EndDate = maxEndDate,
+                    TypeConceptId = 32815,
+                    PersonId = entities[0].PersonId
+                });
+            }
+
+            AddObservationPeriod(ConditionOccurrencesRaw.Cast<IEntity>().ToList());
+            AddObservationPeriod(ProcedureOccurrencesRaw.Cast<IEntity>().ToList());
+            AddObservationPeriod(DrugExposuresRaw.Cast<IEntity>().ToList());
+            AddObservationPeriod(DeviceExposureRaw.Cast<IEntity>().ToList());
+            AddObservationPeriod(ObservationsRaw.Cast<IEntity>().ToList());
+            AddObservationPeriod(MeasurementsRaw.Cast<IEntity>().ToList());
+            AddObservationPeriod(VisitDetailsRaw.Cast<IEntity>().ToList());
+            AddObservationPeriod(DeathRecords.Cast<IEntity>().ToList());
+
+            return observationPeriodRawNew;
         }
 
         #endregion
