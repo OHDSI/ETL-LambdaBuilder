@@ -102,9 +102,9 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerityFull
             if (filtered.Length == 0)
                 return new KeyValuePair<Person, Attrition>(null, Attrition.UnacceptablePatientQuality);
 
-            var ordered = filtered.OrderByDescending(p => p.StartDate).ToArray();
-            var person = ordered.Take(1).First();
-            person.StartDate = ordered.Take(1).Last().StartDate;
+            //var ordered = filtered.OrderByDescending(p => p.GenderConceptId).ToArray();
+            var person = filtered.FirstOrDefault(p => p.GenderConceptId != 8551) ?? filtered.First();
+            //person.StartDate = ordered.Take(1).Last().StartDate;
 
             /*if (person.GenderConceptId == 8551)
             {
@@ -581,6 +581,8 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
                    BuildObservationPeriods(person.ObservationPeriodGap, [.. observationPeriodRawNew])
                        .ToArray();
 
+            var payerPlanPeriods = BuildPayerPlanPeriods([.. PayerPlanPeriodsRaw], null).ToArray();
+
             /*foreach (var op in observationPeriods)
             {
                 op.Id = Offset.GetKeyOffset(op.PersonId).ObservationPeriodId;
@@ -589,7 +591,7 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
                     op.EndDate = Vendor.SourceReleaseDate.Value;
             }*/
 
-            if (observationPeriods.Length == 0)
+            if (observationPeriods.Length == 0 && payerPlanPeriods.Length == 0)
             {
                 return Attrition.InvalidObservationTime;
             }
@@ -758,7 +760,7 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
             // push built entities to ChunkBuilder for further save to CDM database
             AddToChunk(person, death,
                 observationPeriods,
-                [],
+                payerPlanPeriods,
                 UpdateRSourceConcept(drugExposures).ToArray(),
                 UpdateRSourceConcept(conditionOccurrences).ToArray(),
                 UpdateRSourceConcept(procedureOccurrences).ToArray(),

@@ -1,52 +1,46 @@
 ﻿<QueryDefinition>
-  <Query database="none">
-		with a as
+  <Query>
+	with a as
 		(
-		SELECT
+		select
 		ch.person_id as PersonId,
 		hvid,
-		patient_gender,
-		patient_year_of_birth,
 		date_start,
 		date_end,
-		1 as benefit_type,
-		data_vendor
+		payer_type,
+		benefit_type,
+		case when lower(payer_type) = 'medicaid'
+		   then 289
+		   when lower(payer_type) = 'commercial'
+		   then 327
+		   when lower(payer_type) IN ('medicare', 'medicare advantage') 
+		   then 281
+		   else 0
+		end as payer_concept_id,
+		case when lower(benefit_type) = 'medical'
+			 then 270
+		   when lower(benefit_type) = 'pharmacy'
+		   then 273
+		   else 0
+		end as plan_concept_id
 		FROM {sc}.enrollment
-		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
-		where lower(benefit_type) = 'medical'
-
-		union
-
-		SELECT
-		ch.person_id as PersonId,
-		hvid,
-		patient_gender,
-		patient_year_of_birth,
-		date_start,
-		date_end,
-		2 as benefit_type,
-		data_vendor
-		FROM {sc}.enrollment
-		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
-		where lower(benefit_type) = 'pharmacy' or benefit_type is null
+		  JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
 		)
-
-		select *
+		select
+		  a.*
 		from a
-		order by 1
 	</Query>
-  <Persons>
-    <PersonDefinition>
-      <PersonId>PersonId</PersonId>
-      <PersonSourceValue>hvid</PersonSourceValue>
-      <Gender>patient_gender</Gender>
-      <YearOfBirth>patient_year_of_birth</YearOfBirth>
-      <StartDate>date_start</StartDate>
-      <EndDate>date_end</EndDate>
-      <PeriodTypeConceptId>benefit_type</PeriodTypeConceptId>
-      <AdditionalFields>
-        <string>data_vendor</string>
-      </AdditionalFields>
-    </PersonDefinition>
-  </Persons>
+  <PayerPlanPeriods>
+    <PayerPlanPeriodDefinition>
+		<PersonId>PersonId</PersonId>
+		<StartDate>date_start</StartDate>
+		<EndDate>date_end</EndDate>
+		<PayerConceptId>payer_concept_id</PayerConceptId>
+		<PayerSourceValue>payer_type</PayerSourceValue>
+		<PayerSourceConceptId>0</PayerSourceConceptId>
+		<PlanConceptId>plan_concept_id</PlanConceptId>
+		<PlanSourceValue>benefit_type</PlanSourceValue>
+		<PlanSourceConceptId>0</PlanSourceConceptId>
+    </PayerPlanPeriodDefinition>
+  </PayerPlanPeriods>
 </QueryDefinition>
