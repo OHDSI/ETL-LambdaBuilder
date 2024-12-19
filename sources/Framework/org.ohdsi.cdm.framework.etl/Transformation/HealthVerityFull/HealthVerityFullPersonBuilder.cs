@@ -356,7 +356,7 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
 
         public override IEnumerable<ObservationPeriod> BuildObservationPeriods(int gap, EraEntity[] observationPeriods)
         {
-            if (observationPeriods.Length > 1)
+            if (observationPeriods.Length > 0)
             {
                 if (observationPeriods.Any(op => op.StartDate != DateTime.MinValue && (op.EndDate.HasValue && op.EndDate.Value != DateTime.MinValue)))
                 {
