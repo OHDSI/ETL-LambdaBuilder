@@ -1,27 +1,27 @@
 source_code	source_concept_id	source_vocabulary_id	source_code_description	target_concept_id	target_vocabulary_id	valid_start_date	valid_end_date	invalid_reason
-Allergology	0	JNJ_JMDC_SPECIALTIES	Allergology	38004448	Specialty	1970-01-01	2099-12-31	
-Anesthesiology	0	JNJ_JMDC_SPECIALTIES	Anesthesiology	38004450	Specialty	1970-01-01	2099-12-31	
-Cardiology	0	JNJ_JMDC_SPECIALTIES	Cardiology	38004451	Specialty	1970-01-01	2099-12-31	
-Cardiovascular Surgery	0	JNJ_JMDC_SPECIALTIES	Cardiovascular Surgery	38004497	Specialty	1970-01-01	2099-12-31	
-Dermatology	0	JNJ_JMDC_SPECIALTIES	Dermatology	38004452	Specialty	1970-01-01	2099-12-31	
-Gastroenterology	0	JNJ_JMDC_SPECIALTIES	Gastroenterology	38004455	Specialty	1970-01-01	2099-12-31	
-General Internal Medicine	0	JNJ_JMDC_SPECIALTIES	General Internal Medicine	38004456	Specialty	1970-01-01	2099-12-31	
-Neurology	0	JNJ_JMDC_SPECIALTIES	Neurology	38004458	Specialty	1970-01-01	2099-12-31	
-Neurosurgery	0	JNJ_JMDC_SPECIALTIES	Neurosurgery	38004459	Specialty	1970-01-01	2099-12-31	
-Obstetrics & Gynecology	0	JNJ_JMDC_SPECIALTIES	Obstetrics & Gynecology	38004461	Specialty	1970-01-01	2099-12-31	
-Ophthalmology	0	JNJ_JMDC_SPECIALTIES	Ophthalmology	38004463	Specialty	1970-01-01	2099-12-31	
-Orthopedics	0	JNJ_JMDC_SPECIALTIES	Orthopedics	38004465	Specialty	1970-01-01	2099-12-31	
-Other Internal Medicine	0	JNJ_JMDC_SPECIALTIES	Other Internal Medicine	38004456	Specialty	1970-01-01	2099-12-31	
-Other Orthopedics	0	JNJ_JMDC_SPECIALTIES	Other Orthopedics	38004465	Specialty	1970-01-01	2099-12-31	
-Others	0	JNJ_JMDC_SPECIALTIES	Others	0	Specialty	1970-01-01	2099-12-31	
-Other Surgery	0	JNJ_JMDC_SPECIALTIES	Other Surgery	38004447	Specialty	1970-01-01	2099-12-31	
-Otorhinolaryngology	0	JNJ_JMDC_SPECIALTIES	Otorhinolaryngology	38004449	Specialty	1970-01-01	2099-12-31	
-Pediatrics	0	JNJ_JMDC_SPECIALTIES	Pediatrics	38004477	Specialty	1970-01-01	2099-12-31	
-Psychiatry	0	JNJ_JMDC_SPECIALTIES	Psychiatry	38004469	Specialty	1970-01-01	2099-12-31	
-Psychosomatic Medicine	0	JNJ_JMDC_SPECIALTIES	Psychosomatic Medicine	0	Specialty	1970-01-01	2099-12-31	
-Radiology	0	JNJ_JMDC_SPECIALTIES	Radiology	38004675	Specialty	1970-01-01	2099-12-31	
-Respirator Surgery	0	JNJ_JMDC_SPECIALTIES	Respirator Surgery	0	Specialty	1970-01-01	2099-12-31	
-Respiratory	0	JNJ_JMDC_SPECIALTIES	Respiratory	0	Specialty	1970-01-01	2099-12-31	
-Rheumatology	0	JNJ_JMDC_SPECIALTIES	Rheumatology	38004491	Specialty	1970-01-01	2099-12-31	
-Surgery	0	JNJ_JMDC_SPECIALTIES	Surgery	38004447	Specialty	1970-01-01	2099-12-31	
-Urology	0	JNJ_JMDC_SPECIALTIES	Urology	38004474	Specialty	1970-01-01	2099-12-31	
+Allergology	0	JNJ_JMDC_SPECIALTIES	Allergology	38004448	Medicare Specialty	1970-01-01	2099-12-31	
+Anesthesiology	0	JNJ_JMDC_SPECIALTIES	Anesthesiology	38004450	Medicare Specialty	1970-01-01	2099-12-31	
+Cardiology	0	JNJ_JMDC_SPECIALTIES	Cardiology	38004451	Medicare Specialty	1970-01-01	2099-12-31	
+Cardiovascular Surgery	0	JNJ_JMDC_SPECIALTIES	Cardiovascular Surgery	38004497	Medicare Specialty	1970-01-01	2099-12-31	
+Dermatology	0	JNJ_JMDC_SPECIALTIES	Dermatology	38004452	Medicare Specialty	1970-01-01	2099-12-31	
+Gastroenterology	0	JNJ_JMDC_SPECIALTIES	Gastroenterology	38004455	Medicare Specialty	1970-01-01	2099-12-31	
+General Internal Medicine	0	JNJ_JMDC_SPECIALTIES	General Internal Medicine	38004456	Medicare Specialty	1970-01-01	2099-12-31	
+Neurology	0	JNJ_JMDC_SPECIALTIES	Neurology	38004458	Medicare Specialty	1970-01-01	2099-12-31	
+Neurosurgery	0	JNJ_JMDC_SPECIALTIES	Neurosurgery	38004459	Medicare Specialty	1970-01-01	2099-12-31	
+Obstetrics & Gynecology	0	JNJ_JMDC_SPECIALTIES	Obstetrics & Gynecology	38004461	Medicare Specialty	1970-01-01	2099-12-31	
+Ophthalmology	0	JNJ_JMDC_SPECIALTIES	Ophthalmology	38004463	Medicare Specialty	1970-01-01	2099-12-31	
+Orthopedics	0	JNJ_JMDC_SPECIALTIES	Orthopedics	38004465	Medicare Specialty	1970-01-01	2099-12-31	
+Other Internal Medicine	0	JNJ_JMDC_SPECIALTIES	Other Internal Medicine	38004456	Medicare Specialty	1970-01-01	2099-12-31	
+Other Orthopedics	0	JNJ_JMDC_SPECIALTIES	Other Orthopedics	38004465	Medicare Specialty	1970-01-01	2099-12-31	
+Others	0	JNJ_JMDC_SPECIALTIES	Others	0	None	1970-01-01	2099-12-31	
+Other Surgery	0	JNJ_JMDC_SPECIALTIES	Other Surgery	38004447	Medicare Specialty	1970-01-01	2099-12-31	
+Otorhinolaryngology	0	JNJ_JMDC_SPECIALTIES	Otorhinolaryngology	38004449	Medicare Specialty	1970-01-01	2099-12-31	
+Pediatrics	0	JNJ_JMDC_SPECIALTIES	Pediatrics	38004477	Medicare Specialty	1970-01-01	2099-12-31	
+Psychiatry	0	JNJ_JMDC_SPECIALTIES	Psychiatry	38004469	Medicare Specialty	1970-01-01	2099-12-31	
+Psychosomatic Medicine	0	JNJ_JMDC_SPECIALTIES	Psychosomatic Medicine	0	None	1970-01-01	2099-12-31	
+Radiology	0	JNJ_JMDC_SPECIALTIES	Radiology	38004675	Medicare Specialty	1970-01-01	2099-12-31	
+Respirator Surgery	0	JNJ_JMDC_SPECIALTIES	Respirator Surgery	0	None	1970-01-01	2099-12-31	
+Respiratory	0	JNJ_JMDC_SPECIALTIES	Respiratory	0	None	1970-01-01	2099-12-31	
+Rheumatology	0	JNJ_JMDC_SPECIALTIES	Rheumatology	38004491	Medicare Specialty	1970-01-01	2099-12-31	
+Surgery	0	JNJ_JMDC_SPECIALTIES	Surgery	38004447	Medicare Specialty	1970-01-01	2099-12-31	
+Urology	0	JNJ_JMDC_SPECIALTIES	Urology	38004474	Medicare Specialty	1970-01-01	2099-12-31	

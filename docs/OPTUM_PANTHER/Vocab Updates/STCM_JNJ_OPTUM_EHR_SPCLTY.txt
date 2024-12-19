@@ -1,91 +1,99 @@
 source_code	source_concept_id	source_vocabulary_id	source_code_description	target_concept_id	target_vocabulary_id	valid_start_date	valid_end_date	invalid_reason
-Allergy and Immunology	0	JNJ_OPTUM_EHR_SPCLTY	Allergy and Immunology	38004448	Specialty	1970-01-01	2099-12-31	
-Ambulatory Surgical Center	0	JNJ_OPTUM_EHR_SPCLTY	Ambulatory Surgical Center	38004679	Specialty	1970-01-01	2099-12-31	
-Anesthesiology	0	JNJ_OPTUM_EHR_SPCLTY	Anesthesiology	38004450	Specialty	1970-01-01	2099-12-31	
-Bariatric Surgery	0	JNJ_OPTUM_EHR_SPCLTY	Bariatric Surgery	38004447	Specialty	1970-01-01	2099-12-31	
-Birthing Center	0	JNJ_OPTUM_EHR_SPCLTY	Birthing Center	38004461	Specialty	1970-01-01	2099-12-31	
-Cardiology	0	JNJ_OPTUM_EHR_SPCLTY	Cardiology	38004451	Specialty	1970-01-01	2099-12-31	
-Cardiovascular Surgery	0	JNJ_OPTUM_EHR_SPCLTY	Cardiovascular Surgery	38004497	Specialty	1970-01-01	2099-12-31	
-Chiropractic Care	0	JNJ_OPTUM_EHR_SPCLTY	Chiropractic Care	38004475	Specialty	1970-01-01	2099-12-31	
-Clinic	0	JNJ_OPTUM_EHR_SPCLTY	Clinic	38004693	Specialty	1970-01-01	2099-12-31	
-Clinical Neuropsychology	0	JNJ_OPTUM_EHR_SPCLTY	Clinical Neuropsychology	38004505	Specialty	1970-01-01	2099-12-31	
-Clinical Nurse Specialist	0	JNJ_OPTUM_EHR_SPCLTY	Clinical Nurse Specialist	38004506	Specialty	1970-01-01	2099-12-31	
-Clinical Pharmacology	0	JNJ_OPTUM_EHR_SPCLTY	Clinical Pharmacology	0	Specialty	1970-01-01	2099-12-31	
-Colon and Rectal Surgery	0	JNJ_OPTUM_EHR_SPCLTY	Colon and Rectal Surgery	38004471	Specialty	1970-01-01	2099-12-31	
-Counseling	0	JNJ_OPTUM_EHR_SPCLTY	Counseling	0	Specialty	1970-01-01	2099-12-31	
-Critical Care Medicine	0	JNJ_OPTUM_EHR_SPCLTY	Critical Care Medicine	38004500	Specialty	1970-01-01	2099-12-31	
-Dentistry	0	JNJ_OPTUM_EHR_SPCLTY	Dentistry	0	Specialty	1970-01-01	2099-12-31	
-Dermatology	0	JNJ_OPTUM_EHR_SPCLTY	Dermatology	38004452	Specialty	1970-01-01	2099-12-31	
-Diagnostic Testing Center	0	JNJ_OPTUM_EHR_SPCLTY	Diagnostic Testing Center	38004678	Specialty	1970-01-01	2099-12-31	
-Dialysis Center	0	JNJ_OPTUM_EHR_SPCLTY	Dialysis Center	0	Specialty	1970-01-01	2099-12-31	
-Emergency Medicine	0	JNJ_OPTUM_EHR_SPCLTY	Emergency Medicine	38004510	Specialty	1970-01-01	2099-12-31	
-Endocrinology	0	JNJ_OPTUM_EHR_SPCLTY	Endocrinology	38004485	Specialty	1970-01-01	2099-12-31	
-Facility; Other	0	JNJ_OPTUM_EHR_SPCLTY	Facility; Other	38004514	Specialty	1970-01-01	2099-12-31	
-Family Medicine	0	JNJ_OPTUM_EHR_SPCLTY	Family Medicine	38004453	Specialty	1970-01-01	2099-12-31	
-Gastroenterology	0	JNJ_OPTUM_EHR_SPCLTY	Gastroenterology	38004455	Specialty	1970-01-01	2099-12-31	
-General Acute Care Hospital	0	JNJ_OPTUM_EHR_SPCLTY	General Acute Care Hospital	38004515	Specialty	1970-01-01	2099-12-31	
-General Practice	0	JNJ_OPTUM_EHR_SPCLTY	General Practice	38004456	Specialty	1970-01-01	2099-12-31	
-Geriatric Medicine	0	JNJ_OPTUM_EHR_SPCLTY	Geriatric Medicine	38004478	Specialty	1970-01-01	2099-12-31	
-Hematology	0	JNJ_OPTUM_EHR_SPCLTY	Hematology	38004501	Specialty	1970-01-01	2099-12-31	
-Hepatology	0	JNJ_OPTUM_EHR_SPCLTY	Hepatology	0	Specialty	1970-01-01	2099-12-31	
-Hospice and Palliative Medicine	0	JNJ_OPTUM_EHR_SPCLTY	Hospice and Palliative Medicine	0	Specialty	1970-01-01	2099-12-31	
-Hospital Medicine	0	JNJ_OPTUM_EHR_SPCLTY	Hospital Medicine	38004515	Specialty	1970-01-01	2099-12-31	
-Imaging Center	0	JNJ_OPTUM_EHR_SPCLTY	Imaging Center	38004675	Specialty	1970-01-01	2099-12-31	
-Infectious Disease	0	JNJ_OPTUM_EHR_SPCLTY	Infectious Disease	38004484	Specialty	1970-01-01	2099-12-31	
-Internal Medicine	0	JNJ_OPTUM_EHR_SPCLTY	Internal Medicine	38004456	Specialty	1970-01-01	2099-12-31	
-Legal Medicine	0	JNJ_OPTUM_EHR_SPCLTY	Legal Medicine	0	Specialty	1970-01-01	2099-12-31	
-Marriage and Family Therapy	0	JNJ_OPTUM_EHR_SPCLTY	Marriage and Family Therapy	0	Specialty	1970-01-01	2099-12-31	
-Medical Genetics	0	JNJ_OPTUM_EHR_SPCLTY	Medical Genetics	0	Specialty	1970-01-01	2099-12-31	
-Mh/Sa Non-Acute Facility	0	JNJ_OPTUM_EHR_SPCLTY	Mh/Sa Non-Acute Facility	0	Specialty	1970-01-01	2099-12-31	
-Mid Level Provider	0	JNJ_OPTUM_EHR_SPCLTY	Mid Level Provider	38004514	Specialty	1970-01-01	2099-12-31	
-Nephrology	0	JNJ_OPTUM_EHR_SPCLTY	Nephrology	38004479	Specialty	1970-01-01	2099-12-31	
-Neurological Surgery	0	JNJ_OPTUM_EHR_SPCLTY	Neurological Surgery	38004459	Specialty	1970-01-01	2099-12-31	
-Neurology	0	JNJ_OPTUM_EHR_SPCLTY	Neurology	38004458	Specialty	1970-01-01	2099-12-31	
-Nuclear Medicine	0	JNJ_OPTUM_EHR_SPCLTY	Nuclear Medicine	38004476	Specialty	1970-01-01	2099-12-31	
-Nurse Anesthetist	0	JNJ_OPTUM_EHR_SPCLTY	Nurse Anesthetist	38004483	Specialty	1970-01-01	2099-12-31	
-Nutrition	0	JNJ_OPTUM_EHR_SPCLTY	Nutrition	38004694	Specialty	1970-01-01	2099-12-31	
-Obstetrics and Gynecology	0	JNJ_OPTUM_EHR_SPCLTY	Obstetrics and Gynecology	38004461	Specialty	1970-01-01	2099-12-31	
-Occupational Medicine	0	JNJ_OPTUM_EHR_SPCLTY	Occupational Medicine	38004492	Specialty	1970-01-01	2099-12-31	
-Occupational Therapy	0	JNJ_OPTUM_EHR_SPCLTY	Occupational Therapy	38004492	Specialty	1970-01-01	2099-12-31	
-Oncology	0	JNJ_OPTUM_EHR_SPCLTY	Oncology	38004507	Specialty	1970-01-01	2099-12-31	
-Ophthalmology	0	JNJ_OPTUM_EHR_SPCLTY	Ophthalmology	38004463	Specialty	1970-01-01	2099-12-31	
-Optometry	0	JNJ_OPTUM_EHR_SPCLTY	Optometry	38004481	Specialty	1970-01-01	2099-12-31	
-Oral and Maxillofacial Surgery	0	JNJ_OPTUM_EHR_SPCLTY	Oral and Maxillofacial Surgery	38004504	Specialty	1970-01-01	2099-12-31	
-Orthopedic Surgery	0	JNJ_OPTUM_EHR_SPCLTY	Orthopedic Surgery	38004465	Specialty	1970-01-01	2099-12-31	
-Other Non-Acute Hospital	0	JNJ_OPTUM_EHR_SPCLTY	Other Non-Acute Hospital	38004515	Specialty	1970-01-01	2099-12-31	
-Other Nursing Facility	0	JNJ_OPTUM_EHR_SPCLTY	Other Nursing Facility	0	Specialty	1970-01-01	2099-12-31	
-Otolaryngology	0	JNJ_OPTUM_EHR_SPCLTY	Otolaryngology	38004449	Specialty	1970-01-01	2099-12-31	
-Pain Medicine	0	JNJ_OPTUM_EHR_SPCLTY	Pain Medicine	38004494	Specialty	1970-01-01	2099-12-31	
-Pathology	0	JNJ_OPTUM_EHR_SPCLTY	Pathology	38004466	Specialty	1970-01-01	2099-12-31	
-Pediatrics	0	JNJ_OPTUM_EHR_SPCLTY	Pediatrics	38004477	Specialty	1970-01-01	2099-12-31	
-Pediatric Specialties	0	JNJ_OPTUM_EHR_SPCLTY	Pediatric Specialties	38004477	Specialty	1970-01-01	2099-12-31	
-Pediatric Surgery	0	JNJ_OPTUM_EHR_SPCLTY	Pediatric Surgery	38004447	Specialty	1970-01-01	2099-12-31	
-Pharmacy	0	JNJ_OPTUM_EHR_SPCLTY	Pharmacy	38004520	Specialty	1970-01-01	2099-12-31	
-Physical Medicine and Rehabilitation	0	JNJ_OPTUM_EHR_SPCLTY	Physical Medicine and Rehabilitation	38004468	Specialty	1970-01-01	2099-12-31	
-Plastic Surgery	0	JNJ_OPTUM_EHR_SPCLTY	Plastic Surgery	38004467	Specialty	1970-01-01	2099-12-31	
-Podiatry	0	JNJ_OPTUM_EHR_SPCLTY	Podiatry	38004486	Specialty	1970-01-01	2099-12-31	
-Preventive Medicine	0	JNJ_OPTUM_EHR_SPCLTY	Preventive Medicine	38004503	Specialty	1970-01-01	2099-12-31	
-Psychiatric Hospital	0	JNJ_OPTUM_EHR_SPCLTY	Psychiatric Hospital	38004515	Specialty	1970-01-01	2099-12-31	
-Psychiatry	0	JNJ_OPTUM_EHR_SPCLTY	Psychiatry	38004469	Specialty	1970-01-01	2099-12-31	
-Psychiatry and Neurology	0	JNJ_OPTUM_EHR_SPCLTY	Psychiatry and Neurology	38004505	Specialty	1970-01-01	2099-12-31	
-Psychoanalysis	0	JNJ_OPTUM_EHR_SPCLTY	Psychoanalysis	0	Specialty	1970-01-01	2099-12-31	
-Psychology	0	JNJ_OPTUM_EHR_SPCLTY	Psychology	38004488	Specialty	1970-01-01	2099-12-31	
-Pulmonary Medicine	0	JNJ_OPTUM_EHR_SPCLTY	Pulmonary Medicine	38004472	Specialty	1970-01-01	2099-12-31	
-Radiation Oncology	0	JNJ_OPTUM_EHR_SPCLTY	Radiation Oncology	38004509	Specialty	1970-01-01	2099-12-31	
-Radiology	0	JNJ_OPTUM_EHR_SPCLTY	Radiology	38004675	Specialty	1970-01-01	2099-12-31	
-Rheumatology	0	JNJ_OPTUM_EHR_SPCLTY	Rheumatology	38004491	Specialty	1970-01-01	2099-12-31	
-Skilled Nursing Facility	0	JNJ_OPTUM_EHR_SPCLTY	Skilled Nursing Facility	38004516	Specialty	1970-01-01	2099-12-31	
-Social Work	0	JNJ_OPTUM_EHR_SPCLTY	Social Work	38004499	Specialty	1970-01-01	2099-12-31	
-Social Work Clinical	0	JNJ_OPTUM_EHR_SPCLTY	Social Work Clinical	38004499	Specialty	1970-01-01	2099-12-31	
-Surgery	0	JNJ_OPTUM_EHR_SPCLTY	Surgery	38004447	Specialty	1970-01-01	2099-12-31	
-Surgery and Surgical Specialties	0	JNJ_OPTUM_EHR_SPCLTY	Surgery and Surgical Specialties	38004447	Specialty	1970-01-01	2099-12-31	
-Surgical Oncology	0	JNJ_OPTUM_EHR_SPCLTY	Surgical Oncology	38004508	Specialty	1970-01-01	2099-12-31	
-Technician/Technologist	0	JNJ_OPTUM_EHR_SPCLTY	Technician/Technologist	0	Specialty	1970-01-01	2099-12-31	
-Thoracic Surgery	0	JNJ_OPTUM_EHR_SPCLTY	Thoracic Surgery	38004473	Specialty	1970-01-01	2099-12-31	
-Transplant Surgery	0	JNJ_OPTUM_EHR_SPCLTY	Transplant Surgery	0	Specialty	1970-01-01	2099-12-31	
-Trauma Surgery	0	JNJ_OPTUM_EHR_SPCLTY	Trauma Surgery	38004447	Specialty	1970-01-01	2099-12-31	
-Unknown	0	JNJ_OPTUM_EHR_SPCLTY	Unknown	38004514	Specialty	1970-01-01	2099-12-31	
-Unspecified	0	JNJ_OPTUM_EHR_SPCLTY	Unspecified	38004514	Specialty	1970-01-01	2099-12-31	
-Urgent Care Center	0	JNJ_OPTUM_EHR_SPCLTY	Urgent Care Center	38004679	Specialty	1970-01-01	2099-12-31	
-Urology	0	JNJ_OPTUM_EHR_SPCLTY	Urology	38004474	Specialty	1970-01-01	2099-12-31	
-Vascular Surgery	0	JNJ_OPTUM_EHR_SPCLTY	Vascular Surgery	38004496	Specialty	1970-01-01	2099-12-31	
+Allergy and Immunology	0	JNJ_OPTUM_EHR_SPCLTY	Allergy and Immunology	38004448	Medicare Specialty	1970-01-01	2099-12-31	
+Ambulatory Surgical Center	0	JNJ_OPTUM_EHR_SPCLTY	Ambulatory Surgical Center	38004679	Medicare Specialty	1970-01-01	2023-01-20	D
+Ambulatory Surgical Center	0	JNJ_OPTUM_EHR_SPCLTY	Ambulatory Surgical Center	8883	CMS Place of Service	2023-01-20	2099-12-31	
+Anesthesiology	0	JNJ_OPTUM_EHR_SPCLTY	Anesthesiology	38004450	Medicare Specialty	1970-01-01	2099-12-31	
+Bariatric Surgery	0	JNJ_OPTUM_EHR_SPCLTY	Bariatric Surgery	38004447	Medicare Specialty	1970-01-01	2099-12-31	
+Birthing Center	0	JNJ_OPTUM_EHR_SPCLTY	Birthing Center	38004461	Medicare Specialty	1970-01-01	2099-12-31	
+Cardiology	0	JNJ_OPTUM_EHR_SPCLTY	Cardiology	38004451	Medicare Specialty	1970-01-01	2099-12-31	
+Cardiovascular Surgery	0	JNJ_OPTUM_EHR_SPCLTY	Cardiovascular Surgery	38004497	Medicare Specialty	1970-01-01	2099-12-31	
+Chiropractic Care	0	JNJ_OPTUM_EHR_SPCLTY	Chiropractic Care	38004475	Medicare Specialty	1970-01-01	2099-12-31	
+Clinic	0	JNJ_OPTUM_EHR_SPCLTY	Clinic	38004693	Medicare Specialty	1970-01-01	2099-12-31	
+Clinical Neuropsychology	0	JNJ_OPTUM_EHR_SPCLTY	Clinical Neuropsychology	38004505	Medicare Specialty	1970-01-01	2099-12-31	
+Clinical Nurse Specialist	0	JNJ_OPTUM_EHR_SPCLTY	Clinical Nurse Specialist	38004506	Medicare Specialty	1970-01-01	2099-12-31	
+Clinical Pharmacology	0	JNJ_OPTUM_EHR_SPCLTY	Clinical Pharmacology	0	None	1970-01-01	2099-12-31	
+Colon and Rectal Surgery	0	JNJ_OPTUM_EHR_SPCLTY	Colon and Rectal Surgery	38004471	Medicare Specialty	1970-01-01	2099-12-31	
+Counseling	0	JNJ_OPTUM_EHR_SPCLTY	Counseling	0	None	1970-01-01	2099-12-31	
+Critical Care Medicine	0	JNJ_OPTUM_EHR_SPCLTY	Critical Care Medicine	38004500	Medicare Specialty	1970-01-01	2099-12-31	
+Dentistry	0	JNJ_OPTUM_EHR_SPCLTY	Dentistry	0	None	1970-01-01	2099-12-31	
+Dermatology	0	JNJ_OPTUM_EHR_SPCLTY	Dermatology	38004452	Medicare Specialty	1970-01-01	2099-12-31	
+Diagnostic Testing Center	0	JNJ_OPTUM_EHR_SPCLTY	Diagnostic Testing Center	38004678	Medicare Specialty	1970-01-01	2099-12-31	
+Dialysis Center	0	JNJ_OPTUM_EHR_SPCLTY	Dialysis Center	0	None	1970-01-01	2099-12-31	
+Emergency Medicine	0	JNJ_OPTUM_EHR_SPCLTY	Emergency Medicine	38004510	Medicare Specialty	1970-01-01	2099-12-31	
+Endocrinology	0	JNJ_OPTUM_EHR_SPCLTY	Endocrinology	38004485	Medicare Specialty	1970-01-01	2099-12-31	
+Facility; Other	0	JNJ_OPTUM_EHR_SPCLTY	Facility; Other	38004514	Medicare Specialty	1970-01-01	2023-01-20	D
+Facility; Other	0	JNJ_OPTUM_EHR_SPCLTY	Facility; Other	32577	Provider	2023-01-20	2099-12-31	
+Family Medicine	0	JNJ_OPTUM_EHR_SPCLTY	Family Medicine	38004453	Medicare Specialty	1970-01-01	2099-12-31	
+Gastroenterology	0	JNJ_OPTUM_EHR_SPCLTY	Gastroenterology	38004455	Medicare Specialty	1970-01-01	2099-12-31	
+General Acute Care Hospital	0	JNJ_OPTUM_EHR_SPCLTY	General Acute Care Hospital	38004515	Medicare Specialty	1970-01-01	2099-12-31	
+General Practice	0	JNJ_OPTUM_EHR_SPCLTY	General Practice	38004456	Medicare Specialty	1970-01-01	2099-12-31	
+Geriatric Medicine	0	JNJ_OPTUM_EHR_SPCLTY	Geriatric Medicine	38004478	Medicare Specialty	1970-01-01	2099-12-31	
+Hematology	0	JNJ_OPTUM_EHR_SPCLTY	Hematology	38004501	Medicare Specialty	1970-01-01	2099-12-31	
+Hepatology	0	JNJ_OPTUM_EHR_SPCLTY	Hepatology	0	None	1970-01-01	2099-12-31	
+Hospice and Palliative Medicine	0	JNJ_OPTUM_EHR_SPCLTY	Hospice and Palliative Medicine	0	None	1970-01-01	2099-12-31	
+Hospital Medicine	0	JNJ_OPTUM_EHR_SPCLTY	Hospital Medicine	38004515	Medicare Specialty	1970-01-01	2099-12-31	
+Imaging Center	0	JNJ_OPTUM_EHR_SPCLTY	Imaging Center	38004675	Medicare Specialty	1970-01-01	2099-12-31	
+Infectious Disease	0	JNJ_OPTUM_EHR_SPCLTY	Infectious Disease	38004484	Medicare Specialty	1970-01-01	2099-12-31	
+Internal Medicine	0	JNJ_OPTUM_EHR_SPCLTY	Internal Medicine	38004456	Medicare Specialty	1970-01-01	2099-12-31	
+Legal Medicine	0	JNJ_OPTUM_EHR_SPCLTY	Legal Medicine	0	None	1970-01-01	2099-12-31	
+Marriage and Family Therapy	0	JNJ_OPTUM_EHR_SPCLTY	Marriage and Family Therapy	0	None	1970-01-01	2099-12-31	
+Medical Genetics	0	JNJ_OPTUM_EHR_SPCLTY	Medical Genetics	0	None	1970-01-01	2099-12-31	
+Mh/Sa Non-Acute Facility	0	JNJ_OPTUM_EHR_SPCLTY	Mh/Sa Non-Acute Facility	0	None	1970-01-01	2099-12-31	
+Mid Level Provider	0	JNJ_OPTUM_EHR_SPCLTY	Mid Level Provider	38004514	Medicare Specialty	1970-01-01	2023-01-20	D
+Mid Level Provider	0	JNJ_OPTUM_EHR_SPCLTY	Mid Level Provider	32577	Provider	2023-01-20	2099-12-31	
+Nephrology	0	JNJ_OPTUM_EHR_SPCLTY	Nephrology	38004479	Medicare Specialty	1970-01-01	2099-12-31	
+Neurological Surgery	0	JNJ_OPTUM_EHR_SPCLTY	Neurological Surgery	38004459	Medicare Specialty	1970-01-01	2099-12-31	
+Neurology	0	JNJ_OPTUM_EHR_SPCLTY	Neurology	38004458	Medicare Specialty	1970-01-01	2099-12-31	
+Nuclear Medicine	0	JNJ_OPTUM_EHR_SPCLTY	Nuclear Medicine	38004476	Medicare Specialty	1970-01-01	2099-12-31	
+Nurse Anesthetist	0	JNJ_OPTUM_EHR_SPCLTY	Nurse Anesthetist	38004483	Medicare Specialty	1970-01-01	2099-12-31	
+Nutrition	0	JNJ_OPTUM_EHR_SPCLTY	Nutrition	38004694	Medicare Specialty	1970-01-01	2099-12-31	
+Obstetrics and Gynecology	0	JNJ_OPTUM_EHR_SPCLTY	Obstetrics and Gynecology	38004461	Medicare Specialty	1970-01-01	2099-12-31	
+Occupational Medicine	0	JNJ_OPTUM_EHR_SPCLTY	Occupational Medicine	38004492	Medicare Specialty	1970-01-01	2099-12-31	
+Occupational Therapy	0	JNJ_OPTUM_EHR_SPCLTY	Occupational Therapy	38004492	Medicare Specialty	1970-01-01	2099-12-31	
+Oncology	0	JNJ_OPTUM_EHR_SPCLTY	Oncology	38004507	Medicare Specialty	1970-01-01	2099-12-31	
+Ophthalmology	0	JNJ_OPTUM_EHR_SPCLTY	Ophthalmology	38004463	Medicare Specialty	1970-01-01	2099-12-31	
+Optometry	0	JNJ_OPTUM_EHR_SPCLTY	Optometry	38004481	Medicare Specialty	1970-01-01	2099-12-31	
+Oral and Maxillofacial Surgery	0	JNJ_OPTUM_EHR_SPCLTY	Oral and Maxillofacial Surgery	38004504	Medicare Specialty	1970-01-01	2099-12-31	
+Orthopedic Surgery	0	JNJ_OPTUM_EHR_SPCLTY	Orthopedic Surgery	38004465	Medicare Specialty	1970-01-01	2099-12-31	
+Other Non-Acute Hospital	0	JNJ_OPTUM_EHR_SPCLTY	Other Non-Acute Hospital	38004515	Medicare Specialty	1970-01-01	2099-12-31	
+Other Nursing Facility	0	JNJ_OPTUM_EHR_SPCLTY	Other Nursing Facility	0	None	1970-01-01	2099-12-31	
+Otolaryngology	0	JNJ_OPTUM_EHR_SPCLTY	Otolaryngology	38004449	Medicare Specialty	1970-01-01	2099-12-31	
+Pain Medicine	0	JNJ_OPTUM_EHR_SPCLTY	Pain Medicine	38004494	Medicare Specialty	1970-01-01	2099-12-31	
+Pathology	0	JNJ_OPTUM_EHR_SPCLTY	Pathology	38004466	Medicare Specialty	1970-01-01	2099-12-31	
+Pediatrics	0	JNJ_OPTUM_EHR_SPCLTY	Pediatrics	38004477	Medicare Specialty	1970-01-01	2099-12-31	
+Pediatric Specialties	0	JNJ_OPTUM_EHR_SPCLTY	Pediatric Specialties	38004477	Medicare Specialty	1970-01-01	2099-12-31	
+Pediatric Surgery	0	JNJ_OPTUM_EHR_SPCLTY	Pediatric Surgery	38004447	Medicare Specialty	1970-01-01	2099-12-31	
+Pharmacy	0	JNJ_OPTUM_EHR_SPCLTY	Pharmacy	38004520	Medicare Specialty	1970-01-01	2023-01-20	D
+Pharmacy	0	JNJ_OPTUM_EHR_SPCLTY	Pharmacy	581458	Visit	2023-01-20	2099-12-31	
+Physical Medicine and Rehabilitation	0	JNJ_OPTUM_EHR_SPCLTY	Physical Medicine and Rehabilitation	38004468	Medicare Specialty	1970-01-01	2099-12-31	
+Plastic Surgery	0	JNJ_OPTUM_EHR_SPCLTY	Plastic Surgery	38004467	Medicare Specialty	1970-01-01	2099-12-31	
+Podiatry	0	JNJ_OPTUM_EHR_SPCLTY	Podiatry	38004486	Medicare Specialty	1970-01-01	2099-12-31	
+Preventive Medicine	0	JNJ_OPTUM_EHR_SPCLTY	Preventive Medicine	38004503	Medicare Specialty	1970-01-01	2099-12-31	
+Psychiatric Hospital	0	JNJ_OPTUM_EHR_SPCLTY	Psychiatric Hospital	38004515	Medicare Specialty	1970-01-01	2099-12-31	
+Psychiatry	0	JNJ_OPTUM_EHR_SPCLTY	Psychiatry	38004469	Medicare Specialty	1970-01-01	2099-12-31	
+Psychiatry and Neurology	0	JNJ_OPTUM_EHR_SPCLTY	Psychiatry and Neurology	38004505	Medicare Specialty	1970-01-01	2099-12-31	
+Psychoanalysis	0	JNJ_OPTUM_EHR_SPCLTY	Psychoanalysis	0	None	1970-01-01	2099-12-31	
+Psychology	0	JNJ_OPTUM_EHR_SPCLTY	Psychology	38004488	Medicare Specialty	1970-01-01	2099-12-31	
+Pulmonary Medicine	0	JNJ_OPTUM_EHR_SPCLTY	Pulmonary Medicine	38004472	Medicare Specialty	1970-01-01	2099-12-31	
+Radiation Oncology	0	JNJ_OPTUM_EHR_SPCLTY	Radiation Oncology	38004509	Medicare Specialty	1970-01-01	2099-12-31	
+Radiology	0	JNJ_OPTUM_EHR_SPCLTY	Radiology	38004675	Medicare Specialty	1970-01-01	2099-12-31	
+Rheumatology	0	JNJ_OPTUM_EHR_SPCLTY	Rheumatology	38004491	Medicare Specialty	1970-01-01	2099-12-31	
+Skilled Nursing Facility	0	JNJ_OPTUM_EHR_SPCLTY	Skilled Nursing Facility	38004516	Medicare Specialty	1970-01-01	2023-01-20	D
+Skilled Nursing Facility	0	JNJ_OPTUM_EHR_SPCLTY	Skilled Nursing Facility	8863	CMS Place of Service	2023-01-20	2099-12-31	
+Social Work	0	JNJ_OPTUM_EHR_SPCLTY	Social Work	38004499	Medicare Specialty	1970-01-01	2099-12-31	
+Social Work Clinical	0	JNJ_OPTUM_EHR_SPCLTY	Social Work Clinical	38004499	Medicare Specialty	1970-01-01	2099-12-31	
+Surgery	0	JNJ_OPTUM_EHR_SPCLTY	Surgery	38004447	Medicare Specialty	1970-01-01	2099-12-31	
+Surgery and Surgical Specialties	0	JNJ_OPTUM_EHR_SPCLTY	Surgery and Surgical Specialties	38004447	Medicare Specialty	1970-01-01	2099-12-31	
+Surgical Oncology	0	JNJ_OPTUM_EHR_SPCLTY	Surgical Oncology	38004508	Medicare Specialty	1970-01-01	2099-12-31	
+Technician/Technologist	0	JNJ_OPTUM_EHR_SPCLTY	Technician/Technologist	0	None	1970-01-01	2099-12-31	
+Thoracic Surgery	0	JNJ_OPTUM_EHR_SPCLTY	Thoracic Surgery	38004473	Medicare Specialty	1970-01-01	2099-12-31	
+Transplant Surgery	0	JNJ_OPTUM_EHR_SPCLTY	Transplant Surgery	0	None	1970-01-01	2099-12-31	
+Trauma Surgery	0	JNJ_OPTUM_EHR_SPCLTY	Trauma Surgery	38004447	Medicare Specialty	1970-01-01	2099-12-31	
+Unknown	0	JNJ_OPTUM_EHR_SPCLTY	Unknown	38004514	Medicare Specialty	1970-01-01	2023-01-20	D
+Unknown	0	JNJ_OPTUM_EHR_SPCLTY	Unknown	32577	Provider	2023-01-20	2099-12-31	
+Unspecified	0	JNJ_OPTUM_EHR_SPCLTY	Unspecified	38004514	Medicare Specialty	1970-01-01	2023-01-20	D
+Unspecified	0	JNJ_OPTUM_EHR_SPCLTY	Unspecified	32577	Provider	2023-01-20	2099-12-31	
+Urgent Care Center	0	JNJ_OPTUM_EHR_SPCLTY	Urgent Care Center	38004679	Medicare Specialty	1970-01-01	2023-01-20	D
+Urgent Care Center	0	JNJ_OPTUM_EHR_SPCLTY	Urgent Care Center	8883	CMS Place of Service	2023-01-20	2099-12-31	
+Urology	0	JNJ_OPTUM_EHR_SPCLTY	Urology	38004474	Medicare Specialty	1970-01-01	2099-12-31	
+Vascular Surgery	0	JNJ_OPTUM_EHR_SPCLTY	Vascular Surgery	38004496	Medicare Specialty	1970-01-01	2099-12-31	

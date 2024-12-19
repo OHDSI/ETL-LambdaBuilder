@@ -1,0 +1,122 @@
+source_code	source_concept_id	source_vocabulary_id	source_code_description	target_concept_id	target_vocabulary_id	valid_start_date	valid_end_date	invalid_reason
+Binet Stage A	0	JNJ_OPTUM_EHR_ONCEVS	Binet Stage A	1635315	Cancer Modifier	2023-07-26	2099-12-31	
+Binet Stage B	0	JNJ_OPTUM_EHR_ONCEVS	Binet Stage B	1635179	Cancer Modifier	2023-07-26	2099-12-31	
+Durie/Salmon Stage 1	0	JNJ_OPTUM_EHR_ONCEVS	Durie/Salmon Stage 1	1635124	Cancer Modifier	2023-07-26	2099-12-31	
+Durie/Salmon Stage 1A	0	JNJ_OPTUM_EHR_ONCEVS	Durie/Salmon Stage 1A	1635124	Cancer Modifier	2023-07-26	2099-12-31	
+Durie/Salmon Stage 2	0	JNJ_OPTUM_EHR_ONCEVS	Durie/Salmon Stage 2	1635673	Cancer Modifier	2023-07-26	2099-12-31	
+Durie/Salmon Stage 2A	0	JNJ_OPTUM_EHR_ONCEVS	Durie/Salmon Stage 2A	1635673	Cancer Modifier	2023-07-26	2099-12-31	
+Durie/Salmon Stage 3	0	JNJ_OPTUM_EHR_ONCEVS	Durie/Salmon Stage 3	1634548	Cancer Modifier	2023-07-26	2099-12-31	
+Durie/Salmon Stage 3A	0	JNJ_OPTUM_EHR_ONCEVS	Durie/Salmon Stage 3A	1634548	Cancer Modifier	2023-07-26	2099-12-31	
+Durie/Salmon Stage 3B	0	JNJ_OPTUM_EHR_ONCEVS	Durie/Salmon Stage 3B	1634548	Cancer Modifier	2023-07-26	2099-12-31	
+ECOG performance status	0	JNJ_OPTUM_EHR_ONCEVS	ECOG performance status	36305384	LOINC	2023-07-31	2099-12-31	
+FIGO grade 1	0	JNJ_OPTUM_EHR_ONCEVS	FIGO grade 1	1635317	Cancer Modifier	2023-07-26	2099-12-31	
+FIGO grade 1/3	0	JNJ_OPTUM_EHR_ONCEVS	FIGO grade 1/3	1635317	Cancer Modifier	2023-07-26	2099-12-31	
+FIGO grade 2	0	JNJ_OPTUM_EHR_ONCEVS	FIGO grade 2	1635826	Cancer Modifier	2023-07-26	2099-12-31	
+FIGO grade 2/3	0	JNJ_OPTUM_EHR_ONCEVS	FIGO grade 2/3	1635826	Cancer Modifier	2023-07-26	2099-12-31	
+FIGO grade 3	0	JNJ_OPTUM_EHR_ONCEVS	FIGO grade 3	1633887	Cancer Modifier	2023-07-26	2099-12-31	
+FIGO Stage 1	0	JNJ_OPTUM_EHR_ONCEVS	FIGO Stage 1	1634826	Cancer Modifier	2023-07-26	2099-12-31	
+FIGO Stage 1A	0	JNJ_OPTUM_EHR_ONCEVS	FIGO Stage 1A	1633471	Cancer Modifier	2023-07-26	2099-12-31	
+FIGO Stage 1A1	0	JNJ_OPTUM_EHR_ONCEVS	FIGO Stage 1A1	1633850	Cancer Modifier	2023-07-26	2099-12-31	
+FIGO Stage 1B	0	JNJ_OPTUM_EHR_ONCEVS	FIGO Stage 1B	1633590	Cancer Modifier	2023-07-26	2099-12-31	
+FIGO Stage 1B1	0	JNJ_OPTUM_EHR_ONCEVS	FIGO Stage 1B1	1635463	Cancer Modifier	2023-07-26	2099-12-31	
+FIGO Stage 1B2	0	JNJ_OPTUM_EHR_ONCEVS	FIGO Stage 1B2	1635572	Cancer Modifier	2023-07-26	2099-12-31	
+FIGO Stage 1C	0	JNJ_OPTUM_EHR_ONCEVS	FIGO Stage 1C	1635358	Cancer Modifier	2023-07-26	2099-12-31	
+FIGO Stage 2	0	JNJ_OPTUM_EHR_ONCEVS	FIGO Stage 2	1634127	Cancer Modifier	2023-07-26	2099-12-31	
+FIGO Stage 2A	0	JNJ_OPTUM_EHR_ONCEVS	FIGO Stage 2A	1633317	Cancer Modifier	2023-07-26	2099-12-31	
+FIGO Stage 2B	0	JNJ_OPTUM_EHR_ONCEVS	FIGO Stage 2B	1635822	Cancer Modifier	2023-07-26	2099-12-31	
+FIGO Stage 3	0	JNJ_OPTUM_EHR_ONCEVS	FIGO Stage 3	1634024	Cancer Modifier	2023-07-26	2099-12-31	
+FIGO Stage 3A	0	JNJ_OPTUM_EHR_ONCEVS	FIGO Stage 3A	1634412	Cancer Modifier	2023-07-26	2099-12-31	
+FIGO Stage 3B	0	JNJ_OPTUM_EHR_ONCEVS	FIGO Stage 3B	1635339	Cancer Modifier	2023-07-26	2099-12-31	
+FIGO Stage 3C	0	JNJ_OPTUM_EHR_ONCEVS	FIGO Stage 3C	1633903	Cancer Modifier	2023-07-26	2099-12-31	
+FIGO Stage 4	0	JNJ_OPTUM_EHR_ONCEVS	FIGO Stage 4	1634306	Cancer Modifier	2023-07-26	2099-12-31	
+FIGO Stage 4A	0	JNJ_OPTUM_EHR_ONCEVS	FIGO Stage 4A	1635588	Cancer Modifier	2023-07-26	2099-12-31	
+FIGO Stage 4B	0	JNJ_OPTUM_EHR_ONCEVS	FIGO Stage 4B	1635186	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason grade grade primary 3	0	JNJ_OPTUM_EHR_ONCEVS	Gleason grade grade primary 3	1633643	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason grade grade primary 4	0	JNJ_OPTUM_EHR_ONCEVS	Gleason grade grade primary 4	1633348	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason grade grade primary 5	0	JNJ_OPTUM_EHR_ONCEVS	Gleason grade grade primary 5	1635122	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason grade grade secondary 3	0	JNJ_OPTUM_EHR_ONCEVS	Gleason grade grade secondary 3	1634808	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason grade grade secondary 4	0	JNJ_OPTUM_EHR_ONCEVS	Gleason grade grade secondary 4	1633367	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason grade grade secondary 5	0	JNJ_OPTUM_EHR_ONCEVS	Gleason grade grade secondary 5	1634739	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason grade grade tertiary 5	0	JNJ_OPTUM_EHR_ONCEVS	Gleason grade grade tertiary 5	1634454	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason grade primary 2	0	JNJ_OPTUM_EHR_ONCEVS	Gleason grade primary 2	1635165	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason grade primary 3	0	JNJ_OPTUM_EHR_ONCEVS	Gleason grade primary 3	1633643	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason grade primary 4	0	JNJ_OPTUM_EHR_ONCEVS	Gleason grade primary 4	1633348	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason grade primary 5	0	JNJ_OPTUM_EHR_ONCEVS	Gleason grade primary 5	1635122	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason grade result numeric 10	0	JNJ_OPTUM_EHR_ONCEVS	Gleason grade result numeric 10	1633655	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason grade result numeric 2	0	JNJ_OPTUM_EHR_ONCEVS	Gleason grade result numeric 2	1633826	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason grade result numeric 3	0	JNJ_OPTUM_EHR_ONCEVS	Gleason grade result numeric 3	1634459	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason grade result numeric 4	0	JNJ_OPTUM_EHR_ONCEVS	Gleason grade result numeric 4	1635079	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason grade result numeric 5	0	JNJ_OPTUM_EHR_ONCEVS	Gleason grade result numeric 5	1635009	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason grade result numeric 6	0	JNJ_OPTUM_EHR_ONCEVS	Gleason grade result numeric 6	1634230	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason grade result numeric 7	0	JNJ_OPTUM_EHR_ONCEVS	Gleason grade result numeric 7	1633844	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason grade result numeric 7/10	0	JNJ_OPTUM_EHR_ONCEVS	Gleason grade result numeric 7/10	1633844	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason grade result numeric 8	0	JNJ_OPTUM_EHR_ONCEVS	Gleason grade result numeric 8	1635475	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason grade result numeric 9	0	JNJ_OPTUM_EHR_ONCEVS	Gleason grade result numeric 9	1633687	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason grade secondary 2	0	JNJ_OPTUM_EHR_ONCEVS	Gleason grade secondary 2	1635385	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason grade secondary 3	0	JNJ_OPTUM_EHR_ONCEVS	Gleason grade secondary 3	1634808	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason grade secondary 4	0	JNJ_OPTUM_EHR_ONCEVS	Gleason grade secondary 4	1633367	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason grade secondary 5	0	JNJ_OPTUM_EHR_ONCEVS	Gleason grade secondary 5	1634739	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason grade tertiary 3	0	JNJ_OPTUM_EHR_ONCEVS	Gleason grade tertiary 3	1633295	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason grade tertiary 5	0	JNJ_OPTUM_EHR_ONCEVS	Gleason grade tertiary 5	1634454	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason result numeric 10	0	JNJ_OPTUM_EHR_ONCEVS	Gleason result numeric 10	1633655	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason result numeric 3	0	JNJ_OPTUM_EHR_ONCEVS	Gleason result numeric 3	1634230	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason result numeric 4	0	JNJ_OPTUM_EHR_ONCEVS	Gleason result numeric 4	1634230	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason result numeric 5	0	JNJ_OPTUM_EHR_ONCEVS	Gleason result numeric 5	1634230	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason result numeric 6	0	JNJ_OPTUM_EHR_ONCEVS	Gleason result numeric 6	1634230	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason result numeric 6/10	0	JNJ_OPTUM_EHR_ONCEVS	Gleason result numeric 6/10	1634230	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason result numeric 7	0	JNJ_OPTUM_EHR_ONCEVS	Gleason result numeric 7	1633844	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason result numeric 7/10	0	JNJ_OPTUM_EHR_ONCEVS	Gleason result numeric 7/10	1633844	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason result numeric 8	0	JNJ_OPTUM_EHR_ONCEVS	Gleason result numeric 8	1635475	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason result numeric 9	0	JNJ_OPTUM_EHR_ONCEVS	Gleason result numeric 9	1633687	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason score grade primary 3	0	JNJ_OPTUM_EHR_ONCEVS	Gleason score grade primary 3	1633643	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason score grade primary 4	0	JNJ_OPTUM_EHR_ONCEVS	Gleason score grade primary 4	1633348	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason score grade primary 5	0	JNJ_OPTUM_EHR_ONCEVS	Gleason score grade primary 5	1635122	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason score grade secondary 3	0	JNJ_OPTUM_EHR_ONCEVS	Gleason score grade secondary 3	1634808	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason score grade secondary 4	0	JNJ_OPTUM_EHR_ONCEVS	Gleason score grade secondary 4	1633367	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason score grade secondary 5	0	JNJ_OPTUM_EHR_ONCEVS	Gleason score grade secondary 5	1634739	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason score grade tertiary 5	0	JNJ_OPTUM_EHR_ONCEVS	Gleason score grade tertiary 5	1634454	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason score result numeric 10	0	JNJ_OPTUM_EHR_ONCEVS	Gleason score result numeric 10	1633655	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason score result numeric 2	0	JNJ_OPTUM_EHR_ONCEVS	Gleason score result numeric 2	1634230	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason score result numeric 3	0	JNJ_OPTUM_EHR_ONCEVS	Gleason score result numeric 3	0	None	2023-07-26	2099-12-31	
+Gleason score result numeric 4	0	JNJ_OPTUM_EHR_ONCEVS	Gleason score result numeric 4	0	None	2023-07-26	2099-12-31	
+Gleason score result numeric 5	0	JNJ_OPTUM_EHR_ONCEVS	Gleason score result numeric 5	1634230	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason score result numeric 6	0	JNJ_OPTUM_EHR_ONCEVS	Gleason score result numeric 6	1634230	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason score result numeric 6/10	0	JNJ_OPTUM_EHR_ONCEVS	Gleason score result numeric 6/10	1634230	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason score result numeric 7	0	JNJ_OPTUM_EHR_ONCEVS	Gleason score result numeric 7	1633844	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason score result numeric 7/10	0	JNJ_OPTUM_EHR_ONCEVS	Gleason score result numeric 7/10	1633844	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason score result numeric 8	0	JNJ_OPTUM_EHR_ONCEVS	Gleason score result numeric 8	1635475	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason score result numeric 8/10	0	JNJ_OPTUM_EHR_ONCEVS	Gleason score result numeric 8/10	1635475	Cancer Modifier	2023-07-26	2099-12-31	
+Gleason score result numeric 9	0	JNJ_OPTUM_EHR_ONCEVS	Gleason score result numeric 9	1633687	Cancer Modifier	2023-07-26	2099-12-31	
+International Staging System Stage 1	0	JNJ_OPTUM_EHR_ONCEVS	International Staging System Stage 1	1633361	Cancer Modifier	2023-07-26	2099-12-31	
+International Staging System Stage 2	0	JNJ_OPTUM_EHR_ONCEVS	International Staging System Stage 2	1634176	Cancer Modifier	2023-07-26	2099-12-31	
+International Staging System Stage 3	0	JNJ_OPTUM_EHR_ONCEVS	International Staging System Stage 3	1633524	Cancer Modifier	2023-07-26	2099-12-31	
+Karnofsky Performance Status	0	JNJ_OPTUM_EHR_ONCEVS	Karnofsky Performance Status	4169154	SNOMED	2023-07-31	2099-12-31	
+Nottingham Grade grade mitotic 1	0	JNJ_OPTUM_EHR_ONCEVS	Nottingham Grade grade mitotic 1	734310	Cancer Modifier	2023-07-26	2099-12-31	
+Nottingham Grade grade mitotic 2	0	JNJ_OPTUM_EHR_ONCEVS	Nottingham Grade grade mitotic 2	1635449	Cancer Modifier	2023-07-26	2099-12-31	
+Nottingham Grade grade mitotic 3	0	JNJ_OPTUM_EHR_ONCEVS	Nottingham Grade grade mitotic 3	1634207	Cancer Modifier	2023-07-26	2099-12-31	
+Nottingham Grade grade nuclear 1	0	JNJ_OPTUM_EHR_ONCEVS	Nottingham Grade grade nuclear 1	1634750	Cancer Modifier	2023-07-26	2099-12-31	
+Nottingham Grade grade nuclear 2	0	JNJ_OPTUM_EHR_ONCEVS	Nottingham Grade grade nuclear 2	1635449	Cancer Modifier	2023-07-26	2099-12-31	
+Nottingham Grade grade nuclear 3	0	JNJ_OPTUM_EHR_ONCEVS	Nottingham Grade grade nuclear 3	1634207	Cancer Modifier	2023-07-26	2099-12-31	
+Nottingham Grade grade tubular 2	0	JNJ_OPTUM_EHR_ONCEVS	Nottingham Grade grade tubular 2	1635449	Cancer Modifier	2023-07-26	2099-12-31	
+Nottingham Grade grade tubular 3	0	JNJ_OPTUM_EHR_ONCEVS	Nottingham Grade grade tubular 3	1634207	Cancer Modifier	2023-07-26	2099-12-31	
+Nottingham grade mitotic 1	0	JNJ_OPTUM_EHR_ONCEVS	Nottingham grade mitotic 1	1634750	Cancer Modifier	2023-07-26	2099-12-31	
+Nottingham grade nuclear 2	0	JNJ_OPTUM_EHR_ONCEVS	Nottingham grade nuclear 2	1635449	Cancer Modifier	2023-07-26	2099-12-31	
+Nottingham grade tubular 3	0	JNJ_OPTUM_EHR_ONCEVS	Nottingham grade tubular 3	1634207	Cancer Modifier	2023-07-26	2099-12-31	
+Nottingham Score grade mitotic 1	0	JNJ_OPTUM_EHR_ONCEVS	Nottingham Score grade mitotic 1	734310	Cancer Modifier	2023-07-26	2099-12-31	
+Nottingham Score grade mitotic 2	0	JNJ_OPTUM_EHR_ONCEVS	Nottingham Score grade mitotic 2	734311	Cancer Modifier	2023-07-26	2099-12-31	
+Nottingham Score grade mitotic 3	0	JNJ_OPTUM_EHR_ONCEVS	Nottingham Score grade mitotic 3	734312	Cancer Modifier	2023-07-26	2099-12-31	
+Nottingham Score grade nuclear 1	0	JNJ_OPTUM_EHR_ONCEVS	Nottingham Score grade nuclear 1	734307	Cancer Modifier	2023-07-26	2099-12-31	
+Nottingham Score grade nuclear 2	0	JNJ_OPTUM_EHR_ONCEVS	Nottingham Score grade nuclear 2	734308	Cancer Modifier	2023-07-26	2099-12-31	
+Nottingham Score grade nuclear 3	0	JNJ_OPTUM_EHR_ONCEVS	Nottingham Score grade nuclear 3	734309	Cancer Modifier	2023-07-26	2099-12-31	
+Nottingham Score grade tubular 1	0	JNJ_OPTUM_EHR_ONCEVS	Nottingham Score grade tubular 1	734313	Cancer Modifier	2023-07-26	2099-12-31	
+Nottingham Score grade tubular 2	0	JNJ_OPTUM_EHR_ONCEVS	Nottingham Score grade tubular 2	734314	Cancer Modifier	2023-07-26	2099-12-31	
+Nottingham Score grade tubular 3	0	JNJ_OPTUM_EHR_ONCEVS	Nottingham Score grade tubular 3	734315	Cancer Modifier	2023-07-26	2099-12-31	
+Oncotype DX recurrence score	0	JNJ_OPTUM_EHR_ONCEVS	Oncotype DX recurrence score	729854	OMOP Extension	2023-07-31	2099-12-31	
+Rai Stage 1	0	JNJ_OPTUM_EHR_ONCEVS	Rai Stage 1	1634869	Cancer Modifier	2023-07-26	2099-12-31	
+Rai Stage 2	0	JNJ_OPTUM_EHR_ONCEVS	Rai Stage 2	1633424	Cancer Modifier	2023-07-26	2099-12-31	
+Rai Stage 3	0	JNJ_OPTUM_EHR_ONCEVS	Rai Stage 3	1633994	Cancer Modifier	2023-07-26	2099-12-31	
+Rai Stage 4	0	JNJ_OPTUM_EHR_ONCEVS	Rai Stage 4	1634414	Cancer Modifier	2023-07-26	2099-12-31	
+Recurrence score	0	JNJ_OPTUM_EHR_ONCEVS	Recurrence score	729854	OMOP Extension	2023-07-31	2099-12-31	
+RISS Stage 1	0	JNJ_OPTUM_EHR_ONCEVS	RISS Stage 1	1635024	Cancer Modifier	2023-07-26	2099-12-31	
+RISS Stage 2	0	JNJ_OPTUM_EHR_ONCEVS	RISS Stage 2	1633344	Cancer Modifier	2023-07-26	2099-12-31	
+RISS Stage 3	0	JNJ_OPTUM_EHR_ONCEVS	RISS Stage 3	1634199	Cancer Modifier	2023-07-26	2099-12-31	

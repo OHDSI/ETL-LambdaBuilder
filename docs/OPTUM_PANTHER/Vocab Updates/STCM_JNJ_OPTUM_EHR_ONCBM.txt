@@ -1,0 +1,248 @@
+source_code	source_concept_id	source_vocabulary_id	source_code_description	target_concept_id	target_vocabulary_id	valid_start_date	valid_end_date	invalid_reason
+17p13 deletion	0	JNJ_OPTUM_EHR_ONCBM	17p13 deletion	21493501	LOINC	2023-07-26	2099-12-31	
+1q21 amplification	0	JNJ_OPTUM_EHR_ONCBM	1q21 amplification	21494134	LOINC	2023-07-26	2099-12-31	
+alanyl aminopeptidase, membrane (ANPEP or CD13)	0	JNJ_OPTUM_EHR_ONCBM	alanyl aminopeptidase, membrane (ANPEP or CD13)	35951992	OMOP Genomic	2023-07-26	2099-12-31	
+albumin (ALB)	0	JNJ_OPTUM_EHR_ONCBM	albumin (ALB)	35960959	OMOP Genomic	2023-07-26	2099-12-31	
+ALK receptor tyrosine kinase (ALK)	0	JNJ_OPTUM_EHR_ONCBM	ALK receptor tyrosine kinase (ALK)	35963763	OMOP Genomic	2023-07-26	2099-12-31	
+alpha fetoprotein (AFP)	0	JNJ_OPTUM_EHR_ONCBM	alpha fetoprotein (AFP)	35948552	OMOP Genomic	2023-07-26	2099-12-31	
+androgen receptor (AR)	0	JNJ_OPTUM_EHR_ONCBM	androgen receptor (AR)	35953130	OMOP Genomic	2023-07-26	2099-12-31	
+anti-keratin AE1/AE3 (KRT or CK AE1/AE3)	0	JNJ_OPTUM_EHR_ONCBM	anti-keratin AE1/AE3 (KRT or CK AE1/AE3)	3040360	LOINC	2023-07-26	2099-12-31	
+APC regulator of WNT signaling pathway (APC)	0	JNJ_OPTUM_EHR_ONCBM	APC regulator of WNT signaling pathway (APC)	35962095	OMOP Genomic	2023-07-26	2099-12-31	
+ASXL transcriptional regulator 1 (ASXL1)	0	JNJ_OPTUM_EHR_ONCBM	ASXL transcriptional regulator 1 (ASXL1)	35964089	OMOP Genomic	2023-07-26	2099-12-31	
+ATM serine/threonine kinase (ATM)	0	JNJ_OPTUM_EHR_ONCBM	ATM serine/threonine kinase (ATM)	35960740	OMOP Genomic	2023-07-26	2099-12-31	
+ATPase copper transporting beta (ATP7B)	0	JNJ_OPTUM_EHR_ONCBM	ATPase copper transporting beta (ATP7B)	35964103	OMOP Genomic	2023-07-26	2099-12-31	
+AXL receptor tyrosine kinase (AXL)	0	JNJ_OPTUM_EHR_ONCBM	AXL receptor tyrosine kinase (AXL)	35962474	OMOP Genomic	2023-07-26	2099-12-31	
+BAT25 (BAT25)	0	JNJ_OPTUM_EHR_ONCBM	BAT25 (BAT25)	0	None	2023-07-26	2099-12-31	
+BAT26 (BAT26)	0	JNJ_OPTUM_EHR_ONCBM	BAT26 (BAT26)	0	None	2023-07-26	2099-12-31	
+BCL2 apoptosis regulator (BCL2)	0	JNJ_OPTUM_EHR_ONCBM	BCL2 apoptosis regulator (BCL2)	35958594	OMOP Genomic	2023-07-26	2099-12-31	
+BCL6 corepressor (BCOR)	0	JNJ_OPTUM_EHR_ONCBM	BCL6 corepressor (BCOR)	35946879	OMOP Genomic	2023-07-26	2099-12-31	
+BCL6 transcription repressor (BCL6)	0	JNJ_OPTUM_EHR_ONCBM	BCL6 transcription repressor (BCL6)	35951084	OMOP Genomic	2023-07-26	2099-12-31	
+BCR activator of RhoGEF and GTPase (BCR)	0	JNJ_OPTUM_EHR_ONCBM	BCR activator of RhoGEF and GTPase (BCR)	35953732	OMOP Genomic	2023-07-26	2099-12-31	
+Bence Jones protein	0	JNJ_OPTUM_EHR_ONCBM	Bence Jones protein	37393313	SNOMED	2023-07-26	2024-03-13	D
+Bence Jones protein	0	JNJ_OPTUM_EHR_ONCBM	Bence Jones protein	4033705	SNOMED	2024-03-13	2099-12-31	
+beta-2-microglobulin (B2M)	0	JNJ_OPTUM_EHR_ONCBM	beta-2-microglobulin (B2M)	4216186	SNOMED	2023-07-26	2099-12-31	
+Blast cells in bone marrow	0	JNJ_OPTUM_EHR_ONCBM	Blast cells in bone marrow	3009992	LOINC	2023-07-26	2099-12-31	
+Bone marrow cellularity finding	0	JNJ_OPTUM_EHR_ONCBM	Bone marrow cellularity finding	44806784	SNOMED	2023-07-26	2099-12-31	
+bone marrow lymphoblasts	0	JNJ_OPTUM_EHR_ONCBM	bone marrow lymphoblasts	0	None	2023-07-26	2099-12-31	
+bone marrow plasma cells	0	JNJ_OPTUM_EHR_ONCBM	bone marrow plasma cells	44786881	LOINC	2023-07-26	2099-12-31	
+bone morphogenetic protein receptor type 1A (BMPR1A)	0	JNJ_OPTUM_EHR_ONCBM	bone morphogenetic protein receptor type 1A (BMPR1A)	35961340	OMOP Genomic	2023-07-26	2099-12-31	
+B-Raf proto-oncogene, serine/threonine kinase (BRAF)	0	JNJ_OPTUM_EHR_ONCBM	B-Raf proto-oncogene, serine/threonine kinase (BRAF)	35948173	OMOP Genomic	2023-07-26	2099-12-31	
+B-Raf proto-oncogene, serine/threonine kinase (BRAF) V600	0	JNJ_OPTUM_EHR_ONCBM	B-Raf proto-oncogene, serine/threonine kinase (BRAF) V600	35948173	OMOP Genomic	2023-07-26	2099-12-31	
+B-Raf proto-oncogene, serine/threonine kinase (BRAF) V600E	0	JNJ_OPTUM_EHR_ONCBM	B-Raf proto-oncogene, serine/threonine kinase (BRAF) V600E	35948173	OMOP Genomic	2023-07-26	2099-12-31	
+B-Raf proto-oncogene, serine/threonine kinase (BRAF) V600K	0	JNJ_OPTUM_EHR_ONCBM	B-Raf proto-oncogene, serine/threonine kinase (BRAF) V600K	35984352	OMOP Genomic	2023-07-26	2024-03-13	D
+B-Raf proto-oncogene, serine/threonine kinase (BRAF) V600K	0	JNJ_OPTUM_EHR_ONCBM	B-Raf proto-oncogene, serine/threonine kinase (BRAF) V600K	19583251	OMOP Genomic	2024-03-13	2099-12-31	
+BRCA1 associated RING domain 1 (BARD1)	0	JNJ_OPTUM_EHR_ONCBM	BRCA1 associated RING domain 1 (BARD1)	35962884	OMOP Genomic	2023-07-26	2099-12-31	
+BRCA1/BRCA2 DNA repair associated (BRCA1/BRCA2)	0	JNJ_OPTUM_EHR_ONCBM	BRCA1/BRCA2 DNA repair associated (BRCA1/BRCA2)	35950928	OMOP Genomic	2023-07-26	2099-12-31	
+BRCA1/BRCA2 DNA repair associated (BRCA1/BRCA2)	0	JNJ_OPTUM_EHR_ONCBM	BRCA1/BRCA2 DNA repair associated (BRCA1/BRCA2)	35950178	OMOP Genomic	2023-07-26	2099-12-31	
+BRCA1 DNA repair associated (BRCA1)	0	JNJ_OPTUM_EHR_ONCBM	BRCA1 DNA repair associated (BRCA1)	35950928	OMOP Genomic	2023-07-26	2099-12-31	
+BRCA1 interacting protein C-terminal helicase 1 (BRIP1)	0	JNJ_OPTUM_EHR_ONCBM	BRCA1 interacting protein C-terminal helicase 1 (BRIP1)	35960995	OMOP Genomic	2023-07-26	2099-12-31	
+BRCA2 DNA repair associated (BRCA2)	0	JNJ_OPTUM_EHR_ONCBM	BRCA2 DNA repair associated (BRCA2)	35950178	OMOP Genomic	2023-07-26	2099-12-31	
+C9orf72-SMCR8 complex subunit (C9orf72)	0	JNJ_OPTUM_EHR_ONCBM	C9orf72-SMCR8 complex subunit (C9orf72)	35954626	OMOP Genomic	2023-07-26	2099-12-31	
+cadherin 1 (CDH1)	0	JNJ_OPTUM_EHR_ONCBM	cadherin 1 (CDH1)	35949357	OMOP Genomic	2023-07-26	2099-12-31	
+calbindin 2 (CALB2)	0	JNJ_OPTUM_EHR_ONCBM	calbindin 2 (CALB2)	35960289	OMOP Genomic	2023-07-26	2099-12-31	
+cancer antigen 125 (CA 125 or MUC16)	0	JNJ_OPTUM_EHR_ONCBM	cancer antigen 125 (CA 125 or MUC16)	35956038	OMOP Genomic	2023-07-26	2099-12-31	
+cancer antigen 15-3 (CA 15-3)	0	JNJ_OPTUM_EHR_ONCBM	cancer antigen 15-3 (CA 15-3)	37394128	SNOMED	2023-07-26	2024-03-13	D
+cancer antigen 15-3 (CA 15-3)	0	JNJ_OPTUM_EHR_ONCBM	cancer antigen 15-3 (CA 15-3)	4013180	SNOMED	2024-03-13	2099-12-31	
+cancer antigen 27.29 (CA 27.29)	0	JNJ_OPTUM_EHR_ONCBM	cancer antigen 27.29 (CA 27.29)	40483741	SNOMED	2023-07-26	2099-12-31	
+carbohydrate antigen 19-9 (CA 19-9)	0	JNJ_OPTUM_EHR_ONCBM	carbohydrate antigen 19-9 (CA 19-9)	44811979	SNOMED	2023-07-26	2099-12-31	
+carcinoembryonic antigen (CEA)	0	JNJ_OPTUM_EHR_ONCBM	carcinoembryonic antigen (CEA)	4244721	SNOMED	2023-07-26	2099-12-31	
+caudal type homeobox 2 (CDX2)	0	JNJ_OPTUM_EHR_ONCBM	caudal type homeobox 2 (CDX2)	35948906	OMOP Genomic	2023-07-26	2099-12-31	
+CBL proto-oncogene (CBL)	0	JNJ_OPTUM_EHR_ONCBM	CBL proto-oncogene (CBL)	35955105	OMOP Genomic	2023-07-26	2099-12-31	
+CCAAT enhancer binding protein alpha (CEBPA)	0	JNJ_OPTUM_EHR_ONCBM	CCAAT enhancer binding protein alpha (CEBPA)	35948202	OMOP Genomic	2023-07-26	2099-12-31	
+CD14 molecule (CD14)	0	JNJ_OPTUM_EHR_ONCBM	CD14 molecule (CD14)	35955452	OMOP Genomic	2023-07-26	2099-12-31	
+CD19 molecule (CD19)	0	JNJ_OPTUM_EHR_ONCBM	CD19 molecule (CD19)	35960932	OMOP Genomic	2023-07-26	2099-12-31	
+CD274 molecule (CD274 or PD-L1 or PDL1)	0	JNJ_OPTUM_EHR_ONCBM	CD274 molecule (CD274 or PD-L1 or PDL1)	35960433	OMOP Genomic	2023-07-26	2099-12-31	
+CD2 molecule (CD2)	0	JNJ_OPTUM_EHR_ONCBM	CD2 molecule (CD2)	35946914	OMOP Genomic	2023-07-26	2099-12-31	
+CD30 molecule (CD30 or TNFRSF8)	0	JNJ_OPTUM_EHR_ONCBM	CD30 molecule (CD30 or TNFRSF8)	35946663	OMOP Genomic	2023-07-26	2099-12-31	
+CD33 molecule (CD33)	0	JNJ_OPTUM_EHR_ONCBM	CD33 molecule (CD33)	35949007	OMOP Genomic	2023-07-26	2099-12-31	
+CD34 molecule (CD34)	0	JNJ_OPTUM_EHR_ONCBM	CD34 molecule (CD34)	35954026	OMOP Genomic	2023-07-26	2099-12-31	
+CD38 molecule (CD38)	0	JNJ_OPTUM_EHR_ONCBM	CD38 molecule (CD38)	35961058	OMOP Genomic	2023-07-26	2099-12-31	
+CD3 molecule (CD3)	0	JNJ_OPTUM_EHR_ONCBM	CD3 molecule (CD3)	0	None	2023-07-26	2099-12-31	
+CD40 molecule (CD40)	0	JNJ_OPTUM_EHR_ONCBM	CD40 molecule (CD40)	35962194	OMOP Genomic	2023-07-26	2099-12-31	
+CD4 molecule (CD4)	0	JNJ_OPTUM_EHR_ONCBM	CD4 molecule (CD4)	35945310	OMOP Genomic	2023-07-26	2099-12-31	
+CD5 molecule (CD5)	0	JNJ_OPTUM_EHR_ONCBM	CD5 molecule (CD5)	35946494	OMOP Genomic	2023-07-26	2099-12-31	
+CD68 molecule (CD68)	0	JNJ_OPTUM_EHR_ONCBM	CD68 molecule (CD68)	35954543	OMOP Genomic	2023-07-26	2099-12-31	
+CD8a molecule (CD8A or CD8)	0	JNJ_OPTUM_EHR_ONCBM	CD8a molecule (CD8A or CD8)	35962750	OMOP Genomic	2023-07-26	2099-12-31	
+CD8a molecule (CD8 or CD8A)	0	JNJ_OPTUM_EHR_ONCBM	CD8a molecule (CD8 or CD8A)	35962750	OMOP Genomic	2023-07-26	2099-12-31	
+checkpoint kinase 2 (CHEK2)	0	JNJ_OPTUM_EHR_ONCBM	checkpoint kinase 2 (CHEK2)	35948105	OMOP Genomic	2023-07-26	2099-12-31	
+chromodomain helicase DNA binding protein 2 (CHD2)	0	JNJ_OPTUM_EHR_ONCBM	chromodomain helicase DNA binding protein 2 (CHD2)	35945527	OMOP Genomic	2023-07-26	2099-12-31	
+chromogranin A (CHGA)	0	JNJ_OPTUM_EHR_ONCBM	chromogranin A (CHGA)	35951514	OMOP Genomic	2023-07-26	2099-12-31	
+chromosome 13q deletion	0	JNJ_OPTUM_EHR_ONCBM	chromosome 13q deletion	0	None	2023-07-26	2099-12-31	
+chromosome 5q deletion	0	JNJ_OPTUM_EHR_ONCBM	chromosome 5q deletion	0	None	2023-07-26	2099-12-31	
+colony stimulating factor 1 receptor (CSF1R)	0	JNJ_OPTUM_EHR_ONCBM	colony stimulating factor 1 receptor (CSF1R)	35959753	OMOP Genomic	2023-07-26	2099-12-31	
+cyclin D1 (CCND1 or BCL1)	0	JNJ_OPTUM_EHR_ONCBM	cyclin D1 (CCND1 or BCL1)	35963336	OMOP Genomic	2023-07-26	2099-12-31	
+cyclin dependent kinase 4 (CDK4)	0	JNJ_OPTUM_EHR_ONCBM	cyclin dependent kinase 4 (CDK4)	35946972	OMOP Genomic	2023-07-26	2099-12-31	
+cyclin dependent kinase inhibitor 2A/2B (CDKN2A/2B)	0	JNJ_OPTUM_EHR_ONCBM	cyclin dependent kinase inhibitor 2A/2B (CDKN2A/2B)	35963760	OMOP Genomic	2023-07-26	2099-12-31	
+cyclin dependent kinase inhibitor 2A (CDKN2A)	0	JNJ_OPTUM_EHR_ONCBM	cyclin dependent kinase inhibitor 2A (CDKN2A)	35946721	OMOP Genomic	2023-07-26	2099-12-31	
+dihydropyrimidine dehydrogenase (DPD)	0	JNJ_OPTUM_EHR_ONCBM	dihydropyrimidine dehydrogenase (DPD)	44806330	SNOMED	2023-07-26	2099-12-31	
+DNA mismatch repair (MMR)	0	JNJ_OPTUM_EHR_ONCBM	DNA mismatch repair (MMR)	1617420	LOINC	2023-07-26	2099-12-31	
+DNA nucleotidylexotransferase (DNTT or TDT)	0	JNJ_OPTUM_EHR_ONCBM	DNA nucleotidylexotransferase (DNTT or TDT)	35946274	OMOP Genomic	2023-07-26	2099-12-31	
+dystrophin (DMD)	0	JNJ_OPTUM_EHR_ONCBM	dystrophin (DMD)	35962028	OMOP Genomic	2023-07-26	2099-12-31	
+epidermal growth factor receptor (EGFR)	0	JNJ_OPTUM_EHR_ONCBM	epidermal growth factor receptor (EGFR)	35962802	OMOP Genomic	2023-07-26	2099-12-31	
+epidermal growth factor receptor (EGFR) exon 18	0	JNJ_OPTUM_EHR_ONCBM	epidermal growth factor receptor (EGFR) exon 18	35962802	OMOP Genomic	2023-07-26	2099-12-31	
+epidermal growth factor receptor (EGFR) exon 19	0	JNJ_OPTUM_EHR_ONCBM	epidermal growth factor receptor (EGFR) exon 19	35976971	OMOP Genomic	2023-07-26	2099-12-31	
+epidermal growth factor receptor (EGFR) exon 20	0	JNJ_OPTUM_EHR_ONCBM	epidermal growth factor receptor (EGFR) exon 20	35962802	OMOP Genomic	2023-07-26	2099-12-31	
+epidermal growth factor receptor (EGFR) exon 21	0	JNJ_OPTUM_EHR_ONCBM	epidermal growth factor receptor (EGFR) exon 21	35962802	OMOP Genomic	2023-07-26	2099-12-31	
+epidermal growth factor receptor (EGFR) L858R	0	JNJ_OPTUM_EHR_ONCBM	epidermal growth factor receptor (EGFR) L858R	35962802	OMOP Genomic	2023-07-26	2099-12-31	
+epidermal growth factor receptor (EGFR) T790M	0	JNJ_OPTUM_EHR_ONCBM	epidermal growth factor receptor (EGFR) T790M	35986591	OMOP Genomic	2023-07-26	2024-03-13	D
+epidermal growth factor receptor (EGFR) T790M	0	JNJ_OPTUM_EHR_ONCBM	epidermal growth factor receptor (EGFR) T790M	19576591	OMOP Genomic	2024-03-13	2099-12-31	
+epithelial cell adhesion molecule (EPCAM)	0	JNJ_OPTUM_EHR_ONCBM	epithelial cell adhesion molecule (EPCAM)	35963234	OMOP Genomic	2023-07-26	2099-12-31	
+Epstein-Barr Virus (EBV)	0	JNJ_OPTUM_EHR_ONCBM	Epstein-Barr Virus (EBV)	0	None	2023-07-26	2099-12-31	
+erb-b2 receptor tyrosine kinase 2 (ERBB2 or HER2/neu)	0	JNJ_OPTUM_EHR_ONCBM	erb-b2 receptor tyrosine kinase 2 (ERBB2 or HER2/neu)	35955862	OMOP Genomic	2023-07-26	2099-12-31	
+estrogen receptor (ER)	0	JNJ_OPTUM_EHR_ONCBM	estrogen receptor (ER)	35976980	OMOP Genomic	2023-07-26	2099-12-31	
+estrogen receptor/progesterone receptor/erb-b2 receptor tyrosine kinase 2 (ER/PGR/ERBB2)	0	JNJ_OPTUM_EHR_ONCBM	estrogen receptor/progesterone receptor/erb-b2 receptor tyrosine kinase 2 (ER/PGR/ERBB2)	35955862	OMOP Genomic	2023-07-26	2099-12-31	
+estrogen receptor/progesterone receptor/erb-b2 receptor tyrosine kinase 2 (ER/PGR/ERBB2)	0	JNJ_OPTUM_EHR_ONCBM	estrogen receptor/progesterone receptor/erb-b2 receptor tyrosine kinase 2 (ER/PGR/ERBB2)	35957667	OMOP Genomic	2023-07-26	2099-12-31	
+estrogen receptor/progesterone receptor/erb-b2 receptor tyrosine kinase 2 (ER/PGR/ERBB2)	0	JNJ_OPTUM_EHR_ONCBM	estrogen receptor/progesterone receptor/erb-b2 receptor tyrosine kinase 2 (ER/PGR/ERBB2)	35976980	OMOP Genomic	2023-07-26	2099-12-31	
+estrogen receptor/progesterone receptor (ER/PGR)	0	JNJ_OPTUM_EHR_ONCBM	estrogen receptor/progesterone receptor (ER/PGR)	35976980	OMOP Genomic	2023-07-26	2099-12-31	
+estrogen receptor/progesterone receptor (ER/PGR)	0	JNJ_OPTUM_EHR_ONCBM	estrogen receptor/progesterone receptor (ER/PGR)	35957667	OMOP Genomic	2023-07-26	2099-12-31	
+Fc fragment of IgE receptor II (FCER2 or CD23)	0	JNJ_OPTUM_EHR_ONCBM	Fc fragment of IgE receptor II (FCER2 or CD23)	35957519	OMOP Genomic	2023-07-26	2099-12-31	
+Fc fragment of IgG receptor Ia (FCGR1A or CD64)	0	JNJ_OPTUM_EHR_ONCBM	Fc fragment of IgG receptor Ia (FCGR1A or CD64)	35954176	OMOP Genomic	2023-07-26	2099-12-31	
+fms related tyrosine kinase 3 (FLT3)	0	JNJ_OPTUM_EHR_ONCBM	fms related tyrosine kinase 3 (FLT3)	35956153	OMOP Genomic	2023-07-26	2099-12-31	
+fms related tyrosine kinase 3 (FLT3) D835	0	JNJ_OPTUM_EHR_ONCBM	fms related tyrosine kinase 3 (FLT3) D835	35956153	OMOP Genomic	2023-07-26	2099-12-31	
+fms related tyrosine kinase 3 (FLT3) ITD	0	JNJ_OPTUM_EHR_ONCBM	fms related tyrosine kinase 3 (FLT3) ITD	35956153	OMOP Genomic	2023-07-26	2099-12-31	
+fms related tyrosine kinase 3 (FLT3) TKD	0	JNJ_OPTUM_EHR_ONCBM	fms related tyrosine kinase 3 (FLT3) TKD	35956153	OMOP Genomic	2023-07-26	2099-12-31	
+Free kappa light chain	0	JNJ_OPTUM_EHR_ONCBM	Free kappa light chain	44804922	SNOMED	2023-07-26	2099-12-31	
+Free lambda light chain	0	JNJ_OPTUM_EHR_ONCBM	Free lambda light chain	44804924	SNOMED	2023-07-26	2099-12-31	
+fucosyltransferase 4 (FUT4 or CD15)	0	JNJ_OPTUM_EHR_ONCBM	fucosyltransferase 4 (FUT4 or CD15)	35957168	OMOP Genomic	2023-07-26	2099-12-31	
+GATA binding protein 2 (GATA2)	0	JNJ_OPTUM_EHR_ONCBM	GATA binding protein 2 (GATA2)	35958935	OMOP Genomic	2023-07-26	2099-12-31	
+GATA binding protein 3 (GATA3)	0	JNJ_OPTUM_EHR_ONCBM	GATA binding protein 3 (GATA3)	35956024	OMOP Genomic	2023-07-26	2099-12-31	
+HLA-DR Antigens	0	JNJ_OPTUM_EHR_ONCBM	HLA-DR Antigens	35957095	OMOP Genomic	2023-07-26	2099-12-31	
+Human Chorionic Gonadotropin (HCG)	0	JNJ_OPTUM_EHR_ONCBM	Human Chorionic Gonadotropin (HCG)	4285271	SNOMED	2023-07-26	2099-12-31	
+human papillomavirus (HPV)	0	JNJ_OPTUM_EHR_ONCBM	human papillomavirus (HPV)	45763689	SNOMED	2023-07-26	2099-12-31	
+iduronate 2-sulfatase (IDS)	0	JNJ_OPTUM_EHR_ONCBM	iduronate 2-sulfatase (IDS)	35956254	OMOP Genomic	2023-07-26	2099-12-31	
+IKAROS family zinc finger 3 (IKZF3)	0	JNJ_OPTUM_EHR_ONCBM	IKAROS family zinc finger 3 (IKZF3)	35957210	OMOP Genomic	2023-07-26	2099-12-31	
+Immunoglobulin A (IgA)	0	JNJ_OPTUM_EHR_ONCBM	Immunoglobulin A (IgA)	4135810	SNOMED	2023-07-26	2099-12-31	
+Immunoglobulin D (IgD)	0	JNJ_OPTUM_EHR_ONCBM	Immunoglobulin D (IgD)	4286509	SNOMED	2023-07-26	2099-12-31	
+Immunoglobulin G (IgG)	0	JNJ_OPTUM_EHR_ONCBM	Immunoglobulin G (IgG)	4163378	SNOMED	2023-07-26	2099-12-31	
+Immunoglobulin M (IgM)	0	JNJ_OPTUM_EHR_ONCBM	Immunoglobulin M (IgM)	4164130	SNOMED	2023-07-26	2099-12-31	
+inhibin subunit alpha (INHA)	0	JNJ_OPTUM_EHR_ONCBM	inhibin subunit alpha (INHA)	35959396	OMOP Genomic	2023-07-26	2099-12-31	
+interleukin 2 receptor subunit alpha (IL2RA or CD25)	0	JNJ_OPTUM_EHR_ONCBM	interleukin 2 receptor subunit alpha (IL2RA or CD25)	35960573	OMOP Genomic	2023-07-26	2099-12-31	
+isocitrate dehydrogenase (NADP(+)) 1 (IDH1)	0	JNJ_OPTUM_EHR_ONCBM	isocitrate dehydrogenase (NADP(+)) 1 (IDH1)	35948329	OMOP Genomic	2023-07-26	2099-12-31	
+isocitrate dehydrogenase (NADP(+)) 1 (IDH1) R132H	0	JNJ_OPTUM_EHR_ONCBM	isocitrate dehydrogenase (NADP(+)) 1 (IDH1) R132H	35948329	OMOP Genomic	2023-07-26	2099-12-31	
+isocitrate dehydrogenase (NADP(+)) 2 (IDH2)	0	JNJ_OPTUM_EHR_ONCBM	isocitrate dehydrogenase (NADP(+)) 2 (IDH2)	35953046	OMOP Genomic	2023-07-26	2099-12-31	
+isocitrate dehydrogenase (NADP(+))  (IDH)	0	JNJ_OPTUM_EHR_ONCBM	isocitrate dehydrogenase (NADP(+))  (IDH)	35948329	OMOP Genomic	2023-07-26	2099-12-31	
+Janus kinase 2 (JAK2)	0	JNJ_OPTUM_EHR_ONCBM	Janus kinase 2 (JAK2)	35962046	OMOP Genomic	2023-07-26	2099-12-31	
+Janus kinase 2 (JAK2) exon 12	0	JNJ_OPTUM_EHR_ONCBM	Janus kinase 2 (JAK2) exon 12	37392955	SNOMED	2023-07-26	2099-12-31	
+Janus kinase 2 (JAK2) exon 13	0	JNJ_OPTUM_EHR_ONCBM	Janus kinase 2 (JAK2) exon 13	35962046	OMOP Genomic	2023-07-26	2099-12-31	
+Janus kinase 2 (JAK2) exons 12-14	0	JNJ_OPTUM_EHR_ONCBM	Janus kinase 2 (JAK2) exons 12-14	35962046	OMOP Genomic	2023-07-26	2099-12-31	
+Janus kinase 2 (JAK2) exons 12-15	0	JNJ_OPTUM_EHR_ONCBM	Janus kinase 2 (JAK2) exons 12-15	35962046	OMOP Genomic	2023-07-26	2099-12-31	
+Janus kinase 2 (JAK2) V617	0	JNJ_OPTUM_EHR_ONCBM	Janus kinase 2 (JAK2) V617	44791465	SNOMED	2023-07-26	2099-12-31	
+Janus kinase 2 (JAK2) V617F	0	JNJ_OPTUM_EHR_ONCBM	Janus kinase 2 (JAK2) V617F	35962046	OMOP Genomic	2023-07-26	2099-12-31	
+Kappa/lambda light chain ratio	0	JNJ_OPTUM_EHR_ONCBM	Kappa/lambda light chain ratio	37394413	SNOMED	2023-07-26	2024-03-13	D
+Kappa/lambda light chain ratio	0	JNJ_OPTUM_EHR_ONCBM	Kappa/lambda light chain ratio	4136733	SNOMED	2024-03-13	2099-12-31	
+kelch like ECH associated protein 1 (KEAP1)	0	JNJ_OPTUM_EHR_ONCBM	kelch like ECH associated protein 1 (KEAP1)	35962902	OMOP Genomic	2023-07-26	2099-12-31	
+keratin 20 (KRT20 or CK20)	0	JNJ_OPTUM_EHR_ONCBM	keratin 20 (KRT20 or CK20)	35945011	OMOP Genomic	2023-07-26	2099-12-31	
+keratin 5/keratin 6 (KRT5/6 or CK5/6)	0	JNJ_OPTUM_EHR_ONCBM	keratin 5/keratin 6 (KRT5/6 or CK5/6)	35959869	OMOP Genomic	2023-07-26	2099-12-31	
+keratin 7 (KRT7 or CK7)	0	JNJ_OPTUM_EHR_ONCBM	keratin 7 (KRT7 or CK7)	35953643	OMOP Genomic	2023-07-26	2099-12-31	
+KIT proto-oncogene, receptor tyrosine kinase (KIT or CD117)	0	JNJ_OPTUM_EHR_ONCBM	KIT proto-oncogene, receptor tyrosine kinase (KIT or CD117)	35959513	OMOP Genomic	2023-07-26	2099-12-31	
+KIT proto-oncogene, receptor tyrosine kinase (KIT or CD117) exon 11	0	JNJ_OPTUM_EHR_ONCBM	KIT proto-oncogene, receptor tyrosine kinase (KIT or CD117) exon 11	35959513	OMOP Genomic	2023-07-26	2099-12-31	
+KRAS proto-oncogene, GTPase (KRAS)	0	JNJ_OPTUM_EHR_ONCBM	KRAS proto-oncogene, GTPase (KRAS)	35948791	OMOP Genomic	2023-07-26	2099-12-31	
+KRAS proto-oncogene, GTPase (KRAS) codon 12	0	JNJ_OPTUM_EHR_ONCBM	KRAS proto-oncogene, GTPase (KRAS) codon 12	35948791	OMOP Genomic	2023-07-26	2099-12-31	
+KRAS proto-oncogene, GTPase (KRAS) exon 2	0	JNJ_OPTUM_EHR_ONCBM	KRAS proto-oncogene, GTPase (KRAS) exon 2	35948791	OMOP Genomic	2023-07-26	2099-12-31	
+KRAS proto-oncogene, GTPase (KRAS) G12A	0	JNJ_OPTUM_EHR_ONCBM	KRAS proto-oncogene, GTPase (KRAS) G12A	35948791	OMOP Genomic	2023-07-26	2099-12-31	
+KRAS proto-oncogene, GTPase (KRAS) G12C	0	JNJ_OPTUM_EHR_ONCBM	KRAS proto-oncogene, GTPase (KRAS) G12C	35948791	OMOP Genomic	2023-07-26	2099-12-31	
+KRAS proto-oncogene, GTPase (KRAS) G12D	0	JNJ_OPTUM_EHR_ONCBM	KRAS proto-oncogene, GTPase (KRAS) G12D	35948791	OMOP Genomic	2023-07-26	2099-12-31	
+KRAS proto-oncogene, GTPase (KRAS) G12V	0	JNJ_OPTUM_EHR_ONCBM	KRAS proto-oncogene, GTPase (KRAS) G12V	35948791	OMOP Genomic	2023-07-26	2099-12-31	
+KRAS proto-oncogene, GTPase (KRAS) G13D	0	JNJ_OPTUM_EHR_ONCBM	KRAS proto-oncogene, GTPase (KRAS) G13D	35948791	OMOP Genomic	2023-07-26	2099-12-31	
+Lactic Acid Dehydrogenase (LDH)	0	JNJ_OPTUM_EHR_ONCBM	Lactic Acid Dehydrogenase (LDH)	4098519	SNOMED	2023-07-26	2099-12-31	
+lipoprotein lipase (LPL)	0	JNJ_OPTUM_EHR_ONCBM	lipoprotein lipase (LPL)	35954658	OMOP Genomic	2023-07-26	2099-12-31	
+loss of chromosome 7q	0	JNJ_OPTUM_EHR_ONCBM	loss of chromosome 7q	21493506	LOINC	2023-07-26	2099-12-31	
+lymphoid enhancer binding factor 1 (LEF1)	0	JNJ_OPTUM_EHR_ONCBM	lymphoid enhancer binding factor 1 (LEF1)	35945312	OMOP Genomic	2023-07-26	2099-12-31	
+lysine methyltransferase 2A (KMT2A or MLL)	0	JNJ_OPTUM_EHR_ONCBM	lysine methyltransferase 2A (KMT2A or MLL)	35960503	OMOP Genomic	2023-07-26	2099-12-31	
+mammaglobin	0	JNJ_OPTUM_EHR_ONCBM	mammaglobin	35953153	OMOP Genomic	2023-07-26	2099-12-31	
+marker of proliferation Ki-67 (MKI67 or Ki-67)	0	JNJ_OPTUM_EHR_ONCBM	marker of proliferation Ki-67 (MKI67 or Ki-67)	35956566	OMOP Genomic	2023-07-26	2099-12-31	
+MDS1 and EVI1 complex locus (MECOM or MDS1-EVI1)	0	JNJ_OPTUM_EHR_ONCBM	MDS1 and EVI1 complex locus (MECOM or MDS1-EVI1)	35963446	OMOP Genomic	2023-07-26	2099-12-31	
+mechanistic target of rapamycin kinase (MTOR)	0	JNJ_OPTUM_EHR_ONCBM	mechanistic target of rapamycin kinase (MTOR)	35954095	OMOP Genomic	2023-07-26	2099-12-31	
+membrane metalloendopeptidase (MME or CD10)	0	JNJ_OPTUM_EHR_ONCBM	membrane metalloendopeptidase (MME or CD10)	35954915	OMOP Genomic	2023-07-26	2099-12-31	
+membrane spanning 4-domains A1 (CD20 or MS4A1)	0	JNJ_OPTUM_EHR_ONCBM	membrane spanning 4-domains A1 (CD20 or MS4A1)	35960550	OMOP Genomic	2023-07-26	2099-12-31	
+methylenetetrahydrofolate reductase (MTHFR)	0	JNJ_OPTUM_EHR_ONCBM	methylenetetrahydrofolate reductase (MTHFR)	35959234	OMOP Genomic	2023-07-26	2099-12-31	
+methylenetetrahydrofolate reductase (MTHFR) A1298C	0	JNJ_OPTUM_EHR_ONCBM	methylenetetrahydrofolate reductase (MTHFR) A1298C	35959234	OMOP Genomic	2023-07-26	2099-12-31	
+methylenetetrahydrofolate reductase (MTHFR) c.665C>T	0	JNJ_OPTUM_EHR_ONCBM	methylenetetrahydrofolate reductase (MTHFR) c.665C>T	35959234	OMOP Genomic	2023-07-26	2099-12-31	
+methylenetetrahydrofolate reductase (MTHFR) C677T	0	JNJ_OPTUM_EHR_ONCBM	methylenetetrahydrofolate reductase (MTHFR) C677T	35959234	OMOP Genomic	2023-07-26	2099-12-31	
+MET proto-oncogene, receptor tyrosine kinase (MET)	0	JNJ_OPTUM_EHR_ONCBM	MET proto-oncogene, receptor tyrosine kinase (MET)	35961878	OMOP Genomic	2023-07-26	2099-12-31	
+MET proto-oncogene, receptor tyrosine kinase (MET) exon 14	0	JNJ_OPTUM_EHR_ONCBM	MET proto-oncogene, receptor tyrosine kinase (MET) exon 14	35961878	OMOP Genomic	2023-07-26	2099-12-31	
+microsatellite instability (MSI)	0	JNJ_OPTUM_EHR_ONCBM	microsatellite instability (MSI)	700490	OMOP Genomic	2023-07-26	2099-12-31	
+microsatellite stable (MSS)	0	JNJ_OPTUM_EHR_ONCBM	microsatellite stable (MSS)	35977050	OMOP Genomic	2023-07-26	2024-03-13	D
+microsatellite stable (MSS)	0	JNJ_OPTUM_EHR_ONCBM	microsatellite stable (MSS)	700490	OMOP Genomic	2024-03-13	2099-12-31	
+mindbomb E3 ubiquitin protein ligase 1 (MIB1)	0	JNJ_OPTUM_EHR_ONCBM	mindbomb E3 ubiquitin protein ligase 1 (MIB1)	35957763	OMOP Genomic	2023-07-26	2099-12-31	
+MONO27 (MONO27)	0	JNJ_OPTUM_EHR_ONCBM	MONO27 (MONO27)	21493978	LOINC	2023-07-26	2099-12-31	
+M Protein, multiple myeloma	0	JNJ_OPTUM_EHR_ONCBM	M Protein, multiple myeloma	37398150	SNOMED	2023-07-26	2024-03-13	D
+M Protein, multiple myeloma	0	JNJ_OPTUM_EHR_ONCBM	M Protein, multiple myeloma	40481438	SNOMED	2024-03-13	2099-12-31	
+mutL homolog 1 (MLH1)	0	JNJ_OPTUM_EHR_ONCBM	mutL homolog 1 (MLH1)	35946800	OMOP Genomic	2023-07-26	2099-12-31	
+mutS homolog 2 (MSH2)	0	JNJ_OPTUM_EHR_ONCBM	mutS homolog 2 (MSH2)	35952268	OMOP Genomic	2023-07-26	2099-12-31	
+mutS homolog 3 (MSH3)	0	JNJ_OPTUM_EHR_ONCBM	mutS homolog 3 (MSH3)	35952686	OMOP Genomic	2023-07-26	2099-12-31	
+mutS homolog 6 (MSH6)	0	JNJ_OPTUM_EHR_ONCBM	mutS homolog 6 (MSH6)	35950588	OMOP Genomic	2023-07-26	2099-12-31	
+mutY DNA glycosylase (MUTYH)	0	JNJ_OPTUM_EHR_ONCBM	mutY DNA glycosylase (MUTYH)	35949265	OMOP Genomic	2023-07-26	2099-12-31	
+MYC proto-oncogene, bHLH transcription factor (MYC)	0	JNJ_OPTUM_EHR_ONCBM	MYC proto-oncogene, bHLH transcription factor (MYC)	35952889	OMOP Genomic	2023-07-26	2099-12-31	
+myeloblast	0	JNJ_OPTUM_EHR_ONCBM	myeloblast	37399329	SNOMED	2023-07-26	2099-12-31	
+myotubularin 1 (MTM1)	0	JNJ_OPTUM_EHR_ONCBM	myotubularin 1 (MTM1)	35945758	OMOP Genomic	2023-07-26	2099-12-31	
+napsin A aspartic peptidase (NAPSA)	0	JNJ_OPTUM_EHR_ONCBM	napsin A aspartic peptidase (NAPSA)	35962177	OMOP Genomic	2023-07-26	2099-12-31	
+neural cell adhesion molecule 1 (NCAM1 or CD56)	0	JNJ_OPTUM_EHR_ONCBM	neural cell adhesion molecule 1 (NCAM1 or CD56)	35947975	OMOP Genomic	2023-07-26	2099-12-31	
+neurofibromin 1 (NF1)	0	JNJ_OPTUM_EHR_ONCBM	neurofibromin 1 (NF1)	35959215	OMOP Genomic	2023-07-26	2099-12-31	
+neurotrophic receptor tyrosine kinase 1 (NTRK1)	0	JNJ_OPTUM_EHR_ONCBM	neurotrophic receptor tyrosine kinase 1 (NTRK1)	35951557	OMOP Genomic	2023-07-26	2099-12-31	
+neurotrophic receptor tyrosine kinase 2 (NTRK2)	0	JNJ_OPTUM_EHR_ONCBM	neurotrophic receptor tyrosine kinase 2 (NTRK2)	35949322	OMOP Genomic	2023-07-26	2099-12-31	
+neurotrophic receptor tyrosine kinase 3 (NTRK3)	0	JNJ_OPTUM_EHR_ONCBM	neurotrophic receptor tyrosine kinase 3 (NTRK3)	35951499	OMOP Genomic	2023-07-26	2099-12-31	
+nibrin (NBN)	0	JNJ_OPTUM_EHR_ONCBM	nibrin (NBN)	35945269	OMOP Genomic	2023-07-26	2099-12-31	
+NK2 homeobox 1 (NKX2-1 or TTF1)	0	JNJ_OPTUM_EHR_ONCBM	NK2 homeobox 1 (NKX2-1 or TTF1)	35952781	OMOP Genomic	2023-07-26	2099-12-31	
+NR21 (NR21)	0	JNJ_OPTUM_EHR_ONCBM	NR21 (NR21)	21493976	LOINC	2023-07-26	2099-12-31	
+NR24 (NR24)	0	JNJ_OPTUM_EHR_ONCBM	NR24 (NR24)	0	None	2023-07-26	2099-12-31	
+NRAS proto-oncogene, GTPase (NRAS)	0	JNJ_OPTUM_EHR_ONCBM	NRAS proto-oncogene, GTPase (NRAS)	35950119	OMOP Genomic	2023-07-26	2099-12-31	
+nucleophosmin 1 (NPM1)	0	JNJ_OPTUM_EHR_ONCBM	nucleophosmin 1 (NPM1)	35948005	OMOP Genomic	2023-07-26	2099-12-31	
+nucleophosmin 1 (NPM1) exon 12	0	JNJ_OPTUM_EHR_ONCBM	nucleophosmin 1 (NPM1) exon 12	35948005	OMOP Genomic	2023-07-26	2099-12-31	
+O-6-methylguanine-DNA methyltransferase (MGMT)	0	JNJ_OPTUM_EHR_ONCBM	O-6-methylguanine-DNA methyltransferase (MGMT)	35960345	OMOP Genomic	2023-07-26	2099-12-31	
+paired box 2 (PAX2)	0	JNJ_OPTUM_EHR_ONCBM	paired box 2 (PAX2)	35947995	OMOP Genomic	2023-07-26	2099-12-31	
+paired box 5 (PAX5)	0	JNJ_OPTUM_EHR_ONCBM	paired box 5 (PAX5)	35955651	OMOP Genomic	2023-07-26	2099-12-31	
+paired box 8 (PAX8)	0	JNJ_OPTUM_EHR_ONCBM	paired box 8 (PAX8)	35961294	OMOP Genomic	2023-07-26	2099-12-31	
+pan-keratin (KRTs/CKs)	0	JNJ_OPTUM_EHR_ONCBM	pan-keratin (KRTs/CKs)	0	None	2023-07-26	2099-12-31	
+partner and localizer of BRCA2 (PALB2)	0	JNJ_OPTUM_EHR_ONCBM	partner and localizer of BRCA2 (PALB2)	35949597	OMOP Genomic	2023-07-26	2099-12-31	
+patched 1 (PTCH1)	0	JNJ_OPTUM_EHR_ONCBM	patched 1 (PTCH1)	35957012	OMOP Genomic	2023-07-26	2099-12-31	
+phosphatase and tensin homolog (PTEN)	0	JNJ_OPTUM_EHR_ONCBM	phosphatase and tensin homolog (PTEN)	35955125	OMOP Genomic	2023-07-26	2099-12-31	
+phosphatidylinositol-4,5-bisphosphate 3-kinase catalytic subunit alpha (PIK3CA)	0	JNJ_OPTUM_EHR_ONCBM	phosphatidylinositol-4,5-bisphosphate 3-kinase catalytic subunit alpha (PIK3CA)	35953202	OMOP Genomic	2023-07-26	2099-12-31	
+platelet derived growth factor receptor alpha (PDGFRA)	0	JNJ_OPTUM_EHR_ONCBM	platelet derived growth factor receptor alpha (PDGFRA)	35963556	OMOP Genomic	2023-07-26	2099-12-31	
+platelet derived growth factor receptor beta (PDGFRB)	0	JNJ_OPTUM_EHR_ONCBM	platelet derived growth factor receptor beta (PDGFRB)	35955974	OMOP Genomic	2023-07-26	2099-12-31	
+PMS1 homolog 2, mismatch repair system component (PMS2)	0	JNJ_OPTUM_EHR_ONCBM	PMS1 homolog 2, mismatch repair system component (PMS2)	35945784	OMOP Genomic	2023-07-26	2099-12-31	
+progesterone receptor (PGR)	0	JNJ_OPTUM_EHR_ONCBM	progesterone receptor (PGR)	35957667	OMOP Genomic	2023-07-26	2099-12-31	
+proliferative index	0	JNJ_OPTUM_EHR_ONCBM	proliferative index	35957237	OMOP Genomic	2023-07-26	2099-12-31	
+Prostate Specific Antigen (PSA)	0	JNJ_OPTUM_EHR_ONCBM	Prostate Specific Antigen (PSA)	4272032	SNOMED	2023-07-26	2099-12-31	
+protection of telomeres 1 (POT1)	0	JNJ_OPTUM_EHR_ONCBM	protection of telomeres 1 (POT1)	35960007	OMOP Genomic	2023-07-26	2099-12-31	
+protein tyrosine phosphatase receptor type C (CD45 or PTPRC)	0	JNJ_OPTUM_EHR_ONCBM	protein tyrosine phosphatase receptor type C (CD45 or PTPRC)	35963132	OMOP Genomic	2023-07-26	2099-12-31	
+protein tyrosine phosphatase receptor type C (PTPRC or CD45)	0	JNJ_OPTUM_EHR_ONCBM	protein tyrosine phosphatase receptor type C (PTPRC or CD45)	35963132	OMOP Genomic	2023-07-26	2099-12-31	
+RAD50 double strand break repair protein (RAD50)	0	JNJ_OPTUM_EHR_ONCBM	RAD50 double strand break repair protein (RAD50)	35948392	OMOP Genomic	2023-07-26	2099-12-31	
+RAD51 paralog B (RAD51B)	0	JNJ_OPTUM_EHR_ONCBM	RAD51 paralog B (RAD51B)	35952916	OMOP Genomic	2023-07-26	2099-12-31	
+RAD51 paralog C (RAD51C)	0	JNJ_OPTUM_EHR_ONCBM	RAD51 paralog C (RAD51C)	35948812	OMOP Genomic	2023-07-26	2099-12-31	
+RAD51 paralog D (RAD51D)	0	JNJ_OPTUM_EHR_ONCBM	RAD51 paralog D (RAD51D)	35957401	OMOP Genomic	2023-07-26	2099-12-31	
+ret proto-oncogene (RET)	0	JNJ_OPTUM_EHR_ONCBM	ret proto-oncogene (RET)	35952943	OMOP Genomic	2023-07-26	2099-12-31	
+ribosomal protein S15 (RPS15)	0	JNJ_OPTUM_EHR_ONCBM	ribosomal protein S15 (RPS15)	35957192	OMOP Genomic	2023-07-26	2099-12-31	
+ROS proto-oncogene 1, receptor tyrosine kinase (ROS1)	0	JNJ_OPTUM_EHR_ONCBM	ROS proto-oncogene 1, receptor tyrosine kinase (ROS1)	35957723	OMOP Genomic	2023-07-26	2099-12-31	
+RUNX family transcription factor 1 (RUNX1 or AML1)	0	JNJ_OPTUM_EHR_ONCBM	RUNX family transcription factor 1 (RUNX1 or AML1)	35959479	OMOP Genomic	2023-07-26	2099-12-31	
+S100 calcium binding protein (S100)	0	JNJ_OPTUM_EHR_ONCBM	S100 calcium binding protein (S100)	35962538	OMOP Genomic	2023-07-26	2099-12-31	
+serine/threonine kinase 11 (STK11)	0	JNJ_OPTUM_EHR_ONCBM	serine/threonine kinase 11 (STK11)	35954794	OMOP Genomic	2023-07-26	2099-12-31	
+serpin family E member 1 (SERPINE1 or PAI-1)	0	JNJ_OPTUM_EHR_ONCBM	serpin family E member 1 (SERPINE1 or PAI-1)	35956243	OMOP Genomic	2023-07-26	2099-12-31	
+SMAD family member 4 (SMAD4)	0	JNJ_OPTUM_EHR_ONCBM	SMAD family member 4 (SMAD4)	35945866	OMOP Genomic	2023-07-26	2099-12-31	
+superoxide dismutase 1 (SOD1)	0	JNJ_OPTUM_EHR_ONCBM	superoxide dismutase 1 (SOD1)	35948140	OMOP Genomic	2023-07-26	2099-12-31	
+synaptophysin (SYP)	0	JNJ_OPTUM_EHR_ONCBM	synaptophysin (SYP)	35947870	OMOP Genomic	2023-07-26	2099-12-31	
+syndecan 1 (SDC1 or CD138)	0	JNJ_OPTUM_EHR_ONCBM	syndecan 1 (SDC1 or CD138)	35959315	OMOP Genomic	2023-07-26	2099-12-31	
+t(11;14)	0	JNJ_OPTUM_EHR_ONCBM	t(11;14)	35950789	OMOP Genomic	2023-07-26	2099-12-31	
+t(11;14)(q13;q32)(CCND1,IGH)	0	JNJ_OPTUM_EHR_ONCBM	t(11;14)(q13;q32)(CCND1,IGH)	46236747	LOINC	2023-07-26	2099-12-31	
+t(11;18)(q21;q21)(BIRC3,MALT1)	0	JNJ_OPTUM_EHR_ONCBM	t(11;18)(q21;q21)(BIRC3,MALT1)	46236746	LOINC	2023-07-26	2099-12-31	
+t(14;16)	0	JNJ_OPTUM_EHR_ONCBM	t(14;16)	46236743	LOINC	2023-07-26	2099-12-31	
+t(14;16)(q32;q23)(IGH,MAF)	0	JNJ_OPTUM_EHR_ONCBM	t(14;16)(q32;q23)(IGH,MAF)	46236743	LOINC	2023-07-26	2099-12-31	
+t(15;17)(q24.1;q21.1)(PML,RARA)	0	JNJ_OPTUM_EHR_ONCBM	t(15;17)(q24.1;q21.1)(PML,RARA)	46236741	LOINC	2023-07-26	2099-12-31	
+t(4;14)	0	JNJ_OPTUM_EHR_ONCBM	t(4;14)	35954995	OMOP Genomic	2023-07-26	2099-12-31	
+t(4;14)(p16;q32)(FGFR3,IGH)	0	JNJ_OPTUM_EHR_ONCBM	t(4;14)(p16;q32)(FGFR3,IGH)	43055560	LOINC	2023-07-26	2099-12-31	
+t(6;9)(p22;q34)(DEK,NUP214)	0	JNJ_OPTUM_EHR_ONCBM	t(6;9)(p22;q34)(DEK,NUP214)	46236752	LOINC	2023-07-26	2099-12-31	
+t(8;14)(q24;q32)(MYC,IGH)	0	JNJ_OPTUM_EHR_ONCBM	t(8;14)(q24;q32)(MYC,IGH)	46236742	LOINC	2023-07-26	2099-12-31	
+t(9;22)	0	JNJ_OPTUM_EHR_ONCBM	t(9;22)	40485072	SNOMED	2023-07-26	2099-12-31	
+t(9;22)(q34.1;q11)(ABL1,BCR)	0	JNJ_OPTUM_EHR_ONCBM	t(9;22)(q34.1;q11)(ABL1,BCR)	3041541	LOINC	2023-07-26	2099-12-31	
+t(9;22)(q34.1;q11)(ABL1,BCR) P190	0	JNJ_OPTUM_EHR_ONCBM	t(9;22)(q34.1;q11)(ABL1,BCR) P190	3041541	LOINC	2023-07-26	2099-12-31	
+t(9;22)(q34.1;q11)(ABL1,BCR) P210	0	JNJ_OPTUM_EHR_ONCBM	t(9;22)(q34.1;q11)(ABL1,BCR) P210	3041541	LOINC	2023-07-26	2099-12-31	
+TAR DNA binding protein (TARDBP)	0	JNJ_OPTUM_EHR_ONCBM	TAR DNA binding protein (TARDBP)	35964178	OMOP Genomic	2023-07-26	2099-12-31	
+tumor mutation burden (TMB)	0	JNJ_OPTUM_EHR_ONCBM	tumor mutation burden (TMB)	1002393	LOINC	2023-07-26	2099-12-31	
+tumor proportion score (TPS)	0	JNJ_OPTUM_EHR_ONCBM	tumor proportion score (TPS)	42529559	LOINC	2023-07-26	2099-12-31	
+tumor protein p53 (TP53 or p53)	0	JNJ_OPTUM_EHR_ONCBM	tumor protein p53 (TP53 or p53)	35948926	OMOP Genomic	2023-07-26	2099-12-31	
+tumor protein p63 (TP63 or p63 or p40)	0	JNJ_OPTUM_EHR_ONCBM	tumor protein p63 (TP63 or p63 or p40)	35956840	OMOP Genomic	2023-07-26	2099-12-31	
+vascular endothelial growth factor A (VEGFA or VEGF)	0	JNJ_OPTUM_EHR_ONCBM	vascular endothelial growth factor A (VEGFA or VEGF)	35946301	OMOP Genomic	2023-07-26	2099-12-31	
+vimentin (VIM)	0	JNJ_OPTUM_EHR_ONCBM	vimentin (VIM)	35953216	OMOP Genomic	2023-07-26	2099-12-31	
+von Hippel-Lindau tumor suppressor (VHL)	0	JNJ_OPTUM_EHR_ONCBM	von Hippel-Lindau tumor suppressor (VHL)	35961736	OMOP Genomic	2023-07-26	2099-12-31	
+WT1 transcription factor (WT1)	0	JNJ_OPTUM_EHR_ONCBM	WT1 transcription factor (WT1)	35959668	OMOP Genomic	2023-07-26	2099-12-31	
+zeta chain of T cell receptor associated protein kinase 70 (ZAP70)	0	JNJ_OPTUM_EHR_ONCBM	zeta chain of T cell receptor associated protein kinase 70 (ZAP70)	35952114	OMOP Genomic	2023-07-26	2099-12-31	

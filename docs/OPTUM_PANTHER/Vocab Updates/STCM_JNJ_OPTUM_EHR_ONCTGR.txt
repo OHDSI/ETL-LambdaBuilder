@@ -1,0 +1,14 @@
+source_code	source_concept_id	source_vocabulary_id	source_code_description	target_concept_id	target_vocabulary_id	valid_start_date	valid_end_date	invalid_reason
+Tumor grade: 1	0	JNJ_OPTUM_EHR_ONCTGR	Tumor grade: 1	1634371	Cancer Modifier	2023-07-26	2099-12-31	
+Tumor grade: 2	0	JNJ_OPTUM_EHR_ONCTGR	Tumor grade: 2	1634752	Cancer Modifier	2023-07-26	2099-12-31	
+Tumor grade: 3	0	JNJ_OPTUM_EHR_ONCTGR	Tumor grade: 3	1633749	Cancer Modifier	2023-07-26	2099-12-31	
+Tumor grade: 4	0	JNJ_OPTUM_EHR_ONCTGR	Tumor grade: 4	1635792	Cancer Modifier	2023-07-26	2099-12-31	
+Tumor grade: high	0	JNJ_OPTUM_EHR_ONCTGR	Tumor grade: high	1635587	Cancer Modifier	2023-07-26	2099-12-31	
+Tumor grade: intermediate	0	JNJ_OPTUM_EHR_ONCTGR	Tumor grade: intermediate	1635249	Cancer Modifier	2023-07-26	2099-12-31	
+Tumor grade: low	0	JNJ_OPTUM_EHR_ONCTGR	Tumor grade: low	1634085	Cancer Modifier	2023-07-26	2099-12-31	
+Tumor grade: moderately differentiated	0	JNJ_OPTUM_EHR_ONCTGR	Tumor grade: moderately differentiated	1634752	Cancer Modifier	2023-07-26	2099-12-31	
+Tumor grade: moderately to poorly differentiated	0	JNJ_OPTUM_EHR_ONCTGR	Tumor grade: moderately to poorly differentiated	1635249	Cancer Modifier	2023-07-26	2099-12-31	
+Tumor grade: poorly differentiated	0	JNJ_OPTUM_EHR_ONCTGR	Tumor grade: poorly differentiated	1633749	Cancer Modifier	2023-07-26	2099-12-31	
+Tumor grade: undifferentiated	0	JNJ_OPTUM_EHR_ONCTGR	Tumor grade: undifferentiated	1633749	Cancer Modifier	2023-07-26	2099-12-31	
+Tumor grade: well differentiated	0	JNJ_OPTUM_EHR_ONCTGR	Tumor grade: well differentiated	1634371	Cancer Modifier	2023-07-26	2099-12-31	
+Tumor grade: well to moderately differentiated	0	JNJ_OPTUM_EHR_ONCTGR	Tumor grade: well to moderately differentiated	1635249	Cancer Modifier	2023-07-26	2099-12-31	

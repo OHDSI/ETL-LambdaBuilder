@@ -1,0 +1,79 @@
+source_code	source_concept_id	source_vocabulary_id	source_code_description	target_concept_id	target_vocabulary_id	valid_start_date	valid_end_date	invalid_reason
+stage 0	0	JNJ_OPTUM_EHR_ONCSTG	stage 0	1634946	Cancer Modifier	2023-07-26	2099-12-31	
+stage 0a	0	JNJ_OPTUM_EHR_ONCSTG	stage 0a	1634242	Cancer Modifier	2023-07-26	2099-12-31	
+stage 1	0	JNJ_OPTUM_EHR_ONCSTG	stage 1	1635838	Cancer Modifier	2023-07-26	2099-12-31	
+stage 1a	0	JNJ_OPTUM_EHR_ONCSTG	stage 1a	1633544	Cancer Modifier	2023-07-26	2099-12-31	
+stage 1a1	0	JNJ_OPTUM_EHR_ONCSTG	stage 1a1	1633843	Cancer Modifier	2023-07-26	2099-12-31	
+stage 1a2	0	JNJ_OPTUM_EHR_ONCSTG	stage 1a2	1634275	Cancer Modifier	2023-07-26	2099-12-31	
+stage 1b	0	JNJ_OPTUM_EHR_ONCSTG	stage 1b	1635041	Cancer Modifier	2023-07-26	2099-12-31	
+stage 1b1	0	JNJ_OPTUM_EHR_ONCSTG	stage 1b1	1635378	Cancer Modifier	2023-07-26	2099-12-31	
+stage 1b2	0	JNJ_OPTUM_EHR_ONCSTG	stage 1b2	1634558	Cancer Modifier	2023-07-26	2099-12-31	
+stage 1c	0	JNJ_OPTUM_EHR_ONCSTG	stage 1c	1634567	Cancer Modifier	2023-07-26	2099-12-31	
+stage 2	0	JNJ_OPTUM_EHR_ONCSTG	stage 2	1635131	Cancer Modifier	2023-07-26	2099-12-31	
+stage 2a	0	JNJ_OPTUM_EHR_ONCSTG	stage 2a	1634370	Cancer Modifier	2023-07-26	2099-12-31	
+stage 2a2	0	JNJ_OPTUM_EHR_ONCSTG	stage 2a2	1634632	Cancer Modifier	2023-07-26	2099-12-31	
+stage 2b	0	JNJ_OPTUM_EHR_ONCSTG	stage 2b	1634764	Cancer Modifier	2023-07-26	2099-12-31	
+stage 2c	0	JNJ_OPTUM_EHR_ONCSTG	stage 2c	1633907	Cancer Modifier	2023-07-26	2099-12-31	
+stage 3	0	JNJ_OPTUM_EHR_ONCSTG	stage 3	1634191	Cancer Modifier	2023-07-26	2099-12-31	
+stage 3a	0	JNJ_OPTUM_EHR_ONCSTG	stage 3a	1633965	Cancer Modifier	2023-07-26	2099-12-31	
+stage 3b	0	JNJ_OPTUM_EHR_ONCSTG	stage 3b	1634175	Cancer Modifier	2023-07-26	2099-12-31	
+stage 3c	0	JNJ_OPTUM_EHR_ONCSTG	stage 3c	1635305	Cancer Modifier	2023-07-26	2099-12-31	
+stage 4	0	JNJ_OPTUM_EHR_ONCSTG	stage 4	1633987	Cancer Modifier	2023-07-26	2099-12-31	
+stage 4a	0	JNJ_OPTUM_EHR_ONCSTG	stage 4a	1635021	Cancer Modifier	2023-07-26	2099-12-31	
+stage 4b	0	JNJ_OPTUM_EHR_ONCSTG	stage 4b	1634499	Cancer Modifier	2023-07-26	2099-12-31	
+stage 4c	0	JNJ_OPTUM_EHR_ONCSTG	stage 4c	1634648	Cancer Modifier	2023-07-26	2099-12-31	
+stage 5	0	JNJ_OPTUM_EHR_ONCSTG	stage 5	1634804	Cancer Modifier	2023-07-26	2099-12-31	
+stage a	0	JNJ_OPTUM_EHR_ONCSTG	stage a	1634256	Cancer Modifier	2023-07-26	2099-12-31	
+stage advanced	0	JNJ_OPTUM_EHR_ONCSTG	stage advanced	1634568	Cancer Modifier	2023-07-26	2099-12-31	
+stage b	0	JNJ_OPTUM_EHR_ONCSTG	stage b	1635686	Cancer Modifier	2023-07-26	2099-12-31	
+stage c	0	JNJ_OPTUM_EHR_ONCSTG	stage c	1635672	Cancer Modifier	2023-07-26	2099-12-31	
+stage clinical 0	0	JNJ_OPTUM_EHR_ONCSTG	stage clinical 0	1634502	Cancer Modifier	2023-07-26	2099-12-31	
+stage clinical 1	0	JNJ_OPTUM_EHR_ONCSTG	stage clinical 1	1635199	Cancer Modifier	2023-07-26	2099-12-31	
+stage clinical 1a	0	JNJ_OPTUM_EHR_ONCSTG	stage clinical 1a	1634671	Cancer Modifier	2023-07-26	2099-12-31	
+stage clinical 1a2	0	JNJ_OPTUM_EHR_ONCSTG	stage clinical 1a2	1634275	Cancer Modifier	2023-07-26	2099-12-31	
+stage clinical 1b	0	JNJ_OPTUM_EHR_ONCSTG	stage clinical 1b	1633618	Cancer Modifier	2023-07-26	2099-12-31	
+stage clinical 1b1	0	JNJ_OPTUM_EHR_ONCSTG	stage clinical 1b1	1635378	Cancer Modifier	2023-07-26	2099-12-31	
+stage clinical 1b2	0	JNJ_OPTUM_EHR_ONCSTG	stage clinical 1b2	1634558	Cancer Modifier	2023-07-26	2099-12-31	
+stage clinical 2	0	JNJ_OPTUM_EHR_ONCSTG	stage clinical 2	1633841	Cancer Modifier	2023-07-26	2099-12-31	
+stage clinical 2a	0	JNJ_OPTUM_EHR_ONCSTG	stage clinical 2a	1635486	Cancer Modifier	2023-07-26	2099-12-31	
+stage clinical 2b	0	JNJ_OPTUM_EHR_ONCSTG	stage clinical 2b	1634332	Cancer Modifier	2023-07-26	2099-12-31	
+stage clinical 2c	0	JNJ_OPTUM_EHR_ONCSTG	stage clinical 2c	1635056	Cancer Modifier	2023-07-26	2099-12-31	
+stage clinical 3	0	JNJ_OPTUM_EHR_ONCSTG	stage clinical 3	1634876	Cancer Modifier	2023-07-26	2099-12-31	
+stage clinical 3a	0	JNJ_OPTUM_EHR_ONCSTG	stage clinical 3a	1634922	Cancer Modifier	2023-07-26	2099-12-31	
+stage clinical 3b	0	JNJ_OPTUM_EHR_ONCSTG	stage clinical 3b	1634175	Cancer Modifier	2023-07-26	2099-12-31	
+stage clinical 3c	0	JNJ_OPTUM_EHR_ONCSTG	stage clinical 3c	1634571	Cancer Modifier	2023-07-26	2099-12-31	
+stage clinical 4	0	JNJ_OPTUM_EHR_ONCSTG	stage clinical 4	1634447	Cancer Modifier	2023-07-26	2099-12-31	
+stage clinical 4a	0	JNJ_OPTUM_EHR_ONCSTG	stage clinical 4a	1635450	Cancer Modifier	2023-07-26	2099-12-31	
+stage clinical 4b	0	JNJ_OPTUM_EHR_ONCSTG	stage clinical 4b	1634499	Cancer Modifier	2023-07-26	2099-12-31	
+stage clinical 4c	0	JNJ_OPTUM_EHR_ONCSTG	stage clinical 4c	1635404	Cancer Modifier	2023-07-26	2099-12-31	
+stage clinical limited stage	0	JNJ_OPTUM_EHR_ONCSTG	stage clinical limited stage	1633518	Cancer Modifier	2023-07-26	2099-12-31	
+stage clinical unknown	0	JNJ_OPTUM_EHR_ONCSTG	stage clinical unknown	0	None	2023-07-26	2099-12-31	
+stage early stage	0	JNJ_OPTUM_EHR_ONCSTG	stage early stage	1635838	Cancer Modifier	2023-07-26	2099-12-31	
+stage end stage cancer	0	JNJ_OPTUM_EHR_ONCSTG	stage end stage cancer	1634804	Cancer Modifier	2023-07-26	2099-12-31	
+stage extensive stage	0	JNJ_OPTUM_EHR_ONCSTG	stage extensive stage	1635798	Cancer Modifier	2023-07-26	2099-12-31	
+stage iae	0	JNJ_OPTUM_EHR_ONCSTG	stage iae	1635838	Cancer Modifier	2023-07-26	2099-12-31	
+stage ie	0	JNJ_OPTUM_EHR_ONCSTG	stage ie	1635838	Cancer Modifier	2023-07-26	2099-12-31	
+stage iie	0	JNJ_OPTUM_EHR_ONCSTG	stage iie	1635388	Cancer Modifier	2023-07-26	2099-12-31	
+stage iiia1	0	JNJ_OPTUM_EHR_ONCSTG	stage iiia1	1635631	Cancer Modifier	2023-07-26	2099-12-31	
+stage iiia2	0	JNJ_OPTUM_EHR_ONCSTG	stage iiia2	1635840	Cancer Modifier	2023-07-26	2099-12-31	
+stage iiic1	0	JNJ_OPTUM_EHR_ONCSTG	stage iiic1	1634590	Cancer Modifier	2023-07-26	2099-12-31	
+stage iiic2	0	JNJ_OPTUM_EHR_ONCSTG	stage iiic2	1635612	Cancer Modifier	2023-07-26	2099-12-31	
+stage limited stage	0	JNJ_OPTUM_EHR_ONCSTG	stage limited stage	1633518	Cancer Modifier	2023-07-26	2099-12-31	
+stage m3	0	JNJ_OPTUM_EHR_ONCSTG	stage m3	0	None	2023-07-26	2099-12-31	
+stage m5	0	JNJ_OPTUM_EHR_ONCSTG	stage m5	1635838	Cancer Modifier	2023-07-26	2099-12-31	
+stage pathological 0	0	JNJ_OPTUM_EHR_ONCSTG	stage pathological 0	1633542	Cancer Modifier	2023-07-26	2099-12-31	
+stage pathological 1	0	JNJ_OPTUM_EHR_ONCSTG	stage pathological 1	1634252	Cancer Modifier	2023-07-26	2099-12-31	
+stage pathological 1a	0	JNJ_OPTUM_EHR_ONCSTG	stage pathological 1a	1633891	Cancer Modifier	2023-07-26	2099-12-31	
+stage pathological 1b	0	JNJ_OPTUM_EHR_ONCSTG	stage pathological 1b	1633869	Cancer Modifier	2023-07-26	2099-12-31	
+stage pathological 2	0	JNJ_OPTUM_EHR_ONCSTG	stage pathological 2	1633702	Cancer Modifier	2023-07-26	2099-12-31	
+stage pathological 2a	0	JNJ_OPTUM_EHR_ONCSTG	stage pathological 2a	1634960	Cancer Modifier	2023-07-26	2099-12-31	
+stage pathological 2b	0	JNJ_OPTUM_EHR_ONCSTG	stage pathological 2b	1633813	Cancer Modifier	2023-07-26	2099-12-31	
+stage pathological 2c	0	JNJ_OPTUM_EHR_ONCSTG	stage pathological 2c	1633859	Cancer Modifier	2023-07-26	2099-12-31	
+stage pathological 3	0	JNJ_OPTUM_EHR_ONCSTG	stage pathological 3	1635566	Cancer Modifier	2023-07-26	2099-12-31	
+stage pathological 3a	0	JNJ_OPTUM_EHR_ONCSTG	stage pathological 3a	1633519	Cancer Modifier	2023-07-26	2099-12-31	
+stage pathological 3b	0	JNJ_OPTUM_EHR_ONCSTG	stage pathological 3b	1634789	Cancer Modifier	2023-07-26	2099-12-31	
+stage pathological 3c	0	JNJ_OPTUM_EHR_ONCSTG	stage pathological 3c	1635372	Cancer Modifier	2023-07-26	2099-12-31	
+stage pathological 4	0	JNJ_OPTUM_EHR_ONCSTG	stage pathological 4	1634688	Cancer Modifier	2023-07-26	2099-12-31	
+stage pathological 4a	0	JNJ_OPTUM_EHR_ONCSTG	stage pathological 4a	1635232	Cancer Modifier	2023-07-26	2099-12-31	
+stage pathological 4b	0	JNJ_OPTUM_EHR_ONCSTG	stage pathological 4b	1633577	Cancer Modifier	2023-07-26	2099-12-31	
+stage unknown	0	JNJ_OPTUM_EHR_ONCSTG	stage unknown	0	None	2023-07-26	2099-12-31	

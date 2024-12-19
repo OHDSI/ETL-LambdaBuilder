@@ -1,0 +1,186 @@
+source_code	source_concept_id	source_vocabulary_id	source_code_description	target_concept_id	target_vocabulary_id	valid_start_date	valid_end_date	invalid_reason
+1	0	JNJ_TRU_P_SPCLTY	Hospital	38004515	Medicare Specialty	2013-01-06	2099-12-31	
+10	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+10	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+100	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+100	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+105	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+105	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+120	0	JNJ_TRU_P_SPCLTY	Chiropractic	38004475	Medicare Specialty	2013-01-06	2099-12-31	
+130	0	JNJ_TRU_P_SPCLTY	Podiatry	38004486	Medicare Specialty	2013-01-06	2099-12-31	
+140	0	JNJ_TRU_P_SPCLTY	Pain Management	38004494	Medicare Specialty	2013-01-06	2099-12-31	
+145	0	JNJ_TRU_P_SPCLTY	Anesthesiology	38004450	Medicare Specialty	2013-01-06	2099-12-31	
+15	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+15	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+150	0	JNJ_TRU_P_SPCLTY	Anesthesiology	38004450	Medicare Specialty	2013-01-06	2099-12-31	
+160	0	JNJ_TRU_P_SPCLTY	Nuclear Medicine	38004476	Medicare Specialty	2013-01-06	2099-12-31	
+170	0	JNJ_TRU_P_SPCLTY	Pathology	38004466	Medicare Specialty	2013-01-06	2099-12-31	
+175	0	JNJ_TRU_P_SPCLTY	Pathology	38004466	Medicare Specialty	2013-01-06	2099-12-31	
+180	0	JNJ_TRU_P_SPCLTY	Physician/Diagnostic Radiology	38004675	Medicare Specialty	2013-01-06	2099-12-31	
+185	0	JNJ_TRU_P_SPCLTY	Physician/Diagnostic Radiology	38004675	Medicare Specialty	2013-01-06	2099-12-31	
+20	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+20	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+200	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+200	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+202	0	JNJ_TRU_P_SPCLTY	Osteopathic Manipulative Therapy	38004457	Medicare Specialty	2013-01-06	2099-12-31	
+204	0	JNJ_TRU_P_SPCLTY	Internal Medicine	38004456	Medicare Specialty	2013-01-06	2099-12-31	
+206	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+206	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+208	0	JNJ_TRU_P_SPCLTY	Colorectal Surgery	38004471	Medicare Specialty	2013-01-06	2099-12-31	
+21	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+21	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+210	0	JNJ_TRU_P_SPCLTY	Urology	38004474	Medicare Specialty	2013-01-06	2099-12-31	
+215	0	JNJ_TRU_P_SPCLTY	Dermatology	38004452	Medicare Specialty	2013-01-06	2099-12-31	
+22	0	JNJ_TRU_P_SPCLTY	Addiction Medicine	38004498	Medicare Specialty	2013-01-06	2099-12-31	
+220	0	JNJ_TRU_P_SPCLTY	Emergency Medicine	38004510	Medicare Specialty	2013-01-06	2099-12-31	
+225	0	JNJ_TRU_P_SPCLTY	Hospital	38004515	Medicare Specialty	2013-01-06	2099-12-31	
+227	0	JNJ_TRU_P_SPCLTY	Hospice And Palliative Care	45756777	ABMS	2013-01-06	2023-01-20	D
+227	0	JNJ_TRU_P_SPCLTY	Hospice And Palliative Care	38004462	Medicare Specialty	2023-01-20	2099-12-31	
+23	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+23	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+230	0	JNJ_TRU_P_SPCLTY	Allergy/Immunology	38004448	Medicare Specialty	2013-01-06	2099-12-31	
+240	0	JNJ_TRU_P_SPCLTY	Family Practice	38004453	Medicare Specialty	2013-01-06	2099-12-31	
+245	0	JNJ_TRU_P_SPCLTY	Geriatric Medicine	38004478	Medicare Specialty	2013-01-06	2099-12-31	
+25	0	JNJ_TRU_P_SPCLTY	Physical Medicine And Rehabilitation	38004468	Medicare Specialty	2013-01-06	2099-12-31	
+250	0	JNJ_TRU_P_SPCLTY	Cardiology	38004451	Medicare Specialty	2013-01-06	2099-12-31	
+260	0	JNJ_TRU_P_SPCLTY	Neurology	38004458	Medicare Specialty	2013-01-06	2099-12-31	
+265	0	JNJ_TRU_P_SPCLTY	Critical care (intensivist)	38004500	Medicare Specialty	2013-01-06	2099-12-31	
+270	0	JNJ_TRU_P_SPCLTY	Endocrinology	38004485	Medicare Specialty	2013-01-06	2099-12-31	
+275	0	JNJ_TRU_P_SPCLTY	Gastroenterology	38004455	Medicare Specialty	2013-01-06	2099-12-31	
+280	0	JNJ_TRU_P_SPCLTY	Hematology	38004501	Medicare Specialty	2013-01-06	2099-12-31	
+285	0	JNJ_TRU_P_SPCLTY	Infectious Disease	38004484	Medicare Specialty	2013-01-06	2099-12-31	
+290	0	JNJ_TRU_P_SPCLTY	Nephrology	38004479	Medicare Specialty	2013-01-06	2099-12-31	
+295	0	JNJ_TRU_P_SPCLTY	Pulmonary Disease	38004472	Medicare Specialty	2013-01-06	2099-12-31	
+30	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+30	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+300	0	JNJ_TRU_P_SPCLTY	Rheumatology	38004491	Medicare Specialty	2013-01-06	2099-12-31	
+31	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+31	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+32	0	JNJ_TRU_P_SPCLTY	Geriatric Medicine	38004478	Medicare Specialty	2013-01-06	2099-12-31	
+320	0	JNJ_TRU_P_SPCLTY	Obstetrics/Gynecology	38004461	Medicare Specialty	2013-01-06	2099-12-31	
+325	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+325	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+33	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+33	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+330	0	JNJ_TRU_P_SPCLTY	Ophthalmology	38004463	Medicare Specialty	2013-01-06	2099-12-31	
+34	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+34	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+340	0	JNJ_TRU_P_SPCLTY	Otolaryngology	38004449	Medicare Specialty	2013-01-06	2099-12-31	
+35	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+35	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+350	0	JNJ_TRU_P_SPCLTY	Physical Medicine And Rehabilitation	38004468	Medicare Specialty	2013-01-06	2099-12-31	
+355	0	JNJ_TRU_P_SPCLTY	Maxillofacial Surgery	38004504	Medicare Specialty	2013-01-06	2099-12-31	
+36	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+36	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+360	0	JNJ_TRU_P_SPCLTY	Preventive Medicine	38004503	Medicare Specialty	2013-01-06	2099-12-31	
+365	0	JNJ_TRU_P_SPCLTY	Psychiatry	38004469	Medicare Specialty	2013-01-06	2099-12-31	
+37	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+37	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+38	0	JNJ_TRU_P_SPCLTY	Hospice And Palliative Care	45756777	ABMS	2013-01-06	2023-01-20	D
+38	0	JNJ_TRU_P_SPCLTY	Hospice And Palliative Care	38004462	Medicare Specialty	2023-01-20	2099-12-31	
+380	0	JNJ_TRU_P_SPCLTY	Medical Oncology	38004507	Medicare Specialty	2013-01-06	2099-12-31	
+40	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+40	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+400	0	JNJ_TRU_P_SPCLTY	Pediatric Medicine	38004477	Medicare Specialty	2013-01-06	2099-12-31	
+41	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+41	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+410	0	JNJ_TRU_P_SPCLTY	Pediatric Medicine	38004477	Medicare Specialty	2013-01-06	2099-12-31	
+413	0	JNJ_TRU_P_SPCLTY	Nephrology	38004479	Medicare Specialty	2013-01-06	2099-12-31	
+415	0	JNJ_TRU_P_SPCLTY	Ophthalmology	38004463	Medicare Specialty	2013-01-06	2099-12-31	
+418	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+418	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+42	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+42	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+420	0	JNJ_TRU_P_SPCLTY	Otolaryngology	38004449	Medicare Specialty	2013-01-06	2099-12-31	
+423	0	JNJ_TRU_P_SPCLTY	Critical care (intensivist)	38004500	Medicare Specialty	2013-01-06	2099-12-31	
+425	0	JNJ_TRU_P_SPCLTY	Pulmonary Disease	38004472	Medicare Specialty	2013-01-06	2099-12-31	
+428	0	JNJ_TRU_P_SPCLTY	Emergency Medicine	38004510	Medicare Specialty	2013-01-06	2099-12-31	
+430	0	JNJ_TRU_P_SPCLTY	Allergy/Immunology	38004448	Medicare Specialty	2013-01-06	2099-12-31	
+433	0	JNJ_TRU_P_SPCLTY	Endocrinology	38004485	Medicare Specialty	2013-01-06	2099-12-31	
+435	0	JNJ_TRU_P_SPCLTY	Pediatric Medicine	38004477	Medicare Specialty	2013-01-06	2099-12-31	
+438	0	JNJ_TRU_P_SPCLTY	Gastroenterology	38004455	Medicare Specialty	2013-01-06	2099-12-31	
+440	0	JNJ_TRU_P_SPCLTY	Cardiology	38004451	Medicare Specialty	2013-01-06	2099-12-31	
+443	0	JNJ_TRU_P_SPCLTY	Hematology/Oncology	38004502	Medicare Specialty	2013-01-06	2099-12-31	
+448	0	JNJ_TRU_P_SPCLTY	Infectious Disease	38004484	Medicare Specialty	2013-01-06	2099-12-31	
+450	0	JNJ_TRU_P_SPCLTY	Rheumatology	38004491	Medicare Specialty	2013-01-06	2099-12-31	
+453	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+453	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+455	0	JNJ_TRU_P_SPCLTY	Urology	38004474	Medicare Specialty	2013-01-06	2099-12-31	
+458	0	JNJ_TRU_P_SPCLTY	Psychiatry	38004469	Medicare Specialty	2013-01-06	2099-12-31	
+460	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+460	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+5	0	JNJ_TRU_P_SPCLTY	Ambulatory Surgical Center	38004679	Medicare Specialty	2013-01-06	2023-01-20	D
+5	0	JNJ_TRU_P_SPCLTY	Ambulatory Surgical Center	8883	CMS Place of Service	2023-01-20	2099-12-31	
+500	0	JNJ_TRU_P_SPCLTY	General Surgery	38004447	Medicare Specialty	2013-01-06	2099-12-31	
+505	0	JNJ_TRU_P_SPCLTY	General Surgery	38004447	Medicare Specialty	2013-01-06	2099-12-31	
+510	0	JNJ_TRU_P_SPCLTY	Colorectal Surgery	38004471	Medicare Specialty	2013-01-06	2099-12-31	
+520	0	JNJ_TRU_P_SPCLTY	Neurosurgery	38004459	Medicare Specialty	2013-01-06	2099-12-31	
+530	0	JNJ_TRU_P_SPCLTY	Orthopedic Surgery	38004465	Medicare Specialty	2013-01-06	2099-12-31	
+535	0	JNJ_TRU_P_SPCLTY	General Surgery	38004447	Medicare Specialty	2013-01-06	2099-12-31	
+540	0	JNJ_TRU_P_SPCLTY	Cardiac Surgery	38004497	Medicare Specialty	2013-01-06	2099-12-31	
+545	0	JNJ_TRU_P_SPCLTY	General Surgery	38004447	Medicare Specialty	2013-01-06	2099-12-31	
+550	0	JNJ_TRU_P_SPCLTY	Vascular Surgery	38004496	Medicare Specialty	2013-01-06	2099-12-31	
+555	0	JNJ_TRU_P_SPCLTY	General Surgery	38004447	Medicare Specialty	2013-01-06	2099-12-31	
+560	0	JNJ_TRU_P_SPCLTY	General Surgery	38004447	Medicare Specialty	2013-01-06	2099-12-31	
+565	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+565	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+570	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+570	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+575	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+575	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+580	0	JNJ_TRU_P_SPCLTY	Thoracic Surgery	38004473	Medicare Specialty	2013-01-06	2099-12-31	
+585	0	JNJ_TRU_P_SPCLTY	Thoracic Surgery	38004473	Medicare Specialty	2013-01-06	2099-12-31	
+6	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+6	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+805	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+805	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+810	0	JNJ_TRU_P_SPCLTY	Registered Dietitian or Nutrition Professional	38004694	Medicare Specialty	2013-01-06	2099-12-31	
+815	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+815	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+820	0	JNJ_TRU_P_SPCLTY	Certified Nurse Midwife	38004482	Medicare Specialty	2013-01-06	2099-12-31	
+822	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+822	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+824	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+824	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+825	0	JNJ_TRU_P_SPCLTY	Nurse Practitioner	38004487	Medicare Specialty	2013-01-06	2099-12-31	
+827	0	JNJ_TRU_P_SPCLTY	Certified Registered Nurse Anesthetist	38004483	Medicare Specialty	2013-01-06	2099-12-31	
+830	0	JNJ_TRU_P_SPCLTY	Optometry	38004481	Medicare Specialty	2013-01-06	2099-12-31	
+835	0	JNJ_TRU_P_SPCLTY	Optician	38004701	Medicare Specialty	2013-01-06	2099-12-31	
+840	0	JNJ_TRU_P_SPCLTY	Pharmacy	38004520	Medicare Specialty	2013-01-06	2023-01-20	D
+840	0	JNJ_TRU_P_SPCLTY	Pharmacy	581458	Visit	2023-01-20	2099-12-31	
+845	0	JNJ_TRU_P_SPCLTY	Physician Assistant	38004512	Medicare Specialty	2013-01-06	2099-12-31	
+850	0	JNJ_TRU_P_SPCLTY	Physical Therapy	38004490	Medicare Specialty	2013-01-06	2099-12-31	
+853	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+853	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+855	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+855	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+857	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+857	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+860	0	JNJ_TRU_P_SPCLTY	Psychology	38004488	Medicare Specialty	2013-01-06	2099-12-31	
+865	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+865	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+870	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+870	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+900	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+900	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+905	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+905	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+910	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+910	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+915	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+915	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+920	0	JNJ_TRU_P_SPCLTY	Home Health Agency	38004519	Medicare Specialty	2013-01-06	2099-12-31	
+925	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+925	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+930	0	JNJ_TRU_P_SPCLTY	Clinical Laboratory	38004692	Medicare Specialty	2013-01-06	2099-12-31	
+935	0	JNJ_TRU_P_SPCLTY	Pharmacy	38004520	Medicare Specialty	2013-01-06	2023-01-20	D
+935	0	JNJ_TRU_P_SPCLTY	Pharmacy	581458	Visit	2023-01-20	2099-12-31	
+940	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+940	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+945	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+945	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+950	0	JNJ_TRU_P_SPCLTY	Public Health or Welfare Agency	38004689	Medicare Specialty	2013-01-06	2099-12-31	
+955	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+955	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
+960	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	38004514	Medicare Specialty	2013-01-06	2023-01-20	D
+960	0	JNJ_TRU_P_SPCLTY	Unknown Physician Specialty	32577	Provider	2023-01-20	2099-12-31	
