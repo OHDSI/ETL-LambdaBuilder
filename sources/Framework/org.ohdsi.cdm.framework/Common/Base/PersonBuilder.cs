@@ -1062,36 +1062,48 @@ namespace org.ohdsi.cdm.framework.common.Base
             }
         }
 
-        public static string GetDomain(string entityDomain, string conceptDomain)
+        public string GetDomain(string entityDomain, string conceptDomain, string defaultDomain)
         {
-            return conceptDomain switch
+            switch (conceptDomain)
             {
-                "Condition" or "Measurement" or "Meas Value" or "Observation" or "Procedure" or "Device" or "Drug" => conceptDomain,
-                _ => entityDomain,
-            };
+                case "Condition":
+                case "Measurement":
+                case "Observation":
+                case "Procedure":
+                case "Device":
+                case "Drug":
+                    return conceptDomain;
+
+                default:
+                    {
+                        if (string.IsNullOrEmpty(conceptDomain) && !string.IsNullOrEmpty(entityDomain))
+                            return entityDomain;
+
+                        if (string.IsNullOrEmpty(defaultDomain))
+                            return entityDomain;
+
+                        return defaultDomain;
+                    }
+            }
         }
 
         public virtual void AddToChunk(string domain, IEnumerable<IEntity> entities)
         {
             foreach (var entity in entities)
             {
-                var entityDomain = GetDomain(domain, entity.Domain);
+                var entityDomain = GetDomain(domain, entity.Domain, "Observation");
 
                 switch (entityDomain)
                 {
                     case "Condition":
-                        if (entity is not Observation obs || obs.ValueAsNumber == 1)
-                        {
-                            var cond = entity as ConditionOccurrence ??
-                                       new ConditionOccurrence(entity)
-                                       {
-                                           Id = Offset.GetKeyOffset(entity.PersonId).ConditionOccurrenceId
-                                       };
+                        var cond = entity as ConditionOccurrence ??
+                                   new ConditionOccurrence(entity)
+                                   {
+                                       Id = Offset.GetKeyOffset(entity.PersonId).ConditionOccurrenceId
+                                   };
 
-                            ConditionForEra.Add(cond);
-                            ChunkData.AddData(cond);
-                        }
-
+                        ConditionForEra.Add(cond);
+                        ChunkData.AddData(cond);
                         break;
 
                     case "Measurement":

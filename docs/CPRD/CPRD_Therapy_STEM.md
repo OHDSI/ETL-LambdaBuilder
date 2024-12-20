@@ -40,3 +40,4 @@ The days_supply field in the drug_exposure table will hold the original ‘numda
 | type_concept_id |  | Use **32838** - EHR prescription| |
 | end_date | numdays | Follow the imputation logic as described above. |  |
 | sig | dosageid | Use dosageid as a lookup in the commondosages table and store the field 'text' from the commondosages table here. |  |
+|refills|||

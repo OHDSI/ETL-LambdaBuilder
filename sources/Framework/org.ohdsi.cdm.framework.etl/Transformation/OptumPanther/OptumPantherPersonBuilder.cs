@@ -1224,35 +1224,31 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
         {
             foreach (var entity in entities)
             {
-                var entityDomain = GetDomain(domain, entity.Domain);
+                var entityDomain = GetDomain(domain, entity.Domain, "Observation");
 
                 switch (entityDomain)
                 {
                     case "Condition":
-                        var obs = entity as Observation;
-                        if (obs == null || obs.ValueAsNumber == 1)
-                        {
-                            var cond = entity as ConditionOccurrence ??
-                                       new ConditionOccurrence(entity)
-                                       {
-                                           Id = Offset.GetKeyOffset(entity.PersonId).ConditionOccurrenceId
-                                       };
+                        var cond = entity as ConditionOccurrence ??
+                                   new ConditionOccurrence(entity)
+                                   {
+                                       Id = Offset.GetKeyOffset(entity.PersonId).ConditionOccurrenceId
+                                   };
 
-                            if (cond.StatusConceptId.HasValue && cond.StatusConceptId == 1340204)
+                        if (cond.StatusConceptId.HasValue && cond.StatusConceptId == 1340204)
+                        {
+                            var observationHistoryOf = new Observation(cond)
                             {
-                                var observationHistoryOf = new Observation(cond)
-                                {
-                                    Id = Offset.GetKeyOffset(entity.PersonId).ObservationId,
-                                    ValueAsConceptId = cond.ConceptId,
-                                    ConceptId = cond.StatusConceptId.Value
-                                };
-                                ChunkData.AddData(observationHistoryOf);
-                            }
-                            else if (string.IsNullOrEmpty(entity.Domain) || entity.Domain.ToLower().Trim() != "spec anatomic site")
-                            {
-                                ConditionForEra.Add(cond);
-                                ChunkData.AddData(cond);
-                            }
+                                Id = Offset.GetKeyOffset(entity.PersonId).ObservationId,
+                                ValueAsConceptId = cond.ConceptId,
+                                ConceptId = cond.StatusConceptId.Value
+                            };
+                            ChunkData.AddData(observationHistoryOf);
+                        }
+                        else if (string.IsNullOrEmpty(entity.Domain) || entity.Domain.ToLower().Trim() != "spec anatomic site")
+                        {
+                            ConditionForEra.Add(cond);
+                            ChunkData.AddData(cond);
                         }
 
                         break;
