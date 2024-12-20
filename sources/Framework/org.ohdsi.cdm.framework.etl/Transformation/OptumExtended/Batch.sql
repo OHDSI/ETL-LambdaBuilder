@@ -1,3 +1,2 @@
 ﻿SELECT DISTINCT {0}  patid, patid
 FROM {sc}.MEMBER_CONTINUOUS_ENROLLMENT
-order by 1
