@@ -1,20 +1,27 @@
-﻿<QueryDefinition>
+<QueryDefinition>
   <Query>
-    select
-    ch.person_id as patid,
-    a.staffid,
-    a.eventdate,
-    product.gemscriptcode,
-    round(case when a.qty &lt; 0 then null else a.qty end, 0) qty,
-    (cast(ch.person_id as bigint) * 10000000000) +
-    (cast(date_part('year',a.eventdate) as bigint) * 1000000) +
-    (cast(date_part('month',a.eventdate) as bigint) * 10000) +
-    (cast(date_part('day',a.eventdate) as bigint) * 100) + coalesce(c.constype, 99) as visit_occurrence_id,
-    a.consid,
-    d.dosage_text,
-    coalesce(a.numpacks, 0) numpacks,
-    right(cast(a.patid as varchar),3) as care_site_id,
-    coalesce(coalesce(case when a.numdays = 0 or a.numdays &gt; 365 then null else a.numdays end, coalesce(dd.numdays, dm.numdays)), 1) days_supply,
+		with careSite as
+		(
+		SELECT distinct pracid as id
+		FROM {sc}.Practice
+		)
+		
+		select
+		ch.person_id as patid,
+		a.staffid,
+		a.issueseq,
+		a.eventdate,
+		product.gemscriptcode,
+		round(case when a.qty &lt; 0 then null else a.qty end, 0) qty,
+		(cast(ch.person_id as bigint) * 10000000000) +
+		(cast(date_part('year',a.eventdate) as bigint) * 1000000) +
+		(cast(date_part('month',a.eventdate) as bigint) * 10000) +
+		(cast(date_part('day',a.eventdate) as bigint) * 100) + coalesce(c.constype, 99) as visit_occurrence_id,
+		a.consid,
+		d.dosage_text,
+		coalesce(a.numpacks, 0) numpacks,
+		cs.id as care_site_id,
+		coalesce(coalesce(case when a.numdays = 0 or a.numdays &gt; 365 then null else a.numdays end, coalesce(dd.numdays, dm.numdays)), 1) days_supply,
     case
     when c.constype = 0 then 'Data Not Entered'
     when c.constype = 1 then 'Clinic'
@@ -85,11 +92,12 @@
     left join {sc}.Product product on a.prodcode = product.prodcode
     left join {sc}.commondosages d on a.dosageid = d.dosageid
     left join {sc}.daysupply_decodes dd on a.prodcode = dd.prodcode and dd.daily_dose = coalesce(d.daily_dose, 0) and dd.qty = coalesce(case when a.qty &lt; 0 then null else a.qty end, 0) and dd.numpacks = coalesce(a.numpacks, 0)
-    left join {sc}.daysupply_modes dm on a.prodcode = dm.prodcode
-    left join {sc}.consultation c on a.patid = c.patid and a.consid = c.consid
-    where a.eventdate is not null
-    order by ch.person_id
-  </Query>
+		left join {sc}.daysupply_modes dm on a.prodcode = dm.prodcode
+		left join {sc}.consultation c on a.patid = c.patid and a.consid = c.consid
+		left join careSite cs ON cs.id = cast(right(cast(a.patid as varchar),5) as int)
+		where a.eventdate is not null
+		order by ch.person_id
+	</Query>
   <DrugExposure>
     <DrugExposureDefinition>
       <PersonId>patid</PersonId>
@@ -97,6 +105,7 @@
       <EndDate>eventdate</EndDate>
       <DaysSupply>days_supply</DaysSupply>
       <VisitDetailId>visit_occurrence_id</VisitDetailId>
+      <Refill>issueseq</Refill>
       <Sig>dosage_text</Sig>
       <Quantity>qty</Quantity>
       <ProviderId>staffid</ProviderId>
