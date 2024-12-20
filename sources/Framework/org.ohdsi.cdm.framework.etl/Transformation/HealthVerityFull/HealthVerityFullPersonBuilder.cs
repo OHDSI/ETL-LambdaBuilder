@@ -551,14 +551,14 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
             //GetMinMaxDates(VisitDetailsRaw, _minsMaxs);
 
             
-            GetMinDate(DrugExposuresRaw, _mins);
+            /*GetMinDate(DrugExposuresRaw, _mins);
             GetMinDate(ConditionOccurrencesRaw, _mins);
             GetMinDate(ProcedureOccurrencesRaw, _mins);
             GetMinDate(ObservationsRaw, _mins);
             GetMinDate(DeviceExposureRaw, _mins);
             GetMinDate(MeasurementsRaw, _mins);
             GetMinDate(VisitOccurrencesRaw, _mins);
-            GetMinDate(VisitDetailsRaw, _mins);
+            GetMinDate(VisitDetailsRaw, _mins);*/
 
             //GetMaxDate(DrugExposuresRaw, _maxs);
             //GetMaxDate(ConditionOccurrencesRaw, _maxs);

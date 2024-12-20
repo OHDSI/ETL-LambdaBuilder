@@ -6,8 +6,7 @@
 		ch.person_id as PersonId,
 		hvid,
 		patient_gender,
-		patient_year_of_birth,
-		data_vendor
+		patient_year_of_birth
 		FROM {sc}.enrollment
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
 
@@ -17,8 +16,7 @@
 		ch.person_id as PersonId,
 		hvid,
 		patient_gender,
-		patient_year_of_birth,
-		data_vendor
+		patient_year_of_birth
 		FROM {sc}.medical_claims
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
 		
@@ -28,8 +26,7 @@
 		ch.person_id as PersonId,
 		hvid,
 		patient_gender,
-		patient_year_of_birth,
-		data_vendor
+		patient_year_of_birth
 		FROM {sc}.pharmacy_claims
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
 		
@@ -39,14 +36,20 @@
 		ch.person_id as PersonId,
 		hvid,
 		patient_gender,
-		patient_year_of_birth,
-		data_vendor
+		patient_year_of_birth
 		FROM {sc}.events
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
 		)
 		select
-		  a.*
+		  a.*,
+		  pre.most_likely_ethnicity,
+		  pre.most_likely_race,
+		  pr.race
 		from a
+		left join {sc}.patient_race_ethnicity pre
+		  on a.hvid = pre.hvid
+		left join {sc}.patient_race pr
+		  on a.hvid = pr.hvid
 		order by 1
   </Query>
   <Persons>
@@ -55,8 +58,10 @@
       <PersonSourceValue>hvid</PersonSourceValue>
       <Gender>patient_gender</Gender>
       <YearOfBirth>patient_year_of_birth</YearOfBirth>
+	  <Race>most_likely_race</Race>
+	  <Ethnicity>most_likely_ethnicity</Ethnicity>
       <AdditionalFields>
-        <string>data_vendor</string>
+        <string>race</string>
       </AdditionalFields>
     </PersonDefinition>
   </Persons>
