@@ -35,12 +35,18 @@
 		<PersonId>PersonId</PersonId>
 		<StartDate>date_start</StartDate>
 		<EndDate>date_end</EndDate>
-		<PayerConceptId>payer_concept_id</PayerConceptId>
-		<PayerSourceValue>payer_type</PayerSourceValue>
-		<PayerSourceConceptId>0</PayerSourceConceptId>
-		<PlanConceptId>plan_concept_id</PlanConceptId>
-		<PlanSourceValue>benefit_type</PlanSourceValue>
-		<PlanSourceConceptId>0</PlanSourceConceptId>
+      <Concepts>
+        <Concept>
+          <Fields>
+            <Field conceptId="payer_concept_id" key="payer_type" sourceKey="payer_type" defaultTypeId="0"/>
+          </Fields>
+        </Concept>
+        <Concept>
+          <Fields>
+            <Field conceptId="plan_concept_id" key="benefit_type" sourceKey="benefit_type" defaultTypeId="0"/>
+          </Fields>
+        </Concept>
+      </Concepts>
     </PayerPlanPeriodDefinition>
   </PayerPlanPeriods>
 </QueryDefinition>
