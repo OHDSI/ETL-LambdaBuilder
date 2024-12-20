@@ -137,16 +137,16 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 372-Diagnostic Tests-Scoring test result-0%	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-0%	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-00	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-00	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-0.0	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-0.0	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result-0,0,0"""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result-0,0,0"""	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result-0,00"""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result-0,00"""	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result-0.,00"""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result-0.,00"""	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-000	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-000	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result-0,00	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-0,00	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result-0,0,0	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-0,0,0	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-0/00	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-0/00	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-0/.00	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-0/.00	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-0.00	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-0.00	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result-0.,00	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-0.,00	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-0.000	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-0.000	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-001110000	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-001110000	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result-0,0,4"""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result-0,0,4"""	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result-0,0,4	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-0,0,4	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-0-0-6-18	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-0-0-6-18	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-01	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-01	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-0-1	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-0-1	0	None	1970-01-01	2099-12-31	
@@ -157,9 +157,9 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 372-Diagnostic Tests-Scoring test result-0-10000	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-0-10000	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-0-10 = NORMAL	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-0-10 = NORMAL	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-0/12	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-0/12	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result-0,1,2,3."""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result-0,1,2,3."""	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result-0,1,2,3"""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result-0,1,2,3"""	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result-0,1.2.3"""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result-0,1.2.3"""	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result-0,1,2,3	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-0,1,2,3	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result-0,1,2,3.	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-0,1,2,3.	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result-0,1.2.3	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-0,1.2.3	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-0.1.2.3	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-0.1.2.3	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-01/27	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-01/27	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-02	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-02	0	None	1970-01-01	2099-12-31	
@@ -251,8 +251,8 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 372-Diagnostic Tests-Scoring test result-10.	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-10.	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-10%	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-10%	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-10+	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-10+	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result-1,00"""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result-1,00"""	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-100	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-100	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result-1,00	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-1,00	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-1.00	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-1.00	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-100%	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-100%	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-10.00	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-10.00	0	None	1970-01-01	2099-12-31	
@@ -260,7 +260,7 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 372-Diagnostic Tests-Scoring test result-10.1%	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-10.1%	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-10/10	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-10/10	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-10.10	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-10.10	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result-1,0,1,0,0,1,0"""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result-1,0,1,0,0,1,0"""	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result-1,0,1,0,0,1,0	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-1,0,1,0,0,1,0	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-10/12	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-10/12	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-1+0+1+2+1	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-1+0+1+2+1	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-10-14	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-10-14	0	None	1970-01-01	2099-12-31	
@@ -332,8 +332,8 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 372-Diagnostic Tests-Scoring test result-10YR	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-10YR	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-10 Y RISK	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-10 Y RISK	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-10 YR PROBABI	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-10 YR PROBABI	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result-% , 10YR RISK"""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result-% , 10YR RISK"""	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-& 10 YR RISK	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-& 10 YR RISK	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result-% , 10YR RISK	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-% , 10YR RISK	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-% 10 YR RISK	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-% 10 YR RISK	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-% 10-YR RISK	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-% 10-YR RISK	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-%10 YR # RISK	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-%10 YR # RISK	0	None	1970-01-01	2099-12-31	
@@ -596,7 +596,7 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 372-Diagnostic Tests-Scoring test result-14.76	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-14.76	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-14.8%	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-14.8%	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-14.87	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-14.87	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result-1,4,9"""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result-1,4,9"""	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result-1,4,9	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-1,4,9	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-14.9	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-14.9	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-14.9%	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-14.9%	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-14.91	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-14.91	0	None	1970-01-01	2099-12-31	
@@ -789,7 +789,7 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 372-Diagnostic Tests-Scoring test result-18.9	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-18.9	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-18.9%	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-18.9%	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-18.94	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-18.94	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result-18 ANX, 16DEP"""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result-18 ANX, 16DEP"""	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result-18 ANX, 16DEP	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-18 ANX, 16DEP	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-18 OUT OF 21	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-18 OUT OF 21	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-18 WEEK POST	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-18 WEEK POST	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-18 X 1.5	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-18 X 1.5	0	None	1970-01-01	2099-12-31	
@@ -837,7 +837,7 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 372-Diagnostic Tests-Scoring test result-1ST SCORE	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-1ST SCORE	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-1ST SESSON	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-1ST SESSON	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-1 UNIT P/W	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-1 UNIT P/W	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result-1X3,1X2,2X1"""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result-1X3,1X2,2X1"""	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result-1X3,1X2,2X1	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-1X3,1X2,2X1	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-2	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-2	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result->2	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result->2	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result--2	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result--2	0	None	1970-01-01	2099-12-31	
@@ -1000,7 +1000,7 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 372-Diagnostic Tests-Scoring test result-2.21	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-2.21	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-22/100	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-22/100	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-2+2+12	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-2+2+12	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result-2,2,2,2,2,3,2"""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result-2,2,2,2,2,3,2"""	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result-2,2,2,2,2,3,2	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-2,2,2,2,2,3,2	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-22 / 27	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-22 / 27	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-22/27	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-22/27	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-22.3%	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-22.3%	0	None	1970-01-01	2099-12-31	
@@ -1134,8 +1134,8 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 372-Diagnostic Tests-Scoring test result-25CM	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-25CM	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-25DAY/51YEARS	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-25DAY/51YEARS	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-25 OUT OF 30	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-25 OUT OF 30	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result-2.5,RANGE 2-3"""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result-2.5,RANGE 2-3"""	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-2.5 RANGE 2-3	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-2.5 RANGE 2-3	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result-2.5,RANGE 2-3	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-2.5,RANGE 2-3	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-25 - SEVERE	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-25 - SEVERE	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-25 WEEK POST	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-25 WEEK POST	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-25 X 1.5	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-25 X 1.5	0	None	1970-01-01	2099-12-31	
@@ -1265,7 +1265,7 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 372-Diagnostic Tests-Scoring test result-30 +	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-30 +	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-30%	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-30%	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-30+	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-30+	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result-3,00"""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result-3,00"""	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result-3,00	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-3,00	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-3.00	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-3.00	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-3.000	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-3.000	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-3+0+0+0	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-3+0+0+0	0	None	1970-01-01	2099-12-31	
@@ -1349,7 +1349,7 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 372-Diagnostic Tests-Scoring test result-330002121	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-330002121	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-330MLS	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-330MLS	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-331203231	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-331203231	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result-3,3,2,3,3,3,3"""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result-3,3,2,3,3,3,3"""	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result-3,3,2,3,3,3,3	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-3,3,2,3,3,3,3	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-333333331	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-333333331	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-33/48	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-33/48	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-3 - 3.5	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-3 - 3.5	0	None	1970-01-01	2099-12-31	
@@ -1455,12 +1455,12 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 372-Diagnostic Tests-Scoring test result-40&	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-40&	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-40%	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-40%	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-40+	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-40+	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result-4,00"""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result-4,00"""	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result-4,00	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-4,00	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-4.00	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-4.00	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-4..00	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-4..00	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-4.0-0	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-4.0-0	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result-4,0,0,0"""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result-4,0,0,0"""	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result-4,0,0,2"""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result-4,0,0,2"""	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result-4,0,0,0	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-4,0,0,0	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result-4,0,0,2	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-4,0,0,2	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-4+0+0+4	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-4+0+0+4	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-4.00NEG	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-4.00NEG	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-4.00 NEG	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-4.00 NEG	0	None	1970-01-01	2099-12-31	
@@ -1491,13 +1491,13 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 372-Diagnostic Tests-Scoring test result-42%	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-42%	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-4/21	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-4/21	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-4/24	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-4/24	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result-4,2,4,4,"""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result-4,2,4,4,"""	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result-4,2,4,4,	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-4,2,4,4,	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-42.6	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-42.6	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-4/27	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-4/27	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-42.75	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-42.75	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-4/28	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-4/28	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-4/28 6CIT	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-4/28 6CIT	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result-4,2.9"""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result-4,2.9"""	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result-4,2.9	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-4,2.9	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-43	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-43	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-4.3	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-4.3	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-4.3%	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-4.3%	0	None	1970-01-01	2099-12-31	
@@ -1835,7 +1835,7 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 372-Diagnostic Tests-Scoring test result-8.0	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-8.0	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-8.0%	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-8.0%	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-80%	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-80%	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result-8,00"""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result-8,00"""	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result-8,00	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-8,00	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-8.00	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-8.00	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-8.00%	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-8.00%	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-80X34/20	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-80X34/20	0	None	1970-01-01	2099-12-31	
@@ -1877,7 +1877,7 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 372-Diagnostic Tests-Scoring test result-8.70%	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-8.70%	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-8.8	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-8.8	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-8.8%	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-8.8%	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result-8,88"""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result-8,88"""	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result-8,88	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-8,88	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-8/9	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-8/9	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-8.9	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-8.9	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-8.9%	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-8.9%	0	None	1970-01-01	2099-12-31	
@@ -1982,7 +1982,7 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 372-Diagnostic Tests-Scoring test result-A 13 D 13	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-A 13 D 13	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-A= 13 D =3	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-A= 13 D =3	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-A13 + D7	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-A13 + D7	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result-A=14, D=8"""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result-A=14, D=8"""	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result-A=14, D=8	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-A=14, D=8	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-A15 D13	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-A15 D13	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-A16 D12	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-A16 D12	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-A 16 D 19	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-A 16 D 19	0	None	1970-01-01	2099-12-31	
@@ -2042,17 +2042,17 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 372-Diagnostic Tests-Scoring test result-AF	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-AF	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-AFLSA136AA-AA	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-AFLSA136AA-AA	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-AGATSTON	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-AGATSTON	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result-AGE, ALCOHOL"""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result-AGE, ALCOHOL"""	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result-AGE, ALCOHOL	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-AGE, ALCOHOL	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-AGE AND RENAL	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-AGE AND RENAL	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result-AGE, BP"""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result-AGE, BP"""	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result-(AGE, BP>160)"""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result-(AGE, BP>160)"""	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result-AGE, CVA, HYT"""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result-AGE, CVA, HYT"""	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result-AGE,CVA, NSAI"""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result-AGE,CVA, NSAI"""	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result-AGE, BP	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-AGE, BP	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result-(AGE, BP>160)	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-(AGE, BP>160)	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result-AGE, CVA, HYT	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-AGE, CVA, HYT	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result-AGE,CVA, NSAI	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-AGE,CVA, NSAI	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-AGE FEMALE	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-AGE FEMALE	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result-AGE, HYT"""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result-AGE, HYT"""	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result-AGE, STROKE"""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result-AGE, STROKE"""	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result--AGE, TIA"""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result--AGE, TIA"""	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result-AGE, TIA"""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result-AGE, TIA"""	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result-AGE, HYT	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-AGE, HYT	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result-AGE, STROKE	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-AGE, STROKE	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result--AGE, TIA	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result--AGE, TIA	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result-AGE, TIA	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-AGE, TIA	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-AHI	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-AHI	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-A&H QUESTIONA	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-A&H QUESTIONA	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-AIDIT C	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-AIDIT C	0	None	1970-01-01	2099-12-31	
@@ -2326,8 +2326,8 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 372-Diagnostic Tests-Scoring test result-BNF TABLE	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-BNF TABLE	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-BORDELINE	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-BORDELINE	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-BORDERINE	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-BORDERINE	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result-BORDERLINE,"""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result-BORDERLINE,"""	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-BORDERLINE	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-BORDERLINE	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result-BORDERLINE,	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-BORDERLINE,	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-BOTHER SCORE	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-BOTHER SCORE	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-BP	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-BP	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-BP 70/50.	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-BP 70/50.	0	None	1970-01-01	2099-12-31	
@@ -2366,7 +2366,7 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 372-Diagnostic Tests-Scoring test result-CALCULATION%	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-CALCULATION%	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-CALCULATION%3	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-CALCULATION%3	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-CALCULATION3%	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-CALCULATION3%	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result-CALCULATION,6"""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result-CALCULATION,6"""	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result-CALCULATION,6	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-CALCULATION,6	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-CALCULATIONS%	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-CALCULATIONS%	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-CALCULATO	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-CALCULATO	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-CALCULATOR	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-CALCULATOR	0	None	1970-01-01	2099-12-31	
@@ -2936,13 +2936,13 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 372-Diagnostic Tests-Scoring test result-FRAMINGH	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-FRAMINGH	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-FRAMINGHA	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-FRAMINGHA	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-Framingham	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-Framingham	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result-FRAMINGHAM,"""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result-FRAMINGHAM,"""	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-FRAMINGHAM	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-FRAMINGHAM	40769009	LOINC	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-%FRAMINGHAM	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-%FRAMINGHAM	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-% FRAMINGHAM	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-% FRAMINGHAM	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-% (FRAMINGHAM	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-% (FRAMINGHAM	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-%. FRAMINGHAM	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-%. FRAMINGHAM	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-FRAMINGHAM %	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-FRAMINGHAM %	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result-FRAMINGHAM,	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-FRAMINGHAM,	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-FRAMINGHAM.	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-FRAMINGHAM.	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-FRAMINGHAM 10	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-FRAMINGHAM 10	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-FRAMINGHAM 40	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-FRAMINGHAM 40	0	None	1970-01-01	2099-12-31	
@@ -2972,8 +2972,8 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 372-Diagnostic Tests-Scoring test result-%FRAMLINGHAM	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-%FRAMLINGHAM	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-% FRAMLINGHAM	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-% FRAMLINGHAM	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-FRAMLINGHAM.	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-FRAMLINGHAM.	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result-FRAMLINGTON,"""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result-FRAMLINGTON,"""	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-FRAMLINGTON	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-FRAMLINGTON	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result-FRAMLINGTON,	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-FRAMLINGTON,	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-FRAMLINGTONM	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-FRAMLINGTONM	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-FRAM/MIMS	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-FRAM/MIMS	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-FRAMMINGHAM	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-FRAMMINGHAM	0	None	1970-01-01	2099-12-31	
@@ -3285,9 +3285,9 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 372-Diagnostic Tests-Scoring test result-JBP	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-JBP	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-J BRIT SOC	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-J BRIT SOC	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-J BRIT SOCS	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-J BRIT SOCS	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result-JBS ,"""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result-JBS ,"""	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-JBS	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-JBS	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-JB S	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-JB S	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result-JBS ,	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-JBS ,	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-JBS 1.8%	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-JBS 1.8%	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-JBS2	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-JBS2	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-%JBS2	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-%JBS2	0	None	1970-01-01	2099-12-31	
@@ -4099,8 +4099,8 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 372-Diagnostic Tests-Scoring test result-Q'NAIIRE	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-Q'NAIIRE	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-QNAIRE	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-QNAIRE	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-Q'NAIRE	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-Q'NAIRE	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result-Q,NAIRRE"""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result-Q,NAIRRE"""	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-QNAIRRE	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-QNAIRRE	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result-Q,NAIRRE	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-Q,NAIRRE	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-Q/NAIRRE	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-Q/NAIRRE	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-Q'NAIRRE	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-Q'NAIRRE	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-Q'NAIRRERE	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-Q'NAIRRERE	0	None	1970-01-01	2099-12-31	
@@ -4366,7 +4366,7 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 372-Diagnostic Tests-Scoring test result-RMDQ	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-RMDQ	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-ROCKWOOD	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-ROCKWOOD	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-ROSELINE	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-ROSELINE	0	None	1970-01-01	2099-12-31	
-"""372-Diagnostic Tests-Scoring test result-RR, AGE, BP"""	0	JNJ_CPRD_ADD_ENTTYPE	"""372-Diagnostic Tests-Scoring test result-RR, AGE, BP"""	0	None	1970-01-01	2099-12-31	
+372-Diagnostic Tests-Scoring test result-RR, AGE, BP	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-RR, AGE, BP	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-S	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-S	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-SAP TEMPLATE	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-SAP TEMPLATE	0	None	1970-01-01	2099-12-31	
 372-Diagnostic Tests-Scoring test result-SAQ	0	JNJ_CPRD_ADD_ENTTYPE	372-Diagnostic Tests-Scoring test result-SAQ	0	None	1970-01-01	2099-12-31	

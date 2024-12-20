@@ -1,7 +1,7 @@
 source_code	source_concept_id	source_vocabulary_id	source_code_description	target_concept_id	target_vocabulary_id	valid_start_date	valid_end_date	invalid_reason
-130000210	0	JNJ_JMDC_PROCEDURES	"""continuous intravenous infusion, using automatic infusion pump"""	4030886	SNOMED	1970-01-01	2099-12-31	
-130000510	0	JNJ_JMDC_PROCEDURES	"""intradermal, subcutaneous and intramuscular injection"""	4138262	SNOMED	1970-01-01	2024-03-13	D
-130000510	0	JNJ_JMDC_PROCEDURES	"""intradermal, subcutaneous and intramuscular injection"""	37151637	SNOMED	2024-03-13	2099-12-31	
+130000210	0	JNJ_JMDC_PROCEDURES	continuous intravenous infusion, using automatic infusion pump	4030886	SNOMED	1970-01-01	2099-12-31	
+130000510	0	JNJ_JMDC_PROCEDURES	intradermal, subcutaneous and intramuscular injection	4138262	SNOMED	1970-01-01	2024-03-13	D
+130000510	0	JNJ_JMDC_PROCEDURES	intradermal, subcutaneous and intramuscular injection	37151637	SNOMED	2024-03-13	2099-12-31	
 130003250	0	JNJ_JMDC_PROCEDURES	drug infusion into tympanum	4193934	SNOMED	1970-01-01	2099-12-31	
 130003510	0	JNJ_JMDC_PROCEDURES	intravenous injection	4181778	SNOMED	1970-01-01	2099-12-31	
 130003710	0	JNJ_JMDC_PROCEDURES	intravenous drip infusion for infant/preschool child	4030886	SNOMED	1970-01-01	2099-12-31	
@@ -14,16 +14,16 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 130007510	0	JNJ_JMDC_PROCEDURES	continuous local infusion of anti-malignant tumor drug	4273629	SNOMED	1970-01-01	2099-12-31	
 130008510	0	JNJ_JMDC_PROCEDURES	central venous injection (implantable catheter)	45887807	CPT4	1970-01-01	2023-01-20	D
 130008510	0	JNJ_JMDC_PROCEDURES	central venous injection (implantable catheter)	0	None	2023-01-20	2099-12-31	
-130009310	0	JNJ_JMDC_PROCEDURES	"""intravenous drip infusion, limited to outpatient"""	4030886	SNOMED	1970-01-01	2099-12-31	
+130009310	0	JNJ_JMDC_PROCEDURES	intravenous drip infusion, limited to outpatient	4030886	SNOMED	1970-01-01	2099-12-31	
 130010750	0	JNJ_JMDC_PROCEDURES	intralesional injection	4299663	SNOMED	1970-01-01	2024-03-13	D
 130010750	0	JNJ_JMDC_PROCEDURES	intralesional injection	4241075	SNOMED	2024-03-13	2099-12-31	
 130010870	0	JNJ_JMDC_PROCEDURES	outpatient chemotherapy [1]	4273629	SNOMED	1970-01-01	2099-12-31	
 130011390	0	JNJ_JMDC_PROCEDURES	outpatient chemotherapy [2]	4273629	SNOMED	1970-01-01	2099-12-31	
-130012390	0	JNJ_JMDC_PROCEDURES	"""outpatient chemotherapy [1-B], the age of 15 or older"""	4273629	SNOMED	1970-01-01	2099-12-31	
-130012590	0	JNJ_JMDC_PROCEDURES	"""outpatient chemotherapy [2-B], the age of 15 or older"""	4273629	SNOMED	1970-01-01	2099-12-31	
-130012790	0	JNJ_JMDC_PROCEDURES	"""outpatient chemotherapy [1-A], below the age of 15"""	4273629	SNOMED	1970-01-01	2099-12-31	
-130012890	0	JNJ_JMDC_PROCEDURES	"""outpatient chemotherapy [1-A], the age of 15 or older"""	4273629	SNOMED	1970-01-01	2099-12-31	
-130013090	0	JNJ_JMDC_PROCEDURES	"""outpatient chemotherapy [2-A], the age of 15 or older"""	4273629	SNOMED	1970-01-01	2099-12-31	
+130012390	0	JNJ_JMDC_PROCEDURES	outpatient chemotherapy [1-B], the age of 15 or older	4273629	SNOMED	1970-01-01	2099-12-31	
+130012590	0	JNJ_JMDC_PROCEDURES	outpatient chemotherapy [2-B], the age of 15 or older	4273629	SNOMED	1970-01-01	2099-12-31	
+130012790	0	JNJ_JMDC_PROCEDURES	outpatient chemotherapy [1-A], below the age of 15	4273629	SNOMED	1970-01-01	2099-12-31	
+130012890	0	JNJ_JMDC_PROCEDURES	outpatient chemotherapy [1-A], the age of 15 or older	4273629	SNOMED	1970-01-01	2099-12-31	
+130013090	0	JNJ_JMDC_PROCEDURES	outpatient chemotherapy [2-A], the age of 15 or older	4273629	SNOMED	1970-01-01	2099-12-31	
 140002310	0	JNJ_JMDC_PROCEDURES	anti-inflammatory analgesic treatment (medicated plaster treatment [b])	4200997	SNOMED	1970-01-01	2099-12-31	
 160000410	0	JNJ_JMDC_PROCEDURES	urinary protein	4211845	SNOMED	1970-01-01	2099-12-31	
 160000650	0	JNJ_JMDC_PROCEDURES	ketones ampule method [blood]	44804891	SNOMED	1970-01-01	2099-12-31	
@@ -33,10 +33,10 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 160001710	0	JNJ_JMDC_PROCEDURES	glucose [urine]	4149883	SNOMED	1970-01-01	2099-12-31	
 160003910	0	JNJ_JMDC_PROCEDURES	urine osmolality	3026782	LOINC	1970-01-01	2099-12-31	
 160004110	0	JNJ_JMDC_PROCEDURES	N-acetyl-beta-D-glucosaminidase (NAG) [urine]	4020543	SNOMED	1970-01-01	2099-12-31	
-160004310	0	JNJ_JMDC_PROCEDURES	"""luteinizing hormone (LH), qualitative [urine]"""	4043104	SNOMED	1970-01-01	2099-12-31	
+160004310	0	JNJ_JMDC_PROCEDURES	luteinizing hormone (LH), qualitative [urine]	4043104	SNOMED	1970-01-01	2099-12-31	
 160005010	0	JNJ_JMDC_PROCEDURES	urinary sediment by microscopy	4133316	SNOMED	1970-01-01	2099-12-31	
 160005510	0	JNJ_JMDC_PROCEDURES	fecal smear microscopy	4036697	SNOMED	1970-01-01	2099-12-31	
-160007110	0	JNJ_JMDC_PROCEDURES	"""clostridium difficile antigen, qualitative"""	4039363	SNOMED	1970-01-01	2099-12-31	
+160007110	0	JNJ_JMDC_PROCEDURES	clostridium difficile antigen, qualitative	4039363	SNOMED	1970-01-01	2099-12-31	
 160007610	0	JNJ_JMDC_PROCEDURES	erythrocyte sedimentation rate (ESR)	4212065	SNOMED	1970-01-01	2099-12-31	
 160007710	0	JNJ_JMDC_PROCEDURES	eosinophil count	4216098	SNOMED	1970-01-01	2099-12-31	
 160007910	0	JNJ_JMDC_PROCEDURES	reticulocyte count	4263581	SNOMED	1970-01-01	2099-12-31	
@@ -52,12 +52,12 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 160012110	0	JNJ_JMDC_PROCEDURES	thrombin time	4208541	SNOMED	1970-01-01	2024-03-13	D
 160012110	0	JNJ_JMDC_PROCEDURES	thrombin time	3036489	LOINC	2024-03-13	2099-12-31	
 160012310	0	JNJ_JMDC_PROCEDURES	activated partial thromboplastin time (APTT)	4254482	SNOMED	1970-01-01	2099-12-31	
-160012610	0	JNJ_JMDC_PROCEDURES	"""fibrinogen, semi-quantitative"""	4182415	SNOMED	1970-01-01	2099-12-31	
+160012610	0	JNJ_JMDC_PROCEDURES	fibrinogen, semi-quantitative	4182415	SNOMED	1970-01-01	2099-12-31	
 160013110	0	JNJ_JMDC_PROCEDURES	platelet adhesiveness	4004423	SNOMED	1970-01-01	2099-12-31	
-160013310	0	JNJ_JMDC_PROCEDURES	"""fibrin monomer complex, qualitative"""	4014037	SNOMED	1970-01-01	2099-12-31	
+160013310	0	JNJ_JMDC_PROCEDURES	fibrin monomer complex, qualitative	4014037	SNOMED	1970-01-01	2099-12-31	
 160014310	0	JNJ_JMDC_PROCEDURES	platelet aggregation	4094433	SNOMED	1970-01-01	2099-12-31	
-160014510	0	JNJ_JMDC_PROCEDURES	"""fibrin/fibrinogen degradation products (FDP), qualitative"""	2212697	CPT4	1970-01-01	2023-01-20	D
-160014510	0	JNJ_JMDC_PROCEDURES	"""fibrin/fibrinogen degradation products (FDP), qualitative"""	4014036	SNOMED	2023-01-20	2099-12-31	
+160014510	0	JNJ_JMDC_PROCEDURES	fibrin/fibrinogen degradation products (FDP), qualitative	2212697	CPT4	1970-01-01	2023-01-20	D
+160014510	0	JNJ_JMDC_PROCEDURES	fibrin/fibrinogen degradation products (FDP), qualitative	4014036	SNOMED	2023-01-20	2099-12-31	
 160015710	0	JNJ_JMDC_PROCEDURES	plasminogen activity	4235421	SNOMED	1970-01-01	2099-12-31	
 160015810	0	JNJ_JMDC_PROCEDURES	plasmin-plasmin inhibitor complex (PIC)	3036220	LOINC	1970-01-01	2099-12-31	
 160017010	0	JNJ_JMDC_PROCEDURES	total bilirubins (TBIL)	4230543	SNOMED	1970-01-01	2099-12-31	
@@ -116,13 +116,13 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 160028310	0	JNJ_JMDC_PROCEDURES	cholylglycine	4045411	SNOMED	1970-01-01	2099-12-31	
 160028410	0	JNJ_JMDC_PROCEDURES	ceruloplasmin	4337961	SNOMED	1970-01-01	2099-12-31	
 160028610	0	JNJ_JMDC_PROCEDURES	galactose	4189516	SNOMED	1970-01-01	2099-12-31	
-160028710	0	JNJ_JMDC_PROCEDURES	"""total iron binding capacity (TIBC), (RIA method)"""	4235028	SNOMED	1970-01-01	2099-12-31	
-160028810	0	JNJ_JMDC_PROCEDURES	"""unsaturated iron binding capacity (UIBC), (RIA method)"""	4218675	SNOMED	1970-01-01	2099-12-31	
+160028710	0	JNJ_JMDC_PROCEDURES	total iron binding capacity (TIBC), (RIA method)	4235028	SNOMED	1970-01-01	2099-12-31	
+160028810	0	JNJ_JMDC_PROCEDURES	unsaturated iron binding capacity (UIBC), (RIA method)	4218675	SNOMED	1970-01-01	2099-12-31	
 160028910	0	JNJ_JMDC_PROCEDURES	trypsin	4021292	SNOMED	1970-01-01	2099-12-31	
 160029110	0	JNJ_JMDC_PROCEDURES	zinc (Zn)	4324843	SNOMED	1970-01-01	2099-12-31	
 160029410	0	JNJ_JMDC_PROCEDURES	angiotensin-1-converting enzyme (ACE)	4234494	SNOMED	1970-01-01	2099-12-31	
 160029710	0	JNJ_JMDC_PROCEDURES	vitamin B12	4032173	SNOMED	1970-01-01	2099-12-31	
-160030310	0	JNJ_JMDC_PROCEDURES	"""human chorionic gonadotropin (hCG), qualitative"""	4017479	SNOMED	1970-01-01	2099-12-31	
+160030310	0	JNJ_JMDC_PROCEDURES	human chorionic gonadotropin (hCG), qualitative	4017479	SNOMED	1970-01-01	2099-12-31	
 160030610	0	JNJ_JMDC_PROCEDURES	17-ketosteroids	4018340	SNOMED	1970-01-01	2099-12-31	
 160031010	0	JNJ_JMDC_PROCEDURES	homovanillic acid (HVA)	4281996	SNOMED	1970-01-01	2099-12-31	
 160031110	0	JNJ_JMDC_PROCEDURES	vanillylmandelic acid (VMA)	4231897	SNOMED	1970-01-01	2099-12-31	
@@ -134,7 +134,7 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 160032010	0	JNJ_JMDC_PROCEDURES	gastrin	4336961	SNOMED	1970-01-01	2099-12-31	
 160032210	0	JNJ_JMDC_PROCEDURES	plasma renin activity	44810572	SNOMED	1970-01-01	2099-12-31	
 160032310	0	JNJ_JMDC_PROCEDURES	prolactin (PRL)	4010412	SNOMED	1970-01-01	2099-12-31	
-160032510	0	JNJ_JMDC_PROCEDURES	"""human chorionic gonadotropin (hCG), semi-qualitative"""	4285271	SNOMED	1970-01-01	2099-12-31	
+160032510	0	JNJ_JMDC_PROCEDURES	human chorionic gonadotropin (hCG), semi-qualitative	4285271	SNOMED	1970-01-01	2099-12-31	
 160032610	0	JNJ_JMDC_PROCEDURES	human chorionic gonadotropin beta subunit (hCG-beta)	4296540	SNOMED	1970-01-01	2099-12-31	
 160032910	0	JNJ_JMDC_PROCEDURES	follicle stimulating hormone (FSH)	4149280	SNOMED	1970-01-01	2099-12-31	
 160033010	0	JNJ_JMDC_PROCEDURES	C-peptide (CPR)	2212630	CPT4	1970-01-01	2023-01-20	D
@@ -176,36 +176,36 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 160039210	0	JNJ_JMDC_PROCEDURES	Rh(D) blood type	4223193	SNOMED	1970-01-01	2099-12-31	
 160039310	0	JNJ_JMDC_PROCEDURES	Coombs test (direct)	4299254	SNOMED	1970-01-01	2099-12-31	
 160039410	0	JNJ_JMDC_PROCEDURES	Coombs test (indirect)	4055434	SNOMED	1970-01-01	2099-12-31	
-160039810	0	JNJ_JMDC_PROCEDURES	"""serologic test for syphilis (STS), qualitative"""	4229096	SNOMED	1970-01-01	2099-12-31	
-160039910	0	JNJ_JMDC_PROCEDURES	"""anti-streptolysin O (ASO), qualitative"""	4190509	SNOMED	1970-01-01	2099-12-31	
+160039810	0	JNJ_JMDC_PROCEDURES	serologic test for syphilis (STS), qualitative	4229096	SNOMED	1970-01-01	2099-12-31	
+160039910	0	JNJ_JMDC_PROCEDURES	anti-streptolysin O (ASO), qualitative	4190509	SNOMED	1970-01-01	2099-12-31	
 160040010	0	JNJ_JMDC_PROCEDURES	Paul-Bunnell reaction test	4118985	SNOMED	1970-01-01	2099-12-31	
-160040710	0	JNJ_JMDC_PROCEDURES	"""serologic test for syphilis (STS), quantitative"""	4229096	SNOMED	1970-01-01	2099-12-31	
-160040810	0	JNJ_JMDC_PROCEDURES	"""anti-streptokinase (ASK), qualitative"""	4003905	SNOMED	1970-01-01	2099-12-31	
-160040910	0	JNJ_JMDC_PROCEDURES	"""treponema pallidum antibody, qualitative"""	40757049	CPT4	1970-01-01	2023-01-20	D
-160040910	0	JNJ_JMDC_PROCEDURES	"""treponema pallidum antibody, qualitative"""	4229096	SNOMED	2023-01-20	2099-12-31	
-160041010	0	JNJ_JMDC_PROCEDURES	"""mycoplasma antibody, qualitative"""	4014636	SNOMED	1970-01-01	2099-12-31	
-160041510	0	JNJ_JMDC_PROCEDURES	"""treponema pallidum antibody, semi-quantitative"""	40757049	CPT4	1970-01-01	2023-01-20	D
-160041510	0	JNJ_JMDC_PROCEDURES	"""treponema pallidum antibody, semi-quantitative"""	4229096	SNOMED	2023-01-20	2099-12-31	
-160041610	0	JNJ_JMDC_PROCEDURES	"""viral antibody titer, qualitative/semi-quantitative/quantitative (adenovirus)"""	4017925	SNOMED	1970-01-01	2099-12-31	
-160042110	0	JNJ_JMDC_PROCEDURES	"""viral antibody titer, qualitative/semi-quantitative/quantitative (herpesvirus)"""	4032017	SNOMED	1970-01-01	2099-12-31	
-160044010	0	JNJ_JMDC_PROCEDURES	"""Bordetella pertussis antibody, semi-quantitative"""	4198572	SNOMED	1970-01-01	2099-12-31	
-160044110	0	JNJ_JMDC_PROCEDURES	"""group A beta hemolytic streptococcal rapid test, qualitative"""	3010312	LOINC	1970-01-01	2099-12-31	
+160040710	0	JNJ_JMDC_PROCEDURES	serologic test for syphilis (STS), quantitative	4229096	SNOMED	1970-01-01	2099-12-31	
+160040810	0	JNJ_JMDC_PROCEDURES	anti-streptokinase (ASK), qualitative	4003905	SNOMED	1970-01-01	2099-12-31	
+160040910	0	JNJ_JMDC_PROCEDURES	treponema pallidum antibody, qualitative	40757049	CPT4	1970-01-01	2023-01-20	D
+160040910	0	JNJ_JMDC_PROCEDURES	treponema pallidum antibody, qualitative	4229096	SNOMED	2023-01-20	2099-12-31	
+160041010	0	JNJ_JMDC_PROCEDURES	mycoplasma antibody, qualitative	4014636	SNOMED	1970-01-01	2099-12-31	
+160041510	0	JNJ_JMDC_PROCEDURES	treponema pallidum antibody, semi-quantitative	40757049	CPT4	1970-01-01	2023-01-20	D
+160041510	0	JNJ_JMDC_PROCEDURES	treponema pallidum antibody, semi-quantitative	4229096	SNOMED	2023-01-20	2099-12-31	
+160041610	0	JNJ_JMDC_PROCEDURES	viral antibody titer, qualitative/semi-quantitative/quantitative (adenovirus)	4017925	SNOMED	1970-01-01	2099-12-31	
+160042110	0	JNJ_JMDC_PROCEDURES	viral antibody titer, qualitative/semi-quantitative/quantitative (herpesvirus)	4032017	SNOMED	1970-01-01	2099-12-31	
+160044010	0	JNJ_JMDC_PROCEDURES	Bordetella pertussis antibody, semi-quantitative	4198572	SNOMED	1970-01-01	2099-12-31	
+160044110	0	JNJ_JMDC_PROCEDURES	group A beta hemolytic streptococcal rapid test, qualitative	3010312	LOINC	1970-01-01	2099-12-31	
 160046010	0	JNJ_JMDC_PROCEDURES	viral antibody titer according to immunoglobulin class (herpesvirus)	44805999	SNOMED	1970-01-01	2099-12-31	
 160046210	0	JNJ_JMDC_PROCEDURES	viral antibody titer according to immunoglobulin class (rubella virus)	4013550	SNOMED	1970-01-01	2099-12-31	
 160046510	0	JNJ_JMDC_PROCEDURES	mite specific IgG antibody	4266628	SNOMED	1970-01-01	2099-12-31	
-160046810	0	JNJ_JMDC_PROCEDURES	"""hepatitis B virus antigen (HBsAg), qualitative/semi-quantitative"""	4098209	SNOMED	1970-01-01	2099-12-31	
-160047410	0	JNJ_JMDC_PROCEDURES	"""hepatitis B virus antibody (HBsAb), semi-quantitative"""	4268309	SNOMED	1970-01-01	2099-12-31	
+160046810	0	JNJ_JMDC_PROCEDURES	hepatitis B virus antigen (HBsAg), qualitative/semi-quantitative	4098209	SNOMED	1970-01-01	2099-12-31	
+160047410	0	JNJ_JMDC_PROCEDURES	hepatitis B virus antibody (HBsAb), semi-quantitative	4268309	SNOMED	1970-01-01	2099-12-31	
 160049210	0	JNJ_JMDC_PROCEDURES	hepatitis B virus antigen (HBsAg)	37111494	SNOMED	1970-01-01	2099-12-31	
 160049510	0	JNJ_JMDC_PROCEDURES	hepatitis B virus antibody (HBsAb)	2212887	CPT4	1970-01-01	2023-01-20	D
 160049510	0	JNJ_JMDC_PROCEDURES	hepatitis B virus antibody (HBsAb)	4278658	SNOMED	2023-01-20	2099-12-31	
 160050010	0	JNJ_JMDC_PROCEDURES	HBe antigen (HBeAg)	4209123	SNOMED	1970-01-01	2099-12-31	
 160050110	0	JNJ_JMDC_PROCEDURES	HBe antibody (HBeAb)	4193755	SNOMED	1970-01-01	2099-12-31	
 160052710	0	JNJ_JMDC_PROCEDURES	cold agglutination	4172928	SNOMED	1970-01-01	2099-12-31	
-160053110	0	JNJ_JMDC_PROCEDURES	"""rheumatoid factor (RF), semi-quantitative"""	4009848	SNOMED	1970-01-01	2099-12-31	
-160053510	0	JNJ_JMDC_PROCEDURES	"""anti-thyroglobulin antibody, semi-quantitative"""	4065904	SNOMED	1970-01-01	2099-12-31	
-160054310	0	JNJ_JMDC_PROCEDURES	"""anti-DNA antibody, qualitative"""	4197917	SNOMED	1970-01-01	2099-12-31	
-160054510	0	JNJ_JMDC_PROCEDURES	"""anti-mitochondrial antibody, qualitative"""	4015457	SNOMED	1970-01-01	2099-12-31	
-160054610	0	JNJ_JMDC_PROCEDURES	"""C reactive protein (CRP), qualitative"""	4208414	SNOMED	1970-01-01	2099-12-31	
+160053110	0	JNJ_JMDC_PROCEDURES	rheumatoid factor (RF), semi-quantitative	4009848	SNOMED	1970-01-01	2099-12-31	
+160053510	0	JNJ_JMDC_PROCEDURES	anti-thyroglobulin antibody, semi-quantitative	4065904	SNOMED	1970-01-01	2099-12-31	
+160054310	0	JNJ_JMDC_PROCEDURES	anti-DNA antibody, qualitative	4197917	SNOMED	1970-01-01	2099-12-31	
+160054510	0	JNJ_JMDC_PROCEDURES	anti-mitochondrial antibody, qualitative	4015457	SNOMED	1970-01-01	2099-12-31	
+160054610	0	JNJ_JMDC_PROCEDURES	C reactive protein (CRP), qualitative	4208414	SNOMED	1970-01-01	2099-12-31	
 160054710	0	JNJ_JMDC_PROCEDURES	C reactive protein (CRP)	4208414	SNOMED	1970-01-01	2099-12-31	
 160054910	0	JNJ_JMDC_PROCEDURES	serum complement activity (CH50)	44806481	SNOMED	1970-01-01	2099-12-31	
 160055010	0	JNJ_JMDC_PROCEDURES	immunoglobulin A (IgA)	4135810	SNOMED	1970-01-01	2099-12-31	
@@ -214,7 +214,7 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 160055310	0	JNJ_JMDC_PROCEDURES	immunoglobulin M (IgM)	4164130	SNOMED	1970-01-01	2099-12-31	
 160055710	0	JNJ_JMDC_PROCEDURES	transthyretin (prealbumin)	4020695	SNOMED	1970-01-01	2099-12-31	
 160055910	0	JNJ_JMDC_PROCEDURES	apolipoprotein	4017500	SNOMED	1970-01-01	2099-12-31	
-160056110	0	JNJ_JMDC_PROCEDURES	"""specific IgE, semi-quantitative/quantitative"""	4265888	SNOMED	1970-01-01	2099-12-31	
+160056110	0	JNJ_JMDC_PROCEDURES	specific IgE, semi-quantitative/quantitative	4265888	SNOMED	1970-01-01	2099-12-31	
 160056310	0	JNJ_JMDC_PROCEDURES	haptoglobin	40481003	SNOMED	1970-01-01	2099-12-31	
 160056410	0	JNJ_JMDC_PROCEDURES	immunoelectrophoresis (IEP)	4093626	SNOMED	1970-01-01	2099-12-31	
 160056610	0	JNJ_JMDC_PROCEDURES	C1 inactivator	4133773	SNOMED	1970-01-01	2099-12-31	
@@ -231,8 +231,8 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 160059810	0	JNJ_JMDC_PROCEDURES	intraoperative rapid histopathological sample preparation	2213295	CPT4	1970-01-01	2099-12-31	
 160060270	0	JNJ_JMDC_PROCEDURES	immunostaining histopathological sample preparation (other)	40217696	HCPCS	1970-01-01	2024-03-13	D
 160060270	0	JNJ_JMDC_PROCEDURES	immunostaining histopathological sample preparation (other)	4098214	SNOMED	2024-03-13	2099-12-31	
-160060350	0	JNJ_JMDC_PROCEDURES	"""immunostaining histopathological sample preparation, estrogen receptor"""	40217696	HCPCS	1970-01-01	2024-03-13	D
-160060350	0	JNJ_JMDC_PROCEDURES	"""immunostaining histopathological sample preparation, estrogen receptor"""	4098214	SNOMED	2024-03-13	2099-12-31	
+160060350	0	JNJ_JMDC_PROCEDURES	immunostaining histopathological sample preparation, estrogen receptor	40217696	HCPCS	1970-01-01	2024-03-13	D
+160060350	0	JNJ_JMDC_PROCEDURES	immunostaining histopathological sample preparation, estrogen receptor	4098214	SNOMED	2024-03-13	2099-12-31	
 160060510	0	JNJ_JMDC_PROCEDURES	cytology (gynecological material etc.)	44806445	SNOMED	1970-01-01	2099-12-31	
 160060610	0	JNJ_JMDC_PROCEDURES	cytologic diagnosis (other)	44806445	SNOMED	1970-01-01	2099-12-31	
 160060710	0	JNJ_JMDC_PROCEDURES	chromosome banding	40765096	LOINC	1970-01-01	2099-12-31	
@@ -249,17 +249,17 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 160067110	0	JNJ_JMDC_PROCEDURES	blood flow	4118984	SNOMED	1970-01-01	2099-12-31	
 160067410	0	JNJ_JMDC_PROCEDURES	cardiac output	2007104	ICD9Proc	1970-01-01	2099-12-31	
 160068050	0	JNJ_JMDC_PROCEDURES	extracellular fluid volume measurement	4346625	SNOMED	1970-01-01	2099-12-31	
-160068410	0	JNJ_JMDC_PROCEDURES	"""electrocardiography (ECG, at least 12 leads including unipolar limb lead and precordial lead)"""	2313814	CPT4	1970-01-01	2099-12-31	
-160068510	0	JNJ_JMDC_PROCEDURES	"""electrocardiography (ECG, 6 leads or more)"""	4187078	SNOMED	1970-01-01	2099-12-31	
+160068410	0	JNJ_JMDC_PROCEDURES	electrocardiography (ECG, at least 12 leads including unipolar limb lead and precordial lead)	2313814	CPT4	1970-01-01	2099-12-31	
+160068510	0	JNJ_JMDC_PROCEDURES	electrocardiography (ECG, 6 leads or more)	4187078	SNOMED	1970-01-01	2099-12-31	
 160068610	0	JNJ_JMDC_PROCEDURES	electrocardiographic diagnosis (description from another medical institution)	4187078	SNOMED	1970-01-01	2099-12-31	
 160069210	0	JNJ_JMDC_PROCEDURES	exercise electrocardiography 12	4261794	SNOMED	1970-01-01	2099-12-31	
 160069510	0	JNJ_JMDC_PROCEDURES	Holter electrocardiography	4187078	SNOMED	1970-01-01	2099-12-31	
 160069910	0	JNJ_JMDC_PROCEDURES	cardiopulmonary exercise test on treadmill	40492338	SNOMED	1970-01-01	2099-12-31	
 160070050	0	JNJ_JMDC_PROCEDURES	cardiopulmonary exercise test on cycle ergometer	37312777	SNOMED	1970-01-01	2099-12-31	
-160072210	0	JNJ_JMDC_PROCEDURES	"""ultrasonography, tomography (thoracoabdominal)"""	36684398	SNOMED	1970-01-01	2099-12-31	
+160072210	0	JNJ_JMDC_PROCEDURES	ultrasonography, tomography (thoracoabdominal)	36684398	SNOMED	1970-01-01	2099-12-31	
 160072450	0	JNJ_JMDC_PROCEDURES	ultrasonography (combined use of tomography and M mode method)	4180776	SNOMED	1970-01-01	2099-12-31	
-160072510	0	JNJ_JMDC_PROCEDURES	"""ultrasonography, echocardiography (transthoracic echocardiography)"""	4335825	SNOMED	1970-01-01	2099-12-31	
-160072910	0	JNJ_JMDC_PROCEDURES	"""ultrasonography, Doppler method (fetal heart sound observation)"""	4197294	SNOMED	1970-01-01	2099-12-31	
+160072510	0	JNJ_JMDC_PROCEDURES	ultrasonography, echocardiography (transthoracic echocardiography)	4335825	SNOMED	1970-01-01	2099-12-31	
+160072910	0	JNJ_JMDC_PROCEDURES	ultrasonography, Doppler method (fetal heart sound observation)	4197294	SNOMED	1970-01-01	2099-12-31	
 160073750	0	JNJ_JMDC_PROCEDURES	cardioscope (heart endoscope)	4051856	SNOMED	1970-01-01	2099-12-31	
 160074010	0	JNJ_JMDC_PROCEDURES	invasive arterial blood pressure measurement (within 1 hour)	4218778	SNOMED	1970-01-01	2024-03-13	D
 160074010	0	JNJ_JMDC_PROCEDURES	invasive arterial blood pressure measurement (within 1 hour)	4238447	SNOMED	2024-03-13	2099-12-31	
@@ -268,15 +268,15 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 160074310	0	JNJ_JMDC_PROCEDURES	central venous pressure measurement (4 times or less)	21490675	LOINC	2024-03-13	2099-12-31	
 160074410	0	JNJ_JMDC_PROCEDURES	central venous pressure measurement (5 times or more)	4323687	SNOMED	1970-01-01	2024-03-13	D
 160074410	0	JNJ_JMDC_PROCEDURES	central venous pressure measurement (5 times or more)	21490675	LOINC	2024-03-13	2099-12-31	
-160075310	0	JNJ_JMDC_PROCEDURES	"""electroencephalography (EEG), 8 leads or more"""	4181917	SNOMED	1970-01-01	2099-12-31	
-160075750	0	JNJ_JMDC_PROCEDURES	"""electroencephalography (EEG), 2 leads"""	4181917	SNOMED	1970-01-01	2099-12-31	
+160075310	0	JNJ_JMDC_PROCEDURES	electroencephalography (EEG), 8 leads or more	4181917	SNOMED	1970-01-01	2099-12-31	
+160075750	0	JNJ_JMDC_PROCEDURES	electroencephalography (EEG), 2 leads	4181917	SNOMED	1970-01-01	2099-12-31	
 160076310	0	JNJ_JMDC_PROCEDURES	evoked response audiometry	4099247	SNOMED	1970-01-01	2099-12-31	
 160076810	0	JNJ_JMDC_PROCEDURES	evoked electromyography	4179815	SNOMED	1970-01-01	2099-12-31	
 160077510	0	JNJ_JMDC_PROCEDURES	cystometrography	4188081	SNOMED	1970-01-01	2099-12-31	
 160077710	0	JNJ_JMDC_PROCEDURES	uroflowmetry	4261340	SNOMED	1970-01-01	2099-12-31	
 160077910	0	JNJ_JMDC_PROCEDURES	laryngoscopy	4103523	SNOMED	1970-01-01	2099-12-31	
-160078010	0	JNJ_JMDC_PROCEDURES	"""subjective audiometry, pure tone audiometry"""	4151889	SNOMED	1970-01-01	2099-12-31	
-160078310	0	JNJ_JMDC_PROCEDURES	"""subjective audiometry, inner ear function test"""	4151889	SNOMED	1970-01-01	2099-12-31	
+160078010	0	JNJ_JMDC_PROCEDURES	subjective audiometry, pure tone audiometry	4151889	SNOMED	1970-01-01	2099-12-31	
+160078310	0	JNJ_JMDC_PROCEDURES	subjective audiometry, inner ear function test	4151889	SNOMED	1970-01-01	2099-12-31	
 160078550	0	JNJ_JMDC_PROCEDURES	tympanic membrane acoustic reflectometry with acoustic otoscope	4083070	SNOMED	1970-01-01	2099-12-31	
 160078850	0	JNJ_JMDC_PROCEDURES	rhinomanometry	4091870	SNOMED	1970-01-01	2099-12-31	
 160079210	0	JNJ_JMDC_PROCEDURES	play audiometry	4071702	SNOMED	1970-01-01	2099-12-31	
@@ -286,9 +286,9 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 160081710	0	JNJ_JMDC_PROCEDURES	electroretinogram (ERG)	4278216	SNOMED	1970-01-01	2099-12-31	
 160081810	0	JNJ_JMDC_PROCEDURES	detailed visual field test (unilateral)	4336678	SNOMED	1970-01-01	2099-12-31	
 160081930	0	JNJ_JMDC_PROCEDURES	detailed visual field test (bilateral)	4336678	SNOMED	1970-01-01	2099-12-31	
-160082130	0	JNJ_JMDC_PROCEDURES	"""quantitative visual field test, kinetic perimetry (bilateral)"""	4336678	SNOMED	1970-01-01	2099-12-31	
-160082210	0	JNJ_JMDC_PROCEDURES	"""quantitative visual field test, static perimetry (unilateral)"""	4336678	SNOMED	1970-01-01	2099-12-31	
-160082330	0	JNJ_JMDC_PROCEDURES	"""quantitative visual field test, static perimetry (bilateral)"""	4336678	SNOMED	1970-01-01	2099-12-31	
+160082130	0	JNJ_JMDC_PROCEDURES	quantitative visual field test, kinetic perimetry (bilateral)	4336678	SNOMED	1970-01-01	2099-12-31	
+160082210	0	JNJ_JMDC_PROCEDURES	quantitative visual field test, static perimetry (unilateral)	4336678	SNOMED	1970-01-01	2099-12-31	
+160082330	0	JNJ_JMDC_PROCEDURES	quantitative visual field test, static perimetry (bilateral)	4336678	SNOMED	1970-01-01	2099-12-31	
 160082410	0	JNJ_JMDC_PROCEDURES	refraction test	4098814	SNOMED	1970-01-01	2099-12-31	
 160082810	0	JNJ_JMDC_PROCEDURES	corrected visual acuity test (with eyeglasses prescription)	4056269	SNOMED	1970-01-01	2099-12-31	
 160082910	0	JNJ_JMDC_PROCEDURES	detailed tonometry	4064074	SNOMED	1970-01-01	2099-12-31	
@@ -299,11 +299,11 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 160084350	0	JNJ_JMDC_PROCEDURES	stereopsis test	4099662	SNOMED	1970-01-01	2099-12-31	
 160084710	0	JNJ_JMDC_PROCEDURES	anterior chamber gonioscopy	4296747	SNOMED	1970-01-01	2099-12-31	
 160085510	0	JNJ_JMDC_PROCEDURES	development and intelligence tests (complicated)	2314190	CPT4	1970-01-01	2099-12-31	
-160085910	0	JNJ_JMDC_PROCEDURES	"""cognitive function test, other psychological tests (simple)"""	4187379	SNOMED	1970-01-01	2099-12-31	
-160086010	0	JNJ_JMDC_PROCEDURES	"""cognitive function test, other psychological tests (complicated)"""	4187379	SNOMED	1970-01-01	2099-12-31	
-160086110	0	JNJ_JMDC_PROCEDURES	"""cognitive function test, other psychological tests (very complicated operations)"""	4187379	SNOMED	1970-01-01	2099-12-31	
+160085910	0	JNJ_JMDC_PROCEDURES	cognitive function test, other psychological tests (simple)	4187379	SNOMED	1970-01-01	2099-12-31	
+160086010	0	JNJ_JMDC_PROCEDURES	cognitive function test, other psychological tests (complicated)	4187379	SNOMED	1970-01-01	2099-12-31	
+160086110	0	JNJ_JMDC_PROCEDURES	cognitive function test, other psychological tests (very complicated operations)	4187379	SNOMED	1970-01-01	2099-12-31	
 160087210	0	JNJ_JMDC_PROCEDURES	glucose tolerance test (routine load test)	4012477	SNOMED	1970-01-01	2099-12-31	
-160087310	0	JNJ_JMDC_PROCEDURES	"""glucose tolerance test, detailed"""	4012477	SNOMED	1970-01-01	2099-12-31	
+160087310	0	JNJ_JMDC_PROCEDURES	glucose tolerance test, detailed	4012477	SNOMED	1970-01-01	2099-12-31	
 160091310	0	JNJ_JMDC_PROCEDURES	bone mineral density test (lumbar spine radiography with DEXA)	42529473	LOINC	1970-01-01	2099-12-31	
 160092210	0	JNJ_JMDC_PROCEDURES	direct laryngoscopy	4301600	SNOMED	1970-01-01	2099-12-31	
 160092410	0	JNJ_JMDC_PROCEDURES	laryngeal fiberscopy	4176717	SNOMED	1970-01-01	2099-12-31	
@@ -314,9 +314,9 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 160094110	0	JNJ_JMDC_PROCEDURES	enteroscopy (other)	4123735	SNOMED	1970-01-01	2099-12-31	
 160094210	0	JNJ_JMDC_PROCEDURES	proctoscopy	4171571	SNOMED	1970-01-01	2099-12-31	
 160094610	0	JNJ_JMDC_PROCEDURES	rectum fiberscopy	4171571	SNOMED	1970-01-01	2099-12-31	
-160094710	0	JNJ_JMDC_PROCEDURES	"""colonoscopy, fiberscopy, sigmoid colon"""	4196378	SNOMED	1970-01-01	2099-12-31	
-160094910	0	JNJ_JMDC_PROCEDURES	"""colonoscopy, fiberscopy, ascending colon and cecum"""	4279551	SNOMED	1970-01-01	2024-03-13	D
-160094910	0	JNJ_JMDC_PROCEDURES	"""colonoscopy, fiberscopy, ascending colon and cecum"""	4249893	SNOMED	2024-03-13	2099-12-31	
+160094710	0	JNJ_JMDC_PROCEDURES	colonoscopy, fiberscopy, sigmoid colon	4196378	SNOMED	1970-01-01	2099-12-31	
+160094910	0	JNJ_JMDC_PROCEDURES	colonoscopy, fiberscopy, ascending colon and cecum	4279551	SNOMED	1970-01-01	2024-03-13	D
+160094910	0	JNJ_JMDC_PROCEDURES	colonoscopy, fiberscopy, ascending colon and cecum	4249893	SNOMED	2024-03-13	2099-12-31	
 160095310	0	JNJ_JMDC_PROCEDURES	cystourethral fiberscopy	2109766	CPT4	1970-01-01	2024-03-13	D
 160095310	0	JNJ_JMDC_PROCEDURES	cystourethral fiberscopy	4305063	SNOMED	2024-03-13	2099-12-31	
 160095610	0	JNJ_JMDC_PROCEDURES	colposcopy	4189586	SNOMED	1970-01-01	2099-12-31	
@@ -328,17 +328,17 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 160098110	0	JNJ_JMDC_PROCEDURES	prostate needle biopsy	4215762	SNOMED	1970-01-01	2099-12-31	
 160098210	0	JNJ_JMDC_PROCEDURES	endoscopic biopsy	4202517	SNOMED	1970-01-01	2099-12-31	
 160101210	0	JNJ_JMDC_PROCEDURES	arterial blood sampling	4138399	SNOMED	1970-01-01	2099-12-31	
-160102750	0	JNJ_JMDC_PROCEDURES	"""cardioscope (heart endoscope), beyond 3 hours (within 7 days)"""	4051856	SNOMED	1970-01-01	2099-12-31	
-160104250	0	JNJ_JMDC_PROCEDURES	"""Streptococcus pneumoniae antigen, qualitative [urine]"""	4045314	SNOMED	1970-01-01	2099-12-31	
+160102750	0	JNJ_JMDC_PROCEDURES	cardioscope (heart endoscope), beyond 3 hours (within 7 days)	4051856	SNOMED	1970-01-01	2099-12-31	
+160104250	0	JNJ_JMDC_PROCEDURES	Streptococcus pneumoniae antigen, qualitative [urine]	4045314	SNOMED	1970-01-01	2099-12-31	
 160109410	0	JNJ_JMDC_PROCEDURES	viral antibody titer according to immunoglobulin class (cytomegalovirus)	4146598	SNOMED	1970-01-01	2099-12-31	
-160112010	0	JNJ_JMDC_PROCEDURES	"""albumin (Alb), qualitative [urine]"""	2212188	CPT4	1970-01-01	2023-01-20	D
-160112010	0	JNJ_JMDC_PROCEDURES	"""albumin (Alb), qualitative [urine]"""	4017498	SNOMED	2023-01-20	2099-12-31	
-160112810	0	JNJ_JMDC_PROCEDURES	"""adenovirus antigen, qualitative [feces]"""	4008425	SNOMED	1970-01-01	2099-12-31	
-160112910	0	JNJ_JMDC_PROCEDURES	"""rotavirus antigen, qualitative [feces]"""	4263437	SNOMED	1970-01-01	2099-12-31	
+160112010	0	JNJ_JMDC_PROCEDURES	albumin (Alb), qualitative [urine]	2212188	CPT4	1970-01-01	2023-01-20	D
+160112010	0	JNJ_JMDC_PROCEDURES	albumin (Alb), qualitative [urine]	4017498	SNOMED	2023-01-20	2099-12-31	
+160112810	0	JNJ_JMDC_PROCEDURES	adenovirus antigen, qualitative [feces]	4008425	SNOMED	1970-01-01	2099-12-31	
+160112910	0	JNJ_JMDC_PROCEDURES	rotavirus antigen, qualitative [feces]	4263437	SNOMED	1970-01-01	2099-12-31	
 160113410	0	JNJ_JMDC_PROCEDURES	cryofibrinogen	4017634	SNOMED	1970-01-01	2099-12-31	
 160113510	0	JNJ_JMDC_PROCEDURES	antithrombin (AT) activity	44810873	SNOMED	1970-01-01	2099-12-31	
-160113810	0	JNJ_JMDC_PROCEDURES	"""D dimer, qualitative"""	2212699	CPT4	1970-01-01	2023-01-20	D
-160113810	0	JNJ_JMDC_PROCEDURES	"""D dimer, qualitative"""	4015482	SNOMED	2023-01-20	2099-12-31	
+160113810	0	JNJ_JMDC_PROCEDURES	D dimer, qualitative	2212699	CPT4	1970-01-01	2023-01-20	D
+160113810	0	JNJ_JMDC_PROCEDURES	D dimer, qualitative	4015482	SNOMED	2023-01-20	2099-12-31	
 160114010	0	JNJ_JMDC_PROCEDURES	D dimer	4322628	SNOMED	1970-01-01	2099-12-31	
 160114110	0	JNJ_JMDC_PROCEDURES	protein C activity	44810875	SNOMED	1970-01-01	2099-12-31	
 160114210	0	JNJ_JMDC_PROCEDURES	thrombin antithrombin complex (TAT)	4045156	SNOMED	1970-01-01	2099-12-31	
@@ -350,25 +350,25 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 160116010	0	JNJ_JMDC_PROCEDURES	free testosterone	4020107	SNOMED	1970-01-01	2099-12-31	
 160116310	0	JNJ_JMDC_PROCEDURES	atrial natriuretic polypeptide (ANP)	4197113	SNOMED	1970-01-01	2099-12-31	
 160116510	0	JNJ_JMDC_PROCEDURES	carbohydrate antigen 72-4 (CA72-4)	44807680	SNOMED	1970-01-01	2099-12-31	
-160117610	0	JNJ_JMDC_PROCEDURES	"""RS virus antigen, qualitative"""	4201161	SNOMED	1970-01-01	2099-12-31	
+160117610	0	JNJ_JMDC_PROCEDURES	RS virus antigen, qualitative	4201161	SNOMED	1970-01-01	2099-12-31	
 160117810	0	JNJ_JMDC_PROCEDURES	Chlamydia trachomatis antibody according to immunoglobulin class	4007826	SNOMED	1970-01-01	2099-12-31	
 160118410	0	JNJ_JMDC_PROCEDURES	anti-acetylcholine receptor antibody (anti-AChR antibody)	4044814	SNOMED	1970-01-01	2099-12-31	
-160118510	0	JNJ_JMDC_PROCEDURES	"""HCV antibody, qualitative/quantitative"""	4273104	SNOMED	1970-01-01	2099-12-31	
+160118510	0	JNJ_JMDC_PROCEDURES	HCV antibody, qualitative/quantitative	4273104	SNOMED	1970-01-01	2099-12-31	
 160118610	0	JNJ_JMDC_PROCEDURES	hepatitis delta virus antibody	4015456	SNOMED	1970-01-01	2099-12-31	
-160118810	0	JNJ_JMDC_PROCEDURES	"""non-specific IgE, semi-quantitative"""	4220748	SNOMED	1970-01-01	2099-12-31	
+160118810	0	JNJ_JMDC_PROCEDURES	non-specific IgE, semi-quantitative	4220748	SNOMED	1970-01-01	2099-12-31	
 160119210	0	JNJ_JMDC_PROCEDURES	C1q immune complex	4195701	SNOMED	1970-01-01	2099-12-31	
 160119410	0	JNJ_JMDC_PROCEDURES	overnight polysomnography (using portable device)	4189015	SNOMED	1970-01-01	2099-12-31	
 160120510	0	JNJ_JMDC_PROCEDURES	thyroid puncture or needle biopsy	4313010	SNOMED	1970-01-01	2099-12-31	
-160120610	0	JNJ_JMDC_PROCEDURES	"""Chlamydia trachomatis antigen, qualitative"""	4047058	SNOMED	1970-01-01	2099-12-31	
-160120710	0	JNJ_JMDC_PROCEDURES	"""HBc antibody (HBcAb), semi-quantitative/quantitative"""	4241990	SNOMED	1970-01-01	2099-12-31	
+160120610	0	JNJ_JMDC_PROCEDURES	Chlamydia trachomatis antigen, qualitative	4047058	SNOMED	1970-01-01	2099-12-31	
+160120710	0	JNJ_JMDC_PROCEDURES	HBc antibody (HBcAb), semi-quantitative/quantitative	4241990	SNOMED	1970-01-01	2099-12-31	
 160120810	0	JNJ_JMDC_PROCEDURES	hepatitis A antibody (HAAb)	4209250	SNOMED	1970-01-01	2024-03-13	D
 160120810	0	JNJ_JMDC_PROCEDURES	hepatitis A antibody (HAAb)	4222728	SNOMED	2024-03-13	2099-12-31	
-160120910	0	JNJ_JMDC_PROCEDURES	"""hepatitis A virus antibody (HAAb), IgM"""	4338222	SNOMED	1970-01-01	2099-12-31	
+160120910	0	JNJ_JMDC_PROCEDURES	hepatitis A virus antibody (HAAb), IgM	4338222	SNOMED	1970-01-01	2099-12-31	
 160121210	0	JNJ_JMDC_PROCEDURES	antinuclear antibody (other than fluorescent antibody method)	4234268	SNOMED	1970-01-01	2099-12-31	
 160121450	0	JNJ_JMDC_PROCEDURES	cytomegalovirus antibody	4146598	SNOMED	1970-01-01	2099-12-31	
 160121510	0	JNJ_JMDC_PROCEDURES	viral antibody titer according to immunoglobulin class (EB virus)	4015458	SNOMED	1970-01-01	2099-12-31	
 160122850	0	JNJ_JMDC_PROCEDURES	eosinophil [nasal smear/sputum]	4105161	SNOMED	1970-01-01	2099-12-31	
-160123550	0	JNJ_JMDC_PROCEDURES	"""myoglobin, qualitative"""	4143902	SNOMED	1970-01-01	2099-12-31	
+160123550	0	JNJ_JMDC_PROCEDURES	myoglobin, qualitative	4143902	SNOMED	1970-01-01	2099-12-31	
 160123650	0	JNJ_JMDC_PROCEDURES	vitamin B1	4032173	SNOMED	1970-01-01	2099-12-31	
 160124350	0	JNJ_JMDC_PROCEDURES	complement C3	4195474	SNOMED	1970-01-01	2099-12-31	
 160124450	0	JNJ_JMDC_PROCEDURES	complement C4	4135587	SNOMED	1970-01-01	2099-12-31	
@@ -384,9 +384,9 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 160132450	0	JNJ_JMDC_PROCEDURES	sodium and chlorine [urine]	4033092	SNOMED	2023-01-20	2099-12-31	
 160132650	0	JNJ_JMDC_PROCEDURES	potassium [urine]	4173269	SNOMED	1970-01-01	2099-12-31	
 160132750	0	JNJ_JMDC_PROCEDURES	calcium [urine]	4251322	SNOMED	1970-01-01	2099-12-31	
-160134750	0	JNJ_JMDC_PROCEDURES	"""human chorionic gonadotropin (hCG), qualitative [urine]"""	4017479	SNOMED	1970-01-01	2099-12-31	
+160134750	0	JNJ_JMDC_PROCEDURES	human chorionic gonadotropin (hCG), qualitative [urine]	4017479	SNOMED	1970-01-01	2099-12-31	
 160135250	0	JNJ_JMDC_PROCEDURES	homovanillic acid (HVA) [urine]	4150619	SNOMED	1970-01-01	2099-12-31	
-160135450	0	JNJ_JMDC_PROCEDURES	"""estrogen, semi-quantitative [urine]"""	4308131	SNOMED	1970-01-01	2099-12-31	
+160135450	0	JNJ_JMDC_PROCEDURES	estrogen, semi-quantitative [urine]	4308131	SNOMED	1970-01-01	2099-12-31	
 160135850	0	JNJ_JMDC_PROCEDURES	C-peptide (CPR) [urine]	2212630	CPT4	1970-01-01	2023-01-20	D
 160135850	0	JNJ_JMDC_PROCEDURES	C-peptide (CPR) [urine]	4229110	SNOMED	2023-01-20	2099-12-31	
 160137550	0	JNJ_JMDC_PROCEDURES	beta 2 microglobulin [urine]	4235103	SNOMED	1970-01-01	2099-12-31	
@@ -395,39 +395,39 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 160142150	0	JNJ_JMDC_PROCEDURES	mycobacterium avium and intracellulare (MAC) nucleic acid detection	44811865	SNOMED	1970-01-01	2099-12-31	
 160142350	0	JNJ_JMDC_PROCEDURES	1.5-anhydro-D-glucitol (1.5AG)	3039499	LOINC	1970-01-01	2099-12-31	
 160142550	0	JNJ_JMDC_PROCEDURES	borrelia burgdorferi antibody	4018467	SNOMED	1970-01-01	2099-12-31	
-160143050	0	JNJ_JMDC_PROCEDURES	"""intracameral protein concentration measurement, using laser flare cell meter"""	4150333	SNOMED	1970-01-01	2099-12-31	
+160143050	0	JNJ_JMDC_PROCEDURES	intracameral protein concentration measurement, using laser flare cell meter	4150333	SNOMED	1970-01-01	2099-12-31	
 160144410	0	JNJ_JMDC_PROCEDURES	bacterial culture identification (airway)	4016945	SNOMED	1970-01-01	2099-12-31	
 160144510	0	JNJ_JMDC_PROCEDURES	bacterial culture identification (respiratory tract)	4016945	SNOMED	1970-01-01	2099-12-31	
 160144610	0	JNJ_JMDC_PROCEDURES	bacterial culture identification (genital tract)	4016945	SNOMED	1970-01-01	2099-12-31	
 160144710	0	JNJ_JMDC_PROCEDURES	bacterial culture identification (puncture fluid)	4016945	SNOMED	1970-01-01	2099-12-31	
-160145510	0	JNJ_JMDC_PROCEDURES	"""anti-ribonucleoprotein (anti-RNP) antibody, qualitative"""	4014131	SNOMED	1970-01-01	2099-12-31	
-160145910	0	JNJ_JMDC_PROCEDURES	"""anti-SS-A/Ro antibody, qualitative"""	4241825	SNOMED	1970-01-01	2099-12-31	
-160146010	0	JNJ_JMDC_PROCEDURES	"""anti-Scl-70 antibody, qualitative"""	4147759	SNOMED	1970-01-01	2099-12-31	
-160146110	0	JNJ_JMDC_PROCEDURES	"""anti-SS-B/La antibody, qualitative"""	4101092	SNOMED	1970-01-01	2099-12-31	
-160147310	0	JNJ_JMDC_PROCEDURES	"""bone mineral density test (MD, SEXA etc.)"""	42529473	LOINC	1970-01-01	2099-12-31	
+160145510	0	JNJ_JMDC_PROCEDURES	anti-ribonucleoprotein (anti-RNP) antibody, qualitative	4014131	SNOMED	1970-01-01	2099-12-31	
+160145910	0	JNJ_JMDC_PROCEDURES	anti-SS-A/Ro antibody, qualitative	4241825	SNOMED	1970-01-01	2099-12-31	
+160146010	0	JNJ_JMDC_PROCEDURES	anti-Scl-70 antibody, qualitative	4147759	SNOMED	1970-01-01	2099-12-31	
+160146110	0	JNJ_JMDC_PROCEDURES	anti-SS-B/La antibody, qualitative	4101092	SNOMED	1970-01-01	2099-12-31	
+160147310	0	JNJ_JMDC_PROCEDURES	bone mineral density test (MD, SEXA etc.)	42529473	LOINC	1970-01-01	2099-12-31	
 160147410	0	JNJ_JMDC_PROCEDURES	non-stress test	2110284	CPT4	1970-01-01	2024-03-13	D
 160147410	0	JNJ_JMDC_PROCEDURES	non-stress test	4308655	SNOMED	2024-03-13	2099-12-31	
-160148810	0	JNJ_JMDC_PROCEDURES	"""adenovirus antigen, qualitative (other than feces)"""	4008425	SNOMED	1970-01-01	2099-12-31	
+160148810	0	JNJ_JMDC_PROCEDURES	adenovirus antigen, qualitative (other than feces)	4008425	SNOMED	1970-01-01	2099-12-31	
 160149910	0	JNJ_JMDC_PROCEDURES	luteinizing hormone (LH)	4287388	SNOMED	1970-01-01	2099-12-31	
-160151050	0	JNJ_JMDC_PROCEDURES	"""albumin, glycated"""	4018320	SNOMED	1970-01-01	2099-12-31	
+160151050	0	JNJ_JMDC_PROCEDURES	albumin, glycated	4018320	SNOMED	1970-01-01	2099-12-31	
 160151150	0	JNJ_JMDC_PROCEDURES	hyaluronate	4005211	SNOMED	1970-01-01	2099-12-31	
 160151350	0	JNJ_JMDC_PROCEDURES	toxoplasma IgM antibody	4018588	SNOMED	1970-01-01	2099-12-31	
 160151850	0	JNJ_JMDC_PROCEDURES	tyrosine	4225595	SNOMED	1970-01-01	2099-12-31	
 160152350	0	JNJ_JMDC_PROCEDURES	unbound bilirubin	4118986	SNOMED	1970-01-01	2099-12-31	
 160152450	0	JNJ_JMDC_PROCEDURES	Bordetella pertussis antibody	4198572	SNOMED	1970-01-01	2099-12-31	
-160152850	0	JNJ_JMDC_PROCEDURES	"""cardiac troponin T (TnT), qualitative/quantitative"""	4005525	SNOMED	1970-01-01	2099-12-31	
+160152850	0	JNJ_JMDC_PROCEDURES	cardiac troponin T (TnT), qualitative/quantitative	4005525	SNOMED	1970-01-01	2099-12-31	
 160152950	0	JNJ_JMDC_PROCEDURES	dehydroepiandrosterone sulfate (DHEA-S)	2212305	CPT4	1970-01-01	2023-01-20	D
 160152950	0	JNJ_JMDC_PROCEDURES	dehydroepiandrosterone sulfate (DHEA-S)	4216461	SNOMED	2023-01-20	2099-12-31	
-160153150	0	JNJ_JMDC_PROCEDURES	"""mycoplasma antigen, qualitative (FA method)"""	4036385	SNOMED	1970-01-01	2099-12-31	
+160153150	0	JNJ_JMDC_PROCEDURES	mycoplasma antigen, qualitative (FA method)	4036385	SNOMED	1970-01-01	2099-12-31	
 160153450	0	JNJ_JMDC_PROCEDURES	lipoprotein (a)	4007663	SNOMED	1970-01-01	2099-12-31	
 160153550	0	JNJ_JMDC_PROCEDURES	remnant like particles-cholesterol (RLP-C)	3033286	LOINC	1970-01-01	2099-12-31	
-160153950	0	JNJ_JMDC_PROCEDURES	"""antineutrophil cytoplasmic antibody (ANCA), qualitative"""	4102448	SNOMED	1970-01-01	2099-12-31	
+160153950	0	JNJ_JMDC_PROCEDURES	antineutrophil cytoplasmic antibody (ANCA), qualitative	4102448	SNOMED	1970-01-01	2099-12-31	
 160154010	0	JNJ_JMDC_PROCEDURES	[blood]	4246053	SNOMED	1970-01-01	2099-12-31	
 160154350	0	JNJ_JMDC_PROCEDURES	anti-cardiolipin beta 2 glycoprotein I complex antibody	4040367	SNOMED	1970-01-01	2099-12-31	
 160155510	0	JNJ_JMDC_PROCEDURES	peripheral capillary oxygen saturation	4095045	SNOMED	1970-01-01	2099-12-31	
 160155610	0	JNJ_JMDC_PROCEDURES	end-tidal carbon dioxide concentration measurement	40481750	SNOMED	1970-01-01	2099-12-31	
-160156550	0	JNJ_JMDC_PROCEDURES	"""oncofetal fibronectin, qualitative [cervix, vaginal lubrication]"""	2212334	CPT4	1970-01-01	2023-01-20	D
-160156550	0	JNJ_JMDC_PROCEDURES	"""oncofetal fibronectin, qualitative [cervix, vaginal lubrication]"""	4007658	SNOMED	2023-01-20	2099-12-31	
+160156550	0	JNJ_JMDC_PROCEDURES	oncofetal fibronectin, qualitative [cervix, vaginal lubrication]	2212334	CPT4	1970-01-01	2023-01-20	D
+160156550	0	JNJ_JMDC_PROCEDURES	oncofetal fibronectin, qualitative [cervix, vaginal lubrication]	4007658	SNOMED	2023-01-20	2099-12-31	
 160157050	0	JNJ_JMDC_PROCEDURES	thrombomodulin	4015600	SNOMED	1970-01-01	2099-12-31	
 160157210	0	JNJ_JMDC_PROCEDURES	viral antibody titer according to immunoglobulin class (measles virus)	4196408	SNOMED	1970-01-01	2099-12-31	
 160157310	0	JNJ_JMDC_PROCEDURES	viral antibody titer according to immunoglobulin class (mumps virus)	4018593	SNOMED	1970-01-01	2099-12-31	
@@ -436,15 +436,15 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 160157850	0	JNJ_JMDC_PROCEDURES	mycobacterium tuberculosis group nucleic acid detection	4047333	SNOMED	1970-01-01	2099-12-31	
 160158050	0	JNJ_JMDC_PROCEDURES	soluble interleukin 2 receptor (sIL-2R)	4048549	SNOMED	1970-01-01	2099-12-31	
 160158350	0	JNJ_JMDC_PROCEDURES	aspergillus antigen	44790036	SNOMED	1970-01-01	2099-12-31	
-160158450	0	JNJ_JMDC_PROCEDURES	"""HCV nucleic acid, quantitative"""	4162833	SNOMED	1970-01-01	2099-12-31	
+160158450	0	JNJ_JMDC_PROCEDURES	HCV nucleic acid, quantitative	4162833	SNOMED	1970-01-01	2099-12-31	
 160158650	0	JNJ_JMDC_PROCEDURES	Chlamydia trachomatis nucleic acid detection	4162818	SNOMED	1970-01-01	2099-12-31	
 160159050	0	JNJ_JMDC_PROCEDURES	cytokeratin 19 fragment (CYFRA)	4040056	SNOMED	1970-01-01	2099-12-31	
 160159150	0	JNJ_JMDC_PROCEDURES	immunoglobulin light chain kappa/lambda ratio	4136733	SNOMED	1970-01-01	2099-12-31	
-160159550	0	JNJ_JMDC_PROCEDURES	"""urinary sediment, by flow cytometry"""	4276031	SNOMED	1970-01-01	2099-12-31	
+160159550	0	JNJ_JMDC_PROCEDURES	urinary sediment, by flow cytometry	4276031	SNOMED	1970-01-01	2099-12-31	
 160160150	0	JNJ_JMDC_PROCEDURES	(1-3)-beta-D-glucan	4254514	SNOMED	1970-01-01	2099-12-31	
 160160250	0	JNJ_JMDC_PROCEDURES	serum amyloid A protein (SAA)	46284972	SNOMED	1970-01-01	2099-12-31	
-160160350	0	JNJ_JMDC_PROCEDURES	"""HBV nucleic acid, quantitative"""	4160297	SNOMED	1970-01-01	2099-12-31	
-160160410	0	JNJ_JMDC_PROCEDURES	"""ultrasonography, echocardiography (transesophageal echocardiography)"""	4019824	SNOMED	1970-01-01	2099-12-31	
+160160350	0	JNJ_JMDC_PROCEDURES	HBV nucleic acid, quantitative	4160297	SNOMED	1970-01-01	2099-12-31	
+160160410	0	JNJ_JMDC_PROCEDURES	ultrasonography, echocardiography (transesophageal echocardiography)	4019824	SNOMED	1970-01-01	2099-12-31	
 160160510	0	JNJ_JMDC_PROCEDURES	overnight polysomnography (other than [1] or [2])	4189015	SNOMED	1970-01-01	2099-12-31	
 160160710	0	JNJ_JMDC_PROCEDURES	secretin test	4017340	SNOMED	1970-01-01	2099-12-31	
 160161810	0	JNJ_JMDC_PROCEDURES	color vision test	4326577	SNOMED	1970-01-01	2099-12-31	
@@ -453,13 +453,13 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 160162250	0	JNJ_JMDC_PROCEDURES	pro-gastrin releasing peptide (ProGRP)	4017757	SNOMED	1970-01-01	2099-12-31	
 160162350	0	JNJ_JMDC_PROCEDURES	brain natriuretic peptide (BNP)	4307029	SNOMED	1970-01-01	2099-12-31	
 160162550	0	JNJ_JMDC_PROCEDURES	thyroid stimulating antibody (TSAb)	4192910	SNOMED	1970-01-01	2099-12-31	
-160162650	0	JNJ_JMDC_PROCEDURES	"""Escherichia coli verotoxin, qualitative"""	4036359	SNOMED	1970-01-01	2099-12-31	
-160162750	0	JNJ_JMDC_PROCEDURES	"""Escherichia coli, serotyping"""	4040069	SNOMED	1970-01-01	2099-12-31	
-160163850	0	JNJ_JMDC_PROCEDURES	"""cytomegalovirus pp65 antigen, qualitative"""	4005681	SNOMED	1970-01-01	2099-12-31	
+160162650	0	JNJ_JMDC_PROCEDURES	Escherichia coli verotoxin, qualitative	4036359	SNOMED	1970-01-01	2099-12-31	
+160162750	0	JNJ_JMDC_PROCEDURES	Escherichia coli, serotyping	4040069	SNOMED	1970-01-01	2099-12-31	
+160163850	0	JNJ_JMDC_PROCEDURES	cytomegalovirus pp65 antigen, qualitative	4005681	SNOMED	1970-01-01	2099-12-31	
 160164050	0	JNJ_JMDC_PROCEDURES	anti-cardiolipin antibody	4278664	SNOMED	1970-01-01	2099-12-31	
 160164150	0	JNJ_JMDC_PROCEDURES	N. gonorrhoeae nucleic acid detection	4162401	SNOMED	1970-01-01	2099-12-31	
 160164250	0	JNJ_JMDC_PROCEDURES	type 1 collagen cross-linked N-telopeptide (NTx)	4008117	SNOMED	1970-01-01	2099-12-31	
-160165010	0	JNJ_JMDC_PROCEDURES	"""ultrasonography, tomography (other)"""	4037672	SNOMED	1970-01-01	2099-12-31	
+160165010	0	JNJ_JMDC_PROCEDURES	ultrasonography, tomography (other)	4037672	SNOMED	1970-01-01	2099-12-31	
 160165950	0	JNJ_JMDC_PROCEDURES	cardioscope (heart endoscope) (for 7-14 days)	4051856	SNOMED	1970-01-01	2099-12-31	
 160166510	0	JNJ_JMDC_PROCEDURES	electromyography (per muscle)	4179815	SNOMED	1970-01-01	2099-12-31	
 160167250	0	JNJ_JMDC_PROCEDURES	low density lipoprotein (LDL) cholesterol	4016949	SNOMED	1970-01-01	2099-12-31	
@@ -467,46 +467,46 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 160167850	0	JNJ_JMDC_PROCEDURES	myeloperoxidase-antineutrophil cytoplasmic antibody (MPO-ANCA)	4135820	SNOMED	1970-01-01	2099-12-31	
 160168450	0	JNJ_JMDC_PROCEDURES	surfactant protein D (SP-D)	44817214	LOINC	1970-01-01	2099-12-31	
 160168650	0	JNJ_JMDC_PROCEDURES	bone-specific alkaline phosphatase (BAP)	4230636	SNOMED	1970-01-01	2099-12-31	
-160168850	0	JNJ_JMDC_PROCEDURES	"""nuclear matrix protein 22 (NMP22), qualitative [urine]"""	40481777	SNOMED	1970-01-01	2099-12-31	
+160168850	0	JNJ_JMDC_PROCEDURES	nuclear matrix protein 22 (NMP22), qualitative [urine]	40481777	SNOMED	1970-01-01	2099-12-31	
 160168950	0	JNJ_JMDC_PROCEDURES	free/total prostate specific antigen ratio (PSA F/T ratio)	4215704	SNOMED	1970-01-01	2099-12-31	
-160169150	0	JNJ_JMDC_PROCEDURES	"""lupus anticoagulant, qualitative"""	4268621	SNOMED	1970-01-01	2099-12-31	
-160169450	0	JNJ_JMDC_PROCEDURES	"""influenza virus antigen, qualitative"""	2212891	CPT4	1970-01-01	2023-01-20	D
-160169450	0	JNJ_JMDC_PROCEDURES	"""influenza virus antigen, qualitative"""	4017924	SNOMED	2023-01-20	2099-12-31	
+160169150	0	JNJ_JMDC_PROCEDURES	lupus anticoagulant, qualitative	4268621	SNOMED	1970-01-01	2099-12-31	
+160169450	0	JNJ_JMDC_PROCEDURES	influenza virus antigen, qualitative	2212891	CPT4	1970-01-01	2023-01-20	D
+160169450	0	JNJ_JMDC_PROCEDURES	influenza virus antigen, qualitative	4017924	SNOMED	2023-01-20	2099-12-31	
 160169910	0	JNJ_JMDC_PROCEDURES	mycobacterial isolation culture (other)	4264337	SNOMED	1970-01-01	2099-12-31	
 160170410	0	JNJ_JMDC_PROCEDURES	bone mineral density test (ultrasonography)	4037672	SNOMED	1970-01-01	2099-12-31	
 160171210	0	JNJ_JMDC_PROCEDURES	corneal topography	4099372	SNOMED	1970-01-01	2099-12-31	
 160171750	0	JNJ_JMDC_PROCEDURES	cardiac troponin I	4007805	SNOMED	1970-01-01	2099-12-31	
-160172450	0	JNJ_JMDC_PROCEDURES	"""helicobacter pylori antibody, qualitative/semi-quantitative"""	4018470	SNOMED	1970-01-01	2099-12-31	
+160172450	0	JNJ_JMDC_PROCEDURES	helicobacter pylori antibody, qualitative/semi-quantitative	4018470	SNOMED	1970-01-01	2099-12-31	
 160172550	0	JNJ_JMDC_PROCEDURES	Helicobacter pylori antibody	4018470	SNOMED	1970-01-01	2099-12-31	
-160172750	0	JNJ_JMDC_PROCEDURES	"""rapid urease test, qualitative"""	4215465	SNOMED	1970-01-01	2099-12-31	
+160172750	0	JNJ_JMDC_PROCEDURES	rapid urease test, qualitative	4215465	SNOMED	1970-01-01	2099-12-31	
 160172850	0	JNJ_JMDC_PROCEDURES	urea breath test (UBT)	3011630	LOINC	1970-01-01	2099-12-31	
-160173550	0	JNJ_JMDC_PROCEDURES	"""immunostaining histopathological sample preparation, HER2 protein"""	40217696	HCPCS	1970-01-01	2024-03-13	D
-160173550	0	JNJ_JMDC_PROCEDURES	"""immunostaining histopathological sample preparation, HER2 protein"""	4098214	SNOMED	2024-03-13	2099-12-31	
-160174310	0	JNJ_JMDC_PROCEDURES	"""viral antibody titer, qualitative/semi-quantitative/quantitative (varicella-zoster virus)"""	4018595	SNOMED	1970-01-01	2099-12-31	
-160174950	0	JNJ_JMDC_PROCEDURES	"""legionella antigen, qualitative [urine]"""	4162828	SNOMED	1970-01-01	2099-12-31	
-160175450	0	JNJ_JMDC_PROCEDURES	"""helicobacter pylori antigen, qualitative"""	4304824	SNOMED	1970-01-01	2099-12-31	
-160175910	0	JNJ_JMDC_PROCEDURES	"""subjective audiometry, simple audiometry, air conduction pure tone audiometry"""	4151889	SNOMED	1970-01-01	2099-12-31	
+160173550	0	JNJ_JMDC_PROCEDURES	immunostaining histopathological sample preparation, HER2 protein	40217696	HCPCS	1970-01-01	2024-03-13	D
+160173550	0	JNJ_JMDC_PROCEDURES	immunostaining histopathological sample preparation, HER2 protein	4098214	SNOMED	2024-03-13	2099-12-31	
+160174310	0	JNJ_JMDC_PROCEDURES	viral antibody titer, qualitative/semi-quantitative/quantitative (varicella-zoster virus)	4018595	SNOMED	1970-01-01	2099-12-31	
+160174950	0	JNJ_JMDC_PROCEDURES	legionella antigen, qualitative [urine]	4162828	SNOMED	1970-01-01	2099-12-31	
+160175450	0	JNJ_JMDC_PROCEDURES	helicobacter pylori antigen, qualitative	4304824	SNOMED	1970-01-01	2099-12-31	
+160175910	0	JNJ_JMDC_PROCEDURES	subjective audiometry, simple audiometry, air conduction pure tone audiometry	4151889	SNOMED	1970-01-01	2099-12-31	
 160176350	0	JNJ_JMDC_PROCEDURES	creatinine test strip [urine] (protein/creatinine ratio)	4193718	SNOMED	1970-01-01	2099-12-31	
 160176450	0	JNJ_JMDC_PROCEDURES	thrombotest	4095462	SNOMED	1970-01-01	2099-12-31	
 160176650	0	JNJ_JMDC_PROCEDURES	thyroglobulin antibody	4065904	SNOMED	1970-01-01	2099-12-31	
-160176750	0	JNJ_JMDC_PROCEDURES	"""antithyroid microsomal antibody, semi-quantitative"""	4098726	SNOMED	1970-01-01	2099-12-31	
+160176750	0	JNJ_JMDC_PROCEDURES	antithyroid microsomal antibody, semi-quantitative	4098726	SNOMED	1970-01-01	2099-12-31	
 160177050	0	JNJ_JMDC_PROCEDURES	chlamydophila pneumoniae IgM antibody	3017913	LOINC	1970-01-01	2099-12-31	
-160177150	0	JNJ_JMDC_PROCEDURES	"""Streptococcus pneumoniae capsular antigen, qualitative [urine]"""	4045314	SNOMED	1970-01-01	2099-12-31	
+160177150	0	JNJ_JMDC_PROCEDURES	Streptococcus pneumoniae capsular antigen, qualitative [urine]	4045314	SNOMED	1970-01-01	2099-12-31	
 160177250	0	JNJ_JMDC_PROCEDURES	cystatin-C	44789161	SNOMED	1970-01-01	2099-12-31	
 160177450	0	JNJ_JMDC_PROCEDURES	mycobacterium tuberculosis specific interferon gamma producing ability	36674607	SNOMED	1970-01-01	2099-12-31	
-160177550	0	JNJ_JMDC_PROCEDURES	"""procalcitonin (PCT), semi-quantitative"""	44791466	SNOMED	1970-01-01	2099-12-31	
+160177550	0	JNJ_JMDC_PROCEDURES	procalcitonin (PCT), semi-quantitative	44791466	SNOMED	1970-01-01	2099-12-31	
 160177650	0	JNJ_JMDC_PROCEDURES	N. gonorrhoeae and Chlamydia trachomatis nucleic acid simultaneous detection	4162818	SNOMED	1970-01-01	2099-12-31	
 160178010	0	JNJ_JMDC_PROCEDURES	oligoclonal bands	44790168	SNOMED	1970-01-01	2099-12-31	
 160178210	0	JNJ_JMDC_PROCEDURES	genetic testing	4237017	SNOMED	1970-01-01	2099-12-31	
 160178810	0	JNJ_JMDC_PROCEDURES	overnight peripheral capillary oxygen saturation	4095045	SNOMED	1970-01-01	2099-12-31	
 160179710	0	JNJ_JMDC_PROCEDURES	Glucagon tolerance test	4014029	SNOMED	1970-01-01	2099-12-31	
-160181150	0	JNJ_JMDC_PROCEDURES	"""anti-citrullinated peptide antibody, qualitative"""	4255168	SNOMED	1970-01-01	2099-12-31	
+160181150	0	JNJ_JMDC_PROCEDURES	anti-citrullinated peptide antibody, qualitative	4255168	SNOMED	1970-01-01	2099-12-31	
 160181250	0	JNJ_JMDC_PROCEDURES	N-terminal pro-brain natriuretic peptide (NT-proBNP)	4189511	SNOMED	1970-01-01	2099-12-31	
-160182510	0	JNJ_JMDC_PROCEDURES	"""antinuclear antibody (fluorescent antibody method), qualitative"""	4238977	SNOMED	1970-01-01	2099-12-31	
+160182510	0	JNJ_JMDC_PROCEDURES	antinuclear antibody (fluorescent antibody method), qualitative	4238977	SNOMED	1970-01-01	2099-12-31	
 160183010	0	JNJ_JMDC_PROCEDURES	ambulatory blood pressure monitoring	40491004	SNOMED	1970-01-01	2099-12-31	
 160183210	0	JNJ_JMDC_PROCEDURES	neurological examination	4225119	SNOMED	1970-01-01	2099-12-31	
 160183710	0	JNJ_JMDC_PROCEDURES	anoscopy	4230660	SNOMED	1970-01-01	2099-12-31	
-160184150	0	JNJ_JMDC_PROCEDURES	"""IgE, qualitative [tear fluid]"""	4220748	SNOMED	1970-01-01	2099-12-31	
+160184150	0	JNJ_JMDC_PROCEDURES	IgE, qualitative [tear fluid]	4220748	SNOMED	1970-01-01	2099-12-31	
 160184450	0	JNJ_JMDC_PROCEDURES	tartrate-resistant acid phosphatase (TRACP-5b)	4198875	SNOMED	1970-01-01	2099-12-31	
 160185010	0	JNJ_JMDC_PROCEDURES	intraoperative rapid cytology (per surgery)	2213298	CPT4	1970-01-01	2099-12-31	
 160185410	0	JNJ_JMDC_PROCEDURES	IgG4	4220050	SNOMED	1970-01-01	2099-12-31	
@@ -515,35 +515,35 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 160187710	0	JNJ_JMDC_PROCEDURES	cystourethroscopy	4305063	SNOMED	2024-03-13	2099-12-31	
 160189350	0	JNJ_JMDC_PROCEDURES	immunoglobulin free light chain kappa/lambda ratio	4136733	SNOMED	1970-01-01	2099-12-31	
 160189650	0	JNJ_JMDC_PROCEDURES	mycoplasma nucleic acid detection	44811867	SNOMED	1970-01-01	2099-12-31	
-160191610	0	JNJ_JMDC_PROCEDURES	"""fibrinogen, quantitative"""	4280374	SNOMED	1970-01-01	2099-12-31	
-160191910	0	JNJ_JMDC_PROCEDURES	"""FDP, quantitative"""	4016506	SNOMED	1970-01-01	2099-12-31	
-160192110	0	JNJ_JMDC_PROCEDURES	"""D dimer, semi-quantitative"""	2212699	CPT4	1970-01-01	2023-01-20	D
-160192110	0	JNJ_JMDC_PROCEDURES	"""D dimer, semi-quantitative"""	4015482	SNOMED	2023-01-20	2099-12-31	
-160192510	0	JNJ_JMDC_PROCEDURES	"""ferritin, quantitative"""	4176561	SNOMED	1970-01-01	2099-12-31	
-160192610	0	JNJ_JMDC_PROCEDURES	"""myoglobin, quantitative"""	4143902	SNOMED	1970-01-01	2099-12-31	
-160192810	0	JNJ_JMDC_PROCEDURES	"""procalcitonin (PCT), quantitative"""	44791466	SNOMED	1970-01-01	2099-12-31	
-160192910	0	JNJ_JMDC_PROCEDURES	"""human chorionic gonadotropin (hCG), quantitative"""	4285271	SNOMED	1970-01-01	2099-12-31	
-160193610	0	JNJ_JMDC_PROCEDURES	"""anti-streptolysin O (ASO), quantitative"""	4220858	SNOMED	1970-01-01	2099-12-31	
-160193810	0	JNJ_JMDC_PROCEDURES	"""anti-streptokinase (ASK), semi-quantitative"""	4003905	SNOMED	1970-01-01	2099-12-31	
-160195610	0	JNJ_JMDC_PROCEDURES	"""rheumatoid factor (RF), quantitative"""	4009848	SNOMED	1970-01-01	2099-12-31	
-160195710	0	JNJ_JMDC_PROCEDURES	"""antinuclear antibody (fluorescent antibody method), semi-quantitative"""	4276949	SNOMED	1970-01-01	2099-12-31	
-160195810	0	JNJ_JMDC_PROCEDURES	"""antinuclear antibody (fluorescent antibody method), quantitative"""	4276949	SNOMED	1970-01-01	2099-12-31	
-160196310	0	JNJ_JMDC_PROCEDURES	"""anti-RNP antibody, quantitative"""	4014131	SNOMED	1970-01-01	2099-12-31	
-160196510	0	JNJ_JMDC_PROCEDURES	"""anti-Sm antibody, quantitative"""	4097738	SNOMED	1970-01-01	2099-12-31	
-160196710	0	JNJ_JMDC_PROCEDURES	"""anti-SS-A/Ro antibody, quantitative"""	4241825	SNOMED	1970-01-01	2099-12-31	
-160196910	0	JNJ_JMDC_PROCEDURES	"""anti-SS-B/La antibody, quantitative"""	4101092	SNOMED	1970-01-01	2099-12-31	
-160197210	0	JNJ_JMDC_PROCEDURES	"""anti-DNA antibody, quantitative"""	4197917	SNOMED	1970-01-01	2099-12-31	
-160197410	0	JNJ_JMDC_PROCEDURES	"""anti-citrullinated peptide antibody, quantitative"""	4255168	SNOMED	1970-01-01	2099-12-31	
-160197510	0	JNJ_JMDC_PROCEDURES	"""anti-mitochondrial antibody, quantitative"""	4136743	SNOMED	1970-01-01	2099-12-31	
-160197610	0	JNJ_JMDC_PROCEDURES	"""lupus anticoagulant, quantitative"""	4268621	SNOMED	1970-01-01	2099-12-31	
+160191610	0	JNJ_JMDC_PROCEDURES	fibrinogen, quantitative	4280374	SNOMED	1970-01-01	2099-12-31	
+160191910	0	JNJ_JMDC_PROCEDURES	FDP, quantitative	4016506	SNOMED	1970-01-01	2099-12-31	
+160192110	0	JNJ_JMDC_PROCEDURES	D dimer, semi-quantitative	2212699	CPT4	1970-01-01	2023-01-20	D
+160192110	0	JNJ_JMDC_PROCEDURES	D dimer, semi-quantitative	4015482	SNOMED	2023-01-20	2099-12-31	
+160192510	0	JNJ_JMDC_PROCEDURES	ferritin, quantitative	4176561	SNOMED	1970-01-01	2099-12-31	
+160192610	0	JNJ_JMDC_PROCEDURES	myoglobin, quantitative	4143902	SNOMED	1970-01-01	2099-12-31	
+160192810	0	JNJ_JMDC_PROCEDURES	procalcitonin (PCT), quantitative	44791466	SNOMED	1970-01-01	2099-12-31	
+160192910	0	JNJ_JMDC_PROCEDURES	human chorionic gonadotropin (hCG), quantitative	4285271	SNOMED	1970-01-01	2099-12-31	
+160193610	0	JNJ_JMDC_PROCEDURES	anti-streptolysin O (ASO), quantitative	4220858	SNOMED	1970-01-01	2099-12-31	
+160193810	0	JNJ_JMDC_PROCEDURES	anti-streptokinase (ASK), semi-quantitative	4003905	SNOMED	1970-01-01	2099-12-31	
+160195610	0	JNJ_JMDC_PROCEDURES	rheumatoid factor (RF), quantitative	4009848	SNOMED	1970-01-01	2099-12-31	
+160195710	0	JNJ_JMDC_PROCEDURES	antinuclear antibody (fluorescent antibody method), semi-quantitative	4276949	SNOMED	1970-01-01	2099-12-31	
+160195810	0	JNJ_JMDC_PROCEDURES	antinuclear antibody (fluorescent antibody method), quantitative	4276949	SNOMED	1970-01-01	2099-12-31	
+160196310	0	JNJ_JMDC_PROCEDURES	anti-RNP antibody, quantitative	4014131	SNOMED	1970-01-01	2099-12-31	
+160196510	0	JNJ_JMDC_PROCEDURES	anti-Sm antibody, quantitative	4097738	SNOMED	1970-01-01	2099-12-31	
+160196710	0	JNJ_JMDC_PROCEDURES	anti-SS-A/Ro antibody, quantitative	4241825	SNOMED	1970-01-01	2099-12-31	
+160196910	0	JNJ_JMDC_PROCEDURES	anti-SS-B/La antibody, quantitative	4101092	SNOMED	1970-01-01	2099-12-31	
+160197210	0	JNJ_JMDC_PROCEDURES	anti-DNA antibody, quantitative	4197917	SNOMED	1970-01-01	2099-12-31	
+160197410	0	JNJ_JMDC_PROCEDURES	anti-citrullinated peptide antibody, quantitative	4255168	SNOMED	1970-01-01	2099-12-31	
+160197510	0	JNJ_JMDC_PROCEDURES	anti-mitochondrial antibody, quantitative	4136743	SNOMED	1970-01-01	2099-12-31	
+160197610	0	JNJ_JMDC_PROCEDURES	lupus anticoagulant, quantitative	4268621	SNOMED	1970-01-01	2099-12-31	
 160197710	0	JNJ_JMDC_PROCEDURES	proteinase 3-antineutrophil cytoplasmic antibody (PR3-ANCA)	4135820	SNOMED	1970-01-01	2099-12-31	
-160197910	0	JNJ_JMDC_PROCEDURES	"""non-specific IgE, quantitative"""	4220748	SNOMED	1970-01-01	2099-12-31	
+160197910	0	JNJ_JMDC_PROCEDURES	non-specific IgE, quantitative	4220748	SNOMED	1970-01-01	2099-12-31	
 160198010	0	JNJ_JMDC_PROCEDURES	influenza nucleic acid detection	44806470	SNOMED	1970-01-01	2099-12-31	
 160199710	0	JNJ_JMDC_PROCEDURES	development and intelligence tests (very complicated)	2314190	CPT4	1970-01-01	2099-12-31	
 160199810	0	JNJ_JMDC_PROCEDURES	inulin clearance measurement	4092952	SNOMED	1970-01-01	2099-12-31	
-160200410	0	JNJ_JMDC_PROCEDURES	"""nucleus matrix protein 22 (NMP22), quantitative [urine]"""	40481777	SNOMED	1970-01-01	2099-12-31	
+160200410	0	JNJ_JMDC_PROCEDURES	nucleus matrix protein 22 (NMP22), quantitative [urine]	40481777	SNOMED	1970-01-01	2099-12-31	
 160201750	0	JNJ_JMDC_PROCEDURES	type 1 procollagen N propeptide (P1NP)	4007667	SNOMED	1970-01-01	2099-12-31	
-160202550	0	JNJ_JMDC_PROCEDURES	"""human metapneumovirus antigen, qualitative"""	44807109	SNOMED	1970-01-01	2099-12-31	
+160202550	0	JNJ_JMDC_PROCEDURES	human metapneumovirus antigen, qualitative	44807109	SNOMED	1970-01-01	2099-12-31	
 160206310	0	JNJ_JMDC_PROCEDURES	apolipoprotein (3 types or more)	4017500	SNOMED	1970-01-01	2099-12-31	
 160206410	0	JNJ_JMDC_PROCEDURES	selenium	4291008	SNOMED	1970-01-01	2099-12-31	
 160207410	0	JNJ_JMDC_PROCEDURES	transcutaneous oxygen pressure	4095608	SNOMED	1970-01-01	2099-12-31	
@@ -552,7 +552,7 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 160209850	0	JNJ_JMDC_PROCEDURES	human epididymis protein 4 (HE4)	40756890	CPT4	1970-01-01	2099-12-31	
 160210450	0	JNJ_JMDC_PROCEDURES	cytomegalovirus nucleic acid detection [urine]	4162529	SNOMED	1970-01-01	2099-12-31	
 160210550	0	JNJ_JMDC_PROCEDURES	free carnitine	44789171	SNOMED	1970-01-01	2099-12-31	
-160213010	0	JNJ_JMDC_PROCEDURES	"""ultrasonography, tomography (blood vessels of lower extremity)"""	46272042	SNOMED	1970-01-01	2099-12-31	
+160213010	0	JNJ_JMDC_PROCEDURES	ultrasonography, tomography (blood vessels of lower extremity)	46272042	SNOMED	1970-01-01	2099-12-31	
 160213310	0	JNJ_JMDC_PROCEDURES	OCT angiography	4303663	SNOMED	1970-01-01	2099-12-31	
 160213510	0	JNJ_JMDC_PROCEDURES	contrast sensitivity test	4091117	SNOMED	1970-01-01	2099-12-31	
 170000210	0	JNJ_JMDC_PROCEDURES	digital imaging processing for plain radiography	4056681	SNOMED	1970-01-01	2099-12-31	
@@ -566,32 +566,32 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 170002010	0	JNJ_JMDC_PROCEDURES	particular radiography (analog radiography)	4178367	SNOMED	1970-01-01	2099-12-31	
 170002110	0	JNJ_JMDC_PROCEDURES	radiography with contrast medium (analog radiography)	4100357	SNOMED	1970-01-01	2099-12-31	
 170011710	0	JNJ_JMDC_PROCEDURES	CT imaging [1-d] (other)	4300757	SNOMED	1970-01-01	2099-12-31	
-170011810	0	JNJ_JMDC_PROCEDURES	"""CT imaging, with multislice device with 16-63 rows"""	4300757	SNOMED	1970-01-01	2099-12-31	
+170011810	0	JNJ_JMDC_PROCEDURES	CT imaging, with multislice device with 16-63 rows	4300757	SNOMED	1970-01-01	2099-12-31	
 170015010	0	JNJ_JMDC_PROCEDURES	SPECT imaging	4019823	SNOMED	1970-01-01	2099-12-31	
 170015210	0	JNJ_JMDC_PROCEDURES	MRI [3] (other)	4013636	SNOMED	1970-01-01	2099-12-31	
 170015310	0	JNJ_JMDC_PROCEDURES	nuclear medicine diagnosis (other)	4163709	SNOMED	1970-01-01	2024-03-13	D
 170015310	0	JNJ_JMDC_PROCEDURES	nuclear medicine diagnosis (other)	4155794	SNOMED	2024-03-13	2099-12-31	
 170015410	0	JNJ_JMDC_PROCEDURES	computerized tomography diagnosis	4300757	SNOMED	1970-01-01	2099-12-31	
 170017010	0	JNJ_JMDC_PROCEDURES	digital imaging processing (radiography with contrast medium)	4100357	SNOMED	1970-01-01	2099-12-31	
-170020110	0	JNJ_JMDC_PROCEDURES	"""MRI, with scanner of 1.5-3 tesla"""	4013636	SNOMED	1970-01-01	2099-12-31	
+170020110	0	JNJ_JMDC_PROCEDURES	MRI, with scanner of 1.5-3 tesla	4013636	SNOMED	1970-01-01	2099-12-31	
 170022730	0	JNJ_JMDC_PROCEDURES	diagnosis of plain radiographs [a] (perform simultaneously with other)	4178367	SNOMED	1970-01-01	2099-12-31	
-170024510	0	JNJ_JMDC_PROCEDURES	"""scintigraphy (partial-body, static imaging)"""	4160914	SNOMED	1970-01-01	2099-12-31	
-170024610	0	JNJ_JMDC_PROCEDURES	"""scintigraphy (partial-body, dynamic imaging)"""	4160914	SNOMED	1970-01-01	2099-12-31	
+170024510	0	JNJ_JMDC_PROCEDURES	scintigraphy (partial-body, static imaging)	4160914	SNOMED	1970-01-01	2099-12-31	
+170024610	0	JNJ_JMDC_PROCEDURES	scintigraphy (partial-body, dynamic imaging)	4160914	SNOMED	1970-01-01	2099-12-31	
 170024710	0	JNJ_JMDC_PROCEDURES	scintigraphy (whole-body)	4160914	SNOMED	1970-01-01	2099-12-31	
-170024810	0	JNJ_JMDC_PROCEDURES	"""PET imaging, with 18FDG"""	4305790	SNOMED	1970-01-01	2099-12-31	
+170024810	0	JNJ_JMDC_PROCEDURES	PET imaging, with 18FDG	4305790	SNOMED	1970-01-01	2099-12-31	
 170026910	0	JNJ_JMDC_PROCEDURES	diagnosis of mammography	4324693	SNOMED	1970-01-01	2099-12-31	
 170027010	0	JNJ_JMDC_PROCEDURES	mammography (analog radiography)	4324693	SNOMED	1970-01-01	2099-12-31	
-170027310	0	JNJ_JMDC_PROCEDURES	PET & CT combined imaging (with 18FDG)	4305790	SNOMED	1970-01-01	2099-12-31	
 170027310	0	JNJ_JMDC_PROCEDURES	PET & CT combined imaging (with 18FDG)	4300757	SNOMED	1970-01-01	2099-12-31	
+170027310	0	JNJ_JMDC_PROCEDURES	PET & CT combined imaging (with 18FDG)	4305790	SNOMED	1970-01-01	2099-12-31	
 170027910	0	JNJ_JMDC_PROCEDURES	plain radiography (digital radiography)	4056681	SNOMED	1970-01-01	2099-12-31	
 170028110	0	JNJ_JMDC_PROCEDURES	radiography with contrast medium (digital radiography)	4100357	SNOMED	1970-01-01	2099-12-31	
 170028210	0	JNJ_JMDC_PROCEDURES	mammography (digital radiography)	4324693	SNOMED	1970-01-01	2099-12-31	
-170028610	0	JNJ_JMDC_PROCEDURES	"""CT imaging, with multislice device with 4-15 rows"""	4300757	SNOMED	1970-01-01	2099-12-31	
-170030030	0	JNJ_JMDC_PROCEDURES	"""spot radiography, with diagnosis (perform simultaneously with other) (digital radiography)"""	4178367	SNOMED	1970-01-01	2099-12-31	
-170033410	0	JNJ_JMDC_PROCEDURES	"""CT imaging, with multislice device with 64 rows or more (other)"""	4300757	SNOMED	1970-01-01	2099-12-31	
-170033510	0	JNJ_JMDC_PROCEDURES	"""MRI, with scanner of 3 tesla or more (other)"""	4013636	SNOMED	1970-01-01	2099-12-31	
-170034910	0	JNJ_JMDC_PROCEDURES	"""CT imaging, with multislice device with 64 rows or more, at shared facility"""	4300757	SNOMED	1970-01-01	2099-12-31	
-170035010	0	JNJ_JMDC_PROCEDURES	"""MRI, with scanner of 3 tesla or more, at shared facility"""	4013636	SNOMED	1970-01-01	2099-12-31	
+170028610	0	JNJ_JMDC_PROCEDURES	CT imaging, with multislice device with 4-15 rows	4300757	SNOMED	1970-01-01	2099-12-31	
+170030030	0	JNJ_JMDC_PROCEDURES	spot radiography, with diagnosis (perform simultaneously with other) (digital radiography)	4178367	SNOMED	1970-01-01	2099-12-31	
+170033410	0	JNJ_JMDC_PROCEDURES	CT imaging, with multislice device with 64 rows or more (other)	4300757	SNOMED	1970-01-01	2099-12-31	
+170033510	0	JNJ_JMDC_PROCEDURES	MRI, with scanner of 3 tesla or more (other)	4013636	SNOMED	1970-01-01	2099-12-31	
+170034910	0	JNJ_JMDC_PROCEDURES	CT imaging, with multislice device with 64 rows or more, at shared facility	4300757	SNOMED	1970-01-01	2099-12-31	
+170035010	0	JNJ_JMDC_PROCEDURES	MRI, with scanner of 3 tesla or more, at shared facility	4013636	SNOMED	1970-01-01	2099-12-31	
 180006710	0	JNJ_JMDC_PROCEDURES	group psychotherapy for outpatient	4296166	SNOMED	1970-01-01	2099-12-31	
 180006810	0	JNJ_JMDC_PROCEDURES	standard psychoanalytic therapy	4114491	SNOMED	1970-01-01	2099-12-31	
 180007250	0	JNJ_JMDC_PROCEDURES	psychotherapy for ambulatory patient's family member (for 30 minutes or more)	4028920	SNOMED	1970-01-01	2099-12-31	
@@ -607,7 +607,7 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 180014610	0	JNJ_JMDC_PROCEDURES	blood irradiation	4057278	SNOMED	1970-01-01	2099-12-31	
 180016710	0	JNJ_JMDC_PROCEDURES	group psychotherapy for inpatient	4296166	SNOMED	1970-01-01	2099-12-31	
 180016810	0	JNJ_JMDC_PROCEDURES	social skills training therapy for psychiatric inpatient (beyond 6 months)	4038870	SNOMED	1970-01-01	2099-12-31	
-180017010	0	JNJ_JMDC_PROCEDURES	"""brachytherapy (intracavitary irradiation, high dose rate iridium irradiation)"""	4293738	SNOMED	1970-01-01	2099-12-31	
+180017010	0	JNJ_JMDC_PROCEDURES	brachytherapy (intracavitary irradiation, high dose rate iridium irradiation)	4293738	SNOMED	1970-01-01	2099-12-31	
 180017210	0	JNJ_JMDC_PROCEDURES	psychiatric day/night time care	4324956	SNOMED	1970-01-01	2099-12-31	
 180018110	0	JNJ_JMDC_PROCEDURES	psychotherapy for inpatient [1]	4327941	SNOMED	1970-01-01	2099-12-31	
 180018210	0	JNJ_JMDC_PROCEDURES	social skills training therapy for psychiatric inpatient (within 6 months)	4038870	SNOMED	1970-01-01	2099-12-31	
@@ -615,51 +615,51 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 180019710	0	JNJ_JMDC_PROCEDURES	radiotherapy with linear accelerator (stereotactic radiotherapy)	4215577	SNOMED	1970-01-01	2099-12-31	
 180019910	0	JNJ_JMDC_PROCEDURES	psychiatric electroconvulsive therapy (closed circuit general anesthesia)	4030840	SNOMED	1970-01-01	2099-12-31	
 180020010	0	JNJ_JMDC_PROCEDURES	psychosomatic therapy (for outpatient etc.) (at re-consultation)	4232629	SNOMED	1970-01-01	2099-12-31	
-180020410	0	JNJ_JMDC_PROCEDURES	"""ambulatory psychotherapy [1-b] (at first consultation, 60 minutes or more)"""	4327941	SNOMED	1970-01-01	2099-12-31	
+180020410	0	JNJ_JMDC_PROCEDURES	ambulatory psychotherapy [1-b] (at first consultation, 60 minutes or more)	4327941	SNOMED	1970-01-01	2099-12-31	
 180020610	0	JNJ_JMDC_PROCEDURES	psychosomatic therapy (for outpatient etc.) (at first consultation)	4232629	SNOMED	1970-01-01	2099-12-31	
-180020710	0	JNJ_JMDC_PROCEDURES	"""external irradiation (high energy radiotherapy, single field irradiation) (first time)"""	4029715	SNOMED	1970-01-01	2024-09-10	D
-180020710	0	JNJ_JMDC_PROCEDURES	"""external irradiation (high energy radiotherapy, single field irradiation) (first time)"""	1242725	SNOMED	2024-09-10	2099-12-31	
-180020810	0	JNJ_JMDC_PROCEDURES	"""external irradiation (high energy radiotherapy, 2 opposing field irradiation) (first time)"""	4029715	SNOMED	1970-01-01	2024-09-10	D
-180020810	0	JNJ_JMDC_PROCEDURES	"""external irradiation (high energy radiotherapy, 2 opposing field irradiation) (first time)"""	1242725	SNOMED	2024-09-10	2099-12-31	
-180020910	0	JNJ_JMDC_PROCEDURES	"""external irradiation (high energy radiotherapy, 2 non-opposing field irradiation) (first time)"""	4029715	SNOMED	1970-01-01	2024-09-10	D
-180020910	0	JNJ_JMDC_PROCEDURES	"""external irradiation (high energy radiotherapy, 2 non-opposing field irradiation) (first time)"""	1242725	SNOMED	2024-09-10	2099-12-31	
-180021010	0	JNJ_JMDC_PROCEDURES	"""external irradiation (high energy radiotherapy, 3 field irradiation) (first time)"""	4029715	SNOMED	1970-01-01	2024-09-10	D
-180021010	0	JNJ_JMDC_PROCEDURES	"""external irradiation (high energy radiotherapy, 3 field irradiation) (first time)"""	1242725	SNOMED	2024-09-10	2099-12-31	
-180021110	0	JNJ_JMDC_PROCEDURES	"""external irradiation (high energy radiotherapy, 4 field or more irradiation) (first time)"""	4029715	SNOMED	1970-01-01	2024-09-10	D
-180021110	0	JNJ_JMDC_PROCEDURES	"""external irradiation (high energy radiotherapy, 4 field or more irradiation) (first time)"""	1242725	SNOMED	2024-09-10	2099-12-31	
-180021210	0	JNJ_JMDC_PROCEDURES	"""external irradiation (high energy radiotherapy, moving field irradiation) (first time)"""	4029715	SNOMED	1970-01-01	2024-09-10	D
-180021210	0	JNJ_JMDC_PROCEDURES	"""external irradiation (high energy radiotherapy, moving field irradiation) (first time)"""	1242725	SNOMED	2024-09-10	2099-12-31	
-180021310	0	JNJ_JMDC_PROCEDURES	"""external irradiation (high energy radiotherapy, conformal irradiation) (first time)"""	4029715	SNOMED	1970-01-01	2024-09-10	D
-180021310	0	JNJ_JMDC_PROCEDURES	"""external irradiation (high energy radiotherapy, conformal irradiation) (first time)"""	1242725	SNOMED	2024-09-10	2099-12-31	
-180021410	0	JNJ_JMDC_PROCEDURES	"""external irradiation (high energy radiotherapy, single field irradiation) (second time)"""	4029715	SNOMED	1970-01-01	2024-09-10	D
-180021410	0	JNJ_JMDC_PROCEDURES	"""external irradiation (high energy radiotherapy, single field irradiation) (second time)"""	1242725	SNOMED	2024-09-10	2099-12-31	
-180021510	0	JNJ_JMDC_PROCEDURES	"""external irradiation (high energy radiotherapy, 2 opposing field irradiation) (second time)"""	4029715	SNOMED	1970-01-01	2024-09-10	D
-180021510	0	JNJ_JMDC_PROCEDURES	"""external irradiation (high energy radiotherapy, 2 opposing field irradiation) (second time)"""	1242725	SNOMED	2024-09-10	2099-12-31	
-180021610	0	JNJ_JMDC_PROCEDURES	"""external irradiation (high energy radiotherapy, 2 non-opposing field irradiation) (second time)"""	4029715	SNOMED	1970-01-01	2024-09-10	D
-180021610	0	JNJ_JMDC_PROCEDURES	"""external irradiation (high energy radiotherapy, 2 non-opposing field irradiation) (second time)"""	1242725	SNOMED	2024-09-10	2099-12-31	
-180021710	0	JNJ_JMDC_PROCEDURES	"""external irradiation (high energy radiotherapy, 3 field irradiation) (second time)"""	4029715	SNOMED	1970-01-01	2024-09-10	D
-180021710	0	JNJ_JMDC_PROCEDURES	"""external irradiation (high energy radiotherapy, 3 field irradiation) (second time)"""	1242725	SNOMED	2024-09-10	2099-12-31	
-180021810	0	JNJ_JMDC_PROCEDURES	"""external irradiation (high energy radiotherapy, 4 field or more irradiation) (second time)"""	4029715	SNOMED	1970-01-01	2024-09-10	D
-180021810	0	JNJ_JMDC_PROCEDURES	"""external irradiation (high energy radiotherapy, 4 field or more irradiation) (second time)"""	1242725	SNOMED	2024-09-10	2099-12-31	
-180022110	0	JNJ_JMDC_PROCEDURES	"""physical therapy [1], personalized therapy"""	2007587	ICD9Proc	1970-01-01	2099-12-31	
-180022310	0	JNJ_JMDC_PROCEDURES	"""physical therapy [2], personalized therapy"""	2007587	ICD9Proc	1970-01-01	2099-12-31	
-180022510	0	JNJ_JMDC_PROCEDURES	"""physical therapy [3], personalized therapy"""	2007587	ICD9Proc	1970-01-01	2099-12-31	
-180022710	0	JNJ_JMDC_PROCEDURES	"""physical therapy [4], personalized therapy"""	2007587	ICD9Proc	1970-01-01	2099-12-31	
-180022810	0	JNJ_JMDC_PROCEDURES	"""physical therapy [4], group therapy"""	2007587	ICD9Proc	1970-01-01	2099-12-31	
+180020710	0	JNJ_JMDC_PROCEDURES	external irradiation (high energy radiotherapy, single field irradiation) (first time)	4029715	SNOMED	1970-01-01	2024-09-10	D
+180020710	0	JNJ_JMDC_PROCEDURES	external irradiation (high energy radiotherapy, single field irradiation) (first time)	1242725	SNOMED	2024-09-10	2099-12-31	
+180020810	0	JNJ_JMDC_PROCEDURES	external irradiation (high energy radiotherapy, 2 opposing field irradiation) (first time)	4029715	SNOMED	1970-01-01	2024-09-10	D
+180020810	0	JNJ_JMDC_PROCEDURES	external irradiation (high energy radiotherapy, 2 opposing field irradiation) (first time)	1242725	SNOMED	2024-09-10	2099-12-31	
+180020910	0	JNJ_JMDC_PROCEDURES	external irradiation (high energy radiotherapy, 2 non-opposing field irradiation) (first time)	4029715	SNOMED	1970-01-01	2024-09-10	D
+180020910	0	JNJ_JMDC_PROCEDURES	external irradiation (high energy radiotherapy, 2 non-opposing field irradiation) (first time)	1242725	SNOMED	2024-09-10	2099-12-31	
+180021010	0	JNJ_JMDC_PROCEDURES	external irradiation (high energy radiotherapy, 3 field irradiation) (first time)	4029715	SNOMED	1970-01-01	2024-09-10	D
+180021010	0	JNJ_JMDC_PROCEDURES	external irradiation (high energy radiotherapy, 3 field irradiation) (first time)	1242725	SNOMED	2024-09-10	2099-12-31	
+180021110	0	JNJ_JMDC_PROCEDURES	external irradiation (high energy radiotherapy, 4 field or more irradiation) (first time)	4029715	SNOMED	1970-01-01	2024-09-10	D
+180021110	0	JNJ_JMDC_PROCEDURES	external irradiation (high energy radiotherapy, 4 field or more irradiation) (first time)	1242725	SNOMED	2024-09-10	2099-12-31	
+180021210	0	JNJ_JMDC_PROCEDURES	external irradiation (high energy radiotherapy, moving field irradiation) (first time)	4029715	SNOMED	1970-01-01	2024-09-10	D
+180021210	0	JNJ_JMDC_PROCEDURES	external irradiation (high energy radiotherapy, moving field irradiation) (first time)	1242725	SNOMED	2024-09-10	2099-12-31	
+180021310	0	JNJ_JMDC_PROCEDURES	external irradiation (high energy radiotherapy, conformal irradiation) (first time)	4029715	SNOMED	1970-01-01	2024-09-10	D
+180021310	0	JNJ_JMDC_PROCEDURES	external irradiation (high energy radiotherapy, conformal irradiation) (first time)	1242725	SNOMED	2024-09-10	2099-12-31	
+180021410	0	JNJ_JMDC_PROCEDURES	external irradiation (high energy radiotherapy, single field irradiation) (second time)	4029715	SNOMED	1970-01-01	2024-09-10	D
+180021410	0	JNJ_JMDC_PROCEDURES	external irradiation (high energy radiotherapy, single field irradiation) (second time)	1242725	SNOMED	2024-09-10	2099-12-31	
+180021510	0	JNJ_JMDC_PROCEDURES	external irradiation (high energy radiotherapy, 2 opposing field irradiation) (second time)	4029715	SNOMED	1970-01-01	2024-09-10	D
+180021510	0	JNJ_JMDC_PROCEDURES	external irradiation (high energy radiotherapy, 2 opposing field irradiation) (second time)	1242725	SNOMED	2024-09-10	2099-12-31	
+180021610	0	JNJ_JMDC_PROCEDURES	external irradiation (high energy radiotherapy, 2 non-opposing field irradiation) (second time)	4029715	SNOMED	1970-01-01	2024-09-10	D
+180021610	0	JNJ_JMDC_PROCEDURES	external irradiation (high energy radiotherapy, 2 non-opposing field irradiation) (second time)	1242725	SNOMED	2024-09-10	2099-12-31	
+180021710	0	JNJ_JMDC_PROCEDURES	external irradiation (high energy radiotherapy, 3 field irradiation) (second time)	4029715	SNOMED	1970-01-01	2024-09-10	D
+180021710	0	JNJ_JMDC_PROCEDURES	external irradiation (high energy radiotherapy, 3 field irradiation) (second time)	1242725	SNOMED	2024-09-10	2099-12-31	
+180021810	0	JNJ_JMDC_PROCEDURES	external irradiation (high energy radiotherapy, 4 field or more irradiation) (second time)	4029715	SNOMED	1970-01-01	2024-09-10	D
+180021810	0	JNJ_JMDC_PROCEDURES	external irradiation (high energy radiotherapy, 4 field or more irradiation) (second time)	1242725	SNOMED	2024-09-10	2099-12-31	
+180022110	0	JNJ_JMDC_PROCEDURES	physical therapy [1], personalized therapy	2007587	ICD9Proc	1970-01-01	2099-12-31	
+180022310	0	JNJ_JMDC_PROCEDURES	physical therapy [2], personalized therapy	2007587	ICD9Proc	1970-01-01	2099-12-31	
+180022510	0	JNJ_JMDC_PROCEDURES	physical therapy [3], personalized therapy	2007587	ICD9Proc	1970-01-01	2099-12-31	
+180022710	0	JNJ_JMDC_PROCEDURES	physical therapy [4], personalized therapy	2007587	ICD9Proc	1970-01-01	2099-12-31	
+180022810	0	JNJ_JMDC_PROCEDURES	physical therapy [4], group therapy	2007587	ICD9Proc	1970-01-01	2099-12-31	
 180028610	0	JNJ_JMDC_PROCEDURES	psychiatric short time care (small scale)	2213561	CPT4	1970-01-01	2099-12-31	
 180028710	0	JNJ_JMDC_PROCEDURES	psychiatric short time care (large scale)	2213561	CPT4	1970-01-01	2099-12-31	
 180031010	0	JNJ_JMDC_PROCEDURES	psychotherapy for ambulatory patient [1-c-2] (less than 30 minutes)	4327941	SNOMED	1970-01-01	2099-12-31	
 180031110	0	JNJ_JMDC_PROCEDURES	psychotherapy for ambulatory/home-care patient (clinic) (for less than 30 minutes)	4327941	SNOMED	1970-01-01	2099-12-31	
 180031210	0	JNJ_JMDC_PROCEDURES	psychotherapy for ambulatory patient's family member (less than 30 minutes)	4028920	SNOMED	1970-01-01	2099-12-31	
-180031910	0	JNJ_JMDC_PROCEDURES	"""external irradiation (intensity modulated radiotherapy, IMRT)"""	4029715	SNOMED	1970-01-01	2024-09-10	D
-180031910	0	JNJ_JMDC_PROCEDURES	"""external irradiation (intensity modulated radiotherapy, IMRT)"""	1242725	SNOMED	2024-09-10	2099-12-31	
+180031910	0	JNJ_JMDC_PROCEDURES	external irradiation (intensity modulated radiotherapy, IMRT)	4029715	SNOMED	1970-01-01	2024-09-10	D
+180031910	0	JNJ_JMDC_PROCEDURES	external irradiation (intensity modulated radiotherapy, IMRT)	1242725	SNOMED	2024-09-10	2099-12-31	
 180033210	0	JNJ_JMDC_PROCEDURES	cognitive behavioral therapy [2]	4043071	SNOMED	1970-01-01	2099-12-31	
-180035910	0	JNJ_JMDC_PROCEDURES	"""cognitive behavioral therapy [1], by expert psychologist under psychiatric emergency system"""	4043071	SNOMED	1970-01-01	2099-12-31	
+180035910	0	JNJ_JMDC_PROCEDURES	cognitive behavioral therapy [1], by expert psychologist under psychiatric emergency system	4043071	SNOMED	1970-01-01	2099-12-31	
 180039910	0	JNJ_JMDC_PROCEDURES	psychotherapy for home care patient [2-c-3] (less than 30 minutes)	4327941	SNOMED	1970-01-01	2099-12-31	
-180048130	0	JNJ_JMDC_PROCEDURES	"""psychiatric day time care, large scale (beyond 3 years, 3 days a week or more)"""	4324956	SNOMED	1970-01-01	2099-12-31	
+180048130	0	JNJ_JMDC_PROCEDURES	psychiatric day time care, large scale (beyond 3 years, 3 days a week or more)	4324956	SNOMED	1970-01-01	2099-12-31	
 180049330	0	JNJ_JMDC_PROCEDURES	psychotherapy for ambulatory patient [1-c-2] (subtraction 3 or more antidepressants) (less than 30 minutes)	4327941	SNOMED	1970-01-01	2099-12-31	
-180056410	0	JNJ_JMDC_PROCEDURES	"""cognitive behavioral therapy, by psychologist"""	4043071	SNOMED	1970-01-01	2099-12-31	
-999900065	0	JNJ_JMDC_PROCEDURES	"""[J] bacterial culture identification [1], from oral cavity/airway/respiratory tract"""	4016945	SNOMED	1970-01-01	2099-12-31	
+180056410	0	JNJ_JMDC_PROCEDURES	cognitive behavioral therapy, by psychologist	4043071	SNOMED	1970-01-01	2099-12-31	
+999900065	0	JNJ_JMDC_PROCEDURES	[J] bacterial culture identification [1], from oral cavity/airway/respiratory tract	4016945	SNOMED	1970-01-01	2099-12-31	
 999900077	0	JNJ_JMDC_PROCEDURES	[J] detailed ophthalmoscopy	4201612	SNOMED	1970-01-01	2099-12-31	
 999900108	0	JNJ_JMDC_PROCEDURES	[J] lumbar puncture	4080549	SNOMED	1970-01-01	2099-12-31	
 999900113	0	JNJ_JMDC_PROCEDURES	[J] arthrocentesis	4233386	SNOMED	1970-01-01	2099-12-31	

@@ -10,11 +10,11 @@ CC_BACKPAIN	0	JNJ_TRU_HRA_QUESTION	 Self-reported back pain	134736	SNOMED	1970-0
 CC_CHF	0	JNJ_TRU_HRA_QUESTION	 Self-reported congestive heart failure	319835	SNOMED	1970-01-01	2099-12-31	
 CC_DEPRESS	0	JNJ_TRU_HRA_QUESTION	 Self-reported depression	440383	SNOMED	1970-01-01	2099-12-31	
 CC_DIAB	0	JNJ_TRU_HRA_QUESTION	 Self-reported diabetes	201820	SNOMED	1970-01-01	2099-12-31	
-CC_HEARTDIS	0	JNJ_TRU_HRA_QUESTION	""" Self-reported heart disease (coronary artery disease, angina or heart attack)"""	317576	SNOMED	1970-01-01	2099-12-31	
+CC_HEARTDIS	0	JNJ_TRU_HRA_QUESTION	 Self-reported heart disease (coronary artery disease, angina or heart attack)	317576	SNOMED	1970-01-01	2099-12-31	
 CC_HIGHBP	0	JNJ_TRU_HRA_QUESTION	 Self-reported high blood pressure	316866	SNOMED	1970-01-01	2099-12-31	
 CC_HIGHCOL	0	JNJ_TRU_HRA_QUESTION	 Self-reported  high /unhealthy cholesterol	432867	SNOMED	1970-01-01	2099-12-31	
 CC_HRTBURN	0	JNJ_TRU_HRA_QUESTION	 Self-reported  chronic heartburn or ulcer	44783954	SNOMED	1970-01-01	2099-12-31	
-CC_LUNGDIS	0	JNJ_TRU_HRA_QUESTION	""" Self-reported  lung problems (e.g., chronic bronchitis, emphysema, COPD)"""	257907	SNOMED	1970-01-01	2099-12-31	
+CC_LUNGDIS	0	JNJ_TRU_HRA_QUESTION	 Self-reported  lung problems (e.g., chronic bronchitis, emphysema, COPD)	257907	SNOMED	1970-01-01	2099-12-31	
 CC_MIGRAINE	0	JNJ_TRU_HRA_QUESTION	 Self-reported migraine or chronic severe headaches	318736	SNOMED	1970-01-01	2099-12-31	
 CC_NONSKINCAN	0	JNJ_TRU_HRA_QUESTION	 Self-reported cancer (non-skin)	4312326	SNOMED	1970-01-01	2024-03-13	D
 CC_NONSKINCAN	0	JNJ_TRU_HRA_QUESTION	 Self-reported cancer (non-skin)	37153816	SNOMED	2024-03-13	2099-12-31	
