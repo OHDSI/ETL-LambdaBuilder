@@ -89,7 +89,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerityFull
                 return new KeyValuePair<Person, Attrition>(null, Attrition.ImplausibleYOBPast);
             }
 
-            if (records.All(p => p.YearOfBirth > DateTime.Now.Year))
+            if (records.All(p => p.YearOfBirth > Vendor.SourceReleaseDate.Value.Date.Year))
             {
                 return new KeyValuePair<Person, Attrition>(null, Attrition.ImplausibleYOBFuture);
             }
@@ -97,7 +97,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerityFull
             var filtered = records.Where(p =>
                 //p.GenderConceptId != 8551 &&
                 p.YearOfBirth >= 1900 &&
-                p.YearOfBirth <= DateTime.Now.Year).ToArray();
+                p.YearOfBirth <= Vendor.SourceReleaseDate.Value.Date.Year).ToArray();
 
             if (filtered.Length == 0)
                 return new KeyValuePair<Person, Attrition>(null, Attrition.UnacceptablePatientQuality);
@@ -119,7 +119,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerityFull
             if (person.YearOfBirth < 1900)
                 return new KeyValuePair<Person, Attrition>(null, Attrition.ImplausibleYOBPast);
 
-            if (person.YearOfBirth > DateTime.Now.Year)
+            if (person.YearOfBirth > Vendor.SourceReleaseDate.Value.Date.Year)
                 return new KeyValuePair<Person, Attrition>(null, Attrition.ImplausibleYOBFuture);
 
             if (records.Where(r => r.YearOfBirth.HasValue && r.YearOfBirth > 1900).Max(r => r.YearOfBirth) -
@@ -128,8 +128,42 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerityFull
                 return new KeyValuePair<Person, Attrition>(null, Attrition.MultipleYearsOfBirth);
             }
 
+            var raceValues = filtered
+                .Where(item => item.AdditionalFields.ContainsKey("race") && !string.IsNullOrEmpty(item.AdditionalFields["race"]))
+                .Select(item => item.AdditionalFields["race"])
+                .Distinct()
+                .ToList();
+
+            if (person.RaceSourceValue == null)
+            {
+                if (raceValues.Count == 1)
+                {
+                    person.RaceSourceValue = raceValues.First();
+                }
+                else if (raceValues.Count > 1)
+                {
+                    person.RaceSourceValue = "Multiple Races";
+                }
+            }
+            person.RaceConceptId = GetRaceConceptId(person.RaceSourceValue);
+
+            if (person.EthnicitySourceValue == null)
+            {
+                if (raceValues.Count == 1)
+                {
+                    person.EthnicitySourceValue = raceValues.First();
+                }
+                else if (raceValues.Contains("Hispanic"))
+                {
+                    person.EthnicitySourceValue = "Hispanic";
+                }
+            }
+            person.EthnicityConceptId = GetEthnicityConceptId(person.EthnicitySourceValue);
+
             return new KeyValuePair<Person, Attrition>(person, Attrition.None);
         }
+
+
 
         private void AddRawVisitOccurrence(VisitOccurrence rawVisit, VisitOccurrence finalVisit)
         {
@@ -1082,6 +1116,25 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
             AddObservationPeriod(DeathRecords.Cast<IEntity>().ToList());
 
             return observationPeriodRawNew;
+        }
+        private long GetRaceConceptId(string raceSourceValue)
+        {
+            return raceSourceValue switch
+            {
+                "White" => 8527,
+                "Black" => 8516,
+                "Asian" => 8515,
+                _ => 0
+            };
+        }
+        private long GetEthnicityConceptId(string ethnicitySourceValue)
+        {
+            return ethnicitySourceValue switch
+            {
+                "Hispanic" => 38003563,
+                "Non-Hispanic" => 38003564,
+                _ => 0
+            };
         }
 
         #endregion
