@@ -8,25 +8,23 @@
     procedure_code,
     ndc_code,
     claim_type,
-    
+
     case
-			when lower(claim_type) = 'p' then 32871
-			when lower(claim_type) = 'i' then 32810
-			when claim_type is NULL then 32811
+    when lower(claim_type) = 'p' then 32871
+    when lower(claim_type) = 'i' then 32810
+    when claim_type is NULL then 32811
     end as type_concept_id,
-    
-    CAST(COALESCE(prov_rendering_npi, prov_billing_npi, prov_referring_npi) as INT) as provider_id,
-    
-    diagnosis_priority || '|' || admit_diagnosis_ind as condition_status_source_value,
+
+    coalesce(diagnosis_priority, '')   '|'   coalesce(admit_diagnosis_ind, '') as condition_status_source_value,
     case when diagnosis_priority = '1'
-				 then 32902
-				 when (diagnosis_priority != '1' OR diagnosis_priority IS NULL) AND admit_diagnosis_ind =  'Y'
-         then 32890
-         when diagnosis_priority IN ('2', '3', '4') AND admit_diagnosis_ind != 'Y'
-         then 32908
-         else 0
+				then 32902
+				when (diagnosis_priority != '1' OR diagnosis_priority IS NULL) AND coalesce(admit_diagnosis_ind, '') = 'Y'
+				then 32890
+				when diagnosis_priority IN ('2', '3', '4') AND coalesce(admit_diagnosis_ind, '') != 'Y'
+				then 32908
+				else 0
     end as condition_status_concept_id,
-    
+
     COALESCE(procedure_modifier_1,  procedure_modifier_2,  procedure_modifier_3,  procedure_modifier_4) as modifier_source_value,
 
     inst_type_of_bill_std_id,
