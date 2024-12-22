@@ -8,11 +8,13 @@
     procedure_code,
     ndc_code,
     claim_type,
+    
+    CAST(COALESCE(prov_rendering_npi, prov_billing_npi, prov_referring_npi) as INT) as provider_id,
 
     case
-    when lower(claim_type) = 'p' then 32871
-    when lower(claim_type) = 'i' then 32810
-    when claim_type is NULL then 32811
+				when lower(claim_type) = 'p' then 32871
+				when lower(claim_type) = 'i' then 32810
+				when claim_type is NULL then 32811
     end as type_concept_id,
 
     coalesce(diagnosis_priority, '') || '|' || coalesce(admit_diagnosis_ind, '') as condition_status_source_value,
