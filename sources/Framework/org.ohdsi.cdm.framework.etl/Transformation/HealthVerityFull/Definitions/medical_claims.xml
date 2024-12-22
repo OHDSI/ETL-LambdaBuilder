@@ -15,7 +15,7 @@
     when claim_type is NULL then 32811
     end as type_concept_id,
 
-    coalesce(diagnosis_priority, '')   '|'   coalesce(admit_diagnosis_ind, '') as condition_status_source_value,
+    coalesce(diagnosis_priority, '') || '|' || coalesce(admit_diagnosis_ind, '') as condition_status_source_value,
     case when diagnosis_priority = '1'
 				then 32902
 				when (diagnosis_priority != '1' OR diagnosis_priority IS NULL) AND coalesce(admit_diagnosis_ind, '') = 'Y'
