@@ -1,37 +1,47 @@
 ﻿<QueryDefinition>
 	<Query>
-		SELECT distinct
-		ch.person_id as PersonId,
-		hvid,
-		date_service,
-		trim(replace(replace(replace(diagnosis_code, chr(9), ' '), chr(10), ' '), chr(13), ' ')) diagnosis_code,
-		procedure_code,
-		ndc_code,
-		claim_type,
-		case
-		when lower(claim_type) = 'p' then 32871
-		when lower(claim_type) = 'i' then 32810
-		when claim_type is NULL then 32811
-		end as type_concept_id,
-		principal_proc_ind,
-		case
-		when diagnosis_priority = '1' then 32902
-		else 32908
-		end as condition_status_concept_id,
+    SELECT distinct
+    ch.person_id as PersonId,
+    hvid,
+    date_service,
+    trim(replace(replace(replace(diagnosis_code, chr(9), ' '), chr(10), ' '), chr(13), ' ')) diagnosis_code,
+    procedure_code,
+    ndc_code,
+    claim_type,
+    
+    case
+			when lower(claim_type) = 'p' then 32871
+			when lower(claim_type) = 'i' then 32810
+			when claim_type is NULL then 32811
+    end as type_concept_id,
+    
+    CAST(COALESCE(prov_rendering_npi, prov_billing_npi, prov_referring_npi) as INT) as provider_id,
+    
+    diagnosis_priority || '|' || admit_diagnosis_ind as condition_status_source_value,
+    case when diagnosis_priority = '1'
+				 then 32902
+				 when (diagnosis_priority != '1' OR diagnosis_priority IS NULL) AND admit_diagnosis_ind =  'Y'
+         then 32890
+         when diagnosis_priority IN ('2', '3', '4') AND admit_diagnosis_ind != 'Y'
+         then 32908
+         else 0
+    end as condition_status_concept_id,
+    
+    COALESCE(procedure_modifier_1,  procedure_modifier_2,  procedure_modifier_3,  procedure_modifier_4) as modifier_source_value,
 
-		inst_type_of_bill_std_id,
-		place_of_service_std_id,
-		case
-		when date_service_end is null then date_service
-		else date_service_end
-		end as end_date,
-		inst_admit_source_std_id,
-		data_vendor,
+    inst_type_of_bill_std_id,
+    place_of_service_std_id,
+    case
+    when date_service_end is null then date_service
+    else date_service_end
+    end as end_date,
+    inst_admit_source_std_id,
+    data_vendor,
 
-		case
-		when diagnosis_code_qual = '02' then '10'
-		when diagnosis_code_qual = '01' then '9'
-		when date_service &lt; '10/1/2015' then '9'
+    case
+    when diagnosis_code_qual = '02' then '10'
+    when diagnosis_code_qual = '01' then '9'
+    when date_service &lt; '10/1/2015' then '9'
 		when date_service &gt;= '10/1/2015' then '10'
 		end as icd_ver,
 		hv_enc_id,
@@ -48,7 +58,8 @@
 			<Condition>{icd_ver} = 9</Condition>
 			<PersonId>PersonId</PersonId>
 			<StartDate>date_service</StartDate>
-			<EndDate>date_service</EndDate>
+      <EndDate>date_service</EndDate>
+      <ProviderId>provider_id</ProviderId>
 			<AdditionalFields>
 				<string>data_vendor</string>
 			</AdditionalFields>
@@ -65,7 +76,7 @@
 				</Concept>
 				<Concept>
 					<Fields>
-						<Field conceptId="condition_status_concept_id" sourceKey="principal_proc_ind" defaultTypeId="0"/>
+						<Field conceptId="condition_status_concept_id" sourceKey="condition_status_source_value" defaultTypeId="0"/>
 					</Fields>
 				</Concept>
 			</Concepts>
@@ -75,7 +86,8 @@
 			<Condition>{icd_ver} = 10</Condition>
 			<PersonId>PersonId</PersonId>
 			<StartDate>date_service</StartDate>
-			<EndDate>date_service</EndDate>
+      <EndDate>date_service</EndDate>
+      <ProviderId>provider_id</ProviderId>
 			<AdditionalFields>
 				<string>data_vendor</string>
 			</AdditionalFields>
@@ -92,7 +104,7 @@
 				</Concept>
 				<Concept>
 					<Fields>
-						<Field conceptId="condition_status_concept_id" sourceKey="principal_proc_ind" defaultTypeId="0"/>
+            <Field conceptId="condition_status_concept_id" sourceKey="condition_status_source_value" defaultTypeId="0"/>
 					</Fields>
 				</Concept>
 			</Concepts>
@@ -104,6 +116,7 @@
 			<PersonId>PersonId</PersonId>
 			<StartDate>date_service</StartDate>
 			<EndDate>date_service</EndDate>
+      <ProviderId>provider_id</ProviderId>
 			<AdditionalFields>
 				<string>data_vendor</string>
 			</AdditionalFields>
@@ -118,6 +131,16 @@
 						<Field key="procedure_code" typeId="type_concept_id" />
 					</Fields>
 				</Concept>
+        <Concept>
+          <ConceptIdMappers>
+            <Mapper>
+              <Lookup>procedure</Lookup>
+            </Mapper>
+          </ConceptIdMappers>
+          <Fields>
+            <Field key="modifier_source_value" />
+          </Fields>
+        </Concept>
 			</Concepts>
 		</ProcedureOccurrenceDefinition>
 	</ProcedureOccurrence>
@@ -127,6 +150,7 @@
 			<PersonId>PersonId</PersonId>
 			<StartDate>date_service</StartDate>
 			<EndDate>date_service</EndDate>
+      <ProviderId>provider_id</ProviderId>
 			<AdditionalFields>
 				<string>data_vendor</string>
 			</AdditionalFields>
@@ -149,6 +173,7 @@
 		<VisitOccurrenceDefinition>
 			<Condition>{fake} = 0</Condition>
 			<PersonId>PersonId</PersonId>
+      <ProviderId>provider_id</ProviderId>
 			<Concepts>
 				<Concept>
 					<ConceptIdMappers>
@@ -166,6 +191,7 @@
 			<IsUnique>true</IsUnique>
 			<Condition>{type_concept_id} = 32810</Condition>
 			<PersonId>PersonId</PersonId>
+      <ProviderId>provider_id</ProviderId>
 			<StartDate>date_service</StartDate>
 			<EndDate>end_date</EndDate>
 			<AdmittingSourceValue>inst_admit_source_std_id</AdmittingSourceValue>
@@ -190,6 +216,7 @@
 			<IsUnique>true</IsUnique>
 			<Condition>{type_concept_id} = 32871</Condition>
 			<PersonId>PersonId</PersonId>
+      <ProviderId>provider_id</ProviderId>
 			<StartDate>date_service</StartDate>
 			<EndDate>end_date</EndDate>
 			<AdmittingSourceValue>inst_admit_source_std_id</AdmittingSourceValue>

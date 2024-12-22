@@ -1,25 +1,27 @@
 ﻿<QueryDefinition>
 	<Query>
-		SELECT distinct
-		ch.person_id as PersonId,
-		hvid,
-		date_service,
+    SELECT distinct
+    ch.person_id as PersonId,
+    hvid,
+    date_service,
 
-		procedure_code,
-		diagnosis_code,
-		ndc_code,
+    CAST(prov_prescribing_npi AS INT) as provider_id,
 
-		days_supply,
-		dispensed_quantity,
-		fill_number,
-		unit_of_measure,
+    procedure_code,
+    diagnosis_code,
+    ndc_code,
 
-		32869 as type_concept_id,
-		data_vendor,
-		case
-		when diagnosis_code_qual = '02' then '10'
-		when diagnosis_code_qual = '01' then '9'
-		when date_service &lt; '10/1/2015' then '9'
+    days_supply,
+    NULLIF(dispensed_quantity, 0) as dispensed_quantity,
+    unit_of_measure,
+    fill_number,
+
+    32869 as type_concept_id,
+    data_vendor,
+    case
+    when diagnosis_code_qual = '02' then '10'
+    when diagnosis_code_qual = '01' then '9'
+    when date_service &lt; '10/1/2015' then '9'
 		when date_service &gt;= '10/1/2015' then '10'
 		end as icd_ver
 
@@ -35,7 +37,7 @@
 			<PersonId>PersonId</PersonId>
 			<StartDate>date_service</StartDate>
 			<EndDate>date_service</EndDate>
-
+      <ProviderId>provider_id</ProviderId>
 			<Quantity>dispensed_quantity</Quantity>
 			<Refill>fill_number</Refill>
 			<DaysSupply>days_supply</DaysSupply>
@@ -64,7 +66,8 @@
 			<Condition>{icd_ver} = 9</Condition>
 			<PersonId>PersonId</PersonId>
 			<StartDate>date_service</StartDate>
-			<EndDate>date_service</EndDate>
+      <EndDate>date_service</EndDate>
+      <ProviderId>provider_id</ProviderId>
 			<AdditionalFields>
 				<string>data_vendor</string>
 			</AdditionalFields>
@@ -86,7 +89,8 @@
 			<Condition>{icd_ver} = 10</Condition>
 			<PersonId>PersonId</PersonId>
 			<StartDate>date_service</StartDate>
-			<EndDate>date_service</EndDate>
+      <EndDate>date_service</EndDate>
+      <ProviderId>provider_id</ProviderId>
 			<AdditionalFields>
 				<string>data_vendor</string>
 			</AdditionalFields>
@@ -111,6 +115,7 @@
 			<PersonId>PersonId</PersonId>
 			<StartDate>date_service</StartDate>
 			<EndDate>date_service</EndDate>
+      <ProviderId>provider_id</ProviderId>
 			<AdditionalFields>
 				<string>data_vendor</string>
 			</AdditionalFields>
@@ -133,6 +138,7 @@
 		<VisitOccurrenceDefinition>
 			<IsUnique>true</IsUnique>
 			<PersonId>PersonId</PersonId>
+      <ProviderId>provider_id</ProviderId>
 			<StartDate>date_service</StartDate>
 			<EndDate>date_service</EndDate>
 			<AdditionalFields>

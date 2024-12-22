@@ -149,11 +149,12 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerityFull
 
             if (person.EthnicitySourceValue == null)
             {
-                if (raceValues.Count == 1)
+                /*if (raceValues.Count == 1)
                 {
                     person.EthnicitySourceValue = raceValues.First();
                 }
-                else if (raceValues.Contains("Hispanic"))
+                else */
+                if (raceValues.Contains("Hispanic"))
                 {
                     person.EthnicitySourceValue = "Hispanic";
                 }
