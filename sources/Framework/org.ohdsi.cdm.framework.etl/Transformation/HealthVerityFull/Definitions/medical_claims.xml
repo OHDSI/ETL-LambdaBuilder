@@ -8,23 +8,24 @@
     procedure_code,
     ndc_code,
     claim_type,
-    
+
     CAST(COALESCE(prov_rendering_npi, prov_billing_npi, prov_referring_npi) as INT) as provider_id,
+    CAST(prov_facility_npi AS INT) as care_site_id,
 
     case
-				when lower(claim_type) = 'p' then 32871
-				when lower(claim_type) = 'i' then 32810
-				when claim_type is NULL then 32811
+    when lower(claim_type) = 'p' then 32871
+    when lower(claim_type) = 'i' then 32810
+    when claim_type is NULL then 32811
     end as type_concept_id,
 
     coalesce(diagnosis_priority, '') || '|' || coalesce(admit_diagnosis_ind, '') as condition_status_source_value,
     case when diagnosis_priority = '1'
-				then 32902
-				when (diagnosis_priority != '1' OR diagnosis_priority IS NULL) AND coalesce(admit_diagnosis_ind, '') = 'Y'
-				then 32890
-				when diagnosis_priority IN ('2', '3', '4') AND coalesce(admit_diagnosis_ind, '') != 'Y'
-				then 32908
-				else 0
+    then 32902
+    when (diagnosis_priority != '1' OR diagnosis_priority IS NULL) AND coalesce(admit_diagnosis_ind, '') = 'Y'
+    then 32890
+    when diagnosis_priority IN ('2', '3', '4') AND coalesce(admit_diagnosis_ind, '') != 'Y'
+    then 32908
+    else 0
     end as condition_status_concept_id,
 
     COALESCE(procedure_modifier_1,  procedure_modifier_2,  procedure_modifier_3,  procedure_modifier_4) as modifier_source_value,
@@ -36,6 +37,7 @@
     else date_service_end
     end as end_date,
     inst_admit_source_std_id,
+    inst_discharge_status_std_id,
     data_vendor,
 
     case
@@ -173,7 +175,6 @@
 		<VisitOccurrenceDefinition>
 			<Condition>{fake} = 0</Condition>
 			<PersonId>PersonId</PersonId>
-      <ProviderId>provider_id</ProviderId>
 			<Concepts>
 				<Concept>
 					<ConceptIdMappers>
@@ -192,9 +193,11 @@
 			<Condition>{type_concept_id} = 32810</Condition>
 			<PersonId>PersonId</PersonId>
       <ProviderId>provider_id</ProviderId>
+      <CareSiteId>care_site_id</CareSiteId>
 			<StartDate>date_service</StartDate>
 			<EndDate>end_date</EndDate>
 			<AdmittingSourceValue>inst_admit_source_std_id</AdmittingSourceValue>
+      <DischargeToSourceValue>inst_discharge_status_std_id</DischargeToSourceValue>
 			<AdditionalFields>
 				<string>data_vendor</string>
 				<string>hv_enc_id</string>
@@ -217,9 +220,11 @@
 			<Condition>{type_concept_id} = 32871</Condition>
 			<PersonId>PersonId</PersonId>
       <ProviderId>provider_id</ProviderId>
+      <CareSiteId>care_site_id</CareSiteId>
 			<StartDate>date_service</StartDate>
 			<EndDate>end_date</EndDate>
 			<AdmittingSourceValue>inst_admit_source_std_id</AdmittingSourceValue>
+      <DischargeToSourceValue>inst_discharge_status_std_id</DischargeToSourceValue>
 			<AdditionalFields>
 				<string>data_vendor</string>
 				<string>hv_enc_id</string>
@@ -237,5 +242,27 @@
 				</Concept>
 			</Concepts>
 		</VisitOccurrenceDefinition>
+    <VisitOccurrenceDefinition>
+      <IsUnique>true</IsUnique>
+      <Condition>{type_concept_id} = 32811</Condition>
+      <PersonId>PersonId</PersonId>
+      <ProviderId>provider_id</ProviderId>
+      <CareSiteId>care_site_id</CareSiteId>
+      <StartDate>date_service</StartDate>
+      <EndDate>end_date</EndDate>
+      <AdmittingSourceValue>inst_admit_source_std_id</AdmittingSourceValue>
+      <DischargeToSourceValue>inst_discharge_status_std_id</DischargeToSourceValue>
+      <AdditionalFields>
+        <string>data_vendor</string>
+        <string>hv_enc_id</string>
+      </AdditionalFields>
+      <Concepts>
+        <Concept>
+          <Fields>
+            <Field defaultConceptId="0" defaultSource=" " defaultTypeId="32811"/>
+          </Fields>
+        </Concept>
+      </Concepts>
+    </VisitOccurrenceDefinition>
 	</VisitOccurrence>
 </QueryDefinition>

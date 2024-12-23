@@ -6,6 +6,7 @@
     date_service,
 
     CAST(prov_prescribing_npi AS INT) as provider_id,
+    CAST(pharmacy_npi AS INT) as care_site_id,
 
     procedure_code,
     diagnosis_code,
@@ -139,6 +140,7 @@
 			<IsUnique>true</IsUnique>
 			<PersonId>PersonId</PersonId>
       <ProviderId>provider_id</ProviderId>
+      <CareSiteId>care_site_id</CareSiteId>
 			<StartDate>date_service</StartDate>
 			<EndDate>date_service</EndDate>
 			<AdditionalFields>
