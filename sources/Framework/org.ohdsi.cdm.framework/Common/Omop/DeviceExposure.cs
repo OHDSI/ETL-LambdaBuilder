@@ -37,6 +37,7 @@ namespace org.ohdsi.cdm.framework.common.Omop
                    this.UniqueDeviceId == other.UniqueDeviceId &&
                    this.Quantity == other.Quantity &&
                    this.ProviderId == other.ProviderId &&
+                   this.ValueAsConceptId == other.ValueAsConceptId &&
                    this.EndDate == other.EndDate;
 
         }
@@ -51,6 +52,7 @@ namespace org.ohdsi.cdm.framework.common.Omop
                    (SourceValue != null ? SourceValue.GetHashCode() : 0) ^
                    SourceConceptId.GetHashCode() ^
                    (UniqueDeviceId != null ? UniqueDeviceId.GetHashCode() : 0) ^
+                   ValueAsConceptId.GetHashCode() ^
                    (StartDate.GetHashCode()) ^
                    (EndDate.GetHashCode());
         }

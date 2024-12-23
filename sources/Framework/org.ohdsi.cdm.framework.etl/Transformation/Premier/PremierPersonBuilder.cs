@@ -313,23 +313,18 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Premier
         {
             foreach (var entity in entities)
             {
-                var entityDomain = GetDomain(domain, entity.Domain);
+                var entityDomain = GetDomain(domain, entity.Domain, "Observation");
 
                 switch (entityDomain)
                 {
                     case "Condition":
-                        var obs = entity as Observation;
-                        if (obs == null || obs.ValueAsNumber == 1)
-                        {
-                            var cond = entity as ConditionOccurrence ??
-                                       new ConditionOccurrence(entity)
-                                       {
-                                           Id = Offset.GetKeyOffset(entity.PersonId).ConditionOccurrenceId
-                                       };
-                            ConditionForEra.Add(cond);
-                            ChunkData.AddData(cond);
-                        }
-
+                        var cond = entity as ConditionOccurrence ??
+                                   new ConditionOccurrence(entity)
+                                   {
+                                       Id = Offset.GetKeyOffset(entity.PersonId).ConditionOccurrenceId
+                                   };
+                        ConditionForEra.Add(cond);
+                        ChunkData.AddData(cond);
                         break;
 
                     case "Measurement":

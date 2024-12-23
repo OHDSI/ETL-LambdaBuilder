@@ -56,6 +56,7 @@ namespace org.ohdsi.cdm.framework.common.Omop
                    this.DoseUnitSourceValue == other.DoseUnitSourceValue &&
                    this.ProviderId == other.ProviderId &&
                    this.VisitOccurrenceId == other.VisitOccurrenceId &&
+                   this.ValueAsConceptId == other.ValueAsConceptId &&
                    this.StartDate == other.StartDate &&
                    this.EndDate == other.EndDate &&
                    this.VerbatimEndDate == other.VerbatimEndDate;
@@ -81,6 +82,7 @@ namespace org.ohdsi.cdm.framework.common.Omop
                    (RouteSourceValue != null ? RouteSourceValue.GetHashCode() : 0) ^
                    (DoseUnitSourceValue != null ? DoseUnitSourceValue.GetHashCode() : 0) ^
                    ProviderId.GetHashCode() ^
+                   ValueAsConceptId.GetHashCode() ^
                    (StartDate.GetHashCode()) ^
                    (EndDate.GetHashCode()) ^
                    (VerbatimEndDate.GetHashCode());

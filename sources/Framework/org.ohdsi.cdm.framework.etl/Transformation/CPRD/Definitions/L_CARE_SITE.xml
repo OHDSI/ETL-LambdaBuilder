@@ -1,6 +1,6 @@
 ﻿<QueryDefinition>
    <Query>
-     SELECT Right(cast(pracid as varchar),3) pracid, region, 8977 PlaceOfSvcConceptId
+     SELECT pracid, region, 8977 PlaceOfSvcConceptId
      FROM {sc}.Practice
    </Query>
    <CareSites>
