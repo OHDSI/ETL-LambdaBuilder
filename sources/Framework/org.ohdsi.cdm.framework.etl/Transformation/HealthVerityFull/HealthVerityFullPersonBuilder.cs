@@ -57,7 +57,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerityFull
         List<DateTime> _mins = [];
         //List<DateTime> _maxs = [];
 
-        private int _personYoB;
+        //private int _personYoB;
         #endregion
 
         #region Constructors
@@ -560,6 +560,7 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
             //}
         }*/
 
+
         public override Attrition Build(ChunkData data, KeyMasterOffsetManager o)
         {
             this.Offset = o;
@@ -574,35 +575,7 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
                 return result.Value;
             }
 
-            _personYoB = person.YearOfBirth.Value;
-
-            //GetMinMaxDates(DrugExposuresRaw, _minsMaxs);
-            //GetMinMaxDates(ConditionOccurrencesRaw, _minsMaxs);
-            //GetMinMaxDates(ProcedureOccurrencesRaw, _minsMaxs);
-            //GetMinMaxDates(ObservationsRaw, _minsMaxs);
-            //GetMinMaxDates(DeviceExposureRaw, _minsMaxs);
-            //GetMinMaxDates(MeasurementsRaw, _minsMaxs);
-            //GetMinMaxDates(VisitOccurrencesRaw, _minsMaxs);
-            //GetMinMaxDates(VisitDetailsRaw, _minsMaxs);
-
-            
-            /*GetMinDate(DrugExposuresRaw, _mins);
-            GetMinDate(ConditionOccurrencesRaw, _mins);
-            GetMinDate(ProcedureOccurrencesRaw, _mins);
-            GetMinDate(ObservationsRaw, _mins);
-            GetMinDate(DeviceExposureRaw, _mins);
-            GetMinDate(MeasurementsRaw, _mins);
-            GetMinDate(VisitOccurrencesRaw, _mins);
-            GetMinDate(VisitDetailsRaw, _mins);*/
-
-            //GetMaxDate(DrugExposuresRaw, _maxs);
-            //GetMaxDate(ConditionOccurrencesRaw, _maxs);
-            //GetMaxDate(ProcedureOccurrencesRaw, _maxs);
-            //GetMaxDate(ObservationsRaw, _maxs);
-            //GetMaxDate(DeviceExposureRaw, _maxs);
-            //GetMaxDate(MeasurementsRaw, _maxs);
-            //GetMaxDate(VisitOccurrencesRaw, _maxs);
-            //GetMaxDate(VisitDetailsRaw, _maxs);
+            //_personYoB = person.YearOfBirth.Value;
 
             if (VisitOccurrencesRaw.Count > 1000 * 1000)
             {
@@ -610,13 +583,15 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
                 return Attrition.UnacceptablePatientQuality;
             }
 
-            var observationPeriodRawNew = BuildObservationPeriodRawNew();
-
-            var observationPeriods =
-                   BuildObservationPeriods(person.ObservationPeriodGap, [.. observationPeriodRawNew])
-                       .ToArray();
-
-            var payerPlanPeriods = BuildPayerPlanPeriods([.. PayerPlanPeriodsRaw], null).ToArray();
+            // Build and clean death
+            var death = BuildDeath([.. DeathRecords], [], []);
+            if (death != null)
+            {
+                if (person.YearOfBirth.HasValue && person.YearOfBirth.Value > 0 && person.YearOfBirth > death.StartDate.Year)
+                    death = null;
+                if (death.StartDate.Date > Vendor.SourceReleaseDate.Value.Date)
+                    death = null;
+            }
 
             /*foreach (var op in observationPeriods)
             {
@@ -625,17 +600,6 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
                 if (op.EndDate.Value.Date > Vendor.SourceReleaseDate.Value.Date)
                     op.EndDate = Vendor.SourceReleaseDate.Value;
             }*/
-
-            if (observationPeriods.Length == 0 && payerPlanPeriods.Length == 0)
-            {
-                return Attrition.InvalidObservationTime;
-            }
-
-            if (Excluded(person, observationPeriods))
-            {
-                Complete = true;
-                return Attrition.ImplausibleYOBPostEarliestOP;
-            }
 
             foreach (var v in VisitOccurrencesRaw)
             {
@@ -664,11 +628,11 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
                 }
             }
 
-            var visitDetails = BuildVisitDetails(null, [.. VisitOccurrencesRaw], observationPeriods).ToArray();
+            var visitDetails = FilterAndUpdateRecords(BuildVisitDetails(null, [.. VisitOccurrencesRaw], []), death, 60).ToArray();
 
             var visitOccurrences = new Dictionary<long, VisitOccurrence>();
             var visitIds = new List<long>();
-            foreach (var visitOccurrence in BuildVisitOccurrences([.. VisitOccurrencesRaw], observationPeriods))
+            foreach (var visitOccurrence in FilterAndUpdateRecords(BuildVisitOccurrences([.. VisitOccurrencesRaw], []), death, 60))
             {
                 visitOccurrence.Id = Offset.GetKeyOffset(visitOccurrence.PersonId).VisitOccurrenceId;
 
@@ -719,7 +683,7 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
 
 
             var conditionOccurrences =
-                BuildConditionOccurrences([.. ConditionOccurrencesRaw], visitOccurrences, observationPeriods)
+                FilterAndUpdateRecords(BuildConditionOccurrences([.. ConditionOccurrencesRaw], visitOccurrences, []), death, 60)
                     .ToArray();
             foreach (var co in conditionOccurrences)
             {
@@ -727,7 +691,7 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
             }
 
             var procedureOccurrences =
-                BuildProcedureOccurrences([.. ProcedureOccurrencesRaw], visitOccurrences, observationPeriods)
+                FilterAndUpdateRecords(BuildProcedureOccurrences([.. ProcedureOccurrencesRaw], visitOccurrences, []), death, 60)
                     .ToArray();
             foreach (var procedureOccurrence in procedureOccurrences)
             {
@@ -735,7 +699,7 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
                     Offset.GetKeyOffset(procedureOccurrence.PersonId).ProcedureOccurrenceId;
             }
 
-            var observations = BuildObservations([.. ObservationsRaw], visitOccurrences, observationPeriods)
+            var observations = FilterAndUpdateRecords(BuildObservations([.. ObservationsRaw], visitOccurrences, []), death, 60)
                 .ToArray();
             foreach (var ob in observations)
             {
@@ -743,10 +707,22 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
             }
 
             var drugExposures =
-                BuildDrugExposures([.. DrugExposuresRaw], visitOccurrences, observationPeriods)
+                FilterAndUpdateRecords(BuildDrugExposures([.. DrugExposuresRaw], visitOccurrences, []), death, 60)
                     .ToArray();
 
-            if (observationPeriods.Length > 0)
+            foreach (var de in drugExposures)
+            {
+                if (death != null && de.EndDate > death.StartDate.Date.AddDays(60))
+                {
+                    de.EndDate = death.StartDate.Date.AddDays(60);
+                }
+                else if (de.EndDate > Vendor.SourceReleaseDate.Value.Date)
+                {
+                    de.EndDate = Vendor.SourceReleaseDate.Value.Date;
+                }
+            }
+
+            /*if (observationPeriods.Length > 0)
             {
                 var maxEndDate = observationPeriods.Max(op => op.EndDate.Value);
                 foreach (var de in drugExposures)
@@ -756,22 +732,14 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
                         de.EndDate = maxEndDate;
                     }
                 }
-            }
+            }*/
 
-            var measurements = BuildMeasurement([.. MeasurementsRaw], visitOccurrences, observationPeriods)
-                .ToArray();
-            var deviceExposure = BuildDeviceExposure([.. DeviceExposureRaw], visitOccurrences, observationPeriods)
+            var measurements = FilterAndUpdateRecords(BuildMeasurement([.. MeasurementsRaw], visitOccurrences, []), death, 60)
                 .ToArray();
 
-            var death = BuildDeath([.. DeathRecords], visitOccurrences, observationPeriods);
+            var deviceExposure = FilterAndUpdateRecords(BuildDeviceExposure([.. DeviceExposureRaw], visitOccurrences, []), death, 60)
+                .ToArray();
 
-            //// set corresponding ProviderIds
-            //SetProviderIds(drugExposures);
-            //SetProviderIds(conditionOccurrences);
-            //SetProviderIds(visitOccurrences.Values.ToArray());
-            //SetProviderIds(procedureOccurrences);
-            //SetProviderIds(observations);
-            //SetProviderIds(visitDetails);
 
             if (visitOccurrences.Values.Count < 1000 * 1000)
             {
@@ -794,6 +762,27 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
                 SetVisitDetailId(observations, visitByStart);
                 SetVisitDetailId(deviceExposure, visitByStart);
             }
+
+            var observationPeriodRawNew = BuildObservationPeriodRawNew(
+                death, drugExposures, conditionOccurrences, procedureOccurrences, observations,
+                measurements, [.. visitOccurrences.Values], visitDetails, deviceExposure);
+
+            var observationPeriods =
+                   BuildObservationPeriods(person.ObservationPeriodGap, [.. observationPeriodRawNew])
+                       .ToArray();
+
+            if (Excluded(person, observationPeriods))
+            {
+                Complete = true;
+                return Attrition.ImplausibleYOBPostEarliestOP;
+            }
+
+            var payerPlanPeriods = BuildPayerPlanPeriods([.. PayerPlanPeriodsRaw], null).ToArray();
+
+            if (observationPeriods.Length == 0 && payerPlanPeriods.Length == 0)
+            {
+                return Attrition.InvalidObservationTime;
+            } 
 
             // push built entities to ChunkBuilder for further save to CDM database
             AddToChunk(person, death,
@@ -1087,7 +1076,11 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
                 }
             }
         }
-        public List<EraEntity> BuildObservationPeriodRawNew()
+        public List<EraEntity> BuildObservationPeriodRawNew(Death death, DrugExposure[] drugExposures,
+            ConditionOccurrence[] conditionOccurrences,
+            ProcedureOccurrence[] procedureOccurrences, Observation[] observations,
+            Measurement[] measurements, VisitOccurrence[] visitOccurrences, VisitDetail[] visitDetails,
+            DeviceExposure[] deviceExposure)
         {
             var observationPeriodRawNew = new List<EraEntity>();
 
@@ -1107,14 +1100,17 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
                 });
             }
 
-            AddObservationPeriod(ConditionOccurrencesRaw.Cast<IEntity>().ToList());
-            AddObservationPeriod(ProcedureOccurrencesRaw.Cast<IEntity>().ToList());
-            AddObservationPeriod(DrugExposuresRaw.Cast<IEntity>().ToList());
-            AddObservationPeriod(DeviceExposureRaw.Cast<IEntity>().ToList());
-            AddObservationPeriod(ObservationsRaw.Cast<IEntity>().ToList());
-            AddObservationPeriod(MeasurementsRaw.Cast<IEntity>().ToList());
-            AddObservationPeriod(VisitDetailsRaw.Cast<IEntity>().ToList());
-            AddObservationPeriod(DeathRecords.Cast<IEntity>().ToList());
+            AddObservationPeriod(drugExposures.Cast<IEntity>().ToList());
+            AddObservationPeriod(conditionOccurrences.Cast<IEntity>().ToList());
+            AddObservationPeriod(procedureOccurrences.Cast<IEntity>().ToList());
+            AddObservationPeriod(observations.Cast<IEntity>().ToList());
+            AddObservationPeriod(measurements.Cast<IEntity>().ToList());
+            AddObservationPeriod(visitOccurrences.Cast<IEntity>().ToList());
+            AddObservationPeriod(visitDetails.Cast<IEntity>().ToList());
+            if (death != null)
+            {
+                AddObservationPeriod(new List<IEntity> { death });
+            }             
 
             return observationPeriodRawNew;
         }
@@ -1137,7 +1133,38 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
                 _ => 0
             };
         }
+        private IEnumerable<T> FilterAndUpdateRecords<T>(IEnumerable<T> items, Death death, int gap) where T : IEntity
+        {
+            var filteredItems = new List<T>();
+
+            foreach (var item in items)
+            {
+                if (item.StartDate > Vendor.SourceReleaseDate.Value.Date ||
+                    (item.EndDate.HasValue && item.EndDate.Value > Vendor.SourceReleaseDate.Value.Date))
+                {
+                    continue;
+                }
+
+                if (death != null &&
+                    (item.StartDate > death.StartDate.Date.AddDays(gap) ||
+                    (item.EndDate.HasValue && item.EndDate.Value > death.StartDate.Date.AddDays(gap))))
+                {
+                    continue;
+                }
+
+                if (item.EndDate.HasValue && item.EndDate.Value < item.StartDate)
+                {
+                    item.EndDate = item.StartDate;
+                }
+
+                filteredItems.Add(item);
+            }
+
+            return filteredItems;
+        }
 
         #endregion
     }
+
+
 }
