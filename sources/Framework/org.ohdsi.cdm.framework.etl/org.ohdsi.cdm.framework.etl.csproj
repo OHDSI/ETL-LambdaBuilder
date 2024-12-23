@@ -143,6 +143,8 @@
     <None Remove="Transformation\HealthVerityFull\Lookups\rxnorm.sql" />
     <None Remove="Transformation\HealthVerityFull\Lookups\Specialty.sql" />
     <None Remove="Transformation\HealthVerityFull\Lookups\ub04.sql" />
+	<None Remove="Transformation\HealthVerityFull\Lookups\ub04ds.sql" />
+	<None Remove="Transformation\HealthVerityFull\Lookups\ub04po.sql" />
     <None Remove="Transformation\HealthVerityFull\Lookups\units.sql" />
     <None Remove="Transformation\HealthVerityFull\Lookups\ValueAsConceptId.sql" />
     <None Remove="Transformation\JMDC\Batch.sql" />
@@ -730,6 +732,12 @@
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</EmbeddedResource>
 		<EmbeddedResource Include="Transformation\HealthVerityFull\Lookups\ub04.sql">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</EmbeddedResource>
+		<EmbeddedResource Include="Transformation\HealthVerityFull\Lookups\ub04ds.sql">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</EmbeddedResource>
+		<EmbeddedResource Include="Transformation\HealthVerityFull\Lookups\ub04po.sql">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</EmbeddedResource>
 		<EmbeddedResource Include="Transformation\HealthVerityFull\Lookups\units.sql">

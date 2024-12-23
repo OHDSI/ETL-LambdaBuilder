@@ -358,7 +358,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerityFull
             {
                 var vo = _rawVisits[ent.SourceRecordGuid];
                 if (vo.Id == 0 && _rawVisits.TryGetValue(vo.SourceRecordGuid, out VisitOccurrence value) &&
-value.SourceRecordGuid != ent.SourceRecordGuid)
+                    value.SourceRecordGuid != ent.SourceRecordGuid)
                 {
                     vo = value;
                 }
@@ -378,12 +378,13 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
                     new VisitDetail(visitOccurrence)
                     {
                         Id = Offset.GetKeyOffset(visitOccurrence.PersonId).VisitDetailId,
-                        AdmittingSourceValue = visitOccurrence.AdmittingSourceValue
+                        AdmittingSourceValue = visitOccurrence.AdmittingSourceValue,
+                        DischargeToSourceValue = visitOccurrence.DischargeToSourceValue,
+                        DischargeToConceptId = visitOccurrence.DischargeToConceptId
                     };
 
                 if (!visitDetail.EndDate.HasValue)
                     visitDetail.EndDate = visitDetail.StartDate;
-
 
                 yield return visitDetail;
             }
@@ -601,6 +602,8 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
                     op.EndDate = Vendor.SourceReleaseDate.Value;
             }*/
 
+            VisitOccurrencesRaw = FilterAndUpdateRecords(VisitOccurrencesRaw, death, 60).ToList();
+
             foreach (var v in VisitOccurrencesRaw)
             {
                 if (v.ConceptId == 0 && v.AdditionalFields != null && v.AdditionalFields.ContainsKey("defaultconceptid"))
@@ -628,11 +631,11 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
                 }
             }
 
-            var visitDetails = FilterAndUpdateRecords(BuildVisitDetails(null, [.. VisitOccurrencesRaw], []), death, 60).ToArray();
+            var visitDetails = BuildVisitDetails(null, [.. VisitOccurrencesRaw], []).ToArray();
 
             var visitOccurrences = new Dictionary<long, VisitOccurrence>();
             var visitIds = new List<long>();
-            foreach (var visitOccurrence in FilterAndUpdateRecords(BuildVisitOccurrences([.. VisitOccurrencesRaw], []), death, 60))
+            foreach (var visitOccurrence in BuildVisitOccurrences([.. VisitOccurrencesRaw], []))
             {
                 visitOccurrence.Id = Offset.GetKeyOffset(visitOccurrence.PersonId).VisitOccurrenceId;
 

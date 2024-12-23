@@ -196,8 +196,6 @@
       <CareSiteId>care_site_id</CareSiteId>
 			<StartDate>date_service</StartDate>
 			<EndDate>end_date</EndDate>
-			<AdmittingSourceValue>inst_admit_source_std_id</AdmittingSourceValue>
-      <DischargeToSourceValue>inst_discharge_status_std_id</DischargeToSourceValue>
 			<AdditionalFields>
 				<string>data_vendor</string>
 				<string>hv_enc_id</string>
@@ -210,9 +208,29 @@
 						</Mapper>
 					</ConceptIdMappers>
 					<Fields>
-						<Field key="inst_type_of_bill_std_id"  typeId="type_concept_id" defaultConceptId="9202"/>
+						<Field key="inst_type_of_bill_std_id" typeId="type_concept_id" defaultConceptId="9202"/>
 					</Fields>
 				</Concept>
+        <Concept>
+          <ConceptIdMappers>
+            <Mapper>
+              <Lookup>ub04ds</Lookup>
+            </Mapper>
+          </ConceptIdMappers>
+          <Fields>
+            <Field key="inst_discharge_status_std_id" defaultTypeId="0"/>
+          </Fields>
+        </Concept>
+        <Concept>
+          <ConceptIdMappers>
+            <Mapper>
+              <Lookup>ub04po</Lookup>
+            </Mapper>
+          </ConceptIdMappers>
+          <Fields>
+            <Field key="inst_admit_source_std_id" defaultTypeId="0"/>
+          </Fields>
+        </Concept>
 			</Concepts>
 		</VisitOccurrenceDefinition>
 		<VisitOccurrenceDefinition>
@@ -223,8 +241,6 @@
       <CareSiteId>care_site_id</CareSiteId>
 			<StartDate>date_service</StartDate>
 			<EndDate>end_date</EndDate>
-			<AdmittingSourceValue>inst_admit_source_std_id</AdmittingSourceValue>
-      <DischargeToSourceValue>inst_discharge_status_std_id</DischargeToSourceValue>
 			<AdditionalFields>
 				<string>data_vendor</string>
 				<string>hv_enc_id</string>
@@ -240,6 +256,26 @@
 						<Field key="place_of_service_std_id"  typeId="type_concept_id" defaultConceptId="9202"/>
 					</Fields>
 				</Concept>
+        <Concept>
+          <ConceptIdMappers>
+            <Mapper>
+              <Lookup>ub04ds</Lookup>
+            </Mapper>
+          </ConceptIdMappers>
+          <Fields>
+            <Field key="inst_discharge_status_std_id" defaultTypeId="0"/>
+          </Fields>
+        </Concept>
+        <Concept>
+          <ConceptIdMappers>
+            <Mapper>
+              <Lookup>ub04po</Lookup>
+            </Mapper>
+          </ConceptIdMappers>
+          <Fields>
+            <Field key="inst_admit_source_std_id" defaultTypeId="0"/>
+          </Fields>
+        </Concept>
 			</Concepts>
 		</VisitOccurrenceDefinition>
     <VisitOccurrenceDefinition>
@@ -250,8 +286,6 @@
       <CareSiteId>care_site_id</CareSiteId>
       <StartDate>date_service</StartDate>
       <EndDate>end_date</EndDate>
-      <AdmittingSourceValue>inst_admit_source_std_id</AdmittingSourceValue>
-      <DischargeToSourceValue>inst_discharge_status_std_id</DischargeToSourceValue>
       <AdditionalFields>
         <string>data_vendor</string>
         <string>hv_enc_id</string>
@@ -260,6 +294,26 @@
         <Concept>
           <Fields>
             <Field defaultConceptId="0" defaultSource=" " defaultTypeId="32811"/>
+          </Fields>
+        </Concept>
+        <Concept>
+          <ConceptIdMappers>
+            <Mapper>
+              <Lookup>ub04ds</Lookup>
+            </Mapper>
+          </ConceptIdMappers>
+          <Fields>
+            <Field key="inst_discharge_status_std_id" defaultTypeId="0"/>
+          </Fields>
+        </Concept>
+        <Concept>
+          <ConceptIdMappers>
+            <Mapper>
+              <Lookup>ub04po</Lookup>
+            </Mapper>
+          </ConceptIdMappers>
+          <Fields>
+            <Field key="inst_admit_source_std_id" defaultTypeId="0"/>
           </Fields>
         </Concept>
       </Concepts>
