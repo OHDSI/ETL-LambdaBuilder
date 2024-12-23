@@ -1,4 +1,5 @@
-﻿select distinct patid, patid
+﻿select distinct *
+from
 (
 SELECT distinct t.patid, t.patid
 FROM {sc}.med_diagnosis t
