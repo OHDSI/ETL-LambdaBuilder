@@ -1,5 +1,8 @@
-﻿SELECT distinct patid, patid
-FROM {sc}.med_diagnosis
+﻿select distinct patid, patid
+(
+SELECT distinct t.patid, t.patid
+FROM {sc}.med_diagnosis t
+join {sc}.MEMBER_CONTINUOUS_ENROLLMENT t1 on t.patid = t1.patid
 where diag in
 (
 '798', --	"Sudden death, cause unknown"
@@ -10,9 +13,13 @@ where diag in
 'R99' --	Ill-defined and unknown cause of mortality
 )
 union
-SELECT distinct patid, patid
-FROM {sc}.medical_claims
+SELECT distinct t.patid, t.patid
+FROM {sc}.medical_claims t
+join {sc}.MEMBER_CONTINUOUS_ENROLLMENT t1 on t.patid = t1.patid
 where DSTATUS IN ('20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '40', '41', '42')
 union
-SELECT distinct patid, patid
-FROM {sc}.DEATH
+SELECT distinct t.patid, t.patid
+FROM {sc}.DEATH t
+join {sc}.MEMBER_CONTINUOUS_ENROLLMENT t1 on t.patid = t1.patid
+) as a
+order by 1
