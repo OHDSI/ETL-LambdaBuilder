@@ -379,6 +379,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerityFull
                     {
                         Id = Offset.GetKeyOffset(visitOccurrence.PersonId).VisitDetailId,
                         AdmittingSourceValue = visitOccurrence.AdmittingSourceValue,
+                        AdmittingSourceConceptId = visitOccurrence.AdmittingSourceConceptId,
                         DischargeToSourceValue = visitOccurrence.DischargeToSourceValue,
                         DischargeToConceptId = visitOccurrence.DischargeToConceptId
                     };

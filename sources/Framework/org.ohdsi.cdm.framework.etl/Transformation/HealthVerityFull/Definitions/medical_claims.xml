@@ -36,7 +36,13 @@
     when date_service_end is null then date_service
     else date_service_end
     end as end_date,
-    inst_admit_source_std_id,
+    case
+    when length(inst_admit_source_std_id) &gt;= 2
+    and substring(inst_admit_source_std_id, 1, 1) = '0'
+    and substring(inst_admit_source_std_id, 2, 1) ~ '[0-9]'
+    then substring(inst_admit_source_std_id, 2)
+    else inst_admit_source_std_id
+    end as inst_admit_source_std_id,
     inst_discharge_status_std_id,
     data_vendor,
 
