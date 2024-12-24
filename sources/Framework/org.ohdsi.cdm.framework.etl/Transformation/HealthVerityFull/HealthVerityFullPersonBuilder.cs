@@ -164,8 +164,6 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerityFull
             return new KeyValuePair<Person, Attrition>(person, Attrition.None);
         }
 
-
-
         private void AddRawVisitOccurrence(VisitOccurrence rawVisit, VisitOccurrence finalVisit)
         {
             if (!_rawVisits.TryAdd(rawVisit.SourceRecordGuid, finalVisit))
@@ -297,13 +295,23 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerityFull
                 {
                     foreach (var byCareSiteId in byEnd.GroupBy(v => v.CareSiteId))
                     {
-                        var visit = byCareSiteId.OrderBy(v => v.ConceptId).First();
-                        foreach (var vo in byCareSiteId)
+                        foreach (var byConceptId in byCareSiteId.GroupBy(v => v.ConceptId))
                         {
-                            AddRawVisitOccurrence(vo, visit);
+                            var visit = byConceptId.First();
+                            foreach (var vo in byConceptId)
+                            {
+                                AddRawVisitOccurrence(vo, visit);
+                            }
+                            yield return visit;
                         }
 
-                        yield return visit;
+                        //var visit = byCareSiteId.OrderBy(v => v.ConceptId).First();
+                        //foreach (var vo in byCareSiteId)
+                        //{
+                        //    AddRawVisitOccurrence(vo, visit);
+                        //}
+
+                        //yield return visit;
                     }
                 }
             }
@@ -381,7 +389,9 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerityFull
                         AdmittingSourceValue = visitOccurrence.AdmittingSourceValue,
                         AdmittingSourceConceptId = visitOccurrence.AdmittingSourceConceptId,
                         DischargeToSourceValue = visitOccurrence.DischargeToSourceValue,
-                        DischargeToConceptId = visitOccurrence.DischargeToConceptId
+                        DischargeToConceptId = visitOccurrence.DischargeToConceptId,
+                        ProviderId = visitOccurrence.ProviderId,
+                        CareSiteId = visitOccurrence.CareSiteId
                     };
 
                 if (!visitDetail.EndDate.HasValue)
@@ -562,7 +572,6 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerityFull
             //}
         }*/
 
-
         public override Attrition Build(ChunkData data, KeyMasterOffsetManager o)
         {
             this.Offset = o;
@@ -639,15 +648,24 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerityFull
             foreach (var visitOccurrence in BuildVisitOccurrences([.. VisitOccurrencesRaw], []))
             {
                 visitOccurrence.Id = Offset.GetKeyOffset(visitOccurrence.PersonId).VisitOccurrenceId;
+                visitOccurrence.AdmittingSourceValue = null;
+                visitOccurrence.AdmittingSourceConceptId = null;
+                visitOccurrence.DischargeToSourceValue = null;
+                visitOccurrence.DischargeToConceptId = null;
 
                 if (visitOccurrences.TryAdd(visitOccurrence.Id, visitOccurrence))
                 {
                     visitIds.Add(visitOccurrence.Id);
                 }
             }
-
+            VisitDetail mostRecentVisit = null;
             foreach (var visitDetail in visitDetails)
             {
+                if (mostRecentVisit == null)
+                    mostRecentVisit = visitDetail;
+                else if (mostRecentVisit.StartDate.Date < visitDetail.StartDate.Date)
+                    mostRecentVisit = visitDetail;
+
                 var vo = GetVisitOccurrence(visitDetail);
                 visitDetail.VisitOccurrenceId = vo?.Id ?? 0;
 
@@ -684,7 +702,6 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerityFull
 
                 prevVisitId = visitId;
             }
-
 
             var conditionOccurrences =
                 FilterAndUpdateRecords(BuildConditionOccurrences([.. ConditionOccurrencesRaw], visitOccurrences, []), death, 60)
