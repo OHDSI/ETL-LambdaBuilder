@@ -13,7 +13,7 @@
     ndc_code,
 
     days_supply,
-    case when dispensed_quantity > 0
+    case when dispensed_quantity &gt; 0
 			   then dispensed_quantity
 				 else null
     end as dispensed_quantity,
