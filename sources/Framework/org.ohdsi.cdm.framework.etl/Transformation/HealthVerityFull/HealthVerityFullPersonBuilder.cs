@@ -191,7 +191,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerityFull
                 }
             }
 
-            person.LocationId = GetLocationId(zip, state);
+            person.LocationId = GetLocationId(state, zip);
 
             return new KeyValuePair<Person, Attrition>(person, Attrition.None);
         }
