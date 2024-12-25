@@ -13,7 +13,10 @@
     ndc_code,
 
     days_supply,
-    NULLIF(dispensed_quantity, 0) as dispensed_quantity,
+    case when dispensed_quantity > 0
+			   then dispensed_quantity
+				 else null
+    end as dispensed_quantity,
     unit_of_measure,
     fill_number,
 
