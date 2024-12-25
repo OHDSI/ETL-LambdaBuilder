@@ -2,9 +2,9 @@
    <Query database="ccae,mdcr">
      SELECT
      CASE
-     WHEN e.[STATE] IS NOT NULL	THEN e.[STATE]
+     WHEN e.STATE IS NOT NULL	THEN e.STATE
      ELSE 'UN'
-     END AS [STATE],
+     END AS STATE,
      x.EGEOLOC AS LOCATION_SOURCE_VALUE
      FROM (
      SELECT DISTINCT EGEOLOC
