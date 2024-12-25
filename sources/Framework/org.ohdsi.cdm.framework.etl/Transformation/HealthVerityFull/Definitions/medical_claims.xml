@@ -42,7 +42,7 @@
     and substring(inst_admit_source_std_id, 2, 1) ~ '[0-9]'
     then substring(inst_admit_source_std_id, 2)
     else inst_admit_source_std_id
-    end as inst_admit_source_std_id_new,
+    end as inst_admit_source_std_id,
     inst_discharge_status_std_id,
     data_vendor,
 
@@ -234,7 +234,7 @@
             </Mapper>
           </ConceptIdMappers>
           <Fields>
-            <Field key="inst_admit_source_std_id_new" defaultTypeId="0"/>
+            <Field key="inst_admit_source_std_id" defaultTypeId="0"/>
           </Fields>
         </Concept>
 			</Concepts>
@@ -279,7 +279,7 @@
             </Mapper>
           </ConceptIdMappers>
           <Fields>
-            <Field key="inst_admit_source_std_id_new" defaultTypeId="0"/>
+            <Field key="inst_admit_source_std_id" defaultTypeId="0"/>
           </Fields>
         </Concept>
 			</Concepts>
@@ -319,7 +319,7 @@
             </Mapper>
           </ConceptIdMappers>
           <Fields>
-            <Field key="inst_admit_source_std_id_new" defaultTypeId="0"/>
+            <Field key="inst_admit_source_std_id" defaultTypeId="0"/>
           </Fields>
         </Concept>
       </Concepts>
