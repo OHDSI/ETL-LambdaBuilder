@@ -168,7 +168,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerityFull
             var zip = (string)null;
             var state = (string)null;
 
-            var filteredRecords = filtered
+            var filteredLocations = filtered
                 .Where(p => p.AdditionalFields.ContainsKey("patient_zip3") || p.AdditionalFields.ContainsKey("patient_state")
                     || p.AdditionalFields.ContainsKey("created"))
                 .Select(p => new
@@ -180,7 +180,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerityFull
                 .OrderByDescending(p => p.Created)
                 .ToList();
 
-            var nonEmptyZipStateRecord = filteredRecords.FirstOrDefault(p => !string.IsNullOrEmpty(p.Zip) && !string.IsNullOrEmpty(p.State));
+            var nonEmptyZipStateRecord = filteredLocations.FirstOrDefault(p => !string.IsNullOrEmpty(p.Zip) && !string.IsNullOrEmpty(p.State));
             if (nonEmptyZipStateRecord != null)
             {
                 zip = nonEmptyZipStateRecord.Zip;
@@ -188,7 +188,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerityFull
             }
             else
             {
-                var nonEmptyRecord = filteredRecords.FirstOrDefault(p => !string.IsNullOrEmpty(p.Zip) || !string.IsNullOrEmpty(p.State));
+                var nonEmptyRecord = filteredLocations.FirstOrDefault(p => !string.IsNullOrEmpty(p.Zip) || !string.IsNullOrEmpty(p.State));
                 if (nonEmptyRecord != null)
                 {
                     zip = nonEmptyRecord.Zip;
