@@ -67,6 +67,7 @@ namespace org.ohdsi.cdm.framework.common.Omop
                    this.AdmittingSourceValue == other.AdmittingSourceValue &&
                    this.DischargeToConceptId == other.DischargeToConceptId &&
                    this.DischargeToSourceValue == other.DischargeToSourceValue &&
+                   this.ProviderId == other.ProviderId &&
                    this.PrecedingVisitOccurrenceId == other.PrecedingVisitOccurrenceId;
         }
 
@@ -81,6 +82,7 @@ namespace org.ohdsi.cdm.framework.common.Omop
                    (CareSiteId.GetHashCode()) ^
                    (StartDate.GetHashCode()) ^
                    (EndDate.GetHashCode()) ^
+                   ProviderId.GetHashCode() ^
                    AdmittingSourceConceptId.GetHashCode() ^
                    (AdmittingSourceValue != null ? AdmittingSourceValue.GetHashCode() : 0) ^
                    DischargeToConceptId.GetHashCode() ^
