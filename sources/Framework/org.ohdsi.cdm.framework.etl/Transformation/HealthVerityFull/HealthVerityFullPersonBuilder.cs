@@ -151,11 +151,6 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerityFull
 
             if (person.EthnicitySourceValue == null)
             {
-                /*if (raceValues.Count == 1)
-                {
-                    person.EthnicitySourceValue = raceValues.First();
-                }
-                else */
                 if (raceValues.Contains("Hispanic"))
                 {
                     person.EthnicitySourceValue = "Hispanic";
@@ -1023,6 +1018,11 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerityFull
         }
         private long GetRaceConceptId(string raceSourceValue)
         {
+            if (string.IsNullOrEmpty(raceSourceValue))
+            {
+                return 0;
+            }
+
             return raceSourceValue switch
             {
                 "White" => 8527,
@@ -1033,6 +1033,11 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerityFull
         }
         private long GetEthnicityConceptId(string ethnicitySourceValue)
         {
+            if (string.IsNullOrEmpty(ethnicitySourceValue))
+            {
+                return 0;
+            }
+
             return ethnicitySourceValue switch
             {
                 "Hispanic" => 38003563,
@@ -1040,6 +1045,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerityFull
                 _ => 0
             };
         }
+
         private IEnumerable<T> FilterAndUpdateRecords<T>(IEnumerable<T> items, Death death, int gap) where T : IEntity
         {
             var filteredItems = new List<T>();
