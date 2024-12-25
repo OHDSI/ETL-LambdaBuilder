@@ -163,6 +163,41 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerityFull
             }
             person.EthnicityConceptId = GetEthnicityConceptId(person.EthnicitySourceValue);
 
+            // Location
+
+            var zip = (string)null;
+            var state = (string)null;
+
+            var filteredRecords = filtered
+                .Where(p => p.AdditionalFields.ContainsKey("patient_zip3") || p.AdditionalFields.ContainsKey("patient_state")
+                    || p.AdditionalFields.ContainsKey("created"))
+                .Select(p => new
+                {
+                    Zip = p.AdditionalFields.ContainsKey("patient_zip3") ? p.AdditionalFields["patient_zip3"] : null,
+                    State = p.AdditionalFields.ContainsKey("patient_state") ? p.AdditionalFields["patient_state"] : null,
+                    Created = p.AdditionalFields.ContainsKey("created") ? DateTime.Parse(p.AdditionalFields["created"]) : DateTime.MinValue
+                })
+                .OrderByDescending(p => p.Created)
+                .ToList();
+
+            var nonEmptyZipStateRecord = filteredRecords.FirstOrDefault(p => !string.IsNullOrEmpty(p.Zip) && !string.IsNullOrEmpty(p.State));
+            if (nonEmptyZipStateRecord != null)
+            {
+                zip = nonEmptyZipStateRecord.Zip;
+                state = nonEmptyZipStateRecord.State;
+            }
+            else
+            {
+                var nonEmptyRecord = filteredRecords.FirstOrDefault(p => !string.IsNullOrEmpty(p.Zip) || !string.IsNullOrEmpty(p.State));
+                if (nonEmptyRecord != null)
+                {
+                    zip = nonEmptyRecord.Zip;
+                    state = nonEmptyRecord.State;
+                }
+            }
+
+            person.LocationId = GetLocationId(zip, state);
+
             return new KeyValuePair<Person, Attrition>(person, Attrition.None);
         }
 
@@ -422,157 +457,6 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerityFull
                 }
             }
         }
-
-        /*public override IEnumerable<ObservationPeriod> BuildObservationPeriods(int gap, EraEntity[] observationPeriods)
-        {
-            if (observationPeriods.Length > 1)
-            {
-                List<EraEntity> medical = []; //observationPeriods.Where(op => op.TypeConceptId == 1).ToArray();
-                List<EraEntity> pharmacy = []; //observationPeriods.Where(op => op.TypeConceptId == 2).ToArray();
-
-                foreach (var dv in observationPeriods.Where(op => op.TypeConceptId == 1).
-                    GroupBy(op => op.AdditionalFields["data_vendor"]))
-                {
-                    foreach (var sd in dv.GroupBy(op => op.StartDate))
-                    {
-                        medical.Add(new EraEntity
-                        {
-                            PersonId = sd.First().PersonId,
-                            StartDate = sd.First().StartDate,
-                            EndDate = sd.Max(d => d.EndDate),
-                            AdditionalFields = sd.First().AdditionalFields
-                        });
-                    }
-                }
-
-                foreach (var dv in observationPeriods.Where(op => op.TypeConceptId == 2).
-                    GroupBy(op => op.AdditionalFields["data_vendor"]))
-                {
-                    foreach (var sd in dv.GroupBy(op => op.StartDate))
-                    {
-                        pharmacy.Add(new EraEntity
-                        {
-                            PersonId = sd.First().PersonId,
-                            StartDate = sd.First().StartDate,
-                            EndDate = sd.Max(d => d.EndDate),
-                            AdditionalFields = sd.First().AdditionalFields
-                        });
-                    }
-                }
-
-                if (medical.Count > 0 && pharmacy.Count > 0)
-                {
-                    FixObservationPeriodDates(medical, Table.Medical);
-                    FixObservationPeriodDates(pharmacy, Table.Pharmacy);
-
-                    var medicalPeriods = EraHelper.GetEras(medical.Where(i => i.StartDate <= i.EndDate
-                    && i.StartDate.Year >= _minDate.Year && i.EndDate.Value.Year <= DateTime.Now.Year), 30, 0);
-
-                    var pharmacyPeriods = EraHelper.GetEras(pharmacy.Where(i => i.StartDate <= i.EndDate
-                     && i.StartDate.Year >= _minDate.Year && i.EndDate.Value.Year <= DateTime.Now.Year), 30, 0);
-
-                    foreach (var mp in medicalPeriods)
-                    {
-                        List<EraEntity> overlaps = [];
-
-                        var ph = pharmacyPeriods.Where(pp => mp.StartDate < pp.EndDate && pp.StartDate < mp.EndDate);
-
-                        foreach (var p in ph)
-                        {
-                            var o = new EraEntity
-                            {
-                                StartDate = p.StartDate,
-                                EndDate = p.EndDate
-                            };
-
-                            if (mp.StartDate > p.StartDate)
-                                o.StartDate = mp.StartDate;
-
-                            if (mp.EndDate < p.EndDate)
-                                o.EndDate = mp.EndDate;
-
-                            overlaps.Add(o);
-                        }
-
-                        if (overlaps.Count == 0)
-                            continue;
-
-                        foreach (var overlap in EraHelper.GetEras(overlaps, 1, 0))
-                        {
-                            yield return new ObservationPeriod
-                            {
-                                StartDate = overlap.StartDate,
-                                EndDate = overlap.EndDate,
-                                TypeConceptId = 32813,
-                                PersonId = observationPeriods[0].PersonId
-                            };
-                        }
-                    }
-                }
-            }
-        }*/
-
-        /*private void FixObservationPeriodDates(IEnumerable<EraEntity> observationPeriods, Table table)
-        {
-            foreach (var op in observationPeriods)
-            {
-                if (op.StartDate.Year < _minDate.Year)
-                    op.StartDate = _mins.Min();
-
-                if (op.EndDate.Value.Date > Vendor.SourceReleaseDate)
-                    op.EndDate = Vendor.SourceReleaseDate;
-
-                if(op.StartDate.Date > op.EndDate.Value.Date)
-                    op.EndDate = Vendor.SourceReleaseDate.Value.Date;
-
-                if (op.StartDate.Date > op.EndDate.Value.Date)
-                    op.StartDate = _mins.Min();
-            }
-            //foreach (var g in observationPeriods.GroupBy(m => m.AdditionalFields["data_vendor"]))
-            //{
-            //    DataVendor? vendor = null;
-
-            //    if (g.First().AdditionalFields["data_vendor"].StartsWith("private source 17", StringComparison.CurrentCultureIgnoreCase))
-            //        vendor = DataVendor.PrivateSource17;
-            //    else if (g.First().AdditionalFields["data_vendor"].StartsWith("private source 20", StringComparison.CurrentCultureIgnoreCase))
-            //        vendor = DataVendor.PrivateSource20;
-            //    else
-            //        continue;
-
-            //    foreach (var item in g.ToArray())
-            //    {
-            //        if (item.StartDate.Year < _minDate.Year ||
-            //            item.StartDate.Date > Vendor.SourceReleaseDate.Value.Date)
-            //        {
-            //            //item.StartDate = min.Value;
-            //            var key = GetDateKey(table, vendor.Value, AggregationType.Min);
-            //            if (_minsMaxs.ContainsKey(key))
-            //                item.StartDate = _minsMaxs[key].Min();
-            //            else
-            //            {
-            //                if (_minDate > new DateTime(_personYoB, 1, 1))
-            //                    item.StartDate = _minDate;
-            //                else
-            //                    item.StartDate = new DateTime(_personYoB, 1, 1);
-            //            }
-            //        }
-
-            //        if (item.EndDate.Value.Date > Vendor.SourceReleaseDate.Value.Date)
-            //        {
-            //            var key = GetDateKey(table, vendor.Value, AggregationType.Max);
-            //            if (_minsMaxs.ContainsKey(key))
-            //            {
-            //                item.EndDate = _minsMaxs[key].Max();
-
-            //                if(item.StartDate.Date > item.EndDate.Value.Date)
-            //                    item.EndDate = Vendor.SourceReleaseDate.Value.Date;
-            //            }
-            //            else
-            //                item.EndDate = Vendor.SourceReleaseDate.Value.Date;
-            //        }
-            //    }
-            //}
-        }*/
 
         public override Attrition Build(ChunkData data, KeyMasterOffsetManager o)
         {
