@@ -45,14 +45,14 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
                     break;
 
                 case Database.Redshift:
-                    foreach (Match match in Regex.Matches(query, @"\[(.*?)\]", RegexOptions.IgnoreCase).Cast<Match>())
-                    {
-                        var originalValue = match.Value;
-                        // Remove [ and ] and replace spaces as _
-                        var forRedshift = originalValue.Replace("[", @"""").Replace("]", @"""").Replace(" ", "_")
-                            .Replace("-", "_").Trim();
-                        query = query.Replace(originalValue, forRedshift);
-                    }
+                    //foreach (Match match in Regex.Matches(query, @"\[(.*?)\]", RegexOptions.IgnoreCase).Cast<Match>())
+                    //{
+                    //    var originalValue = match.Value;
+                    //    // Remove [ and ] and replace spaces as _
+                    //    var forRedshift = originalValue.Replace("[", @"""").Replace("]", @"""").Replace(" ", "_")
+                    //        .Replace("-", "_").Trim();
+                    //    query = query.Replace(originalValue, forRedshift);
+                    //}
 
                     break;
             }
