@@ -9,8 +9,14 @@
     ndc_code,
     claim_type,
 
-    CAST(COALESCE(prov_rendering_npi, prov_billing_npi, prov_referring_npi) as INT) as provider_id,
-    CAST(prov_facility_npi AS INT) as care_site_id,
+	CASE 
+		WHEN COALESCE(prov_rendering_npi, prov_billing_npi, prov_referring_npi) ~ '^[0-9]+$' THEN CAST(COALESCE(prov_rendering_npi, prov_billing_npi, prov_referring_npi) AS BIGINT)
+		ELSE cast(REGEXP_REPLACE(COALESCE(prov_rendering_npi, prov_billing_npi, prov_referring_npi), '[^0-9]', '0', 1, 'i') as BIGINT) + 1000000000
+	END as provider_id,
+	CASE 
+		WHEN prov_facility_npi ~ '^[0-9]+$' THEN CAST(prov_facility_npi AS BIGINT)
+		ELSE cast(REGEXP_REPLACE(prov_facility_npi, '[^0-9]', '0', 1, 'i') as BIGINT) + 1000000000
+	end as care_site_id,
 
     case
     when lower(claim_type) = 'p' then 32871

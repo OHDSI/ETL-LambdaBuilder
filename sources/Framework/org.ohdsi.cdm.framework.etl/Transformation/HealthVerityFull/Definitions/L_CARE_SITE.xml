@@ -1,7 +1,13 @@
 ﻿<QueryDefinition>
    <Query>
      select
-     cast(care_site_source_value as INT) as care_site_id, care_site_source_value, care_site_name, place_of_service_source_value
+     CASE 
+        WHEN care_site_source_value ~ '^[0-9]+$' THEN CAST(care_site_source_value AS BIGINT)
+        ELSE cast(REGEXP_REPLACE(care_site_source_value, '[^0-9]', '0', 1, 'i') as BIGINT) + 1000000000
+     end as care_site_id, 
+     care_site_source_value, 
+	 care_site_name, 
+     place_of_service_source_value
      from
      (
      select ROW_NUMBER() OVER(PARTITION BY care_site_source_value ORDER BY rnk) AS rn2, *  from
