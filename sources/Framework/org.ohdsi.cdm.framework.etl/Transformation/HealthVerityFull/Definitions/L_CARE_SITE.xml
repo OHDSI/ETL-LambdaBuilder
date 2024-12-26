@@ -1,13 +1,7 @@
 ﻿<QueryDefinition>
    <Query>
      select
-     CASE 
-        WHEN care_site_source_value ~ '^[0-9]+$' THEN CAST(care_site_source_value AS BIGINT)
-        ELSE cast(REGEXP_REPLACE(care_site_source_value, '[^0-9]', '0', 1, 'i') as BIGINT) + 1000000000
-     end as care_site_id, 
-     care_site_source_value, 
-	 care_site_name, 
-     place_of_service_source_value
+     cast(care_site_source_value as INT) as care_site_id, care_site_source_value, care_site_name, place_of_service_source_value
      from
      (
      select ROW_NUMBER() OVER(PARTITION BY care_site_source_value ORDER BY rnk) AS rn2, *  from
@@ -15,23 +9,23 @@
      with cte_sites as (
      select distinct prov_facility_npi, prov_facility_name_1, place_of_service_std_id
      from {sc}.medical_claims
-     where prov_facility_npi is not NULL
+     where prov_facility_npi is not NULL and prov_facility_npi ~ '^[0-9]+$'
      ),
      cte_facility_name AS (
-       SELECT
-       prov_facility_npi,
-       MAX(prov_facility_name_1) AS prov_facility_name_1
-       FROM cte_sites
-       GROUP BY prov_facility_npi
-       HAVING COUNT(DISTINCT prov_facility_name_1) = 1
+     SELECT
+     prov_facility_npi,
+     MAX(prov_facility_name_1) AS prov_facility_name_1
+     FROM cte_sites
+     GROUP BY prov_facility_npi
+     HAVING COUNT(DISTINCT prov_facility_name_1) = 1
      ),
      cte_place_of_service as (
-       SELECT
-       prov_facility_npi,
-       MAX(place_of_service_std_id) AS place_of_service_std_id
-       FROM cte_sites
-       GROUP BY prov_facility_npi
-       HAVING COUNT(DISTINCT place_of_service_std_id) = 1
+     SELECT
+     prov_facility_npi,
+     MAX(place_of_service_std_id) AS place_of_service_std_id
+     FROM cte_sites
+     GROUP BY prov_facility_npi
+     HAVING COUNT(DISTINCT place_of_service_std_id) = 1
      )
      select
      s.prov_facility_npi as care_site_source_value,
@@ -50,7 +44,7 @@
      from
      {sc}.pharmacy_claims
      where
-     pharmacy_npi is not null
+     pharmacy_npi is not null and pharmacy_npi ~ '^[0-9]+$'
      )
      )
      where rn2 = 1

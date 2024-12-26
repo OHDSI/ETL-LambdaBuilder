@@ -5,14 +5,14 @@
     hvid,
     date_service,
 
-	CASE 
-		WHEN prov_prescribing_npi ~ '^[0-9]+$' THEN CAST(prov_prescribing_npi AS BIGINT)
-		ELSE cast(REGEXP_REPLACE(prov_prescribing_npi, '[^0-9]', '0', 1, 'i') as BIGINT) + 1000000000
-	END as provider_id,
-	CASE 
-		WHEN pharmacy_npi ~ '^[0-9]+$' THEN CAST(pharmacy_npi AS BIGINT)
-		ELSE cast(REGEXP_REPLACE(pharmacy_npi, '[^0-9]', '0', 1, 'i') as BIGINT) + 1000000000
-	end as care_site_id,
+    CASE 
+        WHEN prov_prescribing_npi ~ '^[0-9]+$' THEN CAST(prov_prescribing_npi AS INT) 
+        ELSE NULL 
+    END as provider_id,
+    CASE 
+        WHEN pharmacy_npi ~ '^[0-9]+$' THEN CAST(pharmacy_npi AS INT) 
+        ELSE NULL 
+    END as care_site_id,
 
     procedure_code,
     diagnosis_code,
