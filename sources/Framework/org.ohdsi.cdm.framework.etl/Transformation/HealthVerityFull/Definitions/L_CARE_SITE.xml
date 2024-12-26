@@ -1,7 +1,7 @@
 ﻿<QueryDefinition>
    <Query>
      select
-     cast(left(care_site_source_value, 15) as BIGINT) as care_site_id, care_site_source_value, care_site_name, place_of_service_source_value
+     cast(care_site_source_value as BIGINT) as care_site_id, care_site_source_value, care_site_name, place_of_service_source_value
      from
      (
      select ROW_NUMBER() OVER(PARTITION BY care_site_source_value ORDER BY rnk) AS rn2, *  from
@@ -9,7 +9,7 @@
      with cte_sites as (
      select distinct prov_facility_npi, prov_facility_name_1, place_of_service_std_id
      from {sc}.medical_claims
-     where prov_facility_npi is not NULL and prov_facility_npi ~ '^[0-9]+$'
+     where prov_facility_npi is not NULL and prov_facility_npi ~ '^[0-9]+$' and length(prov_facility_npi) &lt;= 10
      ),
      cte_facility_name AS (
      SELECT
@@ -44,7 +44,7 @@
      from
      {sc}.pharmacy_claims
      where
-     pharmacy_npi is not null and pharmacy_npi ~ '^[0-9]+$'
+     pharmacy_npi is not null and pharmacy_npi ~ '^[0-9]+$' and length(pharmacy_npi) &lt;= 10
      )
      )
      where rn2 = 1

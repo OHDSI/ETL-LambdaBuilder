@@ -6,11 +6,11 @@
     date_service,
 
     CASE 
-        WHEN prov_prescribing_npi ~ '^[0-9]+$' THEN CAST(left(prov_prescribing_npi, 15) as BIGINT)
+        WHEN prov_prescribing_npi ~ '^[0-9]+$' AND LENGTH(prov_prescribing_npi) &lt;= 10 THEN CAST(prov_prescribing_npi as BIGINT) 
         ELSE NULL 
     END as provider_id,
     CASE 
-        WHEN pharmacy_npi ~ '^[0-9]+$' THEN CAST(left(pharmacy_npi, 15) as BIGINT)
+        WHEN pharmacy_npi ~ '^[0-9]+$' AND LENGTH(pharmacy_npi) &lt;= 10 THEN CAST(pharmacy_npi as BIGINT) 
         ELSE NULL 
     END as care_site_id,
 

@@ -1,86 +1,86 @@
-﻿<QueryDefinition>
-	<Query>
-    WITH cte_union AS (
-    select prov_rendering_npi as provider_npi, prov_rendering_vendor_specialty as provider_specialty, prov_facility_npi, created
-    from {sc}.medical_claims
-    where prov_rendering_npi is not null and prov_rendering_npi ~ '^[0-9]+$'
-    union
-    select prov_billing_npi as provider_npi,  prov_billing_vendor_specialty as provider_specialty, prov_facility_npi, created
-    from {sc}.medical_claims
-    where prov_billing_npi is not null and prov_billing_npi ~ '^[0-9]+$'
-    union
-    select prov_referring_npi as provider_npi,  prov_referring_vendor_specialty as provider_specialty, prov_facility_npi, created
-    from {sc}.medical_claims
-    where prov_referring_npi is not null and prov_referring_npi ~ '^[0-9]+$'
-    union
-    select prov_prescribing_npi as provider_npi, prov_prescribing_vendor_specialty as provider_specialty, null as prov_facility_npi, '1900-01-01'::DATE as created
-    from {sc}.pharmacy_claims
-    where prov_prescribing_npi is not null and prov_prescribing_npi ~ '^[0-9]+$'
-    ),
-    cte_facility AS (
-    SELECT
-    provider_npi,
-    MAX(prov_facility_npi) AS prov_facility_npi
-    FROM cte_union
-    WHERE created = (
-    SELECT MAX(created)
-    FROM cte_union t2
-    WHERE t2.provider_npi = cte_union.provider_npi
-    and prov_facility_npi is not null
-    )
-    GROUP BY provider_npi
-    HAVING COUNT(DISTINCT prov_facility_npi) = 1
-    ),
-    cte_specialty AS (
-    select provider_npi, provider_specialty from
-    (
-    SELECT
-    provider_npi,
-    provider_specialty,
-    ROW_NUMBER() OVER (PARTITION BY provider_npi ORDER BY freq DESC, provider_specialty) AS rn
-    FROM (
-    SELECT
-    provider_npi,
-    provider_specialty,
-    COUNT(*) AS freq
-    FROM cte_union
-    WHERE LOWER(provider_specialty) NOT IN ('undefined', 'unknown physician specialty', '')
-    GROUP BY provider_npi, provider_specialty
-    ) t
-    )
-    where rn = 1
-    )
-    select
-    CAST(left(u.provider_npi, 15) as BIGINT) AS provider_id,
-    u.provider_npi as provider_source_value,
-    CASE 
-        WHEN f.prov_facility_npi ~ '^[0-9]+$' 
-        THEN cast(left(f.prov_facility_npi, 15) as BIGINT)
-        ELSE NULL 
-    END as care_site_id,
-    s.provider_specialty as specialty_source_value
-    FROM (SELECT DISTINCT provider_npi FROM cte_union) u
-    LEFT JOIN cte_facility f ON u.provider_npi = f.provider_npi
-    LEFT JOIN cte_specialty s ON u.provider_npi = s.provider_npi
-  </Query>
-	<Providers>
-		<ProviderDefinition>
-			<Id>provider_id</Id>
-			<NPI>provider_source_value</NPI>
-			<ProviderSourceValue>provider_source_value</ProviderSourceValue>
-			<CareSiteId>care_site_id</CareSiteId>
-			<Concepts>
-				<Concept>
-					<ConceptIdMappers>
-						<Mapper>
-							<Lookup>Specialty</Lookup>
-						</Mapper>
-					</ConceptIdMappers>
-					<Fields>
-						<Field key="specialty_source_value"/>
-					</Fields>
-				</Concept>
-			</Concepts>
-		</ProviderDefinition>
-	</Providers>
+﻿<QueryDefinition>  
+<Query>  
+   WITH cte_union AS (  
+   select prov_rendering_npi as provider_npi, prov_rendering_vendor_specialty as provider_specialty, prov_facility_npi, created  
+   from {sc}.medical_claims  
+   where prov_rendering_npi is not null and prov_rendering_npi ~ '^[0-9]+$' and length(prov_rendering_npi) &lt;= 10  
+   union  
+   select prov_billing_npi as provider_npi,  prov_billing_vendor_specialty as provider_specialty, prov_facility_npi, created  
+   from {sc}.medical_claims  
+   where prov_billing_npi is not null and prov_billing_npi ~ '^[0-9]+$' and length(prov_billing_npi) &lt;= 10  
+   union  
+   select prov_referring_npi as provider_npi,  prov_referring_vendor_specialty as provider_specialty, prov_facility_npi, created  
+   from {sc}.medical_claims  
+   where prov_referring_npi is not null and prov_referring_npi ~ '^[0-9]+$' and length(prov_referring_npi) &lt;= 10  
+   union  
+   select prov_prescribing_npi as provider_npi, prov_prescribing_vendor_specialty as provider_specialty, null as prov_facility_npi, '1900-01-01'::DATE as created  
+   from {sc}.pharmacy_claims  
+   where prov_prescribing_npi is not null and prov_prescribing_npi ~ '^[0-9]+$' and length(prov_prescribing_npi) &lt;= 10  
+   ),  
+   cte_facility AS (  
+   SELECT  
+   provider_npi,  
+   MAX(prov_facility_npi) AS prov_facility_npi  
+   FROM cte_union  
+   WHERE created = (  
+   SELECT MAX(created)  
+   FROM cte_union t2  
+   WHERE t2.provider_npi = cte_union.provider_npi  
+   and prov_facility_npi is not null  
+   )  
+   GROUP BY provider_npi  
+   HAVING COUNT(DISTINCT prov_facility_npi) = 1  
+   ),  
+   cte_specialty AS (  
+   select provider_npi, provider_specialty from  
+   (  
+   SELECT  
+   provider_npi,  
+   provider_specialty,  
+   ROW_NUMBER() OVER (PARTITION BY provider_npi ORDER BY freq DESC, provider_specialty) AS rn  
+   FROM (  
+   SELECT  
+   provider_npi,  
+   provider_specialty,  
+   COUNT(*) AS freq  
+   FROM cte_union  
+   WHERE LOWER(provider_specialty) NOT IN ('undefined', 'unknown physician specialty', '')  
+   GROUP BY provider_npi, provider_specialty  
+   ) t  
+   )  
+   where rn = 1  
+   )  
+   select  
+   CAST(u.provider_npi as BIGINT)AS provider_id,  
+   u.provider_npi as provider_source_value,  
+   CASE   
+       WHEN f.prov_facility_npi ~ '^[0-9]+$' AND length(f.prov_facility_npi) &lt;= 10
+       THEN cast(f.prov_facility_npi as BIGINT)  
+       ELSE NULL   
+   END as care_site_id,
+   s.provider_specialty as specialty_source_value  
+   FROM (SELECT DISTINCT provider_npi FROM cte_union) u  
+   LEFT JOIN cte_facility f ON u.provider_npi = f.provider_npi  
+   LEFT JOIN cte_specialty s ON u.provider_npi = s.provider_npi  
+ </Query>  
+<Providers>  
+	<ProviderDefinition>  
+		<Id>provider_id</Id>  
+		<NPI>provider_source_value</NPI>  
+		<ProviderSourceValue>provider_source_value</ProviderSourceValue>  
+		<CareSiteId>care_site_id</CareSiteId>  
+		<Concepts>  
+			<Concept>  
+				<ConceptIdMappers>  
+					<Mapper>  
+						<Lookup>Specialty</Lookup>  
+					</Mapper>  
+				</ConceptIdMappers>  
+				<Fields>  
+					<Field key="specialty_source_value"/>  
+				</Fields>  
+			</Concept>  
+		</Concepts>  
+	</ProviderDefinition>  
+</Providers>  
 </QueryDefinition>
