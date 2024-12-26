@@ -10,9 +10,9 @@
     claim_type,
 
     CAST(COALESCE(
-        CASE WHEN prov_rendering_npi ~ '^[0-9]+$' THEN prov_rendering_npi ELSE NULL END,
-        CASE WHEN prov_billing_npi ~ '^[0-9]+$' THEN prov_billing_npi ELSE NULL END,
-        CASE WHEN prov_referring_npi ~ '^[0-9]+$' THEN prov_referring_npi ELSE NULL END
+    CASE WHEN prov_rendering_npi ~ '^[0-9]+$' THEN prov_rendering_npi ELSE NULL END,
+    CASE WHEN prov_billing_npi ~ '^[0-9]+$' THEN prov_billing_npi ELSE NULL END,
+    CASE WHEN prov_referring_npi ~ '^[0-9]+$' THEN prov_referring_npi ELSE NULL END
     ) as BIGINT) as provider_id,
     CAST(CASE WHEN prov_facility_npi ~ '^[0-9]+$' THEN prov_facility_npi ELSE NULL END as BIGINT) as care_site_id,
 
@@ -34,8 +34,8 @@
 
     COALESCE(procedure_modifier_1,  procedure_modifier_2,  procedure_modifier_3,  procedure_modifier_4) as modifier_source_value,
 
-    inst_type_of_bill_std_id,
-    place_of_service_std_id,
+    COALESCE(inst_type_of_bill_std_id, ' ') as inst_type_of_bill_std_id,
+    COALESCE(place_of_service_std_id, ' ') as place_of_service_std_id,
     case
     when date_service_end is null then date_service
     else date_service_end
