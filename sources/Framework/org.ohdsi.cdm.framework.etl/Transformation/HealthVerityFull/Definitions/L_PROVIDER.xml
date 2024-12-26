@@ -51,11 +51,11 @@
     where rn = 1
     )
     select
-    CAST(u.provider_npi as BIGINT)AS provider_id,
+    CAST(left(u.provider_npi, 15) as BIGINT) AS provider_id,
     u.provider_npi as provider_source_value,
     CASE 
         WHEN f.prov_facility_npi ~ '^[0-9]+$' 
-        THEN cast(f.prov_facility_npi as BIGINT)
+        THEN cast(left(f.prov_facility_npi, 15) as BIGINT)
         ELSE NULL 
     END as care_site_id,
     s.provider_specialty as specialty_source_value

@@ -1,7 +1,7 @@
 ﻿<QueryDefinition>
    <Query>
      select
-     cast(care_site_source_value as BIGINT) as care_site_id, care_site_source_value, care_site_name, place_of_service_source_value
+     cast(left(care_site_source_value, 15) as BIGINT) as care_site_id, care_site_source_value, care_site_name, place_of_service_source_value
      from
      (
      select ROW_NUMBER() OVER(PARTITION BY care_site_source_value ORDER BY rnk) AS rn2, *  from

@@ -9,12 +9,12 @@
     ndc_code,
     claim_type,
 
-    CAST(COALESCE(
+    CAST(LEFT(COALESCE(
     CASE WHEN prov_rendering_npi ~ '^[0-9]+$' THEN prov_rendering_npi ELSE NULL END,
     CASE WHEN prov_billing_npi ~ '^[0-9]+$' THEN prov_billing_npi ELSE NULL END,
     CASE WHEN prov_referring_npi ~ '^[0-9]+$' THEN prov_referring_npi ELSE NULL END
-    ) as BIGINT) as provider_id,
-    CAST(CASE WHEN prov_facility_npi ~ '^[0-9]+$' THEN prov_facility_npi ELSE NULL END as BIGINT) as care_site_id,
+    ), 15) as BIGINT) as provider_id,
+    CAST(LEFT(CASE WHEN prov_facility_npi ~ '^[0-9]+$' THEN prov_facility_npi ELSE NULL END, 15) as BIGINT) as care_site_id,
 
     case
     when lower(claim_type) = 'p' then 32871
