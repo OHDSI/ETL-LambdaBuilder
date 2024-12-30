@@ -481,7 +481,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerityFull
             {
                 if (person.YearOfBirth.HasValue && person.YearOfBirth.Value > 0 && person.YearOfBirth > death.StartDate.Year)
                     death = null;
-                if (death.StartDate.Date > Vendor.SourceReleaseDate.Value.Date)
+
+                if (death != null && death.StartDate.Date > Vendor.SourceReleaseDate.Value.Date)
                     death = null;
             }
 
