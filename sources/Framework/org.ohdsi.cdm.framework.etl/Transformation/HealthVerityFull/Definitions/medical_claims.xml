@@ -5,7 +5,7 @@
     hvid,
     date_service,
     trim(replace(replace(replace(diagnosis_code, chr(9), ' '), chr(10), ' '), chr(13), ' ')) diagnosis_code,
-    procedure_code,
+    trim(replace(replace(replace(procedure_code, chr(9), ' '), chr(10), ' '), chr(13), ' ')) procedure_code,
     ndc_code,
     claim_type,
 
