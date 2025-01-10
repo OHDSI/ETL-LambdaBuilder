@@ -1,0 +1,453 @@
+source_code	source_concept_id	source_vocabulary_id	source_code_description	target_concept_id	target_vocabulary_id	valid_start_date	valid_end_date	invalid_reason
+acantholytic squamous cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	acantholytic squamous cell carcinoma	4300558	SNOMED	2023-08-02	2099-12-31	
+acute leukemia	0	JNJ_OPTUM_EHR_ONCNHC	acute leukemia	138708	SNOMED	2023-08-02	2099-12-31	
+acute lymphocytic leukemia	0	JNJ_OPTUM_EHR_ONCNHC	acute lymphocytic leukemia	134305	SNOMED	2023-08-02	2099-12-31	
+acute myelomonocytic leukemia	0	JNJ_OPTUM_EHR_ONCNHC	acute myelomonocytic leukemia	4097706	SNOMED	2023-08-02	2099-12-31	
+acute promyelocytic leukemia	0	JNJ_OPTUM_EHR_ONCNHC	acute promyelocytic leukemia	140352	SNOMED	2023-08-02	2099-12-31	
+adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	adenocarcinoma	40484156	SNOMED	2023-08-02	2099-12-31	
+adenoma	0	JNJ_OPTUM_EHR_ONCNHC	adenoma	40481474	SNOMED	2023-08-02	2099-12-31	
+adenosquamous carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	adenosquamous carcinoma	4298029	SNOMED	2023-08-02	2099-12-31	
+amelanotic melanoma	0	JNJ_OPTUM_EHR_ONCNHC	amelanotic melanoma	4080901	SNOMED	2023-08-02	2099-12-31	
+ampulla of vater adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	ampulla of vater adenocarcinoma	36715928	SNOMED	2023-08-02	2099-12-31	
+anal canal squamous cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	anal canal squamous cell carcinoma	4116241	SNOMED	2023-08-02	2099-12-31	
+anaplastic large cell lymphoma	0	JNJ_OPTUM_EHR_ONCNHC	anaplastic large cell lymphoma	441235	SNOMED	2023-08-02	2024-03-13	D
+anaplastic large cell lymphoma	0	JNJ_OPTUM_EHR_ONCNHC	anaplastic large cell lymphoma	432571	SNOMED	2024-03-13	2099-12-31	
+angioimmunoblastic t-cell lymphoma	0	JNJ_OPTUM_EHR_ONCNHC	angioimmunoblastic t-cell lymphoma	4184976	SNOMED	2023-08-02	2099-12-31	
+angiosarcoma	0	JNJ_OPTUM_EHR_ONCNHC	angiosarcoma	4297200	SNOMED	2023-08-02	2099-12-31	
+anorectal adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	anorectal adenocarcinoma	40487050	SNOMED	2023-08-02	2099-12-31	
+anorectal squamous cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	anorectal squamous cell carcinoma	35624314	SNOMED	2023-08-02	2099-12-31	
+anus neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	anus neoplasm	4129882	SNOMED	2023-08-02	2099-12-31	
+anus squamous cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	anus squamous cell carcinoma	36716972	SNOMED	2023-08-02	2099-12-31	
+appendix adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	appendix adenocarcinoma	4184849	SNOMED	2023-08-02	2099-12-31	
+back basal cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	back basal cell carcinoma	4307538	SNOMED	2023-08-02	2099-12-31	
+basal cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	basal cell carcinoma	42513061	ICDO3	2023-08-02	2099-12-31	
+b-cell lymphomas	0	JNJ_OPTUM_EHR_ONCNHC	b-cell lymphomas	434592	SNOMED	2023-08-02	2099-12-31	
+benign adenoma	0	JNJ_OPTUM_EHR_ONCNHC	benign adenoma	40481474	SNOMED	2023-08-02	2099-12-31	
+benign ascending colon carcinoid tumor	0	JNJ_OPTUM_EHR_ONCNHC	benign ascending colon carcinoid tumor	760937	SNOMED	2023-08-02	2099-12-31	
+benign ascending colon neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	benign ascending colon neoplasm	442111	SNOMED	2023-08-02	2099-12-31	
+benign bladder neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	benign bladder neoplasm	201824	SNOMED	2023-08-02	2099-12-31	
+benign carcinoid tumor	0	JNJ_OPTUM_EHR_ONCNHC	benign carcinoid tumor	37018338	SNOMED	2023-08-02	2024-09-10	D
+benign carcinoid tumor	0	JNJ_OPTUM_EHR_ONCNHC	benign carcinoid tumor	1244536	SNOMED	2024-09-10	2099-12-31	
+benign cecum neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	benign cecum neoplasm	442108	SNOMED	2023-08-02	2099-12-31	
+benign colon neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	benign colon neoplasm	77234	SNOMED	2023-08-02	2099-12-31	
+benign descending colon neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	benign descending colon neoplasm	442104	SNOMED	2023-08-02	2099-12-31	
+benign kidney neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	benign kidney neoplasm	195498	SNOMED	2023-08-02	2099-12-31	
+benign left adrenal gland neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	benign left adrenal gland neoplasm	37117095	SNOMED	2023-08-02	2099-12-31	
+benign left mammary neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	benign left mammary neoplasm	37208024	SNOMED	2023-08-02	2099-12-31	
+benign lung neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	benign lung neoplasm	4242353	SNOMED	2023-08-02	2099-12-31	
+benign mammary neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	benign mammary neoplasm	72576	SNOMED	2023-08-02	2099-12-31	
+benign meningioma	0	JNJ_OPTUM_EHR_ONCNHC	benign meningioma	37110097	SNOMED	2023-08-02	2099-12-31	
+benign ovarian neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	benign ovarian neoplasm	199764	SNOMED	2023-08-02	2099-12-31	
+benign pheochromocytoma	0	JNJ_OPTUM_EHR_ONCNHC	benign pheochromocytoma	4098959	SNOMED	2023-08-02	2099-12-31	
+benign prostatic neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	benign prostatic neoplasm	197237	SNOMED	2023-08-02	2099-12-31	
+benign rectal neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	benign rectal neoplasm	444457	SNOMED	2023-08-02	2099-12-31	
+benign right mammary neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	benign right mammary neoplasm	37208040	SNOMED	2023-08-02	2099-12-31	
+benign sigmoid neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	benign sigmoid neoplasm	444459	SNOMED	2023-08-02	2099-12-31	
+benign skin neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	benign skin neoplasm	138102	SNOMED	2023-08-02	2099-12-31	
+benign stomach neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	benign stomach neoplasm	196061	SNOMED	2023-08-02	2099-12-31	
+benign thymoma	0	JNJ_OPTUM_EHR_ONCNHC	benign thymoma	37205048	SNOMED	2023-08-02	2099-12-31	
+benign thyroid gland neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	benign thyroid gland neoplasm	141249	SNOMED	2023-08-02	2099-12-31	
+benign tongue neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	benign tongue neoplasm	440668	SNOMED	2023-08-02	2099-12-31	
+benign transverse colon neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	benign transverse colon neoplasm	444444	SNOMED	2023-08-02	2099-12-31	
+benign tubular adenoma	0	JNJ_OPTUM_EHR_ONCNHC	benign tubular adenoma	40481474	SNOMED	2023-08-02	2099-12-31	
+bilateral mammary neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	bilateral mammary neoplasm	4162253	SNOMED	2023-08-02	2099-12-31	
+bladder adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	bladder adenocarcinoma	4111028	SNOMED	2023-08-02	2099-12-31	
+bladder carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	bladder carcinoma	4113110	SNOMED	2023-08-02	2099-12-31	
+bladder neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	bladder neoplasm	200680	SNOMED	2023-08-02	2099-12-31	
+bladder transitional cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	bladder transitional cell carcinoma	4113111	SNOMED	2023-08-02	2099-12-31	
+brain neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	brain neoplasm	373724	SNOMED	2023-08-02	2099-12-31	
+bronchial carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	bronchial carcinoma	4111805	SNOMED	2023-08-02	2099-12-31	
+bronchogenic carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	bronchogenic carcinoma	4111805	SNOMED	2023-08-02	2099-12-31	
+burkitt lymphoma	0	JNJ_OPTUM_EHR_ONCNHC	burkitt lymphoma	4041800	SNOMED	2023-08-02	2099-12-31	
+carcinoid tumor	0	JNJ_OPTUM_EHR_ONCNHC	carcinoid tumor	40481907	SNOMED	2023-08-02	2024-09-10	D
+carcinoid tumor	0	JNJ_OPTUM_EHR_ONCNHC	carcinoid tumor	1244536	SNOMED	2024-09-10	2099-12-31	
+carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	carcinoma	36716620	SNOMED	2023-08-02	2099-12-31	
+cecum adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	cecum adenocarcinoma	4184850	SNOMED	2023-08-02	2099-12-31	
+cholangiocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	cholangiocarcinoma	4208660	SNOMED	2023-08-02	2099-12-31	
+chondrosarcoma	0	JNJ_OPTUM_EHR_ONCNHC	chondrosarcoma	40481938	SNOMED	2023-08-02	2099-12-31	
+choriocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	choriocarcinoma	4092517	SNOMED	2023-08-02	2099-12-31	
+chronic lymphocytic leukemia	0	JNJ_OPTUM_EHR_ONCNHC	chronic lymphocytic leukemia	138379	SNOMED	2023-08-02	2099-12-31	
+clear cell	0	JNJ_OPTUM_EHR_ONCNHC	clear cell	0	None	2023-08-02	2099-12-31	
+clear cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	clear cell carcinoma	4110880	SNOMED	2023-08-02	2099-12-31	
+clear cell papillary renal cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	clear cell papillary renal cell carcinoma	37116954	SNOMED	2023-08-02	2099-12-31	
+clear cell sarcoma	0	JNJ_OPTUM_EHR_ONCNHC	clear cell sarcoma	4299430	SNOMED	2023-08-02	2099-12-31	
+colon adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	colon adenocarcinoma	197500	SNOMED	2023-08-02	2099-12-31	
+colon carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	colon carcinoma	4149847	SNOMED	2023-08-02	2099-12-31	
+colon neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	colon neoplasm	4130995	SNOMED	2023-08-02	2099-12-31	
+colorectal adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	colorectal adenocarcinoma	40487050	SNOMED	2023-08-02	2099-12-31	
+colorectal neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	colorectal neoplasm	37018659	SNOMED	2023-08-02	2099-12-31	
+conventional (clear cell) renal cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	conventional (clear cell) renal cell carcinoma	4110880	SNOMED	2023-08-02	2099-12-31	
+dermatofibrosarcoma protuberans	0	JNJ_OPTUM_EHR_ONCNHC	dermatofibrosarcoma protuberans	4174440	SNOMED	2023-08-02	2099-12-31	
+desmoplastic small round cell tumor	0	JNJ_OPTUM_EHR_ONCNHC	desmoplastic small round cell tumor	603122	SNOMED	2023-08-02	2099-12-31	
+diffuse large b-cell lymphoma	0	JNJ_OPTUM_EHR_ONCNHC	diffuse large b-cell lymphoma	44808122	SNOMED	2023-08-02	2024-03-13	D
+diffuse large b-cell lymphoma	0	JNJ_OPTUM_EHR_ONCNHC	diffuse large b-cell lymphoma	4300704	SNOMED	2024-03-13	2099-12-31	
+ductal carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	ductal carcinoma	0	None	2023-08-02	2099-12-31	
+embryonal carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	embryonal carcinoma	607975	SNOMED	2023-08-02	2099-12-31	
+endometrial adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	endometrial adenocarcinoma	4048226	SNOMED	2023-08-02	2099-12-31	
+endometrial carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	endometrial carcinoma	4110871	SNOMED	2023-08-02	2099-12-31	
+endometrial carcinosarcoma	0	JNJ_OPTUM_EHR_ONCNHC	endometrial carcinosarcoma	37115735	SNOMED	2023-08-02	2099-12-31	
+endometrial endometrial adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	endometrial endometrial adenocarcinoma	4048226	SNOMED	2023-08-02	2099-12-31	
+endometrial endometrial endometrioid adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	endometrial endometrial endometrioid adenocarcinoma	42538693	SNOMED	2023-08-02	2099-12-31	
+endometrial endometrioid adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	endometrial endometrioid adenocarcinoma	42538693	SNOMED	2023-08-02	2099-12-31	
+endometrial leiomyosarcoma	0	JNJ_OPTUM_EHR_ONCNHC	endometrial leiomyosarcoma	36560345	ICDO3	2023-08-02	2099-12-31	
+endometrial neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	endometrial neoplasm	4247238	SNOMED	2023-08-02	2099-12-31	
+endometrial squamous cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	endometrial squamous cell carcinoma	37116596	SNOMED	2023-08-02	2099-12-31	
+endometrial stromal sarcoma	0	JNJ_OPTUM_EHR_ONCNHC	endometrial stromal sarcoma	44783285	SNOMED	2023-08-02	2099-12-31	
+endometrioid adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	endometrioid adenocarcinoma	42538693	SNOMED	2023-08-02	2099-12-31	
+epithelioid hemangioendothelioma	0	JNJ_OPTUM_EHR_ONCNHC	epithelioid hemangioendothelioma	4298140	SNOMED	2023-08-02	2099-12-31	
+epithelioid sarcoma	0	JNJ_OPTUM_EHR_ONCNHC	epithelioid sarcoma	37204279	SNOMED	2023-08-02	2099-12-31	
+esophageal adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	esophageal adenocarcinoma	4081043	SNOMED	2023-08-02	2099-12-31	
+esophageal neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	esophageal neoplasm	26638	SNOMED	2023-08-02	2099-12-31	
+esophageal squamous cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	esophageal squamous cell carcinoma	4081044	SNOMED	2023-08-02	2099-12-31	
+esophagogastric junction adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	esophagogastric junction adenocarcinoma	36717176	SNOMED	2023-08-02	2099-12-31	
+ewing's sarcoma	0	JNJ_OPTUM_EHR_ONCNHC	ewing's sarcoma	4144193	SNOMED	2023-08-02	2099-12-31	
+extraskeletal myxoid chondrosarcoma	0	JNJ_OPTUM_EHR_ONCNHC	extraskeletal myxoid chondrosarcoma	4297345	SNOMED	2023-08-02	2099-12-31	
+facial basal cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	facial basal cell carcinoma	4299417	SNOMED	2023-08-02	2099-12-31	
+facial neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	facial neoplasm	4129078	SNOMED	2023-08-02	2099-12-31	
+facial superficial malignant fibrous histiocytoma of skin	0	JNJ_OPTUM_EHR_ONCNHC	facial superficial malignant fibrous histiocytoma of skin	4301538	SNOMED	2023-08-02	2099-12-31	
+fallopian tubes neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	fallopian tubes neoplasm	4130533	SNOMED	2023-08-02	2099-12-31	
+follicular thyroid carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	follicular thyroid carcinoma	4111010	SNOMED	2023-08-02	2099-12-31	
+forehead basal cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	forehead basal cell carcinoma	4298033	SNOMED	2023-08-02	2099-12-31	
+forehead squamous cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	forehead squamous cell carcinoma	4300556	SNOMED	2023-08-02	2099-12-31	
+gastrointestinal gastrointestinal stromal sarcoma	0	JNJ_OPTUM_EHR_ONCNHC	gastrointestinal gastrointestinal stromal sarcoma	4170421	SNOMED	2023-08-02	2099-12-31	
+gastrointestinal stromal sarcoma	0	JNJ_OPTUM_EHR_ONCNHC	gastrointestinal stromal sarcoma	4170421	SNOMED	2023-08-02	2099-12-31	
+germ cell tumor	0	JNJ_OPTUM_EHR_ONCNHC	germ cell tumor	4294433	SNOMED	2023-08-02	2099-12-31	
+glioblastoma	0	JNJ_OPTUM_EHR_ONCNHC	glioblastoma	40571980	SNOMED	2023-08-02	2099-12-31	
+glioma	0	JNJ_OPTUM_EHR_ONCNHC	glioma	40571981	SNOMED	2023-08-02	2099-12-31	
+granulocytic sarcoma	0	JNJ_OPTUM_EHR_ONCNHC	granulocytic sarcoma	140967	SNOMED	2023-08-02	2099-12-31	
+hairy cell leukemia	0	JNJ_OPTUM_EHR_ONCNHC	hairy cell leukemia	4038845	SNOMED	2023-08-02	2099-12-31	
+head and neck neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	head and neck neoplasm	4111017	SNOMED	2023-08-02	2099-12-31	
+hepatocellular carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	hepatocellular carcinoma	4001171	SNOMED	2023-08-02	2099-12-31	
+histiocytic sarcoma	0	JNJ_OPTUM_EHR_ONCNHC	histiocytic sarcoma	4002494	SNOMED	2023-08-02	2099-12-31	
+hodgkin disease	0	JNJ_OPTUM_EHR_ONCNHC	hodgkin disease	4038835	SNOMED	2023-08-02	2099-12-31	
+in situ adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	in situ adenocarcinoma	42513094	ICDO3	2023-08-02	2099-12-31	
+in situ back melanoma	0	JNJ_OPTUM_EHR_ONCNHC	in situ back melanoma	4199817	SNOMED	2023-08-02	2099-12-31	
+in situ basal cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	in situ basal cell carcinoma	37399589	SNOMED	2023-08-02	2099-12-31	
+in situ bladder carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	in situ bladder carcinoma	192855	SNOMED	2023-08-02	2099-12-31	
+in situ carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	in situ carcinoma	433435	SNOMED	2023-08-02	2099-12-31	
+in situ colon carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	in situ colon carcinoma	75512	SNOMED	2023-08-02	2099-12-31	
+in situ ductal carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	in situ ductal carcinoma	4001670	SNOMED	2023-08-02	2099-12-31	
+in situ eyelid melanoma	0	JNJ_OPTUM_EHR_ONCNHC	in situ eyelid melanoma	44501902	ICDO3	2023-08-02	2099-12-31	
+in situ facial melanoma	0	JNJ_OPTUM_EHR_ONCNHC	in situ facial melanoma	4031107	SNOMED	2023-08-02	2099-12-31	
+in situ intraductal carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	in situ intraductal carcinoma	4001670	SNOMED	2023-08-02	2099-12-31	
+in situ left forearm squamous cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	in situ left forearm squamous cell carcinoma	40390738	SNOMED	2023-08-02	2099-12-31	
+in situ left mammary carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	in situ left mammary carcinoma	601142	SNOMED	2023-08-02	2099-12-31	
+in situ left mammary ductal carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	in situ left mammary ductal carcinoma	759930	SNOMED	2023-08-02	2099-12-31	
+in situ left mammary intraductal carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	in situ left mammary intraductal carcinoma	759930	SNOMED	2023-08-02	2099-12-31	
+in situ left mammary lobular carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	in situ left mammary lobular carcinoma	37208045	SNOMED	2023-08-02	2099-12-31	
+in situ left pyriform sinus carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	in situ left pyriform sinus carcinoma	4245561	SNOMED	2023-08-02	2099-12-31	
+in situ lobular carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	in situ lobular carcinoma	4001315	SNOMED	2023-08-02	2099-12-31	
+in situ lung carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	in situ lung carcinoma	255507	SNOMED	2023-08-02	2099-12-31	
+in situ mammary carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	in situ mammary carcinoma	81250	SNOMED	2023-08-02	2099-12-31	
+in situ mammary ductal carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	in situ mammary ductal carcinoma	4001670	SNOMED	2023-08-02	2099-12-31	
+in situ mammary intraductal carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	in situ mammary intraductal carcinoma	4001670	SNOMED	2023-08-02	2099-12-31	
+in situ mammary lobular carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	in situ mammary lobular carcinoma	4001315	SNOMED	2023-08-02	2099-12-31	
+in situ mammary neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	in situ mammary neoplasm	4001670	SNOMED	2023-08-02	2099-12-31	
+in situ melanoma	0	JNJ_OPTUM_EHR_ONCNHC	in situ melanoma	40391314	SNOMED	2023-08-02	2099-12-31	
+in situ prostatic carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	in situ prostatic carcinoma	200970	SNOMED	2023-08-02	2099-12-31	
+in situ right cheek squamous cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	in situ right cheek squamous cell carcinoma	4112745	SNOMED	2023-08-02	2099-12-31	
+in situ right forearm squamous cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	in situ right forearm squamous cell carcinoma	40390738	SNOMED	2023-08-02	2099-12-31	
+in situ right mammary carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	in situ right mammary carcinoma	609066	SNOMED	2023-08-02	2099-12-31	
+in situ right mammary ductal carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	in situ right mammary ductal carcinoma	759931	SNOMED	2023-08-02	2099-12-31	
+in situ right mammary intraductal carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	in situ right mammary intraductal carcinoma	759931	SNOMED	2023-08-02	2099-12-31	
+in situ right mammary lobular carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	in situ right mammary lobular carcinoma	37208046	SNOMED	2023-08-02	2099-12-31	
+in situ skin carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	in situ skin carcinoma	138996	SNOMED	2023-08-02	2099-12-31	
+in situ skin melanoma	0	JNJ_OPTUM_EHR_ONCNHC	in situ skin melanoma	4031756	SNOMED	2023-08-02	2099-12-31	
+in situ skin of scalp squamous cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	in situ skin of scalp squamous cell carcinoma	4112745	SNOMED	2023-08-02	2099-12-31	
+in situ skin squamous cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	in situ skin squamous cell carcinoma	4112745	SNOMED	2023-08-02	2099-12-31	
+in situ squamous cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	in situ squamous cell carcinoma	40390738	SNOMED	2023-08-02	2099-12-31	
+in situ squamous epithelial cells	0	JNJ_OPTUM_EHR_ONCNHC	in situ squamous epithelial cells	40390738	SNOMED	2023-08-02	2099-12-31	
+in situ transitional cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	in situ transitional cell carcinoma	42513082	ICDO3	2023-08-02	2099-12-31	
+in situ uterine adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	in situ uterine adenocarcinoma	44505827	ICDO3	2023-08-02	2099-12-31	
+in situ uterine carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	in situ uterine carcinoma	192581	SNOMED	2023-08-02	2099-12-31	
+intestine gastrointestinal stromal sarcoma	0	JNJ_OPTUM_EHR_ONCNHC	intestine gastrointestinal stromal sarcoma	4170421	SNOMED	2023-08-02	2099-12-31	
+kaposi sarcoma	0	JNJ_OPTUM_EHR_ONCNHC	kaposi sarcoma	434584	SNOMED	2023-08-02	2099-12-31	
+kidney neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	kidney neoplasm	4131748	SNOMED	2023-08-02	2099-12-31	
+langerhans cell sarcoma	0	JNJ_OPTUM_EHR_ONCNHC	langerhans cell sarcoma	37110403	SNOMED	2023-08-02	2099-12-31	
+large b-cell lymphoma	0	JNJ_OPTUM_EHR_ONCNHC	large b-cell lymphoma	44808122	SNOMED	2023-08-02	2024-03-13	D
+large b-cell lymphoma	0	JNJ_OPTUM_EHR_ONCNHC	large b-cell lymphoma	4300704	SNOMED	2024-03-13	2099-12-31	
+laryngeal carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	laryngeal carcinoma	4172359	SNOMED	2023-08-02	2099-12-31	
+laryngeal neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	laryngeal neoplasm	26052	SNOMED	2023-08-02	2099-12-31	
+laryngeal squamous cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	laryngeal squamous cell carcinoma	45768840	SNOMED	2023-08-02	2099-12-31	
+left cheek neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	left cheek neoplasm	4129243	SNOMED	2023-08-02	2099-12-31	
+left kidney neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	left kidney neoplasm	37209617	SNOMED	2023-08-02	2099-12-31	
+left kidney renal cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	left kidney renal cell carcinoma	618675	SNOMED	2023-08-02	2099-12-31	
+left lung adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	left lung adenocarcinoma	42539251	SNOMED	2023-08-02	2099-12-31	
+left lung neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	left lung neoplasm	619299	SNOMED	2023-08-02	2099-12-31	
+left lung non-small cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	left lung non-small cell carcinoma	609080	SNOMED	2023-08-02	2099-12-31	
+left lung squamous cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	left lung squamous cell carcinoma	36712815	SNOMED	2023-08-02	2099-12-31	
+left mammary carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	left mammary carcinoma	4116071	SNOMED	2023-08-02	2099-12-31	
+left mammary ductal carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	left mammary ductal carcinoma	4237178	SNOMED	2023-08-02	2099-12-31	
+left mammary lobular carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	left mammary lobular carcinoma	4080865	SNOMED	2023-08-02	2099-12-31	
+left mammary neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	left mammary neoplasm	4162253	SNOMED	2023-08-02	2099-12-31	
+leiomyosarcoma	0	JNJ_OPTUM_EHR_ONCNHC	leiomyosarcoma	40482829	SNOMED	2023-08-02	2099-12-31	
+lentigo maligna melanoma	0	JNJ_OPTUM_EHR_ONCNHC	lentigo maligna melanoma	4116198	SNOMED	2023-08-02	2099-12-31	
+leukemia	0	JNJ_OPTUM_EHR_ONCNHC	leukemia	317510	SNOMED	2023-08-02	2099-12-31	
+leukemia, myelocytic, acute	0	JNJ_OPTUM_EHR_ONCNHC	leukemia, myelocytic, acute	140352	SNOMED	2023-08-02	2099-12-31	
+leukemia, myelomonocytic, chronic	0	JNJ_OPTUM_EHR_ONCNHC	leukemia, myelomonocytic, chronic	4133599	SNOMED	2023-08-02	2099-12-31	
+lipoma	0	JNJ_OPTUM_EHR_ONCNHC	lipoma	440358	SNOMED	2023-08-02	2099-12-31	
+liposarcoma	0	JNJ_OPTUM_EHR_ONCNHC	liposarcoma	4116070	SNOMED	2023-08-02	2024-03-13	D
+liposarcoma	0	JNJ_OPTUM_EHR_ONCNHC	liposarcoma	4110857	SNOMED	2024-03-13	2099-12-31	
+liver carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	liver carcinoma	4001171	SNOMED	2023-08-02	2099-12-31	
+liver neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	liver neoplasm	4130518	SNOMED	2023-08-02	2099-12-31	
+lobular carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	lobular carcinoma	4080865	SNOMED	2023-08-02	2099-12-31	
+lung adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	lung adenocarcinoma	4112738	SNOMED	2023-08-02	2099-12-31	
+lung carcinoid tumor	0	JNJ_OPTUM_EHR_ONCNHC	lung carcinoid tumor	257513	SNOMED	2023-08-02	2099-12-31	
+lung carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	lung carcinoma	40492938	SNOMED	2023-08-02	2099-12-31	
+lung neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	lung neoplasm	4128888	SNOMED	2023-08-02	2099-12-31	
+lung non-small cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	lung non-small cell carcinoma	4115276	SNOMED	2023-08-02	2099-12-31	
+lung small cell	0	JNJ_OPTUM_EHR_ONCNHC	lung small cell	4110591	SNOMED	2023-08-02	2099-12-31	
+lung small cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	lung small cell carcinoma	4110591	SNOMED	2023-08-02	2099-12-31	
+lung squamous cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	lung squamous cell carcinoma	4110705	SNOMED	2023-08-02	2099-12-31	
+lung squamous epithelial cells	0	JNJ_OPTUM_EHR_ONCNHC	lung squamous epithelial cells	4110705	SNOMED	2023-08-02	2099-12-31	
+lymphoepithelial carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	lymphoepithelial carcinoma	35622758	SNOMED	2023-08-02	2099-12-31	
+lymphoid leukemia	0	JNJ_OPTUM_EHR_ONCNHC	lymphoid leukemia	132853	SNOMED	2023-08-02	2099-12-31	
+lymphoma	0	JNJ_OPTUM_EHR_ONCNHC	lymphoma	432571	SNOMED	2023-08-02	2099-12-31	
+lymphoma, follicular	0	JNJ_OPTUM_EHR_ONCNHC	lymphoma, follicular	4147411	SNOMED	2023-08-02	2099-12-31	
+lymphoma, non-hodgkin	0	JNJ_OPTUM_EHR_ONCNHC	lymphoma, non-hodgkin	4038838	SNOMED	2023-08-02	2099-12-31	
+lymphoplasmacytic lymphoma	0	JNJ_OPTUM_EHR_ONCNHC	lymphoplasmacytic lymphoma	4141255	SNOMED	2023-08-02	2099-12-31	
+macroprolactinoma	0	JNJ_OPTUM_EHR_ONCNHC	macroprolactinoma	4102379	SNOMED	2023-08-02	2099-12-31	
+malignant adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	malignant adenocarcinoma	40484156	SNOMED	2023-08-02	2099-12-31	
+malignant anus neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant anus neoplasm	80045	SNOMED	2023-08-02	2099-12-31	
+malignant appendix neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant appendix neoplasm	433143	SNOMED	2023-08-02	2099-12-31	
+malignant arm melanoma	0	JNJ_OPTUM_EHR_ONCNHC	malignant arm melanoma	4162276	SNOMED	2023-08-02	2099-12-31	
+malignant ascending colon neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant ascending colon neoplasm	4247719	SNOMED	2023-08-02	2099-12-31	
+malignant back melanoma	0	JNJ_OPTUM_EHR_ONCNHC	malignant back melanoma	4150398	SNOMED	2023-08-02	2099-12-31	
+malignant balloon cell melanoma	0	JNJ_OPTUM_EHR_ONCNHC	malignant balloon cell melanoma	4300566	SNOMED	2023-08-02	2099-12-31	
+malignant bladder neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant bladder neoplasm	196360	SNOMED	2023-08-02	2099-12-31	
+malignant body of uterus neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant body of uterus neoplasm	4162860	SNOMED	2023-08-02	2099-12-31	
+malignant brain neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant brain neoplasm	443588	SNOMED	2023-08-02	2099-12-31	
+malignant bronchial neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant bronchial neoplasm	442139	SNOMED	2023-08-02	2099-12-31	
+malignant carcinoid tumor	0	JNJ_OPTUM_EHR_ONCNHC	malignant carcinoid tumor	40482859	SNOMED	2023-08-02	2024-09-10	D
+malignant carcinoid tumor	0	JNJ_OPTUM_EHR_ONCNHC	malignant carcinoid tumor	1244536	SNOMED	2024-09-10	2099-12-31	
+malignant cecum carcinoid tumor	0	JNJ_OPTUM_EHR_ONCNHC	malignant cecum carcinoid tumor	760959	SNOMED	2023-08-02	2099-12-31	
+malignant cecum neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant cecum neoplasm	443391	SNOMED	2023-08-02	2099-12-31	
+malignant colon neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant colon neoplasm	4180790	SNOMED	2023-08-02	2099-12-31	
+malignant colorectal neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant colorectal neoplasm	36683531	SNOMED	2023-08-02	2024-03-13	D
+malignant colorectal neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant colorectal neoplasm	37168850	SNOMED	2024-03-13	2099-12-31	
+malignant descending colon neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant descending colon neoplasm	441800	SNOMED	2023-08-02	2099-12-31	
+malignant desmoplastic melanoma	0	JNJ_OPTUM_EHR_ONCNHC	malignant desmoplastic melanoma	4298034	SNOMED	2023-08-02	2099-12-31	
+malignant endocervix neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant endocervix neoplasm	4157449	SNOMED	2023-08-02	2099-12-31	
+malignant endometrial neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant endometrial neoplasm	4247238	SNOMED	2023-08-02	2099-12-31	
+malignant esophageal neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant esophageal neoplasm	4181343	SNOMED	2023-08-02	2099-12-31	
+malignant facial melanoma	0	JNJ_OPTUM_EHR_ONCNHC	malignant facial melanoma	133713	SNOMED	2023-08-02	2099-12-31	
+malignant fallopian tubes neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant fallopian tubes neoplasm	201801	SNOMED	2023-08-02	2099-12-31	
+malignant fibrous histiocytoma	0	JNJ_OPTUM_EHR_ONCNHC	malignant fibrous histiocytoma	40481499	SNOMED	2023-08-02	2099-12-31	
+malignant forehead melanoma	0	JNJ_OPTUM_EHR_ONCNHC	malignant forehead melanoma	4095590	SNOMED	2023-08-02	2099-12-31	
+malignant gallbladder neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant gallbladder neoplasm	197806	SNOMED	2023-08-02	2099-12-31	
+malignant gastrointestinal stromal sarcoma	0	JNJ_OPTUM_EHR_ONCNHC	malignant gastrointestinal stromal sarcoma	4170421	SNOMED	2023-08-02	2099-12-31	
+malignant glioma	0	JNJ_OPTUM_EHR_ONCNHC	malignant glioma	40571981	SNOMED	2023-08-02	2099-12-31	
+malignant head of pancreas neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant head of pancreas neoplasm	440649	SNOMED	2023-08-02	2099-12-31	
+malignant hypopharyngeal neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant hypopharyngeal neoplasm	435474	SNOMED	2023-08-02	2099-12-31	
+malignant kidney neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant kidney neoplasm	198985	SNOMED	2023-08-02	2099-12-31	
+malignant laryngeal neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant laryngeal neoplasm	26052	SNOMED	2023-08-02	2099-12-31	
+malignant left forearm melanoma	0	JNJ_OPTUM_EHR_ONCNHC	malignant left forearm melanoma	604286	SNOMED	2023-08-02	2099-12-31	
+malignant left kidney neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant left kidney neoplasm	37109302	SNOMED	2023-08-02	2099-12-31	
+malignant left lung neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant left lung neoplasm	619299	SNOMED	2023-08-02	2099-12-31	
+malignant left mammary neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant left mammary neoplasm	4112853	SNOMED	2023-08-02	2099-12-31	
+malignant left ovarian neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant left ovarian neoplasm	4289681	SNOMED	2023-08-02	2099-12-31	
+malignant left shoulder melanoma	0	JNJ_OPTUM_EHR_ONCNHC	malignant left shoulder melanoma	4092371	SNOMED	2023-08-02	2099-12-31	
+malignant left testicular neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant left testicular neoplasm	619381	SNOMED	2023-08-02	2099-12-31	
+malignant left thigh melanoma	0	JNJ_OPTUM_EHR_ONCNHC	malignant left thigh melanoma	4092374	SNOMED	2023-08-02	2099-12-31	
+malignant liver neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant liver neoplasm	4246127	SNOMED	2023-08-02	2099-12-31	
+malignant lower left leg melanoma	0	JNJ_OPTUM_EHR_ONCNHC	malignant lower left leg melanoma	4095145	SNOMED	2023-08-02	2099-12-31	
+malignant lower outer mammary neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant lower outer mammary neoplasm	4188545	SNOMED	2023-08-02	2099-12-31	
+malignant lung carcinoid tumor	0	JNJ_OPTUM_EHR_ONCNHC	malignant lung carcinoid tumor	765056	SNOMED	2023-08-02	2099-12-31	
+malignant lung neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant lung neoplasm	258369	SNOMED	2023-08-02	2099-12-31	
+malignant lymphoma	0	JNJ_OPTUM_EHR_ONCNHC	malignant lymphoma	432571	SNOMED	2023-08-02	2099-12-31	
+malignant mammary melanoma	0	JNJ_OPTUM_EHR_ONCNHC	malignant mammary melanoma	4089865	SNOMED	2023-08-02	2099-12-31	
+malignant mammary neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant mammary neoplasm	4112853	SNOMED	2023-08-02	2099-12-31	
+malignant melanoma	0	JNJ_OPTUM_EHR_ONCNHC	malignant melanoma	4162276	SNOMED	2023-08-02	2099-12-31	
+malignant mesothelioma	0	JNJ_OPTUM_EHR_ONCNHC	malignant mesothelioma	4033891	SNOMED	2023-08-02	2099-12-31	
+malignant mouth neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant mouth neoplasm	25189	SNOMED	2023-08-02	2099-12-31	
+malignant mullerian mixed	0	JNJ_OPTUM_EHR_ONCNHC	malignant mullerian mixed	45773362	SNOMED	2023-08-02	2099-12-31	
+malignant nasopharyngeal neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant nasopharyngeal neoplasm	437226	SNOMED	2023-08-02	2099-12-31	
+malignant neurilemmoma	0	JNJ_OPTUM_EHR_ONCNHC	malignant neurilemmoma	4301642	SNOMED	2023-08-02	2099-12-31	
+malignant neuroendocrine carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	malignant neuroendocrine carcinoma	4102373	SNOMED	2023-08-02	2099-12-31	
+malignant oropharyngeal neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant oropharyngeal neoplasm	432833	SNOMED	2023-08-02	2099-12-31	
+malignant ovarian neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant ovarian neoplasm	200051	SNOMED	2023-08-02	2099-12-31	
+malignant pancreatic neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant pancreatic neoplasm	199754	SNOMED	2023-08-02	2099-12-31	
+malignant pheochromocytoma	0	JNJ_OPTUM_EHR_ONCNHC	malignant pheochromocytoma	37016244	SNOMED	2023-08-02	2099-12-31	
+malignant prostatic neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant prostatic neoplasm	200962	SNOMED	2023-08-02	2099-12-31	
+malignant rectal neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant rectal neoplasm	74582	SNOMED	2023-08-02	2099-12-31	
+malignant renal pelvis neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant renal pelvis neoplasm	195480	SNOMED	2023-08-02	2099-12-31	
+malignant rhabdoid tumor	0	JNJ_OPTUM_EHR_ONCNHC	malignant rhabdoid tumor	603120	SNOMED	2023-08-02	2099-12-31	
+malignant right bronchial neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant right bronchial neoplasm	601155	SNOMED	2023-08-02	2099-12-31	
+malignant right kidney neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant right kidney neoplasm	37109303	SNOMED	2023-08-02	2099-12-31	
+malignant right lung neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant right lung neoplasm	619300	SNOMED	2023-08-02	2099-12-31	
+malignant right mammary neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant right mammary neoplasm	4112853	SNOMED	2023-08-02	2099-12-31	
+malignant right ovarian neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant right ovarian neoplasm	4289392	SNOMED	2023-08-02	2099-12-31	
+malignant right shoulder melanoma	0	JNJ_OPTUM_EHR_ONCNHC	malignant right shoulder melanoma	4092371	SNOMED	2023-08-02	2099-12-31	
+malignant right testicular neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant right testicular neoplasm	44783253	SNOMED	2023-08-02	2099-12-31	
+malignant sigmoid neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant sigmoid neoplasm	436635	SNOMED	2023-08-02	2099-12-31	
+malignant skin basal cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	malignant skin basal cell carcinoma	4112752	SNOMED	2023-08-02	2099-12-31	
+malignant skin melanoma	0	JNJ_OPTUM_EHR_ONCNHC	malignant skin melanoma	141232	SNOMED	2023-08-02	2099-12-31	
+malignant skin neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant skin neoplasm	4155297	SNOMED	2023-08-02	2099-12-31	
+malignant skin of scalp melanoma	0	JNJ_OPTUM_EHR_ONCNHC	malignant skin of scalp melanoma	442143	SNOMED	2023-08-02	2099-12-31	
+malignant skin of scalp neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant skin of scalp neoplasm	439302	SNOMED	2023-08-02	2099-12-31	
+malignant small intestine carcinoid tumor	0	JNJ_OPTUM_EHR_ONCNHC	malignant small intestine carcinoid tumor	46271402	SNOMED	2023-08-02	2024-09-10	D
+malignant small intestine carcinoid tumor	0	JNJ_OPTUM_EHR_ONCNHC	malignant small intestine carcinoid tumor	1244572	SNOMED	2024-09-10	2099-12-31	
+malignant spindle cell melanoma	0	JNJ_OPTUM_EHR_ONCNHC	malignant spindle cell melanoma	4301511	SNOMED	2023-08-02	2099-12-31	
+malignant stomach neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant stomach neoplasm	196044	SNOMED	2023-08-02	2099-12-31	
+malignant supraglottis neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant supraglottis neoplasm	4092212	SNOMED	2023-08-02	2099-12-31	
+malignant teratoma	0	JNJ_OPTUM_EHR_ONCNHC	malignant teratoma	40391775	SNOMED	2023-08-02	2099-12-31	
+malignant testicular neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant testicular neoplasm	433716	SNOMED	2023-08-02	2099-12-31	
+malignant thigh melanoma	0	JNJ_OPTUM_EHR_ONCNHC	malignant thigh melanoma	4092374	SNOMED	2023-08-02	2099-12-31	
+malignant thymoma	0	JNJ_OPTUM_EHR_ONCNHC	malignant thymoma	40480205	SNOMED	2023-08-02	2099-12-31	
+malignant thyroid gland neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant thyroid gland neoplasm	133424	SNOMED	2023-08-02	2099-12-31	
+malignant tongue neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant tongue neoplasm	437498	SNOMED	2023-08-02	2099-12-31	
+malignant tonsillar neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant tonsillar neoplasm	31509	SNOMED	2023-08-02	2099-12-31	
+malignant transverse colon neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant transverse colon neoplasm	432257	SNOMED	2023-08-02	2099-12-31	
+malignant upper back melanoma	0	JNJ_OPTUM_EHR_ONCNHC	malignant upper back melanoma	4153890	SNOMED	2023-08-02	2099-12-31	
+malignant upper inner mammary neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant upper inner mammary neoplasm	4158563	SNOMED	2023-08-02	2099-12-31	
+malignant upper left arm melanoma	0	JNJ_OPTUM_EHR_ONCNHC	malignant upper left arm melanoma	35617772	SNOMED	2023-08-02	2099-12-31	
+malignant upper left lung neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant upper left lung neoplasm	37110032	SNOMED	2023-08-02	2099-12-31	
+malignant upper outer mammary neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant upper outer mammary neoplasm	4187850	SNOMED	2023-08-02	2099-12-31	
+malignant upper right lung neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant upper right lung neoplasm	37110034	SNOMED	2023-08-02	2099-12-31	
+malignant ureteral neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant ureteral neoplasm	200054	SNOMED	2023-08-02	2099-12-31	
+malignant uterine neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant uterine neoplasm	45770892	SNOMED	2023-08-02	2099-12-31	
+malignant vocal cord neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant vocal cord neoplasm	4162122	SNOMED	2023-08-02	2099-12-31	
+malignant vulvar neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	malignant vulvar neoplasm	195197	SNOMED	2023-08-02	2099-12-31	
+mammary carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	mammary carcinoma	4116071	SNOMED	2023-08-02	2099-12-31	
+mammary ductal carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	mammary ductal carcinoma	4237178	SNOMED	2023-08-02	2099-12-31	
+mammary neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	mammary neoplasm	4162253	SNOMED	2023-08-02	2099-12-31	
+mantle cell lymphoma	0	JNJ_OPTUM_EHR_ONCNHC	mantle cell lymphoma	40481901	SNOMED	2023-08-02	2099-12-31	
+marginal zone b-cell lymphoma	0	JNJ_OPTUM_EHR_ONCNHC	marginal zone b-cell lymphoma	40490918	SNOMED	2023-08-02	2099-12-31	
+mast cell sarcoma	0	JNJ_OPTUM_EHR_ONCNHC	mast cell sarcoma	4040379	SNOMED	2023-08-02	2099-12-31	
+maxillary sinus basaloid squamous cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	maxillary sinus basaloid squamous cell carcinoma	36563908	ICDO3	2023-08-02	2099-12-31	
+mediastinal (thymic) large b-cell lymphoma	0	JNJ_OPTUM_EHR_ONCNHC	mediastinal (thymic) large b-cell lymphoma	40481522	SNOMED	2023-08-02	2099-12-31	
+medulloblastoma	0	JNJ_OPTUM_EHR_ONCNHC	medulloblastoma	40481031	SNOMED	2023-08-02	2099-12-31	
+melanoma	0	JNJ_OPTUM_EHR_ONCNHC	melanoma	4162276	SNOMED	2023-08-02	2099-12-31	
+meningioma	0	JNJ_OPTUM_EHR_ONCNHC	meningioma	4131105	SNOMED	2023-08-02	2099-12-31	
+merkel cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	merkel cell carcinoma	4100425	SNOMED	2023-08-02	2099-12-31	
+mixed follicular and papillary thyroid carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	mixed follicular and papillary thyroid carcinoma	4116229	SNOMED	2023-08-02	2099-12-31	
+mixed germ cell tumor	0	JNJ_OPTUM_EHR_ONCNHC	mixed germ cell tumor	607973	SNOMED	2023-08-02	2099-12-31	
+mucinous	0	JNJ_OPTUM_EHR_ONCNHC	mucinous	0	None	2023-08-02	2099-12-31	
+mucinous adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	mucinous adenocarcinoma	42513329	ICDO3	2023-08-02	2099-12-31	
+mucosa-associated lymphoid tissue lymphoma	0	JNJ_OPTUM_EHR_ONCNHC	mucosa-associated lymphoid tissue lymphoma	40490918	SNOMED	2023-08-02	2099-12-31	
+multiple myeloma	0	JNJ_OPTUM_EHR_ONCNHC	multiple myeloma	437233	SNOMED	2023-08-02	2099-12-31	
+myelodysplastic syndrome	0	JNJ_OPTUM_EHR_ONCNHC	myelodysplastic syndrome	138994	SNOMED	2023-08-02	2099-12-31	
+myeloid leukemia	0	JNJ_OPTUM_EHR_ONCNHC	myeloid leukemia	140666	SNOMED	2023-08-02	2099-12-31	
+myeloid leukemia, chronic	0	JNJ_OPTUM_EHR_ONCNHC	myeloid leukemia, chronic	134603	SNOMED	2023-08-02	2099-12-31	
+myxoid liposarcoma	0	JNJ_OPTUM_EHR_ONCNHC	myxoid liposarcoma	4300686	SNOMED	2023-08-02	2099-12-31	
+nasopharyngeal carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	nasopharyngeal carcinoma	40486201	SNOMED	2023-08-02	2099-12-31	
+neck neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	neck neoplasm	4129244	SNOMED	2023-08-02	2099-12-31	
+neurilemmoma	0	JNJ_OPTUM_EHR_ONCNHC	neurilemmoma	40384902	SNOMED	2023-08-02	2099-12-31	
+neuroblastoma	0	JNJ_OPTUM_EHR_ONCNHC	neuroblastoma	4333766	SNOMED	2023-08-02	2099-12-31	
+neuroendocrine carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	neuroendocrine carcinoma	4102373	SNOMED	2023-08-02	2099-12-31	
+non-small cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	non-small cell carcinoma	42513028	ICDO3	2023-08-02	2099-12-31	
+nose adenosquamous carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	nose adenosquamous carcinoma	4298029	SNOMED	2023-08-02	2099-12-31	
+nose basal cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	nose basal cell carcinoma	4291454	SNOMED	2023-08-02	2099-12-31	
+nose neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	nose neoplasm	4054512	SNOMED	2023-08-02	2099-12-31	
+oligodendroglioma	0	JNJ_OPTUM_EHR_ONCNHC	oligodendroglioma	40484128	SNOMED	2023-08-02	2099-12-31	
+osteosarcoma	0	JNJ_OPTUM_EHR_ONCNHC	osteosarcoma	4146619	SNOMED	2023-08-02	2099-12-31	
+ovarian carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	ovarian carcinoma	4116073	SNOMED	2023-08-02	2099-12-31	
+ovarian clear cell adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	ovarian clear cell adenocarcinoma	35621826	SNOMED	2023-08-02	2099-12-31	
+ovarian neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	ovarian neoplasm	200051	SNOMED	2023-08-02	2099-12-31	
+ovarian serous carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	ovarian serous carcinoma	44499443	ICDO3	2023-08-02	2099-12-31	
+ovarian teratoma	0	JNJ_OPTUM_EHR_ONCNHC	ovarian teratoma	37396311	SNOMED	2023-08-02	2099-12-31	
+pancreatic acinar cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	pancreatic acinar cell carcinoma	37204852	SNOMED	2023-08-02	2099-12-31	
+pancreatic adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	pancreatic adenocarcinoma	45763891	SNOMED	2023-08-02	2099-12-31	
+pancreatic ductal adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	pancreatic ductal adenocarcinoma	37311469	SNOMED	2023-08-02	2099-12-31	
+pancreatic duct ductal adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	pancreatic duct ductal adenocarcinoma	37311469	SNOMED	2023-08-02	2099-12-31	
+pancreatic mucinous cystadenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	pancreatic mucinous cystadenocarcinoma	37206235	SNOMED	2023-08-02	2099-12-31	
+pancreatic neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	pancreatic neoplasm	199754	SNOMED	2023-08-02	2099-12-31	
+papillary	0	JNJ_OPTUM_EHR_ONCNHC	papillary	42513030	ICDO3	2023-08-02	2099-12-31	
+papillary carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	papillary carcinoma	42513030	ICDO3	2023-08-02	2099-12-31	
+papillary renal cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	papillary renal cell carcinoma	37116731	SNOMED	2023-08-02	2099-12-31	
+papillary thyroid carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	papillary thyroid carcinoma	4116228	SNOMED	2023-08-02	2099-12-31	
+papillary urothelial carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	papillary urothelial carcinoma	42513090	ICDO3	2023-08-02	2099-12-31	
+papilloma	0	JNJ_OPTUM_EHR_ONCNHC	papilloma	46273955	SNOMED	2023-08-02	2099-12-31	
+penile adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	penile adenocarcinoma	35622691	SNOMED	2023-08-02	2099-12-31	
+penile squamous cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	penile squamous cell carcinoma	4296498	SNOMED	2023-08-02	2099-12-31	
+pharyngeal neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	pharyngeal neoplasm	28083	SNOMED	2023-08-02	2099-12-31	
+pheochromocytoma	0	JNJ_OPTUM_EHR_ONCNHC	pheochromocytoma	4118993	SNOMED	2023-08-02	2099-12-31	
+plasmacytoma	0	JNJ_OPTUM_EHR_ONCNHC	plasmacytoma	4216139	SNOMED	2023-08-02	2099-12-31	
+pleomorphic liposarcoma	0	JNJ_OPTUM_EHR_ONCNHC	pleomorphic liposarcoma	4300687	SNOMED	2023-08-02	2099-12-31	
+precursor b-cell lymphoblastic leukemia	0	JNJ_OPTUM_EHR_ONCNHC	precursor b-cell lymphoblastic leukemia	4082461	SNOMED	2023-08-02	2099-12-31	
+precursor t-cell lymphoblastic lymphoma	0	JNJ_OPTUM_EHR_ONCNHC	precursor t-cell lymphoblastic lymphoma	4227963	SNOMED	2023-08-02	2099-12-31	
+primary site unknown neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	primary site unknown neoplasm	4149322	SNOMED	2023-08-02	2099-12-31	
+primary site unknown squamous cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	primary site unknown squamous cell carcinoma	36402465	ICDO3	2023-08-02	2099-12-31	
+prostatic adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	prostatic adenocarcinoma	4161028	SNOMED	2023-08-02	2099-12-31	
+prostatic carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	prostatic carcinoma	4116087	SNOMED	2023-08-02	2099-12-31	
+prostatic intraepithelial neoplasias	0	JNJ_OPTUM_EHR_ONCNHC	prostatic intraepithelial neoplasias	192681	SNOMED	2023-08-02	2099-12-31	
+prostatic neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	prostatic neoplasm	200962	SNOMED	2023-08-02	2099-12-31	
+rectal adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	rectal adenocarcinoma	4110575	SNOMED	2023-08-02	2099-12-31	
+rectal carcinoid tumor	0	JNJ_OPTUM_EHR_ONCNHC	rectal carcinoid tumor	40481907	SNOMED	2023-08-02	2024-09-10	D
+rectal carcinoid tumor	0	JNJ_OPTUM_EHR_ONCNHC	rectal carcinoid tumor	1244536	SNOMED	2024-09-10	2099-12-31	
+rectal carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	rectal carcinoma	4110575	SNOMED	2023-08-02	2099-12-31	
+rectal neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	rectal neoplasm	74582	SNOMED	2023-08-02	2099-12-31	
+rectal squamous cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	rectal squamous cell carcinoma	35624314	SNOMED	2023-08-02	2099-12-31	
+rectal tubulovillous adenoma	0	JNJ_OPTUM_EHR_ONCNHC	rectal tubulovillous adenoma	40487132	SNOMED	2023-08-02	2099-12-31	
+renal cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	renal cell carcinoma	45765451	SNOMED	2023-08-02	2099-12-31	
+retroperitoneal sarcoma	0	JNJ_OPTUM_EHR_ONCNHC	retroperitoneal sarcoma	4139395	SNOMED	2023-08-02	2099-12-31	
+rhabdomyosarcoma	0	JNJ_OPTUM_EHR_ONCNHC	rhabdomyosarcoma	4116201	SNOMED	2023-08-02	2099-12-31	
+right cheek basal cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	right cheek basal cell carcinoma	4292381	SNOMED	2023-08-02	2099-12-31	
+right cheek neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	right cheek neoplasm	4129243	SNOMED	2023-08-02	2099-12-31	
+right forehead basal cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	right forehead basal cell carcinoma	4298033	SNOMED	2023-08-02	2099-12-31	
+right kidney clear cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	right kidney clear cell carcinoma	759941	SNOMED	2023-08-02	2099-12-31	
+right kidney neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	right kidney neoplasm	37209616	SNOMED	2023-08-02	2099-12-31	
+right kidney renal cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	right kidney renal cell carcinoma	619340	SNOMED	2023-08-02	2099-12-31	
+right lung adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	right lung adenocarcinoma	36712981	SNOMED	2023-08-02	2099-12-31	
+right lung neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	right lung neoplasm	619300	SNOMED	2023-08-02	2099-12-31	
+right lung non-small cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	right lung non-small cell carcinoma	609079	SNOMED	2023-08-02	2099-12-31	
+right lung squamous cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	right lung squamous cell carcinoma	36712816	SNOMED	2023-08-02	2099-12-31	
+right mammary carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	right mammary carcinoma	4116071	SNOMED	2023-08-02	2099-12-31	
+right mammary ductal carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	right mammary ductal carcinoma	4116071	SNOMED	2023-08-02	2099-12-31	
+right mammary lobular carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	right mammary lobular carcinoma	4080865	SNOMED	2023-08-02	2099-12-31	
+right mammary neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	right mammary neoplasm	4162253	SNOMED	2023-08-02	2099-12-31	
+sarcoma	0	JNJ_OPTUM_EHR_ONCNHC	sarcoma	4311439	SNOMED	2023-08-02	2099-12-31	
+seminoma	0	JNJ_OPTUM_EHR_ONCNHC	seminoma	40482780	SNOMED	2023-08-02	2099-12-31	
+serous carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	serous carcinoma	42513304	ICDO3	2023-08-02	2099-12-31	
+serous surface papillary carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	serous surface papillary carcinoma	37396737	SNOMED	2023-08-02	2099-12-31	
+sigmoid adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	sigmoid adenocarcinoma	4200514	SNOMED	2023-08-02	2099-12-31	
+sigmoid neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	sigmoid neoplasm	4129880	SNOMED	2023-08-02	2099-12-31	
+sigmoid signet ring cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	sigmoid signet ring cell carcinoma	44503028	ICDO3	2023-08-02	2099-12-31	
+signet ring cell	0	JNJ_OPTUM_EHR_ONCNHC	signet ring cell	4300559	SNOMED	2023-08-02	2099-12-31	
+skin basal cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	skin basal cell carcinoma	4112752	SNOMED	2023-08-02	2099-12-31	
+skin melanoma	0	JNJ_OPTUM_EHR_ONCNHC	skin melanoma	141232	SNOMED	2023-08-02	2099-12-31	
+skin neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	skin neoplasm	444209	SNOMED	2023-08-02	2099-12-31	
+skin of scalp basal cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	skin of scalp basal cell carcinoma	4298032	SNOMED	2023-08-02	2099-12-31	
+skin of scalp neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	skin of scalp neoplasm	4129081	SNOMED	2023-08-02	2099-12-31	
+skin of scalp squamous cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	skin of scalp squamous cell carcinoma	4300555	SNOMED	2023-08-02	2099-12-31	
+skin squamous cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	skin squamous cell carcinoma	4111921	SNOMED	2023-08-02	2099-12-31	
+skin squamous epithelial cells	0	JNJ_OPTUM_EHR_ONCNHC	skin squamous epithelial cells	4111921	SNOMED	2023-08-02	2099-12-31	
+skin superficial malignant fibrous histiocytoma of skin	0	JNJ_OPTUM_EHR_ONCNHC	skin superficial malignant fibrous histiocytoma of skin	4301538	SNOMED	2023-08-02	2099-12-31	
+small cell	0	JNJ_OPTUM_EHR_ONCNHC	small cell	0	None	2023-08-02	2099-12-31	
+small cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	small cell carcinoma	36712771	SNOMED	2023-08-02	2099-12-31	
+small lymphocytic lymphoma	0	JNJ_OPTUM_EHR_ONCNHC	small lymphocytic lymphoma	4119130	SNOMED	2023-08-02	2099-12-31	
+smoldering myeloma	0	JNJ_OPTUM_EHR_ONCNHC	smoldering myeloma	4184985	SNOMED	2023-08-02	2099-12-31	
+squamous cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	squamous cell carcinoma	4300118	SNOMED	2023-08-02	2099-12-31	
+squamous epithelial cells	0	JNJ_OPTUM_EHR_ONCNHC	squamous epithelial cells	4300118	SNOMED	2023-08-02	2099-12-31	
+stomach adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	stomach adenocarcinoma	4248802	SNOMED	2023-08-02	2099-12-31	
+stomach neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	stomach neoplasm	4131611	SNOMED	2023-08-02	2099-12-31	
+superficial malignant fibrous histiocytoma of skin	0	JNJ_OPTUM_EHR_ONCNHC	superficial malignant fibrous histiocytoma of skin	4301538	SNOMED	2023-08-02	2099-12-31	
+supraglottis basaloid squamous cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	supraglottis basaloid squamous cell carcinoma	44500854	ICDO3	2023-08-02	2099-12-31	
+supraglottis squamous cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	supraglottis squamous cell carcinoma	45769017	SNOMED	2023-08-02	2099-12-31	
+synovial sarcoma	0	JNJ_OPTUM_EHR_ONCNHC	synovial sarcoma	4116202	SNOMED	2023-08-02	2099-12-31	
+t-cell lymphoblastic leukemia	0	JNJ_OPTUM_EHR_ONCNHC	t-cell lymphoblastic leukemia	4082462	SNOMED	2023-08-02	2099-12-31	
+t-cell lymphoma	0	JNJ_OPTUM_EHR_ONCNHC	t-cell lymphoma	4003183	SNOMED	2023-08-02	2099-12-31	
+teratoma	0	JNJ_OPTUM_EHR_ONCNHC	teratoma	36713171	SNOMED	2023-08-02	2099-12-31	
+testicular neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	testicular neoplasm	4129900	SNOMED	2023-08-02	2099-12-31	
+testicular teratoma	0	JNJ_OPTUM_EHR_ONCNHC	testicular teratoma	40456794	SNOMED	2023-08-02	2099-12-31	
+thymoma	0	JNJ_OPTUM_EHR_ONCNHC	thymoma	40485495	SNOMED	2023-08-02	2099-12-31	
+thyroid gland neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	thyroid gland neoplasm	4131909	SNOMED	2023-08-02	2099-12-31	
+thyroid gland papillary	0	JNJ_OPTUM_EHR_ONCNHC	thyroid gland papillary	4116228	SNOMED	2023-08-02	2099-12-31	
+thyroid gland papillary carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	thyroid gland papillary carcinoma	4116228	SNOMED	2023-08-02	2099-12-31	
+tongue carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	tongue carcinoma	4149844	SNOMED	2023-08-02	2099-12-31	
+tongue neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	tongue neoplasm	4130375	SNOMED	2023-08-02	2099-12-31	
+tongue squamous cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	tongue squamous cell carcinoma	4174593	SNOMED	2023-08-02	2099-12-31	
+tonsillar neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	tonsillar neoplasm	4130836	SNOMED	2023-08-02	2099-12-31	
+tonsillar squamous cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	tonsillar squamous cell carcinoma	36563381	ICDO3	2023-08-02	2099-12-31	
+transitional cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	transitional cell carcinoma	42513082	ICDO3	2023-08-02	2099-12-31	
+transverse colon carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	transverse colon carcinoma	4193871	SNOMED	2023-08-02	2099-12-31	
+transverse colon neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	transverse colon neoplasm	4129879	SNOMED	2023-08-02	2099-12-31	
+tubular adenoma	0	JNJ_OPTUM_EHR_ONCNHC	tubular adenoma	40479386	SNOMED	2023-08-02	2099-12-31	
+uterine adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	uterine adenocarcinoma	4202789	SNOMED	2023-08-02	2099-12-31	
+uterine carcinosarcoma	0	JNJ_OPTUM_EHR_ONCNHC	uterine carcinosarcoma	45773362	SNOMED	2023-08-02	2099-12-31	
+uterine neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	uterine neoplasm	45770892	SNOMED	2023-08-02	2099-12-31	
+uterine sarcoma	0	JNJ_OPTUM_EHR_ONCNHC	uterine sarcoma	4112867	SNOMED	2023-08-02	2099-12-31	
+uterine squamous cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	uterine squamous cell carcinoma	35608092	SNOMED	2023-08-02	2099-12-31	
+vulvar neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	vulvar neoplasm	4130032	SNOMED	2023-08-02	2099-12-31	
+vulvar squamous cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	vulvar squamous cell carcinoma	4116084	SNOMED	2023-08-02	2099-12-31	
+yolk sac tumor	0	JNJ_OPTUM_EHR_ONCNHC	yolk sac tumor	4300688	SNOMED	2023-08-02	2099-12-31	
