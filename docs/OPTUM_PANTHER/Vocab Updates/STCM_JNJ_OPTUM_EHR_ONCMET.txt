@@ -1,0 +1,85 @@
+source_code	source_concept_id	source_vocabulary_id	source_code_description	target_concept_id	target_vocabulary_id	valid_start_date	valid_end_date	invalid_reason
+Metastasis to adrenal gland	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to adrenal gland	35225568	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to appendix	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to appendix	35226029	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to ascending colon	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to ascending colon	35226034	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to back	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to back	35226038	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to bladder	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to bladder	35226041	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to bone	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to bone	36769301	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to bone marrow	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to bone marrow	35226074	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to bone of skull	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to bone of skull	35226077	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to brain	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to brain	36768862	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to breast	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to breast	35225556	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to cecum	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to cecum	35225776	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to central nervous system	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to central nervous system	35226096	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to cerebellum	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to cerebellum	35226098	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to cerebral	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to cerebral	35226101	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to cervix	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to cervix	35225582	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to chest	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to chest	35226106	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to chest wall	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to chest wall	35226106	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to choroid	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to choroid	35226107	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to colon	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to colon	35226112	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to descending colon	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to descending colon	35226124	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to diaphragm	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to diaphragm	35226125	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to distant intracranial	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to distant intracranial	35226165	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to duodenum	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to duodenum	35225787	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to esophagus	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to esophagus	35226135	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to eye	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to eye	35226140	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to fallopian tube	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to fallopian tube	35225558	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to femur	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to femur	35226144	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to gallbladder	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to gallbladder	35225777	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to head	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to head	35226165	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to hip	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to hip	35225761	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to ileum	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to ileum	35226174	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to ilium	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to ilium	35226175	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to intra-abdominal organs	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to intra-abdominal organs	35226338	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to intrathoracic organs	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to intrathoracic organs	35226181	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to ischium	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to ischium	35225601	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to kidney	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to kidney	36768082	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to leg	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to leg	35225633	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to leptomeninges	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to leptomeninges	704986	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to liver	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to liver	36770544	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to lung	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to lung	36770283	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to mediastinum	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to mediastinum	35225542	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to muscle	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to muscle	35226189	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to neck	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to neck	35225773	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to omentum	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to omentum	35226218	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to ovary	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to ovary	35226230	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to pancreas	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to pancreas	35226233	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to parotid gland	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to parotid gland	35226242	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to pelvis	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to pelvis	35226246	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to peritoneum	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to peritoneum	35226253	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to pharynx	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to pharynx	35225531	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to pituitary gland	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to pituitary gland	35226256	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to pleura	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to pleura	35226258	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to prostate	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to prostate	35226267	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to pubis	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to pubis	35226268	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to rectosigmoid junction	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to rectosigmoid junction	35226271	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to rectum	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to rectum	35226275	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to retroperitoneum	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to retroperitoneum	35226284	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to rib	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to rib	35226287	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to sacrum	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to sacrum	35225660	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to scapula	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to scapula	35225662	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to shoulder	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to shoulder	35225671	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to sigmoid colon	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to sigmoid colon	35225672	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to skin	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to skin	35225673	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to skin of scalp	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to skin of scalp	35225708	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to small intestine	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to small intestine	35225719	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to soft tissues	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to soft tissues	35225724	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to spinal cord	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to spinal cord	35225743	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to spleen	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to spleen	36768630	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to sternum	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to sternum	35225746	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to stomach	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to stomach	35225747	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to thigh	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to thigh	35225761	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to thorax	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to thorax	35226181	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to thymus	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to thymus	35225765	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to thyroid	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to thyroid	35225767	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to tibia	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to tibia	35225768	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to tongue	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to tongue	35226295	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to trachea	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to trachea	35226299	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to transverse colon	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to transverse colon	35226300	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to ureter	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to ureter	35225576	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to uterus	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to uterus	35225583	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to vagina	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to vagina	35225586	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to vertebral column	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to vertebral column	35225594	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to visceral pleura	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to visceral pleura	35225598	Cancer Modifier	2023-07-26	2099-12-31	
+Metastasis to vulva	0	JNJ_OPTUM_EHR_ONCMET	Metastasis to vulva	35226318	Cancer Modifier	2023-07-26	2099-12-31	

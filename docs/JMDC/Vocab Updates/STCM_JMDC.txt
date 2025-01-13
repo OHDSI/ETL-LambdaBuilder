@@ -1,0 +1,114 @@
+source_code	source_concept_id	source_vocabulary_id	source_code_description	target_concept_id	target_vocabulary_id	valid_start_date	valid_end_date	invalid_reason
+100000008392	0	JMDC	Deleted NHI price (Mexiletine Hydrochloride) 125mg5mL1A Liquid	1307542	RxNorm	1970-01-01	2099-12-31	
+100000008871	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	21605220	ATC	1970-01-01	2023-01-20	D
+100000008871	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	40161972	RxNorm	2023-01-20	2024-03-13	D
+100000008871	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	36879250	RxNorm Extension	2024-03-13	2099-12-31	
+100000009789	0	JMDC	Deleted NHI price (Therapeutic Allergen Extract) 40mg1A Powder	21605215	ATC	1970-01-01	2023-01-20	D
+100000009790	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	21605215	ATC	1970-01-01	2023-01-20	D
+100000009791	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	21605215	ATC	1970-01-01	2023-01-20	D
+100000010653	0	JMDC	Deleted NHI price (Initiating Solution) 200mL1V Liquid	21601162	ATC	1970-01-01	2023-01-20	D
+100000010696	0	JMDC	Deleted NHI price (Initiating Solution) 200mL1V Liquid	21601162	ATC	1970-01-01	2023-01-20	D
+100000010697	0	JMDC	Deleted NHI price (Initiating Solution) 500mL1V Liquid	21601162	ATC	1970-01-01	2023-01-20	D
+100000010796	0	JMDC	Deleted NHI price (Initiating Solution) 500mL1Bag Liquid	21601162	ATC	1970-01-01	2023-01-20	D
+100000013951	0	JMDC	Allergen Disk [TORII] (Allergen Disk) 1Sheet Others	21605218	ATC	1970-01-01	2023-01-20	D
+100000013952	0	JMDC	Allergen Disk [TORII] (Allergen Disk) 1Sheet Others	21605215	ATC	1970-01-01	2023-01-20	D
+100000015749	0	JMDC	White Soft Sugar (White Soft Sugar) 10g Powder	21605370	ATC	1970-01-01	2023-01-20	D
+100000015750	0	JMDC	Unknown Brand Name in English (White Soft Sugar) 10g Powder	21605370	ATC	1970-01-01	2023-01-20	D
+100000017613	0	JMDC	Unknown Brand Name in English (Powdered Opium) 1g Powder	923829	RxNorm	1970-01-01	2099-12-31	
+100000029172	0	JMDC	Wakadenin (Flavin Adenine Dinucleotide Sodium)  Liquid	42903868	RxNorm	1970-01-01	2099-12-31	
+100000030007	0	JMDC	Allergen Disk [TORII] (Allergen Disk)  Others	21605215	ATC	1970-01-01	2023-01-20	D
+100000032358	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract)  Liquid	21605215	ATC	1970-01-01	2023-01-20	D
+100000032359	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract)  Liquid	21605215	ATC	1970-01-01	2023-01-20	D
+100000040142	0	JMDC	Unknown Brand Name in English (White Soft Sugar) 10g Powder	21605370	ATC	1970-01-01	2023-01-20	D
+100000042492	0	JMDC	Unknown Brand Name in English (Therapeutic Allergen Extract) 2mL1V Liquid	21605215	ATC	1970-01-01	2023-01-20	D
+100000043207	0	JMDC	Unknown Brand Name in English (Dimethicone) 40mg1T Tablet	44032810	RxNorm Extension	1970-01-01	2099-12-31	
+100000045251	0	JMDC	Unknown Brand Name in English (Otsujito Extract) 1g Powder	21605291	ATC	1970-01-01	2023-01-20	D
+100000045866	0	JMDC	Unknown Brand Name in English (Therapeutic Allergen Extract) 2mL1V Liquid	40161972	RxNorm	2023-01-20	2024-03-13	D
+100000045866	0	JMDC	Unknown Brand Name in English (Therapeutic Allergen Extract) 2mL1V Liquid	21605220	ATC	1970-01-01	2023-01-20	D
+100000045866	0	JMDC	Unknown Brand Name in English (Therapeutic Allergen Extract) 2mL1V Liquid	36879250	RxNorm Extension	2024-03-13	2099-12-31	
+100000053995	0	JMDC	Heparin Na [FUSO] (Heparin Sodium)  Kit	1367571	RxNorm	1970-01-01	2099-12-31	
+100000057961	0	JMDC	Replas (Initiating Solution) 200mL1Bag Liquid	21601162	ATC	1970-01-01	2023-01-20	D
+100000058199	0	JMDC	Replas (Initiating Solution) 200mL1V Liquid	21601162	ATC	1970-01-01	2023-01-20	D
+100000058233	0	JMDC	Replas (Initiating Solution) 500mL1V Liquid	21601162	ATC	1970-01-01	2023-01-20	D
+100000058234	0	JMDC	Replas (Initiating Solution) 500mL1Bag Liquid	21601162	ATC	1970-01-01	2023-01-20	D
+100000058235	0	JMDC	Replas (Initiating Solution) 1L1V Liquid	21601162	ATC	1970-01-01	2023-01-20	D
+100000058487	0	JMDC	Replas (Initiating Solution)  Liquid	21601162	ATC	1970-01-01	2023-01-20	D
+100000059226	0	JMDC	Solita (Initiating Solution) 500mL1V Liquid	21601162	ATC	1970-01-01	2023-01-20	D
+100000059227	0	JMDC	Soldem (Initiating Solution) 500mL1Bag Liquid	21601162	ATC	1970-01-01	2023-01-20	D
+100000059228	0	JMDC	KN (Initiating Solution) 500mL1V Liquid	21601162	ATC	1970-01-01	2023-01-20	D
+100000059229	0	JMDC	KN (Initiating Solution) 500mL1Bag Liquid	21601162	ATC	1970-01-01	2023-01-20	D
+100000059230	0	JMDC	Denosalin (Initiating Solution) 200mL1Bag Liquid	21601162	ATC	1970-01-01	2023-01-20	D
+100000059519	0	JMDC	Solita (Initiating Solution) 200mL1V Liquid	21601162	ATC	1970-01-01	2023-01-20	D
+100000059631	0	JMDC	Soldem (Initiating Solution) 200mL1Bag Liquid	21601162	ATC	1970-01-01	2023-01-20	D
+100000059632	0	JMDC	Denosalin (Initiating Solution) 500mL1Bag Liquid	21601162	ATC	1970-01-01	2023-01-20	D
+100000060017	0	JMDC	KN (Initiating Solution) 200mL1Bag Liquid	21601162	ATC	1970-01-01	2023-01-20	D
+100000060165	0	JMDC	Solita (Initiating Solution)  Liquid	21601162	ATC	1970-01-01	2023-01-20	D
+100000060525	0	JMDC	Soldem (Initiating Solution)  Liquid	21601162	ATC	1970-01-01	2023-01-20	D
+100000060526	0	JMDC	KN (Initiating Solution)  Liquid	21601162	ATC	1970-01-01	2023-01-20	D
+100000061387	0	JMDC	White Soft Sugar [YOSHIDA] (White Soft Sugar) 10g Powder	21605370	ATC	1970-01-01	2023-01-20	D
+100000062196	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	21605215	ATC	1970-01-01	2023-01-20	D
+100000062197	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	21605215	ATC	1970-01-01	2023-01-20	D
+100000062198	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	21605215	ATC	1970-01-01	2023-01-20	D
+100000062199	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract)  Liquid	21605215	ATC	1970-01-01	2023-01-20	D
+100000062200	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	21605215	ATC	1970-01-01	2023-01-20	D
+100000062201	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	21605215	ATC	1970-01-01	2023-01-20	D
+100000062203	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	21605215	ATC	1970-01-01	2023-01-20	D
+100000062206	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	21605215	ATC	1970-01-01	2023-01-20	D
+100000062208	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	21605215	ATC	1970-01-01	2023-01-20	D
+100000062209	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	21605215	ATC	1970-01-01	2023-01-20	D
+100000062344	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	21605215	ATC	1970-01-01	2023-01-20	D
+100000062346	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	21605215	ATC	1970-01-01	2023-01-20	D
+100000062405	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	21605215	ATC	1970-01-01	2023-01-20	D
+100000062407	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	21605215	ATC	1970-01-01	2023-01-20	D
+100000062408	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract)  Liquid	21605215	ATC	1970-01-01	2023-01-20	D
+100000062409	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	21605215	ATC	1970-01-01	2023-01-20	D
+100000062410	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	21605215	ATC	1970-01-01	2023-01-20	D
+100000062467	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	21605215	ATC	1970-01-01	2023-01-20	D
+100000062468	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	21605215	ATC	1970-01-01	2023-01-20	D
+100000062469	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract)  Liquid	21605215	ATC	1970-01-01	2023-01-20	D
+100000062470	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	21605215	ATC	1970-01-01	2023-01-20	D
+100000062473	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	21605215	ATC	1970-01-01	2023-01-20	D
+100000064728	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract)  Liquid	21605215	ATC	1970-01-01	2023-01-20	D
+100000064729	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	21605215	ATC	1970-01-01	2023-01-20	D
+100000064730	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	21605215	ATC	1970-01-01	2023-01-20	D
+100000065049	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	21605215	ATC	1970-01-01	2023-01-20	D
+100000065050	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract)  Liquid	21605215	ATC	1970-01-01	2023-01-20	D
+100000065246	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract)  Liquid	21605220	ATC	1970-01-01	2023-01-20	D
+100000065246	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract)  Liquid	40161972	RxNorm	2023-01-20	2024-03-13	D
+100000065246	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract)  Liquid	36879250	RxNorm Extension	2024-03-13	2099-12-31	
+100000065247	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	21605220	ATC	1970-01-01	2023-01-20	D
+100000065247	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	40161972	RxNorm	2023-01-20	2024-03-13	D
+100000065247	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	36879250	RxNorm Extension	2024-03-13	2099-12-31	
+100000065248	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	40161972	RxNorm	2023-01-20	2024-03-13	D
+100000065248	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	21605220	ATC	1970-01-01	2023-01-20	D
+100000065248	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	36879250	RxNorm Extension	2024-03-13	2099-12-31	
+100000071585	0	JMDC	Atorvastatin [KYORIN] (Atorvastatin Calcium Hydrate)  Tablet	1545958	RxNorm	1970-01-01	2099-12-31	
+100000075957	0	JMDC	Cedartolen (Therapeutic Allergen Extract)  Liquid	40161972	RxNorm	2023-01-20	2024-03-13	D
+100000075957	0	JMDC	Cedartolen (Therapeutic Allergen Extract)  Liquid	21605220	ATC	1970-01-01	2023-01-20	D
+100000075957	0	JMDC	Cedartolen (Therapeutic Allergen Extract)  Liquid	36879250	RxNorm Extension	2024-03-13	2099-12-31	
+100000075958	0	JMDC	Cedartolen (Therapeutic Allergen Extract)  Liquid	40161972	RxNorm	2023-01-20	2024-03-13	D
+100000075958	0	JMDC	Cedartolen (Therapeutic Allergen Extract)  Liquid	21605220	ATC	1970-01-01	2023-01-20	D
+100000075958	0	JMDC	Cedartolen (Therapeutic Allergen Extract)  Liquid	36879250	RxNorm Extension	2024-03-13	2099-12-31	
+100000076041	0	JMDC	Cedartolen (Therapeutic Allergen Extract) 10mL1Bot Liquid	40161972	RxNorm	2023-01-20	2024-03-13	D
+100000076041	0	JMDC	Cedartolen (Therapeutic Allergen Extract) 10mL1Bot Liquid	21605220	ATC	1970-01-01	2023-01-20	D
+100000076041	0	JMDC	Cedartolen (Therapeutic Allergen Extract) 10mL1Bot Liquid	36879250	RxNorm Extension	2024-03-13	2099-12-31	
+100000076042	0	JMDC	Cedartolen (Therapeutic Allergen Extract) 1mL1Pack Liquid	40161972	RxNorm	2023-01-20	2024-03-13	D
+100000076042	0	JMDC	Cedartolen (Therapeutic Allergen Extract) 1mL1Pack Liquid	21605220	ATC	1970-01-01	2023-01-20	D
+100000076042	0	JMDC	Cedartolen (Therapeutic Allergen Extract) 1mL1Pack Liquid	36879250	RxNorm Extension	2024-03-13	2099-12-31	
+100000076065	0	JMDC	Cedartolen (Therapeutic Allergen Extract) 10mL1Bot Liquid	21605220	ATC	1970-01-01	2023-01-20	D
+100000076065	0	JMDC	Cedartolen (Therapeutic Allergen Extract) 10mL1Bot Liquid	40161972	RxNorm	2023-01-20	2024-03-13	D
+100000076065	0	JMDC	Cedartolen (Therapeutic Allergen Extract) 10mL1Bot Liquid	36879250	RxNorm Extension	2024-03-13	2099-12-31	
+100000077485	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	21605218	ATC	1970-01-01	2023-01-20	D
+100000077488	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	21605218	ATC	1970-01-01	2023-01-20	D
+100000077540	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract)  Liquid	21605218	ATC	1970-01-01	2023-01-20	D
+100000077865	0	JMDC	Actair (Therapeutic Allergen Extract) 100IR1T Tablet	21605218	ATC	1970-01-01	2023-01-20	D
+100000077866	0	JMDC	Actair (Therapeutic Allergen Extract) 300IR1T Tablet	21605218	ATC	1970-01-01	2023-01-20	D
+100000078309	0	JMDC	[YD] Solita (Initiating Solution) 500mL1V Liquid	21601162	ATC	1970-01-01	2023-01-20	D
+100000078484	0	JMDC	[YD] Solita (Initiating Solution) 200mL1V Liquid	21601162	ATC	1970-01-01	2023-01-20	D
+100000078822	0	JMDC	[YD] Solita (Initiating Solution)  Liquid	21601162	ATC	1970-01-01	2023-01-20	D
+100000078982	0	JMDC	Miticure (Therapeutic Allergen Extract) 3,300JAU1T Tablet	21605218	ATC	1970-01-01	2023-01-20	D
+100000078996	0	JMDC	Miticure (Therapeutic Allergen Extract) 10,000JAU1T Tablet	21605218	ATC	1970-01-01	2023-01-20	D
+100000079201	0	JMDC	Solita (Initiating Solution) 200mL1Bag Liquid	21601162	ATC	1970-01-01	2023-01-20	D
+100000079237	0	JMDC	[YD] Solita (Initiating Solution) 500mL1Bag Liquid	21601162	ATC	1970-01-01	2023-01-20	D
+100000079311	0	JMDC	Solita (Initiating Solution) 500mL1Bag Liquid	21601162	ATC	1970-01-01	2023-01-20	D
+100000079312	0	JMDC	[YD] Solita (Initiating Solution) 200mL1Bag Liquid	21601162	ATC	1970-01-01	2023-01-20	D

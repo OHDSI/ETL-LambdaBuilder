@@ -208,36 +208,6 @@
 			<CurrencyConceptId>CurrencyConceptId</CurrencyConceptId>
 		</VisitCostDefinition>
   </VisitCost>			
-  <Death>
-    <DeathDefinition>
-      <Condition>{ccae_mdcr} = 1</Condition>
-      <PersonId>ENROLID</PersonId>
-      <StartDate>SVCDATE</StartDate>
-      <AdditionalFields>
-        <string>priority</string>
-        <string>FACHDID</string>
-        <string>YEAR</string>
-        <string>hlthplan</string>
-        <string>vendor</string>
-      </AdditionalFields>
-      <Concepts>
-        <Concept>
-          <ConceptIdMappers>
-            <Mapper>
-              <Lookup>Death</Lookup>
-            </Mapper>
-          </ConceptIdMappers>
-          <Fields>
-            <Field key="DX1" defaultTypeId="32812"/>
-            <Field key="DX2" defaultTypeId="32812"/>
-            <Field key="DX3" defaultTypeId="32812"/>
-            <Field key="DX4" defaultTypeId="32812"/>
-            <Field key="DX5" defaultTypeId="32812"/>
-          </Fields>
-        </Concept>
-      </Concepts>
-    </DeathDefinition>
-  </Death>
   <Observation>
    <ObservationDefinition>
 	<PersonId>ENROLID</PersonId>

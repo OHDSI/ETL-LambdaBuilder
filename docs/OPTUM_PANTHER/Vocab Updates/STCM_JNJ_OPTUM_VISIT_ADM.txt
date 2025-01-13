@@ -1,0 +1,14 @@
+source_code	source_concept_id	source_vocabulary_id	source_code_description	target_concept_id	target_vocabulary_id	valid_start_date	valid_end_date	invalid_reason
+Admitted or referred by court or law enforcement agency	0	JNJ_OPTUM_VISIT_ADM	Admitted or referred by court or law enforcement agency	45878215	LOINC	1970-01-01	2099-12-31	
+Not Recorded	0	JNJ_OPTUM_VISIT_ADM	Not Recorded	45884262	LOINC	1970-01-01	2099-12-31	
+Other admission source	0	JNJ_OPTUM_VISIT_ADM	Other admission source	45878358	LOINC	1970-01-01	2099-12-31	
+Referred by physician or self referral; non-healthcare facility point of origin	0	JNJ_OPTUM_VISIT_ADM	Referred by physician or self referral; non-healthcare facility point of origin	45884262	LOINC	1970-01-01	2099-12-31	
+Transfer from acute care facility	0	JNJ_OPTUM_VISIT_ADM	Transfer from acute care facility	45884207	LOINC	1970-01-01	2099-12-31	
+Transfer from ambulatory surgery center	0	JNJ_OPTUM_VISIT_ADM	Transfer from ambulatory surgery center	21498482	LOINC	1970-01-01	2099-12-31	
+Transfer from clinic	0	JNJ_OPTUM_VISIT_ADM	Transfer from clinic	21499188	LOINC	1970-01-01	2099-12-31	
+Transfer from emergency room of outside hospital	0	JNJ_OPTUM_VISIT_ADM	Transfer from emergency room of outside hospital	45884373	LOINC	1970-01-01	2099-12-31	
+Transfer from other health care facility	0	JNJ_OPTUM_VISIT_ADM	Transfer from other health care facility	45878216	LOINC	1970-01-01	2099-12-31	
+Transfer from skilled nursing facility	0	JNJ_OPTUM_VISIT_ADM	Transfer from skilled nursing facility	21499365	LOINC	1970-01-01	2099-12-31	
+Transferred from emergency room	0	JNJ_OPTUM_VISIT_ADM	Transferred from emergency room	45884373	LOINC	1970-01-01	2099-12-31	
+Transfer within hospital	0	JNJ_OPTUM_VISIT_ADM	Transfer within hospital	45877964	LOINC	1970-01-01	2099-12-31	
+Unknown admission source	0	JNJ_OPTUM_VISIT_ADM	Unknown admission source	45884262	LOINC	1970-01-01	2099-12-31	

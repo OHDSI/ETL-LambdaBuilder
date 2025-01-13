@@ -62,25 +62,6 @@
          </Concepts>
       </ConditionOccurrenceDefinition>
    </ConditionOccurrence>
-   <Death>
-      <DeathDefinition>
-         <PersonId>medrec_key</PersonId>
-         <VisitOccurrenceId>pat_key</VisitOccurrenceId>
-         <Concepts>
-            <Concept>
-              <IdRequired>true</IdRequired>
-               <ConceptIdMappers>
-                  <Mapper>
-                     <Lookup>DeathCodes</Lookup>
-                  </Mapper>
-               </ConceptIdMappers>
-               <Fields>
-                  <Field key="icd_code" defaultTypeId="32875"/>
-               </Fields>
-            </Concept>
-         </Concepts>
-      </DeathDefinition>
-   </Death>
    <Measurement>
      <MeasurementDefinition>
       <PersonId>medrec_key</PersonId>

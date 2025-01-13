@@ -511,10 +511,10 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
                 var locCd = string.Empty;
 
                 if (e.AdditionalFields.ContainsKey("clmid"))
-                    clmid = e.AdditionalFields["clmid"];
+                    clmid = e.AdditionalFields["clmid"] ?? string.Empty;
 
                 if (e.AdditionalFields.ContainsKey("loc_cd"))
-                    locCd = e.AdditionalFields["loc_cd"];
+                    locCd = e.AdditionalFields["loc_cd"] ?? string.Empty;
 
                 if (_rawVisitDetails.ContainsKey(patPlanid) && _rawVisitDetails[patPlanid].ContainsKey(clmid))
                 {
@@ -839,10 +839,12 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
                 ob.StartDate = latestEndDate;
             }
 
-            if(death != null)
+            death = UpdateDeath(death, person, observationPeriods);
+
+            // Remove any death dates where the associated observation_period_end_date >= 365 days after the death.
+            if (death != null)
             {
-                // If the death_date occurs before the observation_period_start_date then drop the death record.
-                if (death.StartDate.Date < observationPeriods.Min(op => op.StartDate.Date))
+                if (observationPeriods.Max(op => op.EndDate.Value.Date) >= death.StartDate.Date.AddDays(365))
                     death = null;
             }
 
@@ -851,15 +853,27 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
                 death,
                 observationPeriods,
                 payerPlanPeriods,
-                UpdateRSourceConcept(Clean(drugExposures, person)).ToArray(),
-                UpdateRSourceConcept(Clean(conditionOccurrences, person)).ToArray(),
-                UpdateRSourceConcept(Clean(procedureOccurrences, person)).ToArray(),
-                UpdateRSourceConcept(Clean(observations, person)).ToArray(),
-                UpdateRSourceConcept(Clean(measurements, person)).ToArray(),
-                vos,
-                [.. vds.Values],
+                UpdateRSourceConcept(
+                    FilterByDeathDate(Clean(drugExposures, person), death, 60)
+                    ).ToArray(),
+                UpdateRSourceConcept(
+                    FilterByDeathDate(Clean(conditionOccurrences, person), death, 60)
+                    ).ToArray(),
+                UpdateRSourceConcept(
+                    FilterByDeathDate(Clean(procedureOccurrences, person), death, 60)
+                    ).ToArray(),
+                UpdateRSourceConcept(
+                    FilterByDeathDate(Clean(observations, person), death, 60)
+                    ).ToArray(),
+                UpdateRSourceConcept(
+                    FilterByDeathDate(Clean(measurements, person), death, 60)
+                    ).ToArray(),
+                FilterByDeathDate(vos, death, 60).ToArray(),
+                FilterByDeathDate(vds.Values, death, 60).ToArray(),
                 [],
-                UpdateRSourceConcept(Clean(deviceExposure, person)).ToArray(),
+                UpdateRSourceConcept(
+                    FilterByDeathDate(Clean(deviceExposure, person), death, 60)
+                    ).ToArray(),
                 [],
                 []);
 
@@ -945,7 +959,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
         {
             foreach (var entity in entities)
             {
-                var entityDomain = GetDomain(domain, entity.Domain);
+                var entityDomain = GetDomain(domain, entity.Domain, "Observation");
 
                 switch (entityDomain)
                 {

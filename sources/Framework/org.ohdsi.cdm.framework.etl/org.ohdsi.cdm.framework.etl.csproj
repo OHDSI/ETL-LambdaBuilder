@@ -148,8 +148,6 @@
     <None Remove="Transformation\OptumExtended\Lookups\CMSPlaceOfService.sql" />
     <None Remove="Transformation\OptumExtended\Lookups\ConditionICD10.sql" />
     <None Remove="Transformation\OptumExtended\Lookups\ConditionICD9.sql" />
-    <None Remove="Transformation\OptumExtended\Lookups\DeathCodes.sql" />
-    <None Remove="Transformation\OptumExtended\Lookups\DeathCodesICD10.sql" />
     <None Remove="Transformation\OptumExtended\Lookups\DischargeTo.sql" />
     <None Remove="Transformation\OptumExtended\Lookups\DRG.sql" />
     <None Remove="Transformation\OptumExtended\Lookups\DrgDeathCodes.sql" />
@@ -250,7 +248,6 @@
     <None Remove="Transformation\Premier\Definitions\vitals.xml" />
     <None Remove="Transformation\Premier\Lookups\Condition.sql" />
     <None Remove="Transformation\Premier\Lookups\ConditionIcd.sql" />
-    <None Remove="Transformation\Premier\Lookups\DeathCodes.sql" />
     <None Remove="Transformation\Premier\Lookups\Device.sql" />
     <None Remove="Transformation\Premier\Lookups\Drg.sql" />
     <None Remove="Transformation\Premier\Lookups\Drug.sql" />
@@ -284,7 +281,6 @@
     <None Remove="Transformation\Truven\Lookups\CMSPlaceOfService.sql" />
     <None Remove="Transformation\Truven\Lookups\Condition.sql" />
     <None Remove="Transformation\Truven\Lookups\Condition_icd10.sql" />
-    <None Remove="Transformation\Truven\Lookups\Death.sql" />
     <None Remove="Transformation\Truven\Lookups\DischargeTo.sql" />
     <None Remove="Transformation\Truven\Lookups\Drg.sql" />
     <None Remove="Transformation\Truven\Lookups\Drug.sql" />
@@ -720,12 +716,6 @@
     <EmbeddedResource Include="Transformation\OptumExtended\Lookups\ConditionICD9.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\OptumExtended\Lookups\DeathCodes.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\OptumExtended\Lookups\DeathCodesICD10.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
     <EmbeddedResource Include="Transformation\OptumExtended\Lookups\DischargeTo.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -1026,9 +1016,6 @@
     <EmbeddedResource Include="Transformation\Premier\Lookups\ConditionIcd.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\Premier\Lookups\DeathCodes.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
     <EmbeddedResource Include="Transformation\Premier\Lookups\Device.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -1126,9 +1113,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Transformation\Truven\Lookups\Condition_icd10.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\Truven\Lookups\Death.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Transformation\Truven\Lookups\DischargeTo.sql">

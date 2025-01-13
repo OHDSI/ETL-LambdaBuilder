@@ -1,0 +1,154 @@
+source_code	source_concept_id	source_vocabulary_id	source_code_description	target_concept_id	target_vocabulary_id	valid_start_date	valid_end_date	invalid_reason
+109	0	JNJ_PMR_P_SPCLTY	Other Specialty (OS)	38004514	Medicare Specialty	1980-01-01	2023-01-20	D
+109	0	JNJ_PMR_P_SPCLTY	Other Specialty (OS)	32577	Provider	2023-01-20	2099-12-31	
+145	0	JNJ_PMR_P_SPCLTY	Other Specialty (OS)	38004514	Medicare Specialty	1980-01-01	2023-01-20	D
+145	0	JNJ_PMR_P_SPCLTY	Other Specialty (OS)	32577	Provider	2023-01-20	2099-12-31	
+147	0	JNJ_PMR_P_SPCLTY	Other Specialty (OS)	38004514	Medicare Specialty	1980-01-01	2023-01-20	D
+147	0	JNJ_PMR_P_SPCLTY	Other Specialty (OS)	32577	Provider	2023-01-20	2099-12-31	
+34	0	JNJ_PMR_P_SPCLTY	Other Specialty (OS)	38004514	Medicare Specialty	1980-01-01	2023-01-20	D
+34	0	JNJ_PMR_P_SPCLTY	Other Specialty (OS)	32577	Provider	2023-01-20	2099-12-31	
+4001	0	JNJ_PMR_P_SPCLTY	Abdominal Surgery (AS)	38004514	Medicare Specialty	1980-01-01	2023-01-20	D
+4001	0	JNJ_PMR_P_SPCLTY	Abdominal Surgery (AS)	32577	Provider	2023-01-20	2099-12-31	
+4002	0	JNJ_PMR_P_SPCLTY	Addiction Medicine (ADM)	38004498	Medicare Specialty	1980-01-01	2099-12-31	
+4003	0	JNJ_PMR_P_SPCLTY	Adolescent Medicine (ADL)	38004514	Medicare Specialty	1980-01-01	2023-01-20	D
+4003	0	JNJ_PMR_P_SPCLTY	Adolescent Medicine (ADL)	32577	Provider	2023-01-20	2099-12-31	
+4004	0	JNJ_PMR_P_SPCLTY	Allergy and Immunology (AI)	38004448	Medicare Specialty	1980-01-01	2099-12-31	
+4005	0	JNJ_PMR_P_SPCLTY	Allergy (A)	38004448	Medicare Specialty	1980-01-01	2099-12-31	
+4006	0	JNJ_PMR_P_SPCLTY	Anatomic Pathology (ATP)	38004466	Medicare Specialty	1980-01-01	2099-12-31	
+4007	0	JNJ_PMR_P_SPCLTY	Anatomic/Clinical Pathology (PTH)	38004466	Medicare Specialty	1980-01-01	2099-12-31	
+4008	0	JNJ_PMR_P_SPCLTY	Anesthesiology (AN)	38004450	Medicare Specialty	1980-01-01	2099-12-31	
+4009	0	JNJ_PMR_P_SPCLTY	Blood Banking/Transfusion Medicine (BBK)	38004514	Medicare Specialty	1980-01-01	2023-01-20	D
+4009	0	JNJ_PMR_P_SPCLTY	Blood Banking/Transfusion Medicine (BBK)	32577	Provider	2023-01-20	2099-12-31	
+4010	0	JNJ_PMR_P_SPCLTY	Cardiac Electrophysiology (ICE)	38004514	Medicare Specialty	1980-01-01	2023-01-20	D
+4010	0	JNJ_PMR_P_SPCLTY	Cardiac Electrophysiology (ICE)	32577	Provider	2023-01-20	2099-12-31	
+4011	0	JNJ_PMR_P_SPCLTY	Cardiovascular Diseases (CD)	38004451	Medicare Specialty	1980-01-01	2099-12-31	
+4012	0	JNJ_PMR_P_SPCLTY	Cardiovascular Surgery (CDS)	38004497	Medicare Specialty	1980-01-01	2099-12-31	
+4013	0	JNJ_PMR_P_SPCLTY	Certified Nurse Midwife (CNM)	38004482	Medicare Specialty	1980-01-01	2099-12-31	
+4014	0	JNJ_PMR_P_SPCLTY	Certified Reg. Nurse Anesthetist (CRNA)	38004483	Medicare Specialty	1980-01-01	2099-12-31	
+4015	0	JNJ_PMR_P_SPCLTY	Chemical Pathology (PCH)	38004466	Medicare Specialty	1980-01-01	2099-12-31	
+4016	0	JNJ_PMR_P_SPCLTY	Child and Adolescent Psychiatry (CHP)	38004469	Medicare Specialty	1980-01-01	2099-12-31	
+4017	0	JNJ_PMR_P_SPCLTY	Chiropractice (CRP)	38004475	Medicare Specialty	1980-01-01	2099-12-31	
+4018	0	JNJ_PMR_P_SPCLTY	Clinical Genetics (CG)	38004514	Medicare Specialty	1980-01-01	2023-01-20	D
+4018	0	JNJ_PMR_P_SPCLTY	Clinical Genetics (CG)	32577	Provider	2023-01-20	2099-12-31	
+4019	0	JNJ_PMR_P_SPCLTY	Clinical Neurophysiology (CN)	38004514	Medicare Specialty	1980-01-01	2023-01-20	D
+4019	0	JNJ_PMR_P_SPCLTY	Clinical Neurophysiology (CN)	32577	Provider	2023-01-20	2099-12-31	
+4020	0	JNJ_PMR_P_SPCLTY	Clinical Pathology (CLP)	38004466	Medicare Specialty	1980-01-01	2099-12-31	
+4021	0	JNJ_PMR_P_SPCLTY	Clinical Pharmacology (PA)	38004520	Medicare Specialty	1980-01-01	2023-01-20	D
+4021	0	JNJ_PMR_P_SPCLTY	Clinical Pharmacology (PA)	581458	Visit	2023-01-20	2099-12-31	
+4022	0	JNJ_PMR_P_SPCLTY	Colon/Rectal Surgery (CRS)	38004471	Medicare Specialty	1980-01-01	2099-12-31	
+4023	0	JNJ_PMR_P_SPCLTY	Critical Care Medicine (CCM)	38004500	Medicare Specialty	1980-01-01	2099-12-31	
+4024	0	JNJ_PMR_P_SPCLTY	Dental/Oral Surgery (DOR)	38004514	Medicare Specialty	1980-01-01	2023-01-20	D
+4024	0	JNJ_PMR_P_SPCLTY	Dental/Oral Surgery (DOR)	32577	Provider	2023-01-20	2099-12-31	
+4025	0	JNJ_PMR_P_SPCLTY	Dermatology (D)	38004452	Medicare Specialty	1980-01-01	2099-12-31	
+4026	0	JNJ_PMR_P_SPCLTY	Dermatopathology (DMP)	38004466	Medicare Specialty	1980-01-01	2099-12-31	
+4027	0	JNJ_PMR_P_SPCLTY	Diabetes (DIA)	38004514	Medicare Specialty	1980-01-01	2023-01-20	D
+4027	0	JNJ_PMR_P_SPCLTY	Diabetes (DIA)	32577	Provider	2023-01-20	2099-12-31	
+4028	0	JNJ_PMR_P_SPCLTY	Emergency Medicine (EM)	38004510	Medicare Specialty	1980-01-01	2099-12-31	
+4029	0	JNJ_PMR_P_SPCLTY	Endocrinology and Metabolism (END)	38004485	Medicare Specialty	1980-01-01	2099-12-31	
+4030	0	JNJ_PMR_P_SPCLTY	Facial Plastic Surgery (FPS)	38004467	Medicare Specialty	1980-01-01	2099-12-31	
+4031	0	JNJ_PMR_P_SPCLTY	Family Practice (FP)	38004453	Medicare Specialty	1980-01-01	2099-12-31	
+4032	0	JNJ_PMR_P_SPCLTY	Forensic Pathology (FOP)	38004466	Medicare Specialty	1980-01-01	2099-12-31	
+4033	0	JNJ_PMR_P_SPCLTY	Gastroenterology (GE)	38004455	Medicare Specialty	1980-01-01	2099-12-31	
+4034	0	JNJ_PMR_P_SPCLTY	General Practice (GP)	38004446	Medicare Specialty	1980-01-01	2099-12-31	
+4035	0	JNJ_PMR_P_SPCLTY	General Preventative Medicine (GPM)	38004503	Medicare Specialty	1980-01-01	2099-12-31	
+4036	0	JNJ_PMR_P_SPCLTY	General Surgery (GS)	38004447	Medicare Specialty	1980-01-01	2099-12-31	
+4037	0	JNJ_PMR_P_SPCLTY	Geriatric Medicine - Family Prac. (FPG)	38004478	Medicare Specialty	1980-01-01	2099-12-31	
+4038	0	JNJ_PMR_P_SPCLTY	Geriatrics - Internal Medicine (IMG)	38004478	Medicare Specialty	1980-01-01	2099-12-31	
+4039	0	JNJ_PMR_P_SPCLTY	Gynecological Oncology (GO)	38004513	Medicare Specialty	1980-01-01	2099-12-31	
+4040	0	JNJ_PMR_P_SPCLTY	Gynecology (GYN)	38004461	Medicare Specialty	1980-01-01	2099-12-31	
+4041	0	JNJ_PMR_P_SPCLTY	Hand Surgery (HS)	38004480	Medicare Specialty	1980-01-01	2099-12-31	
+4042	0	JNJ_PMR_P_SPCLTY	Head and Neck Surgery (HNS)	38004447	Medicare Specialty	1980-01-01	2099-12-31	
+4043	0	JNJ_PMR_P_SPCLTY	Hematology (HEM)	38004501	Medicare Specialty	1980-01-01	2099-12-31	
+4044	0	JNJ_PMR_P_SPCLTY	Hematology (HMP)	38004501	Medicare Specialty	1980-01-01	2099-12-31	
+4045	0	JNJ_PMR_P_SPCLTY	Hematology/Oncology (HO)	38004502	Medicare Specialty	1980-01-01	2099-12-31	
+4046	0	JNJ_PMR_P_SPCLTY	Hospitalist (HOS)	38004514	Medicare Specialty	1980-01-01	2023-01-20	D
+4046	0	JNJ_PMR_P_SPCLTY	Hospitalist (HOS)	32577	Provider	2023-01-20	2099-12-31	
+4047	0	JNJ_PMR_P_SPCLTY	Immunology (IG)	38004514	Medicare Specialty	1980-01-01	2023-01-20	D
+4047	0	JNJ_PMR_P_SPCLTY	Immunology (IG)	32577	Provider	2023-01-20	2099-12-31	
+4048	0	JNJ_PMR_P_SPCLTY	Infectious Diseases (ID)	38004484	Medicare Specialty	1980-01-01	2099-12-31	
+4049	0	JNJ_PMR_P_SPCLTY	Intensivist (INT)	38004514	Medicare Specialty	1980-01-01	2023-01-20	D
+4049	0	JNJ_PMR_P_SPCLTY	Intensivist (INT)	32577	Provider	2023-01-20	2099-12-31	
+4050	0	JNJ_PMR_P_SPCLTY	Internal Medicine (IM)	38004456	Medicare Specialty	1980-01-01	2099-12-31	
+4051	0	JNJ_PMR_P_SPCLTY	Legal Medicine (LM)	38004514	Medicare Specialty	1980-01-01	2023-01-20	D
+4051	0	JNJ_PMR_P_SPCLTY	Legal Medicine (LM)	32577	Provider	2023-01-20	2099-12-31	
+4052	0	JNJ_PMR_P_SPCLTY	Maternal and Fetal Medicine (MFM)	38004514	Medicare Specialty	1980-01-01	2023-01-20	D
+4052	0	JNJ_PMR_P_SPCLTY	Maternal and Fetal Medicine (MFM)	32577	Provider	2023-01-20	2099-12-31	
+4053	0	JNJ_PMR_P_SPCLTY	Medical Genetics (MG)	38004514	Medicare Specialty	1980-01-01	2023-01-20	D
+4053	0	JNJ_PMR_P_SPCLTY	Medical Genetics (MG)	32577	Provider	2023-01-20	2099-12-31	
+4054	0	JNJ_PMR_P_SPCLTY	Medical Microbiology (MM)	38004514	Medicare Specialty	1980-01-01	2023-01-20	D
+4054	0	JNJ_PMR_P_SPCLTY	Medical Microbiology (MM)	32577	Provider	2023-01-20	2099-12-31	
+4055	0	JNJ_PMR_P_SPCLTY	Medical Oncology (ON)	38004507	Medicare Specialty	1980-01-01	2099-12-31	
+4056	0	JNJ_PMR_P_SPCLTY	Neonatal - Perinatal Medicine (NPM)	38004514	Medicare Specialty	1980-01-01	2023-01-20	D
+4056	0	JNJ_PMR_P_SPCLTY	Neonatal - Perinatal Medicine (NPM)	32577	Provider	2023-01-20	2099-12-31	
+4057	0	JNJ_PMR_P_SPCLTY	Nephrology (NEP)	38004479	Medicare Specialty	1980-01-01	2099-12-31	
+4058	0	JNJ_PMR_P_SPCLTY	Neurological Surgery (NS)	38004447	Medicare Specialty	1980-01-01	2099-12-31	
+4059	0	JNJ_PMR_P_SPCLTY	Neurology (N)	38004458	Medicare Specialty	1980-01-01	2099-12-31	
+4060	0	JNJ_PMR_P_SPCLTY	Neuropathology (NP)	38004466	Medicare Specialty	1980-01-01	2099-12-31	
+4061	0	JNJ_PMR_P_SPCLTY	Neuroradiology (RNR)	38004675	Medicare Specialty	1980-01-01	2099-12-31	
+4062	0	JNJ_PMR_P_SPCLTY	Nuclear Medicine (NM)	38004476	Medicare Specialty	1980-01-01	2099-12-31	
+4063	0	JNJ_PMR_P_SPCLTY	Nuclear Radiology (NR)	38004675	Medicare Specialty	1980-01-01	2099-12-31	
+4064	0	JNJ_PMR_P_SPCLTY	Nurse Practitioner (ARNP)	38004487	Medicare Specialty	1980-01-01	2099-12-31	
+4065	0	JNJ_PMR_P_SPCLTY	Nutrition (NTR)	38004514	Medicare Specialty	1980-01-01	2023-01-20	D
+4065	0	JNJ_PMR_P_SPCLTY	Nutrition (NTR)	32577	Provider	2023-01-20	2099-12-31	
+4066	0	JNJ_PMR_P_SPCLTY	Obstetrics (OBS)	38004461	Medicare Specialty	1980-01-01	2099-12-31	
+4067	0	JNJ_PMR_P_SPCLTY	Obstetrics/Gynecology (OBG)	38004461	Medicare Specialty	1980-01-01	2099-12-31	
+4068	0	JNJ_PMR_P_SPCLTY	Occupational Medicine (OM)	38004492	Medicare Specialty	1980-01-01	2099-12-31	
+4069	0	JNJ_PMR_P_SPCLTY	Ophthalmology (OPH)	38004463	Medicare Specialty	1980-01-01	2099-12-31	
+4070	0	JNJ_PMR_P_SPCLTY	Orthopedic Surgery (ORS)	38004465	Medicare Specialty	1980-01-01	2099-12-31	
+4071	0	JNJ_PMR_P_SPCLTY	Orthopedic Surgery of the Spine (OSS)	38004465	Medicare Specialty	1980-01-01	2099-12-31	
+4072	0	JNJ_PMR_P_SPCLTY	Osteopathic Manipulative Medicine (OMM)	38004457	Medicare Specialty	1980-01-01	2099-12-31	
+4073	0	JNJ_PMR_P_SPCLTY	Other Specialty (OS)	38004514	Medicare Specialty	1980-01-01	2023-01-20	D
+4073	0	JNJ_PMR_P_SPCLTY	Other Specialty (OS)	32577	Provider	2023-01-20	2099-12-31	
+4074	0	JNJ_PMR_P_SPCLTY	Otolaryngology (OTO)	38004449	Medicare Specialty	1980-01-01	2099-12-31	
+4075	0	JNJ_PMR_P_SPCLTY	Pain Management (APM)	38004494	Medicare Specialty	1980-01-01	2099-12-31	
+4076	0	JNJ_PMR_P_SPCLTY	Pediatric Allergy (PDA)	38004448	Medicare Specialty	1980-01-01	2099-12-31	
+4077	0	JNJ_PMR_P_SPCLTY	Pediatric Cardiology (PDC)	38004451	Medicare Specialty	1980-01-01	2099-12-31	
+4078	0	JNJ_PMR_P_SPCLTY	Pediatric Critical Care Medicine (CCP)	38004477	Medicare Specialty	1980-01-01	2099-12-31	
+4079	0	JNJ_PMR_P_SPCLTY	Pediatric Emergency Medicine (PEM)	38004477	Medicare Specialty	1980-01-01	2099-12-31	
+4080	0	JNJ_PMR_P_SPCLTY	Pediatric Endocrinology (PDE)	38004485	Medicare Specialty	1980-01-01	2099-12-31	
+4081	0	JNJ_PMR_P_SPCLTY	Pediatric Gastroenterology (PG)	38004455	Medicare Specialty	1980-01-01	2099-12-31	
+4082	0	JNJ_PMR_P_SPCLTY	Pediatric Hematology/Oncology (PHO)	38004502	Medicare Specialty	1980-01-01	2099-12-31	
+4083	0	JNJ_PMR_P_SPCLTY	Pediatric Infectious Diseases (PDI)	38004484	Medicare Specialty	1980-01-01	2099-12-31	
+4084	0	JNJ_PMR_P_SPCLTY	Pediatric Nephrology (PN)	38004479	Medicare Specialty	1980-01-01	2099-12-31	
+4085	0	JNJ_PMR_P_SPCLTY	Pediatric Neurology (CHN)	38004458	Medicare Specialty	1980-01-01	2099-12-31	
+4086	0	JNJ_PMR_P_SPCLTY	Pediatric Ophthalmology (PO)	38004463	Medicare Specialty	1980-01-01	2099-12-31	
+4087	0	JNJ_PMR_P_SPCLTY	Pediatric Orthopedics (OP)	38004477	Medicare Specialty	1980-01-01	2099-12-31	
+4088	0	JNJ_PMR_P_SPCLTY	Pediatric Otolaryngology (PDO)	38004449	Medicare Specialty	1980-01-01	2099-12-31	
+4089	0	JNJ_PMR_P_SPCLTY	Pediatric Pulmonology (PDP)	38004472	Medicare Specialty	1980-01-01	2099-12-31	
+4090	0	JNJ_PMR_P_SPCLTY	Pediatric Radiology (PDR)	38004675	Medicare Specialty	1980-01-01	2099-12-31	
+4091	0	JNJ_PMR_P_SPCLTY	Pediatric Rheumatology (PPR)	38004491	Medicare Specialty	1980-01-01	2099-12-31	
+4092	0	JNJ_PMR_P_SPCLTY	Pediatric Surgery - Neurological (NSP)	38004459	Medicare Specialty	1980-01-01	2099-12-31	
+4093	0	JNJ_PMR_P_SPCLTY	Pediatric Surgery (PDS)	38004447	Medicare Specialty	1980-01-01	2099-12-31	
+4094	0	JNJ_PMR_P_SPCLTY	Pediatric Urology (UP)	38004474	Medicare Specialty	1980-01-01	2099-12-31	
+4095	0	JNJ_PMR_P_SPCLTY	Pediatrics (PD)	38004477	Medicare Specialty	1980-01-01	2099-12-31	
+4096	0	JNJ_PMR_P_SPCLTY	Physical Medicine and Rehab (PM)	38004468	Medicare Specialty	1980-01-01	2099-12-31	
+4097	0	JNJ_PMR_P_SPCLTY	Physician Assistant (DRA)	38004512	Medicare Specialty	1980-01-01	2099-12-31	
+4098	0	JNJ_PMR_P_SPCLTY	Plastic Surgery (PS)	38004467	Medicare Specialty	1980-01-01	2099-12-31	
+4099	0	JNJ_PMR_P_SPCLTY	Podiatry (POD)	38004486	Medicare Specialty	1980-01-01	2099-12-31	
+4100	0	JNJ_PMR_P_SPCLTY	Psychiatry (P)	38004469	Medicare Specialty	1980-01-01	2099-12-31	
+4101	0	JNJ_PMR_P_SPCLTY	Psychoanalysis (PYA)	38004514	Medicare Specialty	1980-01-01	2023-01-20	D
+4101	0	JNJ_PMR_P_SPCLTY	Psychoanalysis (PYA)	32577	Provider	2023-01-20	2099-12-31	
+4102	0	JNJ_PMR_P_SPCLTY	Public Hlth & Gen?l Prev. Medicine (PHP)	38004689	Medicare Specialty	1980-01-01	2099-12-31	
+4103	0	JNJ_PMR_P_SPCLTY	Pulmonary Critical Care Medicine (PCC)	38004472	Medicare Specialty	1980-01-01	2099-12-31	
+4104	0	JNJ_PMR_P_SPCLTY	Pulmonary Diseases (PUD)	38004472	Medicare Specialty	1980-01-01	2099-12-31	
+4105	0	JNJ_PMR_P_SPCLTY	Radiation Oncology (RO)	38004509	Medicare Specialty	1980-01-01	2099-12-31	
+4106	0	JNJ_PMR_P_SPCLTY	Radiology - Diagnostic (DR)	38004675	Medicare Specialty	1980-01-01	2099-12-31	
+4107	0	JNJ_PMR_P_SPCLTY	Radiology (R)	38004675	Medicare Specialty	1980-01-01	2099-12-31	
+4108	0	JNJ_PMR_P_SPCLTY	Reproductive Endocrinology (REN)	38004485	Medicare Specialty	1980-01-01	2099-12-31	
+4109	0	JNJ_PMR_P_SPCLTY	Rheumatology (RHU)	38004491	Medicare Specialty	1980-01-01	2099-12-31	
+4110	0	JNJ_PMR_P_SPCLTY	Sports & Internal Medicine (ISM)	38004456	Medicare Specialty	1980-01-01	2099-12-31	
+4111	0	JNJ_PMR_P_SPCLTY	Sports Medicine - Orthopedics (OSM)	38004514	Medicare Specialty	1980-01-01	2023-01-20	D
+4111	0	JNJ_PMR_P_SPCLTY	Sports Medicine - Orthopedics (OSM)	32577	Provider	2023-01-20	2099-12-31	
+4112	0	JNJ_PMR_P_SPCLTY	Sports Medicine (FSM)	38004514	Medicare Specialty	1980-01-01	2023-01-20	D
+4112	0	JNJ_PMR_P_SPCLTY	Sports Medicine (FSM)	32577	Provider	2023-01-20	2099-12-31	
+4113	0	JNJ_PMR_P_SPCLTY	Surgical Critical Care (CCS)	38004447	Medicare Specialty	1980-01-01	2099-12-31	
+4114	0	JNJ_PMR_P_SPCLTY	Surgical Oncology (SO)	38004508	Medicare Specialty	1980-01-01	2099-12-31	
+4115	0	JNJ_PMR_P_SPCLTY	Thoracic Surgery (TS)	38004473	Medicare Specialty	1980-01-01	2099-12-31	
+4116	0	JNJ_PMR_P_SPCLTY	Transplant Surgery (TTS)	38004514	Medicare Specialty	1980-01-01	2023-01-20	D
+4116	0	JNJ_PMR_P_SPCLTY	Transplant Surgery (TTS)	32577	Provider	2023-01-20	2099-12-31	
+4117	0	JNJ_PMR_P_SPCLTY	Trauma Surgery (TRS)	38004447	Medicare Specialty	1980-01-01	2099-12-31	
+4118	0	JNJ_PMR_P_SPCLTY	Unspecified (US)	38004514	Medicare Specialty	1980-01-01	2023-01-20	D
+4118	0	JNJ_PMR_P_SPCLTY	Unspecified (US)	32577	Provider	2023-01-20	2099-12-31	
+4119	0	JNJ_PMR_P_SPCLTY	Urology (U)	38004474	Medicare Specialty	1980-01-01	2099-12-31	
+4120	0	JNJ_PMR_P_SPCLTY	Vasc. & Interventional Radiology (VIR)	38004675	Medicare Specialty	1980-01-01	2099-12-31	
+4121	0	JNJ_PMR_P_SPCLTY	Vascular Surgery (VS)	38004496	Medicare Specialty	1980-01-01	2099-12-31	

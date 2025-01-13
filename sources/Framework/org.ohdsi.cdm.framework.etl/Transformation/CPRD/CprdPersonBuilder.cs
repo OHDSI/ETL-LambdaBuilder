@@ -2,6 +2,7 @@
 using org.ohdsi.cdm.framework.common.Builder;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Helpers;
+using org.ohdsi.cdm.framework.common.Lookups;
 using org.ohdsi.cdm.framework.common.Omop;
 using org.ohdsi.cdm.framework.common.PregnancyAlgorithm;
 
@@ -198,13 +199,9 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CPRD
             if (death != null)
             {
                 person.TimeOfDeath = death.StartDate;
-
-                if (death.StartDate < observationPeriods.Min(op => op.StartDate))
-                    return Attrition.UnacceptablePatientQuality;
-
-                if (death.StartDate.Year < person.YearOfBirth || death.StartDate.Year > DateTime.Now.Year)
-                    death = null;
             }
+
+            death = UpdateDeath(death, person, observationPeriods);
 
             var race = new List<IEntity>();
             race.AddRange(conditionOccurrences.Where(co => co.Domain == "Race"));
@@ -222,14 +219,17 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CPRD
                 death,
                 observationPeriods,
                 payerPlanPeriods,
-                Clean(drugExposures, person).ToArray(),
-                Clean(conditionOccurrences, person).ToArray(),
-                Clean(procedureOccurrences, person).ToArray(),
-                Clean(observations, person).ToArray(),
-                Clean(measurements, person).ToArray(),
-                [.. visitOccurrences.Values],
-                [.. visitDetails.Values], null,
-                Clean(deviceExposure, person).ToArray(), null, null);
+                FilterByDeathDate(Clean(drugExposures, person), death, 60).ToArray(),
+                FilterByDeathDate(Clean(conditionOccurrences, person), death, 60).ToArray(),
+                FilterByDeathDate(Clean(procedureOccurrences, person), death, 60).ToArray(),
+                FilterByDeathDate(Clean(observations, person), death, 60).ToArray(),
+                FilterByDeathDate(Clean(measurements, person), death, 60).ToArray(),
+                FilterByDeathDate(visitOccurrences.Values, death, 60).ToArray(),
+                FilterByDeathDate(visitDetails.Values, death, 60).ToArray(),
+                null,
+                FilterByDeathDate(Clean(deviceExposure, person), death, 60).ToArray(), 
+                null, 
+                null);
 
             var pg = new PregnancyAlgorithm();
             foreach (var r in pg.GetPregnancyEpisodes(Vocabulary, person, observationPeriods,
@@ -385,8 +385,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CPRD
             switch (e.AdditionalFields["data"].ToLower().Trim())
             {
                 case "read code for condition":
-                    var result = Vocabulary.Lookup(value, "Read_Code", DateTime.MinValue);
-                    return result.Count != 0 ? result[0].ConceptId : null;
+                    var result = GetReadCodeConceptId(value, DateTime.MinValue);
+                    return result?.ConceptId;
 
                 case "drug code":
                     var result1 = Vocabulary.Lookup(value, "Drug", DateTime.MinValue);
@@ -424,7 +424,6 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CPRD
                                        {
                                            Id = Offset.GetKeyOffset(entity.PersonId).ConditionOccurrenceId
                                        };
-                            //cond.TypeConceptId = 32020; //EHR encounter diagnosis
                             ConditionForEra.Add(cond);
                             ChunkData.AddData(cond);
                         }
@@ -437,19 +436,14 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CPRD
                             Id = Offset.GetKeyOffset(entity.PersonId).MeasurementId
                         };
 
-                        //mes.TypeConceptId = 44818702; //Lab result;
-
                         if (!string.IsNullOrEmpty(mes.SourceValue))
                         {
-                            var result = Vocabulary.Lookup(mes.SourceValue, "Read_Code", mes.StartDate);
+                            var result = GetReadCodeConceptId(mes.SourceValue, mes.StartDate);
 
-                            if (result.Count != 0
-                                && result.Count > 0
-                                && result[0].SourceConcepts.Count > 0
-                                && result[0].SourceConcepts.First().ConceptId > 0
-                                /*&& result[0].Domain == "Measurement"*/)
+                            if(result != null && result.SourceConcepts.Count > 0
+                                && result.SourceConcepts.First().ConceptId > 0)
                             {
-                                mes.SourceConceptId = result[0].SourceConcepts.First().ConceptId;
+                                mes.SourceConceptId = result.SourceConcepts.First().ConceptId;
                             }
                         }
 
@@ -485,7 +479,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CPRD
                             {
                                 Id = Offset.GetKeyOffset(entity.PersonId).ObservationId
                             };
-                            //obs.TypeConceptId = 38000280; //Observation recorded from EHR
+                            
                             var valueAsConceptId = GetValueAsConceptId(obs, obs.ValueAsString);
                             if (valueAsConceptId.HasValue)
                                 obs.ValueAsConceptId = valueAsConceptId.Value;
@@ -509,14 +503,12 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CPRD
 
                             if (obs.TypeConceptId == 32856 && !string.IsNullOrEmpty(obs.SourceValue))
                             {
-                                var result = Vocabulary.Lookup(obs.SourceValue, "Read_Code", obs.StartDate);
+                                var result = GetReadCodeConceptId(obs.SourceValue, obs.StartDate);
 
-                                if (result.Count != 0
-                                    && result.Count > 0
-                                    && result[0].SourceConcepts.Count > 0
-                                    && result[0].SourceConcepts.First().ConceptId > 0)
+                                if (result != null && result.SourceConcepts.Count > 0
+                                    && result.SourceConcepts.First().ConceptId > 0)
                                 {
-                                    obs.SourceConceptId = result[0].SourceConcepts.First().ConceptId;
+                                    obs.SourceConceptId = result.SourceConcepts.First().ConceptId;
                                 }
                             }
 
@@ -541,7 +533,6 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CPRD
                                        Id = Offset.GetKeyOffset(entity.PersonId)
                                            .ProcedureOccurrenceId
                                    };
-                        //proc.TypeConceptId = 38000275; //EHR order list entry
                         ChunkData.AddData(proc);
                         break;
 
@@ -560,13 +551,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CPRD
                                       Id = Offset.GetKeyOffset(entity.PersonId).DrugExposureId
                                   };
 
-                        //drg.TypeConceptId = 38000177;
-
-                        //Drug|CVX
-                        //if (entity.Domain != null && entity.Domain.EndsWith("CVX", StringComparison.OrdinalIgnoreCase))
-                        //{
-                        //    drg.TypeConceptId = 38000179; // Physician administered drug (identified as procedure)
-                        //}
+                        if (!drg.EndDate.HasValue)
+                            drg.EndDate = drg.StartDate;
 
                         DrugForEra.Add(drg);
                         ChunkData.AddData(drg);
@@ -614,12 +600,6 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CPRD
         {
             foreach (var mes in BuildEntities(measurements, visitOccurrences, observationPeriods, false))
             {
-                //if (!string.IsNullOrEmpty(mes.SourceValue))
-                //{
-                //    var result = Vocabulary.Lookup(mes.SourceValue, "Read_Code", mes.StartDate);
-                //    mes.SourceConceptId = result.Any() ? result[0].ConceptId ?? 0 : 0;
-                //}
-
                 yield return mes;
             }
         }
@@ -649,6 +629,18 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CPRD
             ObservationPeriod[] observationPeriods)
         {
             return BuildEntities(devExposure, visitOccurrences, observationPeriods, false);
+        }
+
+        private LookupValue? GetReadCodeConceptId(string sourceValue, DateTime date)
+        {
+            var result = Vocabulary.Lookup(sourceValue, "Read_Code", date);
+
+            if (result != null && result.Count > 0)
+            {
+                return result.FirstOrDefault(r => sourceValue.Equals(r.SourceCode, StringComparison.Ordinal));
+            }
+
+            return null;
         }
 
         #endregion

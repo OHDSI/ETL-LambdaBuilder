@@ -1,0 +1,8 @@
+source_code	source_concept_id	source_vocabulary_id	source_code_description	target_concept_id	target_vocabulary_id	valid_start_date	valid_end_date	invalid_reason
+infiltrative	0	JNJ_OPTUM_EHR_ONCCHR	infiltrative	36769449	Cancer Modifier	2023-07-26	2099-12-31	
+invasive	0	JNJ_OPTUM_EHR_ONCCHR	invasive	36769449	Cancer Modifier	2023-07-26	2099-12-31	
+locally invasive	0	JNJ_OPTUM_EHR_ONCCHR	locally invasive	36769449	Cancer Modifier	2023-07-26	2099-12-31	
+metastatic	0	JNJ_OPTUM_EHR_ONCCHR	metastatic	36769180	Cancer Modifier	2023-07-26	2099-12-31	
+microinvasive	0	JNJ_OPTUM_EHR_ONCCHR	microinvasive	36770022	Cancer Modifier	2023-07-26	2099-12-31	
+multifocal	0	JNJ_OPTUM_EHR_ONCCHR	multifocal	36769933	Cancer Modifier	2023-07-26	2099-12-31	
+unifocal	0	JNJ_OPTUM_EHR_ONCCHR	unifocal	36769332	Cancer Modifier	2023-07-26	2099-12-31	

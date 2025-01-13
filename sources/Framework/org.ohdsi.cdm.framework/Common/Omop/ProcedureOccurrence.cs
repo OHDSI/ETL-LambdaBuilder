@@ -39,7 +39,9 @@ namespace org.ohdsi.cdm.framework.common.Omop
                    this.QualifierSourceValue == other.QualifierSourceValue &&
                    this.TypeConceptId == other.TypeConceptId &&
                    this.StartDate == other.StartDate &&
+                   this.ValueAsConceptId == other.ValueAsConceptId &&
                    this.VisitOccurrenceId == other.VisitOccurrenceId &&
+                   this.ProviderId == other.ProviderId &&
                    this.SourceValue == other.SourceValue;
         }
 
@@ -52,7 +54,9 @@ namespace org.ohdsi.cdm.framework.common.Omop
                    ModifierConceptId.GetHashCode() ^
                    Quantity.GetHashCode() ^
                    SourceConceptId.GetHashCode() ^
+                   ProviderId.GetHashCode() ^
                    (QualifierSourceValue != null ? QualifierSourceValue.GetHashCode() : 0) ^
+                   ValueAsConceptId.GetHashCode() ^
                    (StartDate.GetHashCode()) ^
                    (SourceValue != null ? SourceValue.GetHashCode() : 0);
         }

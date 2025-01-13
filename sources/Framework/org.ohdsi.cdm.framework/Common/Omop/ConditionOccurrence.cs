@@ -35,6 +35,7 @@ namespace org.ohdsi.cdm.framework.common.Omop
                    string.Equals(this.StopReason, other.StopReason) &&
                    string.Equals(this.StatusSourceValue, other.StatusSourceValue) &&
                    this.SourceConceptId == other.SourceConceptId &&
+                   this.ValueAsConceptId == other.ValueAsConceptId &&
                    this.ProviderId.Equals(other.ProviderId) &&
                    this.SourceValue.Equals(other.SourceValue);
         }
@@ -51,6 +52,7 @@ namespace org.ohdsi.cdm.framework.common.Omop
                    (StopReason != null ? StopReason.GetHashCode() : 0) ^
                    SourceConceptId.GetHashCode() ^
                    ProviderId.GetHashCode() ^
+                   ValueAsConceptId.GetHashCode() ^
                    (StatusSourceValue != null ? StatusSourceValue.GetHashCode() : 0) ^
                    (SourceValue != null ? SourceValue.GetHashCode() : 0);
         }

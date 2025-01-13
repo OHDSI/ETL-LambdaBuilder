@@ -1016,66 +1016,61 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Truven
                 if (!entity.VisitDetailId.HasValue)
                     SetVisitDetailId(entity, false);
 
-                var entityDomain = GetDomain(domain, entity.Domain);
+                var entityDomain = GetDomain(domain, entity.Domain, "Observation");
 
                 switch (entityDomain)
                 {
                     case "Condition":
-                        var obs = entity as Observation;
-                        if (obs == null || obs.ValueAsNumber == 1)
+                        var cond = entity as ConditionOccurrence ??
+                                   new ConditionOccurrence(entity)
+                                   {
+                                       Id = Offset.GetKeyOffset(entity.PersonId).ConditionOccurrenceId
+                                   };
+
+                        if (cond.TypeConceptId == 32850) //HRA
                         {
-                            var cond = entity as ConditionOccurrence ??
-                                       new ConditionOccurrence(entity)
-                                       {
-                                           Id = Offset.GetKeyOffset(entity.PersonId).ConditionOccurrenceId
-                                       };
-
-                            if (cond.TypeConceptId == 32850) //HRA
-                            {
-                                cond.EndDate = null; //HIX-1299
-                            }
-
-                            if (cond.TypeConceptId < 2000)
-                            {
-                                // DX1 PDX PPROC PROC1
-                                if (cond.TypeConceptId == 0 ||
-                                    cond.TypeConceptId == 100 ||
-                                    cond.TypeConceptId == 1000)
-                                {
-                                    cond.StatusConceptId = 32902;
-                                }
-                                else
-                                    cond.StatusConceptId = 32908;
-
-                                string fieldName;
-                                if (cond.TypeConceptId < 100)
-                                {
-                                    fieldName = "PROC";
-                                }
-                                else
-                                    fieldName = "DX";
-
-                                if (cond.TypeConceptId == 0 || cond.TypeConceptId == 100 || cond.TypeConceptId == 1000)
-                                    fieldName = "P" + fieldName;
-                                else
-                                {
-                                    if (cond.TypeConceptId >= 100 && cond.TypeConceptId < 1000)
-                                        cond.TypeConceptId -= 100;
-                                    else if (cond.TypeConceptId >= 1000)
-                                        cond.TypeConceptId -= 1000;
-
-                                    fieldName += cond.TypeConceptId;
-                                }
-
-                                cond.StatusSourceValue = fieldName;
-                            }
-
-                            
-                            SetTypeId(cond, visitOccurrences);
-                            ConditionForEra.Add(cond);
-                            ChunkData.AddData(cond);
+                            cond.EndDate = null; //HIX-1299
                         }
 
+                        if (cond.TypeConceptId < 2000)
+                        {
+                            // DX1 PDX PPROC PROC1
+                            if (cond.TypeConceptId == 0 ||
+                                cond.TypeConceptId == 100 ||
+                                cond.TypeConceptId == 1000)
+                            {
+                                cond.StatusConceptId = 32902;
+                            }
+                            else
+                                cond.StatusConceptId = 32908;
+
+                            string fieldName;
+                            if (cond.TypeConceptId < 100)
+                            {
+                                fieldName = "PROC";
+                            }
+                            else
+                                fieldName = "DX";
+
+                            if (cond.TypeConceptId == 0 || cond.TypeConceptId == 100 || cond.TypeConceptId == 1000)
+                                fieldName = "P" + fieldName;
+                            else
+                            {
+                                if (cond.TypeConceptId >= 100 && cond.TypeConceptId < 1000)
+                                    cond.TypeConceptId -= 100;
+                                else if (cond.TypeConceptId >= 1000)
+                                    cond.TypeConceptId -= 1000;
+
+                                fieldName += cond.TypeConceptId;
+                            }
+
+                            cond.StatusSourceValue = fieldName;
+                        }
+
+
+                        SetTypeId(cond, visitOccurrences);
+                        ConditionForEra.Add(cond);
+                        ChunkData.AddData(cond);
                         break;
 
                     case "Measurement":

@@ -1,0 +1,93 @@
+source_code	source_concept_id	source_vocabulary_id	source_code_description	target_concept_id	target_vocabulary_id	valid_start_date	valid_end_date	invalid_reason
+Adenovirus DNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Adenovirus DNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	3032682	LOINC	1970-01-01	2099-12-31	
+Bacteria identified:Prid:Pt:Bld:Nom:Aerobic culture	0	JNJ_PMR_LAB_RES	Bacteria identified:Prid:Pt:Bld:Nom:Aerobic culture	3014398	LOINC	1970-01-01	2099-12-31	
+Bacteria identified:Prid:Pt:Bld:Nom:Culture	0	JNJ_PMR_LAB_RES	Bacteria identified:Prid:Pt:Bld:Nom:Culture	3023368	LOINC	1970-01-01	2099-12-31	
+Bacteria identified:Prid:Pt:Body fld:Nom:Culture	0	JNJ_PMR_LAB_RES	Bacteria identified:Prid:Pt:Body fld:Nom:Culture	3016727	LOINC	1970-01-01	2099-12-31	
+Bacteria identified:Prid:Pt:Sputum:Nom:Culture	0	JNJ_PMR_LAB_RES	Bacteria identified:Prid:Pt:Sputum:Nom:Culture	3023419	LOINC	1970-01-01	2099-12-31	
+Bacteria identified:Prid:Pt:Sputum:Nom:Respiratory culture	0	JNJ_PMR_LAB_RES	Bacteria identified:Prid:Pt:Sputum:Nom:Respiratory culture	3025099	LOINC	1970-01-01	2099-12-31	
+Bacteria identified:Prid:Pt:Stool:Nom:Culture	0	JNJ_PMR_LAB_RES	Bacteria identified:Prid:Pt:Stool:Nom:Culture	3025941	LOINC	1970-01-01	2099-12-31	
+Bacteria identified:Prid:Pt:Thrt:Nom:Culture	0	JNJ_PMR_LAB_RES	Bacteria identified:Prid:Pt:Thrt:Nom:Culture	3012475	LOINC	1970-01-01	2099-12-31	
+Bacteria identified:Prid:Pt:Urine:Nom:Culture	0	JNJ_PMR_LAB_RES	Bacteria identified:Prid:Pt:Urine:Nom:Culture	3026008	LOINC	1970-01-01	2099-12-31	
+Bacteria identified:Prid:Pt:Wound:Nom:Aerobic culture	0	JNJ_PMR_LAB_RES	Bacteria identified:Prid:Pt:Wound:Nom:Aerobic culture	3013146	LOINC	1970-01-01	2099-12-31	
+Bacteria identified:Prid:Pt:Wound:Nom:Culture	0	JNJ_PMR_LAB_RES	Bacteria identified:Prid:Pt:Wound:Nom:Culture	3003714	LOINC	1970-01-01	2099-12-31	
+Bacteria identified:Prid:Pt:XXX:Nom:Anaerobic+Aerobic culture	0	JNJ_PMR_LAB_RES	Bacteria identified:Prid:Pt:XXX:Nom:Anaerobic+Aerobic culture	3024447	LOINC	1970-01-01	2099-12-31	
+Bacteria identified:Prid:Pt:XXX:Nom:Anaerobic culture	0	JNJ_PMR_LAB_RES	Bacteria identified:Prid:Pt:XXX:Nom:Anaerobic culture	3011298	LOINC	1970-01-01	2099-12-31	
+Bacteria identified:Prid:Pt:XXX:Nom:Culture	0	JNJ_PMR_LAB_RES	Bacteria identified:Prid:Pt:XXX:Nom:Culture	3002619	LOINC	1970-01-01	2099-12-31	
+Bacteria identified:Prid:Pt:XXX:Nom:Respiratory culture	0	JNJ_PMR_LAB_RES	Bacteria identified:Prid:Pt:XXX:Nom:Respiratory culture	3023764	LOINC	1970-01-01	2099-12-31	
+Bordetella parapertussis DNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Bordetella parapertussis DNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	3037875	LOINC	1970-01-01	2099-12-31	
+Bordetella pertussis DNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Bordetella pertussis DNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	3037875	LOINC	1970-01-01	2099-12-31	
+Chlamydia sp DNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Chlamydia sp DNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	3034878	LOINC	1970-01-01	2099-12-31	
+Chlamydia trachomatis DNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Chlamydia trachomatis DNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	3044125	LOINC	1970-01-01	2099-12-31	
+Chlamydia trachomatis DNA assay	0	JNJ_PMR_LAB_RES	Chlamydia trachomatis DNA assay	4044979	SNOMED	1970-01-01	2099-12-31	
+Chlamydophila pneumoniae DNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Chlamydophila pneumoniae DNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	3031478	LOINC	1970-01-01	2099-12-31	
+Clostridium difficile toxin A+B:ACnc:Pt:Stool:Ord	0	JNJ_PMR_LAB_RES	Clostridium difficile toxin A+B:ACnc:Pt:Stool:Ord	3032068	LOINC	1970-01-01	2099-12-31	
+Clue cells:ACnc:Pt:XXX:Ord:Wet preparation	0	JNJ_PMR_LAB_RES	Clue cells:ACnc:Pt:XXX:Ord:Wet preparation	3047152	LOINC	1970-01-01	2099-12-31	
+Fluid:Type:Pt:Body fld:Nom	0	JNJ_PMR_LAB_RES	Fluid:Type:Pt:Body fld:Nom	3020845	LOINC	1970-01-01	2099-12-31	
+Fungus identified:Prid:Pt:XXX:Nom:Culture	0	JNJ_PMR_LAB_RES	Fungus identified:Prid:Pt:XXX:Nom:Culture	3000494	LOINC	1970-01-01	2099-12-31	
+Hepatitis A virus Ab.IgM:ACnc:Pt:Ser:Ord	0	JNJ_PMR_LAB_RES	Hepatitis A virus Ab.IgM:ACnc:Pt:Ser:Ord	3016650	LOINC	1970-01-01	2099-12-31	
+Hepatitis B virus core Ab:ACnc:Pt:Ser:Ord	0	JNJ_PMR_LAB_RES	Hepatitis B virus core Ab:ACnc:Pt:Ser:Ord	3021879	LOINC	1970-01-01	2099-12-31	
+Hepatitis B virus core Ab.IgM:ACnc:Pt:Ser:Ord	0	JNJ_PMR_LAB_RES	Hepatitis B virus core Ab.IgM:ACnc:Pt:Ser:Ord	3021879	LOINC	1970-01-01	2099-12-31	
+Hepatitis B virus surface Ab:ACnc:Pt:Ser:Qn	0	JNJ_PMR_LAB_RES	Hepatitis B virus surface Ab:ACnc:Pt:Ser:Qn	4318957	SNOMED	1970-01-01	2099-12-31	
+Hepatitis B virus surface Ab:ACnc:Pt:Ser:Qn:EIA	0	JNJ_PMR_LAB_RES	Hepatitis B virus surface Ab:ACnc:Pt:Ser:Qn:EIA	3006453	LOINC	1970-01-01	2099-12-31	
+Hepatitis B virus surface Ag:ACnc:Pt:Ser:Ord	0	JNJ_PMR_LAB_RES	Hepatitis B virus surface Ag:ACnc:Pt:Ser:Ord	3016650	LOINC	1970-01-01	2099-12-31	
+Hepatitis B virus surface Ag:ACnc:Pt:Ser:Ord:EIA	0	JNJ_PMR_LAB_RES	Hepatitis B virus surface Ag:ACnc:Pt:Ser:Ord:EIA	3019284	LOINC	1970-01-01	2099-12-31	
+Hepatitis C virus Ab:ACnc:Pt:Ser:Ord	0	JNJ_PMR_LAB_RES	Hepatitis C virus Ab:ACnc:Pt:Ser:Ord	3017143	LOINC	1970-01-01	2099-12-31	
+Hepatitis C virus Ab:ACnc:Pt:Ser:Ord:EIA	0	JNJ_PMR_LAB_RES	Hepatitis C virus Ab:ACnc:Pt:Ser:Ord:EIA	3017143	LOINC	1970-01-01	2099-12-31	
+Hepatitis C virus RNA:ACnc:Pt:Ser/Plas:Qn:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Hepatitis C virus RNA:ACnc:Pt:Ser/Plas:Qn:Probe.amp.tar	3049213	LOINC	1970-01-01	2099-12-31	
+HIV 1+2 Ab:ACnc:Pt:Ser:Ord	0	JNJ_PMR_LAB_RES	HIV 1+2 Ab:ACnc:Pt:Ser:Ord	3011325	LOINC	1970-01-01	2099-12-31	
+Human coronavirus 229E Ag:ACnc:Pt:XXX:Ord:IF	0	JNJ_PMR_LAB_RES	Human coronavirus 229E Ag:ACnc:Pt:XXX:Ord:IF	3042457	LOINC	1970-01-01	2099-12-31	
+Human coronavirus 229E RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Human coronavirus 229E RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	3041642	LOINC	1970-01-01	2099-12-31	
+Human coronavirus 229E RNA:PrThr:Pt:Nph:Ord:Non-probe.amp.tar	0	JNJ_PMR_LAB_RES	Human coronavirus 229E RNA:PrThr:Pt:Nph:Ord:Non-probe.amp.tar	21493147	LOINC	1970-01-01	2099-12-31	
+Human coronavirus HKU1 RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Human coronavirus HKU1 RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	40765160	LOINC	1970-01-01	2099-12-31	
+Human coronavirus HKU1 RNA:PrThr:Pt:Nph:Ord:Non-probe.amp.tar	0	JNJ_PMR_LAB_RES	Human coronavirus HKU1 RNA:PrThr:Pt:Nph:Ord:Non-probe.amp.tar	21493330	LOINC	1970-01-01	2099-12-31	
+Human coronavirus NL63 RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Human coronavirus NL63 RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	3040359	LOINC	1970-01-01	2099-12-31	
+Human coronavirus NL63 RNA:PrThr:Pt:Nph:Ord:Non-probe.amp.tar	0	JNJ_PMR_LAB_RES	Human coronavirus NL63 RNA:PrThr:Pt:Nph:Ord:Non-probe.amp.tar	21493331	LOINC	1970-01-01	2099-12-31	
+Human coronavirus OC43 Ag:ACnc:Pt:XXX:Ord:IF	0	JNJ_PMR_LAB_RES	Human coronavirus OC43 Ag:ACnc:Pt:XXX:Ord:IF	3043975	LOINC	1970-01-01	2099-12-31	
+Human coronavirus OC43 RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Human coronavirus OC43 RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	3038546	LOINC	1970-01-01	2099-12-31	
+Human coronavirus OC43 RNA:PrThr:Pt:Nph:Ord:Non-probe.amp.tar	0	JNJ_PMR_LAB_RES	Human coronavirus OC43 RNA:PrThr:Pt:Nph:Ord:Non-probe.amp.tar	21493148	LOINC	1970-01-01	2099-12-31	
+Human coronavirus RNA:ACnc:Pt:Ser/Plas:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Human coronavirus RNA:ACnc:Pt:Ser/Plas:Ord:Probe.amp.tar	40763320	LOINC	1970-01-01	2099-12-31	
+Human coronavirus RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Human coronavirus RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	3042596	LOINC	1970-01-01	2099-12-31	
+Human metapneumovirus A+B L+N genes:PrThr:Pt:Nph:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Human metapneumovirus A+B L+N genes:PrThr:Pt:Nph:Ord:Probe.amp.tar	21493374	LOINC	1970-01-01	2099-12-31	
+Human metapneumovirus Ag:ACnc:Pt:XXX:Ord:IF	0	JNJ_PMR_LAB_RES	Human metapneumovirus Ag:ACnc:Pt:XXX:Ord:IF	3039848	LOINC	1970-01-01	2099-12-31	
+Human metapneumovirus RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Human metapneumovirus RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	3042194	LOINC	1970-01-01	2099-12-31	
+Human metapneumovirus RNA:NCnc:Pt:XXX:Qn:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Human metapneumovirus RNA:NCnc:Pt:XXX:Qn:Probe.amp.tar	3042194	LOINC	1970-01-01	2099-12-31	
+Human metapneumovirus RNA:PrThr:Pt:Nph:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Human metapneumovirus RNA:PrThr:Pt:Nph:Ord:Probe.amp.tar	46236734	LOINC	1970-01-01	2099-12-31	
+Influenza virus A Ag:ACnc:Pt:XXX:Ord	0	JNJ_PMR_LAB_RES	Influenza virus A Ag:ACnc:Pt:XXX:Ord	3002523	LOINC	1970-01-01	2099-12-31	
+Influenza virus B Ag:ACnc:Pt:XXX:Ord	0	JNJ_PMR_LAB_RES	Influenza virus B Ag:ACnc:Pt:XXX:Ord	3003740	LOINC	1970-01-01	2099-12-31	
+Legionella sp Ag:ACnc:Pt:Urine:Ord	0	JNJ_PMR_LAB_RES	Legionella sp Ag:ACnc:Pt:Urine:Ord	3046861	LOINC	1970-01-01	2099-12-31	
+Microscopic observation:Prid:Pt:XXX:Nom:Gram stain	0	JNJ_PMR_LAB_RES	Microscopic observation:Prid:Pt:XXX:Nom:Gram stain	3037167	LOINC	1970-01-01	2099-12-31	
+Microscopic observation:Prid:Pt:XXX:Nom:Wet preparation	0	JNJ_PMR_LAB_RES	Microscopic observation:Prid:Pt:XXX:Nom:Wet preparation	3012236	LOINC	1970-01-01	2099-12-31	
+Mycobacterium sp identified:Prid:Pt:XXX:Nom:Organism specific culture	0	JNJ_PMR_LAB_RES	Mycobacterium sp identified:Prid:Pt:XXX:Nom:Organism specific culture	3005702	LOINC	1970-01-01	2099-12-31	
+Mycobacterium tuberculosis tuberculin stimulated gamma interferon:ACnc:Pt:Bld:Ord	0	JNJ_PMR_LAB_RES	Mycobacterium tuberculosis tuberculin stimulated gamma interferon:ACnc:Pt:Bld:Ord	3046425	LOINC	1970-01-01	2099-12-31	
+Mycoplasma pneumoniae DNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Mycoplasma pneumoniae DNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	3002482	LOINC	1970-01-01	2099-12-31	
+Neisseria gonorrhoeae DNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Neisseria gonorrhoeae DNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	3011371	LOINC	1970-01-01	2099-12-31	
+Parainfluenza virus 1 RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Parainfluenza virus 1 RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	3025634	LOINC	1970-01-01	2099-12-31	
+Parainfluenza virus 2 RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Parainfluenza virus 2 RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	3012158	LOINC	1970-01-01	2099-12-31	
+Parainfluenza virus 3 RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Parainfluenza virus 3 RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	3006262	LOINC	1970-01-01	2099-12-31	
+Parainfluenza virus 4 RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Parainfluenza virus 4 RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	3038297	LOINC	1970-01-01	2099-12-31	
+Reagin Ab:ACnc:Pt:Ser:Ord:RPR	0	JNJ_PMR_LAB_RES	Reagin Ab:ACnc:Pt:Ser:Ord:RPR	3021461	LOINC	1970-01-01	2099-12-31	
+Respiratory syncytial virus Ag:ACnc:Pt:XXX:Ord	0	JNJ_PMR_LAB_RES	Respiratory syncytial virus Ag:ACnc:Pt:XXX:Ord	3001684	LOINC	1970-01-01	2099-12-31	
+Respiratory syncytial virus Ag:ACnc:Pt:XXX:Ord:EIA	0	JNJ_PMR_LAB_RES	Respiratory syncytial virus Ag:ACnc:Pt:XXX:Ord:EIA	3020426	LOINC	1970-01-01	2099-12-31	
+Respiratory syncytial virus Ag:ACnc:Pt:XXX:Ord:IF	0	JNJ_PMR_LAB_RES	Respiratory syncytial virus Ag:ACnc:Pt:XXX:Ord:IF	3005444	LOINC	1970-01-01	2099-12-31	
+Respiratory syncytial virus A RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Respiratory syncytial virus A RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	3044254	LOINC	1970-01-01	2099-12-31	
+Respiratory syncytial virus B RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Respiratory syncytial virus B RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	3000108	LOINC	1970-01-01	2099-12-31	
+Respiratory syncytial virus RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Respiratory syncytial virus RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	3044254	LOINC	1970-01-01	2099-12-31	
+Respiratory syncytial virus RNA:PrThr:Pt:Nph:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Respiratory syncytial virus RNA:PrThr:Pt:Nph:Ord:Probe.amp.tar	46235794	LOINC	1970-01-01	2099-12-31	
+Respiratory virus DNA & RNA panel:-:Pt:XXX:-:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Respiratory virus DNA & RNA panel:-:Pt:XXX:-:Probe.amp.tar	3030692	LOINC	1970-01-01	2099-12-31	
+Rhinovirus+Enterovirus RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Rhinovirus+Enterovirus RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	3040684	LOINC	1970-01-01	2099-12-31	
+Rubella virus	0	JNJ_PMR_LAB_RES	Rubella virus	3028572	LOINC	1970-01-01	2099-12-31	
+SARS coronavirus 2 RNA:PrThr:Pt:Respiratory:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	SARS coronavirus 2 RNA:PrThr:Pt:Respiratory:Ord:Probe.amp.tar	756055	OMOP Extension	2020-03-18	2099-12-31	
+Staphylococcus aureus.methicillin resistant DNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Staphylococcus aureus.methicillin resistant DNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	40764165	LOINC	1970-01-01	2099-12-31	
+STAPHYLOCOCCUS AUREUS.METHICILLIN RESISTANT IDENTIFIED:PRID:PT:XXX:NOM:ORGANISM SPECIFIC CULTURE	0	JNJ_PMR_LAB_RES	STAPHYLOCOCCUS AUREUS.METHICILLIN RESISTANT IDENTIFIED:PRID:PT:XXX:NOM:ORGANISM SPECIFIC CULTURE	3019902	LOINC	1970-01-01	2099-12-31	
+Staphylococcus aureus.methicillin resistant isolate:ACnc:Pt:XXX:Ord:Organism specific culture	0	JNJ_PMR_LAB_RES	Staphylococcus aureus.methicillin resistant isolate:ACnc:Pt:XXX:Ord:Organism specific culture	3019902	LOINC	1970-01-01	2099-12-31	
+Streptococcus pneumoniae Ag:ACnc:Pt:Urine:Ord	0	JNJ_PMR_LAB_RES	Streptococcus pneumoniae Ag:ACnc:Pt:Urine:Ord	3011363	LOINC	1970-01-01	2099-12-31	
+Streptococcus pyogenes Ag:ACnc:Pt:Thrt:Ord	0	JNJ_PMR_LAB_RES	Streptococcus pyogenes Ag:ACnc:Pt:Thrt:Ord	3033319	LOINC	1970-01-01	2099-12-31	
+Streptococcus pyogenes Ag:ACnc:Pt:Thrt:Ord:EIA	0	JNJ_PMR_LAB_RES	Streptococcus pyogenes Ag:ACnc:Pt:Thrt:Ord:EIA	3033319	LOINC	1970-01-01	2099-12-31	
+Streptococcus pyogenes Ag:ACnc:Pt:XXX:Ord	0	JNJ_PMR_LAB_RES	Streptococcus pyogenes Ag:ACnc:Pt:XXX:Ord	3008051	LOINC	1970-01-01	2099-12-31	
+Streptococcus pyogenes Ag:ACnc:Pt:XXX:Ord:EIA	0	JNJ_PMR_LAB_RES	Streptococcus pyogenes Ag:ACnc:Pt:XXX:Ord:EIA	3017906	LOINC	1970-01-01	2099-12-31	
+Streptococcus pyogenes DNA:Prid:Pt:XXX:Nom:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Streptococcus pyogenes DNA:Prid:Pt:XXX:Nom:Probe.amp.tar	3032732	LOINC	1970-01-01	2099-12-31	
+Treponema pallidum Ab:ACnc:Pt:Ser:Qn	0	JNJ_PMR_LAB_RES	Treponema pallidum Ab:ACnc:Pt:Ser:Qn	3019832	LOINC	1970-01-01	2099-12-31	
+Trichomonas vaginalis:ACnc:Pt:XXX:Ord:Wet preparation	0	JNJ_PMR_LAB_RES	Trichomonas vaginalis:ACnc:Pt:XXX:Ord:Wet preparation	3047204	LOINC	1970-01-01	2099-12-31	
+Trichomonas vaginalis rRNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Trichomonas vaginalis rRNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	3045342	LOINC	1970-01-01	2099-12-31	
+Urinalysis panel:-:Pt:Urine:-	0	JNJ_PMR_LAB_RES	Urinalysis panel:-:Pt:Urine:-	3030688	LOINC	1970-01-01	2099-12-31	
+Yeast:ACnc:Pt:XXX:Ord:Wet preparation	0	JNJ_PMR_LAB_RES	Yeast:ACnc:Pt:XXX:Ord:Wet preparation	3047178	LOINC	1970-01-01	2099-12-31	
