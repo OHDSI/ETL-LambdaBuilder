@@ -845,14 +845,7 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
             var payerPlanPeriods = BuildPayerPlanPeriods([.. PayerPlanPeriodsRaw], visitOccurrences).ToArray();
 
             var death = BuildDeath([.. DeathRecords], visitOccurrences, observationPeriods);
-
-            if (death != null)
-            {
-                if (death.StartDate.Date < observationPeriods.Min(op => op.StartDate.Date))
-                    death = null;
-                else if (person.YearOfBirth.HasValue && person.YearOfBirth.Value > 0 && person.YearOfBirth > death.StartDate.Year)
-                    death = null;
-            }
+            death = UpdateDeath(death, person, observationPeriods);
 
             // push built entities to ChunkBuilder for further save to CDM database
             AddToChunk(person, death,
@@ -885,19 +878,6 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
             }
 
             return Attrition.None;
-        }
-
-        //public static IEnumerable<T> UpdateRSourceConcept<T>(IEnumerable<T> records) where T : IEntity
-
-        private static IEnumerable<T> FilterByDeathDate<T>(IEnumerable<T> items, Death death, int gap) where T : IEntity
-        {
-            foreach (var item in items)
-            {
-                if (death == null)
-                    yield return item;
-                else if (item.StartDate.Date <= death.StartDate.AddDays(gap))
-                    yield return item;
-            }
         }
 
         public override IEnumerable<DrugExposure> BuildDrugExposures(DrugExposure[] drugExposures, Dictionary<long, VisitOccurrence> visitOccurrences, ObservationPeriod[] observationPeriods)
