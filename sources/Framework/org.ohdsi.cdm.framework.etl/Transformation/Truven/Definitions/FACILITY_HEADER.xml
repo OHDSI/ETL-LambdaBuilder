@@ -244,44 +244,6 @@
   </ProcedureOccurrence>
   <Death>
     <DeathDefinition>
-      <Condition>{ccae_mdcr} = 1</Condition>
-      <PersonId>ENROLID</PersonId>
-      <StartDate>SVCDATE</StartDate>
-      <Died>DIED</Died>
-      <AdditionalFields>
-        <string>FACHDID</string>
-        <string>YEAR</string>
-        <string>priority</string>
-        <string>hlthplan</string>
-        <string>vendor</string>
-      </AdditionalFields>
-      <Concepts>
-        <Concept>
-          <Fields>
-            <Field key="DSTATUS" defaultConceptId="1" defaultTypeId="32812"/>
-          </Fields>
-        </Concept>
-        <Concept>
-          <ConceptIdMappers>
-            <Mapper>
-              <Lookup>Death</Lookup>
-            </Mapper>
-          </ConceptIdMappers>
-          <Fields>
-            <Field key="DX1" defaultTypeId="32812"/>
-            <Field key="DX2" defaultTypeId="32812"/>
-            <Field key="DX3" defaultTypeId="32812"/>
-            <Field key="DX4" defaultTypeId="32812"/>
-            <Field key="DX5" defaultTypeId="32812"/>
-            <Field key="DX6" defaultTypeId="32812"/>
-            <Field key="DX7" defaultTypeId="32812"/>
-            <Field key="DX8" defaultTypeId="32812"/>
-            <Field key="DX9" defaultTypeId="32812"/>
-          </Fields>
-        </Concept>
-      </Concepts>
-    </DeathDefinition>
-    <DeathDefinition>
       <Condition>{DIED} = 1</Condition>
       <PersonId>ENROLID</PersonId>
       <StartDate>SVCDATE</StartDate>

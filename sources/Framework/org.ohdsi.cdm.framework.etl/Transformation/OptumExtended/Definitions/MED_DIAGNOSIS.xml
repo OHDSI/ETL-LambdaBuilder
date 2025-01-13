@@ -80,41 +80,4 @@
       </Concepts>
     </ConditionOccurrenceDefinition>
   </ConditionOccurrence>
-
-  <Death>
-    <DeathDefinition>
-      <Condition>{icd_flag} = 9</Condition>
-      <PersonId>PERSON_ID</PersonId>
-      <StartDate>START_DATE</StartDate>
-      <Concepts>
-        <Concept>
-          <ConceptIdMappers>
-            <Mapper>
-              <Lookup>DeathCodes</Lookup>
-            </Mapper>
-          </ConceptIdMappers>
-          <Fields>
-            <Field key="diag" defaultTypeId="32812"/>
-          </Fields>
-        </Concept>
-      </Concepts>
-    </DeathDefinition>
-    <DeathDefinition>
-      <Condition>{icd_flag} = 10</Condition>
-      <PersonId>PERSON_ID</PersonId>
-      <StartDate>START_DATE</StartDate>
-      <Concepts>
-        <Concept>
-          <ConceptIdMappers>
-            <Mapper>
-              <Lookup>DeathCodesICD10</Lookup>
-            </Mapper>
-          </ConceptIdMappers>
-          <Fields>
-            <Field key="diag" defaultTypeId="32812"/>
-          </Fields>
-        </Concept>
-      </Concepts>
-    </DeathDefinition>
-  </Death>
 </QueryDefinition>

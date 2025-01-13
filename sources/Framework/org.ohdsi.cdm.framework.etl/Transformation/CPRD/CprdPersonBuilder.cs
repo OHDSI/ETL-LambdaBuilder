@@ -199,13 +199,9 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CPRD
             if (death != null)
             {
                 person.TimeOfDeath = death.StartDate;
-
-                if (death.StartDate < observationPeriods.Min(op => op.StartDate))
-                    return Attrition.UnacceptablePatientQuality;
-
-                if (death.StartDate.Year < person.YearOfBirth || death.StartDate.Year > DateTime.Now.Year)
-                    death = null;
             }
+
+            death = UpdateDeath(death, person, observationPeriods);
 
             var race = new List<IEntity>();
             race.AddRange(conditionOccurrences.Where(co => co.Domain == "Race"));
@@ -223,14 +219,17 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CPRD
                 death,
                 observationPeriods,
                 payerPlanPeriods,
-                Clean(drugExposures, person).ToArray(),
-                Clean(conditionOccurrences, person).ToArray(),
-                Clean(procedureOccurrences, person).ToArray(),
-                Clean(observations, person).ToArray(),
-                Clean(measurements, person).ToArray(),
-                [.. visitOccurrences.Values],
-                [.. visitDetails.Values], null,
-                Clean(deviceExposure, person).ToArray(), null, null);
+                FilterByDeathDate(Clean(drugExposures, person), death, 60).ToArray(),
+                FilterByDeathDate(Clean(conditionOccurrences, person), death, 60).ToArray(),
+                FilterByDeathDate(Clean(procedureOccurrences, person), death, 60).ToArray(),
+                FilterByDeathDate(Clean(observations, person), death, 60).ToArray(),
+                FilterByDeathDate(Clean(measurements, person), death, 60).ToArray(),
+                FilterByDeathDate(visitOccurrences.Values, death, 60).ToArray(),
+                FilterByDeathDate(visitDetails.Values, death, 60).ToArray(),
+                null,
+                FilterByDeathDate(Clean(deviceExposure, person), death, 60).ToArray(), 
+                null, 
+                null);
 
             var pg = new PregnancyAlgorithm();
             foreach (var r in pg.GetPregnancyEpisodes(Vocabulary, person, observationPeriods,
