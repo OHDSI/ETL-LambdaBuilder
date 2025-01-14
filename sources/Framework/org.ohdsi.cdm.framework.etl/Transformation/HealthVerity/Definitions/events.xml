@@ -6,6 +6,7 @@
 		1 as died
 		FROM {sc}.events
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
+		order by 1
 	</Query>
 	<Death>
 		<DeathDefinition>
