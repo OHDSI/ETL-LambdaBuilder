@@ -263,9 +263,10 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
 
         public override IEnumerable<Episode> BuildEpisode(Episode[] episodes, Dictionary<long, VisitOccurrence> visitOccurrences, ObservationPeriod[] observationPeriods)
         {
-            foreach (var groupByType in episodes.GroupBy(e => e.AdditionalFields["cancer_type"]))
+            //foreach (var groupByType in episodes.GroupBy(e => e.AdditionalFields["cancer_type"]))
             {
-                foreach (var groupBySourceValue in groupByType.GroupBy(t => t.SourceValue))
+                //foreach (var groupBySourceValue in groupByType.GroupBy(t => t.SourceValue))
+                foreach (var groupBySourceValue in episodes.GroupBy(t => t.SourceValue))
                 {
                     foreach (var groupByEpisodeNumber in groupBySourceValue.GroupBy(s => s.EpisodeNumber))
                     {
