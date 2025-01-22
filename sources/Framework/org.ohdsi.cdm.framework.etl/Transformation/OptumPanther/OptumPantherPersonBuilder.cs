@@ -286,7 +286,9 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                                 {
                                     EpisodeNumber = episode.EpisodeNumber,
                                     EpisodeParentId = episode.EpisodeParentId,
-                                    EpisodeObjectConceptId = episode.EpisodeObjectConceptId
+                                    EpisodeObjectConceptId = episode.EpisodeObjectConceptId,
+                                    StartDate = era.StartDate,
+                                    EndDate = era.EndDate
                                 };
                             }
                         }
