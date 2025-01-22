@@ -281,10 +281,13 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                             foreach (var era in EraHelper.GetEras(filterd, 1, 0))
                             {
                                 var episode = filterd.First();
-                                episode.StartDate = era.StartDate;
-                                episode.EndDate = era.EndDate;
 
-                                yield return episode;
+                                yield return new Episode(episode)
+                                {
+                                    EpisodeNumber = episode.EpisodeNumber,
+                                    EpisodeParentId = episode.EpisodeParentId,
+                                    EpisodeObjectConceptId = episode.EpisodeObjectConceptId
+                                };
                             }
                         }
                     }
