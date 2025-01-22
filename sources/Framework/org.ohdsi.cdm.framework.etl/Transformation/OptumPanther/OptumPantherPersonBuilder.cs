@@ -2,6 +2,7 @@
 using org.ohdsi.cdm.framework.common.Builder;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Extensions;
+using org.ohdsi.cdm.framework.common.Helpers;
 using org.ohdsi.cdm.framework.common.Omop;
 using org.ohdsi.cdm.framework.common.PregnancyAlgorithm;
 
@@ -277,11 +278,14 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
 
                         if (filterd.Any())
                         {
-                            var episode = filterd.First();
-                            episode.StartDate = filterd.Min(e => e.StartDate);
-                            episode.EndDate = filterd.Max(e => e.EndDate);
+                            foreach (var era in EraHelper.GetEras(filterd, 1, 0))
+                            {
+                                var episode = filterd.First();
+                                episode.StartDate = era.StartDate;
+                                episode.EndDate = era.EndDate;
 
-                            yield return episode;
+                                yield return episode;
+                            }
                         }
                     }
                 }
