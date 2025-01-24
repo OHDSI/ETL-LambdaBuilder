@@ -5,9 +5,6 @@ using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Helpers;
 using org.ohdsi.cdm.framework.common.Omop;
 using org.ohdsi.cdm.framework.common.PregnancyAlgorithm;
-using System;
-using System.Diagnostics;
-using static Amazon.S3.Util.S3EventNotification;
 
 namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerity
 {
@@ -846,6 +843,13 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
 
             var death = BuildDeath([.. DeathRecords], visitOccurrences, observationPeriods);
             death = UpdateDeath(death, person, observationPeriods);
+
+            // Remove any death dates where the associated observation_period_end_date >= 365 days after the death.
+            if (death != null)
+            {
+                if (observationPeriods.Max(op => op.EndDate.Value.Date) >= death.StartDate.Date.AddDays(365))
+                    death = null;
+            }
 
             // push built entities to ChunkBuilder for further save to CDM database
             AddToChunk(person, death,
