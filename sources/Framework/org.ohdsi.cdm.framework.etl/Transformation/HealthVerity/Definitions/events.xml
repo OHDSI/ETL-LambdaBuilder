@@ -1,0 +1,25 @@
+﻿<QueryDefinition>
+  <Query>
+		SELECT distinct
+		ch.person_id as PersonId,
+		event_date,
+		1 as died
+		FROM {sc}.events
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
+		order by 1
+	</Query>
+	<Death>
+		<DeathDefinition>
+			<PersonId>PersonId</PersonId>
+			<StartDate>event_date</StartDate>
+			<Died>died</Died>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field defaultConceptId="0" defaultSource=" " defaultTypeId="32815"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</DeathDefinition>
+	</Death>
+</QueryDefinition>

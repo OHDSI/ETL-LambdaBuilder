@@ -1,0 +1,28 @@
+﻿<QueryDefinition>
+	<Query>
+		with l as
+		(
+		SELECT distinct patient_state, patient_zip3
+		FROM {sc}.enrollment
+		where patient_zip3 is not null and patient_zip3 != ''
+		)
+
+		select
+		ROW_NUMBER() OVER(ORDER BY patient_state, patient_zip3) AS Id,
+		patient_state,
+		patient_zip3,
+		case
+		when patient_state is not null or patient_state != '' then patient_state || '_' || patient_zip3
+		else patient_zip3
+		end source_value
+		from l
+	</Query>
+	<Locations>
+		<LocationDefinition>
+			<Id>Id</Id>
+			<State>patient_state</State>
+			<SourceValue>source_value</SourceValue>
+			<Zip>patient_zip3</Zip>
+		</LocationDefinition>
+	</Locations>
+</QueryDefinition>

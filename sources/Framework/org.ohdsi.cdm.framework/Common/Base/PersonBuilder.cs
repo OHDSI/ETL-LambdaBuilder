@@ -4,7 +4,6 @@ using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Helpers;
 using org.ohdsi.cdm.framework.common.Lookups;
 using org.ohdsi.cdm.framework.common.Omop;
-using System;
 using System.Collections.Concurrent;
 
 namespace org.ohdsi.cdm.framework.common.Base
@@ -1283,7 +1282,7 @@ namespace org.ohdsi.cdm.framework.common.Base
             if (death == null)
                 return null;
 
-            if (death.StartDate.Date < observationPeriods.Min(op => op.StartDate.Date))
+            if (observationPeriods.Any(op => death.StartDate.Date < op.StartDate.Date))
                 return null;
             else if (person.YearOfBirth.HasValue && person.YearOfBirth.Value > 0 && person.YearOfBirth > death.StartDate.Year)
                 return null;

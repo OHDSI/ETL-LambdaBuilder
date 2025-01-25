@@ -53,6 +53,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerity
         private readonly Dictionary<string, List<VisitDetail>> _visitDetailsByHvEncId = [];
         private readonly Dictionary<string, HashSet<DateTime>> _minsMaxs = [];
         private readonly DateTime _minDate = new(2009, 1, 1);
+        private readonly HashSet<string> _races = [];
+        private readonly HashSet<long> _racesConceptId = [];
 
         List<DateTime> _mins = [];
         //List<DateTime> _maxs = [];
@@ -101,6 +103,26 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerity
 
             if (filtered.Length == 0)
                 return new KeyValuePair<Person, Attrition>(null, Attrition.UnacceptablePatientQuality);
+
+            foreach (var item in filtered)
+            {
+                if(item.AdditionalFields != null)
+                {
+                    if(item.AdditionalFields.ContainsKey("race") && !string.IsNullOrEmpty(item.AdditionalFields["race"]))
+                    {
+                        _races.Add(item.AdditionalFields["race"]);
+                    }
+
+                    if (item.AdditionalFields.ContainsKey("race_concept_id") && !string.IsNullOrEmpty(item.AdditionalFields["race_concept_id"]))
+                    {
+                        if (long.TryParse(item.AdditionalFields["race_concept_id"], out long raceConceptId))
+                        {
+                            if(raceConceptId != 0)
+                                _racesConceptId.Add(raceConceptId);
+                        }
+                    }
+                }
+            }
 
             var ordered = filtered.OrderByDescending(p => p.StartDate).ToArray();
             var person = ordered.Take(1).First();
@@ -262,13 +284,23 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerity
                 {
                     foreach (var byCareSiteId in byEnd.GroupBy(v => v.CareSiteId))
                     {
-                        var visit = byCareSiteId.OrderBy(v => v.ConceptId).First();
-                        foreach (var vo in byCareSiteId)
+                        foreach (var byConceptId in byCareSiteId.GroupBy(v => v.ConceptId))
                         {
-                            AddRawVisitOccurrence(vo, visit);
+                            var visit = byConceptId.First();
+                            foreach (var vo in byConceptId)
+                            {
+                                AddRawVisitOccurrence(vo, visit);
+                            }
+                            yield return visit;
                         }
 
-                        yield return visit;
+                        //var visit = byCareSiteId.OrderBy(v => v.ConceptId).First();
+                        //foreach (var vo in byCareSiteId)
+                        //{
+                        //    AddRawVisitOccurrence(vo, visit);
+                        //}
+
+                        //yield return visit;
                     }
                 }
             }
@@ -393,8 +425,8 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
 
                 if (medical.Count > 0 && pharmacy.Count > 0)
                 {
-                    FixObservationPeriodDates(medical, Table.Medical);
-                    FixObservationPeriodDates(pharmacy, Table.Pharmacy);
+                    FixStartEndDates(medical, Table.Medical);
+                    FixStartEndDates(pharmacy, Table.Pharmacy);
 
                     var medicalPeriods = EraHelper.GetEras(medical.Where(i => i.StartDate <= i.EndDate
                     && i.StartDate.Year >= _minDate.Year && i.EndDate.Value.Year <= DateTime.Now.Year), 30, 0);
@@ -443,22 +475,23 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
             }
         }
 
-        private void FixObservationPeriodDates(IEnumerable<EraEntity> observationPeriods, Table table)
+        private void FixStartEndDates(IEnumerable<EraEntity> input, Table? table)
         {
-            foreach (var op in observationPeriods)
+            foreach (var i in input)
             {
-                if (op.StartDate.Year < _minDate.Year)
-                    op.StartDate = _mins.Min();
+                if (_mins.Count > 0 && i.StartDate.Year < _minDate.Year)
+                    i.StartDate = _mins.Min();
 
-                if (op.EndDate.Value.Date > Vendor.SourceReleaseDate)
-                    op.EndDate = Vendor.SourceReleaseDate;
+                if (i.EndDate.Value.Date > Vendor.SourceReleaseDate)
+                    i.EndDate = Vendor.SourceReleaseDate;
 
-                if(op.StartDate.Date > op.EndDate.Value.Date)
-                    op.EndDate = Vendor.SourceReleaseDate.Value.Date;
+                if (i.StartDate.Date > i.EndDate.Value.Date)
+                    i.EndDate = Vendor.SourceReleaseDate.Value.Date;
 
-                if (op.StartDate.Date > op.EndDate.Value.Date)
-                    op.StartDate = _mins.Min();
+                if (_mins.Count > 0 && i.StartDate.Date > i.EndDate.Value.Date)
+                    i.StartDate = _mins.Min();
             }
+
             //foreach (var g in observationPeriods.GroupBy(m => m.AdditionalFields["data_vendor"]))
             //{
             //    DataVendor? vendor = null;
@@ -505,6 +538,21 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
             //}
         }
 
+        private static string GetRace(long raceConceptId)
+        {
+            switch (raceConceptId)
+            {
+                case 8527:
+                    return "White";
+                case 8515:
+                    return "Asian";
+                case 8516:
+                    return "Black";
+                default:
+                    return null;
+            }
+        }
+
         public override Attrition Build(ChunkData data, KeyMasterOffsetManager o)
         {
             this.Offset = o;
@@ -517,6 +565,29 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
             {
                 Complete = true;
                 return result.Value;
+            }
+
+            if(string.IsNullOrEmpty(person.RaceSourceValue))
+            {
+                if(_racesConceptId.Count == 1)
+                {
+                    person.RaceConceptId = _racesConceptId.First();
+                    person.RaceSourceValue = GetRace(person.RaceConceptId.Value);
+                }
+                else if (_racesConceptId.Count > 1)
+                {
+                    person.RaceSourceValue = "Multiple Races";
+                    person.RaceConceptId = 44814659; //(Multiple Races)
+                }
+            }
+
+            if (person.EthnicityConceptId.HasValue && person.EthnicityConceptId == 0)
+            {
+                if (_races.Any(r => r.Equals("Hispanic", StringComparison.OrdinalIgnoreCase)))
+                {
+                    person.EthnicityConceptId = 38003563;
+                    person.EthnicitySourceValue = "Hispanic";
+                }
             }
 
             _personYoB = person.YearOfBirth.Value;
@@ -612,15 +683,21 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
             foreach (var visitOccurrence in BuildVisitOccurrences([.. VisitOccurrencesRaw], observationPeriods))
             {
                 visitOccurrence.Id = Offset.GetKeyOffset(visitOccurrence.PersonId).VisitOccurrenceId;
+                visitOccurrence.AdmittingSourceValue = null;
 
                 if (visitOccurrences.TryAdd(visitOccurrence.Id, visitOccurrence))
                 {
                     visitIds.Add(visitOccurrence.Id);
                 }
             }
-
+            VisitDetail mostRecentVisit = null;
             foreach (var visitDetail in visitDetails)
             {
+                if(mostRecentVisit == null)
+                    mostRecentVisit = visitDetail;
+                else if(mostRecentVisit.StartDate.Date < visitDetail.StartDate.Date)
+                    mostRecentVisit = visitDetail;
+
                 var vo = GetVisitOccurrence(visitDetail);
                 visitDetail.VisitOccurrenceId = vo?.Id ?? 0;
 
@@ -677,10 +754,40 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
             }
 
             var observations = BuildObservations([.. ObservationsRaw], visitOccurrences, observationPeriods)
-                .ToArray();
+                .ToList();
             foreach (var ob in observations)
             {
                 ob.Id = Offset.GetKeyOffset(ob.PersonId).ObservationId;
+            }
+                        
+            if(_racesConceptId.Count > 1)
+            {
+                foreach (var conceptId in _racesConceptId)
+                {
+                    var oRace = new Observation(person);
+                    oRace.Id = Offset.GetKeyOffset(person.PersonId).ObservationId;
+                    oRace.ConceptId = 4013886; // (Race)
+                    oRace.SourceValue = "Multiple Races";
+                    oRace.ValueAsConceptId = conceptId;
+                    oRace.ValueAsString = GetRace(conceptId);
+                    oRace.TypeConceptId = 32810;
+
+                    if (mostRecentVisit != null)
+                    {
+                        oRace.StartDate = mostRecentVisit.StartDate;
+                    }
+                    else if (observationPeriods.Length > 0)
+                    {
+                        oRace.StartDate = observationPeriods.Max(op => op.EndDate.Value.Date);
+                    }
+                    else
+                    {
+                        oRace.StartDate = Vendor.SourceReleaseDate.Value;
+                    }
+
+                    // oRace.ValueSourceValue = GetRace(conceptId); // ??
+                    observations.Add(oRace);
+                }
             }
 
             var drugExposures =
@@ -731,19 +838,32 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
                 SetVisitDetailId(deviceExposure, visitByStart);
             }
 
+            FixStartEndDates(PayerPlanPeriodsRaw, null);
+            var payerPlanPeriods = BuildPayerPlanPeriods([.. PayerPlanPeriodsRaw], visitOccurrences).ToArray();
+
+            var death = BuildDeath([.. DeathRecords], visitOccurrences, observationPeriods);
+            death = UpdateDeath(death, person, observationPeriods);
+
+            // Remove any death dates where the associated observation_period_end_date >= 365 days after the death.
+            if (death != null)
+            {
+                if (observationPeriods.Max(op => op.EndDate.Value.Date) >= death.StartDate.Date.AddDays(365))
+                    death = null;
+            }
+
             // push built entities to ChunkBuilder for further save to CDM database
-            AddToChunk(person, null,
+            AddToChunk(person, death,
                 observationPeriods,
+                payerPlanPeriods,
+                UpdateRSourceConcept(FilterByDeathDate(drugExposures, death, 60)).ToArray(),
+                UpdateRSourceConcept(FilterByDeathDate(conditionOccurrences, death, 60)).ToArray(),
+                UpdateRSourceConcept(FilterByDeathDate(procedureOccurrences, death, 60)).ToArray(),
+                UpdateRSourceConcept(FilterByDeathDate(observations, death, 60)).ToArray(),
+                UpdateRSourceConcept(FilterByDeathDate(measurements, death, 60)).ToArray(),
+                FilterByDeathDate(visitOccurrences.Values, death, 60).ToArray(),
+                FilterByDeathDate(visitDetails, death, 60).ToArray(), 
                 [],
-                UpdateRSourceConcept(drugExposures).ToArray(),
-                UpdateRSourceConcept(conditionOccurrences).ToArray(),
-                UpdateRSourceConcept(procedureOccurrences).ToArray(),
-                UpdateRSourceConcept(observations).ToArray(),
-                UpdateRSourceConcept(measurements).ToArray(),
-                [.. visitOccurrences.Values], 
-                visitDetails, 
-                [],
-                UpdateRSourceConcept(deviceExposure).ToArray(), 
+                UpdateRSourceConcept(FilterByDeathDate(deviceExposure, death, 60)).ToArray(), 
                 [], 
                 []);
 
