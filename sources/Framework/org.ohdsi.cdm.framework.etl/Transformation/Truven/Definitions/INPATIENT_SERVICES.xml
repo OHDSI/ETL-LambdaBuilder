@@ -290,7 +290,7 @@
             </Mapper>
           </ConceptIdMappers>
           <Fields>
-            <Field key="STDPLAC" defaultConceptId="0" defaultTypeId="32854"/>
+            <Field isNullable="true" key="STDPLAC" defaultConceptId="0" defaultTypeId="32854"/>
           </Fields>
         </Concept>
         <Concept>

@@ -59,7 +59,7 @@ namespace org.ohdsi.cdm.framework.common.Definitions
             var conceptKey = reader.GetString(field.Key);
 
             return conceptKey == null
-                ? []
+                ? [new LookupValue()]
                 : mapper.Map(vocabulary, field.Key, conceptKey, reader.GetDateTime(field.EventDate));
         }
 
