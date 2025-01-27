@@ -43,7 +43,7 @@
 		from a
 		left join a2 m2 on a.person_id != m2.person_id and a.gender_source_value = 'female' and a.family_id is not null and a.family_id = m2.family_id and m2.year_of_birth - DATE_PART('YEAR', m2.observation_period_start_date) = 0
 		group by a.person_id, a.person_source_value, a.year_of_birth, a.month_of_birth, a.gender_source_value, a.observation_period_start_date, a.observation_period_end_date, a.died, a.family_id, a.has_payerplan, a.payerplan_id, baby_person_id, m2.year_of_birth, m2.month_of_birth, m2.observation_period_start_date
-		order by CAST(RIGHT(Member_ID, LEN(Member_ID) - 1) AS BIGINT)
+		order by 1
 	</Query>
   <Persons>
     <PersonDefinition>
