@@ -1,7 +1,9 @@
 ﻿using org.ohdsi.cdm.framework.common.Base;
 using org.ohdsi.cdm.framework.common.Builder;
 using org.ohdsi.cdm.framework.common.Enums;
+using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Omop;
+using org.ohdsi.cdm.framework.common.PregnancyAlgorithm;
 
 namespace org.ohdsi.cdm.framework.etl.Transformation.JMDC
 {
@@ -31,6 +33,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.JMDC
         readonly Dictionary<long, DateTime> _visitsDate = [];
         readonly Dictionary<long, DateTime> _visitsDateDiagnosis = [];
         readonly Dictionary<long, VisitOccurrence> _pharmacyVisits = [];
+        private readonly Dictionary<long, HashSet<DateTime>> _potentialChilds = [];
 
         #endregion
 
@@ -63,6 +66,47 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.JMDC
                     entity.VisitOccurrenceId = null;
                 }
             }
+        }
+
+        public override KeyValuePair<Person, Attrition> BuildPerson(List<Person> records)
+        {
+            if (records == null || records.Count == 0)
+                return new KeyValuePair<Person, Attrition>(null, Attrition.UnacceptablePatientQuality);
+
+            var ordered = records.OrderByDescending(p => p.StartDate).ToArray();
+
+            foreach (var p in ordered)
+            {
+                if (p.PotentialChildId.HasValue && p.PotentialChildBirthDate != DateTime.MinValue)
+                {
+                    if (!_potentialChilds.ContainsKey(p.PotentialChildId.Value))
+                    {
+                        _potentialChilds.Add(p.PotentialChildId.Value, []);
+                    }
+
+                    _potentialChilds[p.PotentialChildId.Value].Add(p.PotentialChildBirthDate);
+                }
+            }
+
+            var person = ordered.Take(1).First();
+            person.StartDate = ordered.Take(1).Last().StartDate;
+
+            var gender =
+                records.GroupBy(p => p.GenderConceptId).OrderByDescending(gp => gp.Count()).Take(1).First().First();
+            var race = records.GroupBy(p => p.RaceConceptId).OrderByDescending(gp => gp.Count()).Take(1).First()
+                .First();
+
+            person.GenderConceptId = gender.GenderConceptId;
+            person.GenderSourceValue = gender.GenderSourceValue;
+            person.RaceConceptId = race.RaceConceptId;
+            person.RaceSourceValue = race.RaceSourceValue;
+
+            if (person.GenderConceptId == 8551) //UNKNOWN
+            {
+                return new KeyValuePair<Person, Attrition>(null, Attrition.UnknownGender);
+            }
+
+            return new KeyValuePair<Person, Attrition>(person, Attrition.None);
         }
 
         public override IEnumerable<VisitOccurrence> BuildVisitOccurrences(VisitOccurrence[] visitOccurrences,
@@ -431,7 +475,141 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.JMDC
                 }
             }
 
-            return base.Build(data, o);
+            var result = BuildPerson([.. PersonRecords]);
+            var person = result.Key;
+            if (person == null)
+            {
+                Complete = true;
+                return result.Value;
+            }
+
+            var observationPeriods =
+                BuildObservationPeriods(person.ObservationPeriodGap, [.. ObservationPeriodsRaw]).ToArray();
+
+            // Delete any individual that has an OBSERVATION_PERIOD that is >= 2 years prior to the YEAR_OF_BIRTH
+            if (Excluded(person, observationPeriods))
+            {
+                Complete = true;
+                return Attrition.ImplausibleYOBPostEarliestOP;
+            }
+
+            var payerPlanPeriods = BuildPayerPlanPeriods([.. PayerPlanPeriodsRaw], null).ToArray();
+            var visitOccurrences = new Dictionary<long, VisitOccurrence>();
+
+            foreach (var visitOccurrence in BuildVisitOccurrences([.. VisitOccurrencesRaw], observationPeriods))
+            {
+                if (visitOccurrence.IdUndefined)
+                    visitOccurrence.Id = Offset.GetKeyOffset(visitOccurrence.PersonId).VisitOccurrenceId;
+
+                visitOccurrences.Add(visitOccurrence.Id, visitOccurrence);
+            }
+
+            var visitDetails = BuildVisitDetails([.. VisitDetailsRaw], [.. VisitOccurrencesRaw],
+                observationPeriods).ToArray();
+
+            var drugExposures =
+                BuildDrugExposures([.. DrugExposuresRaw], visitOccurrences, observationPeriods).ToArray();
+            var conditionOccurrences =
+                BuildConditionOccurrences([.. ConditionOccurrencesRaw], visitOccurrences, observationPeriods)
+                    .ToArray();
+            var procedureOccurrences =
+                BuildProcedureOccurrences([.. ProcedureOccurrencesRaw], visitOccurrences, observationPeriods)
+                    .ToArray();
+            var observations = BuildObservations([.. ObservationsRaw], visitOccurrences, observationPeriods)
+                .ToArray();
+            var measurements = BuildMeasurement([.. MeasurementsRaw], visitOccurrences, observationPeriods)
+                .ToArray();
+            var deviceExposure =
+                BuildDeviceExposure([.. DeviceExposureRaw], visitOccurrences, observationPeriods).ToArray();
+
+            // set corresponding PlanPeriodIds to drug exposure entities and procedure occurrence entities
+            SetPayerPlanPeriodId(payerPlanPeriods, drugExposures, procedureOccurrences,
+                [.. visitOccurrences.Values],
+                deviceExposure);
+
+            // set corresponding ProviderIds
+            SetProviderIds(drugExposures);
+            SetProviderIds(conditionOccurrences);
+            SetProviderIds(procedureOccurrences);
+            SetProviderIds(observations);
+
+            var death = BuildDeath([.. DeathRecords], visitOccurrences, observationPeriods);
+            death = UpdateDeath(death, person, observationPeriods);
+
+            // TODO: TMP
+            var drugCosts = BuildDrugCosts(drugExposures).ToArray();
+            var procedureCosts = BuildProcedureCosts(procedureOccurrences).ToArray();
+            var visitCosts = BuildVisitCosts([.. visitOccurrences.Values]).ToArray();
+            var devicCosts = BuildDeviceCosts(deviceExposure).ToArray();
+
+            var cohort = BuildCohort([.. CohortRecords], observationPeriods).ToArray();
+            var notes = BuildNote([.. NoteRecords], visitOccurrences, observationPeriods).ToArray();
+            var episode = BuildEpisode([.. EpisodeRecords], visitOccurrences, observationPeriods).ToArray();
+
+            // push built entities to ChunkBuilder for further save to CDM database
+            AddToChunk(
+                person,
+                death,
+                observationPeriods,
+                payerPlanPeriods,
+                FilterByDeathDate(drugExposures, death, 60).ToArray(),
+                FilterByDeathDate(conditionOccurrences, death, 60).ToArray(),
+                FilterByDeathDate(procedureOccurrences, death, 60).ToArray(),
+                FilterByDeathDate(observations, death, 60).ToArray(),
+                FilterByDeathDate(measurements, death, 60).ToArray(),
+                FilterByDeathDate(visitOccurrences.Values, death, 60).ToArray(),
+                FilterByDeathDate(visitDetails, death, 60).ToArray(),
+                cohort,
+                FilterByDeathDate(deviceExposure, death, 60).ToArray(),
+                notes,
+                episode);
+
+            foreach (var c in CostRaw)
+                ChunkData.AddCostData(c);
+
+            Complete = true;
+
+            var pg = new PregnancyAlgorithm();
+            foreach (var r in pg.GetPregnancyEpisodes(Vocabulary, person, observationPeriods,
+                ChunkData.ConditionOccurrences.Where(e => e.PersonId == person.PersonId).ToArray(),
+                ChunkData.ProcedureOccurrences.Where(e => e.PersonId == person.PersonId).ToArray(),
+                ChunkData.Observations.Where(e => e.PersonId == person.PersonId).ToArray(),
+                ChunkData.Measurements.Where(e => e.PersonId == person.PersonId).ToArray(),
+                ChunkData.DrugExposures.Where(e => e.PersonId == person.PersonId).ToArray()))
+            {
+                r.Id = Offset.GetKeyOffset(r.PersonId).ConditionEraId;
+                ChunkData.ConditionEra.Add(r);
+
+                if (r.ConceptId == 433260 && _potentialChilds.Count > 0)
+                {
+                    foreach (var child in _potentialChilds)
+                    {
+                        var childId = child.Key;
+
+                        foreach (var birthdate in child.Value)
+                        {
+                            if (r.EndDate.Value.Between(birthdate.AddDays(-60), birthdate.AddDays(60)))
+                            {
+                                //40485452    Child of subject
+                                //40478925    Mother of subject
+
+                                ChunkData.FactRelationships.Add(new FactRelationship
+                                {
+                                    DomainConceptId1 = 56,
+                                    DomainConceptId2 = 56,
+                                    FactId1 = r.PersonId,
+                                    FactId2 = childId,
+                                    RelationshipConceptId = 40478925
+                                });
+                                break;
+                            }
+                        }
+
+                    }
+                }
+            }
+
+            return Attrition.None;
         }
 
         public override IEnumerable<T> BuildEntities<T>(IEnumerable<T> entitiesToBuild, IDictionary<long, VisitOccurrence> visitOccurrences, IEnumerable<ObservationPeriod> observationPeriods, bool withinTheObservationPeriod)
