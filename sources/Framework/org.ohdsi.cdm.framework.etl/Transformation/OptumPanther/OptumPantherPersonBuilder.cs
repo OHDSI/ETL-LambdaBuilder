@@ -285,6 +285,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
 
                                 yield return new Episode(episode)
                                 {
+                                    Id = Offset.GetKeyOffset(episode.PersonId).EpisodeId,
                                     EpisodeNumber = episodeNumber,
                                     EpisodeParentId = episode.EpisodeParentId,
                                     EpisodeObjectConceptId = episode.EpisodeObjectConceptId,

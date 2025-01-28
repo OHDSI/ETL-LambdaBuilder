@@ -43,7 +43,7 @@ namespace org.ohdsi.cdm.framework.common.Definitions
             {
                 yield return new Episode(e)
                 {
-                    Id = offset.GetKeyOffset(e.PersonId).NoteId,
+                    Id = offset.GetKeyOffset(e.PersonId).EpisodeId,
 
                     PersonId = e.PersonId,
                     ConceptId = e.ConceptId,
