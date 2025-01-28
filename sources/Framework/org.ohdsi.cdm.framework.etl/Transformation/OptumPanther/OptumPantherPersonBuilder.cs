@@ -269,9 +269,9 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                 //foreach (var groupBySourceValue in groupByType.GroupBy(t => t.SourceValue))
                 foreach (var groupBySourceValue in episodes.GroupBy(t => t.SourceValue))
                 {
-                    foreach (var groupByEpisodeNumber in groupBySourceValue.GroupBy(s => s.EpisodeNumber))
+                    //foreach (var groupByEpisodeNumber in groupBySourceValue.GroupBy(s => s.EpisodeNumber))
                     {
-                        var filterd = groupByEpisodeNumber.Where(e =>
+                        var filterd = groupBySourceValue.Where(e =>
                         e.StartDate >= new DateTime(2007, 1, 1) &&
                         e.StartDate.Year + 1 > _person.YearOfBirth &&
                         (!e.VisitOccurrenceId.HasValue || visitOccurrences.ContainsKey(e.VisitOccurrenceId.Value)));
