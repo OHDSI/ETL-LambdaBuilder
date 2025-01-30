@@ -1084,7 +1084,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
                                 };
 
                         SetTypeId(p);
-                        if (p.ConceptId > 0 || !string.IsNullOrEmpty(p.SourceValue) || !string.IsNullOrWhiteSpace(p.SourceValue.Trim('0')))
+                        if (p.ConceptId > 0 || !string.IsNullOrEmpty(p.SourceValue) || (p.SourceValue != null && !string.IsNullOrWhiteSpace(p.SourceValue.Trim('0'))))
                             ChunkData.AddData(p);
                         break;
 
