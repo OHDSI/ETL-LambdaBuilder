@@ -1,3 +1,3 @@
-﻿SELECT DISTINCT {0} CAST(RIGHT([Member ID], LEN([Member ID]) - 1) AS BIGINT) AS person_id, [Member ID]
+﻿SELECT DISTINCT {0} CAST(RIGHT(member_id, LEN(member_id) - 1) AS BIGINT) AS person_id, member_id
 FROM {sc}.Enrollment
 order by 1
