@@ -2,6 +2,7 @@
 using org.ohdsi.cdm.framework.common.Builder;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Extensions;
+using org.ohdsi.cdm.framework.common.Helpers;
 using org.ohdsi.cdm.framework.common.Omop;
 using org.ohdsi.cdm.framework.common.PregnancyAlgorithm;
 
@@ -40,6 +41,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
         private readonly Dictionary<string, ConditionOccurrence> _oncConditions = [];
         private Person _person;
 
+        private readonly DateTime _minDate = new(2007, 1, 1);
         #endregion
 
         #region Constructors
@@ -176,7 +178,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
         {
             foreach (var drugExposure in base.BuildDrugExposures(PrepareDrugExposures(drugExposures).ToArray(), visitOccurrences, observationPeriods))
             {
-                if (drugExposure.StartDate < new DateTime(2007, 1, 1))
+                if (drugExposure.StartDate.Date < _minDate.Date)
                     continue;
 
                 if (drugExposure.StartDate.Year < _person.YearOfBirth)
@@ -231,7 +233,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
         {
             foreach (var item in base.BuildProcedureOccurrences(procedureOccurrences, visitOccurrences, observationPeriods))
             {
-                if (item.StartDate < new DateTime(2007, 1, 1))
+                if (item.StartDate.Date < _minDate.Date)
                     continue;
 
                 //if (item.StartDate.Year + 1 <= _person.YearOfBirth)
@@ -248,7 +250,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
         {
             foreach (var item in base.BuildNote(notes, visitOccurrences, observationPeriods))
             {
-                if (item.StartDate < new DateTime(2007, 1, 1))
+                if (item.StartDate.Date < _minDate.Date)
                     continue;
 
                 //if (item.StartDate.Year + 1 <= _person.YearOfBirth)
@@ -263,20 +265,39 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
 
         public override IEnumerable<Episode> BuildEpisode(Episode[] episodes, Dictionary<long, VisitOccurrence> visitOccurrences, ObservationPeriod[] observationPeriods)
         {
-            foreach (var e in episodes)
+            //foreach (var groupByType in episodes.GroupBy(e => e.AdditionalFields["cancer_type"]))
             {
-                if (e.StartDate < new DateTime(2007, 1, 1))
-                    continue;
-
-                //if (e.StartDate.Year + 1 <= _person.YearOfBirth)
-                //    continue;
-
-                if (e.StartDate.Year < _person.YearOfBirth)
-                    continue;
-
-                if (e.VisitOccurrenceId == null || visitOccurrences.ContainsKey(e.VisitOccurrenceId.Value))
+                //foreach (var groupBySourceValue in groupByType.GroupBy(t => t.SourceValue))
+                foreach (var groupBySourceValue in episodes.GroupBy(t => t.SourceValue))
                 {
-                    yield return e;
+                    //foreach (var groupByEpisodeNumber in groupBySourceValue.GroupBy(s => s.EpisodeNumber))
+                    {
+                        var filterd = groupBySourceValue.Where(e =>
+                        e.StartDate.Date >= _minDate.Date &&
+                        e.StartDate.Year + 1 > _person.YearOfBirth &&
+                        (!e.VisitOccurrenceId.HasValue || visitOccurrences.ContainsKey(e.VisitOccurrenceId.Value)));
+
+                        if (filterd.Any())
+                        {
+                            var episodeNumber = 1;
+                            foreach (var era in EraHelper.GetEras(filterd, 1, 0))
+                            {
+                                var episode = filterd.First();
+
+                                yield return new Episode(episode)
+                                {
+                                    Id = Offset.GetKeyOffset(episode.PersonId).EpisodeId,
+                                    EpisodeNumber = episodeNumber,
+                                    EpisodeParentId = episode.EpisodeParentId,
+                                    EpisodeObjectConceptId = episode.EpisodeObjectConceptId,
+                                    StartDate = era.StartDate,
+                                    EndDate = era.EndDate
+                                };
+
+                                episodeNumber++;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -296,7 +317,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                 }
                 else
                 {
-                    if (observation.StartDate < new DateTime(2007, 1, 1))
+                    if (observation.StartDate.Date < _minDate.Date)
                         continue;
 
                     //if (observation.StartDate.Year + 1 <= _person.YearOfBirth)
@@ -357,7 +378,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                 if (measurement.StartDate.Year < _person.YearOfBirth)
                     continue;
 
-                if (measurement.StartDate < new DateTime(2007, 1, 1))
+                if (measurement.StartDate.Date < _minDate.Date)
                     continue;
 
 
@@ -619,7 +640,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
             List<VisitDetail> details = [];
             foreach (var visitOccurrence in visitOccurrences)
             {
-                if (visitOccurrence.StartDate.Date < new DateTime(2007, 1, 1))
+                if (visitOccurrence.StartDate.Date < _minDate.Date)
                     continue;
 
                 //if (visitOccurrence.StartDate.Year + 1 <= _person.YearOfBirth)
@@ -695,7 +716,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
 
             foreach (var visitOccurrence in rawVisitOccurrences)
             {
-                if (visitOccurrence.StartDate.Date < new DateTime(2007, 1, 1))
+                if (visitOccurrence.StartDate.Date < _minDate.Date)
                     continue;
 
                 //if (visitOccurrence.StartDate.Year + 1 <= _person.YearOfBirth)
@@ -846,7 +867,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
         {
             foreach (var co in BuildEntities(conditionOccurrences, visitOccurrences, observationPeriods, false))
             {
-                if (co.StartDate < new DateTime(2007, 1, 1))
+                if (co.StartDate.Date < _minDate.Date)
                     continue;
 
                 if (co.StartDate.Year < _person.YearOfBirth)
@@ -957,7 +978,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
 
             var deviceExposure =
                 BuildDeviceExposure([.. DeviceExposureRaw], visitOccurrences, observationPeriods)
-                .Where(d => d.StartDate >= new DateTime(2007, 1, 1))
+                .Where(d => d.StartDate.Date >= _minDate.Date)
                 .ToArray();
 
             // set corresponding PlanPeriodIds to drug exposure entities and procedure occurrence entities
@@ -1030,7 +1051,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                 return Attrition.ImplausibleYOBPostEarliestOP;
             }
 
-            if (observationPeriodsFinal[0].EndDate < new DateTime(2007, 1, 1))
+            if (observationPeriodsFinal[0].EndDate.Value.Date < _minDate.Date)
             {
                 return Attrition.InvalidObservationTime;
             }
@@ -1119,7 +1140,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                 death = CleanUpDeath(deviceExposure, death);
             }
 
-            if (death != null && death.StartDate < new DateTime(2007, 1, 1))
+            if (death != null && death.StartDate.Date < _minDate.Date)
             {
                 return Attrition.UnacceptablePatientQuality;
             }

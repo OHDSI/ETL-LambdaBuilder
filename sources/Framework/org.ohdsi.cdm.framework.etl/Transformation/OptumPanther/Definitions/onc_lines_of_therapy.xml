@@ -1,21 +1,25 @@
 ﻿<QueryDefinition>
   <Query>
-    SELECT distinct
-    ch.person_id as PersonId,
-    initiation,
-    last_administration,
-    lot,
-    regimen_name
-    FROM {sc}.onc_lines_of_therapy l
-    JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
-    order by 1
-  </Query>
+		SELECT distinct
+		ch.person_id as PersonId,
+		initiation,
+		last_administration,
+		cancer_type,
+		lot,
+		regimen_name
+		FROM {sc}.onc_lines_of_therapy l
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
+		order by 1
+	</Query>
   <Episodes>
     <EpisodeDefinition>
       <PersonId>PersonId</PersonId>
       <StartDate>initiation</StartDate>
       <EndDate>last_administration</EndDate>
       <EpisodeNumber>lot</EpisodeNumber>
+			<AdditionalFields>
+				<string>cancer_type</string>
+			</AdditionalFields>
       <Concepts>
         <Concept>
           <Fields>
