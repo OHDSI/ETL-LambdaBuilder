@@ -19,7 +19,7 @@ field_level_universal_file_path <- list.files(
   recursive = FALSE     # Only top-level files
 )
 
-field_level_universal_file <- read.csv(field_level_universal_file_path, stringsAsFactors = FALSE)
+field_level_universal_file <- read.csv(field_level_universal_file_path, stringsAsFactors = FALSE, na.strings = c(""))
 
 table_level_universal_file_path <- list.files(
   path = etl_dqd_path,
@@ -28,7 +28,7 @@ table_level_universal_file_path <- list.files(
   recursive = FALSE     # Only top-level files
 )
 
-table_level_universal_file <- read.csv(table_level_universal_file_path, stringsAsFactors = FALSE)
+table_level_universal_file <- read.csv(table_level_universal_file_path, stringsAsFactors = FALSE, na.strings = c(""))
 
 # Define and grab the default threshold files
 
@@ -39,7 +39,7 @@ field_level_default_file_path <- list.files(
   recursive = FALSE     # Only top-level files
 )
 
-field_level_default_file <- read.csv(field_level_default_file_path, stringsAsFactors = FALSE)
+field_level_default_file <- read.csv(field_level_default_file_path, stringsAsFactors = FALSE, na.strings = c(""))
 
 table_level_default_file_path <- list.files(
   path = dqd_repo_path,
@@ -48,7 +48,7 @@ table_level_default_file_path <- list.files(
   recursive = FALSE     # Only top-level files
 )
 
-table_level_default_file <- read.csv(table_level_default_file_path, stringsAsFactors = FALSE)
+table_level_default_file <- read.csv(table_level_default_file_path, stringsAsFactors = FALSE, na.strings = c(""))
 
 # Replace field threshold records based on `cdmTableName` and `cdmFieldName`
 universal_field_thresholds_full <- field_level_default_file %>%
@@ -73,6 +73,7 @@ for(i in 1:length(etl_dqd_folders)){
                                             "OMOP_CDMv5.4_Field_Level.csv",
                                             sep = "/"),
                                       stringsAsFactors = FALSE,
+                                      na.strings = c(""),
                                       colClasses = c("plausibleValueLow"="character",
                                                      "plausibleValueHigh"="character")) %>%
     filter(!is.na(cdmTableName) & cdmTableName != "")
@@ -89,7 +90,7 @@ for(i in 1:length(etl_dqd_folders)){
             paste(etl_dqd_path,
                   etl_dqd_folders[i],
                   "OMOP_CDMv5.4_Field_Level.csv",
-                  sep = "/"), row.names = FALSE)
+                  sep = "/"), row.names = FALSE, na = "")
   
   
   if(file.exists(paste(etl_dqd_path,
@@ -104,8 +105,7 @@ for(i in 1:length(etl_dqd_folders)){
                                               "OMOP_CDMv5.4_Table_Level.csv",
                                               sep = "/"),
                                         stringsAsFactors = FALSE,
-                                        colClasses = c("plausibleValueLow"="character",
-                                                       "plausibleValueHigh"="character")) %>%
+                                        na.strings = c("")) %>%
       filter(!is.na(cdmTableName) & cdmTableName != "")
     
     # Replace field threshold records based on `cdmTableName` and `cdmFieldName`
@@ -119,7 +119,7 @@ for(i in 1:length(etl_dqd_folders)){
               paste(etl_dqd_path,
                     etl_dqd_folders[i],
                     "OMOP_CDMv5.4_Table_Level.csv",
-                    sep = "/"), row.names = FALSE)
+                    sep = "/"), row.names = FALSE, na = "")
   
   }
   
