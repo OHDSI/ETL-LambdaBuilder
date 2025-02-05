@@ -120,7 +120,7 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
                                         _enumerator.Current.EventId.Value);
                                 break;
                             case Enums.EntityType.Observation:
-                                if (_offset.GetKeyOffset(_enumerator.Current.PersonId).ObservationPeriodIdChanged)
+                                if (_offset.GetKeyOffset(_enumerator.Current.PersonId).ObservationIdChanged)
                                     return _offset.GetId(_enumerator.Current.PersonId,
                                         _enumerator.Current.EventId.Value);
                                 break;
