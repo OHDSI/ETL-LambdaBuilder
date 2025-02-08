@@ -198,6 +198,7 @@
     <None Remove="Transformation\OptumPanther\Definitions\procedure.xml" />
     <None Remove="Transformation\OptumPanther\Lookups\Admitting.sql" />
     <None Remove="Transformation\OptumPanther\Lookups\CMSPlaceOfService.sql" />
+    <None Remove="Transformation\OptumPanther\Lookups\ConditionCPT4.sql" />
     <None Remove="Transformation\OptumPanther\Lookups\ConditionFromProcedure.sql" />
     <None Remove="Transformation\OptumPanther\Lookups\ConditionIcd10.sql" />
     <None Remove="Transformation\OptumPanther\Lookups\ConditionIcd9.sql" />
@@ -873,6 +874,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Transformation\OptumPanther\Lookups\ConditionIcd9.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Lookups\ConditionCPT4.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Transformation\OptumPanther\Lookups\ConditionSNOMED.sql">

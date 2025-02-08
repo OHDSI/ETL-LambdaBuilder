@@ -29,11 +29,15 @@
 		else NULL
 		end as icd10,
 		case
-		when diagnosis_cd_type IN ('SNOMED') then replace(replace(replace(diagnosis_cd, chr(9), ''), chr(10), ''), chr(13), '')
+		when diagnosis_cd_type IN ('SNOMED', 'SNOMEDCT') then replace(replace(replace(diagnosis_cd, chr(9), ''), chr(10), ''), chr(13), '')
 		else NULL
 		end as snomed,
 		case
-		when diagnosis_cd_type NOT IN ('ICD9', 'ICD10', 'SNOMED') then replace(replace(replace(diagnosis_cd, chr(9), ''), chr(10), ''), chr(13), '')
+		when diagnosis_cd_type IN ('CPT4') then replace(replace(replace(diagnosis_cd, chr(9), ''), chr(10), ''), chr(13), '')
+		else NULL
+		end as cpt4,
+		case
+		when diagnosis_cd_type NOT IN ('ICD9', 'ICD10', 'SNOMED', 'SNOMEDCT', 'CPT4') then replace(replace(replace(diagnosis_cd, chr(9), ''), chr(10), ''), chr(13), '')
 		else NULL
 		end as others,
 		admitting_diagnosis, discharge_diagnosis, poa, diagnosis_status, primary_diagnosis2 as primary_diagnosis,
@@ -57,6 +61,10 @@
 		when snomed is not null then 1
 		else 0
 		end addsnomed,
+		case
+		when cpt4 is not null then 1
+		else 0
+		end addcpt4,
 		case
 		when icd9 is null and icd10 is null and snomed is null and
 		diagnosis_cd_type NOT IN ('ICD9', 'ICD10', 'SNOMED') or diagnosis_cd_type is NULL then 1
@@ -153,6 +161,32 @@
         </Concept>
       </Concepts>
     </ConditionOccurrenceDefinition>
+
+		<ConditionOccurrenceDefinition>
+			<Condition>{addcpt4} = 1</Condition>
+			<PersonId>PersonId</PersonId>
+			<StartDate>diag_date</StartDate>
+			<AdditionalFields>
+				<string>encid</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>ConditionCPT4</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="cpt4" sourceKey="diagnosis_cd" defaultTypeId="32840" />
+					</Fields>
+				</Concept>
+				<Concept>
+					<Fields>
+						<Field conceptId="condition_status_concept_id" sourceKey="condition_status_source_value" defaultTypeId="0"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ConditionOccurrenceDefinition>
 
     <ConditionOccurrenceDefinition>
       <Condition>{unknown} = 1</Condition>

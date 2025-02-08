@@ -18,11 +18,11 @@
 		else NULL
 		end as source_code_REV,
 		case
-		when proc_code_type IN ('SNOMED') then proc_code
+		when proc_code_type IN ('SNOMED', 'SNOMEDCT') then proc_code
 		else NULL
 		end as source_code_SNOMED,
 		case
-		when proc_code_type NOT IN ('CPT4', 'HCPCS', 'ICD10', 'ICD9', 'REV', 'SNOMED') then proc_code
+		when proc_code_type NOT IN ('CPT4', 'HCPCS', 'ICD10', 'ICD9', 'REV', 'SNOMED', 'SNOMEDCT') then proc_code
 		else NULL
 		end as unknown
 
