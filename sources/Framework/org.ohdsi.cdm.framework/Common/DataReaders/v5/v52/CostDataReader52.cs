@@ -105,8 +105,13 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v52
                     return _enumerator.Current.PaidDispensingFee.Round();
 
                 case 16:
-                    return (long?)_offset.GetId(_enumerator.Current.PersonId,
-                        _enumerator.Current.PayerPlanPeriodId.Value);
+                    if (_enumerator.Current.PayerPlanPeriodId.HasValue)
+                    {
+                        return (long?)_offset.GetId(_enumerator.Current.PersonId,
+                            _enumerator.Current.PayerPlanPeriodId.Value);
+                    }
+
+                    return null;
 
                 case 17:
                     return _enumerator.Current.AmountAllowed.Round();

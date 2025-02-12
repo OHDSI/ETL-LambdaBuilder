@@ -31,7 +31,6 @@
     <None Remove="Transformation\CDM\Lookups\icd10.sql" />
     <None Remove="Transformation\CDM\Lookups\icd10cm.sql" />
     <None Remove="Transformation\CDM\Lookups\icd10pcs.sql" />
-    <None Remove="Transformation\CDM\Lookups\icd9.sql" />
     <None Remove="Transformation\CDM\Lookups\icd9cm.sql" />
     <None Remove="Transformation\CDM\Lookups\icd9proc.sql" />
     <None Remove="Transformation\CDM\Lookups\ingredient.sql" />
@@ -362,9 +361,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Transformation\CDM\Lookups\icd10pcs.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\CDM\Lookups\icd9.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Transformation\CDM\Lookups\icd9cm.sql">
