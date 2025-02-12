@@ -197,6 +197,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                 }
 
                 _conceptIdToSourceVocabularyId.TrimExcess();
+                Console.WriteLine("_conceptIdToSourceVocabularyId: " + _conceptIdToSourceVocabularyId.Keys.Count);
             }
         }
 
