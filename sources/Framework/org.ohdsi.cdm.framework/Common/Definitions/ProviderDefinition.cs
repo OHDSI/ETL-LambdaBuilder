@@ -95,6 +95,16 @@ namespace org.ohdsi.cdm.framework.common.Definitions
 
                     if (specialtyConceptIds[0].SourceConcepts.Count > 0 && specialtyConceptIds[0].SourceConcepts.First().ConceptId != 0)
                         specialtySourceConceptId = specialtyConceptIds[0].SourceConcepts.First().ConceptId;
+
+                    if (!specialtySourceConceptId.HasValue || specialtySourceConceptId.Value == 0)
+                    {
+                        specialtySourceConceptId = reader.GetLong(conceptField.SourceConceptId);
+                    }
+
+                    if (!specialtySourceConceptId.HasValue || specialtySourceConceptId.Value == 0)
+                    {
+                        specialtySourceConceptId = reader.GetLong(SpecialtySourceConceptId);
+                    }
                 }
 
                 var prov = new Provider
