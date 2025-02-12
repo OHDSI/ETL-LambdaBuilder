@@ -23,16 +23,32 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v53
         // probably performance to be gained by not passing object back?
         public object GetValue(int i)
         {
-
-            return i switch
+            switch (i)
             {
-                0 => _offset.GetId(_enumerator.Current.PersonId, _enumerator.Current.Id),
-                1 => _enumerator.Current.PersonId,
-                2 => _enumerator.Current.StartDate,
-                3 => _enumerator.Current.EndDate,
-                4 => _enumerator.Current.TypeConceptId,
-                _ => throw new NotImplementedException(),
-            };
+                case 0:
+                    {
+                        return _offset.GetKeyOffset(_enumerator.Current.PersonId)
+                            .ObservationPeriodIdChanged
+                            ? _offset.GetId(_enumerator.Current.PersonId, _enumerator.Current.Id)
+                            : _enumerator.Current.Id;
+                    }
+
+                case 1:
+                    return _enumerator.Current.PersonId;
+
+                case 2:
+                    return _enumerator.Current.StartDate;
+
+                case 3:
+                    return _enumerator.Current.EndDate;
+
+                case 4:
+                    return _enumerator.Current.TypeConceptId;
+
+
+                default:
+                    throw new NotImplementedException();
+            }
         }
 
         public string GetName(int i)
