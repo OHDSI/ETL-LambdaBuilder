@@ -436,6 +436,12 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CDM
                     case "icd10pcs":
                         lookupName = "icd10pcs";
                         break;
+                    case "icd10":
+                        lookupName = "icd10";
+                        break;
+                    case "icd9":
+                        lookupName = "icd9";
+                        break;
                     case "icd9cm":
                         lookupName = "icd9cm";
                         break;

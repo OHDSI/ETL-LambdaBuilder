@@ -134,6 +134,22 @@
 				<Concept>
 					<ConceptIdMappers>
 						<Mapper>
+							<Lookup>icd9</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="fake" typeId="1" sourceKey="fake"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</VisitOccurrenceDefinition>
+		<VisitOccurrenceDefinition>
+			<Condition>{fake} = 0</Condition>
+			<PersonId>PERSON_ID</PersonId>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
 							<Lookup>icd9proc</Lookup>
 						</Mapper>
 					</ConceptIdMappers>
