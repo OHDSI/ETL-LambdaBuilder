@@ -107,8 +107,10 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v52
                 case 16:
                     if (_enumerator.Current.PayerPlanPeriodId.HasValue)
                     {
-                        return (long?)_offset.GetId(_enumerator.Current.PersonId,
-                            _enumerator.Current.PayerPlanPeriodId.Value);
+                        if (_offset.GetKeyOffset(_enumerator.Current.PersonId).PayerPlanPeriodIdChanged)
+                            return _offset.GetId(_enumerator.Current.PersonId, _enumerator.Current.PayerPlanPeriodId.Value);
+                        else
+                            return _enumerator.Current.PayerPlanPeriodId;
                     }
 
                     return null;
