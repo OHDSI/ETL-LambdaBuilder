@@ -312,29 +312,6 @@
 			<CurrencyConceptId>CurrencyConceptId</CurrencyConceptId>
 		</VisitCostDefinition>
 	</VisitCost>
-	<Death>
-   <DeathDefinition>
-      <Condition>{DIED} = 1</Condition>
-      <PersonId>ENROLID</PersonId>
-      <StartDate>SVCDATE</StartDate>
-      <Died>DIED</Died>
-      <AdditionalFields>
-        <string>priority</string>
-        <string>FACHDID</string>
-        <string>CASEID</string>
-        <string>YEAR</string>
-        <string>hlthplan</string>
-        <string>vendor</string>
-      </AdditionalFields>
-      <Concepts>
-        <Concept>
-          <Fields>
-            <Field key="DSTATUS" defaultConceptId="1" defaultTypeId="32812"/>
-          </Fields>
-        </Concept>
-      </Concepts>
-    </DeathDefinition>
-  </Death>
   <Observation>
    <ObservationDefinition>
 	<PersonId>ENROLID</PersonId>

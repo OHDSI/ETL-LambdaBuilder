@@ -279,28 +279,6 @@
       </Concepts>
     </ProcedureOccurrenceDefinition>
   </ProcedureOccurrence>
-  <Death>
-    <DeathDefinition>
-      <Condition>{DIED} = 1</Condition>
-      <PersonId>ENROLID</PersonId>
-      <StartDate>DISDATE</StartDate>
-      <Died>DIED</Died>
-      <AdditionalFields>
-        <string>CASEID</string>
-        <string>YEAR</string>
-        <string>priority</string>
-        <string>hlthplan</string>
-        <string>vendor</string>
-      </AdditionalFields>
-      <Concepts>
-        <Concept>
-          <Fields>
-            <Field key="DSTATUS" defaultConceptId="1" defaultTypeId="32812"/>
-          </Fields>
-        </Concept>
-      </Concepts>
-    </DeathDefinition>
-  </Death>
   <VisitOccurrence>
     <VisitOccurrenceDefinition>
       <PersonId>ENROLID</PersonId>

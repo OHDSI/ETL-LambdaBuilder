@@ -162,21 +162,6 @@
          </Concepts>
       </VisitOccurrenceDefinition>
    </VisitOccurrence>
-   <Death>
-      <DeathDefinition>
-         <Condition>{died} = 1</Condition>
-         <PersonId>MEDREC_KEY</PersonId>
-         <Died>died</Died>
-         <VisitOccurrenceId>pat_key</VisitOccurrenceId>
-         <Concepts>
-            <Concept>
-               <Fields>
-                  <Field key="disc_status" defaultConceptId="1" defaultTypeId="32812"/>
-               </Fields>
-            </Concept>
-         </Concepts>
-      </DeathDefinition>
-   </Death>
 	<Observation>
 		<ObservationDefinition>
 			<PersonId>medrec_key</PersonId>
