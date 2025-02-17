@@ -18,7 +18,6 @@ Enrollment entries are consolidated by combining records that indicate continuou
 * Only use records where the person has prescription benefits (RX=1).
 * The gap between observation periods needs to be 32 days or less (<=32).
 * Remove duplicate records before assigning OBSERVATION_PERIOD_ID.  
-* When a person has a death recorded then we truncate the OBSERVATION_PERIOD_END_DATE to reflect the corresponding DEATH_DATE from the **DEATH** table.   
 
 
 ### Reading from **ENROLLMENT_DETAIL**
@@ -34,6 +33,9 @@ Enrollment entries are consolidated by combining records that indicate continuou
 | PERIOD_TYPE_CONCEPT_ID | - | - | `32813` - Claim enrolment record |
 
 ## Change Log
+
+### February 14, 2025
+* Removed logic to truncate the OBSERVATION_PERIOD_END_DATE for DEATH_DATE from the **DEATH** table as we are no longer deriving death date for this source   
 
 ### June 8, 2021
 * Updated the PERIOD_TYPE_CONCEPT_ID to a Standard Concept

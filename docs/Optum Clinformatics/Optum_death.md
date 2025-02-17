@@ -3,34 +3,32 @@ layout: default
 title: Death
 nav_order: 15
 parent: Optum Clinformatics
-description: "DEATH table mapping from DOD DEATH table, MEDICAL_CLAIMS and MED_DIAGNOSIS in DOD as well as in SES "
+description: "DEATH table mapping from DOD DEATH table, MEDICAL_CLAIMS and MED_DIAGNOSIS in DOD "
 
 ---
 
 # CDM Table: DEATH
 
-- DOD: this table will be sourced from the table **Death** - except for persons not in person table. If person is absent in **Death** table, but the fact of death is confirmed by the SES logic (see below), populate the DEATH table as well.
-- SES: this table will be algorithmically derived from observations in claims data. 
+- DOD: this table will be sourced from the table **Death** - except for persons not in person table. If person is absent in **Death** table, but the fact of death is confirmed by information in MEDICAL_CLAIMS.DSTATUS, populate the DEATH table as well.
+- SES: As of 2025, we are no longer deriving death data from Optum SES.
 - Cause of death is not present in source data.
 
 ## **DEATH Table Logic**
 - Delete person if not in PERSON table.
 
-### **Deriving date of death in DOD**
+### **Deriving date of death from the death record in DOD**
 
 - If the observation_period_start_date occurs prior to the death date, delete the death record
 - If the death date occurs before the patient's date of birth, then delete the death record.
 - If there are outpatient or pharmacy visits (VISIT_CONCEPT_ID in 9202, 581458) with visit start date after 30 days of death date, delete the visit record. 
 - If there are inpatient or ER visits (VISIT_CONCEPT_ID in 9201, 9203) with visit start date after 30 days of death date, delete the death record. 
-- If person is absent in **Death** table, but the fact of death is confirmed by the SES logic (see below), populate the DEATH table as well.
+- If person is absent in **Death** table, but the fact of death is confirmed by the MEDICAL_CLAIMS logic (see below), populate the DEATH table as well.
 
-### **Deriving date of death in SES**
-- In SES data only, date of death will be derived from claims as follows.
+### **Deriving date of death from MEDICAL_CLAIMS in DOD**
+- Date of death will be derived from claims as follows:
 - The date of death will be associated to the VISIT_END_DATE.
 - These fields will be scanned for death information:
   1. **MEDICAL_CLAIMS** DSTATUS (Discharge Status)
-  1. **MED_DIAGNOSIS** DIAG (ICD10CM or ICD9CM diagnosis codes)
-  1. **MEDICAL_CLAIMS** DRG
 
 #### Using **MEDICAL_CLAIMS** DSTATUS
 
@@ -55,37 +53,24 @@ see the descriptions below for the reference:
 | **MEDICAL_CLAIMS** DSTATUS | 42           | EXPIRED – PLACE UNKNOWN (HOSPICE)       | 32812        |
 
 
-#### Using ICD9CM and ICD10CM from **MED_DIAGNOSIS** DIAG   
-
-Use [Source to Source](code_snippets.md#source-to-source) and filter with
-```WHERE SOURCE_VOCABULARY_ID IN ('JNJ_DEATH')``` to find DEATH records using the diagnosis codes. 
-
-#### Using **MEDICAL_CLAIMS** DRG 
-
-For DRGs, use the following query.  DRGs are date-sensitve so we need to only pick up DRGs that fall within the valid start and end dates.
-
-```
-SELECT CONCEPT_ID, CONCEPT_NAME, CONCEPT_CODE, valid_start_date, valid_end_date
-FROM concept
-WHERE CONCEPT_ID IN (
-  38000421,38001111,38001112,38001113
-)
-```
-
 **Destination Field**|**Source Field**|**Applied Rule**|**Comment**
 :-----:|:-----:|:-----:|:-----:
 PERSON_ID|PATID||
-DEATH_DATE|**SES: VISIT_OCCURRENCE** VISIT_END_DATE <br><br> **DOD: DEATH**<br/> ymdod or visit_end_date if SES logic is aplied|**(DOD only) DEATH**<br/> Use the last day of the month|
+DEATH_DATE|**VISIT_OCCURRENCE** VISIT_END_DATE <br><br> **DEATH**<br/> ymdod or visit_end_date if MEDICAL_CLAIMS.DSTATUS logic is applied|**DEATH**<br/> Use the last day of the month|
 DEATH_DATETIME|Set time to 00:00:00 UTC Tz||
 DEATH_TYPE_CONCEPT_ID|Derived field|if death acquired from DOD DEATH - 32885, in the other cases - 32812 |
 CAUSE_OF_DEATH_CONCEPT_ID|0||
 CAUSE_OF_DEATH_SOURCE_VALUE|0||
 CAUSE_SOURCE_CONCEPT_ID|0||
 ---
-*Common Data Model ETL Mapping Specification for Optum Extended SES & Extended DOD*
+*Common Data Model ETL Mapping Specification for Optum Extended DOD*
 <br>*CDM Version = 5.4
 
 ## Change log
+
+### 02-Feb-2025
+- Updated logic to remove derived death for Optum SES
+- Removed logic from MEDICAL_CLAIMS.DRG and MED_DIAGNOSIS in Optum DOD
 
 ### 04-Dec-2024
 - fixed misprint in the delete death record rule (DOD), inpatient VISIT_CONCEPT_ID 9202 -> 9201
@@ -95,5 +80,3 @@ CAUSE_SOURCE_CONCEPT_ID|0||
 - table is revived since in CDM v5.4 the death table is present (the file was retired in intent of migration to CDM v6)
 - Type concepts are up-to-date
 - in DOD usage of SES logic if entry is absent in DEATH table
-
-

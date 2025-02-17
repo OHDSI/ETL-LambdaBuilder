@@ -1,4 +1,8 @@
 ﻿<QueryDefinition>
+	<Variables>
+		<Variable name="ses" database="ses">1 as ses</Variable>
+		<Variable name="ses" database="dod">0 as ses</Variable>
+	</Variables>
   <Query>
     with prov as
     (
@@ -36,21 +40,22 @@
     pat_planid,
     loc_cd,
     CASE WHEN icd_flag IS NULL OR icd_flag NOT IN ('10', '9') THEN CASE WHEN fst_dt &lt; '10/01/2015' THEN '9' ELSE '10' END ELSE icd_flag END icd_flag,
-    1 as DAYS_SUPPLY,
-    CASE
-    WHEN DSTATUS IN ('20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '40', '41', '42') THEN 1
-    ELSE 0
-    END as DIED,
-    conf_id,
-    1 as fake,
-    drg,
-    rvnu_cd
-    FROM {sc}.medical_claims mc
-    JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND mc.patid = ch.PERSON_ID
-    left join prov pb on pb.prov=mc.prov
-    left join care_site cs on cs.prov=mc.bill_prov
-    order by PATID
-  </Query>
+		1 as DAYS_SUPPLY,
+		CASE
+		WHEN DSTATUS IN ('20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '40', '41', '42') THEN 1
+		ELSE 0
+		END as DIED,
+		conf_id,
+		1 as fake,
+		drg,
+		rvnu_cd,
+		{ses}
+		FROM {sc}.medical_claims mc
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND mc.patid = ch.PERSON_ID
+		left join prov pb on pb.prov=mc.prov
+		left join care_site cs on cs.prov=mc.bill_prov
+		order by PATID
+	</Query>
   <DrugExposure>
     <DrugExposureDefinition>
       <PersonId>PERSON_ID</PersonId>
@@ -229,6 +234,7 @@
 
   <Death>
     <DeathDefinition>
+			<Condition>{ses} = 0</Condition>
       <PersonId>PERSON_ID</PersonId>
       <StartDate>END_DATE</StartDate>
       <Died>DIED</Died>
