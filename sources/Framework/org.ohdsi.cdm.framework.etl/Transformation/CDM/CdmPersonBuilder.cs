@@ -133,7 +133,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CDM
                 visitOccurrences.Add(visitOccurrence.Id, visitOccurrence);
             }
 
-            var visitDetails = new List<VisitDetail>();
+            var visitDetails = new Dictionary<long, VisitDetail>();
 
             foreach (var vd in VisitDetailsRaw)
             {
@@ -143,7 +143,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CDM
                     continue;
                 }
 
-                visitDetails.Add(vd);
+                visitDetails.Add(vd.Id, vd);
             }
 
             foreach (var de in DrugExposuresRaw)
@@ -182,12 +182,12 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CDM
                     de.Domain = "Device";
             }
 
-            TryToRemap(DrugExposuresRaw);
-            TryToRemap(ConditionOccurrencesRaw);
-            TryToRemap(ProcedureOccurrencesRaw);
-            TryToRemap(ObservationsRaw);
-            TryToRemap(MeasurementsRaw);
-            TryToRemap(DeviceExposureRaw);
+            TryToRemap(DrugExposuresRaw, visitOccurrences, visitDetails);
+            TryToRemap(ConditionOccurrencesRaw, visitOccurrences, visitDetails);
+            TryToRemap(ProcedureOccurrencesRaw, visitOccurrences, visitDetails);
+            TryToRemap(ObservationsRaw, visitOccurrences, visitDetails);
+            TryToRemap(MeasurementsRaw, visitOccurrences, visitDetails);
+            TryToRemap(DeviceExposureRaw, visitOccurrences, visitDetails);
 
             var newEntities = new List<IEntity>();
 
@@ -226,7 +226,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CDM
             // push built entities to ChunkBuilder for further save to CDM database
             AddToChunk(person, death, [.. observationPeriods], payerPlanPeriods, [.. drugExposures],
                 [.. conditionOccurrences], [.. procedureOccurrences], [.. observations], [.. measurements],
-                [.. visitOccurrences.Values], [.. visitDetails], null, [.. deviceExposure], null, null);
+                [.. visitOccurrences.Values], [.. visitDetails.Values], null, [.. deviceExposure], null, null);
 
             foreach (var c in CostRaw)
                 ChunkData.AddCostData(c);
@@ -398,11 +398,16 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CDM
             }
         }
 
-        private void TryToRemap(IEnumerable<IEntity> records)
+        private void TryToRemap(IEnumerable<IEntity> records, Dictionary<long, VisitOccurrence> visits, Dictionary<long, VisitDetail> visitDetails)
         {
             foreach (var record in records)
             {
-                if(record.VisitOccurrenceId.HasValue && _removedVisitIds.ContainsKey(record.VisitOccurrenceId.Value))
+                if (record.VisitOccurrenceId.HasValue && _removedVisitIds.ContainsKey(record.VisitOccurrenceId.Value))
+                {
+                    record.VisitOccurrenceId = null;
+                }
+
+                if (record.VisitOccurrenceId.HasValue && !visits.ContainsKey(record.VisitOccurrenceId.Value))
                 {
                     record.VisitOccurrenceId = null;
                 }
@@ -412,7 +417,12 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CDM
                     record.VisitDetailId = null;
                 }
 
-               UpdateLookup(record);
+                if (record.VisitDetailId.HasValue && !visitDetails.ContainsKey(record.VisitDetailId.Value))
+                {
+                    record.VisitDetailId = null;
+                }
+
+                UpdateLookup(record);
             }
         }
 
