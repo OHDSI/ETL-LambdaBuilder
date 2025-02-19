@@ -169,7 +169,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                 _lookups.Add(o.Key.Split('/')[3].Replace(".txt.gz", ""), lookup);
             }
 
-            if (Vendor is framework.etl.Transformation.CDM.CdmPersonBuilder.CdmVendor)
+            if (Vendor.Name == "CDM")
             {
                 var getObjectRequest = new GetObjectRequest
                 {
@@ -197,6 +197,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                 }
 
                 _conceptIdToSourceVocabularyId.TrimExcess();
+                Console.WriteLine("_conceptIdToSourceVocabularyId: " + _conceptIdToSourceVocabularyId.Keys.Count);
             }
         }
 
