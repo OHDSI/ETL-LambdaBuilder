@@ -37,6 +37,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
         private readonly Dictionary<Guid, VisitOccurrence> _rawVisits = [];
         private readonly Dictionary<string, long> _visitIds = [];
         private readonly Dictionary<string, long> _visitDetailIds = [];
+        private readonly Dictionary<string, VisitDetail> _visitDetailsByEncid = [];
 
         private readonly Dictionary<string, ConditionOccurrence> _oncConditions = [];
         private Person _person;
@@ -948,6 +949,9 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                 }
 
                 visitDetails.Add(vd.Id, vd);
+
+                var encid = vd.AdditionalFields["encid"];
+                _visitDetailsByEncid.TryAdd(encid, vd);
             }
 
             long? prevVisitId = null;
@@ -1104,11 +1108,13 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                         {
                             var encid = e.AdditionalFields["encid"];
 
-                            var vd = visitDetails.Values.FirstOrDefault(v => v.AdditionalFields["encid"] == encid);
-                            if (vd == null) continue;
-
-                            e.VisitDetailId = vd.Id;
-                            e.VisitOccurrenceId = vd.VisitOccurrenceId;
+                            //var vd = visitDetails.Values.FirstOrDefault(v => v.AdditionalFields["encid"] == encid);
+                            //if (vd == null) continue;
+                            if (_visitDetailsByEncid.TryGetValue(encid, out VisitDetail? vd))
+                            {
+                                e.VisitDetailId = vd.Id;
+                                e.VisitOccurrenceId = vd.VisitOccurrenceId;
+                            }
                         }
 
                         if (!e.VisitOccurrenceId.HasValue) continue;
@@ -1223,7 +1229,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                 result.Add(dates.Max());
         }
 
-        protected static void SetVisitOccurrenceId<T>(IEnumerable<T> inputRecords, VisitDetail[] visitDetail)
+        protected void SetVisitOccurrenceId<T>(IEnumerable<T> inputRecords, VisitDetail[] visitDetail)
       where T : class, IEntity
         {
             foreach (var e in inputRecords)
@@ -1232,11 +1238,11 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                 {
                     var encid = e.AdditionalFields["encid"];
 
-                    var vd = visitDetail.FirstOrDefault(v => v.AdditionalFields["encid"] == encid);
-                    if (vd == null) continue;
-
-                    e.VisitDetailId = vd.Id;
-                    e.VisitOccurrenceId = vd.VisitOccurrenceId;
+                    if (_visitDetailsByEncid.TryGetValue(encid, out VisitDetail? vd))
+                    {
+                        e.VisitDetailId = vd.Id;
+                        e.VisitOccurrenceId = vd.VisitOccurrenceId;
+                    }
                 }
             }
         }
