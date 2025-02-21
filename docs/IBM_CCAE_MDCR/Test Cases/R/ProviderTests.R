@@ -40,6 +40,19 @@ createProviderTests <- function () {
     expect_provider(provider_source_value =NULL, specialty_source_value="220")
   }
   
+  if (tolower(frameworkType) == "ccae")
+  {
+    provider<-createProvider();
+    declareTest(id = provider$provid, description = "Provider. Constants")
+    patient<-createPatient();
+    add_facility_header(enrolid=patient$enrolid, provid=NULL, stdprov="220")
+    expect_provider(care_site_id =  0, 
+                    gender_concept_id = 0, 
+                    speciality_source_concept_id = 0, 
+                    gender_source_concept_id = 0)
+    
+  }
+  
   if (tolower(frameworkType) == "mdcd")
   {
     provider<-createProvider();

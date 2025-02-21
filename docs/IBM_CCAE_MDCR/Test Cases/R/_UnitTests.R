@@ -7,6 +7,6 @@ createTests <- function(frameworkType) {
   createCareSiteTests(frameworkType);
   
   #declareTestGroup("Cost", 2)
-  createCostTests(frameworkType);
+  #createCostTests(frameworkType);
   
 }

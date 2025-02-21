@@ -67,6 +67,34 @@ createPersonTests <- function () {
   add_enrollment_detail(enrolid=patient$enrolid, dtend="2012-04-30", dtstart="2012-04-01", dobyr="2012")
   expect_person(person_id=patient$person_id, year_of_birth="2012", month_of_birth="4", day_of_birth="1")
   
+  if (tolower(frameworktype) == "ccae")
+  { 
+    patient<-createPatient()
+    declareTest(id = patient$person_id, "sex=1 => gender_concept_id=8507")
+    add_enrollment_detail(enrolid=patient$enrolid, sex = 1)
+    expect_person(person_id=patient$person_id, gender_concept_id = "8507")
+    
+    patient<-createPatient()
+    declareTest(id = patient$person_id, "sex=2 => gender_concept_id=8532")
+    add_enrollment_detail(enrolid=patient$enrolid, sex = 2)
+    expect_person(person_id=patient$person_id, gender_concept_id = "8532") 
+    
+    patient<-createPatient()
+    declareTest(id = patient$person_id, "sex=3 => discarded")
+    add_enrollment_detail(enrolid=patient$enrolid, sex = 3)
+    expect_no_person(person_id=patient$person_id) 
+    
+    patient<-createPatient()
+    declareTest(id = patient$person_id, "Person. Constants")
+    add_enrollment_detail(enrolid=patient$enrolid)
+    expect_person(person_id=patient$person_id, 
+                  race_concept_id = 0, 
+                  ethnicity_concept_id = 0,
+                  gender_source_concept_id = 0,
+                  race_source_concept_id = 0,
+                  ethnicity_source_concept_id = 0) 
+  }
+  
   if (tolower(frameworkType) != "mdcd")
   {
     patient<-createPatient()

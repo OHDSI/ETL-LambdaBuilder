@@ -41,4 +41,10 @@ createObservationPeriodTests <- function () {
   add_inpatient_services(enrolid=patient$enrolid, svcdate="2012-09-02", dstatus="20")
   expect_observation_period(person_id=patient$person_id, observation_period_start_date="2012-01-01", observation_period_end_date="2012-12-31")
   
+  patient<-createPatient();
+  declareTest(id = patient$person_id, "PERIOD_TYPE_CONCEPT_ID=32813")
+  add_enrollment_detail(enrolid=patient$enrolid, dtstart="2012-01-01", dtend="2012-12-31")
+  add_inpatient_services(enrolid=patient$enrolid, svcdate="2012-09-02", dstatus="20")
+  expect_observation_period(person_id=patient$person_id, period_type_concept_id = 32813)
+  
 }
