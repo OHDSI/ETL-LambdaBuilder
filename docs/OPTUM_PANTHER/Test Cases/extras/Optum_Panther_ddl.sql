@@ -6,17 +6,7 @@ CREATE TABLE _version
    version_date  date      NOT NULL
 );
 
-CREATE TABLE allergy
-(
-   ptid          varchar(11)    NOT NULL,
-   onset_date    date,
-   allergentype  varchar(18),
-   allergendesc  varchar(60),
-   drug_class    varchar(150),
-   ndc           varchar(11),
-   ndc_source    varchar(7),
-   sourceid      varchar(5)
-);
+
 
 CREATE TABLE care_area
 (
