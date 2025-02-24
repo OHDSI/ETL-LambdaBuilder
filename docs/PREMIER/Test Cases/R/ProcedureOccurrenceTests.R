@@ -247,10 +247,8 @@ createProcedureOccurrenceTests <- function () {
               std_chg_code = 270270019860000,
               std_qty      = 3);
 
-  expect_procedure_occurrence(person_id            = patient$person_id,
-                              visit_occurrence_id  = visit$visit_occurrence_id,
-                              procedure_date       = "2002-02-01",
-                              procedure_concept_id = 0,
-                              quantity             = 3);
-
+  expect_observation(person_id              = patient$person_id,
+                     visit_occurrence_id    = visit$visit_occurrence_id,
+                     observation_concept_id = 0,
+                     observation_date       = "2002-02-01");				 
 }
