@@ -99,6 +99,15 @@ And in a similar way for the Merge function, org.ohdsi.cdm.presentation.lambdame
 
 ![image](https://github.com/OHDSI/ETL-LambdaBuilder/assets/13117785/2fc8c1da-fe59-4a22-8536-1187daead5e4)
 
+## Add a layer to the CDMBuilder & Merge functions
+1. Compress the "org.ohdsi.cdm.framework.etl.dll" file to zip archive (exists in publish folder).
+2. Add new layer, #3 upload created zip file.   
+![AddLayer1](https://github.com/user-attachments/assets/5e84f05a-ca9d-4eaf-a54f-7bd9fb960862)
+3. Add created layer to the CDM Builder Function
+![AddLayer2](https://github.com/user-attachments/assets/ef889553-fd71-4dfa-b53d-04e972420c17)
+![AddLayer3](https://github.com/user-attachments/assets/015d018c-b40d-4591-9c15-228d8b735c4e)
+4. Repeat previous steps for the Merge function.
+
 ## Run ETL conversion
 1. Open command line tool folder
 2. Update appsettings.json file with yours setting
