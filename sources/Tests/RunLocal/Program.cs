@@ -64,7 +64,8 @@ namespace RunLocal
                     "COST",
                     "NOTE",
                     "METADATA_TMP",
-                    "FACT_RELATIONSHIP"
+                    "FACT_RELATIONSHIP",
+                    "EPISODE"
                 };
 
                 if (clean)
