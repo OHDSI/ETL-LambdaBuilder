@@ -2983,7 +2983,7 @@ add_procedure <- function(member_id, claim_id, statement_id, type_of_claim, mont
   fields <- c(fields, "actual_point")
   values <- c(values, if (is.null(actual_point)) "NULL" else if (is(actual_point, "subQuery")) paste0("(", as.character(actual_point), ")") else paste0("'", as.character(actual_point), "'"))
 
-  inserts <- list(testId = frameworkContext$testId, testDescription = frameworkContext$testDescription, table = "[procedure]", fields = fields, values = values)
+  inserts <- list(testId = frameworkContext$testId, testDescription = frameworkContext$testDescription, table = "procedure", fields = fields, values = values)
   frameworkContext$inserts[[length(frameworkContext$inserts) + 1]] <- inserts
   invisible(NULL)
 }
@@ -13671,7 +13671,7 @@ generateInsertSql <- function(databaseSchema = NULL) {
   insertSql <- c(insertSql, "TRUNCATE TABLE @cdm_database_schema.material;")
   insertSql <- c(insertSql, "TRUNCATE TABLE @cdm_database_schema.material_master;")
   insertSql <- c(insertSql, "TRUNCATE TABLE @cdm_database_schema.medical_facility;")
-  insertSql <- c(insertSql, "TRUNCATE TABLE @cdm_database_schema.[procedure];")
+  insertSql <- c(insertSql, "TRUNCATE TABLE @cdm_database_schema.procedure;")
   insertSql <- c(insertSql, "TRUNCATE TABLE @cdm_database_schema.procedure_master;")
   createInsertStatement <- function(insert, env) {
     s <- c()
