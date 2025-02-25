@@ -9,7 +9,7 @@ setDefaults <- function (){
 	add_procedure_master(standardized_procedure_code = 123, standardized_procedure_version = '201404', icd9cm_level1 = 9394) # Respiratory medication administered by nebulizer
 
 	set_defaults_claim(paper_claim_flag = NULL, admission_date = NULL, discharge_date = NULL)
-	set_defaults_drug(date_of_dispense = NULL, as_needed_medication_flag = NULL,category_of_medical_care = NULL, pharmacy_charge = NULL, drug_charge = NULL, date_of_prescription = NULL)
+	set_defaults_drug(date_of_dispense = NULL, as_needed_medication_flag = NULL,category_of_medical_care = NULL, dispensing_charge = NULL, drug_charge = NULL, date_of_prescription = NULL)
 	set_defaults_procedure(procedure_standard_additional_rate = NULL, procedure_standard_price = NULL, date_of_procedure = NULL)
 	set_defaults_diagnosis(main_disease_flag = NULL, causative_disease_flag = NULL, suspicion_flag = NULL, outcome_death_flag = NULL, outcome_exacerbation_flag = NULL)
 

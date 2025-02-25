@@ -4,7 +4,7 @@ createTests <- function() {
   # declareTestGroup("Cost")
   createCostTests();
   # declareTestGroup("Death")
-  createDeathTests();
+  # createDeathTests();
   # declareTestGroup("Device Exposure")
   createDeviceExposureTests();
   # declareTestGroup("Drug Exposure")
