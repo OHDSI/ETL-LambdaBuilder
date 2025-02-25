@@ -4381,7 +4381,7 @@ expect_note <- function(note_id, person_id, note_date, note_datetime, note_type_
   invisible(NULL)
 }
 
-expect_note_nlp <- function(note_nlp_id, note_id, section_concept_id, snippet, "offset", lexical_variant, note_nlp_concept_id, note_nlp_source_concept_id, nlp_system, nlp_date, nlp_datetime, term_exists, term_temporal, term_modifiers) {
+expect_note_nlp <- function(note_nlp_id, note_id, section_concept_id, snippet, offset, lexical_variant, note_nlp_concept_id, note_nlp_source_concept_id, nlp_system, nlp_date, nlp_datetime, term_exists, term_temporal, term_modifiers) {
   fields <- c()
   values <- c()
   if (!missing(note_nlp_id)) {
@@ -4408,10 +4408,10 @@ expect_note_nlp <- function(note_nlp_id, note_id, section_concept_id, snippet, "
     frameworkContext$targetFieldsTested <- c(frameworkContext$targetFieldsTested, 'note_nlp.snippet')
   }
 
-  if (!missing("offset")) {
-    fields <- c(fields, ""offset"")
-    values <- c(values, if (is.null("offset")) " IS NULL" else if (is("offset", "subQuery")) paste0(" = (", as.character("offset"), ")") else paste0(" = '", as.character("offset"), "'"))
-    frameworkContext$targetFieldsTested <- c(frameworkContext$targetFieldsTested, 'note_nlp."offset"')
+  if (!missing(offset)) {
+    fields <- c(fields, "offset")
+    values <- c(values, if (is.null(offset)) " IS NULL" else if (is(offset, "subQuery")) paste0(" = (", as.character(offset), ")") else paste0(" = '", as.character(offset), "'"))
+    frameworkContext$targetFieldsTested <- c(frameworkContext$targetFieldsTested, 'note_nlp.offset')
   }
 
   if (!missing(lexical_variant)) {
@@ -6639,7 +6639,7 @@ expect_no_note <- function(note_id, person_id, note_date, note_datetime, note_ty
   invisible(NULL)
 }
 
-expect_no_note_nlp <- function(note_nlp_id, note_id, section_concept_id, snippet, "offset", lexical_variant, note_nlp_concept_id, note_nlp_source_concept_id, nlp_system, nlp_date, nlp_datetime, term_exists, term_temporal, term_modifiers) {
+expect_no_note_nlp <- function(note_nlp_id, note_id, section_concept_id, snippet, offset, lexical_variant, note_nlp_concept_id, note_nlp_source_concept_id, nlp_system, nlp_date, nlp_datetime, term_exists, term_temporal, term_modifiers) {
   fields <- c()
   values <- c()
   if (!missing(note_nlp_id)) {
@@ -6662,9 +6662,9 @@ expect_no_note_nlp <- function(note_nlp_id, note_id, section_concept_id, snippet
     values <- c(values, if (is.null(snippet)) " IS NULL" else if (is(snippet, "subQuery")) paste0(" = (", as.character(snippet), ")") else paste0(" = '", as.character(snippet), "'"))
   }
 
-  if (!missing("offset")) {
-    fields <- c(fields, ""offset"")
-    values <- c(values, if (is.null("offset")) " IS NULL" else if (is("offset", "subQuery")) paste0(" = (", as.character("offset"), ")") else paste0(" = '", as.character("offset"), "'"))
+  if (!missing(offset)) {
+    fields <- c(fields, "offset")
+    values <- c(values, if (is.null(offset)) " IS NULL" else if (is(offset, "subQuery")) paste0(" = (", as.character(offset), ")") else paste0(" = '", as.character(offset), "'"))
   }
 
   if (!missing(lexical_variant)) {
@@ -8938,7 +8938,7 @@ expect_count_note <- function(rowCount, note_id, person_id, note_date, note_date
   invisible(NULL)
 }
 
-expect_count_note_nlp <- function(rowCount, note_nlp_id, note_id, section_concept_id, snippet, "offset", lexical_variant, note_nlp_concept_id, note_nlp_source_concept_id, nlp_system, nlp_date, nlp_datetime, term_exists, term_temporal, term_modifiers) {
+expect_count_note_nlp <- function(rowCount, note_nlp_id, note_id, section_concept_id, snippet, offset, lexical_variant, note_nlp_concept_id, note_nlp_source_concept_id, nlp_system, nlp_date, nlp_datetime, term_exists, term_temporal, term_modifiers) {
   fields <- c()
   values <- c()
   if (!missing(note_nlp_id)) {
@@ -8965,10 +8965,10 @@ expect_count_note_nlp <- function(rowCount, note_nlp_id, note_id, section_concep
     frameworkContext$targetFieldsTested <- c(frameworkContext$targetFieldsTested, 'note_nlp.snippet')
   }
 
-  if (!missing("offset")) {
-    fields <- c(fields, ""offset"")
-    values <- c(values, if (is.null("offset")) " IS NULL" else if (is("offset", "subQuery")) paste0(" = (", as.character("offset"), ")") else paste0(" = '", as.character("offset"), "'"))
-    frameworkContext$targetFieldsTested <- c(frameworkContext$targetFieldsTested, 'note_nlp."offset"')
+  if (!missing(offset)) {
+    fields <- c(fields, "offset")
+    values <- c(values, if (is.null(offset)) " IS NULL" else if (is(offset, "subQuery")) paste0(" = (", as.character(offset), ")") else paste0(" = '", as.character(offset), "'"))
+    frameworkContext$targetFieldsTested <- c(frameworkContext$targetFieldsTested, 'note_nlp.offset')
   }
 
   if (!missing(lexical_variant)) {
@@ -12001,7 +12001,7 @@ lookup_note <- function(fetchField, note_id, person_id, note_date, note_datetime
   return(statement)
 }
 
-lookup_note_nlp <- function(fetchField, note_nlp_id, note_id, section_concept_id, snippet, "offset", lexical_variant, note_nlp_concept_id, note_nlp_source_concept_id, nlp_system, nlp_date, nlp_datetime, term_exists, term_temporal, term_modifiers) {
+lookup_note_nlp <- function(fetchField, note_nlp_id, note_id, section_concept_id, snippet, offset, lexical_variant, note_nlp_concept_id, note_nlp_source_concept_id, nlp_system, nlp_date, nlp_datetime, term_exists, term_temporal, term_modifiers) {
   statement <- paste0('SELECT ', fetchField , ' FROM @cdm_database_schema.note_nlp WHERE')
   first <- TRUE
   if (!missing(note_nlp_id)) {
@@ -12040,13 +12040,13 @@ lookup_note_nlp <- function(fetchField, note_nlp_id, note_id, section_concept_id
     statement <- paste0(statement, " snippet",if (is.null(snippet)) " IS NULL" else if (is(snippet, "subQuery")) paste0(" = (", as.character(snippet), ")") else paste0(" = '", as.character(snippet), "'"))
   }
 
-  if (!missing("offset")) {
+  if (!missing(offset)) {
     if (first) {
       first <- FALSE
     } else {
       statement <- paste0(statement, " AND")
     }
-    statement <- paste0(statement, " "offset"",if (is.null("offset")) " IS NULL" else if (is("offset", "subQuery")) paste0(" = (", as.character("offset"), ")") else paste0(" = '", as.character("offset"), "'"))
+    statement <- paste0(statement, " offset",if (is.null(offset)) " IS NULL" else if (is(offset, "subQuery")) paste0(" = (", as.character(offset), ")") else paste0(" = '", as.character(offset), "'"))
   }
 
   if (!missing(lexical_variant)) {
