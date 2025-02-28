@@ -1,6 +1,6 @@
 #Use this to set pertinent default values for the test cases
 #' @export
-setDefaults <- function (frameworkType){
+setDefaults <- function (){
   set_defaults_drug_claims(metqty = '0', daysupp = '30')
   set_defaults_inpatient_admissions(admdate = '2012-01-01', disdate = '2012-12-31', year = '2012', proc2 = NULL)
   
@@ -13,18 +13,110 @@ setDefaults <- function (frameworkType){
   if (tolower(frameworkType) == "ccae")
   {
     set_defaults_enrollment_detail(
-      indstry = '1',
-      efamid = '0'
-      )
-    
-    set_defaults_enrollment_detail(
-      wgtkey = '0',
-      seqnum = '0',
-      plankey = '0'
+      age = 0
+      ,agegrp = '0'
+      ,datatyp = 0
+      ,dobyr = 0
+      ,dtend = '2025-02-03'
+      ,dtstart = '2025-02-03'
+      ,eeclass = '0'
+      ,eestatu = '0'
+      ,efamid = 0
+      ,egeoloc = '0'
+      ,emprel = '0'
+      ,enrolid = 0
+      ,hlthplan = '0'
+      ,indstry = '0'
+      ,memdays = 0
+      ,mhsacovg = '0'
+      ,msa = 0
+      ,phyflag = '0'
+      ,plankey = 0
+      ,plantyp = 0
+      ,region = '0'
+      ,rx = '0'
+      ,seqnum = 0
+      ,sex = '0'
+      ,version = '0'
+      ,wgtkey = 0
+      ,year = 0
+      ,medadv = 0
       )
     
     set_defaults_facility_header(
-      stdprov = '0'
+      age = 0    
+      ,agegrp = '0'    
+      ,billtyp = '0'    
+      ,cap_svc = '0'    
+      ,caseid = 0    
+      ,cob = 0   
+      ,coins = 0   
+      ,copay = 0   
+      ,datatyp = 0    
+      ,deduct = 0   
+      ,dobyr = 0    
+      ,dstatus = '0'    
+      ,dx1 = '0'    
+      ,dx2 = '0'    
+      ,dx3 = '0'    
+      ,dx4 = '0'    
+      ,dx5 = '0'    
+      ,dx6 = '0'    
+      ,dx7 = '0'    
+      ,dx8 = '0'    
+      ,dx9 = '0'    
+      ,dxver = '0'    
+      ,eeclass = '0'    
+      ,eestatu = '0'    
+      ,efamid = 0    
+      ,egeoloc = '0'    
+      ,eidflag = '0'    
+      ,emprel = '0'    
+      ,enrflag = '0'    
+      ,enrolid = 0    
+      ,fachdid = 0    
+      ,hlthplan = '0'    
+      ,indstry = '0'    
+      ,mdc = '0'    
+      ,mhsacovg = '0'    
+      ,msa = 0    
+      ,netpay = 0   
+      ,ntwkprov = '0'    
+      ,paidntwk = '0'    
+      ,pddate = '2024-03-01'    
+      ,phyflag = '0'    
+      ,plankey = 0    
+      ,plantyp = 0    
+      ,poadx1 = '0'    
+      ,poadx2 = '0'    
+      ,poadx3 = '0'    
+      ,poadx4 = '0'    
+      ,poadx5 = '0'    
+      ,poadx6 = '0'    
+      ,poadx7 = '0'    
+      ,poadx8 = '0'    
+      ,poadx9 = '0'    
+      ,proc1 = '0'    
+      ,proc2 = '0'    
+      ,proc3 = '0'    
+      ,proc4 = '0'    
+      ,proc5 = '0'    
+      ,proc6 = '0'    
+      ,provid = 0    
+      ,region = '0'    
+      ,rx = '0'    
+      ,seqnum = 0    
+      ,sex = '0'    
+      ,stdplac = 0    
+      ,stdprov = 0    
+      ,svcdate = '2024-03-01'    
+      ,tsvcdat = '2024-03-01'    
+      ,version = '0'    
+      ,wgtkey = 0    
+      ,year = 0    
+      ,msclmid = 0    
+      ,npi = '0'    
+      ,medadv = 0    
       )
     
     set_defaults_inpatient_services(
@@ -96,7 +188,7 @@ setDefaults <- function (frameworkType){
       units = 2.5, 
       npi = '1234567890', 
       msclmid = 678901, 
-      medadv = 'abc'
+      medadv = 1
     )
     
     set_defaults_outpatient_services(
@@ -161,7 +253,7 @@ setDefaults <- function (frameworkType){
       units = 2.0, 
       npi = '1234567890', 
       msclmid = 987654, 
-      medadv = 'abc'
+      medadv = 1
     )
     
     
@@ -256,7 +348,7 @@ setDefaults <- function (frameworkType){
       eeclass = 'E', 
       eestatu = 'S', 
       efamid = 112233, 
-      egeoloc = 'CA', 
+      egeoloc = 'C', 
       eidflag = 'Y', 
       emprel = 'S', 
       enrflag = 'N', 
@@ -265,10 +357,10 @@ setDefaults <- function (frameworkType){
       hospnet = 5000.00, 
       hosppay = 4500.00, 
       indstry = 'M', 
-      mdc = '05', 
+      mdc = '5', 
       mhsacovg = 'Y', 
       msa = 101, 
-      pdx = 'C123', 
+      pdx = 'C', 
       phyflag = 'Y', 
       physid = 654321, 
       physnet = 1000.00, 
@@ -305,24 +397,257 @@ setDefaults <- function (frameworkType){
       version = '01', 
       wgtkey = 77, 
       year = 2024, 
-      poapdx = 'Z123', 
-      poadx1 = 'Z234', 
-      poadx2 = 'Z345', 
-      poadx3 = 'Z456', 
-      poadx4 = 'Z567', 
-      poadx5 = 'Z678', 
-      poadx6 = 'Z789', 
-      poadx7 = 'Z890', 
-      poadx8 = 'Z910', 
-      poadx9 = 'Y123', 
-      poadx10 = 'Y234', 
-      poadx11 = 'Y345', 
-      poadx12 = 'Y456', 
-      poadx13 = 'Y567', 
-      poadx14 = 'Y678', 
-      poadx15 = 'Y789', 
-      medadv = 'Standard'
+      poapdx = 'Z', 
+      poadx1 = 'Z', 
+      poadx2 = 'Z', 
+      poadx3 = 'Z', 
+      poadx4 = 'Z', 
+      poadx5 = 'Z', 
+      poadx6 = 'Z', 
+      poadx7 = 'Z', 
+      poadx8 = 'Z', 
+      poadx9 = 'Y', 
+      poadx10 = '2', 
+      poadx11 = 'Y', 
+      poadx12 = 'Y', 
+      poadx13 = 'Y', 
+      poadx14 = 'Y', 
+      poadx15 = 'Y', 
+      medadv = 1
       )
+    
+    set_defaults_health_risk_assessment(
+      flag = 1
+      ,alc_amt = '1'   
+      ,alcdyamt = '1'   
+      ,alcweek = '1'   
+      ,bmi = 1   
+      ,cc_allergy = '1'   
+      ,cc_arthritis = '1'   
+      ,cc_asthma = '1'   
+      ,cc_backpain = '1'   
+      ,cc_chf = '1'   
+      ,cc_depress = '1'   
+      ,cc_diab = '1'   
+      ,cc_heartdis = '1'   
+      ,cc_highbp = '1'   
+      ,cc_highcol = '1'   
+      ,cc_hrtburn = '1'   
+      ,cc_lungdis = '1'   
+      ,cc_migraine = '1'   
+      ,cc_nonskincan = '1'   
+      ,cc_osteopo = '1'   
+      ,cc_skincan = '1'   
+      ,cgramt = '1'   
+      ,cgrcurr = '1'   
+      ,cgrdur = '1'   
+      ,cgrprev = '1'   
+      ,cgrqtyr = 1   
+      ,cgrquit = '1'   
+      ,cgtamt = '1'   
+      ,cgtcurr = '1'   
+      ,cgtdur = '1'   
+      ,cgtpkamt = '1'   
+      ,cgtprev = '1'   
+      ,cgtqtcat = '1'   
+      ,cgtqtyr = 1   
+      ,cgtquit = '1'   
+      ,chewamt = '1'   
+      ,chewcurr = '1'   
+      ,chewdur = '1'   
+      ,chewprev = '1'   
+      ,chewqtyr = 1   
+      ,chewquit = '1'   
+      ,cholestr = 1   
+      ,copestrs = '1'   
+      ,diast_bp = 1   
+      ,dietfrt = '1'   
+      ,dietfrvg = '1'   
+      ,dietveg = '1'   
+      ,dobyr = 1   
+      ,drnkdrv = '1'   
+      ,educ_lvl = '1'   
+      ,efamid = 1   
+      ,enrolid = 1   
+      ,exermo = '1'   
+      ,exerweek = 1   
+      ,famabscat12 = '1'   
+      ,fireext = '1'   
+      ,flu_shot = '1'   
+      ,glucose = 1   
+      ,gluc_fast = '1'   
+      ,hdl = 1   
+      ,height = 1   
+      ,hlthplan = '1'   
+      ,hltimpct = '1'   
+      ,job_sat = '1'   
+      ,ldl = 1   
+      ,life_sat = '1'   
+      ,liftwgt = '1'   
+      ,mh_freq = '1'   
+      ,mh_prob = '1'   
+      ,pipeamt = '1'   
+      ,pipecurr = '1'   
+      ,pipedur = '1'   
+      ,pipeprev = '1'   
+      ,pipeqtyr = 1   
+      ,pipequit = '1'   
+      ,planalc = '1'   
+      ,plandiet = '1'   
+      ,plandrad = '1'   
+      ,planexer = '1'   
+      ,planslp = '1'   
+      ,planstrs = '1'   
+      ,plantob = '1'   
+      ,planwgt = '1'   
+      ,prev_mammo = '1'   
+      ,prev_paptest = '1'   
+      ,prev_prostex = '1'   
+      ,prev_sigmoid = '1'   
+      ,prodabscat = '1'   
+      ,risk_alc = '1'   
+      ,risk_bp = '1'   
+      ,risk_chol = '1'   
+      ,risk_depr = '1'   
+      ,risk_exer = '1'   
+      ,risk_gluc = '1'   
+      ,risk_mh = '1'   
+      ,risk_nutr = '1'   
+      ,risk_safe = '1'   
+      ,risk_sleep = '1'   
+      ,risk_smok = '1'   
+      ,risk_stress = '1'   
+      ,risk_wgt = '1'   
+      ,seatbelt = '1'   
+      ,selfhlth = '1'   
+      ,seqnum = 1   
+      ,sex = '1'   
+      ,sleep_hr = '1'   
+      ,slpapnea = '1'   
+      ,slpprob = '1'   
+      ,smkdetect = '1'   
+      ,stretch = '1'   
+      ,survdate = '2025-03-01'   
+      ,systo_bp = 1   
+      ,tobcurr = '1'   
+      ,tobprev = '1'   
+      ,triglycd = 1   
+      ,version = '1'   
+      ,weight = 1   
+      ,workabs = 1   
+      ,wrkabscat = '1'   
+      ,wrkabscat12 = '1'   
+      ,year = 1   
+      ,ecigvape = '1'   
+    )
+    
+    set_defaults_drug_claims(
+      flag = 1   
+      ,age = 1   
+      ,agegrp = '1'    
+      ,awp = 1   
+      ,cap_svc = '1'    
+      ,cob = 1   
+      ,coins = 1   
+      ,copay = 1   
+      ,datatyp = 1   
+      ,dawind = '1'    
+      ,daysupp = 1   
+      ,deaclas = '1'    
+      ,deduct = 1   
+      ,dispfee = 1   
+      ,dobyr = 1   
+      ,eeclass = '1'    
+      ,eestatu = '1'    
+      ,efamid = 1   
+      ,egeoloc = '1'    
+      ,eidflag = '1'    
+      ,emprel = '1'    
+      ,enrflag = '1'    
+      ,enrolid = 1   
+      ,generid = 1   
+      ,genind = '1'    
+      ,hlthplan = '1'    
+      ,indstry = '1'    
+      ,ingcost = 1   
+      ,maintin = '1'    
+      ,metqty = 1   
+      ,mhsacovg = '1'    
+      ,msa = 1   
+      ,ndcnum = '1'
+      ,netpay = 1   
+      ,ntwkprov = '1'    
+      ,paidntwk = '1'    
+      ,pay = 1   
+      ,pddate = '2025-03-01'   
+      ,pharmid = 1   
+      ,phyflag = '1'    
+      ,plankey = 1   
+      ,plantyp = 1   
+      ,qty = 1   
+      ,refill = 1   
+      ,region = '1'    
+      ,rxmr = '1'    
+      ,saletax = 1   
+      ,seqnum = 1   
+      ,sex = '1'    
+      ,svcdate = '2025-03-01'   
+      ,thercls = 1   
+      ,thergrp = '1'    
+      ,version = '1'    
+      ,wgtkey = 1   
+      ,"year" = 1   
+      ,medadv = 1   
+    )
+    
+    set_defaults_lab(
+      enrolid  = 1   
+      ,seqnum  = 1   
+      ,abnormal  = '1'   
+      ,agegrp  = '1'   
+      ,eeclass  = '1'   
+      ,eestatu  = '1'   
+      ,eidflag  = '1'   
+      ,emprel  = '1'   
+      ,enrflag  = '1'   
+      ,hlthplan  = '1'   
+      ,indstry  = '1'   
+      ,mhsacovg  = '1'   
+      ,phyflag  = '1'   
+      ,proctyp  = '1'   
+      ,region  = '1'   
+      ,rx  = '1'   
+      ,sex  = '1'   
+      ,egeoloc  = '1'   
+      ,mdc  = '1'   
+      ,version  = '1'   
+      ,resltcat  = '1'   
+      ,dx1  = '1'   
+      ,proc1  = '1'   
+      ,pddate  = '2025-03-01'   
+      ,svcdate  = '2025-03-01'   
+      ,msa = 1   
+      ,orderid = 1   
+      ,provid = 1   
+      ,refhigh = 1   
+      ,reflow = 1   
+      ,result = 1   
+      ,testcnt = 1   
+      ,dobyr = 1   
+      ,plankey = 1   
+      ,stdprov = 1   
+      ,wgtkey = 1   
+      ,year = 1   
+      ,age = 1   
+      ,datatyp = 1   
+      ,plantyp = 1   
+      ,stdplac = 1   
+      ,loinccd = '1'   
+      ,resunit = '1'   
+      ,efamid = 1   
+      ,dxver  = '1'   
+      ,medadv = 1 
+    )
     
   }
 }

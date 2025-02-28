@@ -48,7 +48,7 @@ createProviderTests <- function () {
     add_facility_header(enrolid=patient$enrolid, provid=NULL, stdprov="220")
     expect_provider(care_site_id =  0, 
                     gender_concept_id = 0, 
-                    speciality_source_concept_id = 0, 
+                    specialty_concept_id = 0, 
                     gender_source_concept_id = 0)
     
   }

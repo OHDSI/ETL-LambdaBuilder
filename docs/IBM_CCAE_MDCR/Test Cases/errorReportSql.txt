@@ -5,7 +5,7 @@ Error:
 com.amazon.redshift.util.RedshiftException: ERROR: invalid input syntax for integer: ""
 
 SQL:
-INSERT INTO ccae_tests_native.inpatient_admissions(_flag, admdate, admtyp, age, agegrp, caseid, datatyp, days, disdate, dobyr, drg, dstatus, dx1, dx10, dx11, dx12, dx13, dx14, dx15, dx2, dx3, dx4, dx5, dx6, dx7, dx8, dx9, dxver, eeclass, eestatu, efamid, egeoloc, eidflag, emprel, enrflag, enrolid, hlthplan, hospnet, hosppay, indstry, mdc, mhsacovg, msa, pdx, phyflag, physid, physnet, physpay, plankey, plantyp, poapdx, poadx1, poadx2, poadx3, poadx4, poadx5, poadx6, poadx7, poadx8, poadx9, poadx10, poadx11, poadx12, poadx13, poadx14, poadx15, pproc, proc1, proc10, proc11, proc12, proc13, proc14, proc15, proc2, proc3, proc4, proc5, proc6, proc7, proc8, proc9, region, rx, seqnum, sex, state, totcob, totcoins, totcopay, totded, totnet, totpay, version, wgtkey, year, medadv) VALUES ('0', '2012-01-01', '2', '0', '2', '12', '1', '2', '2012-12-31', '1957', '775', '01', 'V3000  ', '       ', '       ', '       ', '       ', '       ', '       ', '       ', '       ', '       ', '       ', '       ', '       ', '       ', '       ', ' ', '9', '1', '', '49', '1', '1', '1', '11', '0', '0.0', '', ' ', '14', '1', '0', 'V3000  ', '1', '', '0.0', '0.0', '', '6', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '1', '1', '1', '1', '1', '1', '       ', '       ', '       ', '       ', '       ', '       ', '       ', '       ', NULL, '       ', '       ', '       ', '       ', '       ', '       ', '       ', '3', '1', '', '2', '49', '0.0', '0.0', '0.0', '0.0', '0.0', '', '10', '', '2012', '')
+INSERT INTO ccae_tests_native.lab(enrolid, seqnum, abnormal, agegrp, eeclass, eestatu, eidflag, emprel, enrflag, hlthplan, indstry, mhsacovg, phyflag, proctyp, region, rx, sex, egeoloc, mdc, version, resltcat, dx1, proc1, pddate, svcdate, msa, orderid, provid, refhigh, reflow, result, testcnt, dobyr, plankey, stdprov, wgtkey, year, age, datatyp, plantyp, stdplac, loinccd, resunit, efamid, dxver, medadv) VALUES ('4', '', 'N', '5', '9', '9', '1', '1', '1', '1', ' ', '1', '1', '1', '3', '1', '2', '12', '00', '10', '   ', '       ', '       ', '', '2012-03-07', '35614', '4101', '', '0.0', '0.0', '0.0', '1', '1957', '', '930', '', '2012', '57', '1', '6', '81', '99999', '', '', ' ', '')
 
 R version:
 R version 4.3.3 (2024-02-29 ucrt)
@@ -23,5 +23,3 @@ Attached base packages:
 - base
 
 Other attached packages:
-- SqlRender (1.18.0)
-- DatabaseConnector (6.3.2)

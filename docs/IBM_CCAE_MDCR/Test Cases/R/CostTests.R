@@ -1,5 +1,5 @@
 #' @export
-createCostTests <- function (frameworkType) {
+createCostTests <- function () {
   
   patient <- createPatient()
   encounter <- createEncounter()

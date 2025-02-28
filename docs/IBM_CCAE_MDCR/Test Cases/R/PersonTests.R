@@ -67,7 +67,7 @@ createPersonTests <- function () {
   add_enrollment_detail(enrolid=patient$enrolid, dtend="2012-04-30", dtstart="2012-04-01", dobyr="2012")
   expect_person(person_id=patient$person_id, year_of_birth="2012", month_of_birth="4", day_of_birth="1")
   
-  if (tolower(frameworktype) == "ccae")
+  if (tolower(frameworkType) == "ccae")
   { 
     patient<-createPatient()
     declareTest(id = patient$person_id, "sex=1 => gender_concept_id=8507")

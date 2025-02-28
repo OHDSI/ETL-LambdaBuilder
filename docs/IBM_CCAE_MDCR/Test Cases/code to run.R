@@ -32,8 +32,8 @@ if (frameworkType == "MDCD" ){
 
 sequencer <- getSequence();
 initFramework();
-setDefaults(frameworkType);
-createTests(frameworkType);
+setDefaults();
+createTests();
 
 connectionDetails <- DatabaseConnector::createConnectionDetails(
   dbms     = "redshift",
@@ -58,7 +58,7 @@ DatabaseConnector::executeSql(connection = connection, sql = insertSql)
 
 if(frameworkType != "MDCD" ){
   #YOU NEED A COPY OF GEOLOC IN YOUR RAW
-  executeSql(connection, paste0("TRUNCATE TABLE ",source_schema,".GEOLOC; INSERT INTO ",source_schema,
+  DatabaseConnector::executeSql(connection, paste0("TRUNCATE TABLE ",source_schema,".GEOLOC; INSERT INTO ",source_schema,
                           ".GEOLOC (EGEOLOC, EGEOLOC_Description, STATE) VALUES (11, 'New Jersey', 'NJ'); INSERT INTO ",
                           source_schema,
                           ".GEOLOC (EGEOLOC, EGEOLOC_Description, STATE) VALUES (38, 'Virginia', 'VA')"))
@@ -67,14 +67,14 @@ if(frameworkType != "MDCD" ){
 
 #IF TESTING CCAE  YOU NEED A COPY OF HRA_QUESTON_REF, HRA_VARIABLE_REF IN YOUR RAW
 if (frameworkType == "CCAE" ){
-  executeSql(connection, paste0("TRUNCATE TABLE ",source_schema,".HRA_VARIABLE_REF;
+  DatabaseConnector::executeSql(connection, paste0("TRUNCATE TABLE ",source_schema,".HRA_VARIABLE_REF;
            INSERT INTO ",source_schema,".HRA_VARIABLE_REF (VARIABLE_NAME, VARIABLE_LONGNAME, QUESTION_TYPE_ID) 
            VALUES ('CC_ASTHMA', 'Self-reported asthma', '4');
            INSERT INTO ",source_schema,".HRA_VARIABLE_REF (VARIABLE_NAME, VARIABLE_LONGNAME, QUESTION_TYPE_ID) 
            VALUES ('CGTDUR', 'Number of years of cigarette use', '8');
            INSERT INTO ",source_schema,".HRA_VARIABLE_REF (VARIABLE_NAME, VARIABLE_LONGNAME, QUESTION_TYPE_ID) 
            VALUES ('CGTPKAMT', 'Number of packs of cigarettes smoked per day', '9');"))
-  executeSql(connection, paste0("TRUNCATE TABLE ",source_schema,".HRA_QUESTION_REF;
+  DatabaseConnector::executeSql(connection, paste0("TRUNCATE TABLE ",source_schema,".HRA_QUESTION_REF;
            INSERT INTO ",source_schema,".HRA_QUESTION_REF (QUESTION_TYPE_ID, CATEGORY_VALUE, CATEGORY_NAME) 
            VALUES ('4', '1', 'Yes');
            INSERT INTO ",source_schema,".HRA_QUESTION_REF (QUESTION_TYPE_ID, CATEGORY_VALUE, CATEGORY_NAME) 
