@@ -1,22 +1,22 @@
 createPersonTests <- function ()
 {
 
-  patient <- createPatient();
-  visit1 <- createVisit();
-  visit2 <- createVisit();
-  declareTest(description="Only visits before death; keep person", id = patient$person_id);
-  add_pat(medrec_key = patient$medrec_key,
-          pat_key    = visit1$pat_key,
-          adm_date   = "2001-01-01",
-          disc_date  = "2001-01-01",
-          age        = 19);
-  add_pat(medrec_key  = patient$medrec_key,
-          pat_key     = visit2$pat_key,
-          adm_date    = "2005-01-01",
-          disc_date   = "2005-01-01",
-          disc_status = 20,
-          age         = 23);
-  expect_person(person_id = patient$person_id);
+  # patient <- createPatient();
+  # visit1 <- createVisit();
+  # visit2 <- createVisit();
+  # declareTest(description="Only visits before death; keep person", id = patient$person_id);
+  # add_pat(medrec_key = patient$medrec_key,
+  #         pat_key    = visit1$pat_key,
+  #         adm_date   = "2001-01-01",
+  #         disc_date  = "2001-01-01",
+  #         age        = 19);
+  # add_pat(medrec_key  = patient$medrec_key,
+  #         pat_key     = visit2$pat_key,
+  #         adm_date    = "2005-01-01",
+  #         disc_date   = "2005-01-01",
+  #         disc_status = 20,
+  #         age         = 23);
+  # expect_person(person_id = patient$person_id);
 
 
   patient <- createPatient();

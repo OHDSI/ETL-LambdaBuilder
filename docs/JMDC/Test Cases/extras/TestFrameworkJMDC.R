@@ -11,8 +11,8 @@ initFramework <- function() {
   defaults <- list()
   defaults$member_id <- ''
   defaults$health_checkup_id <- ''
-  defaults$date_of_health_checkup <- '2014-04-01'
-  defaults$bmi <- '21.1'
+  defaults$date_of_health_checkup <- '2015-04-01'
+  defaults$bmi <- '22.3'
   defaults$abdominal_circumference <- ''
   defaults$presence_of_medical_history <- '2'
   defaults$presence_of_subjective_symptoms <- '2'
@@ -21,11 +21,13 @@ initFramework <- function() {
   defaults$diastolic_bp <- '70'
   defaults$time_of_blood_collection <- '2'
   defaults$triglyceride <- ''
+  defaults$fasting_triglyceride <- ''
+  defaults$casual_triglyceride <- ''
   defaults$hdl_cholesterol <- ''
   defaults$ldl_cholesterol <- ''
   defaults$ast <- '18'
-  defaults$alt <- '15'
-  defaults$g_gt <- ''
+  defaults$alt <- '14'
+  defaults$g_gt <- '15'
   defaults$fasting_blood_sugar <- ''
   defaults$casual_blood_sugar <- ''
   defaults$hba1c <- ''
@@ -39,14 +41,17 @@ initFramework <- function() {
   defaults$fundus_examination_scheie_classification_h <- ''
   defaults$fundus_examination_scheie_classification_s <- ''
   defaults$fundus_examination_scott_classification <- ''
-  defaults$smoking_habit <- '2'
+  defaults$smoking_habit_until_mar_24 <- '2'
+  defaults$smoking_habit_after_apr_24 <- ''
   defaults$eating1_fast_eating <- '2'
   defaults$eating2_before_bedtime <- '2'
   defaults$eating3_late_evening_snack <- ''
   defaults$eating3_snack <- ''
-  defaults$eating_habit <- '2'
-  defaults$drinking_habit <- '3'
-  defaults$amount_drinking <- '1'
+  defaults$eating_habit_breakfast <- '2'
+  defaults$drinking_habit_until_mar_24 <- '3'
+  defaults$amount_of_drinking_until_mar_24 <- '1'
+  defaults$drinking_habit_after_apr_24 <- ''
+  defaults$amount_of_drinking_after_apr_24 <- ''
   defaults$sleep <- '1'
   defaults$drug1_hypertension <- '2'
   defaults$drug2_diabetes <- '2'
@@ -61,10 +66,12 @@ initFramework <- function() {
   defaults$walking_speed <- '2'
   defaults$change_of_weight_in_a_year <- ''
   defaults$mastication <- '1'
-  defaults$lifestyle_modification <- '2'
   defaults$request_for_health_guidance <- '2'
   defaults$serum_uric_acid <- ''
   defaults$serum_creatinine <- ''
+  defaults$lifestyle_modification <- '2'
+  defaults$history_of_specific_health_guidance <- ''
+  defaults$reason_for_not_conducting_inspection <- ''
   defaults$total_cholesterol <- ''
   assign('annual_health_checkup', defaults, envir = frameworkContext$defaultValues)
 
@@ -72,9 +79,9 @@ initFramework <- function() {
   defaults$member_id <- ''
   defaults$claim_id <- ''
   defaults$type_of_claim <- 'Outpatient'
-  defaults$month_and_year_of_medical_care <- '202303'
+  defaults$month_and_year_of_medical_care <- '202312'
   defaults$paper_claim_flag <- ''
-  defaults$medical_facility_id <- 'F0054756'
+  defaults$medical_facility_id <- 'F0024811'
   defaults$large_classification_of_department <- ''
   defaults$medium_classification_of_department <- ''
   defaults$department_on_claim_name <- ''
@@ -85,152 +92,27 @@ initFramework <- function() {
   assign('claim', defaults, envir = frameworkContext$defaultValues)
 
   defaults <- list()
-  defaults$version_id <- ''
-  defaults$version_date <- ''
-  assign('version', defaults, envir = frameworkContext$defaultValues)
-
-  defaults <- list()
-  defaults$standardized_material_code <- '728490000'
-  defaults$standardized_material_version <- '202004'
-  defaults$standardized_material_name <- 'Wound dressing material for skin defect (for wounds reaching subcutaneous tissue/standard type)'
-  defaults$unit <- ''
-  defaults$material_category_large_classification_name <- 'Cardiac/vascular material'
-  defaults$material_category_medium_classification_name <- 'Film'
-  defaults$material_code <- 'Z133'
-  assign('material_master', defaults, envir = frameworkContext$defaultValues)
-
-  defaults <- list()
-  defaults$jmdc_drug_code <- ''
-  defaults$drug_name <- 'Deleted NHI price'
-  defaults$standardized_unit <- ''
-  defaults$atc_level1_code <- 'A'
-  defaults$atc_level1_name <- 'ALIMENTARY TRACT AND METABOLISM'
-  defaults$atc_level2_code <- 'V03'
-  defaults$atc_level2_name <- 'ALL OTHER THERAPEUTIC PRODUCTS'
-  defaults$atc_level3_code <- 'V03B'
-  defaults$atc_level3_name <- 'KANPO AND CHINESE MEDICINES'
-  defaults$atc_level4_code <- 'V03B2'
-  defaults$atc_level4_name <- 'Chinese medicines'
-  defaults$who_atc_code <- 'V03AX'
-  defaults$who_atc_name <- 'Other therapeutic products'
-  defaults$drug_code <- ''
-  defaults$yj_code <- '2171022'
-  defaults$receipt_computerized_processing_code <- ''
-  defaults$general_name <- 'Amlodipine Besilate'
-  defaults$brand_name <- 'Unknown Brand Name in English'
-  defaults$generic_drug_flag <- '1'
-  defaults$formulation_large_classification_name <- 'Oral Use'
-  defaults$formulation_medium_classification_name <- 'Tablet'
-  defaults$formulation_small_classification_name <- 'Tablet'
-  defaults$titer <- ''
-  defaults$titer_unit <- ''
-  assign('drug_master', defaults, envir = frameworkContext$defaultValues)
-
-  defaults <- list()
-  defaults$member_id <- ''
-  defaults$month_and_year_of_birth_of_member <- '199501'
-  defaults$gender_of_member <- 'Male'
-  defaults$family_id <- ''
-  defaults$insured_or_dependent <- 'Insured'
-  defaults$relationship <- 'Insured'
-  defaults$observation_start <- '201704'
-  defaults$observation_end <- '202303'
-  defaults$withdrawal_death_flag <- ''
-  assign('enrollment', defaults, envir = frameworkContext$defaultValues)
-
-  defaults <- list()
   defaults$member_id <- ''
   defaults$claim_id <- ''
   defaults$statement_id <- '1'
   defaults$type_of_claim <- 'Outpatient'
-  defaults$month_and_year_of_medical_care <- '202303'
-  defaults$medical_facility_id <- 'F0234485'
+  defaults$month_and_year_of_medical_care <- '202403'
+  defaults$medical_facility_id <- 'F0231947'
   defaults$standard_disease_code <- '4779004'
   defaults$standard_disease_name <- 'allergic rhinitis'
   defaults$main_disease_flag <- ''
+  defaults$sub_disease_flag <- ''
+  defaults$resource_1st_disease_flag <- ''
+  defaults$resource_2nd_disease_flag <- ''
   defaults$causative_disease_flag <- ''
+  defaults$comorbidity_at_admission_flag <- ''
+  defaults$complication_during_admission_flag <- ''
   defaults$suspicion_flag <- ''
-  defaults$date_of_medical_care_start <- '2020-02-17'
+  defaults$date_of_medical_care_start <- '2022-09-26'
   defaults$outcome <- '1'
   defaults$outcome_death_flag <- ''
   defaults$outcome_exacerbation_flag <- ''
   assign('diagnosis', defaults, envir = frameworkContext$defaultValues)
-
-  defaults <- list()
-  defaults$member_id <- 'M018737735'
-  defaults$claim_id <- ''
-  defaults$statement_id <- '1'
-  defaults$type_of_claim <- 'DPC'
-  defaults$month_and_year_of_medical_care <- '202108'
-  defaults$date_of_material <- ''
-  defaults$medical_facility_id <- 'F0146469'
-  defaults$standardized_material_code <- '739200000'
-  defaults$standardized_material_version <- '202004'
-  defaults$standardized_material_name <- 'Liquid oxygen/stationary liquid oxygen storage tank (CE)'
-  defaults$unit_on_claims <- 'pcs'
-  defaults$unit <- ''
-  defaults$material_usage <- '1.0'
-  defaults$number_of_material <- '1.0'
-  defaults$concurrent_id <- ''
-  defaults$category_of_medical_care <- '40'
-  defaults$material_standard_price <- ''
-  defaults$material_standard_additional_rate <- ''
-  defaults$actual_point <- ''
-  assign('material', defaults, envir = frameworkContext$defaultValues)
-
-  defaults <- list()
-  defaults$medical_facility_id <- ''
-  defaults$number_of_beds <- '0-19'
-  defaults$hpgp <- 'GP'
-  defaults$large_classification_of_department <- 'Internal Medicine'
-  defaults$medium_classification_of_department <- 'General Internal Medicine'
-  defaults$management_body <- 'Clinic'
-  defaults$home_care_support_clinic <- ''
-  defaults$designated_cancer_care_hospitals <- ''
-  defaults$medical_institution_introducing_dpc <- ''
-  defaults$special_functioning_hospitals <- ''
-  assign('medical_facility', defaults, envir = frameworkContext$defaultValues)
-
-  defaults <- list()
-  defaults$member_id <- 'M009124060'
-  defaults$claim_id <- ''
-  defaults$statement_id <- '1'
-  defaults$type_of_claim <- 'Pharmacy'
-  defaults$month_and_year_of_medical_care <- '202303'
-  defaults$medical_facility_id <- 'F0146469'
-  defaults$jmdc_drug_code <- '100000049967'
-  defaults$drug_name <- 'Asverin Powder 10%'
-  defaults$drug_price <- '5.60000000000000'
-  defaults$date_of_prescription <- ''
-  defaults$date_of_dispense <- ''
-  defaults$prescribed_amount_per_day <- '1.0'
-  defaults$unit_of_administered_amount <- 'T'
-  defaults$administered_days <- '1.0'
-  defaults$administered_amount <- '1.0'
-  defaults$concurrent_id <- '1'
-  defaults$as_needed_medication_flag <- ''
-  defaults$category_of_medical_care <- ''
-  defaults$cost_of_total_administrated_drug <- '61.00000000000000000000000'
-  defaults$pharmacy_charge <- ''
-  defaults$drug_charge <- ''
-  defaults$additional_charge <- '0'
-  defaults$actual_point <- '0'
-  defaults$total_point <- '228'
-  assign('drug', defaults, envir = frameworkContext$defaultValues)
-
-  defaults <- list()
-  defaults$standardized_procedure_code <- '160076210'
-  defaults$standardized_procedure_version <- '202204'
-  defaults$standardized_procedure_name <- 'arthrocentesis (unilateral)'
-  defaults$procedure_category_medium_classification_name <- 'surgery'
-  defaults$procedure_category_small_classification_name <- 'surgery fee'
-  defaults$procedure_category_subclassification_name <- 'musculoskeletal system / extremity / trunk'
-  defaults$procedure_category_sub_and_detail_classification_name <- ''
-  defaults$procedure_code <- 'D007'
-  defaults$icd9cm_level1 <- ''
-  defaults$icd9cm_level2 <- ''
-  defaults$icd9cm_level3 <- ''
-  assign('procedure_master', defaults, envir = frameworkContext$defaultValues)
 
   defaults <- list()
   defaults$standard_disease_code <- ''
@@ -246,17 +128,132 @@ initFramework <- function() {
   assign('diagnosis_master', defaults, envir = frameworkContext$defaultValues)
 
   defaults <- list()
-  defaults$member_id <- 'M016152393'
+  defaults$member_id <- 'M009385982'
+  defaults$claim_id <- ''
+  defaults$statement_id <- '1'
+  defaults$type_of_claim <- 'Pharmacy'
+  defaults$month_and_year_of_medical_care <- '202303'
+  defaults$medical_facility_id <- 'F0231947'
+  defaults$jmdc_drug_code <- '100000067351'
+  defaults$drug_name <- 'Carbocisteine DS 50% [TAKATA]'
+  defaults$drug_price <- '10.10000000000000'
+  defaults$date_of_prescription <- ''
+  defaults$date_of_dispense <- ''
+  defaults$prescribed_amount_per_day <- '1.0'
+  defaults$unit_of_administered_amount <- 'T'
+  defaults$administered_days <- '1.0'
+  defaults$administered_amount <- '1.0'
+  defaults$concurrent_id <- '1'
+  defaults$signature_code <- ''
+  defaults$as_needed_medication_flag <- ''
+  defaults$category_of_medical_care <- ''
+  defaults$cost_of_total_administrated_drug <- '62.0'
+  defaults$dispensing_charge <- ''
+  defaults$drug_charge <- ''
+  defaults$additional_charge <- '0'
+  defaults$actual_point <- '0'
+  defaults$total_point <- '286'
+  assign('drug', defaults, envir = frameworkContext$defaultValues)
+
+  defaults <- list()
+  defaults$jmdc_drug_code <- ''
+  defaults$drug_name <- 'Deleted NHI price'
+  defaults$standardized_unit <- ''
+  defaults$atc_level1_code <- 'C'
+  defaults$atc_level1_name <- 'CARDIOVASCULAR SYSTEM'
+  defaults$atc_level2_code <- 'V03'
+  defaults$atc_level2_name <- 'ALL OTHER THERAPEUTIC PRODUCTS'
+  defaults$atc_level3_code <- 'V03B'
+  defaults$atc_level3_name <- 'KANPO AND CHINESE MEDICINES'
+  defaults$atc_level4_code <- 'V03B2'
+  defaults$atc_level4_name <- 'Chinese medicines'
+  defaults$who_atc_code <- 'V03AX'
+  defaults$who_atc_name <- 'Other therapeutic products'
+  defaults$drug_code <- ''
+  defaults$yj_code <- '2171022'
+  defaults$receipt_computerized_processing_code <- ''
+  defaults$general_name <- 'Amlodipine Besilate'
+  defaults$brand_name <- 'Unknown Brand Name in English'
+  defaults$generic_drug_flag <- ''
+  defaults$formulation_large_classification_name <- 'Oral Use'
+  defaults$formulation_medium_classification_name <- 'Tablet'
+  defaults$formulation_small_classification_name <- 'Tablet'
+  defaults$titer <- ''
+  defaults$titer_unit <- ''
+  assign('drug_master', defaults, envir = frameworkContext$defaultValues)
+
+  defaults <- list()
+  defaults$member_id <- ''
+  defaults$type_of_insurance <- '1'
+  defaults$month_and_year_of_birth_of_member <- '199407'
+  defaults$gender_of_member <- 'Male'
+  defaults$family_id <- ''
+  defaults$insured_or_dependent <- 'Insured'
+  defaults$relationship <- 'Insured'
+  defaults$observation_start <- '201704'
+  defaults$observation_end <- '202406'
+  defaults$withdrawal_death_flag <- ''
+  assign('enrollment', defaults, envir = frameworkContext$defaultValues)
+
+  defaults <- list()
+  defaults$member_id <- 'M029418674'
+  defaults$claim_id <- ''
+  defaults$statement_id <- '1'
+  defaults$type_of_claim <- 'DPC'
+  defaults$month_and_year_of_medical_care <- '202305'
+  defaults$date_of_material <- ''
+  defaults$medical_facility_id <- 'F0231947'
+  defaults$standardized_material_code <- '739200000'
+  defaults$standardized_material_version <- '202204'
+  defaults$standardized_material_name <- 'Liquid oxygen/stationary liquid oxygen storage tank (CE)'
+  defaults$unit_on_claims <- 'pcs'
+  defaults$unit <- ''
+  defaults$material_usage <- '1.0'
+  defaults$number_of_material <- '1.0'
+  defaults$concurrent_id <- ''
+  defaults$category_of_medical_care <- '40'
+  defaults$material_standard_price <- ''
+  defaults$material_standard_additional_rate <- ''
+  defaults$actual_point <- ''
+  assign('material', defaults, envir = frameworkContext$defaultValues)
+
+  defaults <- list()
+  defaults$standardized_material_code <- '728490000'
+  defaults$standardized_material_version <- '202204'
+  defaults$standardized_material_name <- 'Wound dressing material for skin defect (for wounds reaching subcutaneous tissue/standard type)'
+  defaults$unit <- ''
+  defaults$material_category_large_classification_name <- 'Cardiac/vascular material'
+  defaults$material_category_medium_classification_name <- 'Film'
+  defaults$material_code <- 'Z133'
+  assign('material_master', defaults, envir = frameworkContext$defaultValues)
+
+  defaults <- list()
+  defaults$medical_facility_id <- ''
+  defaults$number_of_beds <- '0-19'
+  defaults$hpgp <- 'GP'
+  defaults$large_classification_of_department <- 'Internal Medicine'
+  defaults$medium_classification_of_department <- 'General Internal Medicine'
+  defaults$management_body <- 'Clinic'
+  defaults$home_care_support_clinic <- ''
+  defaults$designated_cancer_care_hospitals <- ''
+  defaults$medical_institution_introducing_dpc <- ''
+  defaults$special_functioning_hospitals <- ''
+  assign('medical_facility', defaults, envir = frameworkContext$defaultValues)
+
+  defaults <- list()
+  defaults$member_id <- ''
   defaults$claim_id <- ''
   defaults$statement_id <- '1'
   defaults$type_of_claim <- 'Outpatient'
-  defaults$month_and_year_of_medical_care <- '202303'
+  defaults$month_and_year_of_medical_care <- '202312'
   defaults$date_of_procedure <- ''
-  defaults$medical_facility_id <- 'F0146469'
+  defaults$medical_facility_id <- 'F0231947'
   defaults$standardized_procedure_code <- '112007410'
-  defaults$standardized_procedure_version <- '202004'
+  defaults$standardized_procedure_version <- '202204'
   defaults$standardized_procedure_name <- 're-consultation fee (excluding hospitals with 200 or more general beds)'
   defaults$number_of_times <- '1'
+  defaults$volume <- ''
+  defaults$volume_unit <- ''
   defaults$concurrent_id <- '1'
   defaults$category_of_medical_care <- '60'
   defaults$procedure_standard_point <- '11.0'
@@ -264,6 +261,20 @@ initFramework <- function() {
   defaults$procedure_standard_price <- ''
   defaults$actual_point <- '0'
   assign('procedure', defaults, envir = frameworkContext$defaultValues)
+
+  defaults <- list()
+  defaults$standardized_procedure_code <- '180026510'
+  defaults$standardized_procedure_version <- '202204'
+  defaults$standardized_procedure_name <- 'arthrocentesis (unilateral)'
+  defaults$procedure_category_medium_classification_name <- 'surgery'
+  defaults$procedure_category_small_classification_name <- 'surgery fee'
+  defaults$procedure_category_subclassification_name <- 'musculoskeletal system/extremity/trunk'
+  defaults$procedure_category_sub_and_detail_classification_name <- ''
+  defaults$procedure_code <- 'D007'
+  defaults$icd9cm_level1 <- ''
+  defaults$icd9cm_level2 <- ''
+  defaults$icd9cm_level3 <- ''
+  assign('procedure_master', defaults, envir = frameworkContext$defaultValues)
 
   frameworkContext$sourceFieldsMapped <- c(
   )
@@ -277,7 +288,7 @@ initFramework <- function() {
 
 initFramework()
 
-set_defaults_annual_health_checkup <- function(member_id, health_checkup_id, date_of_health_checkup, bmi, abdominal_circumference, presence_of_medical_history, presence_of_subjective_symptoms, presence_of_objective_symptoms, systolic_bp, diastolic_bp, time_of_blood_collection, triglyceride, hdl_cholesterol, ldl_cholesterol, ast, alt, g_gt, fasting_blood_sugar, casual_blood_sugar, hba1c, urinary_sugar, uric_protein_qualitative, hct, hemoglobin_content, rbc_count, ecg, fundus_examination_keith_wagener_classification, fundus_examination_scheie_classification_h, fundus_examination_scheie_classification_s, fundus_examination_scott_classification, smoking_habit, eating1_fast_eating, eating2_before_bedtime, eating3_late_evening_snack, eating3_snack, eating_habit, drinking_habit, amount_drinking, sleep, drug1_hypertension, drug2_diabetes, drug3_hyperlipidemia, medical_history1_cerebrovascular, medical_history2_cardiovascular, medical_history3_renal, anemia, change_of_weight_from_age_of_twenty, exercise_habit, physical_activity, walking_speed, change_of_weight_in_a_year, mastication, lifestyle_modification, request_for_health_guidance, serum_uric_acid, serum_creatinine, total_cholesterol) {
+set_defaults_annual_health_checkup <- function(member_id, health_checkup_id, date_of_health_checkup, bmi, abdominal_circumference, presence_of_medical_history, presence_of_subjective_symptoms, presence_of_objective_symptoms, systolic_bp, diastolic_bp, time_of_blood_collection, triglyceride, fasting_triglyceride, casual_triglyceride, hdl_cholesterol, ldl_cholesterol, ast, alt, g_gt, fasting_blood_sugar, casual_blood_sugar, hba1c, urinary_sugar, uric_protein_qualitative, hct, hemoglobin_content, rbc_count, ecg, fundus_examination_keith_wagener_classification, fundus_examination_scheie_classification_h, fundus_examination_scheie_classification_s, fundus_examination_scott_classification, smoking_habit_until_mar_24, smoking_habit_after_apr_24, eating1_fast_eating, eating2_before_bedtime, eating3_late_evening_snack, eating3_snack, eating_habit_breakfast, drinking_habit_until_mar_24, amount_of_drinking_until_mar_24, drinking_habit_after_apr_24, amount_of_drinking_after_apr_24, sleep, drug1_hypertension, drug2_diabetes, drug3_hyperlipidemia, medical_history1_cerebrovascular, medical_history2_cardiovascular, medical_history3_renal, anemia, change_of_weight_from_age_of_twenty, exercise_habit, physical_activity, walking_speed, change_of_weight_in_a_year, mastication, request_for_health_guidance, serum_uric_acid, serum_creatinine, lifestyle_modification, history_of_specific_health_guidance, reason_for_not_conducting_inspection, total_cholesterol) {
   defaults <- get('annual_health_checkup', envir = frameworkContext$defaultValues)
   if (!missing(member_id)) {
     defaults$member_id <- member_id
@@ -314,6 +325,12 @@ set_defaults_annual_health_checkup <- function(member_id, health_checkup_id, dat
   }
   if (!missing(triglyceride)) {
     defaults$triglyceride <- triglyceride
+  }
+  if (!missing(fasting_triglyceride)) {
+    defaults$fasting_triglyceride <- fasting_triglyceride
+  }
+  if (!missing(casual_triglyceride)) {
+    defaults$casual_triglyceride <- casual_triglyceride
   }
   if (!missing(hdl_cholesterol)) {
     defaults$hdl_cholesterol <- hdl_cholesterol
@@ -369,8 +386,11 @@ set_defaults_annual_health_checkup <- function(member_id, health_checkup_id, dat
   if (!missing(fundus_examination_scott_classification)) {
     defaults$fundus_examination_scott_classification <- fundus_examination_scott_classification
   }
-  if (!missing(smoking_habit)) {
-    defaults$smoking_habit <- smoking_habit
+  if (!missing(smoking_habit_until_mar_24)) {
+    defaults$smoking_habit_until_mar_24 <- smoking_habit_until_mar_24
+  }
+  if (!missing(smoking_habit_after_apr_24)) {
+    defaults$smoking_habit_after_apr_24 <- smoking_habit_after_apr_24
   }
   if (!missing(eating1_fast_eating)) {
     defaults$eating1_fast_eating <- eating1_fast_eating
@@ -384,14 +404,20 @@ set_defaults_annual_health_checkup <- function(member_id, health_checkup_id, dat
   if (!missing(eating3_snack)) {
     defaults$eating3_snack <- eating3_snack
   }
-  if (!missing(eating_habit)) {
-    defaults$eating_habit <- eating_habit
+  if (!missing(eating_habit_breakfast)) {
+    defaults$eating_habit_breakfast <- eating_habit_breakfast
   }
-  if (!missing(drinking_habit)) {
-    defaults$drinking_habit <- drinking_habit
+  if (!missing(drinking_habit_until_mar_24)) {
+    defaults$drinking_habit_until_mar_24 <- drinking_habit_until_mar_24
   }
-  if (!missing(amount_drinking)) {
-    defaults$amount_drinking <- amount_drinking
+  if (!missing(amount_of_drinking_until_mar_24)) {
+    defaults$amount_of_drinking_until_mar_24 <- amount_of_drinking_until_mar_24
+  }
+  if (!missing(drinking_habit_after_apr_24)) {
+    defaults$drinking_habit_after_apr_24 <- drinking_habit_after_apr_24
+  }
+  if (!missing(amount_of_drinking_after_apr_24)) {
+    defaults$amount_of_drinking_after_apr_24 <- amount_of_drinking_after_apr_24
   }
   if (!missing(sleep)) {
     defaults$sleep <- sleep
@@ -435,9 +461,6 @@ set_defaults_annual_health_checkup <- function(member_id, health_checkup_id, dat
   if (!missing(mastication)) {
     defaults$mastication <- mastication
   }
-  if (!missing(lifestyle_modification)) {
-    defaults$lifestyle_modification <- lifestyle_modification
-  }
   if (!missing(request_for_health_guidance)) {
     defaults$request_for_health_guidance <- request_for_health_guidance
   }
@@ -446,6 +469,15 @@ set_defaults_annual_health_checkup <- function(member_id, health_checkup_id, dat
   }
   if (!missing(serum_creatinine)) {
     defaults$serum_creatinine <- serum_creatinine
+  }
+  if (!missing(lifestyle_modification)) {
+    defaults$lifestyle_modification <- lifestyle_modification
+  }
+  if (!missing(history_of_specific_health_guidance)) {
+    defaults$history_of_specific_health_guidance <- history_of_specific_health_guidance
+  }
+  if (!missing(reason_for_not_conducting_inspection)) {
+    defaults$reason_for_not_conducting_inspection <- reason_for_not_conducting_inspection
   }
   if (!missing(total_cholesterol)) {
     defaults$total_cholesterol <- total_cholesterol
@@ -499,42 +531,186 @@ set_defaults_claim <- function(member_id, claim_id, type_of_claim, month_and_yea
   invisible(defaults)
 }
 
-set_defaults_version <- function(version_id, version_date) {
-  defaults <- get('version', envir = frameworkContext$defaultValues)
-  if (!missing(version_id)) {
-    defaults$version_id <- version_id
+set_defaults_diagnosis <- function(member_id, claim_id, statement_id, type_of_claim, month_and_year_of_medical_care, medical_facility_id, standard_disease_code, standard_disease_name, main_disease_flag, sub_disease_flag, resource_1st_disease_flag, resource_2nd_disease_flag, causative_disease_flag, comorbidity_at_admission_flag, complication_during_admission_flag, suspicion_flag, date_of_medical_care_start, outcome, outcome_death_flag, outcome_exacerbation_flag) {
+  defaults <- get('diagnosis', envir = frameworkContext$defaultValues)
+  if (!missing(member_id)) {
+    defaults$member_id <- member_id
   }
-  if (!missing(version_date)) {
-    defaults$version_date <- version_date
+  if (!missing(claim_id)) {
+    defaults$claim_id <- claim_id
   }
-  assign('version', defaults, envir = frameworkContext$defaultValues)
+  if (!missing(statement_id)) {
+    defaults$statement_id <- statement_id
+  }
+  if (!missing(type_of_claim)) {
+    defaults$type_of_claim <- type_of_claim
+  }
+  if (!missing(month_and_year_of_medical_care)) {
+    defaults$month_and_year_of_medical_care <- month_and_year_of_medical_care
+  }
+  if (!missing(medical_facility_id)) {
+    defaults$medical_facility_id <- medical_facility_id
+  }
+  if (!missing(standard_disease_code)) {
+    defaults$standard_disease_code <- standard_disease_code
+  }
+  if (!missing(standard_disease_name)) {
+    defaults$standard_disease_name <- standard_disease_name
+  }
+  if (!missing(main_disease_flag)) {
+    defaults$main_disease_flag <- main_disease_flag
+  }
+  if (!missing(sub_disease_flag)) {
+    defaults$sub_disease_flag <- sub_disease_flag
+  }
+  if (!missing(resource_1st_disease_flag)) {
+    defaults$resource_1st_disease_flag <- resource_1st_disease_flag
+  }
+  if (!missing(resource_2nd_disease_flag)) {
+    defaults$resource_2nd_disease_flag <- resource_2nd_disease_flag
+  }
+  if (!missing(causative_disease_flag)) {
+    defaults$causative_disease_flag <- causative_disease_flag
+  }
+  if (!missing(comorbidity_at_admission_flag)) {
+    defaults$comorbidity_at_admission_flag <- comorbidity_at_admission_flag
+  }
+  if (!missing(complication_during_admission_flag)) {
+    defaults$complication_during_admission_flag <- complication_during_admission_flag
+  }
+  if (!missing(suspicion_flag)) {
+    defaults$suspicion_flag <- suspicion_flag
+  }
+  if (!missing(date_of_medical_care_start)) {
+    defaults$date_of_medical_care_start <- date_of_medical_care_start
+  }
+  if (!missing(outcome)) {
+    defaults$outcome <- outcome
+  }
+  if (!missing(outcome_death_flag)) {
+    defaults$outcome_death_flag <- outcome_death_flag
+  }
+  if (!missing(outcome_exacerbation_flag)) {
+    defaults$outcome_exacerbation_flag <- outcome_exacerbation_flag
+  }
+  assign('diagnosis', defaults, envir = frameworkContext$defaultValues)
   invisible(defaults)
 }
 
-set_defaults_material_master <- function(standardized_material_code, standardized_material_version, standardized_material_name, unit, material_category_large_classification_name, material_category_medium_classification_name, material_code) {
-  defaults <- get('material_master', envir = frameworkContext$defaultValues)
-  if (!missing(standardized_material_code)) {
-    defaults$standardized_material_code <- standardized_material_code
+set_defaults_diagnosis_master <- function(standard_disease_code, standard_disease_name, icd10_level1_code, icd10_level1_name, icd10_level2_code, icd10_level2_name, icd10_level3_code, icd10_level3_name, icd10_level4_code, icd10_level4_name) {
+  defaults <- get('diagnosis_master', envir = frameworkContext$defaultValues)
+  if (!missing(standard_disease_code)) {
+    defaults$standard_disease_code <- standard_disease_code
   }
-  if (!missing(standardized_material_version)) {
-    defaults$standardized_material_version <- standardized_material_version
+  if (!missing(standard_disease_name)) {
+    defaults$standard_disease_name <- standard_disease_name
   }
-  if (!missing(standardized_material_name)) {
-    defaults$standardized_material_name <- standardized_material_name
+  if (!missing(icd10_level1_code)) {
+    defaults$icd10_level1_code <- icd10_level1_code
   }
-  if (!missing(unit)) {
-    defaults$unit <- unit
+  if (!missing(icd10_level1_name)) {
+    defaults$icd10_level1_name <- icd10_level1_name
   }
-  if (!missing(material_category_large_classification_name)) {
-    defaults$material_category_large_classification_name <- material_category_large_classification_name
+  if (!missing(icd10_level2_code)) {
+    defaults$icd10_level2_code <- icd10_level2_code
   }
-  if (!missing(material_category_medium_classification_name)) {
-    defaults$material_category_medium_classification_name <- material_category_medium_classification_name
+  if (!missing(icd10_level2_name)) {
+    defaults$icd10_level2_name <- icd10_level2_name
   }
-  if (!missing(material_code)) {
-    defaults$material_code <- material_code
+  if (!missing(icd10_level3_code)) {
+    defaults$icd10_level3_code <- icd10_level3_code
   }
-  assign('material_master', defaults, envir = frameworkContext$defaultValues)
+  if (!missing(icd10_level3_name)) {
+    defaults$icd10_level3_name <- icd10_level3_name
+  }
+  if (!missing(icd10_level4_code)) {
+    defaults$icd10_level4_code <- icd10_level4_code
+  }
+  if (!missing(icd10_level4_name)) {
+    defaults$icd10_level4_name <- icd10_level4_name
+  }
+  assign('diagnosis_master', defaults, envir = frameworkContext$defaultValues)
+  invisible(defaults)
+}
+
+set_defaults_drug <- function(member_id, claim_id, statement_id, type_of_claim, month_and_year_of_medical_care, medical_facility_id, jmdc_drug_code, drug_name, drug_price, date_of_prescription, date_of_dispense, prescribed_amount_per_day, unit_of_administered_amount, administered_days, administered_amount, concurrent_id, signature_code, as_needed_medication_flag, category_of_medical_care, cost_of_total_administrated_drug, dispensing_charge, drug_charge, additional_charge, actual_point, total_point) {
+  defaults <- get('drug', envir = frameworkContext$defaultValues)
+  if (!missing(member_id)) {
+    defaults$member_id <- member_id
+  }
+  if (!missing(claim_id)) {
+    defaults$claim_id <- claim_id
+  }
+  if (!missing(statement_id)) {
+    defaults$statement_id <- statement_id
+  }
+  if (!missing(type_of_claim)) {
+    defaults$type_of_claim <- type_of_claim
+  }
+  if (!missing(month_and_year_of_medical_care)) {
+    defaults$month_and_year_of_medical_care <- month_and_year_of_medical_care
+  }
+  if (!missing(medical_facility_id)) {
+    defaults$medical_facility_id <- medical_facility_id
+  }
+  if (!missing(jmdc_drug_code)) {
+    defaults$jmdc_drug_code <- jmdc_drug_code
+  }
+  if (!missing(drug_name)) {
+    defaults$drug_name <- drug_name
+  }
+  if (!missing(drug_price)) {
+    defaults$drug_price <- drug_price
+  }
+  if (!missing(date_of_prescription)) {
+    defaults$date_of_prescription <- date_of_prescription
+  }
+  if (!missing(date_of_dispense)) {
+    defaults$date_of_dispense <- date_of_dispense
+  }
+  if (!missing(prescribed_amount_per_day)) {
+    defaults$prescribed_amount_per_day <- prescribed_amount_per_day
+  }
+  if (!missing(unit_of_administered_amount)) {
+    defaults$unit_of_administered_amount <- unit_of_administered_amount
+  }
+  if (!missing(administered_days)) {
+    defaults$administered_days <- administered_days
+  }
+  if (!missing(administered_amount)) {
+    defaults$administered_amount <- administered_amount
+  }
+  if (!missing(concurrent_id)) {
+    defaults$concurrent_id <- concurrent_id
+  }
+  if (!missing(signature_code)) {
+    defaults$signature_code <- signature_code
+  }
+  if (!missing(as_needed_medication_flag)) {
+    defaults$as_needed_medication_flag <- as_needed_medication_flag
+  }
+  if (!missing(category_of_medical_care)) {
+    defaults$category_of_medical_care <- category_of_medical_care
+  }
+  if (!missing(cost_of_total_administrated_drug)) {
+    defaults$cost_of_total_administrated_drug <- cost_of_total_administrated_drug
+  }
+  if (!missing(dispensing_charge)) {
+    defaults$dispensing_charge <- dispensing_charge
+  }
+  if (!missing(drug_charge)) {
+    defaults$drug_charge <- drug_charge
+  }
+  if (!missing(additional_charge)) {
+    defaults$additional_charge <- additional_charge
+  }
+  if (!missing(actual_point)) {
+    defaults$actual_point <- actual_point
+  }
+  if (!missing(total_point)) {
+    defaults$total_point <- total_point
+  }
+  assign('drug', defaults, envir = frameworkContext$defaultValues)
   invisible(defaults)
 }
 
@@ -616,10 +792,13 @@ set_defaults_drug_master <- function(jmdc_drug_code, drug_name, standardized_uni
   invisible(defaults)
 }
 
-set_defaults_enrollment <- function(member_id, month_and_year_of_birth_of_member, gender_of_member, family_id, insured_or_dependent, relationship, observation_start, observation_end, withdrawal_death_flag) {
+set_defaults_enrollment <- function(member_id, type_of_insurance, month_and_year_of_birth_of_member, gender_of_member, family_id, insured_or_dependent, relationship, observation_start, observation_end, withdrawal_death_flag) {
   defaults <- get('enrollment', envir = frameworkContext$defaultValues)
   if (!missing(member_id)) {
     defaults$member_id <- member_id
+  }
+  if (!missing(type_of_insurance)) {
+    defaults$type_of_insurance <- type_of_insurance
   }
   if (!missing(month_and_year_of_birth_of_member)) {
     defaults$month_and_year_of_birth_of_member <- month_and_year_of_birth_of_member
@@ -646,57 +825,6 @@ set_defaults_enrollment <- function(member_id, month_and_year_of_birth_of_member
     defaults$withdrawal_death_flag <- withdrawal_death_flag
   }
   assign('enrollment', defaults, envir = frameworkContext$defaultValues)
-  invisible(defaults)
-}
-
-set_defaults_diagnosis <- function(member_id, claim_id, statement_id, type_of_claim, month_and_year_of_medical_care, medical_facility_id, standard_disease_code, standard_disease_name, main_disease_flag, causative_disease_flag, suspicion_flag, date_of_medical_care_start, outcome, outcome_death_flag, outcome_exacerbation_flag) {
-  defaults <- get('diagnosis', envir = frameworkContext$defaultValues)
-  if (!missing(member_id)) {
-    defaults$member_id <- member_id
-  }
-  if (!missing(claim_id)) {
-    defaults$claim_id <- claim_id
-  }
-  if (!missing(statement_id)) {
-    defaults$statement_id <- statement_id
-  }
-  if (!missing(type_of_claim)) {
-    defaults$type_of_claim <- type_of_claim
-  }
-  if (!missing(month_and_year_of_medical_care)) {
-    defaults$month_and_year_of_medical_care <- month_and_year_of_medical_care
-  }
-  if (!missing(medical_facility_id)) {
-    defaults$medical_facility_id <- medical_facility_id
-  }
-  if (!missing(standard_disease_code)) {
-    defaults$standard_disease_code <- standard_disease_code
-  }
-  if (!missing(standard_disease_name)) {
-    defaults$standard_disease_name <- standard_disease_name
-  }
-  if (!missing(main_disease_flag)) {
-    defaults$main_disease_flag <- main_disease_flag
-  }
-  if (!missing(causative_disease_flag)) {
-    defaults$causative_disease_flag <- causative_disease_flag
-  }
-  if (!missing(suspicion_flag)) {
-    defaults$suspicion_flag <- suspicion_flag
-  }
-  if (!missing(date_of_medical_care_start)) {
-    defaults$date_of_medical_care_start <- date_of_medical_care_start
-  }
-  if (!missing(outcome)) {
-    defaults$outcome <- outcome
-  }
-  if (!missing(outcome_death_flag)) {
-    defaults$outcome_death_flag <- outcome_death_flag
-  }
-  if (!missing(outcome_exacerbation_flag)) {
-    defaults$outcome_exacerbation_flag <- outcome_exacerbation_flag
-  }
-  assign('diagnosis', defaults, envir = frameworkContext$defaultValues)
   invisible(defaults)
 }
 
@@ -763,6 +891,33 @@ set_defaults_material <- function(member_id, claim_id, statement_id, type_of_cla
   invisible(defaults)
 }
 
+set_defaults_material_master <- function(standardized_material_code, standardized_material_version, standardized_material_name, unit, material_category_large_classification_name, material_category_medium_classification_name, material_code) {
+  defaults <- get('material_master', envir = frameworkContext$defaultValues)
+  if (!missing(standardized_material_code)) {
+    defaults$standardized_material_code <- standardized_material_code
+  }
+  if (!missing(standardized_material_version)) {
+    defaults$standardized_material_version <- standardized_material_version
+  }
+  if (!missing(standardized_material_name)) {
+    defaults$standardized_material_name <- standardized_material_name
+  }
+  if (!missing(unit)) {
+    defaults$unit <- unit
+  }
+  if (!missing(material_category_large_classification_name)) {
+    defaults$material_category_large_classification_name <- material_category_large_classification_name
+  }
+  if (!missing(material_category_medium_classification_name)) {
+    defaults$material_category_medium_classification_name <- material_category_medium_classification_name
+  }
+  if (!missing(material_code)) {
+    defaults$material_code <- material_code
+  }
+  assign('material_master', defaults, envir = frameworkContext$defaultValues)
+  invisible(defaults)
+}
+
 set_defaults_medical_facility <- function(medical_facility_id, number_of_beds, hpgp, large_classification_of_department, medium_classification_of_department, management_body, home_care_support_clinic, designated_cancer_care_hospitals, medical_institution_introducing_dpc, special_functioning_hospitals) {
   defaults <- get('medical_facility', envir = frameworkContext$defaultValues)
   if (!missing(medical_facility_id)) {
@@ -799,8 +954,8 @@ set_defaults_medical_facility <- function(medical_facility_id, number_of_beds, h
   invisible(defaults)
 }
 
-set_defaults_drug <- function(member_id, claim_id, statement_id, type_of_claim, month_and_year_of_medical_care, medical_facility_id, jmdc_drug_code, drug_name, drug_price, date_of_prescription, date_of_dispense, prescribed_amount_per_day, unit_of_administered_amount, administered_days, administered_amount, concurrent_id, as_needed_medication_flag, category_of_medical_care, cost_of_total_administrated_drug, pharmacy_charge, drug_charge, additional_charge, actual_point, total_point) {
-  defaults <- get('drug', envir = frameworkContext$defaultValues)
+set_defaults_procedure <- function(member_id, claim_id, statement_id, type_of_claim, month_and_year_of_medical_care, date_of_procedure, medical_facility_id, standardized_procedure_code, standardized_procedure_version, standardized_procedure_name, number_of_times, volume, volume_unit, concurrent_id, category_of_medical_care, procedure_standard_point, procedure_standard_additional_rate, procedure_standard_price, actual_point) {
+  defaults <- get('procedure', envir = frameworkContext$defaultValues)
   if (!missing(member_id)) {
     defaults$member_id <- member_id
   }
@@ -816,64 +971,49 @@ set_defaults_drug <- function(member_id, claim_id, statement_id, type_of_claim, 
   if (!missing(month_and_year_of_medical_care)) {
     defaults$month_and_year_of_medical_care <- month_and_year_of_medical_care
   }
+  if (!missing(date_of_procedure)) {
+    defaults$date_of_procedure <- date_of_procedure
+  }
   if (!missing(medical_facility_id)) {
     defaults$medical_facility_id <- medical_facility_id
   }
-  if (!missing(jmdc_drug_code)) {
-    defaults$jmdc_drug_code <- jmdc_drug_code
+  if (!missing(standardized_procedure_code)) {
+    defaults$standardized_procedure_code <- standardized_procedure_code
   }
-  if (!missing(drug_name)) {
-    defaults$drug_name <- drug_name
+  if (!missing(standardized_procedure_version)) {
+    defaults$standardized_procedure_version <- standardized_procedure_version
   }
-  if (!missing(drug_price)) {
-    defaults$drug_price <- drug_price
+  if (!missing(standardized_procedure_name)) {
+    defaults$standardized_procedure_name <- standardized_procedure_name
   }
-  if (!missing(date_of_prescription)) {
-    defaults$date_of_prescription <- date_of_prescription
+  if (!missing(number_of_times)) {
+    defaults$number_of_times <- number_of_times
   }
-  if (!missing(date_of_dispense)) {
-    defaults$date_of_dispense <- date_of_dispense
+  if (!missing(volume)) {
+    defaults$volume <- volume
   }
-  if (!missing(prescribed_amount_per_day)) {
-    defaults$prescribed_amount_per_day <- prescribed_amount_per_day
-  }
-  if (!missing(unit_of_administered_amount)) {
-    defaults$unit_of_administered_amount <- unit_of_administered_amount
-  }
-  if (!missing(administered_days)) {
-    defaults$administered_days <- administered_days
-  }
-  if (!missing(administered_amount)) {
-    defaults$administered_amount <- administered_amount
+  if (!missing(volume_unit)) {
+    defaults$volume_unit <- volume_unit
   }
   if (!missing(concurrent_id)) {
     defaults$concurrent_id <- concurrent_id
   }
-  if (!missing(as_needed_medication_flag)) {
-    defaults$as_needed_medication_flag <- as_needed_medication_flag
-  }
   if (!missing(category_of_medical_care)) {
     defaults$category_of_medical_care <- category_of_medical_care
   }
-  if (!missing(cost_of_total_administrated_drug)) {
-    defaults$cost_of_total_administrated_drug <- cost_of_total_administrated_drug
+  if (!missing(procedure_standard_point)) {
+    defaults$procedure_standard_point <- procedure_standard_point
   }
-  if (!missing(pharmacy_charge)) {
-    defaults$pharmacy_charge <- pharmacy_charge
+  if (!missing(procedure_standard_additional_rate)) {
+    defaults$procedure_standard_additional_rate <- procedure_standard_additional_rate
   }
-  if (!missing(drug_charge)) {
-    defaults$drug_charge <- drug_charge
-  }
-  if (!missing(additional_charge)) {
-    defaults$additional_charge <- additional_charge
+  if (!missing(procedure_standard_price)) {
+    defaults$procedure_standard_price <- procedure_standard_price
   }
   if (!missing(actual_point)) {
     defaults$actual_point <- actual_point
   }
-  if (!missing(total_point)) {
-    defaults$total_point <- total_point
-  }
-  assign('drug', defaults, envir = frameworkContext$defaultValues)
+  assign('procedure', defaults, envir = frameworkContext$defaultValues)
   invisible(defaults)
 }
 
@@ -916,99 +1056,6 @@ set_defaults_procedure_master <- function(standardized_procedure_code, standardi
   invisible(defaults)
 }
 
-set_defaults_diagnosis_master <- function(standard_disease_code, standard_disease_name, icd10_level1_code, icd10_level1_name, icd10_level2_code, icd10_level2_name, icd10_level3_code, icd10_level3_name, icd10_level4_code, icd10_level4_name) {
-  defaults <- get('diagnosis_master', envir = frameworkContext$defaultValues)
-  if (!missing(standard_disease_code)) {
-    defaults$standard_disease_code <- standard_disease_code
-  }
-  if (!missing(standard_disease_name)) {
-    defaults$standard_disease_name <- standard_disease_name
-  }
-  if (!missing(icd10_level1_code)) {
-    defaults$icd10_level1_code <- icd10_level1_code
-  }
-  if (!missing(icd10_level1_name)) {
-    defaults$icd10_level1_name <- icd10_level1_name
-  }
-  if (!missing(icd10_level2_code)) {
-    defaults$icd10_level2_code <- icd10_level2_code
-  }
-  if (!missing(icd10_level2_name)) {
-    defaults$icd10_level2_name <- icd10_level2_name
-  }
-  if (!missing(icd10_level3_code)) {
-    defaults$icd10_level3_code <- icd10_level3_code
-  }
-  if (!missing(icd10_level3_name)) {
-    defaults$icd10_level3_name <- icd10_level3_name
-  }
-  if (!missing(icd10_level4_code)) {
-    defaults$icd10_level4_code <- icd10_level4_code
-  }
-  if (!missing(icd10_level4_name)) {
-    defaults$icd10_level4_name <- icd10_level4_name
-  }
-  assign('diagnosis_master', defaults, envir = frameworkContext$defaultValues)
-  invisible(defaults)
-}
-
-set_defaults_procedure <- function(member_id, claim_id, statement_id, type_of_claim, month_and_year_of_medical_care, date_of_procedure, medical_facility_id, standardized_procedure_code, standardized_procedure_version, standardized_procedure_name, number_of_times, concurrent_id, category_of_medical_care, procedure_standard_point, procedure_standard_additional_rate, procedure_standard_price, actual_point) {
-  defaults <- get('procedure', envir = frameworkContext$defaultValues)
-  if (!missing(member_id)) {
-    defaults$member_id <- member_id
-  }
-  if (!missing(claim_id)) {
-    defaults$claim_id <- claim_id
-  }
-  if (!missing(statement_id)) {
-    defaults$statement_id <- statement_id
-  }
-  if (!missing(type_of_claim)) {
-    defaults$type_of_claim <- type_of_claim
-  }
-  if (!missing(month_and_year_of_medical_care)) {
-    defaults$month_and_year_of_medical_care <- month_and_year_of_medical_care
-  }
-  if (!missing(date_of_procedure)) {
-    defaults$date_of_procedure <- date_of_procedure
-  }
-  if (!missing(medical_facility_id)) {
-    defaults$medical_facility_id <- medical_facility_id
-  }
-  if (!missing(standardized_procedure_code)) {
-    defaults$standardized_procedure_code <- standardized_procedure_code
-  }
-  if (!missing(standardized_procedure_version)) {
-    defaults$standardized_procedure_version <- standardized_procedure_version
-  }
-  if (!missing(standardized_procedure_name)) {
-    defaults$standardized_procedure_name <- standardized_procedure_name
-  }
-  if (!missing(number_of_times)) {
-    defaults$number_of_times <- number_of_times
-  }
-  if (!missing(concurrent_id)) {
-    defaults$concurrent_id <- concurrent_id
-  }
-  if (!missing(category_of_medical_care)) {
-    defaults$category_of_medical_care <- category_of_medical_care
-  }
-  if (!missing(procedure_standard_point)) {
-    defaults$procedure_standard_point <- procedure_standard_point
-  }
-  if (!missing(procedure_standard_additional_rate)) {
-    defaults$procedure_standard_additional_rate <- procedure_standard_additional_rate
-  }
-  if (!missing(procedure_standard_price)) {
-    defaults$procedure_standard_price <- procedure_standard_price
-  }
-  if (!missing(actual_point)) {
-    defaults$actual_point <- actual_point
-  }
-  assign('procedure', defaults, envir = frameworkContext$defaultValues)
-  invisible(defaults)
-}
-
 get_defaults_annual_health_checkup <- function() {
   defaults <- get('annual_health_checkup', envir = frameworkContext$defaultValues)
   return(defaults)
@@ -1019,13 +1066,18 @@ get_defaults_claim <- function() {
   return(defaults)
 }
 
-get_defaults_version <- function() {
-  defaults <- get('version', envir = frameworkContext$defaultValues)
+get_defaults_diagnosis <- function() {
+  defaults <- get('diagnosis', envir = frameworkContext$defaultValues)
   return(defaults)
 }
 
-get_defaults_material_master <- function() {
-  defaults <- get('material_master', envir = frameworkContext$defaultValues)
+get_defaults_diagnosis_master <- function() {
+  defaults <- get('diagnosis_master', envir = frameworkContext$defaultValues)
+  return(defaults)
+}
+
+get_defaults_drug <- function() {
+  defaults <- get('drug', envir = frameworkContext$defaultValues)
   return(defaults)
 }
 
@@ -1039,13 +1091,13 @@ get_defaults_enrollment <- function() {
   return(defaults)
 }
 
-get_defaults_diagnosis <- function() {
-  defaults <- get('diagnosis', envir = frameworkContext$defaultValues)
+get_defaults_material <- function() {
+  defaults <- get('material', envir = frameworkContext$defaultValues)
   return(defaults)
 }
 
-get_defaults_material <- function() {
-  defaults <- get('material', envir = frameworkContext$defaultValues)
+get_defaults_material_master <- function() {
+  defaults <- get('material_master', envir = frameworkContext$defaultValues)
   return(defaults)
 }
 
@@ -1054,8 +1106,8 @@ get_defaults_medical_facility <- function() {
   return(defaults)
 }
 
-get_defaults_drug <- function() {
-  defaults <- get('drug', envir = frameworkContext$defaultValues)
+get_defaults_procedure <- function() {
+  defaults <- get('procedure', envir = frameworkContext$defaultValues)
   return(defaults)
 }
 
@@ -1064,22 +1116,12 @@ get_defaults_procedure_master <- function() {
   return(defaults)
 }
 
-get_defaults_diagnosis_master <- function() {
-  defaults <- get('diagnosis_master', envir = frameworkContext$defaultValues)
-  return(defaults)
-}
-
-get_defaults_procedure <- function() {
-  defaults <- get('procedure', envir = frameworkContext$defaultValues)
-  return(defaults)
-}
-
 declareTest <- function(id, description) {
   frameworkContext$testId <- id
   frameworkContext$testDescription <- description
 }
 
-add_annual_health_checkup <- function(member_id, health_checkup_id, date_of_health_checkup, bmi, abdominal_circumference, presence_of_medical_history, presence_of_subjective_symptoms, presence_of_objective_symptoms, systolic_bp, diastolic_bp, time_of_blood_collection, triglyceride, hdl_cholesterol, ldl_cholesterol, ast, alt, g_gt, fasting_blood_sugar, casual_blood_sugar, hba1c, urinary_sugar, uric_protein_qualitative, hct, hemoglobin_content, rbc_count, ecg, fundus_examination_keith_wagener_classification, fundus_examination_scheie_classification_h, fundus_examination_scheie_classification_s, fundus_examination_scott_classification, smoking_habit, eating1_fast_eating, eating2_before_bedtime, eating3_late_evening_snack, eating3_snack, eating_habit, drinking_habit, amount_drinking, sleep, drug1_hypertension, drug2_diabetes, drug3_hyperlipidemia, medical_history1_cerebrovascular, medical_history2_cardiovascular, medical_history3_renal, anemia, change_of_weight_from_age_of_twenty, exercise_habit, physical_activity, walking_speed, change_of_weight_in_a_year, mastication, lifestyle_modification, request_for_health_guidance, serum_uric_acid, serum_creatinine, total_cholesterol) {
+add_annual_health_checkup <- function(member_id, health_checkup_id, date_of_health_checkup, bmi, abdominal_circumference, presence_of_medical_history, presence_of_subjective_symptoms, presence_of_objective_symptoms, systolic_bp, diastolic_bp, time_of_blood_collection, triglyceride, fasting_triglyceride, casual_triglyceride, hdl_cholesterol, ldl_cholesterol, ast, alt, g_gt, fasting_blood_sugar, casual_blood_sugar, hba1c, urinary_sugar, uric_protein_qualitative, hct, hemoglobin_content, rbc_count, ecg, fundus_examination_keith_wagener_classification, fundus_examination_scheie_classification_h, fundus_examination_scheie_classification_s, fundus_examination_scott_classification, smoking_habit_until_mar_24, smoking_habit_after_apr_24, eating1_fast_eating, eating2_before_bedtime, eating3_late_evening_snack, eating3_snack, eating_habit_breakfast, drinking_habit_until_mar_24, amount_of_drinking_until_mar_24, drinking_habit_after_apr_24, amount_of_drinking_after_apr_24, sleep, drug1_hypertension, drug2_diabetes, drug3_hyperlipidemia, medical_history1_cerebrovascular, medical_history2_cardiovascular, medical_history3_renal, anemia, change_of_weight_from_age_of_twenty, exercise_habit, physical_activity, walking_speed, change_of_weight_in_a_year, mastication, request_for_health_guidance, serum_uric_acid, serum_creatinine, lifestyle_modification, history_of_specific_health_guidance, reason_for_not_conducting_inspection, total_cholesterol) {
   defaults <- get('annual_health_checkup', envir = frameworkContext$defaultValues)
   fields <- c()
   values <- c()
@@ -1178,6 +1220,22 @@ add_annual_health_checkup <- function(member_id, health_checkup_id, date_of_heal
   }
   fields <- c(fields, "triglyceride")
   values <- c(values, if (is.null(triglyceride)) "NULL" else if (is(triglyceride, "subQuery")) paste0("(", as.character(triglyceride), ")") else paste0("'", as.character(triglyceride), "'"))
+
+  if (missing(fasting_triglyceride)) {
+    fasting_triglyceride <- defaults$fasting_triglyceride
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'annual_health_checkup.fasting_triglyceride')
+  }
+  fields <- c(fields, "fasting_triglyceride")
+  values <- c(values, if (is.null(fasting_triglyceride)) "NULL" else if (is(fasting_triglyceride, "subQuery")) paste0("(", as.character(fasting_triglyceride), ")") else paste0("'", as.character(fasting_triglyceride), "'"))
+
+  if (missing(casual_triglyceride)) {
+    casual_triglyceride <- defaults$casual_triglyceride
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'annual_health_checkup.casual_triglyceride')
+  }
+  fields <- c(fields, "casual_triglyceride")
+  values <- c(values, if (is.null(casual_triglyceride)) "NULL" else if (is(casual_triglyceride, "subQuery")) paste0("(", as.character(casual_triglyceride), ")") else paste0("'", as.character(casual_triglyceride), "'"))
 
   if (missing(hdl_cholesterol)) {
     hdl_cholesterol <- defaults$hdl_cholesterol
@@ -1323,13 +1381,21 @@ add_annual_health_checkup <- function(member_id, health_checkup_id, date_of_heal
   fields <- c(fields, "fundus_examination_scott_classification")
   values <- c(values, if (is.null(fundus_examination_scott_classification)) "NULL" else if (is(fundus_examination_scott_classification, "subQuery")) paste0("(", as.character(fundus_examination_scott_classification), ")") else paste0("'", as.character(fundus_examination_scott_classification), "'"))
 
-  if (missing(smoking_habit)) {
-    smoking_habit <- defaults$smoking_habit
+  if (missing(smoking_habit_until_mar_24)) {
+    smoking_habit_until_mar_24 <- defaults$smoking_habit_until_mar_24
   } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'annual_health_checkup.smoking_habit')
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'annual_health_checkup.smoking_habit_until_mar_24')
   }
-  fields <- c(fields, "smoking_habit")
-  values <- c(values, if (is.null(smoking_habit)) "NULL" else if (is(smoking_habit, "subQuery")) paste0("(", as.character(smoking_habit), ")") else paste0("'", as.character(smoking_habit), "'"))
+  fields <- c(fields, "smoking_habit_until_mar_24")
+  values <- c(values, if (is.null(smoking_habit_until_mar_24)) "NULL" else if (is(smoking_habit_until_mar_24, "subQuery")) paste0("(", as.character(smoking_habit_until_mar_24), ")") else paste0("'", as.character(smoking_habit_until_mar_24), "'"))
+
+  if (missing(smoking_habit_after_apr_24)) {
+    smoking_habit_after_apr_24 <- defaults$smoking_habit_after_apr_24
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'annual_health_checkup.smoking_habit_after_apr_24')
+  }
+  fields <- c(fields, "smoking_habit_after_apr_24")
+  values <- c(values, if (is.null(smoking_habit_after_apr_24)) "NULL" else if (is(smoking_habit_after_apr_24, "subQuery")) paste0("(", as.character(smoking_habit_after_apr_24), ")") else paste0("'", as.character(smoking_habit_after_apr_24), "'"))
 
   if (missing(eating1_fast_eating)) {
     eating1_fast_eating <- defaults$eating1_fast_eating
@@ -1363,29 +1429,45 @@ add_annual_health_checkup <- function(member_id, health_checkup_id, date_of_heal
   fields <- c(fields, "eating3_snack")
   values <- c(values, if (is.null(eating3_snack)) "NULL" else if (is(eating3_snack, "subQuery")) paste0("(", as.character(eating3_snack), ")") else paste0("'", as.character(eating3_snack), "'"))
 
-  if (missing(eating_habit)) {
-    eating_habit <- defaults$eating_habit
+  if (missing(eating_habit_breakfast)) {
+    eating_habit_breakfast <- defaults$eating_habit_breakfast
   } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'annual_health_checkup.eating_habit')
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'annual_health_checkup.eating_habit_breakfast')
   }
-  fields <- c(fields, "eating_habit")
-  values <- c(values, if (is.null(eating_habit)) "NULL" else if (is(eating_habit, "subQuery")) paste0("(", as.character(eating_habit), ")") else paste0("'", as.character(eating_habit), "'"))
+  fields <- c(fields, "eating_habit_breakfast")
+  values <- c(values, if (is.null(eating_habit_breakfast)) "NULL" else if (is(eating_habit_breakfast, "subQuery")) paste0("(", as.character(eating_habit_breakfast), ")") else paste0("'", as.character(eating_habit_breakfast), "'"))
 
-  if (missing(drinking_habit)) {
-    drinking_habit <- defaults$drinking_habit
+  if (missing(drinking_habit_until_mar_24)) {
+    drinking_habit_until_mar_24 <- defaults$drinking_habit_until_mar_24
   } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'annual_health_checkup.drinking_habit')
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'annual_health_checkup.drinking_habit_until_mar_24')
   }
-  fields <- c(fields, "drinking_habit")
-  values <- c(values, if (is.null(drinking_habit)) "NULL" else if (is(drinking_habit, "subQuery")) paste0("(", as.character(drinking_habit), ")") else paste0("'", as.character(drinking_habit), "'"))
+  fields <- c(fields, "drinking_habit_until_mar_24")
+  values <- c(values, if (is.null(drinking_habit_until_mar_24)) "NULL" else if (is(drinking_habit_until_mar_24, "subQuery")) paste0("(", as.character(drinking_habit_until_mar_24), ")") else paste0("'", as.character(drinking_habit_until_mar_24), "'"))
 
-  if (missing(amount_drinking)) {
-    amount_drinking <- defaults$amount_drinking
+  if (missing(amount_of_drinking_until_mar_24)) {
+    amount_of_drinking_until_mar_24 <- defaults$amount_of_drinking_until_mar_24
   } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'annual_health_checkup.amount_drinking')
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'annual_health_checkup.amount_of_drinking_until_mar_24')
   }
-  fields <- c(fields, "amount_drinking")
-  values <- c(values, if (is.null(amount_drinking)) "NULL" else if (is(amount_drinking, "subQuery")) paste0("(", as.character(amount_drinking), ")") else paste0("'", as.character(amount_drinking), "'"))
+  fields <- c(fields, "amount_of_drinking_until_mar_24")
+  values <- c(values, if (is.null(amount_of_drinking_until_mar_24)) "NULL" else if (is(amount_of_drinking_until_mar_24, "subQuery")) paste0("(", as.character(amount_of_drinking_until_mar_24), ")") else paste0("'", as.character(amount_of_drinking_until_mar_24), "'"))
+
+  if (missing(drinking_habit_after_apr_24)) {
+    drinking_habit_after_apr_24 <- defaults$drinking_habit_after_apr_24
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'annual_health_checkup.drinking_habit_after_apr_24')
+  }
+  fields <- c(fields, "drinking_habit_after_apr_24")
+  values <- c(values, if (is.null(drinking_habit_after_apr_24)) "NULL" else if (is(drinking_habit_after_apr_24, "subQuery")) paste0("(", as.character(drinking_habit_after_apr_24), ")") else paste0("'", as.character(drinking_habit_after_apr_24), "'"))
+
+  if (missing(amount_of_drinking_after_apr_24)) {
+    amount_of_drinking_after_apr_24 <- defaults$amount_of_drinking_after_apr_24
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'annual_health_checkup.amount_of_drinking_after_apr_24')
+  }
+  fields <- c(fields, "amount_of_drinking_after_apr_24")
+  values <- c(values, if (is.null(amount_of_drinking_after_apr_24)) "NULL" else if (is(amount_of_drinking_after_apr_24, "subQuery")) paste0("(", as.character(amount_of_drinking_after_apr_24), ")") else paste0("'", as.character(amount_of_drinking_after_apr_24), "'"))
 
   if (missing(sleep)) {
     sleep <- defaults$sleep
@@ -1499,14 +1581,6 @@ add_annual_health_checkup <- function(member_id, health_checkup_id, date_of_heal
   fields <- c(fields, "mastication")
   values <- c(values, if (is.null(mastication)) "NULL" else if (is(mastication, "subQuery")) paste0("(", as.character(mastication), ")") else paste0("'", as.character(mastication), "'"))
 
-  if (missing(lifestyle_modification)) {
-    lifestyle_modification <- defaults$lifestyle_modification
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'annual_health_checkup.lifestyle_modification')
-  }
-  fields <- c(fields, "lifestyle_modification")
-  values <- c(values, if (is.null(lifestyle_modification)) "NULL" else if (is(lifestyle_modification, "subQuery")) paste0("(", as.character(lifestyle_modification), ")") else paste0("'", as.character(lifestyle_modification), "'"))
-
   if (missing(request_for_health_guidance)) {
     request_for_health_guidance <- defaults$request_for_health_guidance
   } else {
@@ -1530,6 +1604,30 @@ add_annual_health_checkup <- function(member_id, health_checkup_id, date_of_heal
   }
   fields <- c(fields, "serum_creatinine")
   values <- c(values, if (is.null(serum_creatinine)) "NULL" else if (is(serum_creatinine, "subQuery")) paste0("(", as.character(serum_creatinine), ")") else paste0("'", as.character(serum_creatinine), "'"))
+
+  if (missing(lifestyle_modification)) {
+    lifestyle_modification <- defaults$lifestyle_modification
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'annual_health_checkup.lifestyle_modification')
+  }
+  fields <- c(fields, "lifestyle_modification")
+  values <- c(values, if (is.null(lifestyle_modification)) "NULL" else if (is(lifestyle_modification, "subQuery")) paste0("(", as.character(lifestyle_modification), ")") else paste0("'", as.character(lifestyle_modification), "'"))
+
+  if (missing(history_of_specific_health_guidance)) {
+    history_of_specific_health_guidance <- defaults$history_of_specific_health_guidance
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'annual_health_checkup.history_of_specific_health_guidance')
+  }
+  fields <- c(fields, "history_of_specific_health_guidance")
+  values <- c(values, if (is.null(history_of_specific_health_guidance)) "NULL" else if (is(history_of_specific_health_guidance, "subQuery")) paste0("(", as.character(history_of_specific_health_guidance), ")") else paste0("'", as.character(history_of_specific_health_guidance), "'"))
+
+  if (missing(reason_for_not_conducting_inspection)) {
+    reason_for_not_conducting_inspection <- defaults$reason_for_not_conducting_inspection
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'annual_health_checkup.reason_for_not_conducting_inspection')
+  }
+  fields <- c(fields, "reason_for_not_conducting_inspection")
+  values <- c(values, if (is.null(reason_for_not_conducting_inspection)) "NULL" else if (is(reason_for_not_conducting_inspection, "subQuery")) paste0("(", as.character(reason_for_not_conducting_inspection), ")") else paste0("'", as.character(reason_for_not_conducting_inspection), "'"))
 
   if (missing(total_cholesterol)) {
     total_cholesterol <- defaults$total_cholesterol
@@ -1657,92 +1755,469 @@ add_claim <- function(member_id, claim_id, type_of_claim, month_and_year_of_medi
   invisible(NULL)
 }
 
-add_version <- function(version_id, version_date) {
-  defaults <- get('version', envir = frameworkContext$defaultValues)
+add_diagnosis <- function(member_id, claim_id, statement_id, type_of_claim, month_and_year_of_medical_care, medical_facility_id, standard_disease_code, standard_disease_name, main_disease_flag, sub_disease_flag, resource_1st_disease_flag, resource_2nd_disease_flag, causative_disease_flag, comorbidity_at_admission_flag, complication_during_admission_flag, suspicion_flag, date_of_medical_care_start, outcome, outcome_death_flag, outcome_exacerbation_flag) {
+  defaults <- get('diagnosis', envir = frameworkContext$defaultValues)
   fields <- c()
   values <- c()
-  if (missing(version_id)) {
-    version_id <- defaults$version_id
+  if (missing(member_id)) {
+    member_id <- defaults$member_id
   } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'version.version_id')
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis.member_id')
   }
-  fields <- c(fields, "version_id")
-  values <- c(values, if (is.null(version_id)) "NULL" else if (is(version_id, "subQuery")) paste0("(", as.character(version_id), ")") else paste0("'", as.character(version_id), "'"))
+  fields <- c(fields, "member_id")
+  values <- c(values, if (is.null(member_id)) "NULL" else if (is(member_id, "subQuery")) paste0("(", as.character(member_id), ")") else paste0("'", as.character(member_id), "'"))
 
-  if (missing(version_date)) {
-    version_date <- defaults$version_date
+  if (missing(claim_id)) {
+    claim_id <- defaults$claim_id
   } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'version.version_date')
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis.claim_id')
   }
-  fields <- c(fields, "version_date")
-  values <- c(values, if (is.null(version_date)) "NULL" else if (is(version_date, "subQuery")) paste0("(", as.character(version_date), ")") else paste0("'", as.character(version_date), "'"))
+  fields <- c(fields, "claim_id")
+  values <- c(values, if (is.null(claim_id)) "NULL" else if (is(claim_id, "subQuery")) paste0("(", as.character(claim_id), ")") else paste0("'", as.character(claim_id), "'"))
 
-  inserts <- list(testId = frameworkContext$testId, testDescription = frameworkContext$testDescription, table = "_version", fields = fields, values = values)
+  if (missing(statement_id)) {
+    statement_id <- defaults$statement_id
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis.statement_id')
+  }
+  fields <- c(fields, "statement_id")
+  values <- c(values, if (is.null(statement_id)) "NULL" else if (is(statement_id, "subQuery")) paste0("(", as.character(statement_id), ")") else paste0("'", as.character(statement_id), "'"))
+
+  if (missing(type_of_claim)) {
+    type_of_claim <- defaults$type_of_claim
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis.type_of_claim')
+  }
+  fields <- c(fields, "type_of_claim")
+  values <- c(values, if (is.null(type_of_claim)) "NULL" else if (is(type_of_claim, "subQuery")) paste0("(", as.character(type_of_claim), ")") else paste0("'", as.character(type_of_claim), "'"))
+
+  if (missing(month_and_year_of_medical_care)) {
+    month_and_year_of_medical_care <- defaults$month_and_year_of_medical_care
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis.month_and_year_of_medical_care')
+  }
+  fields <- c(fields, "month_and_year_of_medical_care")
+  values <- c(values, if (is.null(month_and_year_of_medical_care)) "NULL" else if (is(month_and_year_of_medical_care, "subQuery")) paste0("(", as.character(month_and_year_of_medical_care), ")") else paste0("'", as.character(month_and_year_of_medical_care), "'"))
+
+  if (missing(medical_facility_id)) {
+    medical_facility_id <- defaults$medical_facility_id
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis.medical_facility_id')
+  }
+  fields <- c(fields, "medical_facility_id")
+  values <- c(values, if (is.null(medical_facility_id)) "NULL" else if (is(medical_facility_id, "subQuery")) paste0("(", as.character(medical_facility_id), ")") else paste0("'", as.character(medical_facility_id), "'"))
+
+  if (missing(standard_disease_code)) {
+    standard_disease_code <- defaults$standard_disease_code
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis.standard_disease_code')
+  }
+  fields <- c(fields, "standard_disease_code")
+  values <- c(values, if (is.null(standard_disease_code)) "NULL" else if (is(standard_disease_code, "subQuery")) paste0("(", as.character(standard_disease_code), ")") else paste0("'", as.character(standard_disease_code), "'"))
+
+  if (missing(standard_disease_name)) {
+    standard_disease_name <- defaults$standard_disease_name
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis.standard_disease_name')
+  }
+  fields <- c(fields, "standard_disease_name")
+  values <- c(values, if (is.null(standard_disease_name)) "NULL" else if (is(standard_disease_name, "subQuery")) paste0("(", as.character(standard_disease_name), ")") else paste0("'", as.character(standard_disease_name), "'"))
+
+  if (missing(main_disease_flag)) {
+    main_disease_flag <- defaults$main_disease_flag
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis.main_disease_flag')
+  }
+  fields <- c(fields, "main_disease_flag")
+  values <- c(values, if (is.null(main_disease_flag)) "NULL" else if (is(main_disease_flag, "subQuery")) paste0("(", as.character(main_disease_flag), ")") else paste0("'", as.character(main_disease_flag), "'"))
+
+  if (missing(sub_disease_flag)) {
+    sub_disease_flag <- defaults$sub_disease_flag
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis.sub_disease_flag')
+  }
+  fields <- c(fields, "sub_disease_flag")
+  values <- c(values, if (is.null(sub_disease_flag)) "NULL" else if (is(sub_disease_flag, "subQuery")) paste0("(", as.character(sub_disease_flag), ")") else paste0("'", as.character(sub_disease_flag), "'"))
+
+  if (missing(resource_1st_disease_flag)) {
+    resource_1st_disease_flag <- defaults$resource_1st_disease_flag
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis.resource_1st_disease_flag')
+  }
+  fields <- c(fields, "resource_1st_disease_flag")
+  values <- c(values, if (is.null(resource_1st_disease_flag)) "NULL" else if (is(resource_1st_disease_flag, "subQuery")) paste0("(", as.character(resource_1st_disease_flag), ")") else paste0("'", as.character(resource_1st_disease_flag), "'"))
+
+  if (missing(resource_2nd_disease_flag)) {
+    resource_2nd_disease_flag <- defaults$resource_2nd_disease_flag
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis.resource_2nd_disease_flag')
+  }
+  fields <- c(fields, "resource_2nd_disease_flag")
+  values <- c(values, if (is.null(resource_2nd_disease_flag)) "NULL" else if (is(resource_2nd_disease_flag, "subQuery")) paste0("(", as.character(resource_2nd_disease_flag), ")") else paste0("'", as.character(resource_2nd_disease_flag), "'"))
+
+  if (missing(causative_disease_flag)) {
+    causative_disease_flag <- defaults$causative_disease_flag
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis.causative_disease_flag')
+  }
+  fields <- c(fields, "causative_disease_flag")
+  values <- c(values, if (is.null(causative_disease_flag)) "NULL" else if (is(causative_disease_flag, "subQuery")) paste0("(", as.character(causative_disease_flag), ")") else paste0("'", as.character(causative_disease_flag), "'"))
+
+  if (missing(comorbidity_at_admission_flag)) {
+    comorbidity_at_admission_flag <- defaults$comorbidity_at_admission_flag
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis.comorbidity_at_admission_flag')
+  }
+  fields <- c(fields, "comorbidity_at_admission_flag")
+  values <- c(values, if (is.null(comorbidity_at_admission_flag)) "NULL" else if (is(comorbidity_at_admission_flag, "subQuery")) paste0("(", as.character(comorbidity_at_admission_flag), ")") else paste0("'", as.character(comorbidity_at_admission_flag), "'"))
+
+  if (missing(complication_during_admission_flag)) {
+    complication_during_admission_flag <- defaults$complication_during_admission_flag
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis.complication_during_admission_flag')
+  }
+  fields <- c(fields, "complication_during_admission_flag")
+  values <- c(values, if (is.null(complication_during_admission_flag)) "NULL" else if (is(complication_during_admission_flag, "subQuery")) paste0("(", as.character(complication_during_admission_flag), ")") else paste0("'", as.character(complication_during_admission_flag), "'"))
+
+  if (missing(suspicion_flag)) {
+    suspicion_flag <- defaults$suspicion_flag
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis.suspicion_flag')
+  }
+  fields <- c(fields, "suspicion_flag")
+  values <- c(values, if (is.null(suspicion_flag)) "NULL" else if (is(suspicion_flag, "subQuery")) paste0("(", as.character(suspicion_flag), ")") else paste0("'", as.character(suspicion_flag), "'"))
+
+  if (missing(date_of_medical_care_start)) {
+    date_of_medical_care_start <- defaults$date_of_medical_care_start
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis.date_of_medical_care_start')
+  }
+  fields <- c(fields, "date_of_medical_care_start")
+  values <- c(values, if (is.null(date_of_medical_care_start)) "NULL" else if (is(date_of_medical_care_start, "subQuery")) paste0("(", as.character(date_of_medical_care_start), ")") else paste0("'", as.character(date_of_medical_care_start), "'"))
+
+  if (missing(outcome)) {
+    outcome <- defaults$outcome
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis.outcome')
+  }
+  fields <- c(fields, "outcome")
+  values <- c(values, if (is.null(outcome)) "NULL" else if (is(outcome, "subQuery")) paste0("(", as.character(outcome), ")") else paste0("'", as.character(outcome), "'"))
+
+  if (missing(outcome_death_flag)) {
+    outcome_death_flag <- defaults$outcome_death_flag
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis.outcome_death_flag')
+  }
+  fields <- c(fields, "outcome_death_flag")
+  values <- c(values, if (is.null(outcome_death_flag)) "NULL" else if (is(outcome_death_flag, "subQuery")) paste0("(", as.character(outcome_death_flag), ")") else paste0("'", as.character(outcome_death_flag), "'"))
+
+  if (missing(outcome_exacerbation_flag)) {
+    outcome_exacerbation_flag <- defaults$outcome_exacerbation_flag
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis.outcome_exacerbation_flag')
+  }
+  fields <- c(fields, "outcome_exacerbation_flag")
+  values <- c(values, if (is.null(outcome_exacerbation_flag)) "NULL" else if (is(outcome_exacerbation_flag, "subQuery")) paste0("(", as.character(outcome_exacerbation_flag), ")") else paste0("'", as.character(outcome_exacerbation_flag), "'"))
+
+  inserts <- list(testId = frameworkContext$testId, testDescription = frameworkContext$testDescription, table = "diagnosis", fields = fields, values = values)
   frameworkContext$inserts[[length(frameworkContext$inserts) + 1]] <- inserts
   invisible(NULL)
 }
 
-add_material_master <- function(standardized_material_code, standardized_material_version, standardized_material_name, unit, material_category_large_classification_name, material_category_medium_classification_name, material_code) {
-  defaults <- get('material_master', envir = frameworkContext$defaultValues)
+add_diagnosis_master <- function(standard_disease_code, standard_disease_name, icd10_level1_code, icd10_level1_name, icd10_level2_code, icd10_level2_name, icd10_level3_code, icd10_level3_name, icd10_level4_code, icd10_level4_name) {
+  defaults <- get('diagnosis_master', envir = frameworkContext$defaultValues)
   fields <- c()
   values <- c()
-  if (missing(standardized_material_code)) {
-    standardized_material_code <- defaults$standardized_material_code
+  if (missing(standard_disease_code)) {
+    standard_disease_code <- defaults$standard_disease_code
   } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'material_master.standardized_material_code')
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis_master.standard_disease_code')
   }
-  fields <- c(fields, "standardized_material_code")
-  values <- c(values, if (is.null(standardized_material_code)) "NULL" else if (is(standardized_material_code, "subQuery")) paste0("(", as.character(standardized_material_code), ")") else paste0("'", as.character(standardized_material_code), "'"))
+  fields <- c(fields, "standard_disease_code")
+  values <- c(values, if (is.null(standard_disease_code)) "NULL" else if (is(standard_disease_code, "subQuery")) paste0("(", as.character(standard_disease_code), ")") else paste0("'", as.character(standard_disease_code), "'"))
 
-  if (missing(standardized_material_version)) {
-    standardized_material_version <- defaults$standardized_material_version
+  if (missing(standard_disease_name)) {
+    standard_disease_name <- defaults$standard_disease_name
   } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'material_master.standardized_material_version')
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis_master.standard_disease_name')
   }
-  fields <- c(fields, "standardized_material_version")
-  values <- c(values, if (is.null(standardized_material_version)) "NULL" else if (is(standardized_material_version, "subQuery")) paste0("(", as.character(standardized_material_version), ")") else paste0("'", as.character(standardized_material_version), "'"))
+  fields <- c(fields, "standard_disease_name")
+  values <- c(values, if (is.null(standard_disease_name)) "NULL" else if (is(standard_disease_name, "subQuery")) paste0("(", as.character(standard_disease_name), ")") else paste0("'", as.character(standard_disease_name), "'"))
 
-  if (missing(standardized_material_name)) {
-    standardized_material_name <- defaults$standardized_material_name
+  if (missing(icd10_level1_code)) {
+    icd10_level1_code <- defaults$icd10_level1_code
   } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'material_master.standardized_material_name')
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis_master.icd10_level1_code')
   }
-  fields <- c(fields, "standardized_material_name")
-  values <- c(values, if (is.null(standardized_material_name)) "NULL" else if (is(standardized_material_name, "subQuery")) paste0("(", as.character(standardized_material_name), ")") else paste0("'", as.character(standardized_material_name), "'"))
+  fields <- c(fields, "icd10_level1_code")
+  values <- c(values, if (is.null(icd10_level1_code)) "NULL" else if (is(icd10_level1_code, "subQuery")) paste0("(", as.character(icd10_level1_code), ")") else paste0("'", as.character(icd10_level1_code), "'"))
 
-  if (missing(unit)) {
-    unit <- defaults$unit
+  if (missing(icd10_level1_name)) {
+    icd10_level1_name <- defaults$icd10_level1_name
   } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'material_master.unit')
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis_master.icd10_level1_name')
   }
-  fields <- c(fields, "unit")
-  values <- c(values, if (is.null(unit)) "NULL" else if (is(unit, "subQuery")) paste0("(", as.character(unit), ")") else paste0("'", as.character(unit), "'"))
+  fields <- c(fields, "icd10_level1_name")
+  values <- c(values, if (is.null(icd10_level1_name)) "NULL" else if (is(icd10_level1_name, "subQuery")) paste0("(", as.character(icd10_level1_name), ")") else paste0("'", as.character(icd10_level1_name), "'"))
 
-  if (missing(material_category_large_classification_name)) {
-    material_category_large_classification_name <- defaults$material_category_large_classification_name
+  if (missing(icd10_level2_code)) {
+    icd10_level2_code <- defaults$icd10_level2_code
   } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'material_master.material_category_large_classification_name')
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis_master.icd10_level2_code')
   }
-  fields <- c(fields, "material_category_large_classification_name")
-  values <- c(values, if (is.null(material_category_large_classification_name)) "NULL" else if (is(material_category_large_classification_name, "subQuery")) paste0("(", as.character(material_category_large_classification_name), ")") else paste0("'", as.character(material_category_large_classification_name), "'"))
+  fields <- c(fields, "icd10_level2_code")
+  values <- c(values, if (is.null(icd10_level2_code)) "NULL" else if (is(icd10_level2_code, "subQuery")) paste0("(", as.character(icd10_level2_code), ")") else paste0("'", as.character(icd10_level2_code), "'"))
 
-  if (missing(material_category_medium_classification_name)) {
-    material_category_medium_classification_name <- defaults$material_category_medium_classification_name
+  if (missing(icd10_level2_name)) {
+    icd10_level2_name <- defaults$icd10_level2_name
   } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'material_master.material_category_medium_classification_name')
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis_master.icd10_level2_name')
   }
-  fields <- c(fields, "material_category_medium_classification_name")
-  values <- c(values, if (is.null(material_category_medium_classification_name)) "NULL" else if (is(material_category_medium_classification_name, "subQuery")) paste0("(", as.character(material_category_medium_classification_name), ")") else paste0("'", as.character(material_category_medium_classification_name), "'"))
+  fields <- c(fields, "icd10_level2_name")
+  values <- c(values, if (is.null(icd10_level2_name)) "NULL" else if (is(icd10_level2_name, "subQuery")) paste0("(", as.character(icd10_level2_name), ")") else paste0("'", as.character(icd10_level2_name), "'"))
 
-  if (missing(material_code)) {
-    material_code <- defaults$material_code
+  if (missing(icd10_level3_code)) {
+    icd10_level3_code <- defaults$icd10_level3_code
   } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'material_master.material_code')
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis_master.icd10_level3_code')
   }
-  fields <- c(fields, "material_code")
-  values <- c(values, if (is.null(material_code)) "NULL" else if (is(material_code, "subQuery")) paste0("(", as.character(material_code), ")") else paste0("'", as.character(material_code), "'"))
+  fields <- c(fields, "icd10_level3_code")
+  values <- c(values, if (is.null(icd10_level3_code)) "NULL" else if (is(icd10_level3_code, "subQuery")) paste0("(", as.character(icd10_level3_code), ")") else paste0("'", as.character(icd10_level3_code), "'"))
 
-  inserts <- list(testId = frameworkContext$testId, testDescription = frameworkContext$testDescription, table = "material_master", fields = fields, values = values)
+  if (missing(icd10_level3_name)) {
+    icd10_level3_name <- defaults$icd10_level3_name
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis_master.icd10_level3_name')
+  }
+  fields <- c(fields, "icd10_level3_name")
+  values <- c(values, if (is.null(icd10_level3_name)) "NULL" else if (is(icd10_level3_name, "subQuery")) paste0("(", as.character(icd10_level3_name), ")") else paste0("'", as.character(icd10_level3_name), "'"))
+
+  if (missing(icd10_level4_code)) {
+    icd10_level4_code <- defaults$icd10_level4_code
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis_master.icd10_level4_code')
+  }
+  fields <- c(fields, "icd10_level4_code")
+  values <- c(values, if (is.null(icd10_level4_code)) "NULL" else if (is(icd10_level4_code, "subQuery")) paste0("(", as.character(icd10_level4_code), ")") else paste0("'", as.character(icd10_level4_code), "'"))
+
+  if (missing(icd10_level4_name)) {
+    icd10_level4_name <- defaults$icd10_level4_name
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis_master.icd10_level4_name')
+  }
+  fields <- c(fields, "icd10_level4_name")
+  values <- c(values, if (is.null(icd10_level4_name)) "NULL" else if (is(icd10_level4_name, "subQuery")) paste0("(", as.character(icd10_level4_name), ")") else paste0("'", as.character(icd10_level4_name), "'"))
+
+  inserts <- list(testId = frameworkContext$testId, testDescription = frameworkContext$testDescription, table = "diagnosis_master", fields = fields, values = values)
+  frameworkContext$inserts[[length(frameworkContext$inserts) + 1]] <- inserts
+  invisible(NULL)
+}
+
+add_drug <- function(member_id, claim_id, statement_id, type_of_claim, month_and_year_of_medical_care, medical_facility_id, jmdc_drug_code, drug_name, drug_price, date_of_prescription, date_of_dispense, prescribed_amount_per_day, unit_of_administered_amount, administered_days, administered_amount, concurrent_id, signature_code, as_needed_medication_flag, category_of_medical_care, cost_of_total_administrated_drug, dispensing_charge, drug_charge, additional_charge, actual_point, total_point) {
+  defaults <- get('drug', envir = frameworkContext$defaultValues)
+  fields <- c()
+  values <- c()
+  if (missing(member_id)) {
+    member_id <- defaults$member_id
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.member_id')
+  }
+  fields <- c(fields, "member_id")
+  values <- c(values, if (is.null(member_id)) "NULL" else if (is(member_id, "subQuery")) paste0("(", as.character(member_id), ")") else paste0("'", as.character(member_id), "'"))
+
+  if (missing(claim_id)) {
+    claim_id <- defaults$claim_id
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.claim_id')
+  }
+  fields <- c(fields, "claim_id")
+  values <- c(values, if (is.null(claim_id)) "NULL" else if (is(claim_id, "subQuery")) paste0("(", as.character(claim_id), ")") else paste0("'", as.character(claim_id), "'"))
+
+  if (missing(statement_id)) {
+    statement_id <- defaults$statement_id
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.statement_id')
+  }
+  fields <- c(fields, "statement_id")
+  values <- c(values, if (is.null(statement_id)) "NULL" else if (is(statement_id, "subQuery")) paste0("(", as.character(statement_id), ")") else paste0("'", as.character(statement_id), "'"))
+
+  if (missing(type_of_claim)) {
+    type_of_claim <- defaults$type_of_claim
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.type_of_claim')
+  }
+  fields <- c(fields, "type_of_claim")
+  values <- c(values, if (is.null(type_of_claim)) "NULL" else if (is(type_of_claim, "subQuery")) paste0("(", as.character(type_of_claim), ")") else paste0("'", as.character(type_of_claim), "'"))
+
+  if (missing(month_and_year_of_medical_care)) {
+    month_and_year_of_medical_care <- defaults$month_and_year_of_medical_care
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.month_and_year_of_medical_care')
+  }
+  fields <- c(fields, "month_and_year_of_medical_care")
+  values <- c(values, if (is.null(month_and_year_of_medical_care)) "NULL" else if (is(month_and_year_of_medical_care, "subQuery")) paste0("(", as.character(month_and_year_of_medical_care), ")") else paste0("'", as.character(month_and_year_of_medical_care), "'"))
+
+  if (missing(medical_facility_id)) {
+    medical_facility_id <- defaults$medical_facility_id
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.medical_facility_id')
+  }
+  fields <- c(fields, "medical_facility_id")
+  values <- c(values, if (is.null(medical_facility_id)) "NULL" else if (is(medical_facility_id, "subQuery")) paste0("(", as.character(medical_facility_id), ")") else paste0("'", as.character(medical_facility_id), "'"))
+
+  if (missing(jmdc_drug_code)) {
+    jmdc_drug_code <- defaults$jmdc_drug_code
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.jmdc_drug_code')
+  }
+  fields <- c(fields, "jmdc_drug_code")
+  values <- c(values, if (is.null(jmdc_drug_code)) "NULL" else if (is(jmdc_drug_code, "subQuery")) paste0("(", as.character(jmdc_drug_code), ")") else paste0("'", as.character(jmdc_drug_code), "'"))
+
+  if (missing(drug_name)) {
+    drug_name <- defaults$drug_name
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.drug_name')
+  }
+  fields <- c(fields, "drug_name")
+  values <- c(values, if (is.null(drug_name)) "NULL" else if (is(drug_name, "subQuery")) paste0("(", as.character(drug_name), ")") else paste0("'", as.character(drug_name), "'"))
+
+  if (missing(drug_price)) {
+    drug_price <- defaults$drug_price
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.drug_price')
+  }
+  fields <- c(fields, "drug_price")
+  values <- c(values, if (is.null(drug_price)) "NULL" else if (is(drug_price, "subQuery")) paste0("(", as.character(drug_price), ")") else paste0("'", as.character(drug_price), "'"))
+
+  if (missing(date_of_prescription)) {
+    date_of_prescription <- defaults$date_of_prescription
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.date_of_prescription')
+  }
+  fields <- c(fields, "date_of_prescription")
+  values <- c(values, if (is.null(date_of_prescription)) "NULL" else if (is(date_of_prescription, "subQuery")) paste0("(", as.character(date_of_prescription), ")") else paste0("'", as.character(date_of_prescription), "'"))
+
+  if (missing(date_of_dispense)) {
+    date_of_dispense <- defaults$date_of_dispense
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.date_of_dispense')
+  }
+  fields <- c(fields, "date_of_dispense")
+  values <- c(values, if (is.null(date_of_dispense)) "NULL" else if (is(date_of_dispense, "subQuery")) paste0("(", as.character(date_of_dispense), ")") else paste0("'", as.character(date_of_dispense), "'"))
+
+  if (missing(prescribed_amount_per_day)) {
+    prescribed_amount_per_day <- defaults$prescribed_amount_per_day
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.prescribed_amount_per_day')
+  }
+  fields <- c(fields, "prescribed_amount_per_day")
+  values <- c(values, if (is.null(prescribed_amount_per_day)) "NULL" else if (is(prescribed_amount_per_day, "subQuery")) paste0("(", as.character(prescribed_amount_per_day), ")") else paste0("'", as.character(prescribed_amount_per_day), "'"))
+
+  if (missing(unit_of_administered_amount)) {
+    unit_of_administered_amount <- defaults$unit_of_administered_amount
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.unit_of_administered_amount')
+  }
+  fields <- c(fields, "unit_of_administered_amount")
+  values <- c(values, if (is.null(unit_of_administered_amount)) "NULL" else if (is(unit_of_administered_amount, "subQuery")) paste0("(", as.character(unit_of_administered_amount), ")") else paste0("'", as.character(unit_of_administered_amount), "'"))
+
+  if (missing(administered_days)) {
+    administered_days <- defaults$administered_days
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.administered_days')
+  }
+  fields <- c(fields, "administered_days")
+  values <- c(values, if (is.null(administered_days)) "NULL" else if (is(administered_days, "subQuery")) paste0("(", as.character(administered_days), ")") else paste0("'", as.character(administered_days), "'"))
+
+  if (missing(administered_amount)) {
+    administered_amount <- defaults$administered_amount
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.administered_amount')
+  }
+  fields <- c(fields, "administered_amount")
+  values <- c(values, if (is.null(administered_amount)) "NULL" else if (is(administered_amount, "subQuery")) paste0("(", as.character(administered_amount), ")") else paste0("'", as.character(administered_amount), "'"))
+
+  if (missing(concurrent_id)) {
+    concurrent_id <- defaults$concurrent_id
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.concurrent_id')
+  }
+  fields <- c(fields, "concurrent_id")
+  values <- c(values, if (is.null(concurrent_id)) "NULL" else if (is(concurrent_id, "subQuery")) paste0("(", as.character(concurrent_id), ")") else paste0("'", as.character(concurrent_id), "'"))
+
+  if (missing(signature_code)) {
+    signature_code <- defaults$signature_code
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.signature_code')
+  }
+  fields <- c(fields, "signature_code")
+  values <- c(values, if (is.null(signature_code)) "NULL" else if (is(signature_code, "subQuery")) paste0("(", as.character(signature_code), ")") else paste0("'", as.character(signature_code), "'"))
+
+  if (missing(as_needed_medication_flag)) {
+    as_needed_medication_flag <- defaults$as_needed_medication_flag
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.as_needed_medication_flag')
+  }
+  fields <- c(fields, "as_needed_medication_flag")
+  values <- c(values, if (is.null(as_needed_medication_flag)) "NULL" else if (is(as_needed_medication_flag, "subQuery")) paste0("(", as.character(as_needed_medication_flag), ")") else paste0("'", as.character(as_needed_medication_flag), "'"))
+
+  if (missing(category_of_medical_care)) {
+    category_of_medical_care <- defaults$category_of_medical_care
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.category_of_medical_care')
+  }
+  fields <- c(fields, "category_of_medical_care")
+  values <- c(values, if (is.null(category_of_medical_care)) "NULL" else if (is(category_of_medical_care, "subQuery")) paste0("(", as.character(category_of_medical_care), ")") else paste0("'", as.character(category_of_medical_care), "'"))
+
+  if (missing(cost_of_total_administrated_drug)) {
+    cost_of_total_administrated_drug <- defaults$cost_of_total_administrated_drug
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.cost_of_total_administrated_drug')
+  }
+  fields <- c(fields, "cost_of_total_administrated_drug")
+  values <- c(values, if (is.null(cost_of_total_administrated_drug)) "NULL" else if (is(cost_of_total_administrated_drug, "subQuery")) paste0("(", as.character(cost_of_total_administrated_drug), ")") else paste0("'", as.character(cost_of_total_administrated_drug), "'"))
+
+  if (missing(dispensing_charge)) {
+    dispensing_charge <- defaults$dispensing_charge
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.dispensing_charge')
+  }
+  fields <- c(fields, "dispensing_charge")
+  values <- c(values, if (is.null(dispensing_charge)) "NULL" else if (is(dispensing_charge, "subQuery")) paste0("(", as.character(dispensing_charge), ")") else paste0("'", as.character(dispensing_charge), "'"))
+
+  if (missing(drug_charge)) {
+    drug_charge <- defaults$drug_charge
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.drug_charge')
+  }
+  fields <- c(fields, "drug_charge")
+  values <- c(values, if (is.null(drug_charge)) "NULL" else if (is(drug_charge, "subQuery")) paste0("(", as.character(drug_charge), ")") else paste0("'", as.character(drug_charge), "'"))
+
+  if (missing(additional_charge)) {
+    additional_charge <- defaults$additional_charge
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.additional_charge')
+  }
+  fields <- c(fields, "additional_charge")
+  values <- c(values, if (is.null(additional_charge)) "NULL" else if (is(additional_charge, "subQuery")) paste0("(", as.character(additional_charge), ")") else paste0("'", as.character(additional_charge), "'"))
+
+  if (missing(actual_point)) {
+    actual_point <- defaults$actual_point
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.actual_point')
+  }
+  fields <- c(fields, "actual_point")
+  values <- c(values, if (is.null(actual_point)) "NULL" else if (is(actual_point, "subQuery")) paste0("(", as.character(actual_point), ")") else paste0("'", as.character(actual_point), "'"))
+
+  if (missing(total_point)) {
+    total_point <- defaults$total_point
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.total_point')
+  }
+  fields <- c(fields, "total_point")
+  values <- c(values, if (is.null(total_point)) "NULL" else if (is(total_point, "subQuery")) paste0("(", as.character(total_point), ")") else paste0("'", as.character(total_point), "'"))
+
+  inserts <- list(testId = frameworkContext$testId, testDescription = frameworkContext$testDescription, table = "drug", fields = fields, values = values)
   frameworkContext$inserts[[length(frameworkContext$inserts) + 1]] <- inserts
   invisible(NULL)
 }
@@ -1948,7 +2423,7 @@ add_drug_master <- function(jmdc_drug_code, drug_name, standardized_unit, atc_le
   invisible(NULL)
 }
 
-add_enrollment <- function(member_id, month_and_year_of_birth_of_member, gender_of_member, family_id, insured_or_dependent, relationship, observation_start, observation_end, withdrawal_death_flag) {
+add_enrollment <- function(member_id, type_of_insurance, month_and_year_of_birth_of_member, gender_of_member, family_id, insured_or_dependent, relationship, observation_start, observation_end, withdrawal_death_flag) {
   defaults <- get('enrollment', envir = frameworkContext$defaultValues)
   fields <- c()
   values <- c()
@@ -1959,6 +2434,14 @@ add_enrollment <- function(member_id, month_and_year_of_birth_of_member, gender_
   }
   fields <- c(fields, "member_id")
   values <- c(values, if (is.null(member_id)) "NULL" else if (is(member_id, "subQuery")) paste0("(", as.character(member_id), ")") else paste0("'", as.character(member_id), "'"))
+
+  if (missing(type_of_insurance)) {
+    type_of_insurance <- defaults$type_of_insurance
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'enrollment.type_of_insurance')
+  }
+  fields <- c(fields, "type_of_insurance")
+  values <- c(values, if (is.null(type_of_insurance)) "NULL" else if (is(type_of_insurance, "subQuery")) paste0("(", as.character(type_of_insurance), ")") else paste0("'", as.character(type_of_insurance), "'"))
 
   if (missing(month_and_year_of_birth_of_member)) {
     month_and_year_of_birth_of_member <- defaults$month_and_year_of_birth_of_member
@@ -2025,135 +2508,6 @@ add_enrollment <- function(member_id, month_and_year_of_birth_of_member, gender_
   values <- c(values, if (is.null(withdrawal_death_flag)) "NULL" else if (is(withdrawal_death_flag, "subQuery")) paste0("(", as.character(withdrawal_death_flag), ")") else paste0("'", as.character(withdrawal_death_flag), "'"))
 
   inserts <- list(testId = frameworkContext$testId, testDescription = frameworkContext$testDescription, table = "enrollment", fields = fields, values = values)
-  frameworkContext$inserts[[length(frameworkContext$inserts) + 1]] <- inserts
-  invisible(NULL)
-}
-
-add_diagnosis <- function(member_id, claim_id, statement_id, type_of_claim, month_and_year_of_medical_care, medical_facility_id, standard_disease_code, standard_disease_name, main_disease_flag, causative_disease_flag, suspicion_flag, date_of_medical_care_start, outcome, outcome_death_flag, outcome_exacerbation_flag) {
-  defaults <- get('diagnosis', envir = frameworkContext$defaultValues)
-  fields <- c()
-  values <- c()
-  if (missing(member_id)) {
-    member_id <- defaults$member_id
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis.member_id')
-  }
-  fields <- c(fields, "member_id")
-  values <- c(values, if (is.null(member_id)) "NULL" else if (is(member_id, "subQuery")) paste0("(", as.character(member_id), ")") else paste0("'", as.character(member_id), "'"))
-
-  if (missing(claim_id)) {
-    claim_id <- defaults$claim_id
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis.claim_id')
-  }
-  fields <- c(fields, "claim_id")
-  values <- c(values, if (is.null(claim_id)) "NULL" else if (is(claim_id, "subQuery")) paste0("(", as.character(claim_id), ")") else paste0("'", as.character(claim_id), "'"))
-
-  if (missing(statement_id)) {
-    statement_id <- defaults$statement_id
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis.statement_id')
-  }
-  fields <- c(fields, "statement_id")
-  values <- c(values, if (is.null(statement_id)) "NULL" else if (is(statement_id, "subQuery")) paste0("(", as.character(statement_id), ")") else paste0("'", as.character(statement_id), "'"))
-
-  if (missing(type_of_claim)) {
-    type_of_claim <- defaults$type_of_claim
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis.type_of_claim')
-  }
-  fields <- c(fields, "type_of_claim")
-  values <- c(values, if (is.null(type_of_claim)) "NULL" else if (is(type_of_claim, "subQuery")) paste0("(", as.character(type_of_claim), ")") else paste0("'", as.character(type_of_claim), "'"))
-
-  if (missing(month_and_year_of_medical_care)) {
-    month_and_year_of_medical_care <- defaults$month_and_year_of_medical_care
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis.month_and_year_of_medical_care')
-  }
-  fields <- c(fields, "month_and_year_of_medical_care")
-  values <- c(values, if (is.null(month_and_year_of_medical_care)) "NULL" else if (is(month_and_year_of_medical_care, "subQuery")) paste0("(", as.character(month_and_year_of_medical_care), ")") else paste0("'", as.character(month_and_year_of_medical_care), "'"))
-
-  if (missing(medical_facility_id)) {
-    medical_facility_id <- defaults$medical_facility_id
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis.medical_facility_id')
-  }
-  fields <- c(fields, "medical_facility_id")
-  values <- c(values, if (is.null(medical_facility_id)) "NULL" else if (is(medical_facility_id, "subQuery")) paste0("(", as.character(medical_facility_id), ")") else paste0("'", as.character(medical_facility_id), "'"))
-
-  if (missing(standard_disease_code)) {
-    standard_disease_code <- defaults$standard_disease_code
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis.standard_disease_code')
-  }
-  fields <- c(fields, "standard_disease_code")
-  values <- c(values, if (is.null(standard_disease_code)) "NULL" else if (is(standard_disease_code, "subQuery")) paste0("(", as.character(standard_disease_code), ")") else paste0("'", as.character(standard_disease_code), "'"))
-
-  if (missing(standard_disease_name)) {
-    standard_disease_name <- defaults$standard_disease_name
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis.standard_disease_name')
-  }
-  fields <- c(fields, "standard_disease_name")
-  values <- c(values, if (is.null(standard_disease_name)) "NULL" else if (is(standard_disease_name, "subQuery")) paste0("(", as.character(standard_disease_name), ")") else paste0("'", as.character(standard_disease_name), "'"))
-
-  if (missing(main_disease_flag)) {
-    main_disease_flag <- defaults$main_disease_flag
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis.main_disease_flag')
-  }
-  fields <- c(fields, "main_disease_flag")
-  values <- c(values, if (is.null(main_disease_flag)) "NULL" else if (is(main_disease_flag, "subQuery")) paste0("(", as.character(main_disease_flag), ")") else paste0("'", as.character(main_disease_flag), "'"))
-
-  if (missing(causative_disease_flag)) {
-    causative_disease_flag <- defaults$causative_disease_flag
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis.causative_disease_flag')
-  }
-  fields <- c(fields, "causative_disease_flag")
-  values <- c(values, if (is.null(causative_disease_flag)) "NULL" else if (is(causative_disease_flag, "subQuery")) paste0("(", as.character(causative_disease_flag), ")") else paste0("'", as.character(causative_disease_flag), "'"))
-
-  if (missing(suspicion_flag)) {
-    suspicion_flag <- defaults$suspicion_flag
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis.suspicion_flag')
-  }
-  fields <- c(fields, "suspicion_flag")
-  values <- c(values, if (is.null(suspicion_flag)) "NULL" else if (is(suspicion_flag, "subQuery")) paste0("(", as.character(suspicion_flag), ")") else paste0("'", as.character(suspicion_flag), "'"))
-
-  if (missing(date_of_medical_care_start)) {
-    date_of_medical_care_start <- defaults$date_of_medical_care_start
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis.date_of_medical_care_start')
-  }
-  fields <- c(fields, "date_of_medical_care_start")
-  values <- c(values, if (is.null(date_of_medical_care_start)) "NULL" else if (is(date_of_medical_care_start, "subQuery")) paste0("(", as.character(date_of_medical_care_start), ")") else paste0("'", as.character(date_of_medical_care_start), "'"))
-
-  if (missing(outcome)) {
-    outcome <- defaults$outcome
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis.outcome')
-  }
-  fields <- c(fields, "outcome")
-  values <- c(values, if (is.null(outcome)) "NULL" else if (is(outcome, "subQuery")) paste0("(", as.character(outcome), ")") else paste0("'", as.character(outcome), "'"))
-
-  if (missing(outcome_death_flag)) {
-    outcome_death_flag <- defaults$outcome_death_flag
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis.outcome_death_flag')
-  }
-  fields <- c(fields, "outcome_death_flag")
-  values <- c(values, if (is.null(outcome_death_flag)) "NULL" else if (is(outcome_death_flag, "subQuery")) paste0("(", as.character(outcome_death_flag), ")") else paste0("'", as.character(outcome_death_flag), "'"))
-
-  if (missing(outcome_exacerbation_flag)) {
-    outcome_exacerbation_flag <- defaults$outcome_exacerbation_flag
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis.outcome_exacerbation_flag')
-  }
-  fields <- c(fields, "outcome_exacerbation_flag")
-  values <- c(values, if (is.null(outcome_exacerbation_flag)) "NULL" else if (is(outcome_exacerbation_flag, "subQuery")) paste0("(", as.character(outcome_exacerbation_flag), ")") else paste0("'", as.character(outcome_exacerbation_flag), "'"))
-
-  inserts <- list(testId = frameworkContext$testId, testDescription = frameworkContext$testDescription, table = "diagnosis", fields = fields, values = values)
   frameworkContext$inserts[[length(frameworkContext$inserts) + 1]] <- inserts
   invisible(NULL)
 }
@@ -2319,6 +2673,71 @@ add_material <- function(member_id, claim_id, statement_id, type_of_claim, month
   invisible(NULL)
 }
 
+add_material_master <- function(standardized_material_code, standardized_material_version, standardized_material_name, unit, material_category_large_classification_name, material_category_medium_classification_name, material_code) {
+  defaults <- get('material_master', envir = frameworkContext$defaultValues)
+  fields <- c()
+  values <- c()
+  if (missing(standardized_material_code)) {
+    standardized_material_code <- defaults$standardized_material_code
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'material_master.standardized_material_code')
+  }
+  fields <- c(fields, "standardized_material_code")
+  values <- c(values, if (is.null(standardized_material_code)) "NULL" else if (is(standardized_material_code, "subQuery")) paste0("(", as.character(standardized_material_code), ")") else paste0("'", as.character(standardized_material_code), "'"))
+
+  if (missing(standardized_material_version)) {
+    standardized_material_version <- defaults$standardized_material_version
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'material_master.standardized_material_version')
+  }
+  fields <- c(fields, "standardized_material_version")
+  values <- c(values, if (is.null(standardized_material_version)) "NULL" else if (is(standardized_material_version, "subQuery")) paste0("(", as.character(standardized_material_version), ")") else paste0("'", as.character(standardized_material_version), "'"))
+
+  if (missing(standardized_material_name)) {
+    standardized_material_name <- defaults$standardized_material_name
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'material_master.standardized_material_name')
+  }
+  fields <- c(fields, "standardized_material_name")
+  values <- c(values, if (is.null(standardized_material_name)) "NULL" else if (is(standardized_material_name, "subQuery")) paste0("(", as.character(standardized_material_name), ")") else paste0("'", as.character(standardized_material_name), "'"))
+
+  if (missing(unit)) {
+    unit <- defaults$unit
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'material_master.unit')
+  }
+  fields <- c(fields, "unit")
+  values <- c(values, if (is.null(unit)) "NULL" else if (is(unit, "subQuery")) paste0("(", as.character(unit), ")") else paste0("'", as.character(unit), "'"))
+
+  if (missing(material_category_large_classification_name)) {
+    material_category_large_classification_name <- defaults$material_category_large_classification_name
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'material_master.material_category_large_classification_name')
+  }
+  fields <- c(fields, "material_category_large_classification_name")
+  values <- c(values, if (is.null(material_category_large_classification_name)) "NULL" else if (is(material_category_large_classification_name, "subQuery")) paste0("(", as.character(material_category_large_classification_name), ")") else paste0("'", as.character(material_category_large_classification_name), "'"))
+
+  if (missing(material_category_medium_classification_name)) {
+    material_category_medium_classification_name <- defaults$material_category_medium_classification_name
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'material_master.material_category_medium_classification_name')
+  }
+  fields <- c(fields, "material_category_medium_classification_name")
+  values <- c(values, if (is.null(material_category_medium_classification_name)) "NULL" else if (is(material_category_medium_classification_name, "subQuery")) paste0("(", as.character(material_category_medium_classification_name), ")") else paste0("'", as.character(material_category_medium_classification_name), "'"))
+
+  if (missing(material_code)) {
+    material_code <- defaults$material_code
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'material_master.material_code')
+  }
+  fields <- c(fields, "material_code")
+  values <- c(values, if (is.null(material_code)) "NULL" else if (is(material_code, "subQuery")) paste0("(", as.character(material_code), ")") else paste0("'", as.character(material_code), "'"))
+
+  inserts <- list(testId = frameworkContext$testId, testDescription = frameworkContext$testDescription, table = "material_master", fields = fields, values = values)
+  frameworkContext$inserts[[length(frameworkContext$inserts) + 1]] <- inserts
+  invisible(NULL)
+}
+
 add_medical_facility <- function(medical_facility_id, number_of_beds, hpgp, large_classification_of_department, medium_classification_of_department, management_body, home_care_support_clinic, designated_cancer_care_hospitals, medical_institution_introducing_dpc, special_functioning_hospitals) {
   defaults <- get('medical_facility', envir = frameworkContext$defaultValues)
   fields <- c()
@@ -2408,14 +2827,14 @@ add_medical_facility <- function(medical_facility_id, number_of_beds, hpgp, larg
   invisible(NULL)
 }
 
-add_drug <- function(member_id, claim_id, statement_id, type_of_claim, month_and_year_of_medical_care, medical_facility_id, jmdc_drug_code, drug_name, drug_price, date_of_prescription, date_of_dispense, prescribed_amount_per_day, unit_of_administered_amount, administered_days, administered_amount, concurrent_id, as_needed_medication_flag, category_of_medical_care, cost_of_total_administrated_drug, pharmacy_charge, drug_charge, additional_charge, actual_point, total_point) {
-  defaults <- get('drug', envir = frameworkContext$defaultValues)
+add_procedure <- function(member_id, claim_id, statement_id, type_of_claim, month_and_year_of_medical_care, date_of_procedure, medical_facility_id, standardized_procedure_code, standardized_procedure_version, standardized_procedure_name, number_of_times, volume, volume_unit, concurrent_id, category_of_medical_care, procedure_standard_point, procedure_standard_additional_rate, procedure_standard_price, actual_point) {
+  defaults <- get('procedure', envir = frameworkContext$defaultValues)
   fields <- c()
   values <- c()
   if (missing(member_id)) {
     member_id <- defaults$member_id
   } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.member_id')
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'procedure.member_id')
   }
   fields <- c(fields, "member_id")
   values <- c(values, if (is.null(member_id)) "NULL" else if (is(member_id, "subQuery")) paste0("(", as.character(member_id), ")") else paste0("'", as.character(member_id), "'"))
@@ -2423,7 +2842,7 @@ add_drug <- function(member_id, claim_id, statement_id, type_of_claim, month_and
   if (missing(claim_id)) {
     claim_id <- defaults$claim_id
   } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.claim_id')
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'procedure.claim_id')
   }
   fields <- c(fields, "claim_id")
   values <- c(values, if (is.null(claim_id)) "NULL" else if (is(claim_id, "subQuery")) paste0("(", as.character(claim_id), ")") else paste0("'", as.character(claim_id), "'"))
@@ -2431,7 +2850,7 @@ add_drug <- function(member_id, claim_id, statement_id, type_of_claim, month_and
   if (missing(statement_id)) {
     statement_id <- defaults$statement_id
   } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.statement_id')
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'procedure.statement_id')
   }
   fields <- c(fields, "statement_id")
   values <- c(values, if (is.null(statement_id)) "NULL" else if (is(statement_id, "subQuery")) paste0("(", as.character(statement_id), ")") else paste0("'", as.character(statement_id), "'"))
@@ -2439,7 +2858,7 @@ add_drug <- function(member_id, claim_id, statement_id, type_of_claim, month_and
   if (missing(type_of_claim)) {
     type_of_claim <- defaults$type_of_claim
   } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.type_of_claim')
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'procedure.type_of_claim')
   }
   fields <- c(fields, "type_of_claim")
   values <- c(values, if (is.null(type_of_claim)) "NULL" else if (is(type_of_claim, "subQuery")) paste0("(", as.character(type_of_claim), ")") else paste0("'", as.character(type_of_claim), "'"))
@@ -2447,164 +2866,124 @@ add_drug <- function(member_id, claim_id, statement_id, type_of_claim, month_and
   if (missing(month_and_year_of_medical_care)) {
     month_and_year_of_medical_care <- defaults$month_and_year_of_medical_care
   } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.month_and_year_of_medical_care')
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'procedure.month_and_year_of_medical_care')
   }
   fields <- c(fields, "month_and_year_of_medical_care")
   values <- c(values, if (is.null(month_and_year_of_medical_care)) "NULL" else if (is(month_and_year_of_medical_care, "subQuery")) paste0("(", as.character(month_and_year_of_medical_care), ")") else paste0("'", as.character(month_and_year_of_medical_care), "'"))
 
+  if (missing(date_of_procedure)) {
+    date_of_procedure <- defaults$date_of_procedure
+  } else {
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'procedure.date_of_procedure')
+  }
+  fields <- c(fields, "date_of_procedure")
+  values <- c(values, if (is.null(date_of_procedure)) "NULL" else if (is(date_of_procedure, "subQuery")) paste0("(", as.character(date_of_procedure), ")") else paste0("'", as.character(date_of_procedure), "'"))
+
   if (missing(medical_facility_id)) {
     medical_facility_id <- defaults$medical_facility_id
   } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.medical_facility_id')
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'procedure.medical_facility_id')
   }
   fields <- c(fields, "medical_facility_id")
   values <- c(values, if (is.null(medical_facility_id)) "NULL" else if (is(medical_facility_id, "subQuery")) paste0("(", as.character(medical_facility_id), ")") else paste0("'", as.character(medical_facility_id), "'"))
 
-  if (missing(jmdc_drug_code)) {
-    jmdc_drug_code <- defaults$jmdc_drug_code
+  if (missing(standardized_procedure_code)) {
+    standardized_procedure_code <- defaults$standardized_procedure_code
   } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.jmdc_drug_code')
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'procedure.standardized_procedure_code')
   }
-  fields <- c(fields, "jmdc_drug_code")
-  values <- c(values, if (is.null(jmdc_drug_code)) "NULL" else if (is(jmdc_drug_code, "subQuery")) paste0("(", as.character(jmdc_drug_code), ")") else paste0("'", as.character(jmdc_drug_code), "'"))
+  fields <- c(fields, "standardized_procedure_code")
+  values <- c(values, if (is.null(standardized_procedure_code)) "NULL" else if (is(standardized_procedure_code, "subQuery")) paste0("(", as.character(standardized_procedure_code), ")") else paste0("'", as.character(standardized_procedure_code), "'"))
 
-  if (missing(drug_name)) {
-    drug_name <- defaults$drug_name
+  if (missing(standardized_procedure_version)) {
+    standardized_procedure_version <- defaults$standardized_procedure_version
   } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.drug_name')
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'procedure.standardized_procedure_version')
   }
-  fields <- c(fields, "drug_name")
-  values <- c(values, if (is.null(drug_name)) "NULL" else if (is(drug_name, "subQuery")) paste0("(", as.character(drug_name), ")") else paste0("'", as.character(drug_name), "'"))
+  fields <- c(fields, "standardized_procedure_version")
+  values <- c(values, if (is.null(standardized_procedure_version)) "NULL" else if (is(standardized_procedure_version, "subQuery")) paste0("(", as.character(standardized_procedure_version), ")") else paste0("'", as.character(standardized_procedure_version), "'"))
 
-  if (missing(drug_price)) {
-    drug_price <- defaults$drug_price
+  if (missing(standardized_procedure_name)) {
+    standardized_procedure_name <- defaults$standardized_procedure_name
   } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.drug_price')
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'procedure.standardized_procedure_name')
   }
-  fields <- c(fields, "drug_price")
-  values <- c(values, if (is.null(drug_price)) "NULL" else if (is(drug_price, "subQuery")) paste0("(", as.character(drug_price), ")") else paste0("'", as.character(drug_price), "'"))
+  fields <- c(fields, "standardized_procedure_name")
+  values <- c(values, if (is.null(standardized_procedure_name)) "NULL" else if (is(standardized_procedure_name, "subQuery")) paste0("(", as.character(standardized_procedure_name), ")") else paste0("'", as.character(standardized_procedure_name), "'"))
 
-  if (missing(date_of_prescription)) {
-    date_of_prescription <- defaults$date_of_prescription
+  if (missing(number_of_times)) {
+    number_of_times <- defaults$number_of_times
   } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.date_of_prescription')
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'procedure.number_of_times')
   }
-  fields <- c(fields, "date_of_prescription")
-  values <- c(values, if (is.null(date_of_prescription)) "NULL" else if (is(date_of_prescription, "subQuery")) paste0("(", as.character(date_of_prescription), ")") else paste0("'", as.character(date_of_prescription), "'"))
+  fields <- c(fields, "number_of_times")
+  values <- c(values, if (is.null(number_of_times)) "NULL" else if (is(number_of_times, "subQuery")) paste0("(", as.character(number_of_times), ")") else paste0("'", as.character(number_of_times), "'"))
 
-  if (missing(date_of_dispense)) {
-    date_of_dispense <- defaults$date_of_dispense
+  if (missing(volume)) {
+    volume <- defaults$volume
   } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.date_of_dispense')
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'procedure.volume')
   }
-  fields <- c(fields, "date_of_dispense")
-  values <- c(values, if (is.null(date_of_dispense)) "NULL" else if (is(date_of_dispense, "subQuery")) paste0("(", as.character(date_of_dispense), ")") else paste0("'", as.character(date_of_dispense), "'"))
+  fields <- c(fields, "volume")
+  values <- c(values, if (is.null(volume)) "NULL" else if (is(volume, "subQuery")) paste0("(", as.character(volume), ")") else paste0("'", as.character(volume), "'"))
 
-  if (missing(prescribed_amount_per_day)) {
-    prescribed_amount_per_day <- defaults$prescribed_amount_per_day
+  if (missing(volume_unit)) {
+    volume_unit <- defaults$volume_unit
   } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.prescribed_amount_per_day')
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'procedure.volume_unit')
   }
-  fields <- c(fields, "prescribed_amount_per_day")
-  values <- c(values, if (is.null(prescribed_amount_per_day)) "NULL" else if (is(prescribed_amount_per_day, "subQuery")) paste0("(", as.character(prescribed_amount_per_day), ")") else paste0("'", as.character(prescribed_amount_per_day), "'"))
-
-  if (missing(unit_of_administered_amount)) {
-    unit_of_administered_amount <- defaults$unit_of_administered_amount
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.unit_of_administered_amount')
-  }
-  fields <- c(fields, "unit_of_administered_amount")
-  values <- c(values, if (is.null(unit_of_administered_amount)) "NULL" else if (is(unit_of_administered_amount, "subQuery")) paste0("(", as.character(unit_of_administered_amount), ")") else paste0("'", as.character(unit_of_administered_amount), "'"))
-
-  if (missing(administered_days)) {
-    administered_days <- defaults$administered_days
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.administered_days')
-  }
-  fields <- c(fields, "administered_days")
-  values <- c(values, if (is.null(administered_days)) "NULL" else if (is(administered_days, "subQuery")) paste0("(", as.character(administered_days), ")") else paste0("'", as.character(administered_days), "'"))
-
-  if (missing(administered_amount)) {
-    administered_amount <- defaults$administered_amount
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.administered_amount')
-  }
-  fields <- c(fields, "administered_amount")
-  values <- c(values, if (is.null(administered_amount)) "NULL" else if (is(administered_amount, "subQuery")) paste0("(", as.character(administered_amount), ")") else paste0("'", as.character(administered_amount), "'"))
+  fields <- c(fields, "volume_unit")
+  values <- c(values, if (is.null(volume_unit)) "NULL" else if (is(volume_unit, "subQuery")) paste0("(", as.character(volume_unit), ")") else paste0("'", as.character(volume_unit), "'"))
 
   if (missing(concurrent_id)) {
     concurrent_id <- defaults$concurrent_id
   } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.concurrent_id')
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'procedure.concurrent_id')
   }
   fields <- c(fields, "concurrent_id")
   values <- c(values, if (is.null(concurrent_id)) "NULL" else if (is(concurrent_id, "subQuery")) paste0("(", as.character(concurrent_id), ")") else paste0("'", as.character(concurrent_id), "'"))
 
-  if (missing(as_needed_medication_flag)) {
-    as_needed_medication_flag <- defaults$as_needed_medication_flag
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.as_needed_medication_flag')
-  }
-  fields <- c(fields, "as_needed_medication_flag")
-  values <- c(values, if (is.null(as_needed_medication_flag)) "NULL" else if (is(as_needed_medication_flag, "subQuery")) paste0("(", as.character(as_needed_medication_flag), ")") else paste0("'", as.character(as_needed_medication_flag), "'"))
-
   if (missing(category_of_medical_care)) {
     category_of_medical_care <- defaults$category_of_medical_care
   } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.category_of_medical_care')
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'procedure.category_of_medical_care')
   }
   fields <- c(fields, "category_of_medical_care")
   values <- c(values, if (is.null(category_of_medical_care)) "NULL" else if (is(category_of_medical_care, "subQuery")) paste0("(", as.character(category_of_medical_care), ")") else paste0("'", as.character(category_of_medical_care), "'"))
 
-  if (missing(cost_of_total_administrated_drug)) {
-    cost_of_total_administrated_drug <- defaults$cost_of_total_administrated_drug
+  if (missing(procedure_standard_point)) {
+    procedure_standard_point <- defaults$procedure_standard_point
   } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.cost_of_total_administrated_drug')
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'procedure.procedure_standard_point')
   }
-  fields <- c(fields, "cost_of_total_administrated_drug")
-  values <- c(values, if (is.null(cost_of_total_administrated_drug)) "NULL" else if (is(cost_of_total_administrated_drug, "subQuery")) paste0("(", as.character(cost_of_total_administrated_drug), ")") else paste0("'", as.character(cost_of_total_administrated_drug), "'"))
+  fields <- c(fields, "procedure_standard_point")
+  values <- c(values, if (is.null(procedure_standard_point)) "NULL" else if (is(procedure_standard_point, "subQuery")) paste0("(", as.character(procedure_standard_point), ")") else paste0("'", as.character(procedure_standard_point), "'"))
 
-  if (missing(pharmacy_charge)) {
-    pharmacy_charge <- defaults$pharmacy_charge
+  if (missing(procedure_standard_additional_rate)) {
+    procedure_standard_additional_rate <- defaults$procedure_standard_additional_rate
   } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.pharmacy_charge')
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'procedure.procedure_standard_additional_rate')
   }
-  fields <- c(fields, "pharmacy_charge")
-  values <- c(values, if (is.null(pharmacy_charge)) "NULL" else if (is(pharmacy_charge, "subQuery")) paste0("(", as.character(pharmacy_charge), ")") else paste0("'", as.character(pharmacy_charge), "'"))
+  fields <- c(fields, "procedure_standard_additional_rate")
+  values <- c(values, if (is.null(procedure_standard_additional_rate)) "NULL" else if (is(procedure_standard_additional_rate, "subQuery")) paste0("(", as.character(procedure_standard_additional_rate), ")") else paste0("'", as.character(procedure_standard_additional_rate), "'"))
 
-  if (missing(drug_charge)) {
-    drug_charge <- defaults$drug_charge
+  if (missing(procedure_standard_price)) {
+    procedure_standard_price <- defaults$procedure_standard_price
   } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.drug_charge')
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'procedure.procedure_standard_price')
   }
-  fields <- c(fields, "drug_charge")
-  values <- c(values, if (is.null(drug_charge)) "NULL" else if (is(drug_charge, "subQuery")) paste0("(", as.character(drug_charge), ")") else paste0("'", as.character(drug_charge), "'"))
-
-  if (missing(additional_charge)) {
-    additional_charge <- defaults$additional_charge
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.additional_charge')
-  }
-  fields <- c(fields, "additional_charge")
-  values <- c(values, if (is.null(additional_charge)) "NULL" else if (is(additional_charge, "subQuery")) paste0("(", as.character(additional_charge), ")") else paste0("'", as.character(additional_charge), "'"))
+  fields <- c(fields, "procedure_standard_price")
+  values <- c(values, if (is.null(procedure_standard_price)) "NULL" else if (is(procedure_standard_price, "subQuery")) paste0("(", as.character(procedure_standard_price), ")") else paste0("'", as.character(procedure_standard_price), "'"))
 
   if (missing(actual_point)) {
     actual_point <- defaults$actual_point
   } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.actual_point')
+    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'procedure.actual_point')
   }
   fields <- c(fields, "actual_point")
   values <- c(values, if (is.null(actual_point)) "NULL" else if (is(actual_point, "subQuery")) paste0("(", as.character(actual_point), ")") else paste0("'", as.character(actual_point), "'"))
 
-  if (missing(total_point)) {
-    total_point <- defaults$total_point
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'drug.total_point')
-  }
-  fields <- c(fields, "total_point")
-  values <- c(values, if (is.null(total_point)) "NULL" else if (is(total_point, "subQuery")) paste0("(", as.character(total_point), ")") else paste0("'", as.character(total_point), "'"))
-
-  inserts <- list(testId = frameworkContext$testId, testDescription = frameworkContext$testDescription, table = "drug", fields = fields, values = values)
+  inserts <- list(testId = frameworkContext$testId, testDescription = frameworkContext$testDescription, table = "procedure", fields = fields, values = values)
   frameworkContext$inserts[[length(frameworkContext$inserts) + 1]] <- inserts
   invisible(NULL)
 }
@@ -2702,240 +3081,6 @@ add_procedure_master <- function(standardized_procedure_code, standardized_proce
   values <- c(values, if (is.null(icd9cm_level3)) "NULL" else if (is(icd9cm_level3, "subQuery")) paste0("(", as.character(icd9cm_level3), ")") else paste0("'", as.character(icd9cm_level3), "'"))
 
   inserts <- list(testId = frameworkContext$testId, testDescription = frameworkContext$testDescription, table = "procedure_master", fields = fields, values = values)
-  frameworkContext$inserts[[length(frameworkContext$inserts) + 1]] <- inserts
-  invisible(NULL)
-}
-
-add_diagnosis_master <- function(standard_disease_code, standard_disease_name, icd10_level1_code, icd10_level1_name, icd10_level2_code, icd10_level2_name, icd10_level3_code, icd10_level3_name, icd10_level4_code, icd10_level4_name) {
-  defaults <- get('diagnosis_master', envir = frameworkContext$defaultValues)
-  fields <- c()
-  values <- c()
-  if (missing(standard_disease_code)) {
-    standard_disease_code <- defaults$standard_disease_code
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis_master.standard_disease_code')
-  }
-  fields <- c(fields, "standard_disease_code")
-  values <- c(values, if (is.null(standard_disease_code)) "NULL" else if (is(standard_disease_code, "subQuery")) paste0("(", as.character(standard_disease_code), ")") else paste0("'", as.character(standard_disease_code), "'"))
-
-  if (missing(standard_disease_name)) {
-    standard_disease_name <- defaults$standard_disease_name
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis_master.standard_disease_name')
-  }
-  fields <- c(fields, "standard_disease_name")
-  values <- c(values, if (is.null(standard_disease_name)) "NULL" else if (is(standard_disease_name, "subQuery")) paste0("(", as.character(standard_disease_name), ")") else paste0("'", as.character(standard_disease_name), "'"))
-
-  if (missing(icd10_level1_code)) {
-    icd10_level1_code <- defaults$icd10_level1_code
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis_master.icd10_level1_code')
-  }
-  fields <- c(fields, "icd10_level1_code")
-  values <- c(values, if (is.null(icd10_level1_code)) "NULL" else if (is(icd10_level1_code, "subQuery")) paste0("(", as.character(icd10_level1_code), ")") else paste0("'", as.character(icd10_level1_code), "'"))
-
-  if (missing(icd10_level1_name)) {
-    icd10_level1_name <- defaults$icd10_level1_name
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis_master.icd10_level1_name')
-  }
-  fields <- c(fields, "icd10_level1_name")
-  values <- c(values, if (is.null(icd10_level1_name)) "NULL" else if (is(icd10_level1_name, "subQuery")) paste0("(", as.character(icd10_level1_name), ")") else paste0("'", as.character(icd10_level1_name), "'"))
-
-  if (missing(icd10_level2_code)) {
-    icd10_level2_code <- defaults$icd10_level2_code
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis_master.icd10_level2_code')
-  }
-  fields <- c(fields, "icd10_level2_code")
-  values <- c(values, if (is.null(icd10_level2_code)) "NULL" else if (is(icd10_level2_code, "subQuery")) paste0("(", as.character(icd10_level2_code), ")") else paste0("'", as.character(icd10_level2_code), "'"))
-
-  if (missing(icd10_level2_name)) {
-    icd10_level2_name <- defaults$icd10_level2_name
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis_master.icd10_level2_name')
-  }
-  fields <- c(fields, "icd10_level2_name")
-  values <- c(values, if (is.null(icd10_level2_name)) "NULL" else if (is(icd10_level2_name, "subQuery")) paste0("(", as.character(icd10_level2_name), ")") else paste0("'", as.character(icd10_level2_name), "'"))
-
-  if (missing(icd10_level3_code)) {
-    icd10_level3_code <- defaults$icd10_level3_code
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis_master.icd10_level3_code')
-  }
-  fields <- c(fields, "icd10_level3_code")
-  values <- c(values, if (is.null(icd10_level3_code)) "NULL" else if (is(icd10_level3_code, "subQuery")) paste0("(", as.character(icd10_level3_code), ")") else paste0("'", as.character(icd10_level3_code), "'"))
-
-  if (missing(icd10_level3_name)) {
-    icd10_level3_name <- defaults$icd10_level3_name
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis_master.icd10_level3_name')
-  }
-  fields <- c(fields, "icd10_level3_name")
-  values <- c(values, if (is.null(icd10_level3_name)) "NULL" else if (is(icd10_level3_name, "subQuery")) paste0("(", as.character(icd10_level3_name), ")") else paste0("'", as.character(icd10_level3_name), "'"))
-
-  if (missing(icd10_level4_code)) {
-    icd10_level4_code <- defaults$icd10_level4_code
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis_master.icd10_level4_code')
-  }
-  fields <- c(fields, "icd10_level4_code")
-  values <- c(values, if (is.null(icd10_level4_code)) "NULL" else if (is(icd10_level4_code, "subQuery")) paste0("(", as.character(icd10_level4_code), ")") else paste0("'", as.character(icd10_level4_code), "'"))
-
-  if (missing(icd10_level4_name)) {
-    icd10_level4_name <- defaults$icd10_level4_name
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'diagnosis_master.icd10_level4_name')
-  }
-  fields <- c(fields, "icd10_level4_name")
-  values <- c(values, if (is.null(icd10_level4_name)) "NULL" else if (is(icd10_level4_name, "subQuery")) paste0("(", as.character(icd10_level4_name), ")") else paste0("'", as.character(icd10_level4_name), "'"))
-
-  inserts <- list(testId = frameworkContext$testId, testDescription = frameworkContext$testDescription, table = "diagnosis_master", fields = fields, values = values)
-  frameworkContext$inserts[[length(frameworkContext$inserts) + 1]] <- inserts
-  invisible(NULL)
-}
-
-add_procedure <- function(member_id, claim_id, statement_id, type_of_claim, month_and_year_of_medical_care, date_of_procedure, medical_facility_id, standardized_procedure_code, standardized_procedure_version, standardized_procedure_name, number_of_times, concurrent_id, category_of_medical_care, procedure_standard_point, procedure_standard_additional_rate, procedure_standard_price, actual_point) {
-  defaults <- get('procedure', envir = frameworkContext$defaultValues)
-  fields <- c()
-  values <- c()
-  if (missing(member_id)) {
-    member_id <- defaults$member_id
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'procedure.member_id')
-  }
-  fields <- c(fields, "member_id")
-  values <- c(values, if (is.null(member_id)) "NULL" else if (is(member_id, "subQuery")) paste0("(", as.character(member_id), ")") else paste0("'", as.character(member_id), "'"))
-
-  if (missing(claim_id)) {
-    claim_id <- defaults$claim_id
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'procedure.claim_id')
-  }
-  fields <- c(fields, "claim_id")
-  values <- c(values, if (is.null(claim_id)) "NULL" else if (is(claim_id, "subQuery")) paste0("(", as.character(claim_id), ")") else paste0("'", as.character(claim_id), "'"))
-
-  if (missing(statement_id)) {
-    statement_id <- defaults$statement_id
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'procedure.statement_id')
-  }
-  fields <- c(fields, "statement_id")
-  values <- c(values, if (is.null(statement_id)) "NULL" else if (is(statement_id, "subQuery")) paste0("(", as.character(statement_id), ")") else paste0("'", as.character(statement_id), "'"))
-
-  if (missing(type_of_claim)) {
-    type_of_claim <- defaults$type_of_claim
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'procedure.type_of_claim')
-  }
-  fields <- c(fields, "type_of_claim")
-  values <- c(values, if (is.null(type_of_claim)) "NULL" else if (is(type_of_claim, "subQuery")) paste0("(", as.character(type_of_claim), ")") else paste0("'", as.character(type_of_claim), "'"))
-
-  if (missing(month_and_year_of_medical_care)) {
-    month_and_year_of_medical_care <- defaults$month_and_year_of_medical_care
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'procedure.month_and_year_of_medical_care')
-  }
-  fields <- c(fields, "month_and_year_of_medical_care")
-  values <- c(values, if (is.null(month_and_year_of_medical_care)) "NULL" else if (is(month_and_year_of_medical_care, "subQuery")) paste0("(", as.character(month_and_year_of_medical_care), ")") else paste0("'", as.character(month_and_year_of_medical_care), "'"))
-
-  if (missing(date_of_procedure)) {
-    date_of_procedure <- defaults$date_of_procedure
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'procedure.date_of_procedure')
-  }
-  fields <- c(fields, "date_of_procedure")
-  values <- c(values, if (is.null(date_of_procedure)) "NULL" else if (is(date_of_procedure, "subQuery")) paste0("(", as.character(date_of_procedure), ")") else paste0("'", as.character(date_of_procedure), "'"))
-
-  if (missing(medical_facility_id)) {
-    medical_facility_id <- defaults$medical_facility_id
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'procedure.medical_facility_id')
-  }
-  fields <- c(fields, "medical_facility_id")
-  values <- c(values, if (is.null(medical_facility_id)) "NULL" else if (is(medical_facility_id, "subQuery")) paste0("(", as.character(medical_facility_id), ")") else paste0("'", as.character(medical_facility_id), "'"))
-
-  if (missing(standardized_procedure_code)) {
-    standardized_procedure_code <- defaults$standardized_procedure_code
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'procedure.standardized_procedure_code')
-  }
-  fields <- c(fields, "standardized_procedure_code")
-  values <- c(values, if (is.null(standardized_procedure_code)) "NULL" else if (is(standardized_procedure_code, "subQuery")) paste0("(", as.character(standardized_procedure_code), ")") else paste0("'", as.character(standardized_procedure_code), "'"))
-
-  if (missing(standardized_procedure_version)) {
-    standardized_procedure_version <- defaults$standardized_procedure_version
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'procedure.standardized_procedure_version')
-  }
-  fields <- c(fields, "standardized_procedure_version")
-  values <- c(values, if (is.null(standardized_procedure_version)) "NULL" else if (is(standardized_procedure_version, "subQuery")) paste0("(", as.character(standardized_procedure_version), ")") else paste0("'", as.character(standardized_procedure_version), "'"))
-
-  if (missing(standardized_procedure_name)) {
-    standardized_procedure_name <- defaults$standardized_procedure_name
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'procedure.standardized_procedure_name')
-  }
-  fields <- c(fields, "standardized_procedure_name")
-  values <- c(values, if (is.null(standardized_procedure_name)) "NULL" else if (is(standardized_procedure_name, "subQuery")) paste0("(", as.character(standardized_procedure_name), ")") else paste0("'", as.character(standardized_procedure_name), "'"))
-
-  if (missing(number_of_times)) {
-    number_of_times <- defaults$number_of_times
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'procedure.number_of_times')
-  }
-  fields <- c(fields, "number_of_times")
-  values <- c(values, if (is.null(number_of_times)) "NULL" else if (is(number_of_times, "subQuery")) paste0("(", as.character(number_of_times), ")") else paste0("'", as.character(number_of_times), "'"))
-
-  if (missing(concurrent_id)) {
-    concurrent_id <- defaults$concurrent_id
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'procedure.concurrent_id')
-  }
-  fields <- c(fields, "concurrent_id")
-  values <- c(values, if (is.null(concurrent_id)) "NULL" else if (is(concurrent_id, "subQuery")) paste0("(", as.character(concurrent_id), ")") else paste0("'", as.character(concurrent_id), "'"))
-
-  if (missing(category_of_medical_care)) {
-    category_of_medical_care <- defaults$category_of_medical_care
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'procedure.category_of_medical_care')
-  }
-  fields <- c(fields, "category_of_medical_care")
-  values <- c(values, if (is.null(category_of_medical_care)) "NULL" else if (is(category_of_medical_care, "subQuery")) paste0("(", as.character(category_of_medical_care), ")") else paste0("'", as.character(category_of_medical_care), "'"))
-
-  if (missing(procedure_standard_point)) {
-    procedure_standard_point <- defaults$procedure_standard_point
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'procedure.procedure_standard_point')
-  }
-  fields <- c(fields, "procedure_standard_point")
-  values <- c(values, if (is.null(procedure_standard_point)) "NULL" else if (is(procedure_standard_point, "subQuery")) paste0("(", as.character(procedure_standard_point), ")") else paste0("'", as.character(procedure_standard_point), "'"))
-
-  if (missing(procedure_standard_additional_rate)) {
-    procedure_standard_additional_rate <- defaults$procedure_standard_additional_rate
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'procedure.procedure_standard_additional_rate')
-  }
-  fields <- c(fields, "procedure_standard_additional_rate")
-  values <- c(values, if (is.null(procedure_standard_additional_rate)) "NULL" else if (is(procedure_standard_additional_rate, "subQuery")) paste0("(", as.character(procedure_standard_additional_rate), ")") else paste0("'", as.character(procedure_standard_additional_rate), "'"))
-
-  if (missing(procedure_standard_price)) {
-    procedure_standard_price <- defaults$procedure_standard_price
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'procedure.procedure_standard_price')
-  }
-  fields <- c(fields, "procedure_standard_price")
-  values <- c(values, if (is.null(procedure_standard_price)) "NULL" else if (is(procedure_standard_price, "subQuery")) paste0("(", as.character(procedure_standard_price), ")") else paste0("'", as.character(procedure_standard_price), "'"))
-
-  if (missing(actual_point)) {
-    actual_point <- defaults$actual_point
-  } else {
-    frameworkContext$sourceFieldsTested <- c(frameworkContext$sourceFieldsTested, 'procedure.actual_point')
-  }
-  fields <- c(fields, "actual_point")
-  values <- c(values, if (is.null(actual_point)) "NULL" else if (is(actual_point, "subQuery")) paste0("(", as.character(actual_point), ")") else paste0("'", as.character(actual_point), "'"))
-
-  inserts <- list(testId = frameworkContext$testId, testDescription = frameworkContext$testDescription, table = "procedure", fields = fields, values = values)
   frameworkContext$inserts[[length(frameworkContext$inserts) + 1]] <- inserts
   invisible(NULL)
 }
@@ -13518,16 +13663,16 @@ generateInsertSql <- function(databaseSchema = NULL) {
   insertSql <- c()
   insertSql <- c(insertSql, "TRUNCATE TABLE @cdm_database_schema.annual_health_checkup;")
   insertSql <- c(insertSql, "TRUNCATE TABLE @cdm_database_schema.claim;")
-  insertSql <- c(insertSql, "TRUNCATE TABLE @cdm_database_schema.material_master;")
+  insertSql <- c(insertSql, "TRUNCATE TABLE @cdm_database_schema.diagnosis;")
+  insertSql <- c(insertSql, "TRUNCATE TABLE @cdm_database_schema.diagnosis_master;")
+  insertSql <- c(insertSql, "TRUNCATE TABLE @cdm_database_schema.drug;")
   insertSql <- c(insertSql, "TRUNCATE TABLE @cdm_database_schema.drug_master;")
   insertSql <- c(insertSql, "TRUNCATE TABLE @cdm_database_schema.enrollment;")
-  insertSql <- c(insertSql, "TRUNCATE TABLE @cdm_database_schema.diagnosis;")
   insertSql <- c(insertSql, "TRUNCATE TABLE @cdm_database_schema.material;")
+  insertSql <- c(insertSql, "TRUNCATE TABLE @cdm_database_schema.material_master;")
   insertSql <- c(insertSql, "TRUNCATE TABLE @cdm_database_schema.medical_facility;")
-  insertSql <- c(insertSql, "TRUNCATE TABLE @cdm_database_schema.drug;")
-  insertSql <- c(insertSql, "TRUNCATE TABLE @cdm_database_schema.procedure_master;")
-  insertSql <- c(insertSql, "TRUNCATE TABLE @cdm_database_schema.diagnosis_master;")
   insertSql <- c(insertSql, "TRUNCATE TABLE @cdm_database_schema.procedure;")
+  insertSql <- c(insertSql, "TRUNCATE TABLE @cdm_database_schema.procedure_master;")
   createInsertStatement <- function(insert, env) {
     s <- c()
     if (env$testId != insert$testId) {

@@ -24,10 +24,10 @@ createPersonTests <- function()
 
   # 3) - invalid: crd > deathdate
   patient <- createPatient();
-  declareTest(id = patient$person_id, "invalid: delete because crd 2013-01-01 > deathdate 2012-01-01")
+  declareTest(id = patient$person_id, "Remove any death dates that occur prior to any observation_period_start_date 2013-01-01 > deathdate 2012-01-01")
   add_patient(patid=patient$patid,gender=1, yob=199, mob=1, accept=1, crd='2013-01-01', deathdate='2012-01-01', tod=NULL,
               pracid=patient$pracid)
-  expect_no_person(person_id = lookup_person("person_id", person_source_value = patient$person_id))
+  expect_no_death(person_id = lookup_person("person_id", person_source_value = patient$person_id))
 
 
   # 4) - invalid: crd > todate

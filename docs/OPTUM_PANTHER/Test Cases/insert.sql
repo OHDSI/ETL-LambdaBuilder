@@ -35,7 +35,6 @@ TRUNCATE TABLE optum_panther_native_test.microbiology;
 TRUNCATE TABLE optum_panther_native_test.diagnosis;
 TRUNCATE TABLE optum_panther_native_test.onc_biomarker;
 TRUNCATE TABLE optum_panther_native_test._version;
-TRUNCATE TABLE optum_panther_native_test.allergy;
 TRUNCATE TABLE optum_panther_native_test.nlp_measurement;
 TRUNCATE TABLE optum_panther_native_test.nlp_drug_rationale;
 TRUNCATE TABLE optum_panther_native_test.nlp_sds_family;
