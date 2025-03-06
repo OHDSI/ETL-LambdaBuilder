@@ -328,7 +328,7 @@ setDefaults <- function (){
       disdate = '2024-12-01', 
       dobyr = 1989, 
       drg = 123, 
-      dstatus = 'DC', 
+      dstatus = '01', 
       dx1 = 'A123', 
       dx10 = 'A345', 
       dx11 = 'A567', 

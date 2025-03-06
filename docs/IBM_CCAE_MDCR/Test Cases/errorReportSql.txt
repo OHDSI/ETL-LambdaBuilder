@@ -2,10 +2,11 @@ DBMS:
 redshift
 
 Error:
-com.amazon.redshift.util.RedshiftException: ERROR: invalid input syntax for integer: ""
+com.amazon.redshift.util.RedshiftException: ERROR: syntax error at or near "IF" in context "IF", at line 1
+  Position: 1
 
 SQL:
-INSERT INTO ccae_tests_native.lab(enrolid, seqnum, abnormal, agegrp, eeclass, eestatu, eidflag, emprel, enrflag, hlthplan, indstry, mhsacovg, phyflag, proctyp, region, rx, sex, egeoloc, mdc, version, resltcat, dx1, proc1, pddate, svcdate, msa, orderid, provid, refhigh, reflow, result, testcnt, dobyr, plankey, stdprov, wgtkey, year, age, datatyp, plantyp, stdplac, loinccd, resunit, efamid, dxver, medadv) VALUES ('4', '', 'N', '5', '9', '9', '1', '1', '1', '1', ' ', '1', '1', '1', '3', '1', '2', '12', '00', '10', '   ', '       ', '       ', '', '2012-03-07', '35614', '4101', '', '0.0', '0.0', '0.0', '1', '1957', '', '930', '', '2012', '57', '1', '6', '81', '99999', '', '', ' ', '')
+IF OBJECT_ID('ccae_tests_cdm.test_results', 'U') IS NOT NULL DROP TABLE ccae_tests_cdm.test_results
 
 R version:
 R version 4.3.3 (2024-02-29 ucrt)
