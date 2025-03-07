@@ -20,7 +20,7 @@ payer\_plan\_period\_id|family\_id|use the family\_id by removing the "M" and co
 person\_id|member\_id| | 
 payer\_plan\_period\_start\_date|observation_start | | 
 payer\_plan\_period\_end\_date| observation_end | |
-payer\_concept\_id| type_of_insurance | Map using the following logic: <br>4 (National health insurance scheme) = 32725(National Health Insurance Program) </br> else 0 (No Matching Concept)</br> | 
+payer\_concept\_id| type_of_insurance | Map using the following logic: <br>4 (National health insurance scheme) = 32725(National Health Insurance Program) </br><br> 1 (Association/union administered health insurance) = 0 </br> <br> 2 (Mutual aid association insurance) = 0 </br> <br> 5 (Advanced elderly medical service system) = 0 </br> | 
 payer\_source\_value| type_of_insurance| | 
 payer\_source\_concept\_id| 0 | | 
 plan\_concept\_id| | | 
