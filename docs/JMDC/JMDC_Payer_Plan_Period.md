@@ -18,11 +18,11 @@ The enrollment table has a new field 'family_id'. This can be used to link perso
 :-----|-----:|:-----:|:-----:
 payer\_plan\_period\_id|family\_id|use the family\_id by removing the "M" and convert into an integer| 
 person\_id|member\_id| | 
-payer\_plan\_period\_start\_date| | | 
-payer\_plan\_period\_end\_date| | | 
-payer\_concept\_id| | | 
-payer\_source\_value| | | 
-payer\_source\_concept\_id| | | 
+payer\_plan\_period\_start\_date|observation_start | | 
+payer\_plan\_period\_end\_date| observation_end | |
+payer\_concept\_id| type_of_insurance | Map using the following logic: <br>4 (National health insurance scheme) = 32725(National Health Insurance Program) </br> else 0 (No Matching Concept)</br> | 
+payer\_source\_value| type_of_insurance| | 
+payer\_source\_concept\_id| 0 | | 
 plan\_concept\_id| | | 
 plan\_source\_value| | | 
 plan\_source\_concept\_id| | | 
@@ -33,3 +33,8 @@ family\_source\_value|family\_id| |
 stop\_reason\_concept\_id| | | 
 stop\_reason\_source\_value| | | 
 stop\_reason\_source\_concept\_id| | | 
+
+## Change Log
+
+### March 7, 2025
+- Update logic to map type_of_insurance and add in payer start/end dates
