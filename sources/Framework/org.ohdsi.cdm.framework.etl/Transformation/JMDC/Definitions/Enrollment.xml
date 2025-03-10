@@ -21,7 +21,12 @@
 		case
 		when family_id != '' then cast(replace(family_id, 'M', '') as int)
 		else 0
-		end as payerplan_id
+		end as payerplan_id,
+		type_of_insurance,
+		case
+		when type_of_insurance = 4 then 32725
+		else 0
+		end payer_concept_id
 		FROM {sc}.Enrollment e
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND e.Member_ID = ch.PERSON_SOURCE_VALUE
 		), a2 as
@@ -67,6 +72,13 @@
       <StartDate>observation_period_start_date</StartDate>
       <EndDate>observation_period_end_date</EndDate>
       <FamilySource>family_id</FamilySource>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field conceptId="payer_concept_id" key="type_of_insurance" sourceKey="type_of_insurance" defaultTypeId="0"/>
+					</Fields>
+				</Concept>
+			</Concepts>
     </PayerPlanPeriodDefinition>
   </PayerPlanPeriods>
   <Death>
