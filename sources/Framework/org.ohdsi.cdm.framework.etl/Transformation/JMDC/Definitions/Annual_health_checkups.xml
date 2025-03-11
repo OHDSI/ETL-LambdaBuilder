@@ -1,5 +1,5 @@
 ﻿<QueryDefinition>
-	<Query database="none">
+	<Query>
 		SELECT
 		CAST(RIGHT(Member_ID, LEN(Member_ID) - 1) AS BIGINT) AS person_id,
 		date_of_health_checkup AS observation_date,
@@ -210,25 +210,25 @@
 		END AS night_meal,
 
 		CASE
-		WHEN Eating_habit IS NULL
+		WHEN eating_habit_breakfast IS NULL
 		THEN NULL
-		WHEN Eating_habit = 1
+		WHEN eating_habit_breakfast = 1
 		THEN 'yes'
 		ELSE 'no'
 		END AS Skip_breakfast,
 
 		CASE
-		WHEN Drinking_habit IS NULL
+		WHEN drinking_habit_until_mar_24 IS NULL and drinking_habit_after_apr_24 IS NULL
 		THEN NULL
-		WHEN Drinking_habit = 1
+		WHEN drinking_habit_until_mar_24 = 1 or drinking_habit_after_apr_24 = 1
 		THEN 'everyday'
-		WHEN Drinking_habit = 2
+		WHEN drinking_habit_until_mar_24 = 2 or drinking_habit_after_apr_24 = 2
 		THEN 'sometimes'
 		ELSE 'rare'
 		END AS Drinking_habits,
 
 		ecg as Electrocardiogram,
-		
+
 		CASE
 		WHEN ecg IS NULL THEN 0
 		ELSE 1
@@ -251,25 +251,25 @@
 		END AS ecg_concept_name,
 
 		CASE
-		WHEN Smoking_habit IS NULL
+		WHEN smoking_habit_until_mar_24 IS NULL and smoking_habit_after_apr_24 IS NULL
 		THEN NULL
-		WHEN Smoking_habit = 1
+		WHEN smoking_habit_until_mar_24 = 1 or smoking_habit_after_apr_24 = 1
 		THEN 4188539
 		ELSE 4188540
 		END AS Smoking_habits_value,
 
 		CASE
-		WHEN Smoking_habit IS NULL
+		WHEN smoking_habit_until_mar_24 IS NULL and smoking_habit_after_apr_24 IS NULL
 		THEN NULL
-		WHEN Smoking_habit = 1
+		WHEN smoking_habit_until_mar_24 = 1 or smoking_habit_after_apr_24 = 1
 		THEN 4298794
 		ELSE 4222303
 		END AS Smoking_habit_concept_id,
 
 		CASE
-		WHEN Smoking_habit IS NULL
+		WHEN smoking_habit_until_mar_24 IS NULL and smoking_habit_after_apr_24 IS NULL
 		THEN NULL
-		WHEN Smoking_habit = 1
+		WHEN smoking_habit_until_mar_24 = 1 or smoking_habit_after_apr_24 = 1
 		THEN 'Smoker'
 		ELSE 'Non-smoker'
 		END AS Smoking_habit_concept_name,
