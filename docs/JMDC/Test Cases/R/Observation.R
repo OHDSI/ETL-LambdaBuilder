@@ -38,8 +38,8 @@ createObservationTests <- function () {
 	add_diagnosis(member_id = "M000001106", claim_id = "C000000001106", standard_disease_code = 4) # Personal history of psychological trauma, not elsewhere classified
 	expect_observation(person_id = 1106, visit_occurrence_id = 1106, observation_date = "2010-01-15")
 
-	# declareTest(1107, "Observation from checkup")
-	# add_enrollment(member_id = "M000001107")
-	# add_annual_health_checkup(member_id = "M000001107", sleep = 2, date_of_health_checkup =  "2010-01-13")
-	# expect_observation(person_id = 1107, observation_date = "2010-01-13", observation_concept_id = 40764749, value_as_concept_id = 4188540)
+	declareTest(1107, "Observation from checkup")
+	add_enrollment(member_id = "M000001107")
+	add_annual_health_checkup(member_id = "M000001107", sleep = 2, date_of_health_checkup =  "2010-01-13")
+	expect_observation(person_id = 1107, observation_date = "2010-01-13", observation_concept_id = 40764749, value_as_concept_id = 4188540)
 }	
