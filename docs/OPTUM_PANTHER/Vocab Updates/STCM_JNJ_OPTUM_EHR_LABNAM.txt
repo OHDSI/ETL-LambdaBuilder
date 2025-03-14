@@ -213,8 +213,8 @@ Blast.absolute	0	JNJ_OPTUM_EHR_LABNAM	Blast.absolute	40768447	LOINC	2013-01-06	2
 Blast.absolute	0	JNJ_OPTUM_EHR_LABNAM	"Count of myeloblasts or myeloid blasts (""blast"" cells) (a type of WBC) per volume analyzed"	3005105	LOINC	2024-03-06	2099-12-31	
 Blast.percent	0	JNJ_OPTUM_EHR_LABNAM	Blast.percent	3023173	LOINC	2013-01-06	2024-03-13	D
 Blast.percent	0	JNJ_OPTUM_EHR_LABNAM	Calculate % of Blast cells to other WBCs per 100 cells counted	3025159	LOINC	2024-03-06	2099-12-31	
-Blood urea nitrogen (BUN)	0	JNJ_OPTUM_EHR_LABNAM	Blood urea nitrogen (BUN)	4017361	SNOMED	2023-01-20	2024-03-13	D
 Blood urea nitrogen (BUN)	0	JNJ_OPTUM_EHR_LABNAM	Blood urea nitrogen (BUN)	3051542	LOINC	2013-01-06	2024-03-13	D
+Blood urea nitrogen (BUN)	0	JNJ_OPTUM_EHR_LABNAM	Blood urea nitrogen (BUN)	4017361	SNOMED	2023-01-20	2024-03-13	D
 Blood urea nitrogen (BUN)	0	JNJ_OPTUM_EHR_LABNAM	Assess basic kidney function	3004295	LOINC	2024-03-06	2099-12-31	
 Blood urea nitrogen/creatinine ratio (BUN/CREA)	0	JNJ_OPTUM_EHR_LABNAM	Blood urea nitrogen/creatinine ratio (BUN/CREA)	3046485	LOINC	2013-01-06	2099-12-31	
 Blood.urine.dipstick	0	JNJ_OPTUM_EHR_LABNAM	Blood.urine.dipstick	3035350	LOINC	2013-01-06	2024-03-13	D
@@ -408,8 +408,8 @@ Complement C3.quantitative	0	JNJ_OPTUM_EHR_LABNAM	Complement C3.quantitative	302
 Complement C3.quantitative	0	JNJ_OPTUM_EHR_LABNAM	Measures the amount of C3 complement proteins in your blood; used to determine how severe a disease is and to monitor effectiveness of treatment	3000620	LOINC	2024-03-06	2099-12-31	
 Complement C4.quantitative	0	JNJ_OPTUM_EHR_LABNAM	Complement C4.quantitative	3052973	LOINC	2013-01-06	2024-03-13	D
 Complement C4.quantitative	0	JNJ_OPTUM_EHR_LABNAM	Measures the amount of C4 complement proteins in your blood; used to determine how severe a disease is and to monitor effectiveness of treatment	3017766	LOINC	2024-03-06	2099-12-31	
-Complement CH50.total	0	JNJ_OPTUM_EHR_LABNAM	Complement CH50.total	44806481	SNOMED	2023-01-20	2024-03-13	D
 Complement CH50.total	0	JNJ_OPTUM_EHR_LABNAM	Complement CH50.total	40758577	LOINC	2013-01-06	2024-03-13	D
+Complement CH50.total	0	JNJ_OPTUM_EHR_LABNAM	Complement CH50.total	44806481	SNOMED	2023-01-20	2024-03-13	D
 Complement CH50.total	0	JNJ_OPTUM_EHR_LABNAM	CH50 measures the function of the complete classical complement pathway, C1 – C9	3028461	LOINC	2024-03-06	2099-12-31	
 Copper/creatinine ratio.urine	0	JNJ_OPTUM_EHR_LABNAM	Random urine lab test to determine the excretion of copper to creatinine ratio in the urine	3010913	LOINC	2024-03-06	2099-12-31	
 Copper.free	0	JNJ_OPTUM_EHR_LABNAM	Serum lab test to assess for copper overload in the blood	36031387	LOINC	2024-03-06	2099-12-31	
@@ -1556,8 +1556,8 @@ Thiopurine methyltransferase.enzymatic activity (TPMT).RBC	0	JNJ_OPTUM_EHR_LABNA
 Thrombin time (TT)	0	JNJ_OPTUM_EHR_LABNAM	Serum test to determine the thrombin time and to assess fibrinogen activity	3036489	LOINC	2024-03-06	2099-12-31	
 Thymidine/creatinine ratio.urine	0	JNJ_OPTUM_EHR_LABNAM	Lab test to measure the ratio of Thymidine to creatinine in urine samples, part of the Purines and Pyrimidines Panel.	40762306	LOINC	2024-03-06	2099-12-31	
 Thymine/creatinine ratio.urine	0	JNJ_OPTUM_EHR_LABNAM	Lab test to measure the presence of Thymine levels in urine, part of the Purines and Pyrimidines Panel	3049781	LOINC	2024-03-06	2099-12-31	
-Thyroid stimulating hormone (TSH)	0	JNJ_OPTUM_EHR_LABNAM	Thyroid stimulating hormone (TSH)	4197602	SNOMED	2023-01-20	2024-03-13	D
 Thyroid stimulating hormone (TSH)	0	JNJ_OPTUM_EHR_LABNAM	Thyroid stimulating hormone (TSH)	40758591	LOINC	2013-01-06	2024-03-13	D
+Thyroid stimulating hormone (TSH)	0	JNJ_OPTUM_EHR_LABNAM	Thyroid stimulating hormone (TSH)	4197602	SNOMED	2023-01-20	2024-03-13	D
 Thyroid stimulating hormone (TSH)	0	JNJ_OPTUM_EHR_LABNAM	Measure the amount of thyroid-stimulating hormone	3023399	LOINC	2024-03-06	2099-12-31	
 Thyroxine.free (FT4)	0	JNJ_OPTUM_EHR_LABNAM	Thyroxine.free (FT4)	3045106	LOINC	2013-01-06	2024-03-13	D
 Thyroxine.free (FT4)	0	JNJ_OPTUM_EHR_LABNAM	Measure the amount of free T4 (the active form of thyroxine)	3008598	LOINC	2024-03-06	2099-12-31	

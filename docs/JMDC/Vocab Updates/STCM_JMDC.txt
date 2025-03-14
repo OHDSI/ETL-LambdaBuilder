@@ -23,8 +23,8 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 100000042492	0	JMDC	Unknown Brand Name in English (Therapeutic Allergen Extract) 2mL1V Liquid	21605215	ATC	1970-01-01	2023-01-20	D
 100000043207	0	JMDC	Unknown Brand Name in English (Dimethicone) 40mg1T Tablet	44032810	RxNorm Extension	1970-01-01	2099-12-31	
 100000045251	0	JMDC	Unknown Brand Name in English (Otsujito Extract) 1g Powder	21605291	ATC	1970-01-01	2023-01-20	D
-100000045866	0	JMDC	Unknown Brand Name in English (Therapeutic Allergen Extract) 2mL1V Liquid	40161972	RxNorm	2023-01-20	2024-03-13	D
 100000045866	0	JMDC	Unknown Brand Name in English (Therapeutic Allergen Extract) 2mL1V Liquid	21605220	ATC	1970-01-01	2023-01-20	D
+100000045866	0	JMDC	Unknown Brand Name in English (Therapeutic Allergen Extract) 2mL1V Liquid	40161972	RxNorm	2023-01-20	2024-03-13	D
 100000045866	0	JMDC	Unknown Brand Name in English (Therapeutic Allergen Extract) 2mL1V Liquid	36879250	RxNorm Extension	2024-03-13	2099-12-31	
 100000053995	0	JMDC	Heparin Na [FUSO] (Heparin Sodium)  Kit	1367571	RxNorm	1970-01-01	2099-12-31	
 100000057961	0	JMDC	Replas (Initiating Solution) 200mL1Bag Liquid	21601162	ATC	1970-01-01	2023-01-20	D
@@ -79,21 +79,21 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 100000065247	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	21605220	ATC	1970-01-01	2023-01-20	D
 100000065247	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	40161972	RxNorm	2023-01-20	2024-03-13	D
 100000065247	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	36879250	RxNorm Extension	2024-03-13	2099-12-31	
-100000065248	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	40161972	RxNorm	2023-01-20	2024-03-13	D
 100000065248	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	21605220	ATC	1970-01-01	2023-01-20	D
+100000065248	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	40161972	RxNorm	2023-01-20	2024-03-13	D
 100000065248	0	JMDC	Allergen Extract [TORII] (Therapeutic Allergen Extract) 2mL1V Liquid	36879250	RxNorm Extension	2024-03-13	2099-12-31	
 100000071585	0	JMDC	Atorvastatin [KYORIN] (Atorvastatin Calcium Hydrate)  Tablet	1545958	RxNorm	1970-01-01	2099-12-31	
-100000075957	0	JMDC	Cedartolen (Therapeutic Allergen Extract)  Liquid	40161972	RxNorm	2023-01-20	2024-03-13	D
 100000075957	0	JMDC	Cedartolen (Therapeutic Allergen Extract)  Liquid	21605220	ATC	1970-01-01	2023-01-20	D
+100000075957	0	JMDC	Cedartolen (Therapeutic Allergen Extract)  Liquid	40161972	RxNorm	2023-01-20	2024-03-13	D
 100000075957	0	JMDC	Cedartolen (Therapeutic Allergen Extract)  Liquid	36879250	RxNorm Extension	2024-03-13	2099-12-31	
-100000075958	0	JMDC	Cedartolen (Therapeutic Allergen Extract)  Liquid	40161972	RxNorm	2023-01-20	2024-03-13	D
 100000075958	0	JMDC	Cedartolen (Therapeutic Allergen Extract)  Liquid	21605220	ATC	1970-01-01	2023-01-20	D
+100000075958	0	JMDC	Cedartolen (Therapeutic Allergen Extract)  Liquid	40161972	RxNorm	2023-01-20	2024-03-13	D
 100000075958	0	JMDC	Cedartolen (Therapeutic Allergen Extract)  Liquid	36879250	RxNorm Extension	2024-03-13	2099-12-31	
-100000076041	0	JMDC	Cedartolen (Therapeutic Allergen Extract) 10mL1Bot Liquid	40161972	RxNorm	2023-01-20	2024-03-13	D
 100000076041	0	JMDC	Cedartolen (Therapeutic Allergen Extract) 10mL1Bot Liquid	21605220	ATC	1970-01-01	2023-01-20	D
+100000076041	0	JMDC	Cedartolen (Therapeutic Allergen Extract) 10mL1Bot Liquid	40161972	RxNorm	2023-01-20	2024-03-13	D
 100000076041	0	JMDC	Cedartolen (Therapeutic Allergen Extract) 10mL1Bot Liquid	36879250	RxNorm Extension	2024-03-13	2099-12-31	
-100000076042	0	JMDC	Cedartolen (Therapeutic Allergen Extract) 1mL1Pack Liquid	40161972	RxNorm	2023-01-20	2024-03-13	D
 100000076042	0	JMDC	Cedartolen (Therapeutic Allergen Extract) 1mL1Pack Liquid	21605220	ATC	1970-01-01	2023-01-20	D
+100000076042	0	JMDC	Cedartolen (Therapeutic Allergen Extract) 1mL1Pack Liquid	40161972	RxNorm	2023-01-20	2024-03-13	D
 100000076042	0	JMDC	Cedartolen (Therapeutic Allergen Extract) 1mL1Pack Liquid	36879250	RxNorm Extension	2024-03-13	2099-12-31	
 100000076065	0	JMDC	Cedartolen (Therapeutic Allergen Extract) 10mL1Bot Liquid	21605220	ATC	1970-01-01	2023-01-20	D
 100000076065	0	JMDC	Cedartolen (Therapeutic Allergen Extract) 10mL1Bot Liquid	40161972	RxNorm	2023-01-20	2024-03-13	D
