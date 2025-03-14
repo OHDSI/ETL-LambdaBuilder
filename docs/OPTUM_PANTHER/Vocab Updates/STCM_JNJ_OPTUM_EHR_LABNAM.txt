@@ -1,4 +1,7 @@
 source_code	source_concept_id	source_vocabulary_id	source_code_description	target_concept_id	target_vocabulary_id	valid_start_date	valid_end_date	invalid_reason
+1;25-Dihydroxyvitamin D2 (Vit D2 1;25 OH)	0	JNJ_OPTUM_EHR_LABNAM	1;25-Dihydroxyvitamin D2 (Vit D2 1;25 OH)	40765039	LOINC	1970-01-01	2099-12-31	
+1;25-Dihydroxyvitamin D3 (Vit D3 1;25 OH)	0	JNJ_OPTUM_EHR_LABNAM	1;25-Dihydroxyvitamin D3 (Vit D3 1;25 OH)	3020149	LOINC	1970-01-01	2099-12-31	
+1;25-Dihydroxyvitamin D.total (Vit D 1;25 OH)	0	JNJ_OPTUM_EHR_LABNAM	1;25-Dihydroxyvitamin D.total (Vit D 1;25 OH)	40765038	LOINC	1970-01-01	2099-12-31	
 2019 coronavirus sars-cov-2 bd; np	0	JNJ_OPTUM_EHR_LABNAM	2019 coronavirus sars-cov-2 bd; np	756055	OMOP Extension	2020-03-18	2024-03-13	D
 2019 CORONAVIRUS SARS-COV-2 BD, NP	0	JNJ_OPTUM_EHR_LABNAM	2019 CORONAVIRUS SARS-COV-2 BD, NP	756055	OMOP Extension	2020-03-18	2024-03-13	D
 2019 coronavirus sars-cov-2 hp	0	JNJ_OPTUM_EHR_LABNAM	2019 coronavirus sars-cov-2 hp	756055	OMOP Extension	2020-03-18	2024-03-13	D
@@ -16,6 +19,8 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 2019 novel coronavirus pcr	0	JNJ_OPTUM_EHR_LABNAM	2019 novel coronavirus pcr	756055	OMOP Extension	2020-03-18	2024-03-13	D
 2019 novel coronavirus pcr source	0	JNJ_OPTUM_EHR_LABNAM	2019 novel coronavirus pcr source	756055	OMOP Extension	2020-03-18	2024-03-13	D
 2019 novel coronavirus rna	0	JNJ_OPTUM_EHR_LABNAM	2019 novel coronavirus rna	756055	OMOP Extension	2020-03-18	2024-03-13	D
+25-Hydroxyvitamin D2 (Vit D2 25-OH)	0	JNJ_OPTUM_EHR_LABNAM	25-Hydroxyvitamin D2 (Vit D2 25-OH)	3049536	LOINC	1970-01-01	2099-12-31	
+25-Hydroxyvitamin D3 (Vit D3 25-OH)	0	JNJ_OPTUM_EHR_LABNAM	25-Hydroxyvitamin D3 (Vit D3 25-OH)	3020149	LOINC	1970-01-01	2099-12-31	
 2-Ethylidene-1;5-Dimethyl-3;3-Diphenylpyrrolidine (EDDP).urine	0	JNJ_OPTUM_EHR_LABNAM	Urine lab test to detect and quantify the amount of Methadone medication in the urine	3031029	LOINC	2024-03-06	2099-12-31	
 5-Hydroxyindoleacetic acid (5-HIAA)	0	JNJ_OPTUM_EHR_LABNAM	The end product of serotonin  	3021385	LOINC	2024-03-06	2099-12-31	
 5-Hydroxyindoleacetic acid (5-HIAA).urine.24 hour	0	JNJ_OPTUM_EHR_LABNAM	The end product of serotonin, measuring the amount in a 24 hour urine sample (all urine collected over 24 hours).	3005148	LOINC	2024-03-06	2099-12-31	
@@ -213,8 +218,8 @@ Blast.absolute	0	JNJ_OPTUM_EHR_LABNAM	Blast.absolute	40768447	LOINC	2013-01-06	2
 Blast.absolute	0	JNJ_OPTUM_EHR_LABNAM	"Count of myeloblasts or myeloid blasts (""blast"" cells) (a type of WBC) per volume analyzed"	3005105	LOINC	2024-03-06	2099-12-31	
 Blast.percent	0	JNJ_OPTUM_EHR_LABNAM	Blast.percent	3023173	LOINC	2013-01-06	2024-03-13	D
 Blast.percent	0	JNJ_OPTUM_EHR_LABNAM	Calculate % of Blast cells to other WBCs per 100 cells counted	3025159	LOINC	2024-03-06	2099-12-31	
-Blood urea nitrogen (BUN)	0	JNJ_OPTUM_EHR_LABNAM	Blood urea nitrogen (BUN)	4017361	SNOMED	2023-01-20	2024-03-13	D
 Blood urea nitrogen (BUN)	0	JNJ_OPTUM_EHR_LABNAM	Blood urea nitrogen (BUN)	3051542	LOINC	2013-01-06	2024-03-13	D
+Blood urea nitrogen (BUN)	0	JNJ_OPTUM_EHR_LABNAM	Blood urea nitrogen (BUN)	4017361	SNOMED	2023-01-20	2024-03-13	D
 Blood urea nitrogen (BUN)	0	JNJ_OPTUM_EHR_LABNAM	Assess basic kidney function	3004295	LOINC	2024-03-06	2099-12-31	
 Blood urea nitrogen/creatinine ratio (BUN/CREA)	0	JNJ_OPTUM_EHR_LABNAM	Blood urea nitrogen/creatinine ratio (BUN/CREA)	3046485	LOINC	2013-01-06	2099-12-31	
 Blood.urine.dipstick	0	JNJ_OPTUM_EHR_LABNAM	Blood.urine.dipstick	3035350	LOINC	2013-01-06	2024-03-13	D
@@ -408,8 +413,8 @@ Complement C3.quantitative	0	JNJ_OPTUM_EHR_LABNAM	Complement C3.quantitative	302
 Complement C3.quantitative	0	JNJ_OPTUM_EHR_LABNAM	Measures the amount of C3 complement proteins in your blood; used to determine how severe a disease is and to monitor effectiveness of treatment	3000620	LOINC	2024-03-06	2099-12-31	
 Complement C4.quantitative	0	JNJ_OPTUM_EHR_LABNAM	Complement C4.quantitative	3052973	LOINC	2013-01-06	2024-03-13	D
 Complement C4.quantitative	0	JNJ_OPTUM_EHR_LABNAM	Measures the amount of C4 complement proteins in your blood; used to determine how severe a disease is and to monitor effectiveness of treatment	3017766	LOINC	2024-03-06	2099-12-31	
-Complement CH50.total	0	JNJ_OPTUM_EHR_LABNAM	Complement CH50.total	44806481	SNOMED	2023-01-20	2024-03-13	D
 Complement CH50.total	0	JNJ_OPTUM_EHR_LABNAM	Complement CH50.total	40758577	LOINC	2013-01-06	2024-03-13	D
+Complement CH50.total	0	JNJ_OPTUM_EHR_LABNAM	Complement CH50.total	44806481	SNOMED	2023-01-20	2024-03-13	D
 Complement CH50.total	0	JNJ_OPTUM_EHR_LABNAM	CH50 measures the function of the complete classical complement pathway, C1 – C9	3028461	LOINC	2024-03-06	2099-12-31	
 Copper/creatinine ratio.urine	0	JNJ_OPTUM_EHR_LABNAM	Random urine lab test to determine the excretion of copper to creatinine ratio in the urine	3010913	LOINC	2024-03-06	2099-12-31	
 Copper.free	0	JNJ_OPTUM_EHR_LABNAM	Serum lab test to assess for copper overload in the blood	36031387	LOINC	2024-03-06	2099-12-31	
@@ -717,6 +722,7 @@ Hairy cell.percent	0	JNJ_OPTUM_EHR_LABNAM	Serum or bone marrow testing to determ
 Hairy cell.qualitative	0	JNJ_OPTUM_EHR_LABNAM	Qualitative blood or bone marrow testing to determine the presence or absence of pale cytoplasm blood cells with 'hairy rim' in the blood or bone marrow	3038268	LOINC	2024-03-06	2099-12-31	
 Haptoglobin	0	JNJ_OPTUM_EHR_LABNAM	Lab test to measure the levels of haptoglobin in blood sample.	3012336	LOINC	2024-03-06	2099-12-31	
 Hematocrit (HCT)	0	JNJ_OPTUM_EHR_LABNAM	Hematocrit (HCT)	3009542	LOINC	2013-01-06	2099-12-31	
+Hematocrit (HCT).cord blood	0	JNJ_OPTUM_EHR_LABNAM	Hematocrit (HCT).cord blood	3012892	LOINC	1970-01-01	2099-12-31	
 Hemoglobin A1C	0	JNJ_OPTUM_EHR_LABNAM	Hemoglobin A1C	40758583	LOINC	2013-01-06	2024-03-13	D
 Hemoglobin A1C	0	JNJ_OPTUM_EHR_LABNAM	Hemoglobin A1C	3034639	LOINC	2023-01-20	2024-03-13	D
 Hemoglobin A1C.percent	0	JNJ_OPTUM_EHR_LABNAM	Determine the percentage of hemoglobin that is glycated (coated with glucose)	3004410	LOINC	2024-03-06	2099-12-31	
@@ -727,6 +733,7 @@ Hemoglobin F.percent	0	JNJ_OPTUM_EHR_LABNAM	Serum lab test to determine the perc
 Hemoglobin.free	0	JNJ_OPTUM_EHR_LABNAM	Serum lab test that measures the amount of hemoglobin found in the serum of the blood outside the red blood cells	3001257	LOINC	2024-03-06	2099-12-31	
 Hemoglobin (HGB)	0	JNJ_OPTUM_EHR_LABNAM	Hemoglobin (HGB)	3000963	LOINC	2013-01-06	2099-12-31	
 Hemoglobin S.percent	0	JNJ_OPTUM_EHR_LABNAM	Serum lab test to determine the percentage of Hemoglobin S, an abnormal type of hemoglobin that is typically inherited and is the basis for the Sickle Cell trait and Sickle Cell Anemia	3005081	LOINC	2024-03-06	2099-12-31	
+Heparin.low molecular weight (LMWH)	0	JNJ_OPTUM_EHR_LABNAM	Heparin.low molecular weight (LMWH)	3045452	LOINC	1970-01-01	2099-12-31	
 Hepatitis B core antibody.IgM (HBc-IgM)	0	JNJ_OPTUM_EHR_LABNAM	Hepatitis B core antibody.IgM (HBc-IgM)	3038787	LOINC	2013-01-06	2024-03-13	D
 Hepatitis B core antibody.IgM (HBc-IgM)	0	JNJ_OPTUM_EHR_LABNAM	Serum Lab Test to detect Hepatitis B core-specific IgM class antibody which is used to indicate acute Hepatitis B infection	3013527	LOINC	2024-03-06	2099-12-31	
 Hepatitis B core antibody.total (HBcAb)	0	JNJ_OPTUM_EHR_LABNAM	Hepatitis B core antibody.total (HBcAb)	3042493	LOINC	2013-01-06	2024-03-13	D
@@ -1012,6 +1019,8 @@ MYD88 gene.L265P mutation.unspecified specimen	0	JNJ_OPTUM_EHR_LABNAM	Biological
 Myelocyte.absolute	0	JNJ_OPTUM_EHR_LABNAM	Myelocyte.absolute	3017181	LOINC	2013-01-06	2024-03-13	D
 Myelocyte.absolute	0	JNJ_OPTUM_EHR_LABNAM	Count of myelocyte cells (a type of WBC) per volume analyzed	3021120	LOINC	2024-03-06	2099-12-31	
 Myelocyte.percent	0	JNJ_OPTUM_EHR_LABNAM	Myelocyte.percent	3017181	LOINC	2013-01-06	2099-12-31	
+Myoglobin	0	JNJ_OPTUM_EHR_LABNAM	Myoglobin	3005895	LOINC	1970-01-01	2099-12-31	
+Myoglobin.urine	0	JNJ_OPTUM_EHR_LABNAM	Myoglobin.urine	3011470	LOINC	1970-01-01	2099-12-31	
 Myristic acid (C14:0)	0	JNJ_OPTUM_EHR_LABNAM	This test is a part of fatty acid panel, used for basic nutritional assessment and identifying fatty acid deficiency and monitoring patients with a fatty acid deficiency who are being treated with a special diet and/or fatty acid supplements.  	3032613	LOINC	2024-03-06	2099-12-31	
 Natriuretic peptide.B (BNP)	0	JNJ_OPTUM_EHR_LABNAM	Natriuretic peptide.B (BNP)	3029187	LOINC	2013-01-06	2024-03-13	D
 Natriuretic peptide.B (BNP)	0	JNJ_OPTUM_EHR_LABNAM	Measure the concentration of B-type natriuretic peptide (BNP)	3031569	LOINC	2024-03-06	2099-12-31	
@@ -1187,6 +1196,7 @@ Prealbumin (PALB)	0	JNJ_OPTUM_EHR_LABNAM	Prealbumin (PALB)	3025987	LOINC	2013-01
 Prealbumin (PALB)	0	JNJ_OPTUM_EHR_LABNAM	Prealbumin (PALB)	3013742	LOINC	2024-03-06	2099-12-31	
 Procalcitonin (PCT)	0	JNJ_OPTUM_EHR_LABNAM	Serum test to determine the presence of Procalcitonin in response to a severe bacterial infection	3046279	LOINC	2024-03-06	2099-12-31	
 Programmed cell death ligand 1 (PD-L1).unspecified specimen	0	JNJ_OPTUM_EHR_LABNAM	Testing of biological sample to determine the presence of immune related biomarkers on the surface certain tissue types, including tumors	42529559	LOINC	2024-03-06	2099-12-31	
+Prolactin.total	0	JNJ_OPTUM_EHR_LABNAM	Prolactin.total	3004722	LOINC	1970-01-01	2099-12-31	
 Prolymphocyte.absolute	0	JNJ_OPTUM_EHR_LABNAM	Prolymphocyte.absolute	46235445	LOINC	2013-01-06	2024-03-13	D
 Prolymphocyte.absolute	0	JNJ_OPTUM_EHR_LABNAM	Count of prolymphocyte cells (a type of WBC) per volume analyzed	3001552	LOINC	2024-03-06	2099-12-31	
 Prolymphocyte.percent	0	JNJ_OPTUM_EHR_LABNAM	Prolymphocyte.percent	46235445	LOINC	2013-01-06	2024-03-13	D
@@ -1548,6 +1558,8 @@ TCR gene.rearrangement.unspecified specimen	0	JNJ_OPTUM_EHR_LABNAM	Biological sa
 TCRG gene.rearrangement.unspecified specimen	0	JNJ_OPTUM_EHR_LABNAM	Molecular genetic test to detect the presence of T-Cell receptor gamma gene rearrangements in unspecified specimen. Used for diagnosis of T-cell malignancies and to evaluate for residual or recurrent disease after treatment.	3017962	LOINC	2024-03-06	2099-12-31	
 Terminal deoxynucleotidyl transferase (TdT).unspecified specimen.percent	0	JNJ_OPTUM_EHR_LABNAM	Biological sample to detect percentage of positive Terminal deoxynucleotidyl transferase (TdT) 	3048160	LOINC	2024-03-06	2099-12-31	
 Terminal deoxynucleotidyl transferase (TdT).unspecified specimen.qualitative	0	JNJ_OPTUM_EHR_LABNAM	Biological sample to detect positive Terminal deoxynucleotidyl transferase (TdT) 	40760551	LOINC	2024-03-06	2099-12-31	
+Testosterone.free.concentration	0	JNJ_OPTUM_EHR_LABNAM	Testosterone.free.concentration	3016049	LOINC	1970-01-01	2099-12-31	
+Testosterone.free.percent	0	JNJ_OPTUM_EHR_LABNAM	Testosterone.free.percent	3016049	LOINC	1970-01-01	2099-12-31	
 Testosterone.total	0	JNJ_OPTUM_EHR_LABNAM	Testosterone.total	3027401	LOINC	2013-01-06	2024-03-13	D
 Testosterone.total	0	JNJ_OPTUM_EHR_LABNAM	Measure amount of testosterone in blood	3008893	LOINC	2024-03-06	2099-12-31	
 Theophylline.total	0	JNJ_OPTUM_EHR_LABNAM	Serum lab test to determine the Theophylline level	3016072	LOINC	2024-03-06	2099-12-31	
@@ -1556,8 +1568,8 @@ Thiopurine methyltransferase.enzymatic activity (TPMT).RBC	0	JNJ_OPTUM_EHR_LABNA
 Thrombin time (TT)	0	JNJ_OPTUM_EHR_LABNAM	Serum test to determine the thrombin time and to assess fibrinogen activity	3036489	LOINC	2024-03-06	2099-12-31	
 Thymidine/creatinine ratio.urine	0	JNJ_OPTUM_EHR_LABNAM	Lab test to measure the ratio of Thymidine to creatinine in urine samples, part of the Purines and Pyrimidines Panel.	40762306	LOINC	2024-03-06	2099-12-31	
 Thymine/creatinine ratio.urine	0	JNJ_OPTUM_EHR_LABNAM	Lab test to measure the presence of Thymine levels in urine, part of the Purines and Pyrimidines Panel	3049781	LOINC	2024-03-06	2099-12-31	
-Thyroid stimulating hormone (TSH)	0	JNJ_OPTUM_EHR_LABNAM	Thyroid stimulating hormone (TSH)	4197602	SNOMED	2023-01-20	2024-03-13	D
 Thyroid stimulating hormone (TSH)	0	JNJ_OPTUM_EHR_LABNAM	Thyroid stimulating hormone (TSH)	40758591	LOINC	2013-01-06	2024-03-13	D
+Thyroid stimulating hormone (TSH)	0	JNJ_OPTUM_EHR_LABNAM	Thyroid stimulating hormone (TSH)	4197602	SNOMED	2023-01-20	2024-03-13	D
 Thyroid stimulating hormone (TSH)	0	JNJ_OPTUM_EHR_LABNAM	Measure the amount of thyroid-stimulating hormone	3023399	LOINC	2024-03-06	2099-12-31	
 Thyroxine.free (FT4)	0	JNJ_OPTUM_EHR_LABNAM	Thyroxine.free (FT4)	3045106	LOINC	2013-01-06	2024-03-13	D
 Thyroxine.free (FT4)	0	JNJ_OPTUM_EHR_LABNAM	Measure the amount of free T4 (the active form of thyroxine)	3008598	LOINC	2024-03-06	2099-12-31	
