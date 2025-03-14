@@ -49,7 +49,7 @@ The **annual_health_checkup** table is a wide table with one row per date and ma
 |     person_id    |     member_id    |     Remove 'M' prefix    |          |
 |     measurement_type_concept_id    |     -    |  32836 (EHR physical examination)   |     |
 |     measurement_date    |     date_of_health_checkup    |         |          |
-|     measurement_concept_id    | bmi <br>abdominal_circumference<br>systolic_bp<br>diastolic_bp<br>triglyceride<br>hdl_cholesterol<br>ldl_cholesterol<br>ast<br>alt<br>g_gt<br>fasting_blood_sugar<br>casual_blood_sugar<br>hba1c<br>urinary_sugar<br>uric_protein_qualitative<br>hct<br>hemoglobin_content<br>rbc_count<br>serum_creatinine<br>serum_uric_acid<br>total_cholesterol<br>ecg    |          |     See the mappings for these columns in the manual mapping file [here](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/JMDC/Vocab%20Updates/Annual_Health_Checkup_Mapping.xlsx)   |
+|     measurement_concept_id    | bmi <br>abdominal_circumference<br>systolic_bp<br>diastolic_bp<br>triglyceride<br>hdl_cholesterol<br>ldl_cholesterol<br>ast<br>alt<br>g_gt<br>fasting_blood_sugar<br>casual_blood_sugar<br>hba1c<br>urinary_sugar<br>uric_protein_qualitative<br>hct<br>hemoglobin_content<br>rbc_count<br>serum_creatinine<br>serum_uric_acid<br>total_cholesterol<br>fundus_examination_keith_wagner_classification<br>fundus_examination_scheie_classification_h<br>fundus_examination_scheie_classification_s<br>fundus_examination_scott_classification<br>    |          |     See the mappings for these columns in the manual mapping file [here](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/JMDC/Vocab%20Updates/Annual_Health_Checkup_Mapping.xlsx)   |
 |     measurement_source_value    |     column name from **annual_health_checkup**    |          |       |
 |     measurement_source_concept_id    |       |          |       |
 |     provider_id    |         |         |         |
@@ -65,6 +65,8 @@ The **annual_health_checkup** table is a wide table with one row per date and ma
 
 ## Change Log
 
+### March 13, 2025
+- Remove ecg mapping from measurement table and added opthamology examination tests.
 ### April 6, 2022
 - Added more text around how to handle records from the annual_health_checkup table.
 ### July 31, 2023
