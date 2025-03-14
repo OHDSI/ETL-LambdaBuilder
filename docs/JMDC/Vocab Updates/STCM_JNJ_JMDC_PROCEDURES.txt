@@ -471,7 +471,8 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 160168950	0	JNJ_JMDC_PROCEDURES	free/total prostate specific antigen ratio (PSA F/T ratio)	4215704	SNOMED	1970-01-01	2099-12-31	
 160169150	0	JNJ_JMDC_PROCEDURES	lupus anticoagulant, qualitative	4268621	SNOMED	1970-01-01	2099-12-31	
 160169450	0	JNJ_JMDC_PROCEDURES	influenza virus antigen, qualitative	2212891	CPT4	1970-01-01	2023-01-20	D
-160169450	0	JNJ_JMDC_PROCEDURES	influenza virus antigen, qualitative	4017924	SNOMED	2023-01-20	2099-12-31	
+160169450	0	JNJ_JMDC_PROCEDURES	influenza virus antigen, qualitative	4017924	SNOMED	2023-01-20	2025-03-11	D
+160169450	0	JNJ_JMDC_PROCEDURES	influenza virus antigen, qualitative	4007314	SNOMED	2025-03-11	2099-12-31	
 160169910	0	JNJ_JMDC_PROCEDURES	mycobacterial isolation culture (other)	4264337	SNOMED	1970-01-01	2099-12-31	
 160170410	0	JNJ_JMDC_PROCEDURES	bone mineral density test (ultrasonography)	4037672	SNOMED	1970-01-01	2099-12-31	
 160171210	0	JNJ_JMDC_PROCEDURES	corneal topography	4099372	SNOMED	1970-01-01	2099-12-31	
@@ -561,10 +562,12 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 170000510	0	JNJ_JMDC_PROCEDURES	diagnosis of plain radiographs [b]	4056681	SNOMED	1970-01-01	2099-12-31	
 170000610	0	JNJ_JMDC_PROCEDURES	diagnosis of particular radiographs	4178367	SNOMED	1970-01-01	2099-12-31	
 170000730	0	JNJ_JMDC_PROCEDURES	diagnosis of particular radiographs (perform simultaneously with other)	4178367	SNOMED	1970-01-01	2099-12-31	
-170000810	0	JNJ_JMDC_PROCEDURES	diagnosis of radiography with contrast medium	4100357	SNOMED	1970-01-01	2099-12-31	
+170000810	0	JNJ_JMDC_PROCEDURES	diagnosis of radiography with contrast medium	4100357	SNOMED	1970-01-01	2025-03-11	D
+170000810	0	JNJ_JMDC_PROCEDURES	diagnosis of radiography with contrast medium	1073730	SNOMED	2025-03-11	2099-12-31	
 170001910	0	JNJ_JMDC_PROCEDURES	plain radiography (analog radiography)	4056681	SNOMED	1970-01-01	2099-12-31	
 170002010	0	JNJ_JMDC_PROCEDURES	particular radiography (analog radiography)	4178367	SNOMED	1970-01-01	2099-12-31	
-170002110	0	JNJ_JMDC_PROCEDURES	radiography with contrast medium (analog radiography)	4100357	SNOMED	1970-01-01	2099-12-31	
+170002110	0	JNJ_JMDC_PROCEDURES	radiography with contrast medium (analog radiography)	4100357	SNOMED	1970-01-01	2025-03-11	D
+170002110	0	JNJ_JMDC_PROCEDURES	radiography with contrast medium (analog radiography)	1073730	SNOMED	2025-03-11	2099-12-31	
 170011710	0	JNJ_JMDC_PROCEDURES	CT imaging [1-d] (other)	4300757	SNOMED	1970-01-01	2099-12-31	
 170011810	0	JNJ_JMDC_PROCEDURES	CT imaging, with multislice device with 16-63 rows	4300757	SNOMED	1970-01-01	2099-12-31	
 170015010	0	JNJ_JMDC_PROCEDURES	SPECT imaging	4019823	SNOMED	1970-01-01	2099-12-31	
@@ -572,7 +575,8 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 170015310	0	JNJ_JMDC_PROCEDURES	nuclear medicine diagnosis (other)	4163709	SNOMED	1970-01-01	2024-03-13	D
 170015310	0	JNJ_JMDC_PROCEDURES	nuclear medicine diagnosis (other)	4155794	SNOMED	2024-03-13	2099-12-31	
 170015410	0	JNJ_JMDC_PROCEDURES	computerized tomography diagnosis	4300757	SNOMED	1970-01-01	2099-12-31	
-170017010	0	JNJ_JMDC_PROCEDURES	digital imaging processing (radiography with contrast medium)	4100357	SNOMED	1970-01-01	2099-12-31	
+170017010	0	JNJ_JMDC_PROCEDURES	digital imaging processing (radiography with contrast medium)	4100357	SNOMED	1970-01-01	2025-03-11	D
+170017010	0	JNJ_JMDC_PROCEDURES	digital imaging processing (radiography with contrast medium)	1073730	SNOMED	2025-03-11	2099-12-31	
 170020110	0	JNJ_JMDC_PROCEDURES	MRI, with scanner of 1.5-3 tesla	4013636	SNOMED	1970-01-01	2099-12-31	
 170022730	0	JNJ_JMDC_PROCEDURES	diagnosis of plain radiographs [a] (perform simultaneously with other)	4178367	SNOMED	1970-01-01	2099-12-31	
 170024510	0	JNJ_JMDC_PROCEDURES	scintigraphy (partial-body, static imaging)	4160914	SNOMED	1970-01-01	2099-12-31	
@@ -584,7 +588,8 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 170027310	0	JNJ_JMDC_PROCEDURES	PET & CT combined imaging (with 18FDG)	4300757	SNOMED	1970-01-01	2099-12-31	
 170027310	0	JNJ_JMDC_PROCEDURES	PET & CT combined imaging (with 18FDG)	4305790	SNOMED	1970-01-01	2099-12-31	
 170027910	0	JNJ_JMDC_PROCEDURES	plain radiography (digital radiography)	4056681	SNOMED	1970-01-01	2099-12-31	
-170028110	0	JNJ_JMDC_PROCEDURES	radiography with contrast medium (digital radiography)	4100357	SNOMED	1970-01-01	2099-12-31	
+170028110	0	JNJ_JMDC_PROCEDURES	radiography with contrast medium (digital radiography)	4100357	SNOMED	1970-01-01	2025-03-11	D
+170028110	0	JNJ_JMDC_PROCEDURES	radiography with contrast medium (digital radiography)	1073730	SNOMED	2025-03-11	2099-12-31	
 170028210	0	JNJ_JMDC_PROCEDURES	mammography (digital radiography)	4324693	SNOMED	1970-01-01	2099-12-31	
 170028610	0	JNJ_JMDC_PROCEDURES	CT imaging, with multislice device with 4-15 rows	4300757	SNOMED	1970-01-01	2099-12-31	
 170030030	0	JNJ_JMDC_PROCEDURES	spot radiography, with diagnosis (perform simultaneously with other) (digital radiography)	4178367	SNOMED	1970-01-01	2099-12-31	

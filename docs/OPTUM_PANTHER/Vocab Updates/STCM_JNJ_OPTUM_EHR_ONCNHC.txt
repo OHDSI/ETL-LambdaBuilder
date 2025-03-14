@@ -23,7 +23,8 @@ back basal cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	back basal cell carcinoma	43075
 basal cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	basal cell carcinoma	42513061	ICDO3	2023-08-02	2099-12-31	
 b-cell lymphomas	0	JNJ_OPTUM_EHR_ONCNHC	b-cell lymphomas	434592	SNOMED	2023-08-02	2099-12-31	
 benign adenoma	0	JNJ_OPTUM_EHR_ONCNHC	benign adenoma	40481474	SNOMED	2023-08-02	2099-12-31	
-benign ascending colon carcinoid tumor	0	JNJ_OPTUM_EHR_ONCNHC	benign ascending colon carcinoid tumor	760937	SNOMED	2023-08-02	2099-12-31	
+benign ascending colon carcinoid tumor	0	JNJ_OPTUM_EHR_ONCNHC	benign ascending colon carcinoid tumor	760937	SNOMED	2023-08-02	2025-03-11	D
+benign ascending colon carcinoid tumor	0	JNJ_OPTUM_EHR_ONCNHC	benign ascending colon carcinoid tumor	1077457	SNOMED	2025-03-11	2099-12-31	
 benign ascending colon neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	benign ascending colon neoplasm	442111	SNOMED	2023-08-02	2099-12-31	
 benign bladder neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	benign bladder neoplasm	201824	SNOMED	2023-08-02	2099-12-31	
 benign carcinoid tumor	0	JNJ_OPTUM_EHR_ONCNHC	benign carcinoid tumor	37018338	SNOMED	2023-08-02	2024-09-10	D
@@ -92,7 +93,8 @@ endometrial endometrioid adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	endometrial endom
 endometrial leiomyosarcoma	0	JNJ_OPTUM_EHR_ONCNHC	endometrial leiomyosarcoma	36560345	ICDO3	2023-08-02	2099-12-31	
 endometrial neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	endometrial neoplasm	4247238	SNOMED	2023-08-02	2099-12-31	
 endometrial squamous cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	endometrial squamous cell carcinoma	37116596	SNOMED	2023-08-02	2099-12-31	
-endometrial stromal sarcoma	0	JNJ_OPTUM_EHR_ONCNHC	endometrial stromal sarcoma	44783285	SNOMED	2023-08-02	2099-12-31	
+endometrial stromal sarcoma	0	JNJ_OPTUM_EHR_ONCNHC	endometrial stromal sarcoma	44783285	SNOMED	2023-08-02	2025-03-12	D
+endometrial stromal sarcoma	0	JNJ_OPTUM_EHR_ONCNHC	endometrial stromal sarcoma	37166810	SNOMED	2025-03-12	2099-12-31	
 endometrioid adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	endometrioid adenocarcinoma	42538693	SNOMED	2023-08-02	2099-12-31	
 epithelioid hemangioendothelioma	0	JNJ_OPTUM_EHR_ONCNHC	epithelioid hemangioendothelioma	4298140	SNOMED	2023-08-02	2099-12-31	
 epithelioid sarcoma	0	JNJ_OPTUM_EHR_ONCNHC	epithelioid sarcoma	37204279	SNOMED	2023-08-02	2099-12-31	
