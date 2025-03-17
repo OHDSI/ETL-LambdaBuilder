@@ -977,6 +977,20 @@
 				</Concept>
 			</Concepts>
 		</ObservationDefinition>
+
+		<ObservationDefinition>
+			<PersonId>PERSON_ID</PersonId>
+			<IsUnique>true</IsUnique>
+			<StartDate>observation_date</StartDate>
+			<ValueSourceValue>amount_of_drinking</ValueSourceValue>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field defaultSource="Amount of alcohol" defaultConceptId="0" defaultTypeId="32836"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ObservationDefinition>
 	</Observation>
 	
 </QueryDefinition>
