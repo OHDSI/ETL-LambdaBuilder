@@ -21,7 +21,12 @@
 		case
 		when family_id != '' then cast(replace(family_id, 'M', '') as int)
 		else 0
-		end as payerplan_id
+		end as payerplan_id,
+		type_of_insurance,
+		case
+		when type_of_insurance = 4 then 32725
+		else 0
+		end payer_concept_id
 		FROM {sc}.Enrollment e
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND e.Member_ID = ch.PERSON_SOURCE_VALUE
 		), a2 as
@@ -42,7 +47,7 @@
 		32813 as PeriodTypeConceptId
 		from a
 		left join a2 m2 on a.person_id != m2.person_id and a.gender_source_value = 'female' and a.family_id is not null and a.family_id = m2.family_id and m2.year_of_birth - DATE_PART('YEAR', m2.observation_period_start_date) = 0
-		group by a.person_id, a.person_source_value, a.year_of_birth, a.month_of_birth, a.gender_source_value, a.observation_period_start_date, a.observation_period_end_date, a.died, a.family_id, a.has_payerplan, a.payerplan_id, baby_person_id, m2.year_of_birth, m2.month_of_birth, m2.observation_period_start_date
+		group by a.person_id, a.person_source_value, a.year_of_birth, a.month_of_birth, a.gender_source_value, a.observation_period_start_date, a.observation_period_end_date, a.died, a.family_id, a.has_payerplan, a.payerplan_id, a.type_of_insurance, a.payer_concept_id, baby_person_id, m2.year_of_birth, m2.month_of_birth, m2.observation_period_start_date
 		order by 1
 	</Query>
   <Persons>
@@ -67,6 +72,13 @@
       <StartDate>observation_period_start_date</StartDate>
       <EndDate>observation_period_end_date</EndDate>
       <FamilySource>family_id</FamilySource>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field conceptId="payer_concept_id" key="type_of_insurance" sourceKey="type_of_insurance" defaultTypeId="0"/>
+					</Fields>
+				</Concept>
+			</Concepts>
     </PayerPlanPeriodDefinition>
   </PayerPlanPeriods>
   <Death>
