@@ -66,7 +66,7 @@ The **annual_health_checkup** table is a wide table with one row per date and ma
 ## Change Log
 
 ### March 13, 2025
-- Remove ecg mapping from measurement table and added opthamology examination tests.
+- Remove ecg mapping from measurement table and added ophthalmology examination tests.
 ### April 6, 2022
 - Added more text around how to handle records from the annual_health_checkup table.
 ### July 31, 2023
