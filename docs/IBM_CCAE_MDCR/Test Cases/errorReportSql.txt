@@ -2,11 +2,20 @@ DBMS:
 redshift
 
 Error:
-com.amazon.redshift.util.RedshiftException: ERROR: syntax error at or near "IF" in context "IF", at line 1
-  Position: 1
+com.amazon.redshift.util.RedshiftException: ERROR: Invalid Query: 
+  Detail: 
+  -----------------------------------------------
+  error:  Invalid Query: 
+  code:      8001
+  context:   single-row subquery returns more than one row
+  query:     80517454
+  location:  _rds_bin_padb.1.0.107351_data_exec_22_3914124054_69e9ec6c1da34cff8aec8b410a0211ecdd6a638a_0.cpp:80
+  process:   padbmaster [pid=1073906189]
+  -----------------------------------------------
+
 
 SQL:
-IF OBJECT_ID('ccae_tests_cdm.test_results', 'U') IS NOT NULL DROP TABLE ccae_tests_cdm.test_results
+INSERT INTO ccae_tests_cdm.test_results SELECT 53 AS id, 'Cost. Patient has cost values, cost is correctly associated with the right event_id (HIX-1515).' AS description, 'Expect cost' AS test, CASE WHEN (SELECT COUNT(*) FROM ccae_tests_cdm.cost WHERE cost_event_id  = (SELECT procedure_occurrence_id FROM ccae_tests_cdm.procedure_occurrence WHERE person_id = '53')) = 0 THEN 'FAIL' ELSE 'PASS' END AS status
 
 R version:
 R version 4.3.3 (2024-02-29 ucrt)

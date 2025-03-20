@@ -13,33 +13,33 @@ setDefaults <- function (){
   if (tolower(frameworkType) == "ccae")
   {
     set_defaults_enrollment_detail(
-      age = 0
-      ,agegrp = '0'
-      ,datatyp = 0
-      ,dobyr = 0
-      ,dtend = '2025-02-03'
-      ,dtstart = '2025-02-03'
-      ,eeclass = '0'
-      ,eestatu = '0'
+      age = 64
+      ,agegrp = '5'
+      ,datatyp = 1
+      ,dobyr = 1935
+      ,dtend = '2000-01-03'
+      ,dtstart = '2000-01-03'
+      ,eeclass = '9'
+      ,eestatu = '3'
       ,efamid = 0
-      ,egeoloc = '0'
-      ,emprel = '0'
-      ,enrolid = 0
+      ,egeoloc = '18'
+      ,emprel = '1'
+      ,enrolid = 283201
       ,hlthplan = '0'
-      ,indstry = '0'
-      ,memdays = 0
-      ,mhsacovg = '0'
-      ,msa = 0
-      ,phyflag = '0'
-      ,plankey = 0
-      ,plantyp = 0
-      ,region = '0'
-      ,rx = '0'
-      ,seqnum = 0
-      ,sex = '0'
-      ,version = '0'
-      ,wgtkey = 0
-      ,year = 0
+      ,indstry = '7'
+      ,memdays = 31
+      ,mhsacovg = ''
+      ,msa = 4040
+      ,phyflag = '1'
+      ,plankey = 3608
+      ,plantyp = 6
+      ,region = '2'
+      ,rx = '1'
+      ,seqnum = 3938130
+      ,sex = '1'
+      ,version = '20'
+      ,wgtkey = 29
+      ,year = 2000
       ,medadv = 0
       )
     
