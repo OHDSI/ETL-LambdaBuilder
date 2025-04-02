@@ -37,5 +37,7 @@ IBM MarketScan® Multi-State Medicaid Database (MDCD) adjudicated US health insu
 The major data elements contained within this database are outpatient pharmacy dispensing claims (coded with National Drug Codes (NDC), inpatient and outpatient medical claims which provide procedure codes (coded in CPT-4, HCPCs, ICD-9-CM or ICD-10-PCS) and diagnosis codes (coded in ICD-9-CM or ICD-10-CM).  The data does not contain laboratory results.  
 <br>
 
+## Change Log
 
-
+### February 14, 2025
+- As of the 2025Q1 release, we are no longer imputing DEATH logic for this data source as it is likely unrepresentative and incomplete. For prior releases, refer to the imputation logic that was used [here](https://github.com/OHDSI/ETL-LambdaBuilder/blob/v.1.1.0/docs/IBM_MDCD/MDCD_death.md).

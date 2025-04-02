@@ -68,3 +68,7 @@ Medicare-paid amounts and the employer-paid
 amounts were available and evident on the claims
 were selected for this database. 
 
+## Change Log
+
+### February 14, 2025
+- As of the 2025Q1 release, we are no longer imputing DEATH logic for this data source as it is likely unrepresentative and incomplete. For prior releases, refer to the imputation logic that was used [here](https://github.com/OHDSI/ETL-LambdaBuilder/blob/v.1.1.0/docs/IBM_CCAE_MDCR/CCAE_MDCR_death.md).

@@ -38,3 +38,9 @@ DEATH_TYPE_CONCEPT_ID|32817 (EHR)
 CAUSE_OF_DEATH_CONCEPT_ID|0||
 CAUSE_OF_DEATH_SOURCE_VALUE|0||
 CAUSE_SOURCE_CONCEPT_ID|0||
+
+## Change Log
+
+### 02-Apr-2025
+- Update logic to remove any death dates that occur prior to any observation_period_start_date or year_of_birth
+- Update logic to remove any records > 60 days after death

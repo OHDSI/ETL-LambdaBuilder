@@ -18,3 +18,8 @@ Premier Healthcare Database (PHD) is a nationally representative all-payer US ho
 
 # Janssen Note:  
 In 2020 a separate data set was delivered that was COVID-19 specific.  This data set followed the same structure as the PHD data set previously licensed but included both the GEN_LAB and LAB_RESULTS tables.  Upon expiration of the COVID-19 specific license the GEN_LAB and LAB_RESULTS tables were licensed in addition to the previously licensed full PHD data set.
+
+## Change Log
+
+### February 14, 2025
+- As of the 2025Q1 release, we are no longer imputing DEATH logic for this data source as it is likely unrepresentative and incomplete. For prior releases, refer to the imputation logic that was used [here](https://github.com/OHDSI/ETL-LambdaBuilder/blob/v.1.1.0/docs/PREMIER/Premier_Death.md).
