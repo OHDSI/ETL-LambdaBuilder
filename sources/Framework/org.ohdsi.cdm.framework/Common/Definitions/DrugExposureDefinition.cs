@@ -53,10 +53,18 @@ namespace org.ohdsi.cdm.framework.common.Definitions
 
                 var calculatedDaysSupply = reader.GetInt(DaysSupply) ?? 1;
 
-                if (calculatedDaysSupply > 0 && calculatedDaysSupply <= 365)
-                    endDate = e.StartDate.AddDays(calculatedDaysSupply - 1);
-                else if (!string.IsNullOrEmpty(EndDate))
+                if (string.IsNullOrEmpty(DaysSupply) && !string.IsNullOrEmpty(EndDate))
+                {
                     endDate = reader.GetDateTime(EndDate);
+                }
+                else if (calculatedDaysSupply > 0 && calculatedDaysSupply <= 365)
+                {
+                    endDate = e.StartDate.AddDays(calculatedDaysSupply - 1);
+                }
+                else if (!string.IsNullOrEmpty(EndDate))
+                {
+                    endDate = reader.GetDateTime(EndDate);
+                }
 
                 var verbatimEndDate = reader.GetDateTime(VerbatimEndDate);
 
