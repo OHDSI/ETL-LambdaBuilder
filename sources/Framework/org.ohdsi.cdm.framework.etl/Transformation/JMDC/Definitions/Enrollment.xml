@@ -10,7 +10,7 @@
 		CAST(CAST(e.observation_start AS VARCHAR(6)) + '01' AS DATE) AS observation_period_start_date,
 		DATEADD(DAY, -1, DATEADD(MONTH, 1, CAST(CAST(e.observation_end AS VARCHAR(6)) + '01' AS DATE))) AS observation_period_end_date,
 		CASE
-		WHEN withdrawal_death_flag = 'true' THEN 1
+		WHEN withdrawal_death_flag = 1 THEN 1
 		ELSE 0
 		END as died,
 		family_id,
