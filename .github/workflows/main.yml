@@ -1,0 +1,27 @@
+name: Release to NuGet ETL
+
+on:
+  workflow_dispatch:
+    inputs:
+      packageVersion:
+        required: true
+        type: string
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+    - name: Restore dependencies
+      run: dotnet restore sources/Framework/org.ohdsi.cdm.framework.etl/org.ohdsi.cdm.framework.etl.csproj
+    - name: Build
+      run: dotnet build -c Release sources/Framework/org.ohdsi.cdm.framework.etl/org.ohdsi.cdm.framework.etl.csproj
+    - name: Create NuGet Package
+      run: dotnet pack -c Release --no-build sources/Framework/org.ohdsi.cdm.framework.etl/org.ohdsi.cdm.framework.etl.csproj -p:PackageVersion=${{ github.event.inputs.packageVersion }}
+    - name: Push to NuGet
+      run: dotnet nuget push **/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.LAMBDABUILDER }}
