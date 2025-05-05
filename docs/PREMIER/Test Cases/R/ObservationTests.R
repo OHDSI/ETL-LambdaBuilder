@@ -69,7 +69,7 @@ createObservationTests <- function () {
                   icd_version = 9);
   expect_observation(person_id                = patient$person_id,
                      visit_occurrence_id      = visit$visit_occurrence_id,
-                     observation_concept_id   = 4203722,
+                     observation_concept_id   = 4206254,
                      observation_date         = "2008-05-01",
                      observation_source_value = "V56.32");
 
