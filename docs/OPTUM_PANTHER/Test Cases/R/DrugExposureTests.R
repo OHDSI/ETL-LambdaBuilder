@@ -250,45 +250,45 @@ createDrugExposureTests <- function () {
   patient <- createPatient();
   declareTest("Patient has immunizations with valid information", id = patient$person_id)
   add_patient(ptid = patient$ptid, first_month_active = '201005', last_month_active = '201212')
-  add_immunizations(ptid = patient$ptid, immunization_date="2011-10-12", ndc="66521011710", pt_reported="N")
+  add_immunizations(ptid = patient$ptid, immunization_date="2011-10-12", ndc="66521011802", pt_reported="N")
   expect_count_drug_exposure(rowCount = 1, person_id = patient$person_id)
 
   patient <- createPatient();
   declareTest("Patient has multiple immunizations with the first within the enrollment period, the second outside of enrollment.", id = patient$person_id)
   add_patient(ptid = patient$ptid, first_month_active = '201005', last_month_active = '201212')
-  add_immunizations(ptid = patient$ptid, immunization_date="2011-10-12", ndc="66521011710", pt_reported="N")
-  add_immunizations(ptid = patient$ptid, immunization_date="2013-10-12", ndc="66521011710", pt_reported="N")
+  add_immunizations(ptid = patient$ptid, immunization_date="2011-10-12", ndc="66521011802", pt_reported="N")
+  add_immunizations(ptid = patient$ptid, immunization_date="2013-10-12", ndc="66521011802", pt_reported="N")
   expect_count_drug_exposure(rowCount = 2, person_id = patient$person_id)
 
   patient <- createPatient();
   declareTest("Patient has multiple immunizations records, all within enrollment period, but have the same immunization_date and ndc", id = patient$person_id)
   add_patient(ptid = patient$ptid, first_month_active = '201005', last_month_active = '201212')
-  add_immunizations(ptid = patient$ptid, immunization_date="2011-10-12", ndc="66521011710", pt_reported="N")
-  add_immunizations(ptid = patient$ptid, immunization_date="2011-10-12", ndc="66521011710", pt_reported="N")
+  add_immunizations(ptid = patient$ptid, immunization_date="2011-10-12", ndc="66521011802", pt_reported="N")
+  add_immunizations(ptid = patient$ptid, immunization_date="2011-10-12", ndc="66521011802", pt_reported="N")
   expect_count_drug_exposure(rowCount = 2, person_id = patient$person_id)
 
   patient <- createPatient();
   declareTest("Patient has immunizations with immunization_date that is NULL", id = patient$person_id)
   add_patient(ptid = patient$ptid, first_month_active = '201005', last_month_active = '201212')
-  add_immunizations(ptid = patient$ptid, immunization_date=NULL, ndc="66521011710", pt_reported="N")
+  add_immunizations(ptid = patient$ptid, immunization_date=NULL, ndc="66521011802", pt_reported="N")
   expect_count_drug_exposure(rowCount = 0, person_id = patient$person_id)
 
   # patient <- createPatient();
   # declareTest("Patient has immunizations with pt_reported =''Y''", id = patient$person_id)
   # add_patient(ptid = patient$ptid, first_month_active = '201005', last_month_active = '201212')
-  # add_immunizations(ptid = patient$ptid, immunization_date="2011-10-12", ndc="66521011710", pt_reported="Y")
+  # add_immunizations(ptid = patient$ptid, immunization_date="2011-10-12", ndc="66521011802", pt_reported="Y")
   # expect_count_drug_exposure(rowCount = 0, person_id = patient$person_id)
 
   patient <- createPatient();
   declareTest("Patient has immunizations and the NDC is properly mapped to the source_concept_id and standard concept_id", id = patient$person_id)
   add_patient(ptid = patient$ptid, first_month_active = '201005', last_month_active = '201212')
-  add_immunizations(ptid = patient$ptid, immunization_date="2011-10-12", ndc="66521011710", pt_reported="N")
-  expect_drug_exposure(person_id = patient$person_id, drug_source_concept_id = 46255929, drug_source_value="66521011710", drug_concept_id=44818419)
+  add_immunizations(ptid = patient$ptid, immunization_date="2011-10-12", ndc="66521011802", pt_reported="N")
+  expect_drug_exposure(person_id = patient$person_id, drug_source_concept_id = 46364505, drug_source_value="66521011802", drug_concept_id=46275888)
 
   patient <- createPatient();
   declareTest("Patient has immunizations with pt_reported =''N'' with a valid drug_type_concept_id", id = patient$person_id)
   add_patient(ptid = patient$ptid, first_month_active = '201005', last_month_active = '201212')
-  add_immunizations(ptid = patient$ptid, immunization_date="2011-10-12", ndc="66521011710", pt_reported="N")
+  add_immunizations(ptid = patient$ptid, immunization_date="2011-10-12", ndc="66521011802", pt_reported="N")
   expect_drug_exposure(person_id = patient$person_id, drug_type_concept_id="32818")
 
   ##### COVID Vaccine Tests
