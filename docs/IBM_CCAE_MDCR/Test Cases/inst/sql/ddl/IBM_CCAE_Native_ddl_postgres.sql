@@ -1,6 +1,26 @@
 -- DROP SCHEMA ccae_tests_native;
 
 CREATE SCHEMA ccae_tests_native;
+-- ccae_tests_native."_pos_episode_visit" definition
+
+-- Drop table
+
+-- DROP TABLE ccae_tests_native."_pos_episode_visit";
+
+--DROP TABLE ccae_tests_native._pos_episode_visit;
+CREATE TABLE IF NOT EXISTS ccae_tests_native._pos_episode_visit
+(
+	episode_id BIGINT   
+	,enrolid BIGINT   
+	,dt_start DATE   
+	,dt_end DATE   
+	,visit_type VARCHAR(3)   
+)
+
+;
+
+
+
 -- ccae_tests_native."_version" definition
 
 -- Drop table
@@ -10,12 +30,11 @@ CREATE SCHEMA ccae_tests_native;
 --DROP TABLE ccae_tests_native._version;
 CREATE TABLE IF NOT EXISTS ccae_tests_native._version
 (
-	version_id INTEGER NOT NULL  
-	,version_date DATE NOT NULL  
+	version_id INTEGER   
+	,version_date DATE   
 )
 
 ;
-
 
 
 -- ccae_tests_native.cpt4 definition
@@ -32,7 +51,6 @@ CREATE TABLE IF NOT EXISTS ccae_tests_native.cpt4
 )
 
 ;
-
 
 
 -- ccae_tests_native.drug_claims definition
@@ -99,8 +117,9 @@ CREATE TABLE IF NOT EXISTS ccae_tests_native.drug_claims
 	,version CHAR(2)   
 	,wgtkey SMALLINT   
 	,"year" SMALLINT   
-	,medadv VARCHAR(50) 
+	,medadv INTEGER   
 )
+
 ;
 
 
@@ -141,8 +160,9 @@ CREATE TABLE IF NOT EXISTS ccae_tests_native.enrollment_detail
 	,version CHAR(2)   
 	,wgtkey SMALLINT   
 	,"year" SMALLINT   
-	,medadv VARCHAR(50) 
+	,medadv INTEGER   
 )
+
 ;
 
 
@@ -240,7 +260,20 @@ CREATE TABLE IF NOT EXISTS ccae_tests_native.enrollment_summary
 	,wgtkey SMALLINT   
 	,"year" SMALLINT   
 	,mswgtkey VARCHAR(5)   
+	,medadv1 INTEGER   
+	,medadv2 INTEGER   
+	,medadv3 INTEGER   
+	,medadv4 INTEGER   
+	,medadv5 INTEGER   
+	,medadv6 INTEGER   
+	,medadv7 INTEGER   
+	,medadv8 INTEGER   
+	,medadv9 INTEGER   
+	,medadv10 INTEGER   
+	,medadv11 INTEGER   
+	,medadv12 INTEGER   
 )
+
 ;
 
 
@@ -266,7 +299,7 @@ CREATE TABLE IF NOT EXISTS ccae_tests_native.facility_header
 	,deduct DOUBLE PRECISION   
 	,dobyr SMALLINT   
 	,dstatus CHAR(2)   
-	,dx1 CHAR(7)   
+	,dx1 CHAR(8)   
 	,dx2 CHAR(7)   
 	,dx3 CHAR(7)   
 	,dx4 CHAR(7)   
@@ -297,6 +330,15 @@ CREATE TABLE IF NOT EXISTS ccae_tests_native.facility_header
 	,phyflag CHAR(1)   
 	,plankey SMALLINT   
 	,plantyp SMALLINT   
+	,poadx1 CHAR(8)   
+	,poadx2 CHAR(1)   
+	,poadx3 CHAR(1)   
+	,poadx4 CHAR(1)   
+	,poadx5 CHAR(1)   
+	,poadx6 CHAR(1)   
+	,poadx7 CHAR(1)   
+	,poadx8 CHAR(1)   
+	,poadx9 CHAR(1)   
 	,proc1 CHAR(7)   
 	,proc2 CHAR(7)   
 	,proc3 CHAR(7)   
@@ -317,7 +359,9 @@ CREATE TABLE IF NOT EXISTS ccae_tests_native.facility_header
 	,"year" SMALLINT   
 	,msclmid INTEGER   
 	,npi VARCHAR(10)   
+	,medadv INTEGER   
 )
+
 ;
 
 
@@ -405,6 +449,7 @@ CREATE TABLE IF NOT EXISTS ccae_tests_native.health_risk_assessment
 	,fireext CHAR(1)   
 	,flu_shot CHAR(1)   
 	,glucose DOUBLE PRECISION   
+	,gluc_fast CHAR(1)   
 	,hdl DOUBLE PRECISION   
 	,height SMALLINT   
 	,hlthplan CHAR(1)   
@@ -437,6 +482,7 @@ CREATE TABLE IF NOT EXISTS ccae_tests_native.health_risk_assessment
 	,risk_alc CHAR(1)   
 	,risk_bp CHAR(1)   
 	,risk_chol CHAR(1)   
+	,risk_depr CHAR(1)   
 	,risk_exer CHAR(1)   
 	,risk_gluc CHAR(1)   
 	,risk_mh CHAR(1)   
@@ -444,6 +490,7 @@ CREATE TABLE IF NOT EXISTS ccae_tests_native.health_risk_assessment
 	,risk_safe CHAR(1)   
 	,risk_sleep CHAR(1)   
 	,risk_smok CHAR(1)   
+	,risk_stress CHAR(1)   
 	,risk_wgt CHAR(1)   
 	,seatbelt CHAR(1)   
 	,selfhlth CHAR(1)   
@@ -465,7 +512,9 @@ CREATE TABLE IF NOT EXISTS ccae_tests_native.health_risk_assessment
 	,wrkabscat CHAR(1)   
 	,wrkabscat12 CHAR(1)   
 	,"year" SMALLINT   
+	,ecigvape CHAR(1)   
 )
+
 ;
 
 
@@ -547,7 +596,7 @@ CREATE TABLE IF NOT EXISTS ccae_tests_native.inpatient_admissions
 	,dobyr SMALLINT   
 	,drg SMALLINT   
 	,dstatus CHAR(2)   
-	,dx1 CHAR(7)   
+	,dx1 CHAR(8)   
 	,dx10 CHAR(7)   
 	,dx11 CHAR(7)   
 	,dx12 CHAR(7)   
@@ -578,13 +627,29 @@ CREATE TABLE IF NOT EXISTS ccae_tests_native.inpatient_admissions
 	,mdc CHAR(2)   
 	,mhsacovg CHAR(1)   
 	,msa INTEGER   
-	,pdx CHAR(7)   
+	,pdx CHAR(8)   
 	,phyflag CHAR(1)   
 	,physid INTEGER   
 	,physnet DOUBLE PRECISION   
 	,physpay DOUBLE PRECISION   
 	,plankey SMALLINT   
 	,plantyp SMALLINT   
+	,poapdx CHAR(8)   
+	,poadx1 CHAR(8)   
+	,poadx2 CHAR(1)   
+	,poadx3 CHAR(1)   
+	,poadx4 CHAR(1)   
+	,poadx5 CHAR(1)   
+	,poadx6 CHAR(1)   
+	,poadx7 CHAR(1)   
+	,poadx8 CHAR(1)   
+	,poadx9 CHAR(1)   
+	,poadx10 CHAR(1)   
+	,poadx11 CHAR(1)   
+	,poadx12 CHAR(1)   
+	,poadx13 CHAR(1)   
+	,poadx14 CHAR(1)   
+	,poadx15 CHAR(1)   
 	,pproc CHAR(7)   
 	,proc1 CHAR(7)   
 	,proc10 CHAR(7)   
@@ -615,24 +680,9 @@ CREATE TABLE IF NOT EXISTS ccae_tests_native.inpatient_admissions
 	,version CHAR(2)   
 	,wgtkey SMALLINT   
 	,"year" SMALLINT   
-	,poapdx CHAR(10)   
-	,poadx1 CHAR(10)   
-	,poadx2 CHAR(10)   
-	,poadx3 CHAR(10)   
-	,poadx4 CHAR(10)   
-	,poadx5 CHAR(10)   
-	,poadx6	CHAR(10)   
-	,poadx7 CHAR(10)   
-	,poadx8 CHAR(10)   
-	,poadx9 CHAR(10)   
-	,poadx10 CHAR(10)   
-	,poadx11 CHAR(10)   
-	,poadx12 CHAR(10)   
-	,poadx13 CHAR(10)   
-	,poadx14 CHAR(10)   
-	,poadx15 CHAR(10)   
-	,medadv  char(10)   
+	,medadv INTEGER   
 )
+
 ;
 
 
@@ -661,7 +711,7 @@ CREATE TABLE IF NOT EXISTS ccae_tests_native.inpatient_services
 	,dobyr SMALLINT   
 	,drg SMALLINT   
 	,dstatus CHAR(2)   
-	,dx1 CHAR(7)   
+	,dx1 CHAR(8)   
 	,dx2 CHAR(7)   
 	,dx3 CHAR(7)   
 	,dx4 CHAR(7)   
@@ -687,14 +737,14 @@ CREATE TABLE IF NOT EXISTS ccae_tests_native.inpatient_services
 	,paidntwk CHAR(1)   
 	,pay DOUBLE PRECISION   
 	,pddate DATE   
-	,pdx CHAR(7)   
+	,pdx CHAR(8)   
 	,phyflag CHAR(1)   
 	,plankey SMALLINT   
 	,plantyp SMALLINT   
 	,pproc CHAR(7)   
 	,proc1 CHAR(7)   
 	,procmod CHAR(2)   
-	,proctyp CHAR(1)   
+	,proctyp CHAR(10)   
 	,provid INTEGER   
 	,qty INTEGER   
 	,"region" CHAR(1)   
@@ -713,8 +763,12 @@ CREATE TABLE IF NOT EXISTS ccae_tests_native.inpatient_services
 	,units DOUBLE PRECISION   
 	,npi VARCHAR(10)   
 	,msclmid INTEGER   
-	,medadv VARCHAR(50) 
+	,medadv INTEGER   
+	,_svcdate DATE   
+	,_tsvcdat DATE   
+	,_visittype VARCHAR(3)   
 )
+
 ;
 
 
@@ -772,7 +826,10 @@ CREATE TABLE IF NOT EXISTS ccae_tests_native.lab
 	,resunit VARCHAR(30)   
 	,efamid INTEGER   
 	,dxver CHAR(1)   
+	,medadv INTEGER   
+	,_flag SMALLINT   
 )
+
 ;
 
 
@@ -785,8 +842,8 @@ CREATE TABLE IF NOT EXISTS ccae_tests_native.lab
 --DROP TABLE ccae_tests_native.loinc;
 CREATE TABLE IF NOT EXISTS ccae_tests_native.loinc
 (
-	loinc_num CHAR(7) NOT NULL  
-	,component VARCHAR(500) NOT NULL  
+	loinc_num CHAR(7)   
+	,component VARCHAR(500)   
 	,property VARCHAR(50)   
 	,time_aspct VARCHAR(15)   
 	,"system" VARCHAR(100)   
@@ -796,10 +853,10 @@ CREATE TABLE IF NOT EXISTS ccae_tests_native.loinc
 	,"class" VARCHAR(50)   
 	,source VARCHAR(20)   
 	,dt_last_ch VARCHAR(8)   
-	,chng_type CHAR(3) NOT NULL  
+	,chng_type CHAR(3)   
 	,comments VARCHAR(4500)   
 	,answerlist VARCHAR(200)   
-	,status VARCHAR(20) NOT NULL  
+	,status VARCHAR(20)   
 	,map_to VARCHAR(7)   
 	,scope VARCHAR(20)   
 	,consumer_name VARCHAR(100)   
@@ -807,16 +864,16 @@ CREATE TABLE IF NOT EXISTS ccae_tests_native.loinc
 	,reference VARCHAR(500)   
 	,exact_cmp_sy VARCHAR(50)   
 	,molar_mass VARCHAR(20)   
-	,classtype INTEGER NOT NULL  
+	,classtype INTEGER   
 	,formula VARCHAR(500)   
 	,species VARCHAR(20)   
 	,exmpl_answers VARCHAR(4000)   
 	,acssym VARCHAR(2600)   
 	,base_name VARCHAR(50)   
-	,final CHAR(1) NOT NULL  
+	,final CHAR(1)   
 	,naaccr_id VARCHAR(20)   
 	,code_table VARCHAR(20)   
-	,setroot BOOLEAN NOT NULL  
+	,setroot BOOLEAN   
 	,panelelements VARCHAR(500)   
 	,survey_quest_text VARCHAR(500)   
 	,survey_quest_src VARCHAR(50)   
@@ -829,7 +886,7 @@ CREATE TABLE IF NOT EXISTS ccae_tests_native.loinc
 	,hl7_field_subfield_id VARCHAR(50)   
 	,external_copyright_notice VARCHAR(500)   
 	,example_units VARCHAR(100)   
-	,inpc_percentage REAL NOT NULL  
+	,inpc_percentage REAL   
 	,long_common_name VARCHAR(500)   
 	,hl7_v2_datatype VARCHAR(10)   
 	,hl7_v3_datatype VARCHAR(10)   
@@ -866,7 +923,7 @@ CREATE TABLE IF NOT EXISTS ccae_tests_native.outpatient_services
 	,datatyp SMALLINT   
 	,deduct DOUBLE PRECISION   
 	,dobyr SMALLINT   
-	,dx1 CHAR(7)   
+	,dx1 CHAR(8)   
 	,dx2 CHAR(7)   
 	,dx3 CHAR(7)   
 	,dx4 CHAR(7)   
@@ -898,7 +955,7 @@ CREATE TABLE IF NOT EXISTS ccae_tests_native.outpatient_services
 	,proc1 CHAR(7)   
 	,procgrp SMALLINT   
 	,procmod CHAR(2)   
-	,proctyp CHAR(1)   
+	,proctyp CHAR(10)   
 	,provid INTEGER   
 	,qty INTEGER   
 	,"region" CHAR(1)   
@@ -917,43 +974,10 @@ CREATE TABLE IF NOT EXISTS ccae_tests_native.outpatient_services
 	,units DOUBLE PRECISION   
 	,npi VARCHAR(10)   
 	,msclmid INTEGER   
-	,medadv VARCHAR(50) 
-)
-;
-
-
--- ccae_tests_native.populations definition
-
--- Drop table
-
--- DROP TABLE ccae_tests_native.populations;
-
---DROP TABLE ccae_tests_native.populations;
-CREATE TABLE IF NOT EXISTS ccae_tests_native.populations
-(
-	_flag SMALLINT   
-	,agegrp CHAR(1)   
-	,datatyp SMALLINT   
-	,eeclass CHAR(1)   
-	,eestatu CHAR(1)   
-	,egeoloc CHAR(2)   
-	,emprel CHAR(1)   
-	,enrflag CHAR(1)   
-	,hlthplan CHAR(1)   
-	,indstry CHAR(1)   
-	,mhsacovg CHAR(1)   
-	,msa INTEGER   
-	,phyflag CHAR(1)   
-	,plankey SMALLINT   
-	,plantyp SMALLINT   
-	,popcnt DOUBLE PRECISION   
-	,popdate DATE   
-	,"region" CHAR(1)   
-	,rx CHAR(1)   
-	,sex CHAR(1)   
-	,version CHAR(2)   
-	,wgtkey SMALLINT   
-	,"year" SMALLINT   
+	,medadv INTEGER   
+	,_svcdate DATE   
+	,_tsvcdat DATE   
+	,_visittype VARCHAR(3)   
 )
 
 ;
@@ -1004,6 +1028,9 @@ CREATE TABLE IF NOT EXISTS ccae_tests_native.red_book
 	,thrdtds VARCHAR(30)   
 	,thrgrds VARCHAR(30)   
 	,"year" SMALLINT   
+	,deactdt DATE   
+	,reactdt DATE   
+	,actind VARCHAR(1)   
 )
 
 ;

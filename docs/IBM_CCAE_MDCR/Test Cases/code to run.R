@@ -36,12 +36,12 @@ setDefaults();
 createTests();
 
 connectionDetails <- DatabaseConnector::createConnectionDetails(
-  dbms     = "redshift",
-  server   = Sys.getenv("truven_server"),
-  port     = as.numeric(Sys.getenv("truven_port")),
-  user     = Sys.getenv("truven_user"),
-  password = Sys.getenv("truven_password"),
-  pathToDriver = Sys.getenv("path_to_redshift_driver")
+  dbms     = Sys.getenv("R_CCAE_dbms"),
+  server   = Sys.getenv("R_CCAE_server"),
+  port     = as.numeric(Sys.getenv("R_CCAE_port")),
+  user     = Sys.getenv("R_CCAE_user"),
+  password = Sys.getenv("R_CCAE_password"),
+  pathToDriver = Sys.getenv("R_CCAE_path_to_driver")
 )
 connection <- DatabaseConnector::connect(connectionDetails)
 

@@ -1,24 +1,15 @@
 DBMS:
-redshift
+postgresql
 
 Error:
-com.amazon.redshift.util.RedshiftException: ERROR: Invalid Query: 
-  Detail: 
-  -----------------------------------------------
-  error:  Invalid Query: 
-  code:      8001
-  context:   single-row subquery returns more than one row
-  query:     80517454
-  location:  _rds_bin_padb.1.0.107351_data_exec_22_3914124054_69e9ec6c1da34cff8aec8b410a0211ecdd6a638a_0.cpp:80
-  process:   padbmaster [pid=1073906189]
-  -----------------------------------------------
-
+org.postgresql.util.PSQLException: ERROR: column "poadx1" of relation "facility_header" does not exist
+  Position: 378
 
 SQL:
-INSERT INTO ccae_tests_cdm.test_results SELECT 53 AS id, 'Cost. Patient has cost values, cost is correctly associated with the right event_id (HIX-1515).' AS description, 'Expect cost' AS test, CASE WHEN (SELECT COUNT(*) FROM ccae_tests_cdm.cost WHERE cost_event_id  = (SELECT procedure_occurrence_id FROM ccae_tests_cdm.procedure_occurrence WHERE person_id = '53')) = 0 THEN 'FAIL' ELSE 'PASS' END AS status
+INSERT INTO ccae_tests_native.facility_header(_flag, age, agegrp, billtyp, cap_svc, caseid, cob, coins, copay, datatyp, deduct, dobyr, dstatus, dx1, dx2, dx3, dx4, dx5, dx6, dx7, dx8, dx9, dxver, eeclass, eestatu, efamid, egeoloc, eidflag, emprel, enrflag, enrolid, fachdid, hlthplan, indstry, mdc, mhsacovg, msa, netpay, ntwkprov, paidntwk, pddate, phyflag, plankey, plantyp, poadx1, poadx2, poadx3, poadx4, poadx5, poadx6, poadx7, poadx8, poadx9, proc1, proc2, proc3, proc4, proc5, proc6, provid, region, rx, seqnum, sex, stdplac, stdprov, svcdate, tsvcdat, version, wgtkey, year, msclmid, npi, medadv) VALUES ('0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1024', '9', '0', '0', '0', '0', '0', '0', '0', '3', '4', '0', '0', '0', '0', '0', '0', '0', '0', '2024-03-01', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2012-10-16', '2012-10-16', '0', '0', '0', '0', '0', '0')
 
 R version:
-R version 4.3.3 (2024-02-29 ucrt)
+R version 4.5.0 (2025-04-11 ucrt)
 
 Platform:
 x86_64-w64-mingw32
