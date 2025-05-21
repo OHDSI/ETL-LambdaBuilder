@@ -34,7 +34,7 @@
 		 pay TOTAL_PAID,
 		 {vendor}
 		 FROM {sc}.DRUG_CLAIMS
-		 JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND ENROLID = ch.PERSON_ID
+		 JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND ENROLID = ch.person_source_value
 		 )
 
 		 SELECT PERSON_ID,

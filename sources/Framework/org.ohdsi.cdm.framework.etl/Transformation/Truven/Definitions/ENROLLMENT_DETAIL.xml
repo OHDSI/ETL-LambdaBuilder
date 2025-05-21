@@ -33,7 +33,7 @@
      case when RX = '1' then 0 else 1 end as missinginsurance,
      RX
      FROM {sc}.ENROLLMENT_DETAIL
-     JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND ENROLID = ch.PERSON_ID)
+     JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND ENROLID = ch.person_source_value)
 
      select a.*,
      CASE

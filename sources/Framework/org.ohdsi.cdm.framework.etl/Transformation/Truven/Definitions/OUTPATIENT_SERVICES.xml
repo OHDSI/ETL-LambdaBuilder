@@ -40,7 +40,7 @@
     {field2},
     qty
     from {sc}.OUTPATIENT_SERVICES
-    JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND ENROLID = ch.PERSON_ID
+    JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND ENROLID = ch.person_source_value
     ORDER BY ENROLID
   </Query>
   <ConditionOccurrence>

@@ -87,7 +87,7 @@
     1 as fake,
     {procmod}
     from {sc}.INPATIENT_SERVICES
-    JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND ENROLID = ch.PERSON_ID)
+    JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND ENROLID = ch.person_source_value)
 
     select *,
     CAST((CAST(UPDATED_YEAR AS VARCHAR) + '-01' + '-01') AS DATE) as UPDATED_DATE,

@@ -20,7 +20,7 @@
      qty,
      1 as hlthplan
      FROM {sc}.LONG_TERM_CARE
-     JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND ENROLID = ch.PERSON_ID
+     JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND ENROLID = ch.person_source_value
      ORDER BY ENROLID
    </Query>
    <ConditionOccurrence>
