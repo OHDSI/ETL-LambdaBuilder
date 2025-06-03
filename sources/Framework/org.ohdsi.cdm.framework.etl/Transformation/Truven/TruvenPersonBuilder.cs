@@ -692,7 +692,6 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Truven
             List<VisitDetail> visitDetails = [.. BuildVisitDetails(null, [.. VisitOccurrencesRaw], observationPeriods)];
 
             var visitOccurrences = new Dictionary<long, VisitOccurrence>();
-            var visitIds = new List<long>();
             foreach (var visitOccurrence in BuildVisitOccurrences([.. VisitOccurrencesRaw], observationPeriods))
             {
 
@@ -704,7 +703,6 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Truven
                     visitOccurrence.ConceptId = 9202;
 
                 visitOccurrences.Add(visitOccurrence.Id, visitOccurrence);
-                visitIds.Add(visitOccurrence.Id);
             }
 
             foreach (var visitDetail in visitDetails)
@@ -728,17 +726,6 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Truven
 
                 _rawVisitDetails[hlthplan][visitDetail.SourceRecordGuid].Add(visitDetail);
                 _rawVisitDetailsByDate[hlthplan][visitDetail.StartDate].Add(visitDetail);
-            }
-
-            long? prevVisitId = null;
-            foreach (var visitId in visitIds.OrderBy(v => v))
-            {
-                if (prevVisitId.HasValue)
-                {
-                    visitOccurrences[visitId].PrecedingVisitOccurrenceId = prevVisitId;
-                }
-
-                prevVisitId = visitId;
             }
 
             foreach (var visitDetail in visitDetails)
@@ -864,30 +851,32 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Truven
 
             person.TimeOfBirth = new DateTime(person.YearOfBirth.Value, person.MonthOfBirth.Value, person.DayOfBirth.Value);
 
+            SetPrecedingVisitOccurrenceId(visitOccurrences.Values);
             // push built entities to ChunkBuilder for further save to CDM database
-            AddToChunk(person, death,
+            AddToChunk(person, 
+                death,
                 observationPeriods,
                 payerPlanPeriods,
                 [.. drugExposures],
-                UpdateRSourceConcept(conditionOccurrences).ToArray(),
-                UpdateRSourceConcept(procedureOccurrences).ToArray(),
-                UpdateRSourceConcept(observations).ToArray(),
-                UpdateRSourceConcept(measurements).ToArray(),
+                [.. UpdateRSourceConcept(conditionOccurrences)],
+                [.. UpdateRSourceConcept(procedureOccurrences)],
+                [.. UpdateRSourceConcept(observations)],
+                [.. UpdateRSourceConcept(measurements)],
                 visitOccurrences, 
                 [.. visitDetails], 
                 [],
-                UpdateRSourceConcept(deviceExposure).ToArray(), 
+                [.. UpdateRSourceConcept(deviceExposure)], 
                 []);
 
             Complete = true;
 
             var pg = new PregnancyAlgorithm();
             foreach (var episode in pg.GetPregnancyEpisodes(Vocabulary, person, observationPeriods,
-                ChunkData.ConditionOccurrences.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.ProcedureOccurrences.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.Observations.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.Measurements.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.DrugExposures.Where(e => e.PersonId == person.PersonId).ToArray()))
+                [.. ChunkData.ConditionOccurrences.Where(e => e.PersonId == person.PersonId)],
+                [.. ChunkData.ProcedureOccurrences.Where(e => e.PersonId == person.PersonId)],
+                [.. ChunkData.Observations.Where(e => e.PersonId == person.PersonId)],
+                [.. ChunkData.Measurements.Where(e => e.PersonId == person.PersonId)],
+                [.. ChunkData.DrugExposures.Where(e => e.PersonId == person.PersonId)]))
             {
                 episode.Id = Offset.GetKeyOffset(episode.PersonId).ConditionEraId;
                 ChunkData.ConditionEra.Add(episode);
