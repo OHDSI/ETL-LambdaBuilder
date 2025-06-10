@@ -1,4 +1,5 @@
-﻿using Force.DeepCloner;
+﻿using Amazon.S3.Model;
+using Force.DeepCloner;
 using org.ohdsi.cdm.framework.common.Base;
 using org.ohdsi.cdm.framework.common.Builder;
 using org.ohdsi.cdm.framework.common.Enums;
@@ -6,6 +7,7 @@ using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Lookups;
 using org.ohdsi.cdm.framework.common.Omop;
 using org.ohdsi.cdm.framework.common.PregnancyAlgorithm;
+using System.Linq;
 
 namespace org.ohdsi.cdm.framework.etl.Transformation.CDM
 {
@@ -40,6 +42,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CDM
 
         private readonly Dictionary<long, HashSet<LookupValue>> _alternativeConcepts = [];
         private int _newId = 0;
+        private readonly string[] _domains = ["Condition", "Device", "Drug", "Measurement", "Observation", "Procedure"];
 
         #endregion
 
@@ -534,7 +537,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CDM
                 }
                 else // Others
                 {
-                    var newMap = lookup.Where(l => l.ConceptId != e.ConceptId || l.Domain != e.Domain);
+                    var filteredByDomain = lookup.Where(l => _domains.Contains(l.Domain));
+                    var newMap = filteredByDomain.Where(l => l.ConceptId != e.ConceptId || l.Domain != e.Domain);
                     if (newMap.Any())
                     {
                         if (newMap.Count() == 1)
@@ -570,6 +574,16 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CDM
                                 }
                             }
                         }
+                    }
+                }
+
+                if (!e.ValueAsConceptId.HasValue || e.ValueAsConceptId == 0)
+                {
+                    var valueAsConceptId = lookup.Where(l => l.ConceptId != e.ConceptId && l.Domain == "Meas Value");
+
+                    if (valueAsConceptId.Count() == 1)
+                    {
+                        e.ValueAsConceptId = valueAsConceptId.First().ConceptId;
                     }
                 }
             }
