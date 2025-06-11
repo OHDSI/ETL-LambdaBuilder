@@ -1,0 +1,35 @@
+﻿<QueryDefinition>
+	<Query>
+		select distinct
+		ch.person_id as PersonId,
+		encid,
+		case
+		when contrast != '' or contrast is not null then concat(concat(procedure,'|'), contrast)
+		else procedure
+		end as source_value,
+		encounterdate,
+		32858 type_concept_id,
+		0 source_concept_id,
+		0 concept_id
+		FROM {sc}.alz_imaging l
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
+		order by 1
+	</Query>
+	<ProcedureOccurrence>
+		<ProcedureOccurrenceDefinition>
+			<IsUnique>true</IsUnique>
+			<PersonId>PersonId</PersonId>
+			<StartDate>encounterdate</StartDate>
+			<AdditionalFields>
+				<string>encid</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field conceptId="concept_id" sourceConceptId="source_concept_id" key="source_value" sourceKey="source_value" typeId="type_concept_id"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ProcedureOccurrenceDefinition>
+	</ProcedureOccurrence>
+</QueryDefinition>

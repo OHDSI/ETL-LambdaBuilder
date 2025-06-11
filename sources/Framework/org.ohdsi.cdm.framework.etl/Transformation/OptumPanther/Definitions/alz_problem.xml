@@ -1,0 +1,41 @@
+﻿<QueryDefinition>
+	<Query>
+		select distinct
+		ch.person_id as PersonId,
+		encid,
+		encounterdate,
+		section note_title,
+		problem note_text,
+		40639387 language_concept_id,
+		case
+		when section != '' or section is not null then concat(concat(problem,'|'), section)
+		else problem
+		end as source_value,
+		qualifier,
+		temporality
+		FROM {sc}.alz_problem l
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
+		order by 1
+	</Query>
+	<Note>
+		<NoteDefinition>
+			<PersonId>PersonId</PersonId>
+			<StartDate>encounterdate</StartDate>
+			<Title>note_title</Title>
+			<Text>note_text</Text>
+			<LanguageConceptId>language_concept_id</LanguageConceptId>
+			<AdditionalFields>
+				<string>encid</string>
+				<string>qualifier</string>
+				<string>temporality</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field key="source_value" defaultConceptId="0" defaultTypeId="0"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</NoteDefinition>
+	</Note>
+</QueryDefinition>

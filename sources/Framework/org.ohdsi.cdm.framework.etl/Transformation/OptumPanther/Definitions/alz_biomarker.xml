@@ -1,0 +1,39 @@
+﻿<QueryDefinition>
+	<Query>
+		select distinct
+		ch.person_id as PersonId,
+		encid,
+		case
+		when biomarker_source != '' or biomarker_source is not null then concat(concat(biomarker,'|'), biomarker_source)
+		else biomarker
+		end as source_value,
+		encounterdate,
+		numeric_result,
+		variant,
+		32858 type_concept_id,
+		0 source_concept_id,
+		0 concept_id
+		FROM {sc}.alz_biomarker l
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
+		order by 1
+	</Query>
+	<Measurement>
+		<MeasurementDefinition>
+			<IsUnique>true</IsUnique>
+			<PersonId>PersonId</PersonId>
+			<StartDate>encounterdate</StartDate>
+			<ValueAsNumber>numeric_result</ValueAsNumber>
+			<ValueSourceValue>variant</ValueSourceValue>
+			<AdditionalFields>
+				<string>encid</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field conceptId="concept_id" sourceConceptId="source_concept_id" key="source_value" sourceKey="source_value" typeId="type_concept_id"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</MeasurementDefinition>
+	</Measurement>
+</QueryDefinition>

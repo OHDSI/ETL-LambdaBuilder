@@ -1,4 +1,5 @@
-﻿using org.ohdsi.cdm.framework.common.Enums;
+﻿using Amazon.S3.Model;
+using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Omop;
 
@@ -13,6 +14,7 @@ namespace org.ohdsi.cdm.framework.common.Builder
         public List<Person> Persons { get; private set; }
         public List<Death> Deaths { get; private set; }
         public List<Note> Note { get; private set; }
+        public List<NoteNlp> NoteNlp { get; private set; }
         public List<Episode> Episode { get; private set; }
         public List<EpisodeEvent> EpisodeEvent { get; private set; }
         public List<ObservationPeriod> ObservationPeriods { get; private set; }
@@ -80,6 +82,7 @@ namespace org.ohdsi.cdm.framework.common.Builder
             DeviceExposure = [];
             Cost = [];
             Note = [];
+            NoteNlp = [];
             Episode = [];
             EpisodeEvent = [];
             FactRelationships = [];
@@ -106,6 +109,7 @@ namespace org.ohdsi.cdm.framework.common.Builder
             DeviceExposure = null;
             Cost = null;
             Note = null;
+            NoteNlp = null;
             Episode = null;
             EpisodeEvent = null;
             FactRelationships = null;
@@ -121,6 +125,11 @@ namespace org.ohdsi.cdm.framework.common.Builder
 
             Cost.Add(cost);
             return true;
+        }
+
+        public void AddNoteNlp(NoteNlp noteNlp)
+        {
+            NoteNlp.Add(noteNlp);
         }
 
         public void AddData(IEntity data, EntityType entityType)
