@@ -33,6 +33,8 @@ This conversion is run after the main corpus of the data is converted, then the 
 
 ## Reading from alz_assessment
 
+The ALZ Cognitive Assessment table includes results from tests of interest that evaluate cognitive impairment, when present in the physician’s notes for a patient. Tests of interest include only: MMSE, MOCA, Mini-cog, SLUMS, 6CIT and AD8.
+
 #### Mapping measurement_concept_id
 
 system_name|measurement_concept_id
@@ -74,45 +76,48 @@ SLUMS| 605634 (Saint Louis University Mental Status)
 
 ## Reading from alz_biomarker
 
+The ALZ Biomarker table includes biomarkers associated with Alzheimer's disease (AD), when present in the physician’s notes, for a specific patient. Biomarkers of interest include only amyloid beta, phosphorylated tau protein, and apolipoprotein. This table supplements the structured Lab table and can provide additional information regarding patient biomarker testing not found in the structured tables.
+
 #### Mapping measurement_concept_id
 
-biomarker|biomarker_source|measurement_concept_id
----|---|---
-amyloid beta 40 peptide |	plasma|
-amyloid beta 40 peptide	||
-amyloid beta 42 peptide/amyloid beta 40 peptide	|blood|
-amyloid beta 42 peptide/amyloid beta 40 peptide	|cerebrospinal fluid|
-amyloid beta 42 peptide/amyloid beta 40 peptide	|plasma|
-amyloid beta 42 peptide/amyloid beta 40 peptide	||
-amyloid beta-peptides|	blood|
-amyloid beta-peptides|	cerebrospinal fluid|
-amyloid beta-peptides|	plasma|
-amyloid beta-peptides|	|
-amyloid beta-protein (1-42)	|blood|
-amyloid beta-protein (1-42)	|cerebrospinal fluid|
-amyloid beta-protein (1-42)	|plasma|
-amyloid beta-protein (1-42)	||
-amyloid tau index|	cerebrospinal fluid|
-amyloid tau index|	|
-apolipoprotein e|	blood|
-apolipoprotein e|	cerebrospinal fluid|
-apolipoprotein e|	plasma|
-apolipoprotein e|	|
-phosphorylated tau protein|	blood|
-phosphorylated tau protein|	cerebrospinal fluid|
-phosphorylated tau protein|	plasma|
-phosphorylated tau protein|	|
-tau protein, phosphorylated 181|	cerebrospinal fluid|
-tau protein, phosphorylated 181|	|
-tau protein, phosphorylated 217	||
-tau protein/amyloid beta 42 peptide|	cerebrospinal fluid|
-tau proteins|	blood|
-tau proteins|	cerebrospinal fluid|
-tau proteins|	|
-total tau protein|	blood|
-total tau protein|	cerebrospinal fluid|
-total tau protein|	plasma|
-total tau protein|	|
+biomarker|biomarker_source|measurement_concept_id|Notes
+---|---|---|---
+amyloid beta 40 peptide |	plasma| 42868556 (Amyloid beta 40 peptide [Mass/volume] in Plasma)
+amyloid beta 40 peptide |	cerebrospinal fluid| 42868555 (Amyloid beta 40 peptide [Mass/volume] in CSF)
+amyloid beta 40 peptide	||42868556 (Amyloid beta 40 peptide [Mass/volume] in Plasma)
+amyloid beta 42 peptide/amyloid beta 40 peptide	|blood| |Mapping available in August 2025 release of vocabulary loinc code =`106941-8`
+amyloid beta 42 peptide/amyloid beta 40 peptide	|cerebrospinal fluid| 1617024 (Amyloid beta 42 peptide/Amyloid beta 40 peptide, Spinal fluid)
+amyloid beta 42 peptide/amyloid beta 40 peptide	|plasma| |Mapping available in August 2025 release of vocabulary loinc code =`106941-8`
+amyloid beta 42 peptide/amyloid beta 40 peptide	|| |Mapping available in August 2025 release of vocabulary loinc code =`106941-8`
+amyloid beta-peptides|	blood| 1091801 (Beta-Amyloid 1-42 and 1-40 panel, Spinal fluid)| Mapping to CSF in lieu of other concepts
+amyloid beta-peptides|	cerebrospinal fluid| 1091801 (Beta-Amyloid 1-42 and 1-40 panel, Spinal fluid)| Mapping to CSF in lieu of other concepts
+amyloid beta-peptides|	plasma| 1091801 (Beta-Amyloid 1-42 and 1-40 panel, Spinal fluid)| Mapping to CSF in lieu of other concepts
+amyloid beta-peptides|	|1091801 (Beta-Amyloid 1-42 and 1-40 panel, Spinal fluid)| Mapping to CSF in lieu of other concepts
+amyloid beta-protein (1-42)	|blood| 3043102	(Amyloid beta 42 peptide [Mass/volume] in Plasma)
+amyloid beta-protein (1-42)	|cerebrospinal fluid| 3042810 (Amyloid beta 42 peptide [Mass/volume] in Cerebral spinal fluid)
+amyloid beta-protein (1-42)	|plasma| 3043102	(Amyloid beta 42 peptide [Mass/volume] in Plasma)
+amyloid beta-protein (1-42)	|| 3043102	(Amyloid beta 42 peptide [Mass/volume] in Plasma)
+amyloid tau index|	cerebrospinal fluid| 3042151 (Tau protein/Amyloid beta 42 peptide [Ratio] in Cerebral spinal fluid)
+amyloid tau index|	| 3042151 (Tau protein/Amyloid beta 42 peptide [Ratio] in Cerebral spinal fluid)
+apolipoprotein e|	blood| 3044063 (Apolipoprotein E [Presence] in Serum or Plasma)
+apolipoprotein e|	cerebrospinal fluid|1617460 (Apolipoprotein E [Mass/volume] in Cerebral spinal fluid)
+apolipoprotein e|	plasma| 3044063 (Apolipoprotein E [Presence] in Serum or Plasma)
+apolipoprotein e|	| 3044063 (Apolipoprotein E [Presence] in Serum or Plasma)
+phosphorylated tau protein|	blood|   3011901	(Tau protein [Mass/volume] in Serum)| Mapping to general tau protein concept in lieu of phosphorylated concept
+phosphorylated tau protein|	cerebrospinal fluid| 3000242 (Tau protein [Mass/volume] in Cerebral spinal fluid)| Mapping to general tau protein concept in lieu of phosphorylated concept
+phosphorylated tau protein|	plasma| 3011901	(Tau protein [Mass/volume] in Serum)| Mapping to general tau protein concept in lieu of phosphorylated concept
+phosphorylated tau protein|	| 3011901	(Tau protein [Mass/volume] in Serum)| Mapping to general tau protein concept in lieu of phosphorylated concept
+tau protein, phosphorylated 181|	cerebrospinal fluid| 43055225 (Phosphorylated tau 181 [Mass/volume] in Cerebral spinal fluid by Immunoassay)
+tau protein, phosphorylated 181|	| 1259491(Phosphorylated tau 181 [Mass/volume] in Plasma by Immunoassay)
+tau protein, phosphorylated 217	|| 1092155 (Tau protein.phosphorylated 217 [Mass/volume] in Serum or Plasma by Immunoassay)
+tau protein/amyloid beta 42 peptide|	cerebrospinal fluid| 3042151 (Tau protein/Amyloid beta 42 peptide [Ratio] in Cerebral spinal fluid)
+tau proteins|	blood| 3011901	(Tau protein [Mass/volume] in Serum)
+tau proteins|	cerebrospinal fluid| 3000242 (Tau protein [Mass/volume] in Cerebral spinal fluid)
+tau proteins|	|3011901	(Tau protein [Mass/volume] in Serum)
+total tau protein|	blood|3011901	(Tau protein [Mass/volume] in Serum)
+total tau protein|	cerebrospinal fluid|  3000242 (Tau protein [Mass/volume] in Cerebral spinal fluid)
+total tau protein|	plasma| 3011901	(Tau protein [Mass/volume] in Serum)
+total tau protein|	|3011901	(Tau protein [Mass/volume] in Serum)
 
 | Destination Field| SourceField| Logic| Comment|
 |-|-|-|-|
@@ -137,27 +142,29 @@ total tau protein|	|
 
 ## Reading from alz_imaging
 
-biomarker|biomarker_source|procedure_concept_id
----|---|---
-computed tomography	|with|
-computed tomography|	with and without|
-computed tomography	|without|
-computed tomography|	|
-magnetic resonance imaging|	with|
-magnetic resonance imaging|	with and without|
-magnetic resonance imaging|	without|
-magnetic resonance imaging|	|
-magnetic resonance spectroscopy|	with|
-magnetic resonance spectroscopy|	with and without|
-magnetic resonance spectroscopy|	without|
-magnetic resonance spectroscopy|	|
-positron emission tomography|	with|
-positron emission tomography|	without|
-positron emission tomography|	|
-single-photon emission computed tomography|	with|
-single-photon emission computed tomography||	
+The ALZ Radiology Report Findings table features provider-documented imaging procedure findings of Alzheimer’s disease (AD) or cognitive impairment progression and treatment efficacy, as noted in radiology reports. These findings are based on brain PET scans, MRI, MRS, CT and SPECT images. The table includes neuroimaging biomarker findings that help confirm AD diagnoses and monitor disease progression and treatment effectiveness.
 
 #### Mapping procedure_concept_id
+
+procedure|contrast|procedure_concept_id
+---|---|---
+computed tomography	|with|1073730 (CT with contrast)
+computed tomography|	with and without| 4300757 (Computed Tomography)
+computed tomography	|without| 4163903 (CT without contrast)
+computed tomography|	|4300757 (Computed Tomography)
+magnetic resonance imaging|	with| 4198856 (MRI with contrast)
+magnetic resonance imaging|	with and without| 4013636 (magnetic resonance imaging)
+magnetic resonance imaging|	without| 4231864 (MRI without contrast)
+magnetic resonance imaging|	|4013636 (magnetic resonance imaging)
+magnetic resonance spectroscopy|	with| 4082847 (magnetic resonance spectroscopy)
+magnetic resonance spectroscopy|	with and without| 4082847 (magnetic resonance spectroscopy)
+magnetic resonance spectroscopy|	without| 4082847 (magnetic resonance spectroscopy)
+magnetic resonance spectroscopy|	| 4082847 (magnetic resonance spectroscopy)
+positron emission tomography|	with| 4305790 (positron emission tomography)
+positron emission tomography|	without| 4305790 (positron emission tomography)
+positron emission tomography|	| 4305790 (positron emission tomography)
+single-photon emission computed tomography|	with| 4019823 (single photon emission computed tomography)
+single-photon emission computed tomography|| 4019823 (single photon emission computed tomography)
 
 |Destination Field |SourceField |Logic |Comment |
 |-|-|-|-|
@@ -169,7 +176,8 @@ single-photon emission computed tomography||
 |procedure_source_concept_id || Set to 0
 |procedure_source_value |procedure <br> contrast | concat(procedure,'\|',contrast)
 |provider_id | encid    |   Use the encid to lookup PROVIDER_ID in the VISIT_DETAIL table.    |  If encid is blank then leave PROVIDER_ID blank.    |
-|procedure_datetime | | | |
+|procedure_date | procedure_date <br> encounter_date | coalesce(procedure_date,encounterdate) | |
+|procedure_datetime | procedure_date <br> encounter_date | coalesce(procedure_date,encounterdate) | |
 |modifier_concept_id | | | |
 |quantity | | | |
 |visit_detail_id | | | |
@@ -179,6 +187,8 @@ single-photon emission computed tomography||
 
 ## Reading from alz_problem
 
+The ALZ Symptoms and Problems table records patient cognitive impairment, health incidents, complaints, ailments and progression when present in the physician’s notes. Examples may include cognitive, behavioral, emotional, psychiatric and physical symptoms and problems. Additionally, this table includes records of provider documented Alzheimer’s or MCI diagnoses recorded in the provider note. This information offers an overview of a patient’s health over time
+
 ### NOTE
 
 |     Destination   Field    |     Source   Field    |     Logic    |     Comment    |
@@ -187,7 +197,7 @@ note_id	 |    autogenerate      |          |          |
 |     person_id    |     ptid    |          |          |
 |     nlp_date    |     text_date <br> encounterdate    | coalesce(text_date,encounter_date)         |          |
 |     Nlp_datetime    | text_date <br> encounterdate    | coalesce(text_date,encounter_date) Set time to midnight        |         |
-note_type_concept_id	||||
+note_type_concept_id	|32858 (NLP)|||
 note_class_concept_id|||
 note_title	|section|||
 note_text	|problem|||
@@ -206,8 +216,83 @@ note_source_value|problem <br> section | concat(problem,'\|',section')||
 |     person_id    |     ptid    |          |          |
 |     nlp_date    |     text_date <br> encounterdate    | coalesce(text_date,encounter_date)         |          |
 |     Nlp_datetime    | text_date <br> encounterdate    | coalesce(text_date,encounter_date) Set time to midnight        |         |
-|     section_concept_id    |    section    |     See mapping logic above    |          |
+|     section_concept_id    |  0   |    |          |
 |     lexical_variant    |  problem|||
 term_exists|qualifier|||
 term_temporal|temporality||
-term_modifiers|qualifier|||
+term_modifiers|severity <br> chronicity <br> stage <br> change| Concatenate a string with the applicable modifiers <br> "Severity=`severity`\| Chronicity=`chronicity`\| Stage=`stage`\| Change=`change`" ||
+
+
+## Reading from alz_imaging
+
+### NOTE
+
+|     Destination   Field    |     Source   Field    |     Logic    |     Comment    |
+|-|-|-|-|
+note_id	 |    autogenerate      |          |          |
+|     person_id    |     ptid    |          |          |
+|     nlp_date    |     procedure_date <br> encounterdate    | coalesce(text_date,encounter_date)         |          |
+|     Nlp_datetime    | procedure_date <br> encounterdate    | coalesce(text_date,encounter_date) Set time to midnight        |         |
+note_type_concept_id	|32858 (NLP)|||
+note_class_concept_id|||
+note_title	||||
+note_text	|findings|||
+|     Encoding_concept_id    |     0    |          |          |
+|     Language_concept_id    |     40639387    |     US English    |          |
+|     Provider_id    |     encid    |     Use the encid to lookup the PROVIDER_ID from the associated VISIT_DETAIL record   |  If encid is blank then leave PROVIDER_ID blank    |
+| visit_occurrence_id|encid | Lookup the VISIT_OCCURRENCE_ID based on the encid |If encid is blank then use diag_date to determine which VISIT_OCCURRENCE_ID the diagnosis should be associated to|
+note_source_value|findings <br> reasons | concat(findings,'\|',reasons')||
+note_event_id||Link to associated procedure_occurrence id from record that was created
+
+# Table name: drug_exposure
+
+## Reading from alz_medication
+
+The ALZ Medications table records Alzheimer’s disease (AD) and cognitive impairment drugs that have been documented in the unstructured physician notes. Medications of interest include donepezil (brand and generic), mematine (brand and generic), Rexulti®, Exelon® and others. This table supplements the structured medication data, such as written prescriptions, administered medications and procedures and can provide additional information regarding the actions and responses associated with medications not found in the structured tables.
+
+drug| drug_concept_id| Notes
+---|---|---
+aducanumab| 1537087 (aducanumab)
+aduhelm| 1537087 (aducanumab)| Aduhelm is the brand name of aducanumab
+aricept| 715997 (donepezil)|Aricept is the brand name of donepezil
+brexpiprazole| 46275300 (brexpiprazole)
+donanemab| 1734796 (donanemab)
+donepezil| 715997 (donepezil)
+donepezil / memantine|715997 (donepezil)
+donepezil / memantine|701322 (memantine)
+exelon|733523 (risvastigmine)| Exelon is the brand name of risvastigmine
+galantamine| 757627 (galantamine)
+gantenerumab| 36851650 (gantenerumab)
+kisunla| 1734796 (donanemab)| Kisunla is the brand name of donanemab
+lecanemab| 1301377 (lecanemab)
+leqembi| 1301377 (lecanemab)| Leqembia is the brand name of lecanemab
+memantine|701322 (memantine)
+namenda|701322 (memantine)| Namenda is the brand name of memantine
+namzaric|715997 (donepezil)| Namzaric is the brand name of donepezil / memantine
+namzaric|701322 (memantine)| Namzaric is the brand name of donepezil / memantine
+razadyne|757627 (galantamine)| Razadyne is the brand of galantamine
+rexulti|46275300 (brexpiprazole)| Rexulti is the brand of rexulti
+risvastigmine| 733523 (risvastigmine)
+
+| Destination Field | Source field | Logic | Comment field |
+| --- | --- | --- | --- |
+| drug_exposure_id | id |  |  |
+| person_id | ptid |  |  |
+| drug_concept_id | drug | See mapping above  |  |
+| drug_exposure_start_date | encounter_date |  |  |
+| drug_exposure_start_datetime | encounter_date |  |  |
+| drug_exposure_end_date | | |  |
+| drug_exposure_end_datetime | |||
+| verbatim_end_date | | | |
+| drug_type_concept_id |32858 (NLP)|||
+| refills | |  |  |
+| quantity | |  |  |  |
+| days_supply |  |  |  |
+| sig |  |  |  |
+| route_concept_id |  |  |  |
+|     Provider_id    |     encid    |     Use the encid to lookup the PROVIDER_ID from the associated VISIT_DETAIL record   |  If encid is blank then leave PROVIDER_ID blank    |
+| visit_occurrence_id|encid | Lookup the VISIT_OCCURRENCE_ID based on the encid |If encid is blank then use diag_date to determine which VISIT_OCCURRENCE_ID the diagnosis should be associated to|
+| visit_detail_id |  |  |  |
+| drug_source_value | drug |  |  |
+| drug_source_concept_id | 0 |  |  |
+| route_source_value | |  |  |
