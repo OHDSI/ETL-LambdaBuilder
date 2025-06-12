@@ -765,6 +765,9 @@
     <EmbeddedResource Include="Transformation\OptumPanther\CombinedLookups\DaysSupply.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\alz_medication.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Transformation\OptumPanther\Definitions\alz_problem.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
