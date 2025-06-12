@@ -1,0 +1,54 @@
+﻿<QueryDefinition>
+	<Query>
+		select distinct
+		ch.person_id as PersonId,
+		encid,
+		drug as source_value,
+		encounterdate,
+		32858 type_concept_id,
+		0 source_concept_id,
+		case
+		when drug='aducanumab' then 1537087
+		when drug='aduhelm' then 1537087
+		when drug='aricept' then 715997
+		when drug='brexpiprazole' then 46275300
+		when drug='donanemab' then 1734796
+		when drug='donepezil' then 715997
+		when drug='donepezil / memantine' then 715997
+		when drug='donepezil / memantine' then 701322
+		when drug='exelon' then 733523
+		when drug='galantamine' then 757627
+		when drug='gantenerumab' then 36851650
+		when drug='kisunla' then 1734796
+		when drug='lecanemab' then 1301377
+		when drug='leqembi' then 1301377
+		when drug='memantine' then 701322
+		when drug='namenda' then 701322
+		when drug='namzaric' then 715997
+		when drug='namzaric' then 701322
+		when drug='razadyne' then 757627
+		when drug='rexulti' then 46275300
+		when drug='risvastigmine' then 733523
+		end as concept_id
+		FROM {sc}.alz_medication l
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
+		order by 1
+	</Query>
+	<DrugExposure>
+		<DrugExposureDefinition>
+			<IsUnique>true</IsUnique>
+			<PersonId>PersonId</PersonId>
+			<StartDate>encounterdate</StartDate>
+			<AdditionalFields>
+				<string>encid</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field conceptId="concept_id" sourceConceptId="source_concept_id" key="source_value" sourceKey="source_value" typeId="type_concept_id"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</DrugExposureDefinition>
+	</DrugExposure>
+</QueryDefinition>
