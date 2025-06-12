@@ -1098,29 +1098,51 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
             SetProviderIds(deviceExposure, visitOccurrences);
             SetProviderIds(observations, visitOccurrences);
 
+            int noteNlpId = 0;
             if (notes.Length != 0)
             {
                 if (visitOccurrences.Count > 0)
                 {
-                    foreach (var e in notes.Where(e => !e.ProviderId.HasValue))
+                    foreach (var e in notes)
                     {
-                        if (e.AdditionalFields != null && e.AdditionalFields.ContainsKey("encid") && !string.IsNullOrEmpty(e.AdditionalFields["encid"]))
+                        //NoteNlp
+                        if (e.AdditionalFields != null && e.AdditionalFields.ContainsKey("temporality"))
                         {
-                            var encid = e.AdditionalFields["encid"];
-
-                            //var vd = visitDetails.Values.FirstOrDefault(v => v.AdditionalFields["encid"] == encid);
-                            //if (vd == null) continue;
-                            if (_visitDetailsByEncid.TryGetValue(encid, out VisitDetail? vd))
+                            ChunkData.AddNoteNlp(new NoteNlp
                             {
-                                e.VisitDetailId = vd.Id;
-                                e.VisitOccurrenceId = vd.VisitOccurrenceId;
-                            }
+                                NoteNlpId = noteNlpId,
+                                PersonId = e.PersonId,
+                                NoteId = e.Id,
+
+                                NlpDate = e.StartDate,
+                                LexicalVariant = e.Text,
+                                TermExists = e.AdditionalFields["qualifier"].Equals("actual", StringComparison.OrdinalIgnoreCase),
+                                TermTemporal = e.AdditionalFields["temporality"],
+                                TermModifiers = $"Severity={e.AdditionalFields["severity"]}| Chronicity={e.AdditionalFields["chronicity"]}| Stage={e.AdditionalFields["stage"]}| Change={e.AdditionalFields["change"]}"
+                            });
+                            noteNlpId++;
                         }
 
-                        if (!e.VisitOccurrenceId.HasValue) continue;
+                        if (!e.ProviderId.HasValue)
+                        {
+                            if (e.AdditionalFields != null && e.AdditionalFields.ContainsKey("encid") && !string.IsNullOrEmpty(e.AdditionalFields["encid"]))
+                            {
+                                var encid = e.AdditionalFields["encid"];
 
-                        if (visitOccurrences.ContainsKey(e.VisitOccurrenceId.Value))
-                            e.ProviderId = visitOccurrences[e.VisitOccurrenceId.Value].ProviderId;
+                                //var vd = visitDetails.Values.FirstOrDefault(v => v.AdditionalFields["encid"] == encid);
+                                //if (vd == null) continue;
+                                if (_visitDetailsByEncid.TryGetValue(encid, out VisitDetail? vd))
+                                {
+                                    e.VisitDetailId = vd.Id;
+                                    e.VisitOccurrenceId = vd.VisitOccurrenceId;
+                                }
+                            }
+
+                            if (!e.VisitOccurrenceId.HasValue) continue;
+
+                            if (visitOccurrences.ContainsKey(e.VisitOccurrenceId.Value))
+                                e.ProviderId = visitOccurrences[e.VisitOccurrenceId.Value].ProviderId;
+                        }
                     }
                 }
             }

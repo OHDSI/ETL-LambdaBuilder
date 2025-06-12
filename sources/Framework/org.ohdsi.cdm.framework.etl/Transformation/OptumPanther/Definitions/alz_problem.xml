@@ -3,7 +3,10 @@
 		select distinct
 		ch.person_id as PersonId,
 		encid,
-		encounterdate,
+		case
+		when text_date ilike 'yy%' or text_date ilike '%mm%' or text_date ilike '%dd' or text_date = '' or text_date is null then encounterdate
+		else to_date(text_date, 'YYYYMMDD', FALSE)
+		end as start_date,
 		section note_title,
 		problem note_text,
 		40639387 language_concept_id,
@@ -12,7 +15,11 @@
 		else problem
 		end as source_value,
 		qualifier,
-		temporality
+		temporality,
+		severity,
+		chronicity,
+		stage,
+		change
 		FROM {sc}.alz_problem l
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
 		order by 1
@@ -20,7 +27,7 @@
 	<Note>
 		<NoteDefinition>
 			<PersonId>PersonId</PersonId>
-			<StartDate>encounterdate</StartDate>
+			<StartDate>start_date</StartDate>
 			<Title>note_title</Title>
 			<Text>note_text</Text>
 			<LanguageConceptId>language_concept_id</LanguageConceptId>
@@ -28,11 +35,15 @@
 				<string>encid</string>
 				<string>qualifier</string>
 				<string>temporality</string>
+				<string>severity</string>
+				<string>chronicity</string>
+				<string>stage</string>
+				<string>change</string>
 			</AdditionalFields>
 			<Concepts>
 				<Concept>
 					<Fields>
-						<Field key="source_value" defaultConceptId="0" defaultTypeId="0"/>
+						<Field key="source_value" defaultConceptId="0" defaultTypeId="32858"/>
 					</Fields>
 				</Concept>
 			</Concepts>
