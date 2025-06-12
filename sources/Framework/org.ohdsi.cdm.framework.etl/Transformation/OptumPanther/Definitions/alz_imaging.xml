@@ -31,7 +31,9 @@
 		when procedure='positron emission tomography' then 4305790
 		when procedure='single-photon emission computed tomography' and contrast='with' then 4019823
 		when procedure='single-photon emission computed tomography' then 4019823
-		end as concept_id
+		end as concept_id,
+		findings,
+		reasons
 		FROM {sc}.alz_imaging l
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
 		order by 1
@@ -43,6 +45,8 @@
 			<StartDate>start_date</StartDate>
 			<AdditionalFields>
 				<string>encid</string>
+				<string>findings</string>
+				<string>reasons</string>
 			</AdditionalFields>
 			<Concepts>
 				<Concept>

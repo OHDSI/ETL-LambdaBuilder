@@ -990,7 +990,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                 [.. visitOccurrences.Values],
                 deviceExposure);
 
-            var notes = BuildNote([.. NoteRecords], visitOccurrences, observationPeriods).ToArray();
+            var notes = BuildNote([.. NoteRecords], visitOccurrences, observationPeriods).ToList();
             var episodes = BuildEpisode([.. EpisodeRecords], visitOccurrences, observationPeriods).ToArray();
 
             List<DateTime> mins = [];
@@ -1099,7 +1099,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
             SetProviderIds(observations, visitOccurrences);
 
             int noteNlpId = 0;
-            if (notes.Length != 0)
+            if (notes.Count != 0)
             {
                 if (visitOccurrences.Count > 0)
                 {
@@ -1173,30 +1173,56 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                 return Attrition.UnacceptablePatientQuality;
             }
 
+            foreach (var p in procedureOccurrences)
+            {
+                if (p.TypeConceptId != 32858)
+                    continue;
+
+                
+                if (p.AdditionalFields == null || !p.AdditionalFields.ContainsKey("findings"))
+                    continue;
+
+                // alz_imaging
+                notes.Add(
+                    new Note
+                    {
+                        Id = Offset.GetKeyOffset(p.PersonId).NoteId,
+                        PersonId = p.PersonId,
+                        StartDate = p.StartDate,
+                        TypeConceptId = 32858,
+                        Text = p.AdditionalFields["findings"],
+                        LanguageConceptId = 40639387,
+                        ProviderId = p.ProviderId,
+                        VisitOccurrenceId = p.VisitOccurrenceId,
+                        SourceValue = $"{p.AdditionalFields["findings"]}|{p.AdditionalFields["reasons"]}",
+                        EventId = p.Id
+                    });
+            }
+
             // push built entities to ChunkBuilder for further save to CDM database
             AddToChunk(person, 
                 death, 
                 [.. observationPeriodsFinal], 
                 payerPlanPeriods,
-                UpdateRSourceConcept(drugExposures).ToArray(),
-                UpdateRSourceConcept(conditionOccurrences).ToArray(),
-                UpdateRSourceConcept(procedureOccurrences).ToArray(),
-                UpdateRSourceConcept(observations).ToArray(),
-                UpdateRSourceConcept(measurements).ToArray(),
+                [.. UpdateRSourceConcept(drugExposures)],
+                [.. UpdateRSourceConcept(conditionOccurrences)],
+                [.. UpdateRSourceConcept(procedureOccurrences)],
+                [.. UpdateRSourceConcept(observations)],
+                [.. UpdateRSourceConcept(measurements)],
                 [.. visitOccurrences.Values], 
                 [.. visitDetails.Values], 
                 cohort,
-                UpdateRSourceConcept(deviceExposure).ToArray(), 
-                notes, 
+                [.. UpdateRSourceConcept(deviceExposure)],
+                [.. notes], 
                 episodes);
 
             var pg = new PregnancyAlgorithm();
             foreach (var r in pg.GetPregnancyEpisodes(Vocabulary, person, [.. observationPeriodsFinal],
-                ChunkData.ConditionOccurrences.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.ProcedureOccurrences.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.Observations.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.Measurements.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.DrugExposures.Where(e => e.PersonId == person.PersonId).ToArray()))
+                [.. ChunkData.ConditionOccurrences.Where(e => e.PersonId == person.PersonId)],
+                [.. ChunkData.ProcedureOccurrences.Where(e => e.PersonId == person.PersonId)],
+                [.. ChunkData.Observations.Where(e => e.PersonId == person.PersonId)],
+                [.. ChunkData.Measurements.Where(e => e.PersonId == person.PersonId)],
+                [.. ChunkData.DrugExposures.Where(e => e.PersonId == person.PersonId)]))
             {
                 r.Id = Offset.GetKeyOffset(r.PersonId).ConditionEraId;
                 ChunkData.ConditionEra.Add(r);
