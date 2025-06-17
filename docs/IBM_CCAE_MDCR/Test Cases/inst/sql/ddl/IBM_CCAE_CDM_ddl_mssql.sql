@@ -1,3 +1,11 @@
+--FROM POSTGRES 
+--if not exists -> 
+--VARCHAR(65535) -> VARCHAR(MAX)
+--TIMESTAMP -> DATETIME2
+
+
+
+
 -- DROP SCHEMA ccae_tests_cdm cascade;
 
 CREATE SCHEMA ccae_tests_cdm;
@@ -8,7 +16,7 @@ CREATE SCHEMA ccae_tests_cdm;
 -- DROP TABLE ccae_tests_cdm."_version";
 
 --DROP TABLE ccae_tests_cdm._version;
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm._version
+CREATE TABLE ccae_tests_cdm._version
 (
 	version_id INTEGER NOT NULL  
 	,version_date DATE NOT NULL  
@@ -24,7 +32,7 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm._version
 -- DROP TABLE ccae_tests_cdm.care_site;
 
 --DROP TABLE ccae_tests_cdm.care_site;
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm.care_site
+CREATE TABLE ccae_tests_cdm.care_site
 (
 	care_site_id BIGINT NOT NULL  
 	,care_site_name VARCHAR(255)   
@@ -44,12 +52,12 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm.care_site
 -- DROP TABLE ccae_tests_cdm.cdm_source;
 
 --DROP TABLE ccae_tests_cdm.cdm_source;
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm.cdm_source
+CREATE TABLE ccae_tests_cdm.cdm_source
 (
 	cdm_source_name VARCHAR(255) NOT NULL  
 	,cdm_source_abbreviation VARCHAR(30)   
 	,cdm_holder VARCHAR(255)   
-	,source_description VARCHAR(65535)   
+	,source_description VARCHAR(MAX)   
 	,source_documentation_reference VARCHAR(255)   
 	,cdm_etl_reference VARCHAR(255)   
 	,source_release_date DATE   
@@ -69,7 +77,7 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm.cdm_source
 -- DROP TABLE ccae_tests_cdm.cohort;
 
 --DROP TABLE ccae_tests_cdm.cohort;
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm.cohort
+CREATE TABLE ccae_tests_cdm.cohort
 (
 	cohort_definition_id BIGINT NOT NULL  
 	,subject_id BIGINT NOT NULL  
@@ -86,13 +94,13 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm.cohort
 -- DROP TABLE ccae_tests_cdm.cohort_definition;
 
 --DROP TABLE ccae_tests_cdm.cohort_definition;
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm.cohort_definition
+CREATE TABLE ccae_tests_cdm.cohort_definition
 (
 	cohort_definition_id BIGINT NOT NULL  
 	,cohort_definition_name VARCHAR(255) NOT NULL  
-	,cohort_definition_description VARCHAR(65535)   
+	,cohort_definition_description VARCHAR(MAX)   
 	,definition_type_concept_id BIGINT NOT NULL  
-	,cohort_definition_syntax VARCHAR(65535)   
+	,cohort_definition_syntax VARCHAR(MAX)   
 	,subject_concept_id BIGINT NOT NULL  
 	,cohort_initiation_date DATE   
 )
@@ -107,7 +115,7 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm.cohort_definition
 -- DROP TABLE ccae_tests_cdm.concept;
 
 --DROP TABLE ccae_tests_cdm.concept;
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm.concept
+CREATE TABLE ccae_tests_cdm.concept
 (
 	concept_id BIGINT NOT NULL  
 	,concept_name VARCHAR(500) NOT NULL  
@@ -131,7 +139,7 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm.concept
 -- DROP TABLE ccae_tests_cdm.concept_ancestor;
 
 --DROP TABLE ccae_tests_cdm.concept_ancestor;
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm.concept_ancestor
+CREATE TABLE ccae_tests_cdm.concept_ancestor
 (
 	ancestor_concept_id BIGINT NOT NULL  
 	,descendant_concept_id BIGINT NOT NULL  
@@ -148,7 +156,7 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm.concept_ancestor
 -- DROP TABLE ccae_tests_cdm.concept_class;
 
 --DROP TABLE ccae_tests_cdm.concept_class;
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm.concept_class
+CREATE TABLE ccae_tests_cdm.concept_class
 (
 	concept_class_id VARCHAR(20) NOT NULL  
 	,concept_class_name VARCHAR(255) NOT NULL  
@@ -165,7 +173,7 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm.concept_class
 -- DROP TABLE ccae_tests_cdm.concept_synonym;
 
 --DROP TABLE ccae_tests_cdm.concept_synonym;
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm.concept_synonym
+CREATE TABLE ccae_tests_cdm.concept_synonym
 (
 	concept_id BIGINT NOT NULL  
 	,concept_synonym_name VARCHAR(1500) NOT NULL  
@@ -182,7 +190,7 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm.concept_synonym
 -- DROP TABLE ccae_tests_cdm.cost;
 
 --DROP TABLE ccae_tests_cdm.cost;
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm.cost
+CREATE TABLE ccae_tests_cdm.cost
 (
 	cost_id BIGINT NOT NULL  
 	,cost_event_id BIGINT NOT NULL  
@@ -217,7 +225,7 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm.cost
 -- DROP TABLE ccae_tests_cdm."domain";
 
 --DROP TABLE ccae_tests_cdm."domain";
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm."domain"
+CREATE TABLE ccae_tests_cdm."domain"
 (
 	domain_id VARCHAR(20) NOT NULL  
 	,domain_name VARCHAR(255) NOT NULL  
@@ -234,7 +242,7 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm."domain"
 -- DROP TABLE ccae_tests_cdm.drug_strength;
 
 --DROP TABLE ccae_tests_cdm.drug_strength;
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm.drug_strength
+CREATE TABLE ccae_tests_cdm.drug_strength
 (
 	drug_concept_id BIGINT NOT NULL  
 	,ingredient_concept_id BIGINT NOT NULL  
@@ -260,7 +268,7 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm.drug_strength
 -- DROP TABLE ccae_tests_cdm.fact_relationship;
 
 --DROP TABLE ccae_tests_cdm.fact_relationship;
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm.fact_relationship
+CREATE TABLE ccae_tests_cdm.fact_relationship
 (
 	domain_concept_id_1 BIGINT NOT NULL  
 	,fact_id_1 BIGINT NOT NULL  
@@ -279,7 +287,7 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm.fact_relationship
 -- DROP TABLE ccae_tests_cdm."location";
 
 --DROP TABLE ccae_tests_cdm."location";
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm."location"
+CREATE TABLE ccae_tests_cdm."location"
 (
 	location_id BIGINT NOT NULL  
 	,address_1 VARCHAR(50)   
@@ -305,17 +313,17 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm."location"
 -- DROP TABLE ccae_tests_cdm.metadata;
 
 --DROP TABLE ccae_tests_cdm.metadata;
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm.metadata
+CREATE TABLE ccae_tests_cdm.metadata
 (
 	metadata_id BIGINT NOT NULL  
 	,metadata_concept_id BIGINT NOT NULL  
 	,metadata_type_concept_id BIGINT NOT NULL  
 	,name VARCHAR(250) NOT NULL  
-	,value_as_string VARCHAR(65535)   
+	,value_as_string VARCHAR(MAX)   
 	,value_as_concept_id BIGINT   
 	,value_as_number NUMERIC(38,2)   
 	,metadata_date DATE   
-	,metadata_datetime TIMESTAMP   
+	,metadata_datetime DATETIME2   
 )
 
 ;
@@ -328,7 +336,7 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm.metadata
 -- DROP TABLE ccae_tests_cdm.note_nlp;
 
 --DROP TABLE ccae_tests_cdm.note_nlp;
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm.note_nlp
+CREATE TABLE ccae_tests_cdm.note_nlp
 (
 	note_nlp_id BIGINT NOT NULL  
 	,note_id BIGINT NOT NULL  
@@ -340,7 +348,7 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm.note_nlp
 	,note_nlp_source_concept_id BIGINT   
 	,nlp_system VARCHAR(250)   
 	,nlp_date DATE NOT NULL  
-	,nlp_datetime TIMESTAMP   
+	,nlp_datetime DATETIME2   
 	,term_exists VARCHAR(1)   
 	,term_temporal VARCHAR(50)   
 	,term_modifiers VARCHAR(2000)   
@@ -356,14 +364,14 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm.note_nlp
 -- DROP TABLE ccae_tests_cdm.person;
 
 --DROP TABLE ccae_tests_cdm.person;
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm.person
+CREATE TABLE ccae_tests_cdm.person
 (
 	person_id BIGINT NOT NULL  
 	,gender_concept_id BIGINT NOT NULL  
 	,year_of_birth INTEGER NOT NULL  
 	,month_of_birth INTEGER   
 	,day_of_birth INTEGER   
-	,birth_datetime TIMESTAMP   
+	,birth_datetime DATETIME2   
 	,race_concept_id BIGINT NOT NULL  
 	,ethnicity_concept_id BIGINT NOT NULL  
 	,location_id BIGINT   
@@ -388,7 +396,7 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm.person
 -- DROP TABLE ccae_tests_cdm.provider;
 
 --DROP TABLE ccae_tests_cdm."provider";
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm."provider"
+CREATE TABLE ccae_tests_cdm."provider"
 (
 	provider_id BIGINT NOT NULL  
 	,provider_name VARCHAR(255)   
@@ -415,7 +423,7 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm."provider"
 -- DROP TABLE ccae_tests_cdm.relationship;
 
 --DROP TABLE ccae_tests_cdm.relationship;
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm.relationship
+CREATE TABLE ccae_tests_cdm.relationship
 (
 	relationship_id VARCHAR(20) NOT NULL  
 	,relationship_name VARCHAR(255) NOT NULL  
@@ -435,7 +443,7 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm.relationship
 -- DROP TABLE ccae_tests_cdm.source_to_concept_map;
 
 --DROP TABLE ccae_tests_cdm.source_to_concept_map;
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm.source_to_concept_map
+CREATE TABLE ccae_tests_cdm.source_to_concept_map
 (
 	source_code VARCHAR(255)   
 	,source_concept_id BIGINT NOT NULL  
@@ -458,7 +466,7 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm.source_to_concept_map
 -- DROP TABLE ccae_tests_cdm.test_results;
 
 --DROP TABLE ccae_tests_cdm.test_results;
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm.test_results
+CREATE TABLE ccae_tests_cdm.test_results
 (
 	id INTEGER   
 	,description VARCHAR(512)   
@@ -475,7 +483,7 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm.test_results
 -- DROP TABLE ccae_tests_cdm.vocabulary;
 
 --DROP TABLE ccae_tests_cdm.vocabulary;
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm.vocabulary
+CREATE TABLE ccae_tests_cdm.vocabulary
 (
 	vocabulary_id VARCHAR(20) NOT NULL  
 	,vocabulary_name VARCHAR(255) NOT NULL  
@@ -494,7 +502,7 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm.vocabulary
 -- DROP TABLE ccae_tests_cdm.concept_relationship;
 
 --DROP TABLE ccae_tests_cdm.concept_relationship;
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm.concept_relationship
+CREATE TABLE ccae_tests_cdm.concept_relationship
 (
 	concept_id_1 BIGINT NOT NULL  
 	,concept_id_2 BIGINT NOT NULL  
@@ -512,7 +520,7 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm.concept_relationship
 -- DROP TABLE ccae_tests_cdm.condition_era;
 
 --DROP TABLE ccae_tests_cdm.condition_era;
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm.condition_era
+CREATE TABLE ccae_tests_cdm.condition_era
 (
 	condition_era_id BIGINT NOT NULL  
 	,person_id BIGINT NOT NULL  
@@ -531,24 +539,24 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm.condition_era
 -- DROP TABLE ccae_tests_cdm.condition_occurrence;
 
 --DROP TABLE ccae_tests_cdm.condition_occurrence;
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm.condition_occurrence
+CREATE TABLE ccae_tests_cdm.condition_occurrence
 (
 	condition_occurrence_id BIGINT NOT NULL  
 	,person_id BIGINT NOT NULL  
 	,condition_concept_id BIGINT NOT NULL  
 	,condition_start_date DATE NOT NULL  
-	,condition_start_datetime TIMESTAMP   
+	,condition_start_datetime DATETIME2   
 	,condition_end_date DATE   
-	,condition_end_datetime TIMESTAMP   
+	,condition_end_datetime DATETIME2   
 	,condition_type_concept_id BIGINT NOT NULL  
 	,stop_reason VARCHAR(20)   
 	,provider_id BIGINT   
 	,visit_occurrence_id BIGINT   
 	,visit_detail_id BIGINT   
 	,condition_status_concept_id BIGINT   
-	,condition_source_value VARCHAR(65535)   
+	,condition_source_value VARCHAR(MAX)   
 	,condition_source_concept_id BIGINT   
-	,condition_status_source_value VARCHAR(65535)   
+	,condition_status_source_value VARCHAR(MAX)   
 )
 ;
 
@@ -560,11 +568,11 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm.condition_occurrence
 -- DROP TABLE ccae_tests_cdm.death;
 
 --DROP TABLE ccae_tests_cdm.death;
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm.death
+CREATE TABLE ccae_tests_cdm.death
 (
 	person_id BIGINT NOT NULL  
 	,death_date DATE NOT NULL  
-	,death_datetime TIMESTAMP   
+	,death_datetime DATETIME2   
 	,death_type_concept_id BIGINT NOT NULL  
 	,cause_concept_id BIGINT   
 	,cause_source_value VARCHAR(50)   
@@ -579,15 +587,15 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm.death
 -- DROP TABLE ccae_tests_cdm.device_exposure;
 
 --DROP TABLE ccae_tests_cdm.device_exposure;
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm.device_exposure
+CREATE TABLE ccae_tests_cdm.device_exposure
 (
 	device_exposure_id BIGINT NOT NULL  
 	,person_id BIGINT NOT NULL  
 	,device_concept_id BIGINT NOT NULL  
 	,device_exposure_start_date DATE NOT NULL  
-	,device_exposure_start_datetime TIMESTAMP   
+	,device_exposure_start_datetime DATETIME2   
 	,device_exposure_end_date DATE   
-	,device_exposure_end_datetime TIMESTAMP   
+	,device_exposure_end_datetime DATETIME2   
 	,device_type_concept_id BIGINT NOT NULL  
 	,unique_device_id VARCHAR(50)   
 	,production_id VARCHAR(255)   
@@ -610,7 +618,7 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm.device_exposure
 -- DROP TABLE ccae_tests_cdm.dose_era;
 
 --DROP TABLE ccae_tests_cdm.dose_era;
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm.dose_era
+CREATE TABLE ccae_tests_cdm.dose_era
 (
 	dose_era_id BIGINT NOT NULL  
 	,person_id BIGINT NOT NULL  
@@ -630,7 +638,7 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm.dose_era
 -- DROP TABLE ccae_tests_cdm.drug_era;
 
 --DROP TABLE ccae_tests_cdm.drug_era;
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm.drug_era
+CREATE TABLE ccae_tests_cdm.drug_era
 (
 	drug_era_id BIGINT NOT NULL  
 	,person_id BIGINT NOT NULL  
@@ -649,31 +657,31 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm.drug_era
 -- DROP TABLE ccae_tests_cdm.drug_exposure;
 
 --DROP TABLE ccae_tests_cdm.drug_exposure;
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm.drug_exposure
+CREATE TABLE ccae_tests_cdm.drug_exposure
 (
 	drug_exposure_id BIGINT NOT NULL  
 	,person_id BIGINT NOT NULL  
 	,drug_concept_id BIGINT NOT NULL  
 	,drug_exposure_start_date DATE NOT NULL  
-	,drug_exposure_start_datetime TIMESTAMP   
+	,drug_exposure_start_datetime DATETIME2   
 	,drug_exposure_end_date DATE   
-	,drug_exposure_end_datetime TIMESTAMP   
+	,drug_exposure_end_datetime DATETIME2   
 	,verbatim_end_date DATE   
 	,drug_type_concept_id BIGINT NOT NULL  
 	,stop_reason VARCHAR(20)   
 	,refills INTEGER   
 	,quantity NUMERIC(38,2)   
 	,days_supply INTEGER   
-	,sig VARCHAR(65535)   
+	,sig VARCHAR(MAX)   
 	,route_concept_id BIGINT   
-	,lot_number VARCHAR(65535)   
+	,lot_number VARCHAR(MAX)   
 	,provider_id BIGINT   
 	,visit_occurrence_id BIGINT   
 	,visit_detail_id BIGINT   
-	,drug_source_value VARCHAR(65535)   
+	,drug_source_value VARCHAR(MAX)   
 	,drug_source_concept_id BIGINT   
-	,route_source_value VARCHAR(65535)   
-	,dose_unit_source_value VARCHAR(65535)   
+	,route_source_value VARCHAR(MAX)   
+	,dose_unit_source_value VARCHAR(MAX)   
 )
 ;
 
@@ -685,15 +693,15 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm.drug_exposure
 -- DROP TABLE ccae_tests_cdm.episode;
 
 --DROP TABLE ccae_tests_cdm.episode;
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm.episode
+CREATE TABLE ccae_tests_cdm.episode
 (
 	episode_id BIGINT NOT NULL  
 	,person_id BIGINT NOT NULL  
 	,episode_concept_id BIGINT NOT NULL  
 	,episode_start_date DATE NOT NULL  
-	,episode_start_datetime TIMESTAMP   
+	,episode_start_datetime DATETIME2   
 	,episode_end_date DATE   
-	,episode_end_datetime TIMESTAMP   
+	,episode_end_datetime DATETIME2   
 	,episode_parent_id BIGINT   
 	,episode_number INTEGER   
 	,episode_object_concept_id BIGINT NOT NULL  
@@ -711,7 +719,7 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm.episode
 -- DROP TABLE ccae_tests_cdm.episode_event;
 
 --DROP TABLE ccae_tests_cdm.episode_event;
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm.episode_event
+CREATE TABLE ccae_tests_cdm.episode_event
 (
 	episode_id BIGINT NOT NULL  
 	,event_id BIGINT NOT NULL  
@@ -727,13 +735,13 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm.episode_event
 -- DROP TABLE ccae_tests_cdm.measurement;
 
 --DROP TABLE ccae_tests_cdm.measurement;
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm.measurement
+CREATE TABLE ccae_tests_cdm.measurement
 (
 	measurement_id BIGINT NOT NULL  
 	,person_id BIGINT NOT NULL  
 	,measurement_concept_id BIGINT NOT NULL  
 	,measurement_date DATE NOT NULL  
-	,measurement_datetime TIMESTAMP   
+	,measurement_datetime DATETIME2   
 	,measurement_time VARCHAR(50)   
 	,measurement_type_concept_id BIGINT NOT NULL  
 	,operator_concept_id BIGINT   
@@ -745,11 +753,11 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm.measurement
 	,provider_id BIGINT   
 	,visit_occurrence_id BIGINT   
 	,visit_detail_id BIGINT   
-	,measurement_source_value VARCHAR(65535)   
+	,measurement_source_value VARCHAR(MAX)   
 	,measurement_source_concept_id BIGINT   
-	,unit_source_value VARCHAR(65535)   
+	,unit_source_value VARCHAR(MAX)   
 	,unit_source_concept_id BIGINT   
-	,value_source_value VARCHAR(65535)   
+	,value_source_value VARCHAR(MAX)   
 	,measurement_event_id BIGINT   
 	,meas_event_field_concept_id BIGINT   
 )
@@ -762,14 +770,14 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm.measurement
 -- DROP TABLE ccae_tests_cdm.note;
 
 --DROP TABLE ccae_tests_cdm.note;
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm.note
+CREATE TABLE ccae_tests_cdm.note
 (
 	note_id BIGINT NOT NULL  
 	,person_id BIGINT NOT NULL  
 	,note_date DATE NOT NULL  
-	,note_datetime TIMESTAMP   
+	,note_datetime DATETIME2   
 	,note_type_concept_id BIGINT NOT NULL  
-	,note_text VARCHAR(65535)   
+	,note_text VARCHAR(MAX)   
 	,provider_id BIGINT   
 	,visit_occurrence_id BIGINT   
 	,visit_detail_id BIGINT   
@@ -790,26 +798,26 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm.note
 -- DROP TABLE ccae_tests_cdm.observation;
 
 --DROP TABLE ccae_tests_cdm.observation;
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm.observation
+CREATE TABLE ccae_tests_cdm.observation
 (
 	observation_id BIGINT NOT NULL  
 	,person_id BIGINT NOT NULL  
 	,observation_concept_id BIGINT NOT NULL  
 	,observation_date DATE NOT NULL  
-	,observation_datetime TIMESTAMP   
+	,observation_datetime DATETIME2   
 	,observation_type_concept_id BIGINT NOT NULL  
 	,value_as_number NUMERIC(38,2)   
-	,value_as_string VARCHAR(65535)   
+	,value_as_string VARCHAR(MAX)   
 	,value_as_concept_id BIGINT   
 	,qualifier_concept_id BIGINT   
 	,unit_concept_id BIGINT   
 	,provider_id BIGINT   
 	,visit_occurrence_id BIGINT   
 	,visit_detail_id BIGINT   
-	,observation_source_value VARCHAR(65535)   
+	,observation_source_value VARCHAR(MAX)   
 	,observation_source_concept_id BIGINT   
-	,unit_source_value VARCHAR(65535)   
-	,qualifier_source_value VARCHAR(65535)   
+	,unit_source_value VARCHAR(MAX)   
+	,qualifier_source_value VARCHAR(MAX)   
 	,value_source_value VARCHAR(700)   
 	,observation_event_id BIGINT   
 	,obs_event_field_concept_id BIGINT   
@@ -824,7 +832,7 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm.observation
 -- DROP TABLE ccae_tests_cdm.observation_period;
 
 --DROP TABLE ccae_tests_cdm.observation_period;
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm.observation_period
+CREATE TABLE ccae_tests_cdm.observation_period
 (
 	observation_period_id BIGINT NOT NULL  
 	,person_id BIGINT NOT NULL  
@@ -841,7 +849,7 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm.observation_period
 -- DROP TABLE ccae_tests_cdm.payer_plan_period;
 
 --DROP TABLE ccae_tests_cdm.payer_plan_period;
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm.payer_plan_period
+CREATE TABLE ccae_tests_cdm.payer_plan_period
 (
 	payer_plan_period_id BIGINT NOT NULL  
 	,person_id BIGINT NOT NULL  
@@ -871,15 +879,15 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm.payer_plan_period
 -- DROP TABLE ccae_tests_cdm.procedure_occurrence;
 
 --DROP TABLE ccae_tests_cdm.procedure_occurrence;
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm.procedure_occurrence
+CREATE TABLE ccae_tests_cdm.procedure_occurrence
 (
 	procedure_occurrence_id BIGINT NOT NULL  
 	,person_id BIGINT NOT NULL  
 	,procedure_concept_id BIGINT NOT NULL  
 	,procedure_date DATE NOT NULL  
-	,procedure_datetime TIMESTAMP   
+	,procedure_datetime DATETIME2   
 	,procedure_end_date DATE   
-	,procedure_end_datetime TIMESTAMP   
+	,procedure_end_datetime DATETIME2   
 	,procedure_type_concept_id BIGINT NOT NULL  
 	,modifier_concept_id BIGINT   
 	,quantity INTEGER   
@@ -899,14 +907,14 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm.procedure_occurrence
 -- DROP TABLE ccae_tests_cdm.specimen;
 
 --DROP TABLE ccae_tests_cdm.specimen;
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm.specimen
+CREATE TABLE ccae_tests_cdm.specimen
 (
 	specimen_id BIGINT NOT NULL  
 	,person_id BIGINT NOT NULL  
 	,specimen_concept_id BIGINT NOT NULL  
 	,specimen_type_concept_id BIGINT NOT NULL  
 	,specimen_date DATE NOT NULL  
-	,specimen_datetime TIMESTAMP   
+	,specimen_datetime DATETIME2   
 	,quantity DOUBLE PRECISION   
 	,unit_concept_id BIGINT   
 	,anatomic_site_concept_id BIGINT   
@@ -927,15 +935,15 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm.specimen
 -- DROP TABLE ccae_tests_cdm.visit_detail;
 
 --DROP TABLE ccae_tests_cdm.visit_detail;
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm.visit_detail
+CREATE TABLE ccae_tests_cdm.visit_detail
 (
 	visit_detail_id BIGINT NOT NULL  
 	,person_id BIGINT NOT NULL  
 	,visit_detail_concept_id BIGINT NOT NULL  
 	,visit_detail_start_date DATE NOT NULL  
-	,visit_detail_start_datetime TIMESTAMP   
+	,visit_detail_start_datetime DATETIME2   
 	,visit_detail_end_date DATE NOT NULL  
-	,visit_detail_end_datetime TIMESTAMP   
+	,visit_detail_end_datetime DATETIME2   
 	,visit_detail_type_concept_id BIGINT NOT NULL  
 	,provider_id BIGINT   
 	,care_site_id BIGINT   
@@ -958,15 +966,15 @@ CREATE TABLE IF NOT EXISTS ccae_tests_cdm.visit_detail
 -- DROP TABLE ccae_tests_cdm.visit_occurrence;
 
 --DROP TABLE ccae_tests_cdm.visit_occurrence;
-CREATE TABLE IF NOT EXISTS ccae_tests_cdm.visit_occurrence
+CREATE TABLE ccae_tests_cdm.visit_occurrence
 (
 	visit_occurrence_id BIGINT NOT NULL  
 	,person_id BIGINT NOT NULL  
 	,visit_concept_id BIGINT NOT NULL  
 	,visit_start_date DATE NOT NULL  
-	,visit_start_datetime TIMESTAMP   
+	,visit_start_datetime DATETIME2   
 	,visit_end_date DATE NOT NULL  
-	,visit_end_datetime TIMESTAMP   
+	,visit_end_datetime DATETIME2   
 	,visit_type_concept_id BIGINT NOT NULL  
 	,provider_id BIGINT   
 	,care_site_id BIGINT   
