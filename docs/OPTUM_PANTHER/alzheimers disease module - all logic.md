@@ -132,11 +132,11 @@ total tau protein|	|3011901	(Tau protein [Mass/volume] in Serum)
 |provider_id| encid    |   Use the encid to lookup PROVIDER_ID in the VISIT_DETAIL table.    |  If encid is blank then leave PROVIDER_ID blank.    |
 |observation_datetime||||
 |value_as_number|numeric_result |||
-|value_source_value|variant|||
-|value_as_concept_id|||
-|unit_concept_id|||
+|value_source_value|numeric_result<br>narrative_result<br>variant|concat(coalesce(numeric_result,narrative_result),'\|', variant)||
+|value_as_concept_id|narrative_result| Map value_as_concept_id using the CONCEPT table where lower(narrative_result)=lower(concept_code) and vocabulary_id='SNOMED' and concept_class_id='Qualifier Value' and standard_concept='S'|||
+|unit_concept_id|unit| Map the following: <br> %= 8554 (Percent) <br> pg/ml= 8845 (picogram per milliliter) |||
 |visit_detail_id||||
-|unit_source_value|||
+|unit_source_value|unit||
 
 # Table name: procedure_occurrence
 
@@ -200,7 +200,7 @@ note_id	 |    autogenerate      |          |          |
 note_type_concept_id	|32858 (NLP)|||
 note_class_concept_id|||
 note_title	|section|||
-note_text	|problem|||
+note_text	|problem| concat("problem:",problem)||
 |     Encoding_concept_id    |     0    |          |          |
 |     Language_concept_id    |     40639387    |     US English    |          |
 |     Provider_id    |     encid    |     Use the encid to lookup the PROVIDER_ID from the associated VISIT_DETAIL record   |  If encid is blank then leave PROVIDER_ID blank    |
@@ -236,7 +236,7 @@ note_id	 |    autogenerate      |          |          |
 note_type_concept_id	|32858 (NLP)|||
 note_class_concept_id|||
 note_title	||||
-note_text	|findings|||
+note_text	|findings|concat("imaging:",findings)||
 |     Encoding_concept_id    |     0    |          |          |
 |     Language_concept_id    |     40639387    |     US English    |          |
 |     Provider_id    |     encid    |     Use the encid to lookup the PROVIDER_ID from the associated VISIT_DETAIL record   |  If encid is blank then leave PROVIDER_ID blank    |
@@ -271,7 +271,7 @@ namenda|701322 (memantine)| Namenda is the brand name of memantine
 namzaric|715997 (donepezil)| Namzaric is the brand name of donepezil / memantine
 namzaric|701322 (memantine)| Namzaric is the brand name of donepezil / memantine
 razadyne|757627 (galantamine)| Razadyne is the brand of galantamine
-rexulti|46275300 (brexpiprazole)| Rexulti is the brand of rexulti
+rexulti|46275300 (brexpiprazole)| Rexulti is the brand of brexpiprazole
 risvastigmine| 733523 (risvastigmine)
 
 | Destination Field | Source field | Logic | Comment field |
@@ -281,8 +281,8 @@ risvastigmine| 733523 (risvastigmine)
 | drug_concept_id | drug | See mapping above  |  |
 | drug_exposure_start_date | encounter_date |  |  |
 | drug_exposure_start_datetime | encounter_date |  |  |
-| drug_exposure_end_date | | |  |
-| drug_exposure_end_datetime | |||
+| drug_exposure_end_date | encounter_date | |  |
+| drug_exposure_end_datetime | encounter_date |||
 | verbatim_end_date | | | |
 | drug_type_concept_id |32858 (NLP)|||
 | refills | |  |  |
