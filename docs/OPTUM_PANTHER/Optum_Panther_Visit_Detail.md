@@ -28,7 +28,7 @@ To find a provider associated with a VISIT_DETAIL record, join to the encounter_
 | visit_detail_end_datetime |  Interaction_time | Combine interaction_date and interaction_time into a datetime value  |   |
 | visit_detail_type_concept_id |   | 32827 | EHR encounter |
 | provider_id | encounter_provider.provid|  | Use the logic detailed above to choose a provider for the VISIT_DETAIL record. |
-| care_site_id |   |   |   |
+| care_site_id | sourceid  | Lookup the sourceid in the CARE_SITE table and put the care_site_id here  |   |
 | visit_detail_source_value | interaction_type |   |   |
 | visit_detail_source_concept_id | 0 | |   |
 | admitting_source_concept_id | 0 | |  |
@@ -120,6 +120,9 @@ Each record in the native Procedure table **where proc_code is 99221, 99222, 992
 | visit_occurrence_id | visit | Each encounter in the native visit table will be associated with a visit in the CDM VISIT_OCCURRENCE table. Use the visitid to lookup the corresponding VISIT_OCCURRENCE_ID |   |
 
 ## Change Log
+
+### June 19, 2025
+- CARE_SITE table logic added to the documentation
 
 ### June 6, 2022
 - Added the native Procedure table to generate IP records in the VISIT_DETAIL table
