@@ -655,7 +655,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                     {
                         Id = GetVisitDetailId(visitOccurrence),
                         DischargeToConceptId = visitOccurrence.DischargeToConceptId,
-                        DischargeToSourceValue = visitOccurrence.DischargeToSourceValue
+                        DischargeToSourceValue = visitOccurrence.DischargeToSourceValue,
+                        CareSiteId = visitOccurrence.CareSiteId
                     };
 
                 details.Add(visitDetail);
