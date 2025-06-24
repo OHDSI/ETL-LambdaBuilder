@@ -679,17 +679,13 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
             var visitDetails = BuildVisitDetails(null, [.. VisitOccurrencesRaw], observationPeriods).ToArray();
 
             var visitOccurrences = new Dictionary<long, VisitOccurrence>();
-            var visitIds = new List<long>();
             foreach (var visitOccurrence in BuildVisitOccurrences([.. VisitOccurrencesRaw], observationPeriods))
             {
                 visitOccurrence.Id = Offset.GetKeyOffset(visitOccurrence.PersonId).VisitOccurrenceId;
                 visitOccurrence.AdmittingSourceValue = null;
-
-                if (visitOccurrences.TryAdd(visitOccurrence.Id, visitOccurrence))
-                {
-                    visitIds.Add(visitOccurrence.Id);
-                }
+                visitOccurrences.TryAdd(visitOccurrence.Id, visitOccurrence);
             }
+
             VisitDetail mostRecentVisit = null;
             foreach (var visitDetail in visitDetails)
             {
@@ -724,18 +720,6 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
                 _visitDetails[visitDetail.VisitOccurrenceId.Value].Add(visitDetail);
             }
 
-            long? prevVisitId = null;
-            foreach (var visitId in visitIds.OrderBy(v => v))
-            {
-                if (prevVisitId.HasValue)
-                {
-                    visitOccurrences[visitId].PrecedingVisitOccurrenceId = prevVisitId;
-                }
-
-                prevVisitId = visitId;
-            }
-
-
             var conditionOccurrences =
                 BuildConditionOccurrences([.. ConditionOccurrencesRaw], visitOccurrences, observationPeriods)
                     .ToArray();
@@ -764,13 +748,15 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
             {
                 foreach (var conceptId in _racesConceptId)
                 {
-                    var oRace = new Observation(person);
-                    oRace.Id = Offset.GetKeyOffset(person.PersonId).ObservationId;
-                    oRace.ConceptId = 4013886; // (Race)
-                    oRace.SourceValue = "Multiple Races";
-                    oRace.ValueAsConceptId = conceptId;
-                    oRace.ValueAsString = GetRace(conceptId);
-                    oRace.TypeConceptId = 32810;
+                    var oRace = new Observation(person)
+                    {
+                        Id = Offset.GetKeyOffset(person.PersonId).ObservationId,
+                        ConceptId = 4013886, // (Race)
+                        SourceValue = "Multiple Races",
+                        ValueAsConceptId = conceptId,
+                        ValueAsString = GetRace(conceptId),
+                        TypeConceptId = 32810
+                    };
 
                     if (mostRecentVisit != null)
                     {
@@ -851,19 +837,22 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
                     death = null;
             }
 
+            var visits = FilterByDeathDate(visitOccurrences.Values, death, 60).ToArray();
+            SetPrecedingVisitOccurrenceId(visits);
+
             // push built entities to ChunkBuilder for further save to CDM database
             AddToChunk(person, death,
                 observationPeriods,
                 payerPlanPeriods,
-                UpdateRSourceConcept(FilterByDeathDate(drugExposures, death, 60)).ToArray(),
-                UpdateRSourceConcept(FilterByDeathDate(conditionOccurrences, death, 60)).ToArray(),
-                UpdateRSourceConcept(FilterByDeathDate(procedureOccurrences, death, 60)).ToArray(),
-                UpdateRSourceConcept(FilterByDeathDate(observations, death, 60)).ToArray(),
-                UpdateRSourceConcept(FilterByDeathDate(measurements, death, 60)).ToArray(),
-                FilterByDeathDate(visitOccurrences.Values, death, 60).ToArray(),
+                [.. UpdateRSourceConcept(FilterByDeathDate(drugExposures, death, 60))],
+                [.. UpdateRSourceConcept(FilterByDeathDate(conditionOccurrences, death, 60))],
+                [.. UpdateRSourceConcept(FilterByDeathDate(procedureOccurrences, death, 60))],
+                [.. UpdateRSourceConcept(FilterByDeathDate(observations, death, 60))],
+                [.. UpdateRSourceConcept(FilterByDeathDate(measurements, death, 60))],
+                visits,
                 FilterByDeathDate(visitDetails, death, 60).ToArray(), 
                 [],
-                UpdateRSourceConcept(FilterByDeathDate(deviceExposure, death, 60)).ToArray(), 
+                [.. UpdateRSourceConcept(FilterByDeathDate(deviceExposure, death, 60))], 
                 [], 
                 []);
 
@@ -871,11 +860,11 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
 
             var pg = new PregnancyAlgorithm();
             foreach (var r in pg.GetPregnancyEpisodes(Vocabulary, person, observationPeriods,
-                ChunkData.ConditionOccurrences.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.ProcedureOccurrences.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.Observations.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.Measurements.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.DrugExposures.Where(e => e.PersonId == person.PersonId).ToArray()))
+                [.. ChunkData.ConditionOccurrences.Where(e => e.PersonId == person.PersonId)],
+                [.. ChunkData.ProcedureOccurrences.Where(e => e.PersonId == person.PersonId)],
+                [.. ChunkData.Observations.Where(e => e.PersonId == person.PersonId)],
+                [.. ChunkData.Measurements.Where(e => e.PersonId == person.PersonId)],
+                [.. ChunkData.DrugExposures.Where(e => e.PersonId == person.PersonId)]))
             {
                 r.Id = Offset.GetKeyOffset(r.PersonId).ConditionEraId;
                 ChunkData.ConditionEra.Add(r);

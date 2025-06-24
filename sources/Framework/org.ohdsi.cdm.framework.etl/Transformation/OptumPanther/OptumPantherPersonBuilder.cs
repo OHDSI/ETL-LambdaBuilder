@@ -913,7 +913,6 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
             var vDetails = BuildVisitDetails(null, dedupVisits, observationPeriods).ToArray();
 
             var visitOccurrences = new Dictionary<long, VisitOccurrence>();
-            var visitIds = new List<long>();
             foreach (var visitOccurrence in BuildVisitOccurrences(dedupVisits, observationPeriods))
             {
                 visitOccurrence.Id = Offset.GetKeyOffset(visitOccurrence.PersonId).VisitOccurrenceId;
@@ -926,7 +925,6 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
 
                 _rawVisits.TryAdd(visitOccurrence.SourceRecordGuid, visitOccurrence);
                 visitOccurrences.Add(visitOccurrence.Id, visitOccurrence);
-                visitIds.Add(visitOccurrence.Id);
             }
 
             var visitDetails = new Dictionary<long, VisitDetail>();
@@ -952,17 +950,6 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
 
                 var encid = vd.AdditionalFields["encid"];
                 _visitDetailsByEncid.TryAdd(encid, vd);
-            }
-
-            long? prevVisitId = null;
-            foreach (var visitId in visitIds.OrderBy(v => v))
-            {
-                if (prevVisitId.HasValue)
-                {
-                    visitOccurrences[visitId].PrecedingVisitOccurrenceId = prevVisitId;
-                }
-
-                prevVisitId = visitId;
             }
 
             var drugExposures =
@@ -1151,6 +1138,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                 return Attrition.UnacceptablePatientQuality;
             }
 
+            SetPrecedingVisitOccurrenceId(visitOccurrences.Values);
             // push built entities to ChunkBuilder for further save to CDM database
             AddToChunk(person, 
                 death, 

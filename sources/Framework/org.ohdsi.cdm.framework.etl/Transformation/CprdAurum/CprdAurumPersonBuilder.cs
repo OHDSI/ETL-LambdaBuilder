@@ -229,7 +229,6 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CprdAurum
                 BuildObservationPeriods(person.ObservationPeriodGap, op).ToArray();
 
             var visitDetails = new Dictionary<long, VisitDetail>();
-            var visitDetIds = new List<long>();
             foreach (var vd in BuildVisitDetails(null, VisitOccurrencesRaw.Where(vo =>
                     vo.StartDate.Year >= person.YearOfBirth &&
                     vo.EndDate.Value.Year >= person.YearOfBirth &&
@@ -240,22 +239,9 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CprdAurum
                     continue;
 
                 visitDetails.Add(vd.Id, vd);
-                visitDetIds.Add(vd.Id);
-            }
-
-            long? prevVisitDetId = null;
-            foreach (var visitId in visitDetIds.OrderBy(v => v))
-            {
-                if (prevVisitDetId.HasValue)
-                {
-                    visitDetails[visitId].PrecedingVisitDetailId = prevVisitDetId;
-                }
-
-                prevVisitDetId = visitId;
             }
 
             var visitOccurrences = new Dictionary<long, VisitOccurrence>();
-            var visitIds = new List<long>();
             foreach (var byStartDate in visitDetails.Values.GroupBy(v => v.StartDate))
             {
                 var vd = byStartDate.First();
@@ -278,21 +264,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CprdAurum
                 }
 
                 visitOccurrences.Add(visitOccurrence.Id, visitOccurrence);
-                visitIds.Add(visitOccurrence.Id);
             }
-
-
-            long? prevVisitId = null;
-            foreach (var visitId in visitIds.OrderBy(v => v))
-            {
-                if (prevVisitId.HasValue)
-                {
-                    visitOccurrences[visitId].PrecedingVisitOccurrenceId = prevVisitId;
-                }
-
-                prevVisitId = visitId;
-            }
-
 
             if (person.YearOfBirth < 1900)
                 return Attrition.ImplausibleYOBPast;
@@ -335,10 +307,24 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CprdAurum
                     death = null;
             }
 
+            SetPrecedingVisitOccurrenceId(visitOccurrences.Values);
+            SetPrecedingVisitDetailId(visitDetails.Values);
             // push built entities to ChunkBuilder for further save to CDM database
-            AddToChunk(person, death, observationPeriods, [], drugExposures,
-                conditionOccurrences, procedureOccurrences, observations, measurements,
-                [.. visitOccurrences.Values], [.. visitDetails.Values], [], deviceExposure, [], []);
+            AddToChunk(person, 
+                death, 
+                observationPeriods, 
+                [], 
+                drugExposures,
+                conditionOccurrences, 
+                procedureOccurrences, 
+                observations, 
+                measurements,
+                [.. visitOccurrences.Values], 
+                [.. visitDetails.Values], 
+                [], 
+                deviceExposure, 
+                [], 
+                []);
 
 
             return Attrition.None;
