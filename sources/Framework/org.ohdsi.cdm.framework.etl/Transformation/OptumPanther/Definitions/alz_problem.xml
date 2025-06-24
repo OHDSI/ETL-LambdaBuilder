@@ -8,7 +8,7 @@
 		else to_date(text_date, 'YYYYMMDD', FALSE)
 		end as start_date,
 		section note_title,
-		problem note_text,
+		concat('problem:',problem) note_text,
 		40639387 language_concept_id,
 		case
 		when section != '' or section is not null then concat(concat(problem,'|'), section)

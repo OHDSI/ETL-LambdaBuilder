@@ -966,6 +966,9 @@
     <EmbeddedResource Include="Transformation\OptumPanther\Lookups\Specialty.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Lookups\ValueAsConcept.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Transformation\OptumPanther\Lookups\Visits.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>

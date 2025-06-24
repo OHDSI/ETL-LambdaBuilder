@@ -49,7 +49,16 @@
 		when biomarker='total tau protein' and biomarker_source='cerebrospinal fluid' then 3000242
 		when biomarker='total tau protein' and biomarker_source='plasma' then 3011901
 		when biomarker='total tau protein' then 3011901
-		end as concept_id
+		end as concept_id,
+		unit unit_source_value,
+		case
+		when trim(lower(unit))='%' then 8554
+		when trim(lower(unit))='pg/ml' then 8845
+		else 0
+		end unit_concept_id,
+		0 unit_source_concept_id,
+		narrative_result,
+		concat(concat(coalesce(numeric_result,coalesce(narrative_result, '')),'|'), coalesce(variant, '')) value_source_value
 		FROM {sc}.alz_biomarker l
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
 		order by 1
@@ -60,7 +69,7 @@
 			<PersonId>PersonId</PersonId>
 			<StartDate>encounterdate</StartDate>
 			<ValueAsNumber>numeric_result</ValueAsNumber>
-			<ValueSourceValue>variant</ValueSourceValue>
+			<ValueSourceValue>value_source_value</ValueSourceValue>
 			<AdditionalFields>
 				<string>encid</string>
 			</AdditionalFields>
@@ -68,6 +77,21 @@
 				<Concept>
 					<Fields>
 						<Field conceptId="concept_id" sourceConceptId="source_concept_id" key="source_value" sourceKey="source_value" typeId="type_concept_id"/>
+					</Fields>
+				</Concept>
+				<Concept>
+					<Fields>
+						<Field conceptId="unit_concept_id" sourceConceptId="unit_source_concept_id" key="unit_source_value" sourceKey="unit_source_value" defaultTypeId="0"/>
+					</Fields>
+				</Concept>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>ValueAsConcept</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="narrative_result" defaultTypeId="0" />
 					</Fields>
 				</Concept>
 			</Concepts>

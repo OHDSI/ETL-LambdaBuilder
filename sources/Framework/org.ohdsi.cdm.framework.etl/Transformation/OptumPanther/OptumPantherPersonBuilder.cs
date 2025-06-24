@@ -1190,7 +1190,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                         PersonId = p.PersonId,
                         StartDate = p.StartDate,
                         TypeConceptId = 32858,
-                        Text = p.AdditionalFields["findings"],
+                        Text = string.Concat("imaging:", p.AdditionalFields["findings"]),
                         LanguageConceptId = 40639387,
                         ProviderId = p.ProviderId,
                         VisitOccurrenceId = p.VisitOccurrenceId,
