@@ -10,7 +10,7 @@ description: "**PERSON** mapping from IBM MarketScan® Medicaid (MDCD) **ENROLLM
 
 ### Key conventions
 * The **ENROLLMENT_DETAIL** table stores multiple records for each person, one for each month they are enrolled in a health plan.  However, the CDM will only store one record per person in the **PERSON** table.  
-  * Only records where the person has prescription benefits (DRUGCOVG =1) or eligible for both Medicaid and Medicare coverage (MEDICARE =1) are used.
+  * Only records where the person has prescription benefits (DRUGCOVG =1) are used.
 * Start by evaluating all **ENROLLMENT_DETAIL** records and **remove** the following persons:
   * Individuals with two different, valid sex values (1 or 2) over different ENROLLMENT_DETAIL records
   * Individuals with Year(GETDATE()) - max(DOBYR) < 90 AND max(DOBYR) >= min(DOBYR) +2 
