@@ -138,6 +138,22 @@ total tau protein|	|3011901	(Tau protein [Mass/volume] in Serum)
 |visit_detail_id||||
 |unit_source_value|unit||
 
+### Querying the Biomarker Data
+
+Because of the lack of specificity in the native data and granularity in the mapping of the vocabulary, it is recommended to search the `measurement_source_value` when looking to differentiate between `tau`, `total tau`, `ptau`, `ptau 181` and `ptau217`. 
+
+Example query shown below:
+
+```sql
+    select measurement_concept_id,measurement_source_value,c.concept_name,c.concept_code,c.vocabulary_id,count(*)
+    from measurement m 
+    left join concept c on m.measurement_concept_id =c.concept_id 
+    where measurement_type_concept_id =32858
+    and measurement_source_value ~ 'tau'
+    group by 1,2,3,4,5
+    order by 2 asc;
+```
+
 # Table name: procedure_occurrence
 
 ## Reading from alz_imaging
