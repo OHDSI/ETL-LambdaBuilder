@@ -1,0 +1,79 @@
+﻿<QueryDefinition>
+	<Query>
+		with map as
+		(
+		select 'aducanumab' drug_name, 1537087 concept_id
+		union
+		select 'aduhelm' drug_name, 1537087 concept_id
+		union
+		select 'aricept' drug_name, 715997 concept_id
+		union
+		select 'brexpiprazole' drug_name, 46275300 concept_id
+		union
+		select 'donanemab' drug_name, 1734796 concept_id
+		union
+		select 'donepezil' drug_name, 715997 concept_id
+		union
+		select 'donepezil / memantine' drug_name, 715997 concept_id
+		union
+		select 'donepezil / memantine' drug_name, 701322 concept_id
+		union
+		select 'exelon' drug_name, 733523 concept_id
+		union
+		select 'galantamine' drug_name, 757627 concept_id
+		union
+		select 'gantenerumab' drug_name, 36851650 concept_id
+		union
+		select 'kisunla' drug_name, 1734796 concept_id
+		union
+		select 'lecanemab' drug_name, 1301377 concept_id
+		union
+		select 'leqembi' drug_name, 1301377 concept_id
+		union
+		select 'memantine' drug_name, 701322 concept_id
+		union
+		select 'namenda' drug_name, 701322 concept_id
+		union
+		select 'namzaric' drug_name, 715997 concept_id
+		union
+		select 'namzaric' drug_name, 701322 concept_id
+		union
+		select 'razadyne' drug_name, 757627 concept_id
+		union
+		select 'rexulti' drug_name, 46275300 concept_id
+		union
+		select 'risvastigmine' drug_name, 733523 concept_id
+		)
+
+		select distinct
+		ch.person_id as PersonId,
+		encid,
+		drug as source_value,
+		encounterdate,
+		32858 type_concept_id,
+		0 source_concept_id,
+		map.concept_id
+		FROM {sc}.alz_medication l
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
+		LEFT JOIN map on l.drug = map.drug_name
+		order by 1
+	</Query>
+	<DrugExposure>
+		<DrugExposureDefinition>
+			<IsUnique>true</IsUnique>
+			<PersonId>PersonId</PersonId>
+			<StartDate>encounterdate</StartDate>
+			<EndDate>encounterdate</EndDate>
+			<AdditionalFields>
+				<string>encid</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field conceptId="concept_id" sourceConceptId="source_concept_id" key="source_value" sourceKey="source_value" typeId="type_concept_id"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</DrugExposureDefinition>
+	</DrugExposure>
+</QueryDefinition>

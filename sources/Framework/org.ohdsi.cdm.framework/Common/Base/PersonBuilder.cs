@@ -40,6 +40,7 @@ namespace org.ohdsi.cdm.framework.common.Base
         protected List<DrugExposure> DrugForEra = [];
         protected List<ConditionOccurrence> ConditionForEra = [];
         protected List<Note> NoteRecords = [];
+        protected List<NoteNlp> NoteNlpRecords = [];
         protected List<Episode> EpisodeRecords = [];
 
 
@@ -226,6 +227,9 @@ namespace org.ohdsi.cdm.framework.common.Base
             NoteRecords.Clear();
             NoteRecords = null;
 
+            NoteNlpRecords.Clear();
+            NoteNlpRecords = null;
+
             EpisodeRecords.Clear();
             EpisodeRecords = null;
 
@@ -288,6 +292,11 @@ namespace org.ohdsi.cdm.framework.common.Base
         {
             NoteRecords.Add(data);
         }
+
+        public void AddNoteNlpRecords(NoteNlp data)
+        {
+            NoteNlpRecords.Add(data);
+        }        
 
         public void AddEpisode(Episode data)
         {

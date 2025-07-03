@@ -1,0 +1,51 @@
+﻿<QueryDefinition>
+	<Query>
+		select distinct
+		ch.person_id as PersonId,
+		encid,
+		system_name as source_value,
+		encounterdate,
+		numeric_result,
+		32858 type_concept_id,
+		0 source_concept_id,
+		case
+		when system_name = '6CIT' then 35609721
+		when system_name = 'AD8' then 36684956
+		when system_name = 'MMSE' then 4169175
+		when system_name = 'MOCA' then 44808666
+		when system_name = 'MOCA 2.1' then 44808666
+		when system_name = 'MOCA 7.1' then 606673
+		when system_name = 'MOCA 7.2' then 606672
+		when system_name = 'MOCA 7.3' then 606670
+		when system_name = 'MOCA 8.1' then 606671
+		when system_name = 'MOCA 8.1 Blind' then 606671
+		when system_name = 'MOCA 8.2' then 44808666
+		when system_name = 'MOCA 8.3' then 44808666
+		when system_name = 'MOCA Blind' then 44808666
+		when system_name = 'Minicog' then 37017073
+		when system_name = 'SLUMS' then 605634
+		end as concept_id
+		FROM {sc}.alz_assessment l
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
+		order by 1
+	</Query>
+	<Measurement>
+		<MeasurementDefinition>
+			<IsUnique>true</IsUnique>
+			<PersonId>PersonId</PersonId>
+			<StartDate>encounterdate</StartDate>
+			<ValueAsNumber>numeric_result</ValueAsNumber>
+			<ValueSourceValue>numeric_result</ValueSourceValue>
+			<AdditionalFields>
+				<string>encid</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field conceptId="concept_id" sourceConceptId="source_concept_id" key="source_value" sourceKey="source_value" typeId="type_concept_id"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</MeasurementDefinition>
+	</Measurement>
+</QueryDefinition>
