@@ -20,7 +20,7 @@ namespace org.ohdsi.cdm.framework.common.Utility
         {
             foreach (var assemblyFile in Directory.GetFiles(path, "*.dll"))
             {
-                yield return Assembly.LoadFile(assemblyFile);
+                yield return Assembly.LoadFrom(assemblyFile);
             }
         }
 

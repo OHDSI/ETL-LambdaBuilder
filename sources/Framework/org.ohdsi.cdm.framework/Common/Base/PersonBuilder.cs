@@ -437,6 +437,46 @@ namespace org.ohdsi.cdm.framework.common.Base
             }
         }
 
+        protected static void SetPrecedingVisitOccurrenceId(IEnumerable<VisitOccurrence> visitOccurrences)
+        {
+            if (visitOccurrences == null)
+                return;
+
+            long? priorVisitId = null;
+            foreach (var visit in visitOccurrences
+                .OrderBy(v => v.StartDate)
+                .ThenBy(v => v.EndDate)
+                .ThenBy(v => v.Id))
+            {
+                if (priorVisitId.HasValue)
+                {
+                    visit.PrecedingVisitOccurrenceId = priorVisitId;
+                }
+
+                priorVisitId = visit.Id;
+            }
+        }
+
+        protected static void SetPrecedingVisitDetailId(IEnumerable<VisitDetail> visitDetails)
+        {
+            if (visitDetails == null)
+                return;
+
+            long? priorVisitId = null;
+            foreach (var visit in visitDetails
+                .OrderBy(v => v.StartDate)
+                .ThenBy(v => v.EndDate)
+                .ThenBy(v => v.Id))
+            {
+                if (priorVisitId.HasValue)
+                {
+                    visit.PrecedingVisitDetailId = priorVisitId;
+                }
+
+                priorVisitId = visit.Id;
+            }
+        }
+
         // set corresponding PlanPeriodIds to drug exposure entities and procedure occurrence entities
         protected virtual void SetPayerPlanPeriodId(PayerPlanPeriod[] payerPlanPeriods, DrugExposure[] drugExposures,
             ProcedureOccurrence[] procedureOccurrences, VisitOccurrence[] visitOccurrences,

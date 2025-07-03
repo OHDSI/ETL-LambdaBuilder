@@ -795,6 +795,9 @@
     <EmbeddedResource Include="Transformation\OptumPanther\Definitions\labs.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\L_CARE_SITE.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Transformation\OptumPanther\Definitions\L_LOCATION.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
