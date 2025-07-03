@@ -40,6 +40,7 @@ namespace org.ohdsi.cdm.framework.common.Base
         protected List<DrugExposure> DrugForEra = [];
         protected List<ConditionOccurrence> ConditionForEra = [];
         protected List<Note> NoteRecords = [];
+        protected List<NoteNlp> NoteNlpRecords = [];
         protected List<Episode> EpisodeRecords = [];
 
 
@@ -226,6 +227,9 @@ namespace org.ohdsi.cdm.framework.common.Base
             NoteRecords.Clear();
             NoteRecords = null;
 
+            NoteNlpRecords.Clear();
+            NoteNlpRecords = null;
+
             EpisodeRecords.Clear();
             EpisodeRecords = null;
 
@@ -288,6 +292,11 @@ namespace org.ohdsi.cdm.framework.common.Base
         {
             NoteRecords.Add(data);
         }
+
+        public void AddNoteNlpRecords(NoteNlp data)
+        {
+            NoteNlpRecords.Add(data);
+        }        
 
         public void AddEpisode(Episode data)
         {
@@ -425,6 +434,46 @@ namespace org.ohdsi.cdm.framework.common.Base
             foreach (var e in records.Where(e => !string.IsNullOrEmpty(e.ProviderKey)))
             {
                 e.ProviderId = Entity.GetId(e.ProviderKey);
+            }
+        }
+
+        protected static void SetPrecedingVisitOccurrenceId(IEnumerable<VisitOccurrence> visitOccurrences)
+        {
+            if (visitOccurrences == null)
+                return;
+
+            long? priorVisitId = null;
+            foreach (var visit in visitOccurrences
+                .OrderBy(v => v.StartDate)
+                .ThenBy(v => v.EndDate)
+                .ThenBy(v => v.Id))
+            {
+                if (priorVisitId.HasValue)
+                {
+                    visit.PrecedingVisitOccurrenceId = priorVisitId;
+                }
+
+                priorVisitId = visit.Id;
+            }
+        }
+
+        protected static void SetPrecedingVisitDetailId(IEnumerable<VisitDetail> visitDetails)
+        {
+            if (visitDetails == null)
+                return;
+
+            long? priorVisitId = null;
+            foreach (var visit in visitDetails
+                .OrderBy(v => v.StartDate)
+                .ThenBy(v => v.EndDate)
+                .ThenBy(v => v.Id))
+            {
+                if (priorVisitId.HasValue)
+                {
+                    visit.PrecedingVisitDetailId = priorVisitId;
+                }
+
+                priorVisitId = visit.Id;
             }
         }
 

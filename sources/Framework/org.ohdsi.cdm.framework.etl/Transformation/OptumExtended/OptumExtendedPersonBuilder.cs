@@ -451,7 +451,6 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
                     yield return visitDetail;
             }
 
-
             foreach (var patplanidGroup in mcVisits.Values.GroupBy(v => v.AdditionalFields["pat_planid"]))
             {
                 foreach (var clmidGroup in patplanidGroup.GroupBy(v => v.AdditionalFields["clmid"]))
@@ -459,7 +458,11 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
                     foreach (var clmseqGroup in clmidGroup.GroupBy(v => v.AdditionalFields["clmseq"]))
                     {
                         long? prevVisitId = null;
-                        foreach (var vd in clmseqGroup.OrderBy(v => v.AdditionalFields["paid_status"]))
+                        foreach (var vd in clmseqGroup
+                            .OrderBy(v => v.AdditionalFields["paid_status"])
+                            .ThenBy(v => v.StartDate)
+                            .ThenBy(v => v.EndDate)
+                            .ThenBy(v => v.Id))
                         {
                             if (prevVisitId.HasValue)
                             {
@@ -809,24 +812,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
             var vos = visitOccurrences.Values.Where(v => v.ConceptId >= 0).ToArray();
             var vds = visitDetails.Where(v => v.ConceptId >= 0).ToDictionary(v => v.Id, v => v);
 
-            long? prevVisitId = null;
-            foreach (var v in vos.OrderBy(v => v.Id))
-            {
-                if (prevVisitId.HasValue)
-                {
-                    visitOccurrences[v.Id].PrecedingVisitOccurrenceId = prevVisitId;
-                }
-
-                prevVisitId = v.Id;
-            }
-
-            foreach (var vd in vds.Values)
-            {
-                if (vd.PrecedingVisitDetailId.HasValue && !vds.ContainsKey(vd.PrecedingVisitDetailId.Value))
-                {
-                    vd.PrecedingVisitDetailId = null;
-                }
-            }
+           
 
             var latestEndDate = observationPeriods.Max(op => op.EndDate.Value);
             foreach (var ob in observations)
@@ -848,32 +834,32 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
                     death = null;
             }
 
+            var visits = FilterByDeathDate(vos, death, 60).ToArray();
+            var details = FilterByDeathDate(vds.Values, death, 60).ToArray();
+
+            SetPrecedingVisitOccurrenceId(visits);
+            foreach (var vd in details)
+            {
+                if (vd.PrecedingVisitDetailId.HasValue && !vds.ContainsKey(vd.PrecedingVisitDetailId.Value))
+                {
+                    vd.PrecedingVisitDetailId = null;
+                }
+            }
+
             // push built entities to ChunkBuilder for further save to CDM database
             AddToChunk(person,
                 death,
                 observationPeriods,
                 payerPlanPeriods,
-                UpdateRSourceConcept(
-                    FilterByDeathDate(Clean(drugExposures, person), death, 60)
-                    ).ToArray(),
-                UpdateRSourceConcept(
-                    FilterByDeathDate(Clean(conditionOccurrences, person), death, 60)
-                    ).ToArray(),
-                UpdateRSourceConcept(
-                    FilterByDeathDate(Clean(procedureOccurrences, person), death, 60)
-                    ).ToArray(),
-                UpdateRSourceConcept(
-                    FilterByDeathDate(Clean(observations, person), death, 60)
-                    ).ToArray(),
-                UpdateRSourceConcept(
-                    FilterByDeathDate(Clean(measurements, person), death, 60)
-                    ).ToArray(),
-                FilterByDeathDate(vos, death, 60).ToArray(),
-                FilterByDeathDate(vds.Values, death, 60).ToArray(),
+                [.. UpdateRSourceConcept(FilterByDeathDate(Clean(drugExposures, person), death, 60))],
+                [.. UpdateRSourceConcept(FilterByDeathDate(Clean(conditionOccurrences, person), death, 60))],
+                [.. UpdateRSourceConcept(FilterByDeathDate(Clean(procedureOccurrences, person), death, 60))],
+                [.. UpdateRSourceConcept(FilterByDeathDate(Clean(observations, person), death, 60))],
+                [.. UpdateRSourceConcept(FilterByDeathDate(Clean(measurements, person), death, 60))],
+                visits,
+                details,
                 [],
-                UpdateRSourceConcept(
-                    FilterByDeathDate(Clean(deviceExposure, person), death, 60)
-                    ).ToArray(),
+                [.. UpdateRSourceConcept(FilterByDeathDate(Clean(deviceExposure, person), death, 60))],
                 [],
                 []);
 
@@ -882,11 +868,11 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
 
 
             foreach (var episode in pg.GetPregnancyEpisodes(Vocabulary, person, observationPeriods,
-                ChunkData.ConditionOccurrences.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.ProcedureOccurrences.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.Observations.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.Measurements.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.DrugExposures.Where(e => e.PersonId == person.PersonId).ToArray()))
+                [.. ChunkData.ConditionOccurrences.Where(e => e.PersonId == person.PersonId)],
+                [.. ChunkData.ProcedureOccurrences.Where(e => e.PersonId == person.PersonId)],
+                [.. ChunkData.Observations.Where(e => e.PersonId == person.PersonId)],
+                [.. ChunkData.Measurements.Where(e => e.PersonId == person.PersonId)],
+                [.. ChunkData.DrugExposures.Where(e => e.PersonId == person.PersonId)]))
             {
                 episode.Id = Offset.GetKeyOffset(episode.PersonId).ConditionEraId;
                 //episode.OccurrenceCount = episode.OccurrenceCount * -1; //TMP

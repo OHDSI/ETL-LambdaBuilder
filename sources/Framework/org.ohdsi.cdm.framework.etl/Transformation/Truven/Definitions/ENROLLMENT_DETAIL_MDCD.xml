@@ -41,7 +41,7 @@
      null EGEOLOC,
      32813 PeriodTypeConceptId,
      CASE WHEN MHSACOVG IS NULL THEN '0' ELSE MHSACOVG END AS VALUE_AS_NUMBER,
-     case when DRUGCOVG = '1' OR MEDICARE = '1' then 0 else 1  end as missinginsurance
+     case when DRUGCOVG = '1' then 0 else 1  end as missinginsurance
      FROM {sc}.ENROLLMENT_DETAIL
      JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND ENROLID = ch.person_source_value)
 

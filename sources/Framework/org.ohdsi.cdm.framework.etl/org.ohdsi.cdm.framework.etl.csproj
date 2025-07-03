@@ -765,6 +765,18 @@
     <EmbeddedResource Include="Transformation\OptumPanther\CombinedLookups\DaysSupply.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\alz_medication.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\alz_problem.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\alz_imaging.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\alz_biomarker.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Transformation\OptumPanther\Definitions\care_area.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -781,6 +793,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Transformation\OptumPanther\Definitions\labs.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\L_CARE_SITE.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Transformation\OptumPanther\Definitions\L_LOCATION.xml">
@@ -835,6 +850,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Transformation\OptumPanther\Definitions\onc_treatment_response.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Definitions\alz_assessment.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Transformation\OptumPanther\Definitions\onc_tumor_grade.xml">
@@ -949,6 +967,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Transformation\OptumPanther\Lookups\Specialty.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\OptumPanther\Lookups\ValueAsConcept.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Transformation\OptumPanther\Lookups\Visits.sql">

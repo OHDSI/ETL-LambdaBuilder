@@ -1,5 +1,5 @@
 ﻿<QueryDefinition>
-	<Query database="none">
+	<Query>
 		SELECT
 		CAST(RIGHT(Member_ID, LEN(Member_ID) - 1) AS BIGINT) AS person_id,
 		date_of_health_checkup AS observation_date,
@@ -186,49 +186,106 @@
 		CASE
 		WHEN Eating1_fast_eating IS NULL
 		THEN NULL
-		WHEN Eating1_fast_eating = 1
-		THEN 'fast'
-		WHEN Eating1_fast_eating = 2
-		THEN 'normal'
-		ELSE 'slow'
+		WHEN Eating1_fast_eating = 1 THEN 'fast'
+		WHEN Eating1_fast_eating = 2 THEN 'average'
+		WHEN Eating1_fast_eating = 3 THEN 'slow'
+		ELSE Eating1_fast_eating || ' unknown'
 		END AS Eating_speed,
 
 		CASE
-		WHEN Eating2_before_bedtime IS NULL
-		THEN NULL
-		WHEN Eating2_before_bedtime = 1
-		THEN 'yes'
+		WHEN Eating2_before_bedtime IS NULL THEN NULL
+		WHEN Eating2_before_bedtime = 1 THEN 'yes'
 		ELSE 'no'
+		END AS Eating_before_bedtime,
+
+		CASE
+		WHEN Eating2_before_bedtime IS NULL THEN NULL
+		WHEN Eating2_before_bedtime = 1 THEN 4188539
+		ELSE 4188540
+		END AS Eating_before_bedtime_concept_id,
+
+		CASE
+		WHEN eating3_snack IS NULL THEN NULL
+		WHEN eating3_snack = 1 THEN 'Every day'
+		WHEN eating3_snack = 2 THEN 'Sometimes'
+		WHEN eating3_snack = 3 THEN 'Rarely'
 		END AS Eat_snack,
 
 		CASE
-		WHEN Eating3_late_evening_snack IS NULL
-		THEN NULL
-		WHEN Eating3_late_evening_snack = 1
-		THEN 'yes'
+		WHEN eating3_snack IS NULL THEN NULL
+		WHEN eating3_snack = 1 THEN 4288153
+		WHEN eating3_snack = 2 THEN 765707
+		WHEN eating3_snack = 3 THEN 763696
+		END AS Eat_snack_concept_id,
+
+		CASE
+		WHEN Eating3_late_evening_snack IS NULL THEN NULL
+		WHEN Eating3_late_evening_snack = 1 THEN 'yes'
 		ELSE 'no'
 		END AS night_meal,
 
 		CASE
-		WHEN Eating_habit IS NULL
-		THEN NULL
-		WHEN Eating_habit = 1
-		THEN 'yes'
+		WHEN Eating3_late_evening_snack IS NULL THEN NULL
+		WHEN Eating3_late_evening_snack = 1 THEN 4188539
+		ELSE 4188540
+		END AS night_meal_concept_id,
+
+		CASE
+		WHEN eating_habit_breakfast IS NULL THEN NULL
+		WHEN eating_habit_breakfast = 1 THEN 'yes'
 		ELSE 'no'
 		END AS Skip_breakfast,
 
 		CASE
-		WHEN Drinking_habit IS NULL
-		THEN NULL
-		WHEN Drinking_habit = 1
-		THEN 'everyday'
-		WHEN Drinking_habit = 2
-		THEN 'sometimes'
-		ELSE 'rare'
+		WHEN eating_habit_breakfast IS NULL THEN NULL
+		WHEN eating_habit_breakfast = 1 THEN 4188539
+		ELSE 4188540
+		END AS Skip_breakfast_concept_id,
+
+
+		CASE
+		WHEN drinking_habit_until_mar_24 IS NULL and drinking_habit_after_apr_24 IS NULL THEN NULL
+		WHEN drinking_habit_after_apr_24 = 1 THEN 'Daily'
+		WHEN drinking_habit_after_apr_24 = 2 THEN '5~6 days a week'
+		WHEN drinking_habit_after_apr_24 = 3 THEN '3~4 days a week'
+		WHEN drinking_habit_after_apr_24 = 4 THEN '1~2 days a week'
+		WHEN drinking_habit_after_apr_24 = 5 THEN '1~3 days per month'
+		WHEN drinking_habit_after_apr_24 = 6 THEN 'Less than 1 day per month'
+		WHEN drinking_habit_after_apr_24 = 7 THEN 'Quit'
+		WHEN drinking_habit_after_apr_24 = 8 THEN 'Dont drink (cant drink)'
+
+		WHEN drinking_habit_until_mar_24 = 1 THEN 'Every day'
+		WHEN drinking_habit_until_mar_24 = 2 THEN 'Sometimes'
+		ELSE 'Rarely'
 		END AS Drinking_habits,
 
+		CASE
+		WHEN drinking_habit_until_mar_24 IS NULL and drinking_habit_after_apr_24 IS NULL THEN NULL
+		WHEN drinking_habit_until_mar_24 = 1 or drinking_habit_after_apr_24 = 1	THEN 4288153
+		WHEN drinking_habit_until_mar_24 = 2 and drinking_habit_after_apr_24 is null THEN 765707
+		WHEN drinking_habit_until_mar_24 = 3 and drinking_habit_after_apr_24 is null THEN 763696
+		WHEN drinking_habit_after_apr_24 = 7 THEN 4220362
+		WHEN drinking_habit_after_apr_24 = 8 THEN 4022664
+		ELSE 0
+		END AS Drinking_habits_concept_id,
+
+		CASE
+		WHEN amount_of_drinking_until_mar_24 IS NULL and amount_of_drinking_after_apr_24 IS NULL THEN NULL
+
+		WHEN amount_of_drinking_after_apr_24 = 1 THEN '1 is not in the balance'
+		WHEN amount_of_drinking_after_apr_24 = 2 THEN '1~2 is not in the balance'
+		WHEN amount_of_drinking_after_apr_24 = 3 THEN '2~3 is not in the balance'
+		WHEN amount_of_drinking_after_apr_24 = 4 THEN '3~5'
+		WHEN amount_of_drinking_after_apr_24 = 5 THEN '5 or more'
+
+		WHEN amount_of_drinking_until_mar_24 = 1 THEN 'Less than 1'
+		WHEN amount_of_drinking_until_mar_24 = 2 THEN 'Less than 2'
+		WHEN amount_of_drinking_until_mar_24 = 3 THEN 'Less than 3'
+		WHEN amount_of_drinking_until_mar_24 = 4 THEN '3 or more'
+		END AS amount_of_drinking,
+
 		ecg as Electrocardiogram,
-		
+
 		CASE
 		WHEN ecg IS NULL THEN 0
 		ELSE 1
@@ -251,26 +308,18 @@
 		END AS ecg_concept_name,
 
 		CASE
-		WHEN Smoking_habit IS NULL
+		WHEN smoking_habit_until_mar_24 IS NULL and smoking_habit_after_apr_24 IS NULL
 		THEN NULL
-		WHEN Smoking_habit = 1
-		THEN 4188539
-		ELSE 4188540
-		END AS Smoking_habits_value,
-
-		CASE
-		WHEN Smoking_habit IS NULL
-		THEN NULL
-		WHEN Smoking_habit = 1
-		THEN 4298794
+		WHEN smoking_habit_until_mar_24 = 1 or smoking_habit_after_apr_24 = 1 THEN 4298794
+		WHEN smoking_habit_after_apr_24 = 2 THEN 4310250
 		ELSE 4222303
 		END AS Smoking_habit_concept_id,
 
 		CASE
-		WHEN Smoking_habit IS NULL
+		WHEN smoking_habit_until_mar_24 IS NULL and smoking_habit_after_apr_24 IS NULL
 		THEN NULL
-		WHEN Smoking_habit = 1
-		THEN 'Smoker'
+		WHEN smoking_habit_until_mar_24 = 1 or smoking_habit_after_apr_24 = 1 THEN 'Smoker'
+		WHEN smoking_habit_after_apr_24 = 2 THEN 'Ex-smoker'
 		ELSE 'Non-smoker'
 		END AS Smoking_habit_concept_name,
 
@@ -783,73 +832,6 @@
 				</Concept>
 			</Concepts>
 		</MeasurementDefinition>
-
-
-		<MeasurementDefinition>
-			<PersonId>PERSON_ID</PersonId>
-			<IsUnique>true</IsUnique>
-			<StartDate>observation_date</StartDate>
-			<ValueSourceValue>Eating_speed</ValueSourceValue>
-			<Concepts>
-				<Concept>
-					<Fields>
-						<Field defaultSource="Eating speed" defaultConceptId="0" defaultTypeId="32836"/>
-					</Fields>
-				</Concept>
-			</Concepts>
-		</MeasurementDefinition>
-		<MeasurementDefinition>
-			<PersonId>PERSON_ID</PersonId>
-			<IsUnique>true</IsUnique>
-			<StartDate>observation_date</StartDate>
-			<ValueSourceValue>Eat_snack</ValueSourceValue>
-			<Concepts>
-				<Concept>
-					<Fields>
-						<Field defaultSource="Eat snack within 2 hours before bedtime more than 3 times in a week" defaultConceptId="0" defaultTypeId="32836"/>
-					</Fields>
-				</Concept>
-			</Concepts>
-		</MeasurementDefinition>
-		<MeasurementDefinition>
-			<PersonId>PERSON_ID</PersonId>
-			<IsUnique>true</IsUnique>
-			<StartDate>observation_date</StartDate>
-			<ValueSourceValue>night_meal</ValueSourceValue>
-			<Concepts>
-				<Concept>
-					<Fields>
-						<Field defaultSource="Have a late-night meal after supper more than 3 timesin a week" defaultConceptId="0" defaultTypeId="32836"/>
-					</Fields>
-				</Concept>
-			</Concepts>
-		</MeasurementDefinition>
-		<MeasurementDefinition>
-			<PersonId>PERSON_ID</PersonId>
-			<IsUnique>true</IsUnique>
-			<StartDate>observation_date</StartDate>
-			<ValueSourceValue>Skip_breakfast</ValueSourceValue>
-			<Concepts>
-				<Concept>
-					<Fields>
-						<Field defaultSource="Skip breakfast more than 3 times in a week" defaultConceptId="0" defaultTypeId="32836"/>
-					</Fields>
-				</Concept>
-			</Concepts>
-		</MeasurementDefinition>
-		<MeasurementDefinition>
-			<PersonId>PERSON_ID</PersonId>
-			<IsUnique>true</IsUnique>
-			<StartDate>observation_date</StartDate>
-			<ValueSourceValue>Drinking_habits</ValueSourceValue>
-			<Concepts>
-				<Concept>
-					<Fields>
-						<Field defaultSource="Drinking habits" defaultConceptId="0" defaultTypeId="32836"/>
-					</Fields>
-				</Concept>
-			</Concepts>
-		</MeasurementDefinition>
 	</Measurement>
 
 	<Observation>
@@ -906,5 +888,109 @@
 				</Concept>
 			</Concepts>
 		</ObservationDefinition>
+
+		<ObservationDefinition>
+			<PersonId>PERSON_ID</PersonId>
+			<IsUnique>true</IsUnique>
+			<StartDate>observation_date</StartDate>
+			<ValueSourceValue>Eating_speed</ValueSourceValue>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field defaultSource="Eating speed" defaultConceptId="0" defaultTypeId="32836"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ObservationDefinition>
+
+		<ObservationDefinition>
+			<PersonId>PERSON_ID</PersonId>
+			<IsUnique>true</IsUnique>
+			<StartDate>observation_date</StartDate>
+			<ValueSourceValue>Eat_snack</ValueSourceValue>
+			<ValueAsConceptId>Eat_snack_concept_id</ValueAsConceptId>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field defaultSource="Eat snack other than breakfast, lunch and dinner" defaultConceptId="0" defaultTypeId="32836"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ObservationDefinition>
+
+		<ObservationDefinition>
+			<PersonId>PERSON_ID</PersonId>
+			<IsUnique>true</IsUnique>
+			<StartDate>observation_date</StartDate>
+			<ValueSourceValue>Eating_before_bedtime</ValueSourceValue>
+			<ValueAsConceptId>Eating_before_bedtime_concept_id</ValueAsConceptId>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field defaultSource="Have a late-night meal after supper more than 3 times in a week" defaultConceptId="0" defaultTypeId="32836"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ObservationDefinition>
+
+		<ObservationDefinition>
+			<PersonId>PERSON_ID</PersonId>
+			<IsUnique>true</IsUnique>
+			<StartDate>observation_date</StartDate>
+			<ValueSourceValue>night_meal</ValueSourceValue>
+			<ValueAsConceptId>night_meal_concept_id</ValueAsConceptId>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field defaultSource="Eat snack after dinner more than 3 times in a week" defaultConceptId="0" defaultTypeId="32836"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ObservationDefinition>
+
+		<ObservationDefinition>
+			<PersonId>PERSON_ID</PersonId>
+			<IsUnique>true</IsUnique>
+			<StartDate>observation_date</StartDate>
+			<ValueSourceValue>Skip_breakfast</ValueSourceValue>
+			<ValueAsConceptId>Skip_breakfast_concept_id</ValueAsConceptId>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field defaultSource="Skip breakfast more than 3 times in a week" defaultConceptId="0" defaultTypeId="32836"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ObservationDefinition>
+
+		<ObservationDefinition>
+			<PersonId>PERSON_ID</PersonId>
+			<IsUnique>true</IsUnique>
+			<StartDate>observation_date</StartDate>
+			<ValueSourceValue>Drinking_habits</ValueSourceValue>
+			<ValueAsConceptId>Drinking_habits_concept_id</ValueAsConceptId>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field defaultSource="Drinking habits" defaultConceptId="0" defaultTypeId="32836"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ObservationDefinition>
+
+		<ObservationDefinition>
+			<PersonId>PERSON_ID</PersonId>
+			<IsUnique>true</IsUnique>
+			<StartDate>observation_date</StartDate>
+			<ValueSourceValue>amount_of_drinking</ValueSourceValue>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field defaultSource="Amount of alcohol" defaultConceptId="0" defaultTypeId="32836"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ObservationDefinition>
 	</Observation>
+	
 </QueryDefinition>

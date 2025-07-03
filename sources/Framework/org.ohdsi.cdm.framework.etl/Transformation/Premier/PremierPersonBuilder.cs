@@ -128,17 +128,6 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Premier
                 });
             }
 
-            long? prevVisitId = null;
-            foreach (var visit in visitOccurrences.Values.OrderBy(v => v.EndDate.Value))
-            {
-                if (prevVisitId.HasValue)
-                {
-                    visit.PrecedingVisitOccurrenceId = prevVisitId;
-                }
-
-                prevVisitId = visit.Id;
-            }
-
             var minYearOfBirth = 9999;
             var maxYearOfBirth = 0;
             var firstVOYear = 0;
@@ -272,25 +261,30 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Premier
 
             ConditionForEra.Clear();
 
+            SetPrecedingVisitOccurrenceId(visitOccurrences.Values);
             // push built entities to ChunkBuilder for further save to CDM database
             AddToChunk(person, death,
                 observationPeriods,
                 payerPlanPeriods,
-                UpdateRSourceConcept(drugExposures).ToArray(),
-                UpdateRSourceConcept(conditionOccurrences).ToArray(),
-                UpdateRSourceConcept(procedureOccurrences).ToArray(),
-                UpdateRSourceConcept(observations).ToArray(),
-                UpdateRSourceConcept(measurements).ToArray(),
-                [.. visitOccurrences.Values], null, [], UpdateRSourceConcept(deviceExposure).ToArray(),
-                [], []);
+                [.. UpdateRSourceConcept(drugExposures)],
+                [.. UpdateRSourceConcept(conditionOccurrences)],
+                [.. UpdateRSourceConcept(procedureOccurrences)],
+                [.. UpdateRSourceConcept(observations)],
+                [.. UpdateRSourceConcept(measurements)],
+                [.. visitOccurrences.Values], 
+                null, 
+                [], 
+                [.. UpdateRSourceConcept(deviceExposure)],
+                [], 
+                []);
 
             var pg = new PregnancyAlgorithm();
             foreach (var r in pg.GetPregnancyEpisodes(Vocabulary, person, observationPeriods,
-                ChunkData.ConditionOccurrences.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.ProcedureOccurrences.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.Observations.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.Measurements.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.DrugExposures.Where(e => e.PersonId == person.PersonId).ToArray()))
+                [.. ChunkData.ConditionOccurrences.Where(e => e.PersonId == person.PersonId)],
+                [.. ChunkData.ProcedureOccurrences.Where(e => e.PersonId == person.PersonId)],
+                [.. ChunkData.Observations.Where(e => e.PersonId == person.PersonId)],
+                [.. ChunkData.Measurements.Where(e => e.PersonId == person.PersonId)],
+                [.. ChunkData.DrugExposures.Where(e => e.PersonId == person.PersonId)]))
             {
                 r.Id = Offset.GetKeyOffset(r.PersonId).ConditionEraId;
                 ChunkData.ConditionEra.Add(r);

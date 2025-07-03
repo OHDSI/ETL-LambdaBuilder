@@ -65,13 +65,13 @@ createObservationTests <- function () {
           disc_date    = "2008-05-01");
   add_patbill(pat_key  = visit$pat_key);
   add_paticd_proc(pat_key     = visit$pat_key,
-                  icd_code    = 'V56.32',
+                  icd_code    = 'E826',
                   icd_version = 9);
   expect_observation(person_id                = patient$person_id,
                      visit_occurrence_id      = visit$visit_occurrence_id,
-                     observation_concept_id   = 4203722,
+                     observation_concept_id   = 443423,
                      observation_date         = "2008-05-01",
-                     observation_source_value = "V56.32");
+                     observation_source_value = "E826");
 
   # PATICD_PROC.ICD_CODE ICD10CM;
   patient <- createPatient();

@@ -25,11 +25,11 @@ createProcedureOccurrenceTests <- function () {
           disc_date    = "2014-10-01");
   add_patbill(pat_key  = visit$pat_key);
   add_paticd_proc(pat_key     = visit$pat_key,
-                  icd_code    = "V43.64",
+                  icd_code    = "V55.1",
                   icd_version = 9);
   expect_procedure_occurrence(person_id            = patient$person_id,
                               visit_occurrence_id  = visit$visit_occurrence_id,
-                              procedure_concept_id = 4134857,
+                              procedure_concept_id = 4125153,
                               procedure_date       = "2014-10-01");
 
   # PATICD_PROC.ICD_CODE ICD9Proc

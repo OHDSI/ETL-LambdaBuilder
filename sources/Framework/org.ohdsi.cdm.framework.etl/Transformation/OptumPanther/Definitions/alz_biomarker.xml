@@ -1,0 +1,100 @@
+﻿<QueryDefinition>
+	<Query>
+		select distinct
+		ch.person_id as PersonId,
+		encid,
+		case
+		when biomarker_source != '' or biomarker_source is not null then concat(concat(biomarker,'|'), biomarker_source)
+		else biomarker
+		end as source_value,
+		encounterdate,
+		numeric_result,
+		variant,
+		32858 type_concept_id,
+		0 source_concept_id,
+		case
+		when biomarker='amyloid beta 40 peptide' and biomarker_source='plasma' then 42868556
+		when biomarker='amyloid beta 40 peptide' and biomarker_source='cerebrospinal fluid' then 42868555
+		when biomarker='amyloid beta 40 peptide' then 42868556
+		when biomarker='amyloid beta 42 peptide/amyloid beta 40 peptide' and biomarker_source='blood' then 0 --Mapping available in August 2025 release of vocabulary loinc code =106941-8
+		when biomarker='amyloid beta 42 peptide/amyloid beta 40 peptide' and biomarker_source='cerebrospinal fluid' then 1617024
+		when biomarker='amyloid beta 42 peptide/amyloid beta 40 peptide' and biomarker_source='plasma' then 0 --Mapping available in August 2025 release of vocabulary loinc code =106941-8
+		when biomarker='amyloid beta 42 peptide/amyloid beta 40 peptide' then 0 --Mapping available in August 2025 release of vocabulary loinc code =106941-8
+		when biomarker='amyloid beta-peptides' and biomarker_source='blood' then 1091801
+		when biomarker='amyloid beta-peptides' and biomarker_source='cerebrospinal fluid' then 1091801
+		when biomarker='amyloid beta-peptides' and biomarker_source='plasma' then 1091801
+		when biomarker='amyloid beta-peptides' then 1091801
+		when biomarker='amyloid beta-protein (1-42)' and biomarker_source='blood' then 3043102
+		when biomarker='amyloid beta-protein (1-42)' and biomarker_source='cerebrospinal fluid' then 3042810
+		when biomarker='amyloid beta-protein (1-42)' and biomarker_source='plasma' then 3043102
+		when biomarker='amyloid beta-protein (1-42)' then 3043102
+		when biomarker='amyloid tau index' and biomarker_source='cerebrospinal fluid' then 3042151
+		when biomarker='amyloid tau index' then 3042151
+		when biomarker='apolipoprotein e' and biomarker_source='blood' then 3044063
+		when biomarker='apolipoprotein e' and biomarker_source='cerebrospinal fluid' then 1617460
+		when biomarker='apolipoprotein e' and biomarker_source='plasma' then 3044063
+		when biomarker='apolipoprotein e' then 3044063
+		when biomarker='phosphorylated tau protein' and biomarker_source='blood' then 3011901
+		when biomarker='phosphorylated tau protein' and biomarker_source='cerebrospinal fluid' then 3000242
+		when biomarker='phosphorylated tau protein' and biomarker_source='plasma' then 3011901
+		when biomarker='phosphorylated tau protein' then 3011901
+		when biomarker='tau protein, phosphorylated 181' and biomarker_source='cerebrospinal fluid' then 43055225
+		when biomarker='tau protein, phosphorylated 181' then 1259491
+		when biomarker='tau protein, phosphorylated 217' then 1092155
+		when biomarker='tau protein/amyloid beta 42 peptide' and biomarker_source='cerebrospinal fluid' then 3042151
+		when biomarker='tau proteins' and biomarker_source='blood' then 3011901
+		when biomarker='tau proteins' and biomarker_source='cerebrospinal fluid' then 3000242
+		when biomarker='tau proteins' then 3011901
+		when biomarker='total tau protein' and biomarker_source='blood' then 3011901
+		when biomarker='total tau protein' and biomarker_source='cerebrospinal fluid' then 3000242
+		when biomarker='total tau protein' and biomarker_source='plasma' then 3011901
+		when biomarker='total tau protein' then 3011901
+		end as concept_id,
+		unit unit_source_value,
+		case
+		when trim(lower(unit))='%' then 8554
+		when trim(lower(unit))='pg/ml' then 8845
+		else 0
+		end unit_concept_id,
+		0 unit_source_concept_id,
+		narrative_result,
+		concat(concat(coalesce(numeric_result,coalesce(narrative_result, '')),'|'), coalesce(variant, '')) value_source_value
+		FROM {sc}.alz_biomarker l
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
+		order by 1
+	</Query>
+	<Measurement>
+		<MeasurementDefinition>
+			<IsUnique>true</IsUnique>
+			<PersonId>PersonId</PersonId>
+			<StartDate>encounterdate</StartDate>
+			<ValueAsNumber>numeric_result</ValueAsNumber>
+			<ValueSourceValue>value_source_value</ValueSourceValue>
+			<AdditionalFields>
+				<string>encid</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field conceptId="concept_id" sourceConceptId="source_concept_id" key="source_value" sourceKey="source_value" typeId="type_concept_id"/>
+					</Fields>
+				</Concept>
+				<Concept>
+					<Fields>
+						<Field conceptId="unit_concept_id" sourceConceptId="unit_source_concept_id" key="unit_source_value" sourceKey="unit_source_value" defaultTypeId="0"/>
+					</Fields>
+				</Concept>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>ValueAsConcept</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="narrative_result" defaultTypeId="0" />
+					</Fields>
+				</Concept>
+			</Concepts>
+		</MeasurementDefinition>
+	</Measurement>
+</QueryDefinition>

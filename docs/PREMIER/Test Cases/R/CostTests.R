@@ -34,7 +34,7 @@ createCostTests <- function () {
               sum_dept_desc = "OR",
               std_dept_desc = "SURGERY");
   expect_procedure_occurrence(person_id            = patient$person_id,
-                              procedure_concept_id = 2107402);
+                              procedure_concept_id = 4105220);
   expect_cost(cost_domain_id            = "Procedure",
               total_charge              = 29374.99,
               total_cost                = 13572.76,

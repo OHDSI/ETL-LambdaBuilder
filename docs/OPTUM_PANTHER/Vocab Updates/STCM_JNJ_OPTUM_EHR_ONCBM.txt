@@ -32,8 +32,8 @@ B-Raf proto-oncogene, serine/threonine kinase (BRAF) V600E	0	JNJ_OPTUM_EHR_ONCBM
 B-Raf proto-oncogene, serine/threonine kinase (BRAF) V600K	0	JNJ_OPTUM_EHR_ONCBM	B-Raf proto-oncogene, serine/threonine kinase (BRAF) V600K	35984352	OMOP Genomic	2023-07-26	2024-03-13	D
 B-Raf proto-oncogene, serine/threonine kinase (BRAF) V600K	0	JNJ_OPTUM_EHR_ONCBM	B-Raf proto-oncogene, serine/threonine kinase (BRAF) V600K	19583251	OMOP Genomic	2024-03-13	2099-12-31	
 BRCA1 associated RING domain 1 (BARD1)	0	JNJ_OPTUM_EHR_ONCBM	BRCA1 associated RING domain 1 (BARD1)	35962884	OMOP Genomic	2023-07-26	2099-12-31	
-BRCA1/BRCA2 DNA repair associated (BRCA1/BRCA2)	0	JNJ_OPTUM_EHR_ONCBM	BRCA1/BRCA2 DNA repair associated (BRCA1/BRCA2)	35950928	OMOP Genomic	2023-07-26	2099-12-31	
 BRCA1/BRCA2 DNA repair associated (BRCA1/BRCA2)	0	JNJ_OPTUM_EHR_ONCBM	BRCA1/BRCA2 DNA repair associated (BRCA1/BRCA2)	35950178	OMOP Genomic	2023-07-26	2099-12-31	
+BRCA1/BRCA2 DNA repair associated (BRCA1/BRCA2)	0	JNJ_OPTUM_EHR_ONCBM	BRCA1/BRCA2 DNA repair associated (BRCA1/BRCA2)	35950928	OMOP Genomic	2023-07-26	2099-12-31	
 BRCA1 DNA repair associated (BRCA1)	0	JNJ_OPTUM_EHR_ONCBM	BRCA1 DNA repair associated (BRCA1)	35950928	OMOP Genomic	2023-07-26	2099-12-31	
 BRCA1 interacting protein C-terminal helicase 1 (BRIP1)	0	JNJ_OPTUM_EHR_ONCBM	BRCA1 interacting protein C-terminal helicase 1 (BRIP1)	35960995	OMOP Genomic	2023-07-26	2099-12-31	
 BRCA2 DNA repair associated (BRCA2)	0	JNJ_OPTUM_EHR_ONCBM	BRCA2 DNA repair associated (BRCA2)	35950178	OMOP Genomic	2023-07-26	2099-12-31	
@@ -93,8 +93,8 @@ estrogen receptor (ER)	0	JNJ_OPTUM_EHR_ONCBM	estrogen receptor (ER)	35976980	OMO
 estrogen receptor/progesterone receptor/erb-b2 receptor tyrosine kinase 2 (ER/PGR/ERBB2)	0	JNJ_OPTUM_EHR_ONCBM	estrogen receptor/progesterone receptor/erb-b2 receptor tyrosine kinase 2 (ER/PGR/ERBB2)	35955862	OMOP Genomic	2023-07-26	2099-12-31	
 estrogen receptor/progesterone receptor/erb-b2 receptor tyrosine kinase 2 (ER/PGR/ERBB2)	0	JNJ_OPTUM_EHR_ONCBM	estrogen receptor/progesterone receptor/erb-b2 receptor tyrosine kinase 2 (ER/PGR/ERBB2)	35957667	OMOP Genomic	2023-07-26	2099-12-31	
 estrogen receptor/progesterone receptor/erb-b2 receptor tyrosine kinase 2 (ER/PGR/ERBB2)	0	JNJ_OPTUM_EHR_ONCBM	estrogen receptor/progesterone receptor/erb-b2 receptor tyrosine kinase 2 (ER/PGR/ERBB2)	35976980	OMOP Genomic	2023-07-26	2099-12-31	
-estrogen receptor/progesterone receptor (ER/PGR)	0	JNJ_OPTUM_EHR_ONCBM	estrogen receptor/progesterone receptor (ER/PGR)	35976980	OMOP Genomic	2023-07-26	2099-12-31	
 estrogen receptor/progesterone receptor (ER/PGR)	0	JNJ_OPTUM_EHR_ONCBM	estrogen receptor/progesterone receptor (ER/PGR)	35957667	OMOP Genomic	2023-07-26	2099-12-31	
+estrogen receptor/progesterone receptor (ER/PGR)	0	JNJ_OPTUM_EHR_ONCBM	estrogen receptor/progesterone receptor (ER/PGR)	35976980	OMOP Genomic	2023-07-26	2099-12-31	
 Fc fragment of IgE receptor II (FCER2 or CD23)	0	JNJ_OPTUM_EHR_ONCBM	Fc fragment of IgE receptor II (FCER2 or CD23)	35957519	OMOP Genomic	2023-07-26	2099-12-31	
 Fc fragment of IgG receptor Ia (FCGR1A or CD64)	0	JNJ_OPTUM_EHR_ONCBM	Fc fragment of IgG receptor Ia (FCGR1A or CD64)	35954176	OMOP Genomic	2023-07-26	2099-12-31	
 fms related tyrosine kinase 3 (FLT3)	0	JNJ_OPTUM_EHR_ONCBM	fms related tyrosine kinase 3 (FLT3)	35956153	OMOP Genomic	2023-07-26	2099-12-31	
