@@ -2,9 +2,9 @@
   <Variables>
     <Variable name="prefix" database="ccae">Commercial</Variable>
     <Variable name="prefix" database="mdcr">Medicare</Variable>
-    <Variable name="vendor" database="ccae">'ccae' as vendor</Variable>
-    <Variable name="vendor" database="mdcr">'mdcr' as vendor</Variable>
-    <Variable name="vendor" database="mdcd">'mdcd' as vendor</Variable>
+    <Variable name="vendor" database="ccae">cast('ccae' as varchar) as vendor</Variable>
+    <Variable name="vendor" database="mdcr">cast('mdcr' as varchar) as vendor</Variable>
+    <Variable name="vendor" database="mdcd">cast('mdcd' as varchar) as vendor</Variable>
   </Variables>
    <Query database="ccae,mdcr">
 	   with a as (
@@ -45,13 +45,13 @@
 	   + ps
 	   PayerSource,
 	   900000010 AS OBSERVATION_CONCEPT_ID,
-	   'MHSACOVG' AS OBSERVATION_SOURCE_VALUE,
+	   cast('MHSACOVG' as varchar) AS OBSERVATION_SOURCE_VALUE,
 	   {vendor},
-	   null PLANKEY,
-	   null RACE_SOURCE_VALUE,
-	   null RACE_CONCEPT_ID,
-	   null ETHNICITY_SOURCE_VALUE,
-	   null ETHNICITY_CONCEPT_ID,
+	   cast(null as varchar) PLANKEY,
+	   cast(null as varchar) RACE_SOURCE_VALUE,
+	   cast(null as bigint) RACE_CONCEPT_ID,
+	   cast(null as varchar) ETHNICITY_SOURCE_VALUE,
+	   cast(null as bigint) ETHNICITY_CONCEPT_ID,
 	   e2.ENROLID as baby_person_id,
 	   CAST((CAST(e2.DOBYR AS VARCHAR) + '-' +  CAST(DATEPART(MONTH, e2.DTSTART) as VARCHAR) + '-01') AS DATE) as baby_dob
 	   from a
