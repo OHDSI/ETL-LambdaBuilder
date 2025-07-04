@@ -61,7 +61,7 @@ SLUMS| 605634 (Saint Louis University Mental Status)
 | visit_occurrence_id|encid | Lookup the VISIT_OCCURRENCE_ID based on the encid |If encid is blank then use diag_date to determine which VISIT_OCCURRENCE_ID the diagnosis should be associated to|
 |person_id|ptid|||
 |measurement_type_concept_id||32858 (NLP)|
-|measurement_date| encounterdate|||
+|measurement_date| note_date|||
 |measurement_concept_id|system_name|See mapping logic above||
 |measurement_source_concept_id||Set to 0 |
 |measurement_source_value|system_name|||
@@ -125,7 +125,7 @@ total tau protein|	|3011901	(Tau protein [Mass/volume] in Serum)
 | visit_occurrence_id|encid | Lookup the VISIT_OCCURRENCE_ID based on the encid |If encid is blank then use diag_date to determine which VISIT_OCCURRENCE_ID the diagnosis should be associated to|
 |person_id|ptid|||
 |measurement_type_concept_id||32858 (NLP)|
-|measurement_date| encounterdate|||
+|measurement_date| note_date|||
 |measurement_concept_id|biomarker <br> biomarker_source |See mapping logic above||
 |measurement_source_concept_id||Set to 0 |
 |measurement_source_value|concat(biomarker,'\|',biomarker_source)|||
@@ -192,8 +192,8 @@ single-photon emission computed tomography|| 4019823 (single photon emission com
 |procedure_source_concept_id || Set to 0
 |procedure_source_value |procedure <br> contrast | concat(procedure,'\|',contrast)
 |provider_id | encid    |   Use the encid to lookup PROVIDER_ID in the VISIT_DETAIL table.    |  If encid is blank then leave PROVIDER_ID blank.    |
-|procedure_date | procedure_date <br> encounter_date | coalesce(procedure_date,encounterdate) | |
-|procedure_datetime | procedure_date <br> encounter_date | coalesce(procedure_date,encounterdate) | |
+|procedure_date | procedure_date <br> encounter_date | coalesce(procedure_date,note_date) | |
+|procedure_datetime | procedure_date <br> encounter_date | coalesce(procedure_date,note_date) | |
 |modifier_concept_id | | | |
 |quantity | | | |
 |visit_detail_id | | | |
@@ -211,8 +211,8 @@ The ALZ Symptoms and Problems table records patient cognitive impairment, health
 |-|-|-|-|
 note_id	 |    autogenerate      |          |          |
 |     person_id    |     ptid    |          |          |
-|     nlp_date    |     text_date <br> encounterdate    | coalesce(text_date,encounter_date)         |          |
-|     Nlp_datetime    | text_date <br> encounterdate    | coalesce(text_date,encounter_date) Set time to midnight        |         |
+|     nlp_date    |     text_date <br> note_date    | coalesce(text_date,encounter_date)         |          |
+|     Nlp_datetime    | text_date <br> note_date    | coalesce(text_date,encounter_date) Set time to midnight        |         |
 note_type_concept_id	|32858 (NLP)|||
 note_class_concept_id|||
 note_title	|section|||
@@ -230,8 +230,8 @@ note_source_value|problem <br> section | concat(problem,'\|',section')||
 |     Note_nlp_id    |    autogenerate      |          |          |
 |     Note_id    |    autogenerate      |          |          |
 |     person_id    |     ptid    |          |          |
-|     nlp_date    |     text_date <br> encounterdate    | coalesce(text_date,encounter_date)         |          |
-|     Nlp_datetime    | text_date <br> encounterdate    | coalesce(text_date,encounter_date) Set time to midnight        |         |
+|     nlp_date    |     text_date <br> note_date    | coalesce(text_date,encounter_date)         |          |
+|     Nlp_datetime    | text_date <br> note_date    | coalesce(text_date,encounter_date) Set time to midnight        |         |
 |     section_concept_id    |  0   |    |          |
 |     lexical_variant    |  problem|||
 term_exists|qualifier|||
@@ -247,8 +247,8 @@ term_modifiers|severity <br> chronicity <br> stage <br> change| Concatenate a st
 |-|-|-|-|
 note_id	 |    autogenerate      |          |          |
 |     person_id    |     ptid    |          |          |
-|     nlp_date    |     procedure_date <br> encounterdate    | coalesce(text_date,encounter_date)         |          |
-|     Nlp_datetime    | procedure_date <br> encounterdate    | coalesce(text_date,encounter_date) Set time to midnight        |         |
+|     nlp_date    |     procedure_date <br> note_date    | coalesce(text_date,encounter_date)         |          |
+|     Nlp_datetime    | procedure_date <br> note_date    | coalesce(text_date,encounter_date) Set time to midnight        |         |
 note_type_concept_id	|32858 (NLP)|||
 note_class_concept_id|||
 note_title	||||

@@ -49,7 +49,7 @@
 		ch.person_id as PersonId,
 		encid,
 		drug as source_value,
-		encounterdate,
+		note_date,
 		32858 type_concept_id,
 		0 source_concept_id,
 		map.concept_id
@@ -62,8 +62,8 @@
 		<DrugExposureDefinition>
 			<IsUnique>true</IsUnique>
 			<PersonId>PersonId</PersonId>
-			<StartDate>encounterdate</StartDate>
-			<EndDate>encounterdate</EndDate>
+			<StartDate>note_date</StartDate>
+			<EndDate>note_date</EndDate>
 			<AdditionalFields>
 				<string>encid</string>
 			</AdditionalFields>
