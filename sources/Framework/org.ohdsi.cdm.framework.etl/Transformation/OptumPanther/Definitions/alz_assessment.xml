@@ -4,7 +4,7 @@
 		ch.person_id as PersonId,
 		encid,
 		system_name as source_value,
-		encounterdate,
+		note_date,
 		numeric_result,
 		32858 type_concept_id,
 		0 source_concept_id,
@@ -33,7 +33,7 @@
 		<MeasurementDefinition>
 			<IsUnique>true</IsUnique>
 			<PersonId>PersonId</PersonId>
-			<StartDate>encounterdate</StartDate>
+			<StartDate>note_date</StartDate>
 			<ValueAsNumber>numeric_result</ValueAsNumber>
 			<ValueSourceValue>numeric_result</ValueSourceValue>
 			<AdditionalFields>

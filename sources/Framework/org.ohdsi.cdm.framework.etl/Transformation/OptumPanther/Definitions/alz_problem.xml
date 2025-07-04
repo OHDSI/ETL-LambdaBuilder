@@ -4,7 +4,7 @@
 		ch.person_id as PersonId,
 		encid,
 		case
-		when text_date ilike 'yy%' or text_date ilike '%mm%' or text_date ilike '%dd' or text_date = '' or text_date is null then encounterdate
+		when text_date ilike 'yy%' or text_date ilike '%mm%' or text_date ilike '%dd' or text_date = '' or text_date is null then note_date
 		else to_date(text_date, 'YYYYMMDD', FALSE)
 		end as start_date,
 		section note_title,

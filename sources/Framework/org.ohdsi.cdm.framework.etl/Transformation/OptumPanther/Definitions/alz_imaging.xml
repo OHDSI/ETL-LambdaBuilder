@@ -8,7 +8,7 @@
 		else procedure
 		end as source_value,
 		case
-		when procedure_date ilike 'yy%' or procedure_date ilike '%mm%' or procedure_date ilike '%dd' or procedure_date = '' or procedure_date is null then encounterdate
+		when procedure_date ilike 'yy%' or procedure_date ilike '%mm%' or procedure_date ilike '%dd' or procedure_date = '' or procedure_date is null then note_date
 		else to_date(procedure_date, 'YYYY-MM-DD', FALSE)
 		end as start_date,
 		32858 type_concept_id,
