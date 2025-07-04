@@ -58,7 +58,7 @@
 	   left join {sc}.ENROLLMENT_DETAIL e2 on a.ENROLID != e2.ENROLID and a.SEX = '2' and a.RX = '1' and e2.RX = '1' and a.Family = SUBSTRING(RIGHT('00000000000' + cast(e2.ENROLID as VARCHAR), 11), 1,9) and e2.DOBYR - a.DOBYR >= 12 and e2.DOBYR - DATEPART(YEAR, e2.DTSTART) = 0
 	   )
 
-	   select b.*,
+	   select enrolid, sex, dobyr, dtstart, dtend, family, ps, datatyp, egeoloc, periodtypeconceptid, value_as_number, missinginsurance, rx, payersource, observation_concept_id, observation_source_value, vendor, plankey, race_source_value, ethnicity_source_value, race_concept_id, ethnicity_concept_id, baby_person_id,
 	   min(baby_dob) as baby_dob
 	   from b
 	   group by enrolid, sex, dobyr, dtstart, dtend, family, ps, datatyp, egeoloc, periodtypeconceptid, value_as_number, missinginsurance, rx, payersource, observation_concept_id, observation_source_value, vendor, plankey, race_source_value, race_concept_id, ethnicity_source_value, ethnicity_concept_id, baby_person_id, baby_dob
