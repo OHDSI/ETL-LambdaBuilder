@@ -2,13 +2,14 @@ DBMS:
 postgresql
 
 Error:
-org.postgresql.util.PSQLException: ERROR: relation "native_cdm_testing_premier._lookup_datadictionary" does not exist
+org.postgresql.util.PSQLException: ERROR: column "pat_key" of relation "pat" does not exist
+  Position: 38
 
 SQL:
-TRUNCATE TABLE native_cdm_testing_premier._lookup_datadictionary
+INSERT INTO premier_tests_native.pat(pat_key, adm_date, disc_mon, disc_date, prov_id, i_o_ind, pat_type, point_of_origin, adm_type, disc_status, mart_status, age, gender, race, admphy_spec, adm_phy, attphy_spec, att_phy, std_payor, los, pat_charges, pat_cost, pat_fix_cost, pat_var_cost, medrec_key, ms_drg, ms_drg_mdc, hispanic_ind, publish_type) VALUES ('2', '2005-01-01', '2021309', '2005-01-01', '1784', 'O', '28', '1', '3', '1', 'S', '33', 'F', 'W', '900', '999999999', '4028', '35227191', '360', '0', '100.00', '0.00', '0.00', '0.00', '1', '0', '0000', 'N', 'CP')
 
 R version:
-R version 4.3.1 (2023-06-16 ucrt)
+R version 4.5.0 (2025-04-11 ucrt)
 
 Platform:
 x86_64-w64-mingw32
@@ -23,6 +24,3 @@ Attached base packages:
 - base
 
 Other attached packages:
-- PremierTests (0.1.0)
-- DatabaseConnector (6.2.4)
-- SqlRender (1.16.1)

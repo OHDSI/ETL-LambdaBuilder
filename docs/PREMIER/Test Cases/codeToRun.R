@@ -2,30 +2,26 @@
 #### WRITE TEST CASES AND RELOAD PACKAGE                                   ####
 ################################################################################
 
-source("R/main.R");
-source("R/TestFrameworkPremier.R");
-sequencer <- getSequence(); 
-getTests();
-initFramework();
-createTests();
+source("R/_main.R");
+source("R/_UnitTests.R");
+source("R/_SetDefaults.R");
+source("extras/TestFrameworkPremier.R");
 
-
-
-getInsertSql <- function(connectionDetails) {
-  return(frameworkContext$insertSql);
-}
+source_schema <- "premier_tests_native"
+cdm_schema <- "premier_tests_cdm"
 
 sequencer <- getSequence();
-getTests();
 initFramework();
+setDefaults();
 createTests();
 
 connectionDetails <- DatabaseConnector::createConnectionDetails(
-  dbms     = Sys.getenv("dbms"),
-  server   = Sys.getenv("server"),
-  port     = as.numeric(Sys.getenv("port")),
-  user     = Sys.getenv("user"),
-  password = Sys.getenv("password")
+  dbms     = Sys.getenv("R_Premier_dbms"),
+  server   = Sys.getenv("R_Premier_server"),
+  port     = as.numeric(Sys.getenv("R_Premier_port")),
+  user     = Sys.getenv("R_Premier_user"),
+  password = Sys.getenv("R_Premier_password"),
+  pathToDriver = Sys.getenv("R_path_to_driver_pg")
 )
 connection <- DatabaseConnector::connect(connectionDetails)
 ################################################################################
@@ -33,12 +29,9 @@ connection <- DatabaseConnector::connect(connectionDetails)
 ################################################################################
 
 
-
-
-source_schema <- "native_cdm_testing_premier"
 insertSql <- paste(generateInsertSql(databaseSchema = source_schema),
                    sep = "", collapse = "\n")
-SqlRender::writeSql(insertSql, "inst/insert.sql")
+SqlRender::writeSql(insertSql, "inst/sql/insert.sql")
 DatabaseConnector::executeSql(connection = connection, sql = insertSql)
 
 ################################################################################
@@ -54,10 +47,9 @@ DatabaseConnector::executeSql(connection = connection, sql = insertSql)
 #### TEST CDM                                                               ####
 ################################################################################
 
-cdm_schema <- "testing.cdm_testing_premier"
 testSql <- paste(generateTestSql(databaseSchema = cdm_schema),
                  sep = "", collapse = "\n")
-SqlRender::writeSql(testSql, "inst/sql/sql_server/test.sql")
+SqlRender::writeSql(testSql, "inst/sql/test.sql")
 DatabaseConnector::executeSql(connection, testSql)
 
 ################################################################################
