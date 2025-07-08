@@ -41,7 +41,7 @@ connectionDetails <- DatabaseConnector::createConnectionDetails(
   port     = as.numeric(Sys.getenv("R_CCAE_port")),
   user     = Sys.getenv("R_CCAE_user"),
   password = Sys.getenv("R_CCAE_password"),
-  pathToDriver = Sys.getenv("R_CCAE_path_to_driver")
+  pathToDriver = Sys.getenv("R_path_to_driver_pg")
 )
 connection <- DatabaseConnector::connect(connectionDetails)
 
