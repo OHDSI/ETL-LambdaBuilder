@@ -1,3 +1,17 @@
+source("R/ConditionOccurrenceTests.R");
+source("R/DeathTests.R");
+source("R/DeviceExposureTests.R");
+source("R/DrugExposureTests.R");
+source("R/LocationTests.R");
+source("R/MeasurementTests.R");
+source("R/ObservationPeriodTests.R");
+source("R/ObservationTests.R");
+source("R/PayerPlanPeriodTests.R");
+source("R/PersonTests.R");
+source("R/ProcedureOccurrenceTests.R");
+source("R/ProviderTests.R");
+source("R/VisitOccurrenceTest.R");
+
 createTests <- function() {
   createConditionOccurrenceTests();
   createDeathTests();
