@@ -452,6 +452,13 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerity
                 Console.WriteLine("UnacceptablePatientQuality " + person.PersonSourceValue + " " + VisitOccurrencesRaw.Count);
                 return Attrition.UnacceptablePatientQuality;
             }
+
+            if(_mins.Count == 0 && _maxs.Count == 0)
+            {
+                Console.WriteLine("UnacceptablePatientQuality " + person.PersonSourceValue + " " + VisitOccurrencesRaw.Count);
+                return Attrition.UnacceptablePatientQuality;
+            }
+
             var observationPeriods = new[] {
                 new ObservationPeriod
                 {
