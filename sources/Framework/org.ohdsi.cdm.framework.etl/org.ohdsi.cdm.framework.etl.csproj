@@ -552,6 +552,9 @@
     <EmbeddedResource Include="Transformation\HealthVerity\Definitions\emr_proc.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\HealthVerity\Definitions\person.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Transformation\HealthVerity\Definitions\enrollment.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>

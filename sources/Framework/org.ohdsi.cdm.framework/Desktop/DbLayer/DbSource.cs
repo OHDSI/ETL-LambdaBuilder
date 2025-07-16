@@ -100,9 +100,9 @@ namespace org.ohdsi.cdm.framework.desktop.DbLayer
         }
 
 
-        public IEnumerable<IDataReader> GetPersonKeys(string batchScript, long batches, int batchSize)
+        public IEnumerable<IDataReader> GetPersonKeys(string batchScript, long batches, int batchSize, string param1)
         {
-            batchScript = batchScript.Replace("{sc}", _schemaName);
+            batchScript = batchScript.Replace("{sc}", _schemaName).Replace("{param1}", param1);
             var sql = batches > 0
                 ? string.Format(batchScript, "TOP " + batches * batchSize)
                 : string.Format(batchScript, "");

@@ -54,6 +54,8 @@ namespace org.ohdsi.cdm.presentation.etl
 
             bool skipCdmsource = true;
 
+            var param1 = string.Empty;
+
             var r = Parser.Default.ParseArguments<Options>(arguments)
                   .WithParsed<Options>(o =>
                   {
@@ -74,6 +76,7 @@ namespace org.ohdsi.cdm.presentation.etl
                       createNewBuildingId = o.CreateNewBuildingId.Value;
                       skipCdmsource = o.CdmSource.Value;
                       resumeChunkCreation = o.ResumeChunk.Value;
+                      param1 = o.Param1;
                   });
 
             if (r.Tag.ToString() != "Parsed")
@@ -181,6 +184,9 @@ namespace org.ohdsi.cdm.presentation.etl
                 Settings.Current.Building.RawDestinationConnectionString = destinationConnectionString;
                 Settings.Current.Building.Vendor = vendor;
                 Settings.Current.Building.EtlLibraryPath = configuration.GetSection("AppSettings")["etlLibraryPath"];
+
+                Console.WriteLine("param1:" + param1);
+                Settings.Current.Building.Param1 = param1 ?? string.Empty;
 
                 if (!createNewBuildingId)
                 {

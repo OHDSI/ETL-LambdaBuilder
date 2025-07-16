@@ -32,7 +32,7 @@ namespace org.ohdsi.cdm.framework.desktop.Base
             foreach (var qd in Settings.Settings.Current.Building.SourceQueryDefinitions)
             {
                 var sql = GetSqlHelper.GetSql(Settings.Settings.Current.Building.SourceEngine.Database,
-                        qd.GetSql(Settings.Settings.Current.Building.Vendor, Settings.Settings.Current.Building.SourceSchemaName, Settings.Settings.Current.Building.SourceSchemaName), Settings.Settings.Current.Building.SourceSchemaName);
+                        qd.GetSql(Settings.Settings.Current.Building.Vendor, Settings.Settings.Current.Building.SourceSchemaName, Settings.Settings.Current.Building.SourceSchemaName, Settings.Settings.Current.Building.Param1), Settings.Settings.Current.Building.SourceSchemaName);
 
                 if (qd.Persons == null) continue;
                 if (string.IsNullOrEmpty(sql)) continue;
@@ -97,7 +97,7 @@ namespace org.ohdsi.cdm.framework.desktop.Base
                     if (qd.CareSites != null) return;
 
                     var sql = GetSqlHelper.GetSql(Settings.Settings.Current.Building.SourceEngine.Database,
-                            qd.GetSql(Settings.Settings.Current.Building.Vendor, Settings.Settings.Current.Building.SourceSchemaName, Settings.Settings.Current.Building.SourceSchemaName), Settings.Settings.Current.Building.SourceSchemaName);
+                            qd.GetSql(Settings.Settings.Current.Building.Vendor, Settings.Settings.Current.Building.SourceSchemaName, Settings.Settings.Current.Building.SourceSchemaName, Settings.Settings.Current.Building.Param1), Settings.Settings.Current.Building.SourceSchemaName);
 
 
                     if (string.IsNullOrEmpty(sql)) return;

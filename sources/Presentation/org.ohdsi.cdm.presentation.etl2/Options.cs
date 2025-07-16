@@ -54,5 +54,8 @@ namespace org.ohdsi.cdm.presentation.etl
 
         [Option("new", Required = true)]
         public bool? CreateNewBuildingId { get; set; }
+
+        [Option("param1")]
+        public string Param1 { get; set; }
     }
 }

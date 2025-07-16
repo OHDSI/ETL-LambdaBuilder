@@ -26,7 +26,6 @@
 		else date_service_end
 		end as end_date,
 		inst_admit_source_std_id,
-		data_vendor,
 
 		case
 		when diagnosis_code_qual = '02' then '10'
@@ -40,6 +39,7 @@
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
 		where  date_service is not null and date_part('year', date_service) &gt;= 2009 and
 		(logical_delete_reason is null or logical_delete_reason = '' or logical_delete_reason = 'null' or lower(logical_delete_reason) not in ('denied claims', 'reversal to original claim'))
+		and data_vendor {param1}
 		order by ch.person_id
 	</Query>
 	<ConditionOccurrence>
@@ -49,9 +49,6 @@
 			<PersonId>PersonId</PersonId>
 			<StartDate>date_service</StartDate>
 			<EndDate>date_service</EndDate>
-			<AdditionalFields>
-				<string>data_vendor</string>
-			</AdditionalFields>
 			<Concepts>
 				<Concept>
 					<ConceptIdMappers>
@@ -76,9 +73,6 @@
 			<PersonId>PersonId</PersonId>
 			<StartDate>date_service</StartDate>
 			<EndDate>date_service</EndDate>
-			<AdditionalFields>
-				<string>data_vendor</string>
-			</AdditionalFields>
 			<Concepts>
 				<Concept>
 					<ConceptIdMappers>
@@ -104,9 +98,6 @@
 			<PersonId>PersonId</PersonId>
 			<StartDate>date_service</StartDate>
 			<EndDate>date_service</EndDate>
-			<AdditionalFields>
-				<string>data_vendor</string>
-			</AdditionalFields>
 			<Concepts>
 				<Concept>
 					<ConceptIdMappers>
@@ -127,9 +118,6 @@
 			<PersonId>PersonId</PersonId>
 			<StartDate>date_service</StartDate>
 			<EndDate>date_service</EndDate>
-			<AdditionalFields>
-				<string>data_vendor</string>
-			</AdditionalFields>
 			<Concepts>
 				<Concept>
 					<ConceptIdMappers>
@@ -170,7 +158,6 @@
 			<EndDate>end_date</EndDate>
 			<AdmittingSourceValue>inst_admit_source_std_id</AdmittingSourceValue>
 			<AdditionalFields>
-				<string>data_vendor</string>
 				<string>hv_enc_id</string>
 			</AdditionalFields>
 			<Concepts>
@@ -194,7 +181,6 @@
 			<EndDate>end_date</EndDate>
 			<AdmittingSourceValue>inst_admit_source_std_id</AdmittingSourceValue>
 			<AdditionalFields>
-				<string>data_vendor</string>
 				<string>hv_enc_id</string>
 			</AdditionalFields>
 			<Concepts>

@@ -8,8 +8,7 @@
 		else loinc_code
 		end as source,
 		result_unit_of_measure,
-		replace(result, chr(9), ' ') as result,
-		data_vendor
+		replace(result, chr(9), ' ') as result
 		from {sc}.lab_tests
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
 		where loinc_code is not null and test_ordered_name is not null and result_name is not null and coalesce(date_service, date_specimen) is not null

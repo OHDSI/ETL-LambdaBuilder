@@ -101,7 +101,7 @@ namespace org.ohdsi.cdm.framework.desktop.Controllers
                 if (queryDefinition.CareSites != null) return;
 
                 var sql = GetSqlHelper.GetSql(Settings.Settings.Current.Building.SourceEngine.Database,
-                    queryDefinition.GetSql(Settings.Settings.Current.Building.Vendor, Settings.Settings.Current.Building.SourceSchemaName, _chunksSchema), Settings.Settings.Current.Building.SourceSchemaName);
+                    queryDefinition.GetSql(Settings.Settings.Current.Building.Vendor, Settings.Settings.Current.Building.SourceSchemaName, _chunksSchema, Settings.Settings.Current.Building.Param1), Settings.Settings.Current.Building.SourceSchemaName);
 
                 if (string.IsNullOrEmpty(sql)) return;
 
@@ -226,7 +226,7 @@ namespace org.ohdsi.cdm.framework.desktop.Controllers
 
                     var sql = GetSqlHelper.GetSql(Settings.Settings.Current.Building.SourceEngine.Database,
                         queryDefinition.GetSql(Settings.Settings.Current.Building.Vendor, Settings.Settings.Current.Building.SourceSchemaName,
-                            _chunksSchema), Settings.Settings.Current.Building.SourceSchemaName);
+                            _chunksSchema, Settings.Settings.Current.Building.Param1), Settings.Settings.Current.Building.SourceSchemaName);
 
                     if (string.IsNullOrEmpty(sql)) return;
 
@@ -347,7 +347,7 @@ namespace org.ohdsi.cdm.framework.desktop.Controllers
             var query = GetSqlHelper.GetSql(Settings.Settings.Current.Building.SourceEngine.Database,
                 Settings.Settings.Current.Building.BatchScript, Settings.Settings.Current.Building.SourceSchemaName);
 
-            foreach (var reader in _dbSource.GetPersonKeys(query, batches, batchSize))
+            foreach (var reader in _dbSource.GetPersonKeys(query, batches, batchSize, Settings.Settings.Current.Building.Param1))
             {
                 if (batch.Count == batchSize)
                 {

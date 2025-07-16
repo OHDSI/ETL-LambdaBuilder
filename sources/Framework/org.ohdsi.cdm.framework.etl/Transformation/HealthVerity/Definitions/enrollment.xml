@@ -1,75 +1,12 @@
 ﻿<QueryDefinition>
-  <Query>
-		with l as
+	<Query>
+		with a as
 		(
-		SELECT distinct patient_state, patient_zip3
-		FROM {sc}.enrollment
-		where patient_zip3 is not null and patient_zip3 != ''
-		),
-		location as
-		(
-		SELECT distinct ROW_NUMBER() OVER(ORDER BY patient_state, patient_zip3) AS Id, patient_state, patient_zip3
-		FROM l
-		),
-		a as
-		(
-		SELECT
+		select
 		ch.person_id as PersonId,
-		hvid,
-		patient_gender,
-		patient_year_of_birth,
 		date_start,
 		date_end,
-		1 as benefit_type,
-		data_vendor,
-		patient_zip3,
-		patient_state,
-		payer_type
-		FROM {sc}.enrollment
-		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
-		where lower(benefit_type) = 'medical'
-
-		union
-
-		SELECT
-		ch.person_id as PersonId,
-		hvid,
-		patient_gender,
-		patient_year_of_birth,
-		date_start,
-		date_end,
-		2 as benefit_type,
-		data_vendor,
-		patient_zip3,
-		patient_state,
-		payer_type
-		FROM {sc}.enrollment
-		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
-		where lower(benefit_type) = 'pharmacy' or benefit_type is null
-		)
-
-		select a.*,
-		l.Id as LocationId,
-		pe.most_likely_race,
-		case lower(coalesce(pe.most_likely_race, ''))
-		when 'white' then 8527
-		when 'black' then 8516
-		when 'asian' then 8515
-		else 0
-		end as most_likely_race_concept_id,
-		coalesce(pe.most_likely_race, '') as race,
-		case lower(coalesce(pe.most_likely_race, ''))
-		when 'white' then 8527
-		when 'black' then 8516
-		when 'asian' then 8515
-		else 0
-		end as race_concept_id,
-		pe.most_likely_ethnicity,
-		case
-		when lower(pe.most_likely_ethnicity) = 'hispanic' then 38003563
-		when lower(pe.most_likely_ethnicity) = 'non-hispanic' then 38003564
-		else 0
-		end as ethnicity_concept_id,
+		payer_type,
 		case lower(coalesce(a.payer_type, ''))
 		when 'medicaid' then 289
 		when 'commercial' then 327
@@ -77,32 +14,15 @@
 		when 'medicare advantage' then 281
 		else 0
 		end as payer_concept_id
+		FROM {sc}.enrollment
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
+		where replace(data_vendor, ' - Enrollment', '') {param1}
+		)
+
+		select a.*
 		from a
-		left join {sc}.patient_race_ethnicity pe on pe.hvid = a.hvid
-		left join location l on l.patient_zip3 = a.patient_zip3 and coalesce(l.patient_state, '') = coalesce(a.patient_state, '')
 		order by 1
 	</Query>
-  <Persons>
-    <PersonDefinition>
-      <PersonId>PersonId</PersonId>
-      <PersonSourceValue>hvid</PersonSourceValue>
-      <Gender>patient_gender</Gender>
-      <YearOfBirth>patient_year_of_birth</YearOfBirth>
-      <StartDate>date_start</StartDate>
-      <EndDate>date_end</EndDate>
-      <PeriodTypeConceptId>benefit_type</PeriodTypeConceptId>
-			<LocationId>LocationId</LocationId>
-			<Race>most_likely_race</Race>
-			<RaceConceptId>most_likely_race_concept_id</RaceConceptId>
-			<Ethnicity>most_likely_ethnicity</Ethnicity>
-			<EthnicityConceptId>ethnicity_concept_id</EthnicityConceptId>
-			<AdditionalFields>
-        <string>data_vendor</string>
-				<string>race_concept_id</string>
-				<string>race</string>
-      </AdditionalFields>
-    </PersonDefinition>
-  </Persons>
 	<PayerPlanPeriods>
 		<PayerPlanPeriodDefinition>
 			<PersonId>PersonId</PersonId>

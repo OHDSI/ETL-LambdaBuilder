@@ -273,7 +273,7 @@ namespace org.ohdsi.cdm.presentation.etl
         private static IEnumerable<T> GetEntities<T>(QueryDefinition qd, EntityDefinition ed) where T : IEntity
         {
             var sql = GetSqlHelper.GetSql(Settings.Current.Building.SourceEngine.Database,
-                qd.GetSql(Settings.Current.Building.Vendor, Settings.Current.Building.SourceSchemaName, Settings.Current.Building.SourceSchemaName), Settings.Current.Building.SourceSchemaName);
+                qd.GetSql(Settings.Current.Building.Vendor, Settings.Current.Building.SourceSchemaName, Settings.Current.Building.SourceSchemaName, Settings.Current.Building.Param1), Settings.Current.Building.SourceSchemaName);
             var keys = new Dictionary<string, bool>();
             if (!string.IsNullOrEmpty(sql))
             {

@@ -129,13 +129,13 @@ namespace org.ohdsi.cdm.framework.common.Definitions
             return result;
         }
 
-        public string GetSql(Vendor vendor, string sourceSchema, string chunkSchema)
+        public string GetSql(Vendor vendor, string sourceSchema, string chunkSchema, string param1)
         {
             if (!IsSuitable(Query.Database, vendor))
                 return null;
 
             if (Variables == null || Variables.Length == 0)
-                return Query.Text.Replace("{sc}", sourceSchema).Replace("{ch_sc}", chunkSchema);
+                return Query.Text.Replace("{sc}", sourceSchema).Replace("{ch_sc}", chunkSchema).Replace("{param1}", param1);
 
             foreach (var v in Variables)
             {
@@ -145,7 +145,7 @@ namespace org.ohdsi.cdm.framework.common.Definitions
                 Query.Text = Query.Text.Replace("{" + v.Name + "}", v.Value);
             }
 
-            return Query.Text.Replace("{sc}", sourceSchema).Replace("{ch_sc}", chunkSchema);
+            return Query.Text.Replace("{sc}", sourceSchema).Replace("{ch_sc}", chunkSchema).Replace("{param1}", param1);
         }
 
 

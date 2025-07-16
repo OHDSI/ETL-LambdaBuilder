@@ -15,7 +15,6 @@
 		unit_of_measure,
 
 		32869 as type_concept_id,
-		data_vendor,
 		case
 		when diagnosis_code_qual = '02' then '10'
 		when diagnosis_code_qual = '01' then '9'
@@ -40,9 +39,6 @@
 			<Refill>fill_number</Refill>
 			<DaysSupply>days_supply</DaysSupply>
 			<DoseUnitSourceValue>unit_of_measure</DoseUnitSourceValue>
-			<AdditionalFields>
-				<string>data_vendor</string>
-			</AdditionalFields>
 			<Concepts>
 				<Concept>
 					<ConceptIdMappers>
@@ -65,9 +61,6 @@
 			<PersonId>PersonId</PersonId>
 			<StartDate>date_service</StartDate>
 			<EndDate>date_service</EndDate>
-			<AdditionalFields>
-				<string>data_vendor</string>
-			</AdditionalFields>
 			<Concepts>
 				<Concept>
 					<ConceptIdMappers>
@@ -87,9 +80,6 @@
 			<PersonId>PersonId</PersonId>
 			<StartDate>date_service</StartDate>
 			<EndDate>date_service</EndDate>
-			<AdditionalFields>
-				<string>data_vendor</string>
-			</AdditionalFields>
 			<Concepts>
 				<Concept>
 					<ConceptIdMappers>
@@ -111,9 +101,6 @@
 			<PersonId>PersonId</PersonId>
 			<StartDate>date_service</StartDate>
 			<EndDate>date_service</EndDate>
-			<AdditionalFields>
-				<string>data_vendor</string>
-			</AdditionalFields>
 			<Concepts>
 				<Concept>
 					<ConceptIdMappers>
@@ -135,9 +122,6 @@
 			<PersonId>PersonId</PersonId>
 			<StartDate>date_service</StartDate>
 			<EndDate>date_service</EndDate>
-			<AdditionalFields>
-				<string>data_vendor</string>
-			</AdditionalFields>
 			<Concepts>
 				<Concept>
 					<Fields>

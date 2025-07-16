@@ -8,20 +8,19 @@
 		procedure_code,
 		diagnosis_code,
 		ndc_code,
-		
+
 		CASE
 		WHEN days_supply &lt; 0 THEN 0
-    WHEN days_supply &gt; 365 THEN 365
-    WHEN days_supply IS NULL THEN 0
-    ELSE days_supply
-    END as days_supply,
-		
+		WHEN days_supply &gt; 365 THEN 365
+		WHEN days_supply IS NULL THEN 0
+		ELSE days_supply
+		END as days_supply,
+
 		dispensed_quantity,
 		fill_number,
 		unit_of_measure,
 
 		32869 as type_concept_id,
-		data_vendor,
 		case
 		when diagnosis_code_qual = '02' then '10'
 		when diagnosis_code_qual = '01' then '9'
@@ -42,6 +41,7 @@
 		and reject_reason_code_4 is null
 		and reject_reason_code_5 is null
 		)
+		and data_vendor {param1}
 		order by 1
 	</Query>
 	<DrugExposure>
@@ -55,9 +55,6 @@
 			<Refill>fill_number</Refill>
 			<DaysSupply>days_supply</DaysSupply>
 			<DoseUnitSourceValue>unit_of_measure</DoseUnitSourceValue>
-			<AdditionalFields>
-				<string>data_vendor</string>
-			</AdditionalFields>
 			<Concepts>
 				<Concept>
 					<ConceptIdMappers>
@@ -80,9 +77,6 @@
 			<PersonId>PersonId</PersonId>
 			<StartDate>date_service</StartDate>
 			<EndDate>date_service</EndDate>
-			<AdditionalFields>
-				<string>data_vendor</string>
-			</AdditionalFields>
 			<Concepts>
 				<Concept>
 					<ConceptIdMappers>
@@ -102,9 +96,6 @@
 			<PersonId>PersonId</PersonId>
 			<StartDate>date_service</StartDate>
 			<EndDate>date_service</EndDate>
-			<AdditionalFields>
-				<string>data_vendor</string>
-			</AdditionalFields>
 			<Concepts>
 				<Concept>
 					<ConceptIdMappers>
@@ -126,9 +117,6 @@
 			<PersonId>PersonId</PersonId>
 			<StartDate>date_service</StartDate>
 			<EndDate>date_service</EndDate>
-			<AdditionalFields>
-				<string>data_vendor</string>
-			</AdditionalFields>
 			<Concepts>
 				<Concept>
 					<ConceptIdMappers>
@@ -150,9 +138,6 @@
 			<PersonId>PersonId</PersonId>
 			<StartDate>date_service</StartDate>
 			<EndDate>date_service</EndDate>
-			<AdditionalFields>
-				<string>data_vendor</string>
-			</AdditionalFields>
 			<Concepts>
 				<Concept>
 					<Fields>
