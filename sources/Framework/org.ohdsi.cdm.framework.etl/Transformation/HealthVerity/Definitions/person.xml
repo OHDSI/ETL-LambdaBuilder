@@ -1,4 +1,4 @@
-﻿﻿<QueryDefinition>
+﻿<QueryDefinition>
 	<Query>
 		with l as
 		(
