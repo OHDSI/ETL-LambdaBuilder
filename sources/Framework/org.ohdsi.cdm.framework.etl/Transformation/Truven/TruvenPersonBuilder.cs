@@ -222,8 +222,22 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Truven
                 return new KeyValuePair<Person, Attrition>(null, Attrition.MultipleYearsOfBirth);
             }
 
+            //  identify patients with > 1 DOBYR
+            if (records.GroupBy(person => person.YearOfBirth).Count() > 1)
+            {
+                var minYearOfBirth = records.Min(p => p.YearOfBirth);
+
+                //If the earliest DOBYR is equal to the year of their first enrollment period, use this value as the DOBYR
+                if (minYearOfBirth == person.StartDate.Year)
+                    person.YearOfBirth = minYearOfBirth;
+            }
+
             if (person.LocationId == 0)
                 person.LocationId = null;
+
+            // Delete individuals born >= 1 year after their first enrollment period.
+            if (person.YearOfBirth > person.StartDate.Year)
+                return new KeyValuePair<Person, Attrition>(null, Attrition.InvalidObservationTime);
 
             return new KeyValuePair<Person, Attrition>(person, Attrition.None);
         }
