@@ -902,6 +902,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
             {
                 new()
                 {
+                    Id = Offset.GetKeyOffset(person.PersonId).ObservationPeriodId,
                     PersonId = person.PersonId,
                     StartDate = DateTime.MinValue,
                     EndDate = DateTime.MaxValue,
