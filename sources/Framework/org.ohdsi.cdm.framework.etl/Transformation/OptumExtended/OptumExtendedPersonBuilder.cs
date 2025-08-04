@@ -1141,7 +1141,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
                 }
             }
 
-            var person = ordered.Take(1).Last();
+            var person = ordered.Last();
 
             if (records.Where(r => r.YearOfBirth.HasValue && r.YearOfBirth > 1900).Max(r => r.YearOfBirth) -
                 records.Where(r => r.YearOfBirth.HasValue && r.YearOfBirth > 1900).Min(r => r.YearOfBirth) > 2)

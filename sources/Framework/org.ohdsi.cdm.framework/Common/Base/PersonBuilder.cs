@@ -623,12 +623,12 @@ namespace org.ohdsi.cdm.framework.common.Base
                 return new KeyValuePair<Person, Attrition>(null, Attrition.UnacceptablePatientQuality);
 
             var ordered = records.OrderByDescending(p => p.StartDate).ToArray();
-            var person = ordered.Take(1).First();
-            person.StartDate = ordered.Take(1).Last().StartDate;
+            var person = ordered.First();
+            person.StartDate = ordered.Last().StartDate;
 
             var gender =
-                records.GroupBy(p => p.GenderConceptId).OrderByDescending(gp => gp.Count()).Take(1).First().First();
-            var race = records.GroupBy(p => p.RaceConceptId).OrderByDescending(gp => gp.Count()).Take(1).First()
+                records.GroupBy(p => p.GenderConceptId).OrderByDescending(gp => gp.Count()).First().First();
+            var race = records.GroupBy(p => p.RaceConceptId).OrderByDescending(gp => gp.Count()).First()
                 .First();
 
             person.GenderConceptId = gender.GenderConceptId;

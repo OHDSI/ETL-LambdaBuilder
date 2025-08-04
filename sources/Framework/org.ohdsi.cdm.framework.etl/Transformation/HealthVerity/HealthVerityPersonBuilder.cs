@@ -125,8 +125,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerity
             }
 
             var ordered = filtered.OrderByDescending(p => p.StartDate).ToArray();
-            var person = ordered.Take(1).First();
-            person.StartDate = ordered.Take(1).Last().StartDate;
+            var person = ordered.First();
+            person.StartDate = ordered.Last().StartDate;
 
             if (person.GenderConceptId == 8551)
             {
