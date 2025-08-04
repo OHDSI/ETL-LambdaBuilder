@@ -54,7 +54,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CprdAurum
                 return new KeyValuePair<Person, Attrition>(null, Attrition.UnacceptablePatientQuality);
 
             var ordered = filtered.OrderByDescending(p => p.StartDate);
-            var person = ordered.Take(1).First();
+            var person = ordered.First();
 
 
             if (person.GenderConceptId == 8551)
