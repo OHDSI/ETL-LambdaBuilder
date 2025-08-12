@@ -701,14 +701,14 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
             foreach (var visitDetail in visitDetails)
             {
                 var patPlanid = visitDetail.AdditionalFields["pat_planid"];
-                var clmid = string.Empty;
-                var locCd = string.Empty;
 
-                if (visitDetail.AdditionalFields.ContainsKey("clmid"))
-                    clmid = visitDetail.AdditionalFields["clmid"];
+                visitDetail.AdditionalFields.TryGetValue("clmid", out string? clmid);
+                if (clmid == null)
+                    clmid = "";
 
-                if (visitDetail.AdditionalFields.ContainsKey("loc_cd"))
-                    locCd = visitDetail.AdditionalFields["loc_cd"];
+                visitDetail.AdditionalFields.TryGetValue("loc_cd", out string? locCd);
+                if (locCd == null)
+                    locCd = "";
 
                 if (!_rawVisitDetails.ContainsKey(patPlanid))
                     _rawVisitDetails.Add(patPlanid, []);
