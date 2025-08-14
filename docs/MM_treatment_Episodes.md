@@ -1,1076 +1,537 @@
 ---
-
 layout: default
-
 title: Multiple myeloma treatment Episodes
-
-nav\_order: 17
-
+nav_order: 17
 description: "Drug Era Logic"
-
-
 
 ---
 
+# Multiple myeloma treatment episodes in EPISODE. Creation logic
 
+## 
 
-\# Multiple myeloma treatment episodes in EPISODE. Creation logic
-
-
-
-\## 
-
-
-
-\## Background
-
-
+## Background
 
 Drug data available in observational health databases can be abstracted
-
 on 4 principal levels: drug exposure (single drug administration or
-
 prescription), drug era (continuous drug administration or
-
 prescription), treatment regimen (drugs used in combination with fixed
-
 schedule), line of therapy (several regimens used consecutively united
-
 by one clinical intent). The first two levels exist in our OMOP common
-
 data model (CDM) datasets, and we need an effective way of capturing and
-
 storing lines and regimen.
 
+## Rules applied 
 
+### Rules for Regimen building
 
-\## Rules applied 
+1.  The first regimen starts as the first multiple myeloma
+    (MM)s-specific drug exposure after or on the day of the first MM
+    diagnosis (concept_id = 437233 [Multiple
+    myeloma](https://athena.ohdsi.org/search-terms/terms/437233))
 
+2.  All MM-specific drugs (see appendix 1) within 30 days of a regimen
+    start are considered part of same regimen (applicable to the first
+    and subsequent regimen)
 
+3.  The regimen ends if either:
 
-\### Rules for Regimen building
+    a.  A new drug is added after the first 30 days
 
+    b.  Any drug from the first regimen is discontinued (not used for
+        more than 90 days), note if other drugs are discontinued within
+        30 days of this event, the last event within these 30 days is
+        considered the regimen end date.
 
+4.  A new regimen starts as either
 
-1\.  The first regimen starts as the first multiple myeloma
+    a.  The day after the previous regimen end
 
-&nbsp;   (MM)s-specific drug exposure after or on the day of the first MM
+    b.  Start of the new drug era, if there was gap between previous
+        regimens
 
-&nbsp;   diagnosis (concept\_id = 437233 \[Multiple
+5.  Steps 2 -- 4 are repeated until all drug eras of drugs of interest
+    are covered
 
-&nbsp;   myeloma](https://athena.ohdsi.org/search-terms/terms/437233))
+6.  Add CAR-T regimens. Currently the CAR-T events are divided into 3
+    groups (subject of a discussion):
 
-
-
-2\.  All MM-specific drugs (see appendix 1) within 30 days of a regimen
-
-&nbsp;   start are considered part of same regimen (applicable to the first
-
-&nbsp;   and subsequent regimen)
-
-
-
-3\.  The regimen ends if either:
-
-
-
-&nbsp;   a.  A new drug is added after the first 30 days
-
-
-
-&nbsp;   b.  Any drug from the first regimen is discontinued (not used for
-
-&nbsp;       more than 90 days), note if other drugs are discontinued within
-
-&nbsp;       30 days of this event, the last event within these 30 days is
-
-&nbsp;       considered the regimen end date.
-
-
-
-4\.  A new regimen starts as either
-
-
-
-&nbsp;   a.  The day after the previous regimen end
-
-
-
-&nbsp;   b.  Start of the new drug era, if there was gap between previous
-
-&nbsp;       regimens
-
-
-
-5\.  Steps 2 -- 4 are repeated until all drug eras of drugs of interest
-
-&nbsp;   are covered
-
-
-
-6\.  Add CAR-T regimens. Currently the CAR-T events are divided into 3
-
-&nbsp;   groups (subject of a discussion):
-
-
-
-a\\) \\'Apheresis Aph\&CART\\' -- when both Apheresis procedure and CAR-T
-
+a\) \'Apheresis Aph&CART\' -- when both Apheresis procedure and CAR-T
 injection event are present in the data. Apheresis date is both start
-
 and end date of the regimen.
 
-
-
-b\\) \\'CAR-T\\': drug\_exposure\_start\_date and drug\_exposure\_end\_date are
-
+b\) \'CAR-T\': drug_exposure_start_date and drug_exposure_end_date are
 considered a regimen start and end date.
 
-
-
-c\\) \\'Apheresis no CART\\': Apheresis procedure is documented, but the
-
+c\) \'Apheresis no CART\': Apheresis procedure is documented, but the
 CAR-T is not. Apheresis date is both start and end date of the regimen.
 
-
-
-Later both \\'Apheresis Aph\&CART\\' and \\'Apheresis no CART\\' are mapped
-
+Later both \'Apheresis Aph&CART\' and \'Apheresis no CART\' are mapped
 to the same Apheresis concept, but it's reflected in
-
-episode\_source\_value, so we can track the Apheresis procedures which
-
+episode_source_value, so we can track the Apheresis procedures which
 don't have CAR-T infusion afterwards.
 
-
-
-\*\*Apheresis concept\_ids:\*\* 927059 "Chimeric antigen receptor T-cell
-
+**Apheresis concept_ids:** 927059 "Chimeric antigen receptor T-cell
 (CAR-T) therapy; harvesting of blood-derived T lymphocytes for
-
 development of genetically modified autologous CAR-T cells, per day"
 
+**CAR-T** codes are in Appendix 2.
 
+7.  Add Transplant regimen. Transplant date is regimen_start_date as
+    well as regimen_end_date. If two transplants are given within 180
+    days, only the first one is written into regimen. See the list of
+    codes in appendix 3.
 
-\*\*CAR-T\*\* codes are in Appendix 2.
+8.  Regimen source names are the names of drugs or procedures in
+    alphabetical order
 
-
-
-7\.  Add Transplant regimen. Transplant date is regimen\_start\_date as
-
-&nbsp;   well as regimen\_end\_date. If two transplants are given within 180
-
-&nbsp;   days, only the first one is written into regimen. See the list of
-
-&nbsp;   codes in appendix 3.
-
-
-
-8\.  Regimen source names are the names of drugs or procedures in
-
-&nbsp;   alphabetical order
-
-
-
-\### Lines of therapy rules
-
-
+### Lines of therapy rules
 
 Regimens are combined into lines of therapy using the following rules:
 
+9.  The regimen is marked as Maintenance therapy (will be used as a
+    component of line of therapy) when:
 
+    a.  It's \'bortezomib\', \'lenalidomide\', \'thalidomide\' or
+        \'ixazomib\' monotherapy, and a previous regimen was
+        polytherapy, and length of a previous regimen is more than 30
+        days, and length of a current regimen is more than 60 days, and
+        the current regimen starts within 180 days after the previous
+        regimen end.
 
-9\.  The regimen is marked as Maintenance therapy (will be used as a
+    b.  If It's daratumumab monotherapy, apply rules from previous step,
+        and additionally a previous regimen should include daratumumab
 
-&nbsp;   component of line of therapy) when:
+    c.  It's any drug monotherapy after the transplant that appears
+        within a year after transplantation date.
 
+10. 
 
+11. Regimens are grouped into line of therapy when they are:
 
-&nbsp;   a.  It's \\'bortezomib\\', \\'lenalidomide\\', \\'thalidomide\\' or
+    a.  HSCT (autologous stem cell transplantation) and therapies that
+        surround it, for example: bortezomib, lenalidomide
+        (**induction**) then HSCT (**autologous stem cell
+        transplantation**) then lenalidomide (**maintenance);**
+        Melphalan **(Pre-Transplant Conditioning)** then HSCT.
 
-&nbsp;       \\'ixazomib\\' monotherapy, and a previous regimen was
+        i.  Sometimes drug data is missing, so we end up with incomplete
+            therapies, for example **bortezomib then HSCT**, which
+            requires lenalidomide as part of induction therapy
 
-&nbsp;       polytherapy, and length of a previous regimen is more than 30
+    b.  Apheresis, anti-plasma cell treatment (cyclophosphamide,
+        fludarabine or cyclophosphamide monotherapy), CAR-T
 
-&nbsp;       days, and length of a current regimen is more than 60 days, and
+    c.  Regimen and its corresponding maintenance therapy
 
-&nbsp;       the current regimen starts within 180 days after the previous
+    d.  Addition of immunomodulatory (IMIDS = lenalidomide,
+        pomalidomide, thalidomide) or proteasome inhibitor drugs (PI =
+        bortezomib, carfilzomib, ixazomib) within the first 90 days of
+        the previous regimen start, if the previous regimen doesn't have
+        the drugs from the same group (2 IMIDs or 2 PIs can't be in the
+        same line)
 
-&nbsp;       regimen end.
+    e.  The addition of lenalidomide in 1L to a line that already
+        contained cyclophosphamide does not advance the line. Note: this
+        addition must occur within 60 days of line start for this rule
+        to be applied
 
+12. Most of the regimen are mapped to HemOnc concepts by matching
+    ingredients and populate EPISODE.episode_object_concept_id, if
+    there's no corresponding concept, it was mapped to 0. Procedures are
+    mapped as follows:
 
+  ------------------------------------------------------------------------
+  **Source Concept    **Target Concept    **Target Concept Name**
+  Name**              ID**                
+  ------------------- ------------------- --------------------------------
+  HSCT                4120445             Hemopoietic stem cell transplant
 
-&nbsp;   b.  If It's daratumumab monotherapy, apply rules from previous step,
+  CAR-T               37557245            Cellular therapy conditioning
+                                          regimen
 
-&nbsp;       and additionally a previous regimen should include daratumumab
+  Apheresis Aph&CART  4132856             Apheresis
 
+  Apheresis no CART   4132856             Apheresis
+  ------------------------------------------------------------------------
 
+13. Line of treatment concepts are mapped to 0, since HemOnc vocabulary
+    doesn't support lines, the value will be only stored in
+    episode_source_value as names of regimen in their temporal order
+    separated by ' then '.
 
-&nbsp;   c.  It's any drug monotherapy after the transplant that appears
+14. The start date of line of therapy is the start date of the first
+    regimen, the end date of the line of therapy is the end date of the
+    last regimen the line is made from.
 
-&nbsp;       within a year after transplantation date.
+15. The line of treatment becomes a parent episode of treatment regimen
 
+### Mapping to the EPISODE table
 
+  -------------------------------------------------------------------------------
+  **target column name**      **logic**
+  --------------------------- ---------------------------------------------------
+  episode_id                  autoincrement
 
-10\. 
+  person_id                   drug_era.person_id
 
+  episode_concept_id          For treatment regimen: 32531\-- Treatment Regimen\
+                              For lines of therapy: 32941 \-- Cancer Drug
+                              Treatment \-- can\'t find Line of Therapy episode
+                              concept. this is the closest we have now
 
+  episode_start_date          as described in the logic above
 
-11\. Regimens are grouped into line of therapy when they are:
+  episode_start_datetime      NULL
 
+  episode_end_date            as described in the logic above
 
+  episode_end_datetime        NULL
 
-&nbsp;   a.  HSCT (autologous stem cell transplantation) and therapies that
+  episode_parent_id           episode_id of line of therapy which contains this
+                              regimen
 
-&nbsp;       surround it, for example: bortezomib, lenalidomide
+  episode_number              based on the order of dates of episodes/lines for a
+                              given patient
 
-&nbsp;       (\*\*induction\*\*) then HSCT (\*\*autologous stem cell
+  episode_object_concept_id   mapped HemOnc regimen concept or 0 for episodes, 0
+                              for lines of treatment
 
-&nbsp;       transplantation\*\*) then lenalidomide (\*\*maintenance);\*\*
+  episode_type_concept_id     32880\-- Standard algorithm
 
-&nbsp;       Melphalan \*\*(Pre-Transplant Conditioning)\*\* then HSCT.
+  episode_source_value        for regimen: names of drugs or procedures in
+                              alphabetical order separated by \' ,\'\
+                              for lines of therapy: names of regimen in their
+                              temporal order separated by ' then '
 
+  episode_source_concept_id   0
+  -------------------------------------------------------------------------------
 
+### Appendix.
 
-&nbsp;       i.  Sometimes drug data is missing, so we end up with incomplete
+## Codesets used
 
-&nbsp;           therapies, for example \*\*bortezomib then HSCT\*\*, which
+1.  Chemo/immunotherapy drugs:
 
-&nbsp;           requires lenalidomide as part of induction therapy
+  -----------------------------------------------------------------------
+  concept_id           concept_name
+  -------------------- --------------------------------------------------
+  740067               melphalan flufenamide
 
+  741578               teclistamab
 
+  746340               talquetamab
 
-&nbsp;   b.  Apheresis, anti-plasma cell treatment (cyclophosphamide,
+  746391               elranatamab
 
-&nbsp;       fludarabine or cyclophosphamide monotherapy), CAR-T
+  902725               Doxorubicin pegylated liposomal
 
+  902728               Vincristine liposomal
 
+  1301267              melphalan
 
-&nbsp;   c.  Regimen and its corresponding maintenance therapy
+  1308290              vincristine
 
+  1310317              cyclophosphamide
 
+  1336825              bortezomib
 
-&nbsp;   d.  Addition of immunomodulatory (IMIDS = lenalidomide,
+  1338512              doxorubicin
 
-&nbsp;       pomalidomide, thalidomide) or proteasome inhibitor drugs (PI =
+  1350504              etoposide
 
-&nbsp;       bortezomib, carfilzomib, ixazomib) within the first 90 days of
+  1361191              selinexor
 
-&nbsp;       the previous regimen start, if the previous regimen doesn't have
+  1395557              fludarabine
 
-&nbsp;       the drugs from the same group (2 IMIDs or 2 PIs can't be in the
+  1397599              cisplatin
 
-&nbsp;       same line)
+  19026972             lenalidomide
 
+  19137042             thalidomide
 
+  35604032             elotuzumab
 
-&nbsp;   e.  The addition of lenalidomide in 1L to a line that already
+  35604205             venetoclax
 
-&nbsp;       contained cyclophosphamide does not advance the line. Note: this
+  35605744             daratumumab
 
-&nbsp;       addition must occur within 60 days of line start for this rule
+  35606214             ixazomib
 
-&nbsp;       to be applied
+  36849790             4-HYDROXYCYCLOPHOSPHAMIDE
 
+  36858740             FLUDARABINE F-18
 
+  37002419             belantamab mafodotin
 
-12\. Most of the regimen are mapped to HemOnc concepts by matching
+  37002429             belantamab
 
-&nbsp;   ingredients and populate EPISODE.episode\_object\_concept\_id, if
+  37498969             isatuximab
 
-&nbsp;   there's no corresponding concept, it was mapped to 0. Procedures are
+  42873638             carfilzomib
 
-&nbsp;   mapped as follows:
+  43014237             pomalidomide
+  -----------------------------------------------------------------------
 
+2.  CAR-T
 
+  -----------------------------------------------------------------------
+  concept_id            concept_name
+  --------------------- -------------------------------------------------
+  739856                lisocabtagene maraleucel
 
-&nbsp; ------------------------------------------------------------------------
+  779144                ciltacabtagene autoleucel
 
-&nbsp; \*\*Source Concept    \*\*Target Concept    \*\*Target Concept Name\*\*
+  792737                tisagenlecleucel
 
-&nbsp; Name\*\*              ID\*\*                
+  792844                axicabtagene ciloleucel
 
-&nbsp; ------------------- ------------------- --------------------------------
+  36026868              idecabtagene vicleucel
 
-&nbsp; HSCT                4120445             Hemopoietic stem cell transplant
+  37002369              brexucabtagene autoleucel
+  -----------------------------------------------------------------------
 
+3.  Stem cell Transplant codes
 
+  -----------------------------------------------------------------------
+  concept_id    concept_name
+  ------------- ---------------------------------------------------------
+  2002363       Autologous hematopoietic stem cell transplant without
+                purging
 
-&nbsp; CAR-T               37557245            Cellular therapy conditioning
+  2002364       Allogeneic hematopoietic stem cell transpant without
+                purging
 
-&nbsp;                                         regimen
+  2002365       Cord blood stem cell transplant
 
+  2002366       Autologous hematopoietic stem cell transplant with
+                purging
 
+  2002367       Allogeneic hematopoietic stem cell transplant with
+                purging
 
-&nbsp; Apheresis Aph\&CART  4132856             Apheresis
+  2721124       Cord blood-derived stem-cell transplantation, allogeneic
 
+  2721125       Bone marrow or blood-derived stem cells (peripheral or
+                umbilical), allogeneic or autologous, harvesting,
+                transplantation, and related complications; including:
+                pheresis and cell preparation/storage; marrow ablative
+                therapy; drugs, supplies, hospitaliza\...
 
+  2785921       Transfusion of Autologous Cord Blood Stem Cells into
+                Central Artery, Percutaneous Approach (Deprecated)
 
-&nbsp; Apheresis no CART   4132856             Apheresis
+  2785922       Transfusion of Nonautologous Cord Blood Stem Cells into
+                Central Artery, Percutaneous Approach (Deprecated)
 
-&nbsp; ------------------------------------------------------------------------
+  2785923       Transfusion of Autologous Hematopoietic Stem Cells into
+                Central Artery, Percutaneous Approach (Deprecated)
 
+  2785924       Transfusion of Nonautologous Hematopoietic Stem Cells
+                into Central Artery, Percutaneous Approach (Deprecated)
 
+  2788483       Transfusion of Embryonic Stem Cells into Peripheral Vein,
+                Open Approach (Deprecated)
 
-13\. Line of treatment concepts are mapped to 0, since HemOnc vocabulary
+  2788671       Transfusion of Autologous Bone Marrow into Peripheral
+                Vein, Open Approach (Deprecated)
 
-&nbsp;   doesn't support lines, the value will be only stored in
+  2788672       Transfusion of Nonautologous Bone Marrow into Peripheral
+                Vein, Open Approach (Deprecated)
 
-&nbsp;   episode\_source\_value as names of regimen in their temporal order
+  2788699       Transfusion of Autologous Cord Blood Stem Cells into
+                Peripheral Vein, Open Approach (Deprecated)
 
-&nbsp;   separated by ' then '.
+  2788700       Transfusion of Nonautologous Cord Blood Stem Cells into
+                Peripheral Vein, Open Approach (Deprecated)
 
+  2788701       Transfusion of Autologous Hematopoietic Stem Cells into
+                Peripheral Vein, Open Approach (Deprecated)
 
+  2788702       Transfusion of Nonautologous Hematopoietic Stem Cells
+                into Peripheral Vein, Open Approach (Deprecated)
 
-14\. The start date of line of therapy is the start date of the first
+  2788703       Transfusion of Embryonic Stem Cells into Peripheral Vein,
+                Percutaneous Approach
 
-&nbsp;   regimen, the end date of the line of therapy is the end date of the
+  2788704       Transfusion of Autologous Bone Marrow into Peripheral
+                Vein, Percutaneous Approach
 
-&nbsp;   last regimen the line is made from.
+  2788705       Transfusion of Nonautologous Bone Marrow into Peripheral
+                Vein, Percutaneous Approach (Deprecated)
 
+  2788732       Transfusion of Autologous Cord Blood Stem Cells into
+                Peripheral Vein, Percutaneous Approach
 
+  2788733       Transfusion of Nonautologous Cord Blood Stem Cells into
+                Peripheral Vein, Percutaneous Approach (Deprecated)
 
-15\. The line of treatment becomes a parent episode of treatment regimen
+  2788734       Transfusion of Autologous Hematopoietic Stem Cells into
+                Peripheral Vein, Percutaneous Approach
 
+  2788925       Transfusion of Nonautologous Hematopoietic Stem Cells
+                into Peripheral Vein, Percutaneous Approach (Deprecated)
 
+  2788926       Transfusion of Embryonic Stem Cells into Central Vein,
+                Open Approach (Deprecated)
 
-\### Mapping to the EPISODE table
+  2788927       Transfusion of Autologous Bone Marrow into Central Vein,
+                Open Approach (Deprecated)
 
+  2788928       Transfusion of Nonautologous Bone Marrow into Central
+                Vein, Open Approach (Deprecated)
 
+  2788955       Transfusion of Autologous Cord Blood Stem Cells into
+                Central Vein, Open Approach (Deprecated)
 
-&nbsp; -------------------------------------------------------------------------------
+  2788956       Transfusion of Nonautologous Cord Blood Stem Cells into
+                Central Vein, Open Approach (Deprecated)
 
-&nbsp; \*\*target column name\*\*      \*\*logic\*\*
+  2788957       Transfusion of Autologous Hematopoietic Stem Cells into
+                Central Vein, Open Approach (Deprecated)
 
-&nbsp; --------------------------- ---------------------------------------------------
+  2788958       Transfusion of Nonautologous Hematopoietic Stem Cells
+                into Central Vein, Open Approach (Deprecated)
 
-&nbsp; episode\_id                  autoincrement
+  2788959       Transfusion of Embryonic Stem Cells into Central Vein,
+                Percutaneous Approach
 
+  2788960       Transfusion of Autologous Bone Marrow into Central Vein,
+                Percutaneous Approach
 
+  2788961       Transfusion of Nonautologous Bone Marrow into Central
+                Vein, Percutaneous Approach (Deprecated)
 
-&nbsp; person\_id                   drug\_era.person\_id
+  2788988       Transfusion of Autologous Cord Blood Stem Cells into
+                Central Vein, Percutaneous Approach
 
+  2789176       Transfusion of Nonautologous Cord Blood Stem Cells into
+                Central Vein, Percutaneous Approach (Deprecated)
 
+  2789177       Transfusion of Autologous Hematopoietic Stem Cells into
+                Central Vein, Percutaneous Approach
 
-&nbsp; episode\_concept\_id          For treatment regimen: 32531\\-- Treatment Regimen\\
+  2789178       Transfusion of Nonautologous Hematopoietic Stem Cells
+                into Central Vein, Percutaneous Approach (Deprecated)
 
-&nbsp;                             For lines of therapy: 32941 \\-- Cancer Drug
+  2789179       Transfusion of Autologous Bone Marrow into Peripheral
+                Artery, Open Approach (Deprecated)
 
-&nbsp;                             Treatment \\-- can\\'t find Line of Therapy episode
+  2789180       Transfusion of Nonautologous Bone Marrow into Peripheral
+                Artery, Open Approach (Deprecated)
 
-&nbsp;                             concept. this is the closest we have now
+  2789207       Transfusion of Autologous Cord Blood Stem Cells into
+                Peripheral Artery, Open Approach (Deprecated)
 
+  2789208       Transfusion of Nonautologous Cord Blood Stem Cells into
+                Peripheral Artery, Open Approach (Deprecated)
 
+  2789209       Transfusion of Autologous Hematopoietic Stem Cells into
+                Peripheral Artery, Open Approach (Deprecated)
 
-&nbsp; episode\_start\_date          as described in the logic above
+  2789210       Transfusion of Nonautologous Hematopoietic Stem Cells
+                into Peripheral Artery, Open Approach (Deprecated)
 
+  2789211       Transfusion of Autologous Bone Marrow into Peripheral
+                Artery, Percutaneous Approach (Deprecated)
 
+  2789212       Transfusion of Nonautologous Bone Marrow into Peripheral
+                Artery, Percutaneous Approach (Deprecated)
 
-&nbsp; episode\_start\_datetime      NULL
+  2789428       Transfusion of Autologous Cord Blood Stem Cells into
+                Peripheral Artery, Percutaneous Approach (Deprecated)
 
+  2789429       Transfusion of Nonautologous Cord Blood Stem Cells into
+                Peripheral Artery, Percutaneous Approach (Deprecated)
 
+  2789430       Transfusion of Autologous Hematopoietic Stem Cells into
+                Peripheral Artery, Percutaneous Approach (Deprecated)
 
-&nbsp; episode\_end\_date            as described in the logic above
+  2789431       Transfusion of Nonautologous Hematopoietic Stem Cells
+                into Peripheral Artery, Percutaneous Approach
+                (Deprecated)
 
+  2789432       Transfusion of Autologous Bone Marrow into Central
+                Artery, Open Approach (Deprecated)
 
+  2789433       Transfusion of Nonautologous Bone Marrow into Central
+                Artery, Open Approach (Deprecated)
 
-&nbsp; episode\_end\_datetime        NULL
+  2789460       Transfusion of Autologous Cord Blood Stem Cells into
+                Central Artery, Open Approach (Deprecated)
 
+  2789461       Transfusion of Nonautologous Cord Blood Stem Cells into
+                Central Artery, Open Approach (Deprecated)
 
+  2789462       Transfusion of Autologous Hematopoietic Stem Cells into
+                Central Artery, Open Approach (Deprecated)
 
-&nbsp; episode\_parent\_id           episode\_id of line of therapy which contains this
+  2789463       Transfusion of Nonautologous Hematopoietic Stem Cells
+                into Central Artery, Open Approach (Deprecated)
 
-&nbsp;                             regimen
+  2789464       Transfusion of Autologous Bone Marrow into Central
+                Artery, Percutaneous Approach (Deprecated)
 
+  2789465       Transfusion of Nonautologous Bone Marrow into Central
+                Artery, Percutaneous Approach (Deprecated)
 
+  4028623       Transplantation of bone marrow
 
-&nbsp; episode\_number              based on the order of dates of episodes/lines for a
+  4059885       Autologous bone marrow transplant without purging
 
-&nbsp;                             given patient
+  4081380       Peripheral blood stem cell graft
 
+  4083057       Cord cell transfusion
 
+  4120445       Hemopoietic stem cell transplant
 
-&nbsp; episode\_object\_concept\_id   mapped HemOnc regimen concept or 0 for episodes, 0
+  4121104       Syngeneic bone marrow transplant
 
-&nbsp;                             for lines of treatment
+  4122920       T-cell depleted allogeneic bone marrow graft
 
+  4125486       Imperfect T-cell depleted allogeneic bone marrow graft
 
+  4125487       Allogeneic related bone marrow transplant
 
-&nbsp; episode\_type\_concept\_id     32880\\-- Standard algorithm
+  4125488       Allogeneic unrelated bone marrow transplant
 
+  4139690       Grafting of cord blood to bone marrow
 
+  4142405       Allograft of bone marrow from sibling donor
 
-&nbsp; episode\_source\_value        for regimen: names of drugs or procedures in
+  4143404       Allogeneic peripheral blood stem cell transplant
 
-&nbsp;                             alphabetical order separated by \\' ,\\'\\
+  4144157       Autologous peripheral blood stem cell transplant
 
-&nbsp;                             for lines of therapy: names of regimen in their
+  4144882       Allograft of bone marrow from matched unrelated donor
 
-&nbsp;                             temporal order separated by ' then '
+  4145532       Allograft of cord blood to bone marrow
 
+  4186582       Autologous bone marrow transplant with purging
 
+  4240337       Autologous bone marrow transplant
 
-&nbsp; episode\_source\_concept\_id   0
+  4242257       Allogeneic bone marrow transplantation
 
-&nbsp; -------------------------------------------------------------------------------
+  37152106      High-dose chemotherapy with stem cell transplant
 
+  40484034      Grafting of bone marrow using allograft from unmatched
+                unrelated donor
 
+  40486968      Allogeneic bone marrow transplantation with purging
 
-\### Appendix.
+  40492289      Allogeneic bone marrow transplantation without purging
 
+  44514755      Other specified graft of bone marrow
 
+  44515878      Other specified graft of cord blood stem cells to bone
+                marrow
 
-\## Codesets used
+  44783964      Syngeneic peripheral blood stem cell transplantation
 
+  44790154      Allograft of bone marrow from haploidentical donor
 
+  44793170      Allograft of bone marrow from unmatched unrelated donor
 
-1\.  Chemo/immunotherapy drugs:
-
-
-
-&nbsp; -----------------------------------------------------------------------
-
-&nbsp; concept\_id           concept\_name
-
-&nbsp; -------------------- --------------------------------------------------
-
-&nbsp; 740067               melphalan flufenamide
-
-
-
-&nbsp; 741578               teclistamab
-
-
-
-&nbsp; 746340               talquetamab
-
-
-
-&nbsp; 746391               elranatamab
-
-
-
-&nbsp; 902725               Doxorubicin pegylated liposomal
-
-
-
-&nbsp; 902728               Vincristine liposomal
-
-
-
-&nbsp; 1301267              melphalan
-
-
-
-&nbsp; 1308290              vincristine
-
-
-
-&nbsp; 1310317              cyclophosphamide
-
-
-
-&nbsp; 1336825              bortezomib
-
-
-
-&nbsp; 1338512              doxorubicin
-
-
-
-&nbsp; 1350504              etoposide
-
-
-
-&nbsp; 1361191              selinexor
-
-
-
-&nbsp; 1395557              fludarabine
-
-
-
-&nbsp; 1397599              cisplatin
-
-
-
-&nbsp; 19026972             lenalidomide
-
-
-
-&nbsp; 19137042             thalidomide
-
-
-
-&nbsp; 35604032             elotuzumab
-
-
-
-&nbsp; 35604205             venetoclax
-
-
-
-&nbsp; 35605744             daratumumab
-
-
-
-&nbsp; 35606214             ixazomib
-
-
-
-&nbsp; 36849790             4-HYDROXYCYCLOPHOSPHAMIDE
-
-
-
-&nbsp; 36858740             FLUDARABINE F-18
-
-
-
-&nbsp; 37002419             belantamab mafodotin
-
-
-
-&nbsp; 37002429             belantamab
-
-
-
-&nbsp; 37498969             isatuximab
-
-
-
-&nbsp; 42873638             carfilzomib
-
-
-
-&nbsp; 43014237             pomalidomide
-
-&nbsp; -----------------------------------------------------------------------
-
-
-
-2\.  CAR-T
-
-
-
-&nbsp; -----------------------------------------------------------------------
-
-&nbsp; concept\_id            concept\_name
-
-&nbsp; --------------------- -------------------------------------------------
-
-&nbsp; 739856                lisocabtagene maraleucel
-
-
-
-&nbsp; 779144                ciltacabtagene autoleucel
-
-
-
-&nbsp; 792737                tisagenlecleucel
-
-
-
-&nbsp; 792844                axicabtagene ciloleucel
-
-
-
-&nbsp; 36026868              idecabtagene vicleucel
-
-
-
-&nbsp; 37002369              brexucabtagene autoleucel
-
-&nbsp; -----------------------------------------------------------------------
-
-
-
-3\.  Stem cell Transplant codes
-
-
-
-&nbsp; -----------------------------------------------------------------------
-
-&nbsp; concept\_id    concept\_name
-
-&nbsp; ------------- ---------------------------------------------------------
-
-&nbsp; 2002363       Autologous hematopoietic stem cell transplant without
-
-&nbsp;               purging
-
-
-
-&nbsp; 2002364       Allogeneic hematopoietic stem cell transpant without
-
-&nbsp;               purging
-
-
-
-&nbsp; 2002365       Cord blood stem cell transplant
-
-
-
-&nbsp; 2002366       Autologous hematopoietic stem cell transplant with
-
-&nbsp;               purging
-
-
-
-&nbsp; 2002367       Allogeneic hematopoietic stem cell transplant with
-
-&nbsp;               purging
-
-
-
-&nbsp; 2721124       Cord blood-derived stem-cell transplantation, allogeneic
-
-
-
-&nbsp; 2721125       Bone marrow or blood-derived stem cells (peripheral or
-
-&nbsp;               umbilical), allogeneic or autologous, harvesting,
-
-&nbsp;               transplantation, and related complications; including:
-
-&nbsp;               pheresis and cell preparation/storage; marrow ablative
-
-&nbsp;               therapy; drugs, supplies, hospitaliza\\...
-
-
-
-&nbsp; 2785921       Transfusion of Autologous Cord Blood Stem Cells into
-
-&nbsp;               Central Artery, Percutaneous Approach (Deprecated)
-
-
-
-&nbsp; 2785922       Transfusion of Nonautologous Cord Blood Stem Cells into
-
-&nbsp;               Central Artery, Percutaneous Approach (Deprecated)
-
-
-
-&nbsp; 2785923       Transfusion of Autologous Hematopoietic Stem Cells into
-
-&nbsp;               Central Artery, Percutaneous Approach (Deprecated)
-
-
-
-&nbsp; 2785924       Transfusion of Nonautologous Hematopoietic Stem Cells
-
-&nbsp;               into Central Artery, Percutaneous Approach (Deprecated)
-
-
-
-&nbsp; 2788483       Transfusion of Embryonic Stem Cells into Peripheral Vein,
-
-&nbsp;               Open Approach (Deprecated)
-
-
-
-&nbsp; 2788671       Transfusion of Autologous Bone Marrow into Peripheral
-
-&nbsp;               Vein, Open Approach (Deprecated)
-
-
-
-&nbsp; 2788672       Transfusion of Nonautologous Bone Marrow into Peripheral
-
-&nbsp;               Vein, Open Approach (Deprecated)
-
-
-
-&nbsp; 2788699       Transfusion of Autologous Cord Blood Stem Cells into
-
-&nbsp;               Peripheral Vein, Open Approach (Deprecated)
-
-
-
-&nbsp; 2788700       Transfusion of Nonautologous Cord Blood Stem Cells into
-
-&nbsp;               Peripheral Vein, Open Approach (Deprecated)
-
-
-
-&nbsp; 2788701       Transfusion of Autologous Hematopoietic Stem Cells into
-
-&nbsp;               Peripheral Vein, Open Approach (Deprecated)
-
-
-
-&nbsp; 2788702       Transfusion of Nonautologous Hematopoietic Stem Cells
-
-&nbsp;               into Peripheral Vein, Open Approach (Deprecated)
-
-
-
-&nbsp; 2788703       Transfusion of Embryonic Stem Cells into Peripheral Vein,
-
-&nbsp;               Percutaneous Approach
-
-
-
-&nbsp; 2788704       Transfusion of Autologous Bone Marrow into Peripheral
-
-&nbsp;               Vein, Percutaneous Approach
-
-
-
-&nbsp; 2788705       Transfusion of Nonautologous Bone Marrow into Peripheral
-
-&nbsp;               Vein, Percutaneous Approach (Deprecated)
-
-
-
-&nbsp; 2788732       Transfusion of Autologous Cord Blood Stem Cells into
-
-&nbsp;               Peripheral Vein, Percutaneous Approach
-
-
-
-&nbsp; 2788733       Transfusion of Nonautologous Cord Blood Stem Cells into
-
-&nbsp;               Peripheral Vein, Percutaneous Approach (Deprecated)
-
-
-
-&nbsp; 2788734       Transfusion of Autologous Hematopoietic Stem Cells into
-
-&nbsp;               Peripheral Vein, Percutaneous Approach
-
-
-
-&nbsp; 2788925       Transfusion of Nonautologous Hematopoietic Stem Cells
-
-&nbsp;               into Peripheral Vein, Percutaneous Approach (Deprecated)
-
-
-
-&nbsp; 2788926       Transfusion of Embryonic Stem Cells into Central Vein,
-
-&nbsp;               Open Approach (Deprecated)
-
-
-
-&nbsp; 2788927       Transfusion of Autologous Bone Marrow into Central Vein,
-
-&nbsp;               Open Approach (Deprecated)
-
-
-
-&nbsp; 2788928       Transfusion of Nonautologous Bone Marrow into Central
-
-&nbsp;               Vein, Open Approach (Deprecated)
-
-
-
-&nbsp; 2788955       Transfusion of Autologous Cord Blood Stem Cells into
-
-&nbsp;               Central Vein, Open Approach (Deprecated)
-
-
-
-&nbsp; 2788956       Transfusion of Nonautologous Cord Blood Stem Cells into
-
-&nbsp;               Central Vein, Open Approach (Deprecated)
-
-
-
-&nbsp; 2788957       Transfusion of Autologous Hematopoietic Stem Cells into
-
-&nbsp;               Central Vein, Open Approach (Deprecated)
-
-
-
-&nbsp; 2788958       Transfusion of Nonautologous Hematopoietic Stem Cells
-
-&nbsp;               into Central Vein, Open Approach (Deprecated)
-
-
-
-&nbsp; 2788959       Transfusion of Embryonic Stem Cells into Central Vein,
-
-&nbsp;               Percutaneous Approach
-
-
-
-&nbsp; 2788960       Transfusion of Autologous Bone Marrow into Central Vein,
-
-&nbsp;               Percutaneous Approach
-
-
-
-&nbsp; 2788961       Transfusion of Nonautologous Bone Marrow into Central
-
-&nbsp;               Vein, Percutaneous Approach (Deprecated)
-
-
-
-&nbsp; 2788988       Transfusion of Autologous Cord Blood Stem Cells into
-
-&nbsp;               Central Vein, Percutaneous Approach
-
-
-
-&nbsp; 2789176       Transfusion of Nonautologous Cord Blood Stem Cells into
-
-&nbsp;               Central Vein, Percutaneous Approach (Deprecated)
-
-
-
-&nbsp; 2789177       Transfusion of Autologous Hematopoietic Stem Cells into
-
-&nbsp;               Central Vein, Percutaneous Approach
-
-
-
-&nbsp; 2789178       Transfusion of Nonautologous Hematopoietic Stem Cells
-
-&nbsp;               into Central Vein, Percutaneous Approach (Deprecated)
-
-
-
-&nbsp; 2789179       Transfusion of Autologous Bone Marrow into Peripheral
-
-&nbsp;               Artery, Open Approach (Deprecated)
-
-
-
-&nbsp; 2789180       Transfusion of Nonautologous Bone Marrow into Peripheral
-
-&nbsp;               Artery, Open Approach (Deprecated)
-
-
-
-&nbsp; 2789207       Transfusion of Autologous Cord Blood Stem Cells into
-
-&nbsp;               Peripheral Artery, Open Approach (Deprecated)
-
-
-
-&nbsp; 2789208       Transfusion of Nonautologous Cord Blood Stem Cells into
-
-&nbsp;               Peripheral Artery, Open Approach (Deprecated)
-
-
-
-&nbsp; 2789209       Transfusion of Autologous Hematopoietic Stem Cells into
-
-&nbsp;               Peripheral Artery, Open Approach (Deprecated)
-
-
-
-&nbsp; 2789210       Transfusion of Nonautologous Hematopoietic Stem Cells
-
-&nbsp;               into Peripheral Artery, Open Approach (Deprecated)
-
-
-
-&nbsp; 2789211       Transfusion of Autologous Bone Marrow into Peripheral
-
-&nbsp;               Artery, Percutaneous Approach (Deprecated)
-
-
-
-&nbsp; 2789212       Transfusion of Nonautologous Bone Marrow into Peripheral
-
-&nbsp;               Artery, Percutaneous Approach (Deprecated)
-
-
-
-&nbsp; 2789428       Transfusion of Autologous Cord Blood Stem Cells into
-
-&nbsp;               Peripheral Artery, Percutaneous Approach (Deprecated)
-
-
-
-&nbsp; 2789429       Transfusion of Nonautologous Cord Blood Stem Cells into
-
-&nbsp;               Peripheral Artery, Percutaneous Approach (Deprecated)
-
-
-
-&nbsp; 2789430       Transfusion of Autologous Hematopoietic Stem Cells into
-
-&nbsp;               Peripheral Artery, Percutaneous Approach (Deprecated)
-
-
-
-&nbsp; 2789431       Transfusion of Nonautologous Hematopoietic Stem Cells
-
-&nbsp;               into Peripheral Artery, Percutaneous Approach
-
-&nbsp;               (Deprecated)
-
-
-
-&nbsp; 2789432       Transfusion of Autologous Bone Marrow into Central
-
-&nbsp;               Artery, Open Approach (Deprecated)
-
-
-
-&nbsp; 2789433       Transfusion of Nonautologous Bone Marrow into Central
-
-&nbsp;               Artery, Open Approach (Deprecated)
-
-
-
-&nbsp; 2789460       Transfusion of Autologous Cord Blood Stem Cells into
-
-&nbsp;               Central Artery, Open Approach (Deprecated)
-
-
-
-&nbsp; 2789461       Transfusion of Nonautologous Cord Blood Stem Cells into
-
-&nbsp;               Central Artery, Open Approach (Deprecated)
-
-
-
-&nbsp; 2789462       Transfusion of Autologous Hematopoietic Stem Cells into
-
-&nbsp;               Central Artery, Open Approach (Deprecated)
-
-
-
-&nbsp; 2789463       Transfusion of Nonautologous Hematopoietic Stem Cells
-
-&nbsp;               into Central Artery, Open Approach (Deprecated)
-
-
-
-&nbsp; 2789464       Transfusion of Autologous Bone Marrow into Central
-
-&nbsp;               Artery, Percutaneous Approach (Deprecated)
-
-
-
-&nbsp; 2789465       Transfusion of Nonautologous Bone Marrow into Central
-
-&nbsp;               Artery, Percutaneous Approach (Deprecated)
-
-
-
-&nbsp; 4028623       Transplantation of bone marrow
-
-
-
-&nbsp; 4059885       Autologous bone marrow transplant without purging
-
-
-
-&nbsp; 4081380       Peripheral blood stem cell graft
-
-
-
-&nbsp; 4083057       Cord cell transfusion
-
-
-
-&nbsp; 4120445       Hemopoietic stem cell transplant
-
-
-
-&nbsp; 4121104       Syngeneic bone marrow transplant
-
-
-
-&nbsp; 4122920       T-cell depleted allogeneic bone marrow graft
-
-
-
-&nbsp; 4125486       Imperfect T-cell depleted allogeneic bone marrow graft
-
-
-
-&nbsp; 4125487       Allogeneic related bone marrow transplant
-
-
-
-&nbsp; 4125488       Allogeneic unrelated bone marrow transplant
-
-
-
-&nbsp; 4139690       Grafting of cord blood to bone marrow
-
-
-
-&nbsp; 4142405       Allograft of bone marrow from sibling donor
-
-
-
-&nbsp; 4143404       Allogeneic peripheral blood stem cell transplant
-
-
-
-&nbsp; 4144157       Autologous peripheral blood stem cell transplant
-
-
-
-&nbsp; 4144882       Allograft of bone marrow from matched unrelated donor
-
-
-
-&nbsp; 4145532       Allograft of cord blood to bone marrow
-
-
-
-&nbsp; 4186582       Autologous bone marrow transplant with purging
-
-
-
-&nbsp; 4240337       Autologous bone marrow transplant
-
-
-
-&nbsp; 4242257       Allogeneic bone marrow transplantation
-
-
-
-&nbsp; 37152106      High-dose chemotherapy with stem cell transplant
-
-
-
-&nbsp; 40484034      Grafting of bone marrow using allograft from unmatched
-
-&nbsp;               unrelated donor
-
-
-
-&nbsp; 40486968      Allogeneic bone marrow transplantation with purging
-
-
-
-&nbsp; 40492289      Allogeneic bone marrow transplantation without purging
-
-
-
-&nbsp; 44514755      Other specified graft of bone marrow
-
-
-
-&nbsp; 44515878      Other specified graft of cord blood stem cells to bone
-
-&nbsp;               marrow
-
-
-
-&nbsp; 44783964      Syngeneic peripheral blood stem cell transplantation
-
-
-
-&nbsp; 44790154      Allograft of bone marrow from haploidentical donor
-
-
-
-&nbsp; 44793170      Allograft of bone marrow from unmatched unrelated donor
-
-
-
-&nbsp; 46271079      Transplantation of autologous hematopoietic stem cell
-
-&nbsp; -----------------------------------------------------------------------
-
-
-
+  46271079      Transplantation of autologous hematopoietic stem cell
+  -----------------------------------------------------------------------
