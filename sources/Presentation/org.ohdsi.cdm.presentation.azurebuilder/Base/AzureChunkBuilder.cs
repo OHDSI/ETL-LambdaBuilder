@@ -1,4 +1,5 @@
-﻿using org.ohdsi.cdm.framework.common.Base;
+﻿using Microsoft.Extensions.Logging;
+using org.ohdsi.cdm.framework.common.Base;
 using org.ohdsi.cdm.framework.common.Definitions;
 
 namespace org.ohdsi.cdm.presentation.azurebuilder.Base
@@ -7,7 +8,6 @@ namespace org.ohdsi.cdm.presentation.azurebuilder.Base
     {
         #region Variables
         private Func<IPersonBuilder> _createPersonBuilder ;
-        //private readonly string _tmpFolder;
         #endregion
 
         public int TotalPersonConverted { get; private set; }
@@ -54,50 +54,20 @@ namespace org.ohdsi.cdm.presentation.azurebuilder.Base
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine("WARN_EXC - ReadMetadata - throw");
-                        Console.WriteLine(e.Message);
-                        Console.WriteLine(e.StackTrace);
-                        Console.WriteLine("[RestoreMetadataFromS3] fieldName duplication: " + fieldName + " - " + qd.FileName);
+                        Settings.Current.Logger.LogInformation("WARN_EXC - ReadMetadata - throw");
+                        Settings.Current.Logger.LogInformation(e.Message);
+                        Settings.Current.Logger.LogInformation(e.StackTrace);
+                        Settings.Current.Logger.LogInformation("[RestoreMetadataFromS3] fieldName duplication: " + fieldName + " - " + qd.FileName);
                         throw;
                     }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                Console.WriteLine(ex.StackTrace);
+                Settings.Current.Logger.LogInformation(ex.Message);
+                Settings.Current.Logger.LogInformation(ex.StackTrace);
             }
         }
-
-        //public long? Process(string s3Key, Dictionary<string, long> restorePoint)
-        //{
-        //    var chunkId = int.Parse(s3Key.Split('.')[2]);
-        //    var prefix = s3Key.Split('.')[3].Trim();
-        //    var attempt = 0;
-
-        //    if (s3Key.Split('.').Length == 6)
-        //    {
-        //        attempt = int.Parse(s3Key.Split('.')[4]);
-        //    }
-
-        //    var folder = string.Format("{0}/{1}/raw", Settings.Current.Building.Vendor,
-        //    Settings.Current.Building.Id);
-
-        //    Parallel.ForEach(Settings.Current.Building.SourceQueryDefinitions, qd => { ReadMetadata(qd, folder); });
-
-        //    long? result;
-        //    using (var part = new AzureChunkPart(chunkId, _createPersonBuilder, prefix, attempt))
-        //    {
-        //        result = part.Process(restorePoint);
-        //        TotalPersonConverted = part.TotalPersonConverted;
-        //    }
-
-        //    _createPersonBuilder = null;
-
-        //    GC.Collect();
-
-        //    return result;
-        //}
 
         public long? Process(int chunkId, string prefix, Dictionary<string, long> restorePoint, int attempt)
         {

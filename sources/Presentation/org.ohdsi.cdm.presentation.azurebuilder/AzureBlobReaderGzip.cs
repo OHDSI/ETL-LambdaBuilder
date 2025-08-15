@@ -1,4 +1,5 @@
-﻿using org.ohdsi.cdm.framework.common.Helpers;
+﻿using Microsoft.Extensions.Logging;
+using org.ohdsi.cdm.framework.common.Helpers;
 using System.Data;
 using System.IO.Compression;
 using System.Text;
@@ -8,13 +9,6 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
     public class AzureBlobReaderGzip : IDataReader
     {
         private string[] _currentLine;
-
-        //private readonly string _serviceUri;
-        //private readonly string _blobContainerName;
-
-        //private readonly string _tenantId;
-        //private readonly string _clientId;
-        //private readonly string _clientSecret;
 
         private readonly string _fileName;
         
@@ -58,16 +52,8 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
             Paused = false;
         }
 
-        //public AzureBlobReaderGzip(string serviceUri, string tenantId, string blobContainerName, string clientId,
-        //   string clientSecret, string fileName, Dictionary<string, int> fieldHeaders, long initRow)
         public AzureBlobReaderGzip(string fileName, Dictionary<string, int> fieldHeaders, long initRow)
         {
-            //_serviceUri = serviceUri;
-            //_blobContainerName = blobContainerName;
-
-            //_tenantId = tenantId;
-            //_clientId = clientId;
-            //_clientSecret = clientSecret;
 
             _fileName = fileName;
             _fieldHeaders = fieldHeaders;
@@ -82,7 +68,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
             Close();
             Dispose();
 
-            Console.WriteLine(_fileName + " " + initRow);
+            Settings.Current.Logger.LogInformation(_fileName + " " + initRow);
 
             _stream = AzureHelper.OpenStream(_fileName);
 
@@ -97,7 +83,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
             }
 
             if (initRow > 0)
-                Console.WriteLine($"{_fileName}; Rows skipped={initRow}");
+                Settings.Current.Logger.LogInformation($"{_fileName}; Rows skipped={initRow}");
 
             _lastReadTime = DateTime.MinValue;
         }
@@ -124,7 +110,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
 
         public void Restart()
         {
-            Console.WriteLine($"{_fileName} - restarting... (IdleTime={IdleTime.TotalSeconds})");
+            Settings.Current.Logger.LogInformation($"{_fileName} - restarting... (IdleTime={IdleTime.TotalSeconds})");
             Close();
             Dispose();
         }
@@ -165,13 +151,13 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                 {
                     _lastReadTime = DateTime.Now;
 
-                    Console.WriteLine($"{_fileName} AzureBlobReaderGzip attempt={attempt} | Exception={e.Message}");
+                    Settings.Current.Logger.LogInformation($"{_fileName} AzureBlobReaderGzip attempt={attempt} | Exception={e.Message}");
                     Init(_rowIndex);
                     if (attempt > 5)
                     {
-                        Console.WriteLine("WARN_EXC - Read - throw");
-                        Console.WriteLine(e.Message);
-                        Console.WriteLine(e.StackTrace);
+                        Settings.Current.Logger.LogInformation("WARN_EXC - Read - throw");
+                        Settings.Current.Logger.LogInformation(e.Message);
+                        Settings.Current.Logger.LogInformation(e.StackTrace);
                         throw;
                     }
                 }

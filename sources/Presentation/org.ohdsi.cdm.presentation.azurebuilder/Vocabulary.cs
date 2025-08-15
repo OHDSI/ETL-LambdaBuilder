@@ -2,6 +2,7 @@
 using Azure.Identity;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using Microsoft.Extensions.Logging;
 using org.ohdsi.cdm.framework.common.Definitions;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Helpers;
@@ -50,13 +51,13 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                                                 
                         lookup.Fill(bc.OpenRead());
 
-                        Console.WriteLine(lookup.KeysCount);
+                        Settings.Current.Logger.LogInformation(lookup.KeysCount.ToString());
                         _lookups.Add(conceptIdMapper.Lookup, lookup);
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine(e.Message);
-                        Console.WriteLine(e.StackTrace);
+                        Settings.Current.Logger.LogInformation(e.Message);
+                        Settings.Current.Logger.LogInformation(e.StackTrace);
                         throw;
                     }
                 }
@@ -73,31 +74,31 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
             }
         }
 
-        public static void Attach(Vocabulary vocabulary)
+        public void Attach()
         {
             foreach (var qd in Settings.Current.Building.SourceQueryDefinitions)
             {
-                Attach(qd.Persons, vocabulary);
-                Attach(qd.ConditionOccurrence, vocabulary);
-                Attach(qd.DrugExposure, vocabulary);
-                Attach(qd.ProcedureOccurrence, vocabulary);
-                Attach(qd.Observation, vocabulary);
-                Attach(qd.VisitOccurrence, vocabulary);
-                Attach(qd.VisitDetail, vocabulary);
-                Attach(qd.CareSites, vocabulary);
-                Attach(qd.Providers, vocabulary);
-                Attach(qd.Death, vocabulary);
-                Attach(qd.Measurement, vocabulary);
-                Attach(qd.DeviceExposure, vocabulary);
-                Attach(qd.Note, vocabulary);
-                Attach(qd.Episodes, vocabulary);
+                Attach(qd.Persons, this);
+                Attach(qd.ConditionOccurrence, this);
+                Attach(qd.DrugExposure, this);
+                Attach(qd.ProcedureOccurrence, this);
+                Attach(qd.Observation, this);
+                Attach(qd.VisitOccurrence, this );
+                Attach(qd.VisitDetail, this);
+                Attach(qd.CareSites, this);
+                Attach(qd.Providers, this);
+                Attach(qd.Death, this);
+                Attach(qd.Measurement, this);
+                Attach(qd.DeviceExposure, this);
+                Attach(qd.Note, this);
+                Attach(qd.Episodes, this);
 
-                Attach(qd.VisitCost, vocabulary);
-                Attach(qd.ProcedureCost, vocabulary);
-                Attach(qd.DeviceCost, vocabulary);
-                Attach(qd.ObservationCost, vocabulary);
-                Attach(qd.MeasurementCost, vocabulary);
-                Attach(qd.DrugCost, vocabulary);
+                Attach(qd.VisitCost, this);
+                Attach(qd.ProcedureCost, this);
+                Attach(qd.DeviceCost, this);
+                Attach(qd.ObservationCost, this);
+                Attach(qd.MeasurementCost, this);
+                Attach(qd.DrugCost, this);
             }
         }
 
@@ -147,7 +148,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
             lookup = new Lookup();
             foreach (var blob in AzureHelper.GetBlobContainer().GetBlobs(BlobTraits.None, BlobStates.None, $"{AzureHelper.Path}/CombinedLookups"))
             {
-                Console.WriteLine(blob.Name);
+                Settings.Current.Logger.LogInformation(blob.Name);
 
                 lookup.Fill(AzureHelper.OpenStream(blob.Name));
                 _lookups.Add(blob.Name.Split('/')[3].Replace(".txt.gz", ""), lookup);
@@ -173,7 +174,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                 }
 
                 _conceptIdToSourceVocabularyId.TrimExcess();
-                Console.WriteLine("_conceptIdToSourceVocabularyId: " + _conceptIdToSourceVocabularyId.Keys.Count);
+                Settings.Current.Logger.LogInformation("_conceptIdToSourceVocabularyId: " + _conceptIdToSourceVocabularyId.Keys.Count);
             }
         }
 

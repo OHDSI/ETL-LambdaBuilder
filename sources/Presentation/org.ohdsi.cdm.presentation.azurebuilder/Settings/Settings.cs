@@ -1,4 +1,5 @@
-﻿using org.ohdsi.cdm.framework.common.Enums;
+﻿using Microsoft.Extensions.Logging;
+using org.ohdsi.cdm.framework.common.Enums;
 
 namespace org.ohdsi.cdm.presentation.azurebuilder
 {
@@ -15,17 +16,19 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
 
         public bool Timeout => Duration > TimeoutValue;
 
+        public ILogger<FunctionCdmEtl> Logger { get; private set; }
+
         static Settings()
         {
             Current = new Settings();
         }
                 
-        public string ServiceUri;
-        public string BlobContainerName;
+        public string ServiceUri { get; set; }
+        public string BlobContainerName { get; set; }
 
-        public string TenantId;
-        public string ClientId;
-        public string ClientSecret;
+        public string TenantId { get; set; }
+        public string ClientId { get; set; }
+        public string ClientSecret { get; set; }
 
         public string CDMFolder { get; set; }
 
@@ -39,8 +42,9 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
 
         #region Methods
 
-        public static void Initialize(int buildingId, Vendor vendor, string etlLibraryPath)
+        public static void Initialize(int buildingId, Vendor vendor, string etlLibraryPath, ILogger<FunctionCdmEtl> logger)
         {
+            Current.Logger = logger;
             Current.Building = new BuildingSettings { Id = buildingId, Vendor = vendor };
             Current.Building.SetVendorSettings(etlLibraryPath);
         }

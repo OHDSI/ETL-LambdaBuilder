@@ -243,27 +243,27 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
             {
                 var tables = new[]
                 {
-                    "PERSON",
-                    "OBSERVATION_PERIOD",
-                    "PAYER_PLAN_PERIOD",
-                    "DEATH",
-                    "DRUG_EXPOSURE",
-                    "OBSERVATION",
-                    "VISIT_OCCURRENCE",
-                    "VISIT_DETAIL",
-                    "PROCEDURE_OCCURRENCE",
-                    "DRUG_ERA",
-                    "CONDITION_ERA",
-                    "DEVICE_EXPOSURE",
-                    "MEASUREMENT",
-                    "COHORT",
-                    "CONDITION_OCCURRENCE",
-                    "COST",
-                    "NOTE",
-                    "METADATA_TMP",
-                    "FACT_RELATIONSHIP",
-                    "EPISODE_EVENT",
-                    "EPISODE"
+                    "person",
+                    "observation_period",
+                    "payer_plan_period",
+                    "death",
+                    "drug_exposure",
+                    "observation",
+                    "visit_occurrence",
+                    "visit_detail",
+                    "procedure_occurrence",
+                    "drug_era",
+                    "condition_era",
+                    "device_exposure",
+                    "measurement",
+                    "cohort",
+                    "condition_occurrence",
+                    "cost",
+                    "note",
+                    "metadata_tmp",
+                    "fact_relationship",
+                    "episode_event",
+                    "episode"
                 };
 
                 Parallel.ForEach(tables, t => { Write(chunk, chunkId, subChunkId, t); });
