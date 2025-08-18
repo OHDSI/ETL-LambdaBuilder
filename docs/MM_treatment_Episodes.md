@@ -55,14 +55,14 @@ storing lines and regimen.
 6.  Add CAR-T regimens. Currently the CAR-T events are divided into 3
     groups (subject of a discussion):
 
-a\) 'Apheresis Aph&CART' – when both Apheresis procedure and CAR-T
+    1.  'Apheresis Aph&CART' – when both Apheresis procedure and CAR-T
 injection event are present in the data. Apheresis date is both start
 and end date of the regimen.
 
-b\) 'CAR-T': drug_exposure_start_date and drug_exposure_end_date are
+    2.  CAR-T': drug_exposure_start_date and drug_exposure_end_date are
 considered a regimen start and end date.
 
-c\) 'Apheresis no CART': Apheresis procedure is documented, but the
+    3.  'Apheresis no CART': Apheresis procedure is documented, but the
 CAR-T is not. Apheresis date is both start and end date of the regimen.
 
 Later both 'Apheresis Aph&CART' and 'Apheresis no CART' are mapped to
@@ -103,9 +103,7 @@ Regimens are combined into lines of therapy using the following rules:
     3.  It’s any drug monotherapy after the transplant that appears
         within a year after transplantation date.
 
-10. 
-
-11. Regimens are grouped into line of therapy when they are:
+10. Regimens are grouped into line of therapy when they are:
 
     1.  HSCT (autologous stem cell transplantation) and therapies that
         surround it, for example: bortezomib, lenalidomide
@@ -134,7 +132,7 @@ Regimens are combined into lines of therapy using the following rules:
         addition must occur within 60 days of line start for this rule
         to be applied
 
-12. Most of the regimen are mapped to HemOnc concepts by matching
+11. Most of the regimen are mapped to HemOnc concepts by matching
     ingredients and populate EPISODE.episode_object_concept_id, if
     there’s no corresponding concept, it was mapped to 0. Procedures are
     mapped as follows:
@@ -146,16 +144,16 @@ Regimens are combined into lines of therapy using the following rules:
 | Apheresis Aph&CART      | 4132856               | Apheresis                             |
 | Apheresis no CART       | 4132856               | Apheresis                             |
 
-13. Line of treatment concepts are mapped to 0, since HemOnc vocabulary
+12. Line of treatment concepts are mapped to 0, since HemOnc vocabulary
     doesn’t support lines, the value will be only stored in
     episode_source_value as names of regimen in their temporal order
     separated by ‘ then ‘.
 
-14. The start date of line of therapy is the start date of the first
+13. The start date of line of therapy is the start date of the first
     regimen, the end date of the line of therapy is the end date of the
     last regimen the line is made from.
 
-15. The line of treatment becomes a parent episode of treatment regimen
+14. The line of treatment becomes a parent episode of treatment regimen
 
 ### Mapping to the EPISODE table
 
