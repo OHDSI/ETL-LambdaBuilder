@@ -1,5 +1,6 @@
 ﻿using Azure.Identity;
 using Azure.Storage.Blobs;
+using org.ohdsi.cdm.framework.common.Enums;
 
 namespace org.ohdsi.cdm.presentation.azurebuilder
 {
@@ -7,7 +8,15 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
     {
         internal static string Path
         {
-            get { return $"{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id}"; }
+            get { return $"{Settings.Current.Prefix}/{GetVendorName(Settings.Current.Building.Vendor)}/{Settings.Current.Building.Id}"; }
+        }
+
+        private static string GetVendorName(Vendor v)
+        {
+            if (v.Name.Contains("Truven_"))
+                return v.Name.Replace("Truven_", "").ToLower();
+
+            return v.Name.ToLower();
         }
 
         internal static BlobContainerClient GetBlobContainer()

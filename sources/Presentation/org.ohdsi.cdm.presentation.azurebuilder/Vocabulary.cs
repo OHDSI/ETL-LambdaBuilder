@@ -39,8 +39,8 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                 {
                     var lookup = new Lookup();
 
-                    var fileName = $"{AzureHelper.Path}/Lookups/{conceptIdMapper.Lookup}.txt";
-                    
+                    var fileName = $"{AzureHelper.Path}/Lookups/{conceptIdMapper.Lookup}.txt.gz";
+
                     try
                     {
                         ClientSecretCredential credential = new(Settings.Current.TenantId, Settings.Current.ClientId, Settings.Current.ClientSecret);

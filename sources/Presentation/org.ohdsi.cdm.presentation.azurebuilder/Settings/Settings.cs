@@ -26,6 +26,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
         public string ServiceUri { get; set; }
         public string BlobContainerName { get; set; }
 
+        public string Prefix { get; set; }
         public string TenantId { get; set; }
         public string ClientId { get; set; }
         public string ClientSecret { get; set; }
