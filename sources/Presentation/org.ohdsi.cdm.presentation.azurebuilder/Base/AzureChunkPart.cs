@@ -1,4 +1,6 @@
-﻿using org.ohdsi.cdm.framework.common.Base;
+﻿using Amazon.S3.Model;
+using Microsoft.Extensions.Logging;
+using org.ohdsi.cdm.framework.common.Base;
 using org.ohdsi.cdm.framework.common.Builder;
 using org.ohdsi.cdm.framework.common.Definitions;
 using org.ohdsi.cdm.framework.common.Enums;
@@ -31,8 +33,6 @@ namespace org.ohdsi.cdm.presentation.azurebuilder.Base
         private bool _readRestarted;
         private string _currentReaderName;
 
-        //private readonly string _tmpFolder;
-
         public int TotalPersonConverted { get; private set; }
 
         public AzureChunkPart(int chunkId, Func<IPersonBuilder> createPersonBuilder, string prefix, int attempt)
@@ -47,7 +47,6 @@ namespace org.ohdsi.cdm.presentation.azurebuilder.Base
             _lastSavedPersonId = null;
             _watchdog = new System.Timers.Timer(Settings.Current.WatchdogValue);
             _watchdog.Elapsed += Watchdog_Elapsed;
-            //_tmpFolder = tmpFolder;
         }
 
         private void Watchdog_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -66,7 +65,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder.Base
         {
             try
             {
-                Console.WriteLine("--- RAM: " + GC.GetTotalMemory(false) / 1024 / 1024 + "Mb");
+                Settings.Current.Logger.LogInformation("--- RAM: " + GC.GetTotalMemory(false) / 1024 / 1024 + "Mb");
                 _restorePoint = restorePoint;
 
                 if (_restorePoint.TryGetValue("_lastSavedPersonId", out long value))
@@ -76,10 +75,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder.Base
 
                 var timer = new Stopwatch();
                 timer.Start();
-
-                var folder = $"{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id}/raw";
-
-
+                
                 var qds = new Dictionary<string, QueryDefinition>();
                 var queries = new List<string>();
 
@@ -101,8 +97,11 @@ namespace org.ohdsi.cdm.presentation.azurebuilder.Base
                     var initRow = 0L;
                     if (_restorePoint.ContainsKey(qd.FileName))
                         initRow = _restorePoint[qd.FileName];
+
                     
-                    _readers.Add(qd.FileName, new AzureBlobReaderGzip(qd.FileName, qd.FieldHeaders, initRow));
+                    var fileName = $"{AzureHelper.Path}/raw/{_chunkId}/{qd.FileName}/{qd.FileName}{_prefix}_part_00.zst";
+
+                    _readers.Add(qd.FileName, new AzureBlobReaderGzip(fileName, qd.FieldHeaders, initRow));
 
                     if (qd.Persons != null && qd.Persons.Length > 0)
                     {
@@ -205,7 +204,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder.Base
                     BuildAndSave([.. _personBuilders.Keys], true);
                 timer.Stop();
 
-                Console.WriteLine(
+                Settings.Current.Logger.LogInformation(
                     $"(Timeout={Settings.Current.Timeout}) Total: {timer.ElapsedMilliseconds}ms, Build: {_totalBuild}ms, Save: {_totalSave}ms || Total person: {TotalPersonConverted} || Duaration: {Settings.Current.Duration}s");
 
                 foreach (var qd in Settings.Current.Building.SourceQueryDefinitions)
@@ -225,9 +224,9 @@ namespace org.ohdsi.cdm.presentation.azurebuilder.Base
             }
             catch (Exception e)
             {
-                Console.WriteLine("WARN_EXC - Process - throw");
-                Console.WriteLine(e.Message);
-                Console.WriteLine(e.StackTrace);
+                Settings.Current.Logger.LogInformation("WARN_EXC - Process - throw");
+                Settings.Current.Logger.LogInformation(e.Message);
+                Settings.Current.Logger.LogInformation(e.StackTrace);
                 Settings.Current.Error = true;
                 throw;
             }
@@ -301,10 +300,10 @@ namespace org.ohdsi.cdm.presentation.azurebuilder.Base
 
             totalTime.Stop();
 
-            Console.WriteLine(
+            Settings.Current.Logger.LogInformation(
                 $"Save complete (total person={TotalPersonConverted}), part={key} Saved: {personCount} || Save: {timeForSave}ms, Total: {totalTime.ElapsedMilliseconds}ms || Last saved PersonId={_lastSavedPersonId} || RAM: {GC.GetTotalMemory(false) / 1024 / 1024}Mb || Duaration: {Settings.Current.Duration}s");
 
-            Console.WriteLine("Restore point - " +
+            Settings.Current.Logger.LogInformation("Restore point - " +
                               string.Join(';', _restorePoint.Select(rp => $"{rp.Key}:{rp.Value}")));
         }
 
@@ -455,7 +454,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder.Base
 
                 if (_readRestarted)
                 {
-                    Console.WriteLine($"-> personId={personId.Value} | RowIndex={queryDefinition.ProcessedPersonIds[personId.Value]} | FileName = {queryDefinition.FileName}");
+                    Settings.Current.Logger.LogInformation($"-> personId={personId.Value} | RowIndex={queryDefinition.ProcessedPersonIds[personId.Value]} | FileName = {queryDefinition.FileName}");
                     _readRestarted = false;
                 }
 
@@ -583,9 +582,9 @@ namespace org.ohdsi.cdm.presentation.azurebuilder.Base
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("WARN_EXC - AddEntity - throw");
-                    Console.WriteLine(e.Message);
-                    Console.WriteLine(e.StackTrace);
+                    Settings.Current.Logger.LogInformation("WARN_EXC - AddEntity - throw");
+                    Settings.Current.Logger.LogInformation(e.Message);
+                    Settings.Current.Logger.LogInformation(e.StackTrace);
                     Settings.Current.Error = true;
                     throw;
                 }

@@ -41,6 +41,8 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
 
                     var fileName = $"{AzureHelper.Path}/Lookups/{conceptIdMapper.Lookup}.txt.gz";
 
+                    Settings.Current.Logger.LogInformation(fileName);
+
                     try
                     {
                         ClientSecretCredential credential = new(Settings.Current.TenantId, Settings.Current.ClientId, Settings.Current.ClientSecret);
@@ -56,6 +58,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                     }
                     catch (Exception e)
                     {
+                        Settings.Current.Logger.LogInformation("ERROR " + fileName);
                         Settings.Current.Logger.LogInformation(e.Message);
                         Settings.Current.Logger.LogInformation(e.StackTrace);
                         throw;
@@ -141,7 +144,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                 }
 
             var lookup = new Lookup();
-            lookup.Fill(AzureHelper.OpenStream($"{AzureHelper.Path}/Lookups/PregnancyDrug.txt"));
+            lookup.Fill(AzureHelper.OpenStream($"{AzureHelper.Path}/Lookups/PregnancyDrug.txt.gz"));
             _lookups.Add("PregnancyDrug", lookup);
 
 

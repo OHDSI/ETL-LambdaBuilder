@@ -106,6 +106,8 @@ public class FunctionCdmEtl
             Settings.Current.ClientSecret = clientSecret;
             Settings.Current.ServiceUri = blobURI;
             Settings.Current.BlobContainerName = blobContainerName;
+            Settings.Current.Prefix = prefix;
+
             Settings.Current.CDMFolder = Environment.GetEnvironmentVariable("cdmFolder");
 
             ServicePointManager.DefaultConnectionLimit = Int32.MaxValue;

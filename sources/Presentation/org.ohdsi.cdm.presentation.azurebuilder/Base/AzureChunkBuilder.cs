@@ -39,7 +39,6 @@ namespace org.ohdsi.cdm.presentation.azurebuilder.Base
             {
                 var metadataKey = string.Format("{0}/metadata/{1}", folder, qd.FileName + ".txt");
 
-
                 using var stream = AzureHelper.OpenStream(metadataKey);
                 using var sr = new StreamReader(stream);
 
@@ -71,8 +70,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder.Base
 
         public long? Process(int chunkId, string prefix, Dictionary<string, long> restorePoint, int attempt)
         {
-            var folder = string.Format("{0}/{1}/raw", Settings.Current.Building.Vendor,
-            Settings.Current.Building.Id);
+            var folder = string.Format("{0}/raw", AzureHelper.Path);
 
             Parallel.ForEach(Settings.Current.Building.SourceQueryDefinitions, qd => { ReadMetadata(qd, folder); });
 
