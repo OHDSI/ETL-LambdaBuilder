@@ -13,7 +13,7 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
 {
     public class FileTransferHelper
     {
-        public static void UploadFile(IAmazonS3 awsClient, BlobContainerClient auzreClient, string bucketName, string fileName, IDataReader reader, string delimiter, char quote, string nullAs)
+        public static void UploadFile(IAmazonS3 awsClient, BlobContainerClient azureClient, string bucketName, string fileName, IDataReader reader, string delimiter, char quote, string nullAs)
         {
             int fileIndex = 0;
             var fileEnded = false;
@@ -25,7 +25,7 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
                 if (fileIndex > 0)
                     name = fileName.Replace(".gz", "." + fileIndex + ".gz");
 
-                fileEnded = SaveFilePart(awsClient, auzreClient, bucketName, name, reader, delimiter, quote, nullAs);
+                fileEnded = SaveFilePart(awsClient, azureClient, bucketName, name, reader, delimiter, quote, nullAs);
                 fileIndex++;
             }
         }
