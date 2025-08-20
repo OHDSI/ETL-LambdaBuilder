@@ -14,7 +14,7 @@ using System.Data.Odbc;
 
 namespace org.ohdsi.cdm.framework.desktop.Savers
 {
-    public class RedshiftSaver : Saver
+    public class DatabricksSaver : Saver
     {
         private AmazonS3Client _currentClient;
         private string _connectionString;
@@ -134,7 +134,8 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
 
                 var tableName = "_chunks" + index;
                 var fileName = $"{Settings.Settings.Current.Building.Vendor}/{Settings.Settings.Current.Building.Id}/{tableName}.txt.gz";
-                FileTransferHelper.UploadFile(_currentClient, null, Settings.Settings.Current.Bucket, fileName, new ChunkDataReader(chunk), "\t", '`', "\0");
+                // TODO: Azure
+                //FileTransferHelper.CopyFile(_currentClient, Settings.Settings.Current.Bucket, fileName, new ChunkDataReader(chunk), "\t", '`', "\0");
 
                 using var currentConnection = SqlConnectionHelper.OpenOdbcConnection(_connectionString);
                 using var currentTransaction = currentConnection.BeginTransaction();

@@ -13,7 +13,6 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
         private string _bucket;
 
         private string _cdmFolder;
-        private string _vendorSettings;
 
 
         #region Properties
@@ -143,14 +142,6 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
             }
             set => _cdmFolder = value;
         }
-
-        public string VendorSettings
-        {
-            get => _vendorSettings;
-            set => _vendorSettings = value;
-        }
-
-
         #endregion
 
         #region Methods

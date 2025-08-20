@@ -93,7 +93,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                 var timer = new Stopwatch();
                 timer.Start();
                 _vocabulary = new Vocabulary(Settings.Current.Building.Vendor);
-                _vocabulary.Fill(false, false);
+                _vocabulary.Fill(false);
                 timer.Stop();
 
                 Console.WriteLine("Vocabulary initialized for " + Settings.Current.Building.Vendor + " | " +

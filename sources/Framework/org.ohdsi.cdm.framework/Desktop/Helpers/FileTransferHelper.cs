@@ -1,5 +1,6 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Transfer;
+using Azure.Storage.Blobs;
 using CsvHelper;
 using CsvHelper.Configuration;
 using System.Data;
@@ -10,9 +11,9 @@ using System.Text;
 
 namespace org.ohdsi.cdm.framework.desktop.Helpers
 {
-    public class AmazonS3Helper
+    public class FileTransferHelper
     {
-        public static void CopyFile(IAmazonS3 client, string bucketName, string fileName, IDataReader reader, string delimiter, char quote, string nullAs)
+        public static void UploadFile(IAmazonS3 awsClient, BlobContainerClient auzreClient, string bucketName, string fileName, IDataReader reader, string delimiter, char quote, string nullAs)
         {
             int fileIndex = 0;
             var fileEnded = false;
@@ -22,9 +23,9 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
                 var name = fileName;
 
                 if (fileIndex > 0)
-                    name = fileName + "." + fileIndex;
+                    name = fileName.Replace(".gz", "." + fileIndex + ".gz");
 
-                fileEnded = SaveFilePart(client, bucketName, name, reader, delimiter, quote, nullAs);
+                fileEnded = SaveFilePart(awsClient, auzreClient, bucketName, name, reader, delimiter, quote, nullAs);
                 fileIndex++;
             }
         }
@@ -44,7 +45,7 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
                });
         }
 
-        private static bool SaveFilePart(IAmazonS3 client, string bucketName, string fileName, IDataReader reader, string delimiter, char quote, string nullAs)
+        private static bool SaveFilePart(IAmazonS3 awsClient, BlobContainerClient azureClient, string bucketName, string fileName, IDataReader reader, string delimiter, char quote, string nullAs)
         {
             var rowNumbers = 0;
             const int rowLimit = 10_000_000;
@@ -88,15 +89,27 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
                 Console.WriteLine("Key=" + fileName);
 
                 using var gz = Compress(source);
-                using var directoryTransferUtility = new TransferUtility(client);
-                directoryTransferUtility.Upload(new TransferUtilityUploadRequest
+
+                if (awsClient != null)
                 {
-                    BucketName = bucketName,
-                    Key = fileName,
-                    ServerSideEncryptionMethod = ServerSideEncryptionMethod.AES256,
-                    StorageClass = S3StorageClass.Standard,
-                    InputStream = gz
-                });
+                    using (awsClient)
+                    {
+                        using var directoryTransferUtility = new TransferUtility(awsClient);
+                        directoryTransferUtility.Upload(new TransferUtilityUploadRequest
+                        {
+                            BucketName = bucketName,
+                            Key = fileName,
+                            ServerSideEncryptionMethod = ServerSideEncryptionMethod.AES256,
+                            StorageClass = S3StorageClass.Standard,
+                            InputStream = gz
+                        });
+                    }
+                }
+
+                if(azureClient != null)
+                {
+                    azureClient.UploadBlob(fileName, gz);
+                }
             }
 
             return ended;

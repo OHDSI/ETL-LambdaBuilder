@@ -268,7 +268,7 @@ namespace org.ohdsi.cdm.presentation.etl
                 else
                 {
                     var etl = new ETL();
-                    etl.Start(skipChunkCreation, resumeChunkCreation, skipLookupCreation, skipBuild, skipVocabularyCopying, lambdaUtility, configuration.GetSection("AppSettings")["cdm_folder_csv"], !useLocalSettings, chunksSchema);
+                    etl.Start(skipChunkCreation, resumeChunkCreation, skipLookupCreation, skipBuild, skipVocabularyCopying, lambdaUtility);
                 }
 
                 if (skipValidation)

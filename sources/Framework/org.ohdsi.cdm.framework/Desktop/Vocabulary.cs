@@ -1,15 +1,9 @@
-﻿using Amazon.S3;
-using Amazon.S3.Model;
-using Amazon.S3.Transfer;
-using CsvHelper;
-using CsvHelper.Configuration;
-using org.ohdsi.cdm.framework.common.Definitions;
+﻿using org.ohdsi.cdm.framework.common.Definitions;
 using org.ohdsi.cdm.framework.common.Lookups;
 using org.ohdsi.cdm.framework.desktop.Helpers;
+using org.ohdsi.cdm.framework.Desktop.DataReaders;
 using System.Data;
 using System.Data.Odbc;
-using System.Globalization;
-using System.Text;
 
 namespace org.ohdsi.cdm.framework.desktop
 {
@@ -75,26 +69,17 @@ namespace org.ohdsi.cdm.framework.desktop
             return lv;
         }
 
-        private void LoadCombinedLookups(bool readFromS3, bool storeToS3)
+        public IEnumerable<Tuple<IDataReader, string>> GetCombinedLookups()
         {
             if (Settings.Settings.Current.Building.CombinedLookupDefinitions == null || Settings.Settings.Current.Building.CombinedLookupDefinitions.Count == 0)
             {
                 Console.WriteLine("CombinedLookups - empty");
-                return;
+                yield break;
             }
 
             Console.WriteLine("CombinedLookups - Loading...");
-            var baseSql = string.Empty;
-
-            if (readFromS3)
-            {
-                baseSql = S3ReadAllText($@"{Settings.Settings.Current.VendorSettings}\Core\Lookups\Base.sql");
-            }
-            else
-            {
-                baseSql = File.ReadAllText(Path.Combine(Settings.Settings.Current.Folder,
+            var baseSql = File.ReadAllText(Path.Combine(Settings.Settings.Current.Folder,
                     @"Core\Lookups\Base.sql"));
-            }
 
             foreach (var lookup in Settings.Settings.Current.Building.CombinedLookupDefinitions)
             {
@@ -103,13 +88,13 @@ namespace org.ohdsi.cdm.framework.desktop
 
                 vocabularyQuery = vocabularyQuery.Replace("{base}", baseSql);
                 vocabularyQuery = vocabularyQuery.Replace("{sc}", Settings.Settings.Current.Building.VocabularySchemaName);
+                var finalLookup = new Dictionary<string, string>();
 
                 try
                 {
                     var sourceLookup = new Dictionary<string, List<string>>();
                     var vocabularyLookup = new Dictionary<string, List<string>>();
                     var combinedLookup = new Dictionary<string, List<string>>();
-                    var finalLookup = new Dictionary<string, string>();
 
                     Console.WriteLine(sourceQuery);
                     using (var connection = SqlConnectionHelper.OpenOdbcConnection(Settings.Settings.Current.Building.SourceConnectionString))
@@ -168,164 +153,62 @@ namespace org.ohdsi.cdm.framework.desktop
 
                         finalLookup.Add(item.Key, mostFrequent);
                     }
-
-                    if (storeToS3)
-                    {
-                        var fileName =
-                            $"{Settings.Settings.Current.Building.Vendor}/{Settings.Settings.Current.Building.Id}/CombinedLookups/{lookup.FileName}.txt.gz";
-
-                        Console.WriteLine(lookup.FileName + " - store to S3 | " + fileName);
-
-                        using (var client = new AmazonS3Client(
-                            Settings.Settings.Current.S3AwsAccessKeyId,
-                            Settings.Settings.Current.S3AwsSecretAccessKey,
-                            new AmazonS3Config
-                            {
-                                Timeout = TimeSpan.FromMinutes(60),
-                                RegionEndpoint = Amazon.RegionEndpoint.USEast1,
-                                MaxErrorRetry = 20,
-                            }))
-                        {
-                            using var source = new MemoryStream();
-                            using StreamWriter writer = new(source, new UTF8Encoding(false, true));
-                            using var csv = new CsvWriter(writer,
-                                  new CsvConfiguration(CultureInfo.InvariantCulture)
-                                  {
-                                      HasHeaderRecord = false,
-                                      Delimiter = "\t",
-                                      Quote = '`',
-                                      Encoding = Encoding.UTF8
-                                  });
-                            foreach (var item in finalLookup)
-                            {
-                                csv.WriteField(item.Key ?? string.Empty);
-                                csv.WriteField(item.Value ?? string.Empty);
-                                csv.NextRecord();
-                            }
-
-                            writer.Flush();
-
-                            using var gz = AmazonS3Helper.Compress(source);
-                            using var directoryTransferUtility = new TransferUtility(client);
-                            directoryTransferUtility.Upload(new TransferUtilityUploadRequest
-                            {
-                                BucketName = Settings.Settings.Current.Bucket,
-                                Key = fileName,
-                                ServerSideEncryptionMethod = ServerSideEncryptionMethod.AES256,
-                                StorageClass = S3StorageClass.Standard,
-                                InputStream = gz
-                            });
-                        }
-                        _lookups.Add(lookup.FileName, null);
-                    }
-                    else
-                    {
-                        Console.WriteLine(lookup.FileName + " - filling");
-                        var l = new Lookup();
-                        foreach (var item in finalLookup)
-                        {
-                            l.Add(new LookupValue
-                            {
-                                ConceptId = int.Parse(item.Value),
-                                SourceCode = item.Key,
-                                ValidStartDate = DateTime.MinValue,
-                                ValidEndDate = DateTime.MaxValue,
-                                Ingredients = []
-                            });
-                        }
-
-                        _lookups.Add(lookup.FileName, l);
-                        Console.WriteLine(lookup.FileName + " - Done (" + _lookups[lookup.FileName].KeysCount + ")");
-                    }
-
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine("LoadCombinedLookups " + e.Message);
-
                     throw;
                 }
+
+                yield return new Tuple<IDataReader, string>(new DictionaryDataReader(finalLookup), lookup.FileName);
             }
         }
 
-        private static void LoadConceptIdToSourceVocabularyId()
+
+        private void FillCombinedLookups()
         {
-            Console.WriteLine("ConceptIdToSourceVocabularyId - Loading...");
-
-            var sql = File.ReadAllText(Path.Combine(Settings.Settings.Current.Folder,
-                @"Core\Lookups\ConceptIdToSourceVocabularyId.sql"));
-
-            sql = sql.Replace("{sc}", Settings.Settings.Current.Building.VocabularySchemaName);
-
-            using (var connection =
-                SqlConnectionHelper.OpenOdbcConnection(Settings.Settings.Current.Building.VocabularyConnectionString))
-            using (var command = new OdbcCommand(sql, connection) { CommandTimeout = 0 })
-            using (var reader = command.ExecuteReader())
+            foreach (var cl in GetCombinedLookups())
             {
-                var fileName =
-                    $"{Settings.Settings.Current.Building.Vendor}/{Settings.Settings.Current.Building.Id}/Lookups/ConceptIdToSourceVocabularyId.txt.gz";
+                var reader = cl.Item1;
+                var name = cl.Item2;
+                Console.WriteLine(name + " - filling");
 
-                Console.WriteLine("ConceptIdToSourceVocabularyId - store to S3 | " + fileName);
-
-                using var client = new AmazonS3Client(
-                    Settings.Settings.Current.S3AwsAccessKeyId,
-                    Settings.Settings.Current.S3AwsSecretAccessKey,
-                    new AmazonS3Config
+                var lookup = new Lookup();
+                while (reader.Read())
+                {
+                    lookup.Add(new LookupValue
                     {
-                        Timeout = TimeSpan.FromMinutes(60),
-                        RegionEndpoint = Amazon.RegionEndpoint.USEast1,
-                        MaxErrorRetry = 20,
+                        ConceptId = int.Parse(reader[0].ToString()),
+                        SourceCode = reader[1].ToString(),
+                        ValidStartDate = DateTime.MinValue,
+                        ValidEndDate = DateTime.MaxValue,
+                        Ingredients = []
                     });
-                AmazonS3Helper.CopyFile(client, Settings.Settings.Current.Bucket,
-                    fileName,
-                    reader, "\t", '`', "\0");
+                }
 
+                _lookups.Add(name, lookup);
+                Console.WriteLine(name + " - Done (" + _lookups[name].KeysCount + ")");
             }
-            Console.WriteLine("ConceptIdToSourceVocabularyId - Done");
         }
 
-        private void LoadPregnancyDrug(bool readFromS3, bool storeToS3)
+        public IDataReader GetPregnancyDrug()
         {
-            string sql;
-            if (readFromS3)
-            {
-                sql = S3ReadAllText($@"{Settings.Settings.Current.VendorSettings}\Core\Lookups\PregnancyDrug.sql");
-            }
-            else
-            {
-                sql = File.ReadAllText(Path.Combine(Settings.Settings.Current.Folder,
+            var sql = File.ReadAllText(Path.Combine(Settings.Settings.Current.Folder,
                     @"Core\Lookups\PregnancyDrug.sql"));
-            }
 
             sql = sql.Replace("{sc}", Settings.Settings.Current.Building.VocabularySchemaName);
 
             Console.WriteLine("PregnancyDrug - Loading...");
-            using (var connection =
-                SqlConnectionHelper.OpenOdbcConnection(Settings.Settings.Current.Building.VocabularyConnectionString))
-            using (var command = new OdbcCommand(sql, connection) { CommandTimeout = 0 })
-            using (var reader = command.ExecuteReader())
+            using var connection = SqlConnectionHelper.OpenOdbcConnection(Settings.Settings.Current.Building.VocabularyConnectionString);
+            using var command = new OdbcCommand(sql, connection) { CommandTimeout = 0 };
+            return command.ExecuteReader();
+        }
+
+        private void FillPregnancyDrug()
+        {
+            using (var reader = GetPregnancyDrug())
             {
-                if (storeToS3)
-                {
-                    var fileName =
-                        $"{Settings.Settings.Current.Building.Vendor}/{Settings.Settings.Current.Building.Id}/Lookups/PregnancyDrug.txt.gz";
 
-                    Console.WriteLine("PregnancyDrug - store to S3 | " + fileName);
-
-                    using var client = new AmazonS3Client(
-                        Settings.Settings.Current.S3AwsAccessKeyId,
-                        Settings.Settings.Current.S3AwsSecretAccessKey,
-                        new AmazonS3Config
-                        {
-                            Timeout = TimeSpan.FromMinutes(60),
-                            RegionEndpoint = Amazon.RegionEndpoint.USEast1,
-                            MaxErrorRetry = 20,
-                        });
-                    AmazonS3Helper.CopyFile(client, Settings.Settings.Current.Bucket,
-                        fileName,
-                        reader, "\t", '`', "\0");
-                }
-                else
                 {
                     Console.WriteLine("PregnancyDrug - filling");
                     var lookup = new Lookup();
@@ -344,44 +227,33 @@ namespace org.ohdsi.cdm.framework.desktop
             Console.WriteLine("PregnancyDrug - Done");
         }
 
-
-        private void Load(IEnumerable<EntityDefinition> definitions, bool readFromS3, bool storeToS3)
+        private IEnumerable<Tuple<IDataReader, string>> GetDataReaders(IEnumerable<EntityDefinition> definitions)
         {
-            if (definitions == null) return;
-
-            foreach (var ed in definitions)
+            if (definitions != null)
             {
-                ed.Vocabulary = this;
-
-                if (ed.Concepts == null) continue;
-
-                foreach (var c in ed.Concepts)
+                foreach (var ed in definitions)
                 {
-                    if (c.ConceptIdMappers == null) continue;
+                    ed.Vocabulary = this;
 
-                    foreach (var conceptIdMapper in c.ConceptIdMappers)
+                    if (ed.Concepts == null) continue;
+
+                    foreach (var c in ed.Concepts)
                     {
-                        if (!string.IsNullOrEmpty(conceptIdMapper.Lookup))
+                        if (c.ConceptIdMappers == null) continue;
+
+                        foreach (var conceptIdMapper in c.ConceptIdMappers)
                         {
-                            if (!_lookups.ContainsKey(conceptIdMapper.Lookup))
+                            if (!string.IsNullOrEmpty(conceptIdMapper.Lookup))
                             {
-                                string sql = string.Empty;
-                                var vendorFolder = Settings.Settings.Current.Building.Vendor.Folder;
-
-                                var baseSql = string.Empty;
-                                var sqlFileDestination = string.Empty;
-
-                                if (readFromS3)
+                                if (!_lookups.ContainsKey(conceptIdMapper.Lookup))
                                 {
-                                    baseSql = S3ReadAllText($@"{Settings.Settings.Current.VendorSettings}\Core\Lookups\Base.sql");
+                                    string sql = string.Empty;
+                                    var vendorFolder = Settings.Settings.Current.Building.Vendor.Folder;
 
-                                    sqlFileDestination = Path.Combine(Settings.Settings.Current.VendorSettings, "Core", "Transformation",
-                                        vendorFolder, "Lookups", conceptIdMapper.Lookup + ".sql");
+                                    var baseSql = string.Empty;
+                                    var sqlFileDestination = string.Empty;
 
-                                    sql = S3ReadAllText(sqlFileDestination);
-                                }
-                                else
-                                {
+
                                     baseSql = File.ReadAllText(Path.Combine(Settings.Settings.Current.Folder,
                                         @"Core\Lookups\Base.sql"));
 
@@ -389,63 +261,28 @@ namespace org.ohdsi.cdm.framework.desktop
                                         vendorFolder, "Lookups", conceptIdMapper.Lookup + ".sql");
 
                                     sql = File.ReadAllText(sqlFileDestination);
-                                }
 
-                                sql = sql.Replace("{base}", baseSql);
-                                sql = sql.Replace("{sc}", Settings.Settings.Current.Building.VocabularySchemaName);
 
-                                try
-                                {
-                                    Console.WriteLine(conceptIdMapper.Lookup + " - Loading...");
-                                    using var connection = SqlConnectionHelper.OpenOdbcConnection(Settings.Settings.Current.Building.VocabularyConnectionString);
-                                    using var command = new OdbcCommand(sql, connection) { CommandTimeout = 0 };
-                                    using var reader = command.ExecuteReader();
+                                    sql = sql.Replace("{base}", baseSql);
+                                    sql = sql.Replace("{sc}", Settings.Settings.Current.Building.VocabularySchemaName);
 
-                                    if (storeToS3)
+                                    OdbcDataReader reader;
+                                    try
                                     {
-                                        var fileName =
-                                            $"{Settings.Settings.Current.Building.Vendor}/{Settings.Settings.Current.Building.Id}/Lookups/{conceptIdMapper.Lookup}.txt.gz";
+                                        Console.WriteLine(conceptIdMapper.Lookup + " - Loading...");
+                                        using var connection = SqlConnectionHelper.OpenOdbcConnection(Settings.Settings.Current.Building.VocabularyConnectionString);
+                                        using var command = new OdbcCommand(sql, connection) { CommandTimeout = 0 };
+                                        reader = command.ExecuteReader();
 
-                                        Console.WriteLine(conceptIdMapper.Lookup + " - store to S3 | " + fileName);
-
-                                        using (var client = new AmazonS3Client(
-                                            Settings.Settings.Current.S3AwsAccessKeyId,
-                                            Settings.Settings.Current.S3AwsSecretAccessKey,
-                                            new AmazonS3Config
-                                            {
-                                                Timeout = TimeSpan.FromMinutes(60),
-                                                RegionEndpoint = Amazon.RegionEndpoint.USEast1,
-                                                MaxErrorRetry = 20,
-                                            }))
-                                        {
-                                            AmazonS3Helper.CopyFile(client, Settings.Settings.Current.Bucket,
-                                                fileName,
-                                                reader, "\t", '`', "\0");
-                                        }
-                                        _lookups.Add(conceptIdMapper.Lookup, null);
                                     }
-                                    else
+                                    catch (Exception)
                                     {
-                                        Console.WriteLine(conceptIdMapper.Lookup + " - filling");
-                                        var lookup = new Lookup();
-                                        while (reader.Read())
-                                        {
-                                            var lv = CreateLookupValue(reader);
-                                            lookup.Add(lv);
-                                        }
-
-                                        _lookups.Add(conceptIdMapper.Lookup, lookup);
-                                        Console.WriteLine(conceptIdMapper.Lookup + " - Done (" + _lookups[conceptIdMapper.Lookup].KeysCount + ")");
+                                        Console.WriteLine("Lookup error [file]: " + sqlFileDestination);
+                                        Console.WriteLine("Lookup error [query]: " + sql);
+                                        throw;
                                     }
 
-                                }
-                                catch (Exception)
-                                {
-                                    Console.WriteLine("Lookup error [file]: " + sqlFileDestination);
-                                    Console.WriteLine("Lookup error [query]: " + sql);
-                                    //Logger.WriteWarning("Lookup error [file]: " + sqlFileDestination);
-                                    //Logger.WriteWarning("Lookup error [query]: " + sql);
-                                    throw;
+                                    yield return new Tuple<IDataReader, string>(reader, conceptIdMapper.Lookup);
                                 }
                             }
                         }
@@ -454,87 +291,165 @@ namespace org.ohdsi.cdm.framework.desktop
             }
         }
 
+        public IEnumerable<Tuple<IDataReader, string>> GetHealthSystemDataReaders()
+        {
+            foreach (var qd in Settings.Settings.Current.Building.SourceQueryDefinitions)
+            {
+                foreach (var item in GetDataReaders(qd.CareSites))
+                {
+                    yield return item;
+                }
+
+                foreach (var item in GetDataReaders(qd.Providers))
+                {
+                    yield return item;
+                }
+
+                foreach (var item in GetDataReaders(qd.Locations))
+                {
+                    yield return item;
+                }
+            }
+        }
+
+        public IEnumerable<Tuple<IDataReader, string>> GetClinicalDataReaders()
+        {
+            foreach (var qd in Settings.Settings.Current.Building.SourceQueryDefinitions)
+            {
+                foreach (var item in GetDataReaders(qd.Persons))
+                {
+                    yield return item;
+                }
+
+                foreach (var item in GetDataReaders(qd.ConditionOccurrence))
+                {
+                    yield return item;
+                }
+
+                foreach (var item in GetDataReaders(qd.DrugExposure))
+                {
+                    yield return item;
+                }
+
+                foreach (var item in GetDataReaders(qd.ProcedureOccurrence))
+                {
+                    yield return item;
+                }
+
+                foreach (var item in GetDataReaders(qd.Observation))
+                {
+                    yield return item;
+                }
+
+                foreach (var item in GetDataReaders(qd.VisitOccurrence))
+                {
+                    yield return item;
+                }
+
+                foreach (var item in GetDataReaders(qd.VisitDetail))
+                {
+                    yield return item;
+                }
+
+                foreach (var item in GetDataReaders(qd.Death))
+                {
+                    yield return item;
+                }
+
+                foreach (var item in GetDataReaders(qd.Measurement))
+                {
+                    yield return item;
+                }
+
+                foreach (var item in GetDataReaders(qd.DeviceExposure))
+                {
+                    yield return item;
+                }
+
+
+                foreach (var item in GetDataReaders(qd.Note))
+                {
+                    yield return item;
+                }
+
+                foreach (var item in GetDataReaders(qd.VisitCost))
+                {
+                    yield return item;
+                }
+
+                foreach (var item in GetDataReaders(qd.ProcedureCost))
+                {
+                    yield return item;
+                }
+
+                foreach (var item in GetDataReaders(qd.DeviceCost))
+                {
+                    yield return item;
+                }
+
+                foreach (var item in GetDataReaders(qd.ObservationCost))
+                {
+                    yield return item;
+                }
+
+                foreach (var item in GetDataReaders(qd.MeasurementCost))
+                {
+                    yield return item;
+                }
+
+                foreach (var item in GetDataReaders(qd.DrugCost))
+                {
+                    yield return item;
+                }
+            }
+        }
+
+        private void Fill(IEnumerable<Tuple<IDataReader, string>> readers)
+        {
+            foreach (var dr in readers)
+            {
+                var name = dr.Item2;
+                using var reader = dr.Item1;
+
+                {
+                    Console.WriteLine(name + " - filling");
+                    var lookup = new Lookup();
+                    while (reader.Read())
+                    {
+                        var lv = CreateLookupValue(reader);
+                        lookup.Add(lv);
+                    }
+
+                    _lookups.Add(name, lookup);
+                    Console.WriteLine(name + " - Done (" + _lookups[name].KeysCount + ")");
+                }
+            }
+        }
+        
+
         /// <summary>
         /// Fill vocabulary for source to conceptId mapping
         /// </summary>
         /// <param name="forLookup">true - fill vocab. for: CareSites, Providers, Locations; false - rest of us</param>
-        public void Fill(bool forLookup, bool readFromS3)
+        public void Fill(bool forLookup)
         {
-
             _genderConcepts = new GenderLookup();
             _genderConcepts.Load();
 
             _pregnancyConcepts = new PregnancyConcepts(Settings.Settings.Current.Folder);
 
-            LoadCombinedLookups(readFromS3, false);
+            FillCombinedLookups();
 
-            foreach (var qd in Settings.Settings.Current.Building.SourceQueryDefinitions)
+            if (forLookup)
             {
-                if (forLookup)
-                {
-                    Load(qd.CareSites, readFromS3, false);
-                    Load(qd.Providers, readFromS3, false);
-                    Load(qd.Locations, readFromS3, false);
-                }
-                else
-                {
-                    Load(qd.Persons, readFromS3, false);
-                    Load(qd.ConditionOccurrence, readFromS3, false);
-                    Load(qd.DrugExposure, readFromS3, false);
-                    Load(qd.ProcedureOccurrence, readFromS3, false);
-                    Load(qd.Observation, readFromS3, false);
-                    Load(qd.VisitOccurrence, readFromS3, false);
-                    Load(qd.VisitDetail, readFromS3, false);
-                    Load(qd.Death, readFromS3, false);
-                    Load(qd.Measurement, readFromS3, false);
-                    Load(qd.DeviceExposure, readFromS3, false);
-                    Load(qd.Note, readFromS3, false);
-
-                    Load(qd.VisitCost, readFromS3, false);
-                    Load(qd.ProcedureCost, readFromS3, false);
-                    Load(qd.DeviceCost, readFromS3, false);
-                    Load(qd.ObservationCost, readFromS3, false);
-                    Load(qd.MeasurementCost, readFromS3, false);
-                    Load(qd.DrugCost, readFromS3, false);
-                }
+                Fill(GetHealthSystemDataReaders());
             }
-            LoadPregnancyDrug(readFromS3, false);
-
-            if (Settings.Settings.Current.Building.Vendor.Name == "CDM")
-                LoadConceptIdToSourceVocabularyId();
-        }
-
-        public void SaveToS3(bool readFromS3)
-        {
-            LoadCombinedLookups(readFromS3, true);
-            foreach (var qd in Settings.Settings.Current.Building.SourceQueryDefinitions)
+            else
             {
-                Load(qd.Persons, readFromS3, true);
-                Load(qd.ConditionOccurrence, readFromS3, true);
-                Load(qd.DrugExposure, readFromS3, true);
-                Load(qd.ProcedureOccurrence, readFromS3, true);
-                Load(qd.Observation, readFromS3, true);
-                Load(qd.VisitOccurrence, readFromS3, true);
-                Load(qd.VisitDetail, readFromS3, true);
-                Load(qd.Death, readFromS3, true);
-                Load(qd.Measurement, readFromS3, true);
-                Load(qd.DeviceExposure, readFromS3, true);
-                Load(qd.Note, readFromS3, true);
-                Load(qd.Episodes, readFromS3, true);
-
-                Load(qd.VisitCost, readFromS3, true);
-                Load(qd.ProcedureCost, readFromS3, true);
-                Load(qd.DeviceCost, readFromS3, true);
-                Load(qd.ObservationCost, readFromS3, true);
-                Load(qd.MeasurementCost, readFromS3, true);
-                Load(qd.DrugCost, readFromS3, true);
+                Fill(GetClinicalDataReaders());
             }
-            LoadPregnancyDrug(readFromS3, true);
 
-            if (Settings.Settings.Current.Building.Vendor.Name == "CDM")
-                LoadConceptIdToSourceVocabularyId();
-
-            _lookups.Clear();
+            FillPregnancyDrug();
         }
 
         public List<LookupValue> Lookup(string sourceValue, string key, DateTime eventDate)
@@ -557,53 +472,6 @@ namespace org.ohdsi.cdm.framework.desktop
         public IEnumerable<PregnancyConcept> LookupPregnancyConcept(long conceptId)
         {
             return _pregnancyConcepts.GetConcepts(conceptId);
-        }
-
-        private static string S3ReadAllText(string key)
-        {
-            key = key.Replace("\\", "/");
-            var fileName = $@"s3:\\{Settings.Settings.Current.Bucket}\{key}";
-
-            Console.Write($"loading {fileName}");
-
-            var config = new AmazonS3Config
-            {
-                Timeout = TimeSpan.FromMinutes(60),
-                RegionEndpoint = Amazon.RegionEndpoint.USEast1,
-                MaxErrorRetry = 20
-            };
-
-            using var client = new AmazonS3Client(Settings.Settings.Current.S3AwsAccessKeyId,
-                Settings.Settings.Current.S3AwsSecretAccessKey, config);
-            var getObjectRequest = new GetObjectRequest
-            {
-                BucketName = Settings.Settings.Current.Bucket,
-                Key = key
-            };
-
-            try
-            {
-                var getObject = client.GetObjectAsync(getObjectRequest);
-                getObject.Wait();
-                using var response = getObject.Result;
-                using var responseStream = response.ResponseStream;
-                using var reader = new StreamReader(responseStream, Encoding.Default);
-                var content = reader.ReadToEnd();
-                Console.WriteLine(", COMPLETE");
-                return content;
-
-            }
-            catch (Exception ex)
-            {
-                if (((Amazon.Runtime.AmazonServiceException)ex.InnerException).StatusCode ==
-                    System.Net.HttpStatusCode.NotFound)
-                {
-                    Console.Write(" - not exists");
-                    return null;
-                }
-
-                throw;
-            }
         }
 
         public string GetSourceVocabularyId(long conceptId)

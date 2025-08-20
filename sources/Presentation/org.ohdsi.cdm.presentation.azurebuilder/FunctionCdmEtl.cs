@@ -263,7 +263,7 @@ public class FunctionCdmEtl
             var timer = new Stopwatch();
             timer.Start();
             _vocabulary = new Vocabulary(Settings.Current.Building.Vendor);
-            _vocabulary.Fill(false, false);
+            _vocabulary.Fill(false);
             _vocabulary.Attach();
             timer.Stop();
 
