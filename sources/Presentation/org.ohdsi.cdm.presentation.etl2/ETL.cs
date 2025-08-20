@@ -218,8 +218,7 @@ namespace org.ohdsi.cdm.presentation.etl
                     query = query.Replace("{sc}", schemaName);
 
                     var folder = $"{BuildingPrefix}/{Settings.Current.CDMFolder}";
-
-                    using (var currentClient = GetAwsStorageClient())
+                    
                     using (var connection = SqlConnectionHelper.OpenOdbcConnection(Settings.Current.Building.VocabularyConnectionString))
                     using (var c = new OdbcCommand(query, connection))
                     {
@@ -227,7 +226,8 @@ namespace org.ohdsi.cdm.presentation.etl
                         using var reader = c.ExecuteReader();
 
                         var fileName = $"{folder}/{tableName}/{tableName}.txt.gz";
-                        FileTransferHelper.UploadFile(currentClient, null, Settings.Current.Bucket, fileName, reader, ",", '"', @"\N");
+                        
+                        FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.Bucket, fileName, reader, ",", '"', @"\N");
                     }
 
                     Console.WriteLine("[Vocabulary] " + tableName + " SAVED");
