@@ -100,7 +100,7 @@ namespace org.ohdsi.cdm.presentation.etl
                         connection.Open();
 
                         var command = connection.CreateCommand();
-                        command.CommandText = File.ReadAllText("builderdll.sql");
+                        command.CommandText = File.ReadAllText("builderddl.sql");
                         command.ExecuteNonQuery();
                     }
 
