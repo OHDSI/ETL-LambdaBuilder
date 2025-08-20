@@ -3,6 +3,7 @@ using org.ohdsi.cdm.framework.common.Lookups;
 using org.ohdsi.cdm.framework.desktop.Helpers;
 using org.ohdsi.cdm.framework.Desktop.DataReaders;
 using System.Data;
+using System.Data.Common;
 using System.Data.Odbc;
 
 namespace org.ohdsi.cdm.framework.desktop
@@ -191,7 +192,7 @@ namespace org.ohdsi.cdm.framework.desktop
             }
         }
 
-        public IDataReader GetPregnancyDrug()
+        public DataReaderInfo GetPregnancyDrug()
         {
             var sql = File.ReadAllText(Path.Combine(Settings.Settings.Current.Folder,
                     @"Core\Lookups\PregnancyDrug.sql"));
@@ -199,35 +200,33 @@ namespace org.ohdsi.cdm.framework.desktop
             sql = sql.Replace("{sc}", Settings.Settings.Current.Building.VocabularySchemaName);
 
             Console.WriteLine("PregnancyDrug - Loading...");
-            using var connection = SqlConnectionHelper.OpenOdbcConnection(Settings.Settings.Current.Building.VocabularyConnectionString);
-            using var command = new OdbcCommand(sql, connection) { CommandTimeout = 0 };
-            return command.ExecuteReader();
+            var connection = SqlConnectionHelper.OpenOdbcConnection(Settings.Settings.Current.Building.VocabularyConnectionString);
+            var command = new OdbcCommand(sql, connection) { CommandTimeout = 0 };
+            var reader = command.ExecuteReader();
+
+            return new DataReaderInfo(connection, command, reader, "PregnancyDrug");
         }
 
         private void FillPregnancyDrug()
         {
-            using (var reader = GetPregnancyDrug())
+            using (var ri = GetPregnancyDrug())
             {
-
+                Console.WriteLine("PregnancyDrug - filling");
+                var lookup = new Lookup();
+                while (ri.DataReader.Read())
                 {
-                    Console.WriteLine("PregnancyDrug - filling");
-                    var lookup = new Lookup();
-                    while (reader.Read())
+                    lookup.Add(new LookupValue
                     {
-                        lookup.Add(new LookupValue
-                        {
-                            ConceptId = int.Parse(reader[0].ToString()),
-                            SourceCode = reader[0].ToString()
-                        });
-                    }
-
-                    _lookups.Add("PregnancyDrug", lookup);
+                        ConceptId = int.Parse(ri.DataReader[0].ToString()),
+                        SourceCode = ri.DataReader[0].ToString()
+                    });
                 }
+                _lookups.Add("PregnancyDrug", lookup);
             }
             Console.WriteLine("PregnancyDrug - Done");
         }
 
-        private IEnumerable<Tuple<IDataReader, string>> GetDataReaders(IEnumerable<EntityDefinition> definitions)
+        private IEnumerable<DataReaderInfo> GetDataReaders(IEnumerable<EntityDefinition> definitions)
         {
             if (definitions != null)
             {
@@ -266,12 +265,14 @@ namespace org.ohdsi.cdm.framework.desktop
                                     sql = sql.Replace("{base}", baseSql);
                                     sql = sql.Replace("{sc}", Settings.Settings.Current.Building.VocabularySchemaName);
 
-                                    OdbcDataReader reader;
+                                    OdbcConnection connection;
+                                    OdbcCommand command;
+                                    IDataReader reader;
                                     try
                                     {
                                         Console.WriteLine(conceptIdMapper.Lookup + " - Loading...");
-                                        using var connection = SqlConnectionHelper.OpenOdbcConnection(Settings.Settings.Current.Building.VocabularyConnectionString);
-                                        using var command = new OdbcCommand(sql, connection) { CommandTimeout = 0 };
+                                        connection = SqlConnectionHelper.OpenOdbcConnection(Settings.Settings.Current.Building.VocabularyConnectionString);
+                                        command = new OdbcCommand(sql, connection) { CommandTimeout = 0 };
                                         reader = command.ExecuteReader();
 
                                     }
@@ -282,7 +283,7 @@ namespace org.ohdsi.cdm.framework.desktop
                                         throw;
                                     }
 
-                                    yield return new Tuple<IDataReader, string>(reader, conceptIdMapper.Lookup);
+                                    yield return new DataReaderInfo(connection, command, reader, conceptIdMapper.Lookup);
                                 }
                             }
                         }
@@ -291,7 +292,7 @@ namespace org.ohdsi.cdm.framework.desktop
             }
         }
 
-        public IEnumerable<Tuple<IDataReader, string>> GetHealthSystemDataReaders()
+        public IEnumerable<DataReaderInfo> GetHealthSystemDataReaders()
         {
             foreach (var qd in Settings.Settings.Current.Building.SourceQueryDefinitions)
             {
@@ -312,7 +313,7 @@ namespace org.ohdsi.cdm.framework.desktop
             }
         }
 
-        public IEnumerable<Tuple<IDataReader, string>> GetClinicalDataReaders()
+        public IEnumerable<DataReaderInfo> GetClinicalDataReaders()
         {
             foreach (var qd in Settings.Settings.Current.Building.SourceQueryDefinitions)
             {
@@ -404,24 +405,22 @@ namespace org.ohdsi.cdm.framework.desktop
             }
         }
 
-        private void Fill(IEnumerable<Tuple<IDataReader, string>> readers)
+        private void Fill(IEnumerable<DataReaderInfo> readers)
         {
             foreach (var dr in readers)
             {
-                var name = dr.Item2;
-                using var reader = dr.Item1;
-
+                using (dr)
                 {
-                    Console.WriteLine(name + " - filling");
+                    Console.WriteLine(dr.Name + " - filling");
                     var lookup = new Lookup();
-                    while (reader.Read())
+                    while (dr.DataReader.Read())
                     {
-                        var lv = CreateLookupValue(reader);
+                        var lv = CreateLookupValue(dr.DataReader);
                         lookup.Add(lv);
                     }
 
-                    _lookups.Add(name, lookup);
-                    Console.WriteLine(name + " - Done (" + _lookups[name].KeysCount + ")");
+                    _lookups.Add(dr.Name, lookup);
+                    Console.WriteLine(dr.Name + " - Done (" + _lookups[dr.Name].KeysCount + ")");
                 }
             }
         }

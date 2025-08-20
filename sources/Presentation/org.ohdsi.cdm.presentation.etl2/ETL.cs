@@ -89,21 +89,24 @@ namespace org.ohdsi.cdm.presentation.etl
                 CopyFile(reader, fileName);
             }
 
-            foreach (var dr in vocabulary.GetClinicalDataReaders())
+            foreach (var ri in vocabulary.GetClinicalDataReaders())
             {
-                var name = dr.Item2;
-                using var reader = dr.Item1;
-
-                var fileName = $"{BuildingPrefix}/Lookups/{name}.txt.gz";
-                Console.WriteLine(name + " - store to S3 | " + fileName);
-                CopyFile(reader, fileName);
+                using (ri)
+                {
+                    var fileName = $"{BuildingPrefix}/Lookups/{ri.Name}.txt.gz";
+                    Console.WriteLine(ri.Name + " - store to S3 | " + fileName);
+                    CopyFile(ri.DataReader, fileName);
+                }
             }
 
-            using (var reader = vocabulary.GetPregnancyDrug())
+            using (var ri = vocabulary.GetPregnancyDrug())
             {
-                var fileName = $"{BuildingPrefix}/Lookups/PregnancyDrug.txt.gz";
-                Console.WriteLine("PregnancyDrug - store to S3 | " + fileName);
-                CopyFile(reader, fileName);
+                using (ri)
+                {
+                    var fileName = $"{BuildingPrefix}/Lookups/PregnancyDrug.txt.gz";
+                    Console.WriteLine("PregnancyDrug - store to S3 | " + fileName);
+                    CopyFile(ri.DataReader, fileName);
+                }
             }
 
             if (Settings.Current.Building.Vendor.Name == "CDM")
