@@ -54,8 +54,11 @@ namespace org.ohdsi.cdm.framework.desktop.DbLayer
             Console.WriteLine("CreateChunkTable:" + query);
 
             using var connection = SqlConnectionHelper.OpenOdbcConnection(_connectionString);
-            using var cmd = new OdbcCommand(query, connection);
-            cmd.ExecuteNonQuery();
+            foreach (var q in query.Split(';', StringSplitOptions.RemoveEmptyEntries))
+            {
+                using var cmd = new OdbcCommand(q, connection);
+                cmd.ExecuteNonQuery();
+            }
         }
 
         public void DropChunkTable(string schemaName)
