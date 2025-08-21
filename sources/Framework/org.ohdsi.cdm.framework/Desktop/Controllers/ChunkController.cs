@@ -35,7 +35,7 @@ namespace org.ohdsi.cdm.framework.desktop.Controllers
         }
 
 
-        public void ClenupChunks()
+        public void CleanupChunks()
         {
             _dbSource.DropChunkTable(_chunksSchema);
         }
