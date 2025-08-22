@@ -96,7 +96,7 @@ namespace org.ohdsi.cdm.framework.desktop.Controllers
                 query = $@"COPY INTO {_chunksSchema}._chunks BY POSITION " +
                     $@"FROM 'abfss://{Settings.Settings.Current.CloudStorageName}@{storage}/{Settings.Settings.Current.BuildingPrefix}' " +
                     @"FILEFORMAT = CSV " +
-                    @"PATTERN = 'chunks[0-9]{1,4}.txt.gz' " +
+                    @"PATTERN = 'chunks[0-9].txt.gz' " +
                     @"FORMAT_OPTIONS( " +
                     @"'recursiveFileLookup' = 'true', " +
                     @"'header' = 'false', " +
