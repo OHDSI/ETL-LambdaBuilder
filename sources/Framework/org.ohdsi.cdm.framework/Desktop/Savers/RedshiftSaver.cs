@@ -110,19 +110,6 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
                 var tableName = "_chunks" + index;
                 var fileName = $"{Settings.Settings.Current.Building.Vendor}/{Settings.Settings.Current.Building.Id}/{tableName}.txt.gz";
                 FileTransferHelper.UploadFile(_currentClient, null, Settings.Settings.Current.CloudStorageName, fileName, new ChunkDataReader(chunk), "\t", '`', "\0");
-
-                string query = $@"copy {schemaName}._chunks from 's3://{Settings.Settings.Current.CloudStorageName}/{fileName}' " +
-                    $@"credentials 'aws_access_key_id={Settings.Settings.Current.CloudStorageKey};aws_secret_access_key={Settings.Settings.Current.CloudStorageSecret}' " +
-                    @"IGNOREBLANKLINES " +
-                    @"DELIMITER '\t' " +
-                    @"NULL AS '\000' " +
-                    @"csv quote as '`' " +
-                    @"GZIP";
-
-                using var connection = SqlConnectionHelper.OpenOdbcConnection(_connectionString);
-                using var c = new OdbcCommand(query, connection);
-                c.CommandTimeout = 900;
-                c.ExecuteNonQuery();
             }
             catch (Exception e)
             {

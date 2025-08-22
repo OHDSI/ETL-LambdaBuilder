@@ -1,6 +1,7 @@
 ﻿using org.ohdsi.cdm.framework.desktop.DbLayer;
 using org.ohdsi.cdm.framework.desktop.Helpers;
 using System.Data;
+using System.Data.Odbc;
 using System.Text.RegularExpressions;
 
 namespace org.ohdsi.cdm.framework.desktop.Controllers
@@ -80,7 +81,52 @@ namespace org.ohdsi.cdm.framework.desktop.Controllers
                 saver.Commit();
             }
 
+            CopyIntoFromCloudStorage(chunksConnectionString);
+
             Console.WriteLine("***** Chunk ids were generated and saved, total count=" + chunkId + " *****");
+        }
+
+
+        private void CopyIntoFromCloudStorage(string connectionString)
+        {
+            string query;
+            if (Settings.Settings.Current.Building.SourceEngine.Database == Enums.Database.Databricks)
+            {
+                var storage = Settings.Settings.Current.CloudStorageUri.Split("//")[1];
+                query = $@"COPY INTO {_chunksSchema}._chunks BY POSITION " +
+                    $@"FROM 'abfss://{storage}/{Settings.Settings.Current.CloudStorageName}/{Settings.Settings.Current.BuildingPrefix}' " +
+                    @"FILEFORMAT = CSV " +
+                    @"PATTERN = 'chunks[0-9]{1,4}.txt.gz' " +
+                    @"FORMAT_OPTIONS( " +
+                    @"'recursiveFileLookup' = 'true', " +
+                    @"'header' = 'false', " +
+                    @"'delimiter' = '\t', " +
+                    @"'quote' = '`', " +
+                    @"'nullValue' = '\\0', " +
+                    @"'unescapedQuoteHandling' = 'RAISE_ERROR', " +
+                    @"'mode' = 'FAILFAST', " +
+                    @"'multiLine' = 'true' " +
+                    @"'compression' = 'gzip');";
+            }
+            else if (Settings.Settings.Current.Building.SourceEngine.Database == Enums.Database.Redshift)
+            {
+                query = $@"copy {_chunksSchema}._chunks from 's3://{Settings.Settings.Current.CloudStorageName}/_chunks' " +
+                    $@"credentials 'aws_access_key_id={Settings.Settings.Current.CloudStorageKey};aws_secret_access_key={Settings.Settings.Current.CloudStorageSecret}' " +
+                    @"IGNOREBLANKLINES " +
+                    @"DELIMITER '\t' " +
+                    @"NULL AS '\000' " +
+                    @"csv quote as '`' " +
+                    @"GZIP";
+            }
+            else
+            {
+                return;
+            }
+
+            using var connection = SqlConnectionHelper.OpenOdbcConnection(connectionString);
+            using var c = new OdbcCommand(query, connection);
+            c.CommandTimeout = 900;
+            c.ExecuteNonQuery();
         }
 
         public IEnumerable<List<KeyValuePair<long, string>>> GetPersonKeys(int batchSize)

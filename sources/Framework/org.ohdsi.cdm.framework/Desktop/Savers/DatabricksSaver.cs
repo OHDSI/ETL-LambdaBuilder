@@ -4,7 +4,6 @@ using org.ohdsi.cdm.framework.common.Builder;
 using org.ohdsi.cdm.framework.desktop.DataReaders;
 using org.ohdsi.cdm.framework.desktop.Helpers;
 using System.Data;
-using System.Data.Odbc;
 
 namespace org.ohdsi.cdm.framework.desktop.Savers
 {
@@ -47,27 +46,6 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
                 var tableName = "chunks" + index;
                 var fileName = $"{Settings.Settings.Current.BuildingPrefix}/{tableName}.txt.gz";
                 FileTransferHelper.UploadFile(null, _currentClient, Settings.Settings.Current.CloudStorageName, fileName, new ChunkDataReader(chunk), "\t", '`', "\0");
-
-                var storage = Settings.Settings.Current.CloudStorageUri.Split("//")[1];
-                string query = $@"COPY INTO {schemaName}._chunks BY POSITION " +
-                    $@"FROM 'abfss://{storage}/{Settings.Settings.Current.CloudStorageName}/{Settings.Settings.Current.BuildingPrefix}' " +
-                    @"FILEFORMAT = CSV " +
-                    @"PATTERN = 'chunks[0-9]{1,4}.txt.gz' " +
-                    @"FORMAT_OPTIONS( " +
-                    @"'recursiveFileLookup' = 'true', " +
-                    @"'header' = 'false', " +
-                    @"'delimiter' = '\t', " +
-                    @"'quote' = '`', " +
-                    @"'nullValue' = '\\0', " +
-                    @"'unescapedQuoteHandling' = 'RAISE_ERROR', " +
-                    @"'mode' = 'FAILFAST', " +
-                    @"'multiLine' = 'true' " +
-                    @"'compression' = 'gzip');";
-
-                using var connection = SqlConnectionHelper.OpenOdbcConnection(_connectionString);
-                using var c = new OdbcCommand(query, connection);
-                c.CommandTimeout = 900;
-                c.ExecuteNonQuery();
             }
             catch (Exception e)
             {

@@ -130,7 +130,9 @@ namespace org.ohdsi.cdm.presentation.etl
                 var chunkController = new ChunkController(chunksSchema);
 
                 if (!resumeChunkCreation)
-                    chunkController.CreateChunks( 10_000);
+                {
+                    chunkController.CreateChunks(10_000);
+                }
 
                 CopyVocabularyTables(skipVocabularyCopying);
                 CreateLookupTables(skipLookupCreation);
