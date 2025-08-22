@@ -22,8 +22,8 @@ namespace org.ohdsi.cdm.framework.desktop.DataReaders
             {
                 0 => _enumerator.Current.Id,
                 1 => _enumerator.Current.PartitionId,
-                3 => _enumerator.Current.PersonId,
-                4 => _enumerator.Current.PersonSource,
+                2 => _enumerator.Current.PersonId,
+                3 => _enumerator.Current.PersonSource,
                 _ => throw new NotImplementedException(),
             };
         }
