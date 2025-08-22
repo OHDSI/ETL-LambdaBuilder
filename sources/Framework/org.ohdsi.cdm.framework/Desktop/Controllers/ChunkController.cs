@@ -105,7 +105,7 @@ namespace org.ohdsi.cdm.framework.desktop.Controllers
                     @"'nullValue' = '\\0', " +
                     @"'unescapedQuoteHandling' = 'RAISE_ERROR', " +
                     @"'mode' = 'FAILFAST', " +
-                    @"'multiLine' = 'true' " +
+                    @"'multiLine' = 'true', " +
                     @"'compression' = 'gzip');";
             }
             else if (Settings.Settings.Current.Building.SourceEngine.Database == Enums.Database.Redshift)
