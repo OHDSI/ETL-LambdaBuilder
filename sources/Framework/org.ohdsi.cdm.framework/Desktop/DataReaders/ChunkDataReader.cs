@@ -18,8 +18,6 @@ namespace org.ohdsi.cdm.framework.desktop.DataReaders
 
         public object GetValue(int i)
         {
-            if (_enumerator.Current == null) return null;
-
             return i switch
             {
                 0 => _enumerator.Current.Id,

@@ -57,9 +57,8 @@ namespace org.ohdsi.cdm.framework.desktop.Databases
         {
             var folder = $"{Settings.Settings.Current.Building.Vendor}/{Settings.Settings.Current.Building.Id}/raw";
 
-
-            return new S3DataReader(Settings.Settings.Current.Bucket, folder, Settings.Settings.Current.S3AwsAccessKeyId,
-               Settings.Settings.Current.S3AwsSecretAccessKey, chunkId, qd.FileName, qd.FieldHeaders, prefix);
+            return new S3DataReader(Settings.Settings.Current.CloudStorageName, folder, Settings.Settings.Current.CloudStorageKey,
+               Settings.Settings.Current.CloudStorageSecret, chunkId, qd.FileName, qd.FieldHeaders, prefix);
         }
 
         public override IChunkBuilder GetChunkBuilder(int chunkId, Func<IPersonBuilder> createPersonBuilder)

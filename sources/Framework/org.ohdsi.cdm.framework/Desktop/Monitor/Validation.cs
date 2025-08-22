@@ -65,14 +65,14 @@ namespace org.ohdsi.cdm.framework.desktop3.Monitor
         {
             var slices = new HashSet<string>();
             var prefix = $"{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id.Value}/{_cdmFolder}/PERSON/PERSON.";
-            Console.WriteLine("Calculating slices num " + Settings.Current.Bucket + "|" + prefix);
-            using (var client = new AmazonS3Client(Settings.Current.S3AwsAccessKeyId, Settings.Current.S3AwsSecretAccessKey,
+            Console.WriteLine("Calculating slices num " + Settings.Current.CloudStorageName + "|" + prefix);
+            using (var client = new AmazonS3Client(Settings.Current.CloudStorageKey, Settings.Current.CloudStorageSecret,
                 Amazon.RegionEndpoint.USEast1))
 
             {
                 var request = new ListObjectsV2Request
                 {
-                    BucketName = Settings.Current.Bucket,
+                    BucketName = Settings.Current.CloudStorageName,
                     Prefix = prefix
                 };
                 ListObjectsV2Response response;
@@ -102,12 +102,12 @@ namespace org.ohdsi.cdm.framework.desktop3.Monitor
             var currentChunkId = 0;
             var result = new KeyValuePair<int, Dictionary<long, List<string>>>(0, []);
             var prefix = $"{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id.Value}/_chunks";
-            using (var client = new AmazonS3Client(Settings.Current.S3AwsAccessKeyId, Settings.Current.S3AwsSecretAccessKey,
+            using (var client = new AmazonS3Client(Settings.Current.CloudStorageKey, Settings.Current.CloudStorageSecret,
                 Amazon.RegionEndpoint.USEast1))
             {
                 var request = new ListObjectsV2Request
                 {
-                    BucketName = Settings.Current.Bucket,
+                    BucketName = Settings.Current.CloudStorageName,
                     Prefix = prefix
                 };
 
@@ -116,9 +116,9 @@ namespace org.ohdsi.cdm.framework.desktop3.Monitor
 
                 foreach (var o in response.Result.S3Objects.OrderBy(o => o.LastModified))
                 {
-                    using var transferUtility = new TransferUtility(Settings.Current.S3AwsAccessKeyId,
-                        Settings.Current.S3AwsSecretAccessKey, Amazon.RegionEndpoint.USEast1);
-                    using var responseStream = transferUtility.OpenStream(Settings.Current.Bucket, o.Key);
+                    using var transferUtility = new TransferUtility(Settings.Current.CloudStorageKey,
+                        Settings.Current.CloudStorageSecret, Amazon.RegionEndpoint.USEast1);
+                    using var responseStream = transferUtility.OpenStream(Settings.Current.CloudStorageName, o.Key);
                     using var bufferedStream = new BufferedStream(responseStream);
                     using var gzipStream = new GZipStream(bufferedStream, CompressionMode.Decompress);
                     using var reader = new StreamReader(gzipStream, Encoding.Default);
@@ -155,11 +155,11 @@ namespace org.ohdsi.cdm.framework.desktop3.Monitor
             for (int i = 0; i < slicesNum; i++)
             {
                 var prefix = $"{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id.Value}/{_cdmFolder}/{table}/{table}.{i}.{chunkId}.";
-                using var client = new AmazonS3Client(Settings.Current.S3AwsAccessKeyId, Settings.Current.S3AwsSecretAccessKey,
+                using var client = new AmazonS3Client(Settings.Current.CloudStorageKey, Settings.Current.CloudStorageSecret,
                     Amazon.RegionEndpoint.USEast1);
                 var request = new ListObjectsV2Request
                 {
-                    BucketName = Settings.Current.Bucket,
+                    BucketName = Settings.Current.CloudStorageName,
                     Prefix = prefix
                 };
                 ListObjectsV2Response response;
@@ -203,9 +203,9 @@ namespace org.ohdsi.cdm.framework.desktop3.Monitor
 
                     Parallel.ForEach(objects, o =>
                     {
-                        using var transferUtility = new TransferUtility(Settings.Current.S3AwsAccessKeyId, Settings.Current.S3AwsSecretAccessKey,
+                        using var transferUtility = new TransferUtility(Settings.Current.CloudStorageKey, Settings.Current.CloudStorageSecret,
                             Amazon.RegionEndpoint.USEast1);
-                        using var responseStream = transferUtility.OpenStream(Settings.Current.Bucket, o.Key);
+                        using var responseStream = transferUtility.OpenStream(Settings.Current.CloudStorageName, o.Key);
                         using var bufferedStream = new BufferedStream(responseStream);
                         using var gzipStream = new GZipStream(bufferedStream, CompressionMode.Decompress);
                         using var reader = new StreamReader(gzipStream, Encoding.Default);
@@ -346,12 +346,12 @@ namespace org.ohdsi.cdm.framework.desktop3.Monitor
             var prefix = $"{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id.Value}/raw/{chunkId}/{table}/{table}";
 
             var result = new HashSet<string>();
-            using (var client = new AmazonS3Client(Settings.Current.S3AwsAccessKeyId, Settings.Current.S3AwsSecretAccessKey,
+            using (var client = new AmazonS3Client(Settings.Current.CloudStorageKey, Settings.Current.CloudStorageSecret,
                 Amazon.RegionEndpoint.USEast1))
             {
                 var request = new ListObjectsV2Request
                 {
-                    BucketName = Settings.Current.Bucket,
+                    BucketName = Settings.Current.CloudStorageName,
                     Prefix = prefix
                 };
 
@@ -361,9 +361,9 @@ namespace org.ohdsi.cdm.framework.desktop3.Monitor
                 var rows = new List<string>();
                 foreach (var o in response.S3Objects)
                 {
-                    using var transferUtility = new TransferUtility(Settings.Current.S3AwsAccessKeyId,
-                        Settings.Current.S3AwsSecretAccessKey, Amazon.RegionEndpoint.USEast1);
-                    using var responseStream = transferUtility.OpenStream(Settings.Current.Bucket, o.Key);
+                    using var transferUtility = new TransferUtility(Settings.Current.CloudStorageKey,
+                        Settings.Current.CloudStorageSecret, Amazon.RegionEndpoint.USEast1);
+                    using var responseStream = transferUtility.OpenStream(Settings.Current.CloudStorageName, o.Key);
                     {
                         foreach (var line in GetLines(responseStream))
                         {
@@ -394,12 +394,12 @@ namespace org.ohdsi.cdm.framework.desktop3.Monitor
 
                     var perfix = $"{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id.Value}/{_cdmFolder}/{table}/{table}.{slice}.{chunkId}.";
 
-                    using (var client = new AmazonS3Client(Settings.Current.S3AwsAccessKeyId, Settings.Current.S3AwsSecretAccessKey,
+                    using (var client = new AmazonS3Client(Settings.Current.CloudStorageKey, Settings.Current.CloudStorageSecret,
                         Amazon.RegionEndpoint.USEast1))
                     {
                         var request = new ListObjectsV2Request
                         {
-                            BucketName = Settings.Current.Bucket,
+                            BucketName = Settings.Current.CloudStorageName,
                             Prefix = perfix
                         };
                         ListObjectsV2Response response;
@@ -411,7 +411,7 @@ namespace org.ohdsi.cdm.framework.desktop3.Monitor
 
                             var multiObjectDeleteRequest = new DeleteObjectsRequest
                             {
-                                BucketName = Settings.Current.Bucket
+                                BucketName = Settings.Current.CloudStorageName
                             };
 
                             foreach (var o in response.S3Objects)

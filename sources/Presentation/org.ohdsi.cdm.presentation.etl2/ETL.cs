@@ -3,7 +3,6 @@ using Azure.Identity;
 using Azure.Storage.Blobs;
 using Microsoft.Extensions.Configuration;
 using org.ohdsi.cdm.framework.common.Definitions;
-using org.ohdsi.cdm.framework.common.Helpers;
 using org.ohdsi.cdm.framework.common.Omop;
 using org.ohdsi.cdm.framework.desktop;
 using org.ohdsi.cdm.framework.desktop.Controllers;
@@ -22,35 +21,14 @@ namespace org.ohdsi.cdm.presentation.etl
 {
     class ETL
     {
-        private string _cdmFolderCsv;
-
-        private static string ServiceUri { get; set; }
-        private static string BlobContainerName { get; set; }
-
-        private static string AzurePrefix { get; set; }
-        private static string TenantId { get; set; }
-        private static string ClientId { get; set; }
-        private static string ClientSecret { get; set; }
-
-        private static string BuildingPrefix
-        {
-            get
-            {
-                if(string.IsNullOrEmpty(AzurePrefix))
-                    return $"{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id}";
-
-                return $"{AzurePrefix}/{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id}";
-            }
-        }
-
         private static AmazonS3Client GetAwsStorageClient()
         {
-            if (string.IsNullOrEmpty(Settings.Current.S3AwsAccessKeyId))
+            if (string.IsNullOrEmpty(Settings.Current.CloudStorageKey))
                 return null;
 
             return new AmazonS3Client(
-                    Settings.Current.S3AwsAccessKeyId,
-                    Settings.Current.S3AwsSecretAccessKey,
+                    Settings.Current.CloudStorageKey,
+                    Settings.Current.CloudStorageSecret,
                     new AmazonS3Config
                     {
                         Timeout = TimeSpan.FromMinutes(60),
@@ -61,17 +39,17 @@ namespace org.ohdsi.cdm.presentation.etl
 
         private static BlobContainerClient GetAzureStorageClient()
         {
-            if (string.IsNullOrEmpty(TenantId))
+            if (string.IsNullOrEmpty(Settings.Current.CloudStorageHolder))
                 return null;
 
-            var credential = new ClientSecretCredential(TenantId, ClientId, ClientSecret);
-            var client = new BlobServiceClient(new Uri(ServiceUri), credential, null);
-            return client.GetBlobContainerClient(BlobContainerName);
+            var credential = new ClientSecretCredential(Settings.Current.CloudStorageHolder, Settings.Current.CloudStorageKey, Settings.Current.CloudStorageSecret);
+            var client = new BlobServiceClient(new Uri(Settings.Current.CloudStorageUri), credential, null);
+            return client.GetBlobContainerClient(Settings.Current.CloudStorageName);
         }
 
         private static void CopyFile(IDataReader reader, string fileName)
         {
-            FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.Bucket,
+            FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.CloudStorageName,
                 fileName,
                 reader, "\t", '`', "\0");
         }
@@ -84,7 +62,7 @@ namespace org.ohdsi.cdm.presentation.etl
                 var reader = cl.Item1;
                 var name = cl.Item2;
 
-                var fileName = $"{BuildingPrefix}/CombinedLookups/{name}.txt.gz";
+                var fileName = $"{Settings.Current.BuildingPrefix}/CombinedLookups/{name}.txt.gz";
                 Console.WriteLine(name + " - store to S3 | " + fileName);
                 CopyFile(reader, fileName);
             }
@@ -93,7 +71,7 @@ namespace org.ohdsi.cdm.presentation.etl
             {
                 using (ri)
                 {
-                    var fileName = $"{BuildingPrefix}/Lookups/{ri.Name}.txt.gz";
+                    var fileName = $"{Settings.Current.BuildingPrefix}/Lookups/{ri.Name}.txt.gz";
                     Console.WriteLine(ri.Name + " - store to S3 | " + fileName);
                     CopyFile(ri.DataReader, fileName);
                 }
@@ -103,7 +81,7 @@ namespace org.ohdsi.cdm.presentation.etl
             {
                 using (ri)
                 {
-                    var fileName = $"{BuildingPrefix}/Lookups/PregnancyDrug.txt.gz";
+                    var fileName = $"{Settings.Current.BuildingPrefix}/Lookups/PregnancyDrug.txt.gz";
                     Console.WriteLine("PregnancyDrug - store to S3 | " + fileName);
                     CopyFile(ri.DataReader, fileName);
                 }
@@ -121,7 +99,7 @@ namespace org.ohdsi.cdm.presentation.etl
                 using (var command = new OdbcCommand(sql, connection) { CommandTimeout = 0 })
                 using (var reader = command.ExecuteReader())
                 {
-                    var fileName = $"{BuildingPrefix}/Lookups/ConceptIdToSourceVocabularyId.txt.gz";
+                    var fileName = $"{Settings.Current.BuildingPrefix}/Lookups/ConceptIdToSourceVocabularyId.txt.gz";
                     Console.WriteLine("ConceptIdToSourceVocabularyId - store to S3 | " + fileName);
                     CopyFile(reader, fileName);
                 }
@@ -131,21 +109,13 @@ namespace org.ohdsi.cdm.presentation.etl
             Console.WriteLine("Vocabulary was saved to S3");
         }
 
-        public void Start(bool skipChunkCreation, bool resumeChunkCreation, bool skipLookupCreation, bool skipBuild, bool skipVocabularyCopying, LambdaUtility utility)
+        public void Start(bool skipChunkCreation, bool resumeChunkCreation, bool skipLookupCreation, bool skipBuild, bool skipVocabularyCopying)
         {
             var builder = new ConfigurationBuilder()
                    .AddJsonFile("appsettings.json");
             IConfigurationRoot configuration = builder.Build();
 
-            _cdmFolderCsv = configuration.GetSection("AppSettings")["cdm_folder_csv"];
-            var chunksSchema = configuration.GetSection("AppSettings")["chunks_schema"];
-
-            ServiceUri = configuration.GetSection("AppSettings")["blobURI"];
-            BlobContainerName = configuration.GetSection("AppSettings")["containerName"];
-            AzurePrefix = configuration.GetSection("AppSettings")["prefix"];
-            TenantId = configuration.GetSection("AppSettings")["tenantId"];
-            ClientId = configuration.GetSection("AppSettings")["clientId"];
-            ClientSecret = configuration.GetSection("AppSettings")["clientSecret"];
+            var chunksSchema = configuration.GetSection("AppSettings")["chunksSchema"];
 
             SaveVocabularyToCloudStorage();
 
@@ -160,12 +130,12 @@ namespace org.ohdsi.cdm.presentation.etl
                 var chunkController = new ChunkController(chunksSchema);
 
                 if (!resumeChunkCreation)
-                    chunkController.CreateChunks();
+                    chunkController.CreateChunks( 10_000);
 
                 CopyVocabularyTables(skipVocabularyCopying);
                 CreateLookupTables(skipLookupCreation);
 
-                chunkController.MoveChunkDataToS3(true, true, utility);
+                //chunkController.MoveChunkDataToS3(true, true, utility);
             }
             else
             {
@@ -175,12 +145,12 @@ namespace org.ohdsi.cdm.presentation.etl
 
                 if (!skipBuild)
                 {
-                    var tasks = utility.TriggerBuildFunction(Settings.Current.Building.Vendor, Settings.Current.Building.Id.Value, null, false);
-                    Task.WaitAll([.. tasks]);
-                    Console.WriteLine("CDM Build lambda functions were triggered");
+                    //var tasks = utility.TriggerBuildFunction(Settings.Current.Building.Vendor, Settings.Current.Building.Id.Value, null, false);
+                    //Task.WaitAll([.. tasks]);
+                    //Console.WriteLine("CDM Build lambda functions were triggered");
 
-                    checkCreation = Task.Run(() => utility.AllChunksWereDone(Settings.Current.Building.Vendor,
-                        Settings.Current.Building.Id.Value, utility.BuildMessageBucket));
+                    //checkCreation = Task.Run(() => utility.AllChunksWereDone(Settings.Current.Building.Vendor,
+                    //    Settings.Current.Building.Id.Value, utility.BuildMessageBucket));
                 }
                 else
                 {
@@ -217,7 +187,7 @@ namespace org.ohdsi.cdm.presentation.etl
                     var query = File.ReadAllText(filePath);
                     query = query.Replace("{sc}", schemaName);
 
-                    var folder = $"{BuildingPrefix}/{Settings.Current.CDMFolder}";
+                    var folder = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}";
                     
                     using (var connection = SqlConnectionHelper.OpenOdbcConnection(Settings.Current.Building.VocabularyConnectionString))
                     using (var c = new OdbcCommand(query, connection))
@@ -227,7 +197,7 @@ namespace org.ohdsi.cdm.presentation.etl
 
                         var fileName = $"{folder}/{tableName}/{tableName}.txt.gz";
                         
-                        FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.Bucket, fileName, reader, ",", '"', @"\N");
+                        FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.CloudStorageName, fileName, reader, ",", '"', @"\N");
                     }
 
                     Console.WriteLine("[Vocabulary] " + tableName + " SAVED");
@@ -291,7 +261,7 @@ namespace org.ohdsi.cdm.presentation.etl
                     providerConcepts.Add(entity);
                     if (providerConcepts.Count == 250 * 1000)
                     {
-                        saver.SaveEntityLookup(providerConcepts, index, Settings.Current.CDMFolder, _cdmFolderCsv);
+                        saver.SaveEntityLookup(providerConcepts, index, Settings.Current.CDMFolder);
                         index++;
                         providerConcepts.Clear();
                     }
@@ -300,7 +270,7 @@ namespace org.ohdsi.cdm.presentation.etl
                 }
 
                 if (providerConcepts.Count > 0)
-                    saver.SaveEntityLookup(providerConcepts, index, Settings.Current.CDMFolder, _cdmFolderCsv);
+                    saver.SaveEntityLookup(providerConcepts, index, Settings.Current.CDMFolder);
 
                 Console.WriteLine("[Creating lookup] Providers was loaded");
             }
@@ -324,7 +294,7 @@ namespace org.ohdsi.cdm.presentation.etl
                     careSiteConcepts.Add(entity);
                     if (careSiteConcepts.Count == 250 * 1000)
                     {
-                        saver.SaveEntityLookup(careSiteConcepts, index, Settings.Current.CDMFolder, _cdmFolderCsv);
+                        saver.SaveEntityLookup(careSiteConcepts, index, Settings.Current.CDMFolder);
                         index++;
                         careSiteConcepts.Clear();
                     }
@@ -343,7 +313,7 @@ namespace org.ohdsi.cdm.presentation.etl
                 });
 
             if (careSiteConcepts.Count > 0)
-                saver.SaveEntityLookup(careSiteConcepts, index, Settings.Current.CDMFolder, _cdmFolderCsv);
+                saver.SaveEntityLookup(careSiteConcepts, index, Settings.Current.CDMFolder);
 
             Console.WriteLine("[Creating lookup] Care sites was loaded");
         }
@@ -366,7 +336,7 @@ namespace org.ohdsi.cdm.presentation.etl
                     locationConcepts.Add(entity);
                     if (locationConcepts.Count == 250 * 1000)
                     {
-                        saver.SaveEntityLookup(locationConcepts, index, Settings.Current.CDMFolder, _cdmFolderCsv, Settings.Current.Building.Cdm);
+                        saver.SaveEntityLookup(locationConcepts, index, Settings.Current.CDMFolder, Settings.Current.Building.Cdm);
                         index++;
                         locationConcepts.Clear();
                     }
@@ -377,10 +347,239 @@ namespace org.ohdsi.cdm.presentation.etl
             }
 
             if (locationConcepts.Count > 0)
-                saver.SaveEntityLookup(locationConcepts, index, Settings.Current.CDMFolder, _cdmFolderCsv, Settings.Current.Building.Cdm);
+                saver.SaveEntityLookup(locationConcepts, index, Settings.Current.CDMFolder, Settings.Current.Building.Cdm);
 
             Console.WriteLine("[Creating lookup] Locations was loaded " + Settings.Current.Building.Cdm);
         }
+
+        //public void MoveChunkDataToS3(bool useMonitor, bool triggerLambdas, LambdaUtility utility)
+        //{
+        //    Console.WriteLine("Moving raw data to S3...");
+        //    var chunkIds = _dbChunk.GetNotMovedToS3Chunks(Settings.Settings.Current.Building.Id.Value).ToArray();
+
+        //    if (chunkIds.Length == 0)
+        //        return;
+
+        //    var baseFolder =
+        //        $"{Settings.Settings.Current.Bucket}/{Settings.Settings.Current.Building.Vendor}/{Settings.Settings.Current.Building.Id}/raw";
+        //    Console.WriteLine("[Moving raw data] S3 raw folder - " + baseFolder);
+
+        //    Parallel.ForEach(Settings.Settings.Current.Building.SourceQueryDefinitions, queryDefinition =>
+        //    {
+        //        if (queryDefinition.Providers != null) return;
+        //        if (queryDefinition.Locations != null) return;
+        //        if (queryDefinition.CareSites != null) return;
+
+        //        var sql = GetSqlHelper.GetSql(Settings.Settings.Current.Building.SourceEngine.Database,
+        //            queryDefinition.GetSql(Settings.Settings.Current.Building.Vendor, Settings.Settings.Current.Building.SourceSchemaName, _chunksSchema), Settings.Settings.Current.Building.SourceSchemaName);
+
+        //        if (string.IsNullOrEmpty(sql)) return;
+
+        //        sql = string.Format(sql, chunkIds[0]);
+
+        //        if (queryDefinition.FieldHeaders == null)
+        //        {
+        //            if (queryDefinition.Persons != null)
+        //            {
+        //                Settings.Settings.Current.Building.PersonIdFieldName = queryDefinition.GetPersonIdFieldName();
+        //                Settings.Settings.Current.Building.PersonFileName = queryDefinition.FileName;
+        //            }
+        //            StoreMetadataToS3(queryDefinition, sql);
+        //        }
+        //    });
+
+        //    Console.WriteLine($"PersonFileName:{Settings.Settings.Current.Building.PersonFileName}");
+        //    Console.WriteLine($"PersonIdFieldName:{Settings.Settings.Current.Building.PersonIdFieldName}");
+        //    Console.WriteLine($"PersonIdFieldIndex:{Settings.Settings.Current.Building.PersonIdFieldIndex}");
+
+        //    Task monitorHandle = null;
+        //    using (var monitor = new ChunksMonitor())
+        //    {
+        //        Parallel.ForEach(chunkIds, new ParallelOptions { MaxDegreeOfParallelism = Settings.Settings.Current.ParallelChunks }, cId =>
+        //          {
+        //              var chunkId = cId;
+
+        //              var attempt = 0;
+        //              var complete = false;
+        //              while (!complete)
+        //              {
+        //                  attempt++;
+        //                  try
+        //                  {
+        //                      MoveChunkRawData(chunkId, baseFolder);
+        //                      complete = true;
+        //                  }
+        //                  catch (Exception e)
+        //                  {
+        //                      Console.Write(e.Message + " | Exception | new attempt | attempt=" + attempt);
+        //                      if (attempt > 3)
+        //                      {
+        //                          throw;
+        //                      }
+        //                  }
+        //              }
+
+        //              _dbChunk.ChunkCreated(chunkId, Settings.Settings.Current.Building.Id.Value);
+        //              Console.WriteLine("[Moving raw data] Raw data for chunkId=" + chunkId + " is available on S3");
+
+        //              if (triggerLambdas)
+        //              {
+        //                  var tasks = utility.TriggerBuildFunction(Settings.Settings.Current.Building.Vendor, Settings.Settings.Current.Building.Id.Value, chunkId, false);
+        //                  Task.WaitAll([.. tasks]);
+        //                  Console.WriteLine($"[Moving raw data] Lambda functions for cuhnkId={chunkId} were triggered | {tasks.Count} functions");
+        //              }
+
+        //              if (useMonitor)
+        //              {
+        //                  monitor.TryAddChunk(chunkId, _chunksSchema);
+
+        //                  monitorHandle ??= monitor.Handle();
+        //              }
+
+        //              var unprocessed = 0;
+        //              do
+        //              {
+        //                  using (var client = new AmazonS3Client(Settings.Settings.Current.MessageS3AwsAccessKeyId, Settings.Settings.Current.MessageS3AwsSecretAccessKey, Amazon.RegionEndpoint.USEast1))
+        //                  {
+        //                      var bucket = LambdaUtility.GetBucket(Settings.Settings.Current.MessageBucket);
+        //                      var prefix = LambdaUtility.GetPrefix(Settings.Settings.Current.MessageBucket,
+        //                          $"{Settings.Settings.Current.Building.Vendor}.{Settings.Settings.Current.Building.Id.Value}.");
+
+        //                      var request = new ListObjectsV2Request
+        //                      {
+        //                          BucketName = bucket,
+        //                          Prefix = prefix
+        //                      };
+
+        //                      Task<ListObjectsV2Response> task;
+        //                      task = client.ListObjectsV2Async(request);
+        //                      task.Wait();
+
+        //                      unprocessed = task.Result.S3Objects.Count;
+        //                  }
+
+        //                  Console.WriteLine($"[Moving raw data] Unprocessed lambda functions={unprocessed}");
+
+        //                  if (unprocessed > 700)
+        //                  {
+        //                      Console.WriteLine($"[Moving raw data] unprocessed > 700, waiting 3 minutes...");
+        //                      Thread.Sleep(TimeSpan.FromMinutes(3));
+        //                  }
+        //              }
+        //              while (unprocessed > 700);
+        //          });
+
+        //        monitor.CompleteAdding();
+        //        if (useMonitor)
+        //        {
+        //            monitorHandle?.Wait();
+        //        }
+
+        //        monitorHandle?.Dispose();
+
+        //        if (useMonitor && monitor.InvalidCount > 0)
+        //            throw new Exception($"ERROR - {monitor.InvalidCount} - Invalid chunks");
+        //    }
+
+        //    Console.WriteLine("Moving raw data to S3 - complete");
+        //}
+
+        //private void MoveChunkRawData(int chunkId, string baseFolder)
+        //{
+        //    Parallel.ForEach(Settings.Settings.Current.Building.SourceQueryDefinitions,
+        //        new ParallelOptions { MaxDegreeOfParallelism = Settings.Settings.Current.ParallelQueries }, queryDefinition =>
+        //        {
+
+        //            if (queryDefinition.Providers != null) return;
+        //            if (queryDefinition.Locations != null) return;
+        //            if (queryDefinition.CareSites != null) return;
+
+        //            var sql = GetSqlHelper.GetSql(Settings.Settings.Current.Building.SourceEngine.Database,
+        //                queryDefinition.GetSql(Settings.Settings.Current.Building.Vendor, Settings.Settings.Current.Building.SourceSchemaName,
+        //                    _chunksSchema), Settings.Settings.Current.Building.SourceSchemaName);
+
+        //            if (string.IsNullOrEmpty(sql)) return;
+
+        //            sql = string.Format(sql, chunkId);
+
+        //            var personIdField = queryDefinition.GetPersonIdFieldName();
+        //            var tmpTableName = "#" + queryDefinition.FileName + "_" + chunkId;
+
+
+        //            var folder = $"{baseFolder}/{chunkId}/{queryDefinition.FileName}";
+        //            var fileName = $@"{folder}/{queryDefinition.FileName}";
+
+        //            var unloadQuery = string.Format(@"create table {0} sortkey ({1}) distkey ({1}) as {2}; " +
+        //                                            @"UNLOAD ('select * from {0} order by {1}') to 's3://{3}' " +
+        //                                            @"DELIMITER AS '\t' " +
+        //                                            @"NULL AS '\\N' " +
+        //                                            @"credentials 'aws_access_key_id={4};aws_secret_access_key={5}' " +
+        //                                            @"ZSTD ALLOWOVERWRITE PARALLEL ON",
+        //                tmpTableName, //0
+        //                personIdField, //1
+        //                sql, //2
+        //                fileName, //3
+        //                Settings.Settings.Current.S3AwsAccessKeyId, //4
+        //                Settings.Settings.Current.S3AwsSecretAccessKey); //5
+
+        //            using var connection =
+        //                SqlConnectionHelper.OpenOdbcConnection(Settings.Settings.Current.Building
+        //                    .SourceConnectionString);
+        //            using var c = new OdbcCommand(unloadQuery, connection);
+        //            c.CommandTimeout = 900;
+        //            c.ExecuteNonQuery();
+        //        });
+        //}
+
+        //private static void StoreMetadataToS3(QueryDefinition queryDefinition, string query)
+        //{
+        //    Console.WriteLine("[Moving raw data] StoreMetadataToS3 start - " + queryDefinition.FileName);
+        //    var sql = query + " limit 1";
+        //    var metadataKey =
+        //        $"{Settings.Settings.Current.Building.Vendor}/{Settings.Settings.Current.Building.Id}/raw/metadata/{queryDefinition.FileName + ".txt"}";
+
+        //    using (var conn =
+        //        SqlConnectionHelper.OpenOdbcConnection(Settings.Settings.Current.Building.SourceConnectionString))
+        //    using (var c = Settings.Settings.Current.Building.SourceEngine.GetCommand(sql, conn))
+        //    using (var reader = c.ExecuteReader(CommandBehavior.SchemaOnly))
+        //    {
+        //        using var source = new MemoryStream();
+        //        using StreamWriter writer = new(source, new UTF8Encoding(false, true));
+        //        using var csv = new CsvWriter(writer, new CsvConfiguration(CultureInfo.InvariantCulture)
+        //        {
+        //            HasHeaderRecord = false,
+        //            Delimiter = ",",
+        //            Encoding = Encoding.UTF8
+        //        });
+        //        for (var i = 0; i < reader.FieldCount; i++)
+        //        {
+        //            var fieldName = reader.GetName(i);
+        //            if (Settings.Settings.Current.Building.PersonFileName == queryDefinition.FileName &&
+        //                Settings.Settings.Current.Building.PersonIdFieldName == fieldName)
+        //            {
+        //                Settings.Settings.Current.Building.PersonIdFieldIndex = i;
+        //            }
+
+        //            csv.WriteField(fieldName);
+        //        }
+
+        //        csv.NextRecord();
+        //        writer.Flush();
+
+        //        using var client = new AmazonS3Client(Settings.Settings.Current.S3AwsAccessKeyId,
+        //            Settings.Settings.Current.S3AwsSecretAccessKey, Amazon.RegionEndpoint.USEast1);
+        //        using var directoryTransferUtility = new TransferUtility(client);
+        //        directoryTransferUtility.Upload(new TransferUtilityUploadRequest
+        //        {
+        //            BucketName = Settings.Settings.Current.Bucket,
+        //            Key = metadataKey,
+        //            ServerSideEncryptionMethod = ServerSideEncryptionMethod.AES256,
+        //            StorageClass = S3StorageClass.Standard,
+        //            InputStream = source
+        //        });
+        //    }
+        //    Console.WriteLine("[Moving raw data] StoreMetadataToS3 end - " + queryDefinition.FileName);
+        //}
 
         private static IEnumerable<T> GetEntities<T>(QueryDefinition qd, EntityDefinition ed) where T : IEntity
         {

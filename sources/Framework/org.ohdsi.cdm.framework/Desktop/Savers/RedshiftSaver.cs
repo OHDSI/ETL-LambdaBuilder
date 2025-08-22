@@ -7,7 +7,6 @@ using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Omop;
 using org.ohdsi.cdm.framework.desktop.DataReaders;
-using org.ohdsi.cdm.framework.desktop.Enums;
 using org.ohdsi.cdm.framework.desktop.Helpers;
 using System.Data;
 using System.Data.Odbc;
@@ -28,8 +27,8 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
                 MaxErrorRetry = 20,
             };
 
-            _currentClient = new AmazonS3Client(Settings.Settings.Current.S3AwsAccessKeyId,
-                Settings.Settings.Current.S3AwsSecretAccessKey,
+            _currentClient = new AmazonS3Client(Settings.Settings.Current.CloudStorageKey,
+                Settings.Settings.Current.CloudStorageSecret,
                 config);
 
             _connectionString = connectionString;
@@ -56,9 +55,6 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
                 {
                     if (attempt <= 5)
                     {
-                        //Logger.Write(chunk.ChunkId, LogMessageTypes.Warning,
-                        //    "MoveToS3 attempt=" + attempt + ") | " + table + " | " + Logger.CreateExceptionString(e));
-
                         Console.WriteLine("MoveToS3 attempt=" + attempt + ") | " + table + " | " + Logger.CreateExceptionString(e));
                     }
                     else
@@ -72,29 +68,9 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
         public override void Write(int? chunkId, int? subChunkId, IDataReader reader, string tableName)
         {
             throw new NotImplementedException();
-        }
+        }               
 
-        private static void CopyToRedshift(string bucket, string schemaName, string tableName, string fileName,
-            OdbcConnection connection, OdbcTransaction transaction)
-        {
-            const string query = @"copy {0}.{1} from 's3://{2}/{3}' " +
-                                 @"credentials 'aws_access_key_id={4};aws_secret_access_key={5}' " +
-                                 @"IGNOREBLANKLINES " +
-                                 @"DELIMITER '\t' " +
-                                 @"NULL AS '\000' " +
-                                 @"csv quote as '`' " +
-                                 @"GZIP";
-
-            using var c =
-                    new OdbcCommand(
-                        string.Format(query, schemaName, tableName, bucket, fileName,
-                            Settings.Settings.Current.S3AwsAccessKeyId,
-                            Settings.Settings.Current.S3AwsSecretAccessKey), connection, transaction);
-            c.CommandTimeout = 900;
-            c.ExecuteNonQuery();
-        }
-
-        public void SaveToS3Csv(string bucket, string folder, string tableName, IDataReader reader)
+        private void SaveToS3Csv(string bucket, string folder, string tableName, IDataReader reader)
         {
             Console.WriteLine($"{tableName} - Save to S3 started (csv)");
 
@@ -131,29 +107,31 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
         {
             try
             {
-
                 var tableName = "_chunks" + index;
                 var fileName = $"{Settings.Settings.Current.Building.Vendor}/{Settings.Settings.Current.Building.Id}/{tableName}.txt.gz";
-                FileTransferHelper.UploadFile(_currentClient, null, Settings.Settings.Current.Bucket, fileName, new ChunkDataReader(chunk), "\t", '`', "\0");
+                FileTransferHelper.UploadFile(_currentClient, null, Settings.Settings.Current.CloudStorageName, fileName, new ChunkDataReader(chunk), "\t", '`', "\0");
 
-                using var currentConnection = SqlConnectionHelper.OpenOdbcConnection(_connectionString);
-                using var currentTransaction = currentConnection.BeginTransaction();
-                CopyToRedshift(Settings.Settings.Current.Bucket, schemaName, "_chunks",
-                    fileName,
-                    currentConnection,
-                    currentTransaction);
+                string query = $@"copy {schemaName}._chunks from 's3://{Settings.Settings.Current.CloudStorageName}/{fileName}' " +
+                    $@"credentials 'aws_access_key_id={Settings.Settings.Current.CloudStorageKey};aws_secret_access_key={Settings.Settings.Current.CloudStorageSecret}' " +
+                    @"IGNOREBLANKLINES " +
+                    @"DELIMITER '\t' " +
+                    @"NULL AS '\000' " +
+                    @"csv quote as '`' " +
+                    @"GZIP";
 
-                currentTransaction.Commit();
+                using var connection = SqlConnectionHelper.OpenOdbcConnection(_connectionString);
+                using var c = new OdbcCommand(query, connection);
+                c.CommandTimeout = 900;
+                c.ExecuteNonQuery();
             }
             catch (Exception e)
             {
                 Console.WriteLine(Logger.CreateExceptionString(e));
-                //Logger.WriteError(e);
-                Rollback();
+                throw;
             }
         }
 
-        public void SaveEntityLookup(List<Location> location, int index, string spectrumFolder, string apsFolder, CdmVersions cdm)
+        public void SaveEntityLookup(List<Location> location, int index, string cdmFolder, CdmVersions cdm)
         {
             if (location != null && location.Count > 0)
             {
@@ -165,16 +143,16 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
 
                 if (cdm == CdmVersions.V54)
                 {
-                    SaveToS3Csv(Settings.Settings.Current.Bucket, folder + apsFolder, tableName, new LocationDataReader54(location));
+                    SaveToS3Csv(Settings.Settings.Current.CloudStorageName, folder + cdmFolder, tableName, new LocationDataReader54(location));
                 }
                 else
                 {
-                    SaveToS3Csv(Settings.Settings.Current.Bucket, folder + apsFolder, tableName, new LocationDataReader(location));
+                    SaveToS3Csv(Settings.Settings.Current.CloudStorageName, folder + cdmFolder, tableName, new LocationDataReader(location));
                 }
             }
         }
 
-        public void SaveEntityLookup(List<CareSite> careSite, int index, string spectrumFolder, string apsFolder)
+        public void SaveEntityLookup(List<CareSite> careSite, int index, string cdmFolder)
         {
             if (careSite != null && careSite.Count > 0)
             {
@@ -183,11 +161,11 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
                     $"{Settings.Settings.Current.Building.Vendor}/" +
                     $"{Settings.Settings.Current.Building.Id}/";
 
-                SaveToS3Csv(Settings.Settings.Current.Bucket, folder + apsFolder, tableName, new CareSiteDataReader(careSite));
+                SaveToS3Csv(Settings.Settings.Current.CloudStorageName, folder + cdmFolder, tableName, new CareSiteDataReader(careSite));
             }
         }
 
-        public void SaveEntityLookup(List<Provider> provider, int index, string spectrumFolder, string apsFolder)
+        public void SaveEntityLookup(List<Provider> provider, int index, string cdmFolder)
         {
             if (provider != null && provider.Count > 0)
             {
@@ -197,7 +175,7 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
                     $"{Settings.Settings.Current.Building.Vendor}/" +
                     $"{Settings.Settings.Current.Building.Id}/";
 
-                SaveToS3Csv(Settings.Settings.Current.Bucket, folder + apsFolder, tableName, new ProviderDataReader(provider));
+                SaveToS3Csv(Settings.Settings.Current.CloudStorageName, folder + cdmFolder, tableName, new ProviderDataReader(provider));
             }
         }
 

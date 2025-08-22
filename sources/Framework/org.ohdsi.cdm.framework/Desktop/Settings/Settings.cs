@@ -5,13 +5,13 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
 {
     public class Settings
     {
-        private string _s3AwsAccessKeyId;
-        private string _s3AwsSecretAccessKey;
+        //public string MessageS3AwsAccessKeyId { get; set; }
+        //public string MessageS3AwsSecretAccessKey { get; set; }
+        //public string MessageBucket { get; set; }
 
-        private string _ec2AwsAccessKeyId;
-        private string _ec2AwsSecretAccessKey;
-        private string _bucket;
-
+        private string _cloudStorageKey;
+        private string _cloudStorageSecret;
+        private string _cloudStorageName;
         private string _cdmFolder;
 
 
@@ -66,69 +66,72 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
         public string CreateIndexesScript => File.ReadAllText(
             Path.Combine(Folder, "Common", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "CreateIndexes.sql"));
 
-        public string S3AwsAccessKeyId
+        /// <summary>
+        /// AWS s3 - None; Azure Blob - ServiceUri
+        /// </summary>
+        public string CloudStorageUri { get; set; }
+
+        /// <summary>
+        /// AWS s3 - None; Azure Blob - TenantId
+        /// </summary>
+        public string CloudStorageHolder { get; set; }
+
+        public string CloudPrefix { get; set; }
+
+        public string BuildingPrefix
         {
             get
             {
-                if (!string.IsNullOrEmpty(_s3AwsAccessKeyId))
-                    return _s3AwsAccessKeyId;
+                if (string.IsNullOrEmpty(Settings.Current.CloudPrefix))
+                    return $"{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id}";
 
-                return ConfigurationManager.AppSettings["s3_aws_access_key_id"];
+                return $"{Settings.Current.CloudPrefix}/{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id}";
             }
-            set => _s3AwsAccessKeyId = value;
         }
 
-        public string S3AwsSecretAccessKey
+        /// <summary>
+        /// AWS s3 - S3AwsAccessKeyId; Azure Blob - ClientId
+        /// </summary>
+        public string CloudStorageKey
         {
             get
             {
-                if (!string.IsNullOrEmpty(_s3AwsSecretAccessKey))
-                    return _s3AwsSecretAccessKey;
+                if (!string.IsNullOrEmpty(_cloudStorageKey))
+                    return _cloudStorageKey;
 
-                return ConfigurationManager.AppSettings["s3_aws_secret_access_key"];
+                return ConfigurationManager.AppSettings["cloudStorageKey"];
             }
-            set => _s3AwsSecretAccessKey = value;
+            set => _cloudStorageKey = value;
         }
 
-        public string MessageS3AwsAccessKeyId { get; set; }
-        public string MessageS3AwsSecretAccessKey { get; set; }
-
-        public string MessageBucket { get; set; }
-
-        public string Ec2AwsAccessKeyId
+        /// <summary>
+        /// AWS s3 - S3AwsSecretAccessKey; Azure Blob - ClientSecret
+        /// </summary>
+        public string CloudStorageSecret
         {
             get
             {
-                if (!string.IsNullOrEmpty(_ec2AwsAccessKeyId))
-                    return _ec2AwsAccessKeyId;
+                if (!string.IsNullOrEmpty(_cloudStorageSecret))
+                    return _cloudStorageSecret;
 
-                return ConfigurationManager.AppSettings["ec2_aws_access_key_id"];
+                return ConfigurationManager.AppSettings["cloudStorageSecret"];
             }
-            set => _ec2AwsAccessKeyId = value;
+            set => _cloudStorageSecret = value;
         }
 
-        public string Ec2AwsSecretAccessKey
+        /// <summary>
+        /// AWS s3 - Bucket; Azure Blob - BlobContainerName
+        /// </summary>
+        public string CloudStorageName
         {
             get
             {
-                if (!string.IsNullOrEmpty(_ec2AwsSecretAccessKey))
-                    return _ec2AwsSecretAccessKey;
+                if (!string.IsNullOrEmpty(_cloudStorageName))
+                    return _cloudStorageName;
 
-                return ConfigurationManager.AppSettings["ec2_aws_secret_access_key"];
+                return ConfigurationManager.AppSettings["cloudStorageName"];
             }
-            set => _ec2AwsSecretAccessKey = value;
-        }
-
-        public string Bucket
-        {
-            get
-            {
-                if (!string.IsNullOrEmpty(_bucket))
-                    return _bucket;
-
-                return ConfigurationManager.AppSettings["bucket"];
-            }
-            set => _bucket = value;
+            set => _cloudStorageName = value;
         }
 
         public string CDMFolder

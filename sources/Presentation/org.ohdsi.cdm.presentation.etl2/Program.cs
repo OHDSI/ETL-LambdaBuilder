@@ -7,20 +7,16 @@ using org.ohdsi.cdm.framework.common.DataReaders.v5;
 using org.ohdsi.cdm.framework.common.DataReaders.v5.v54;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Extensions;
-using org.ohdsi.cdm.framework.common.Helpers;
 using org.ohdsi.cdm.framework.common.Omop;
 using org.ohdsi.cdm.framework.common.Utility;
 using org.ohdsi.cdm.framework.desktop.DbLayer;
 using org.ohdsi.cdm.framework.desktop.Settings;
-using org.ohdsi.cdm.framework.desktop3.Monitor;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data.Odbc;
 using System.Data.SqlClient;
 using System.IO;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace org.ohdsi.cdm.presentation.etl
 {
@@ -111,38 +107,33 @@ namespace org.ohdsi.cdm.presentation.etl
                     Console.WriteLine($"builder:{new SqlConnectionStringBuilder(builderConnectionString).DataSource};");
                 }
 
-                var s3awsAccessKeyId = configuration.GetSection("AppSettings")["s3_aws_access_key_id"];
-                var s3awsSecretAccessKey = configuration.GetSection("AppSettings")["s3_aws_secret_access_key"];
+                //var s3MessagesAccessKeyId = configuration.GetSection("AppSettings")["s3_messages_access_key_id"];
+                //var s3MessagesSecretAccessKey = configuration.GetSection("AppSettings")["s3_messages_secret_access_key"];
 
-                var bucket = configuration.GetSection("AppSettings")["bucket"];
-                var cdmFolder = configuration.GetSection("AppSettings")["cdm_folder"];
-                var cdmFolderCsv = configuration.GetSection("AppSettings")["cdm_folder_csv"];
-                var rawFolder = configuration.GetSection("AppSettings")["raw_folder"];
+                //var msgBucket = configuration.GetSection("AppSettings")["messages_bucket"];
+                //var msgBucketMerge = configuration.GetSection("AppSettings")["messages_bucket_merge"];
 
-                var s3MessagesAccessKeyId = configuration.GetSection("AppSettings")["s3_messages_access_key_id"];
-                var s3MessagesSecretAccessKey = configuration.GetSection("AppSettings")["s3_messages_secret_access_key"];
-
-                var msgBucket = configuration.GetSection("AppSettings")["messages_bucket"];
-                var msgBucketMerge = configuration.GetSection("AppSettings")["messages_bucket_merge"];
-
-                var iamRole = configuration.GetSection("AppSettings")["iam_role"];
-                var chunksSchema = configuration.GetSection("AppSettings")["chunks_schema"];
+                //Settings.Current.MessageS3AwsAccessKeyId = s3MessagesAccessKeyId;
+                //Settings.Current.MessageS3AwsSecretAccessKey = s3MessagesSecretAccessKey;
+                //Settings.Current.MessageBucket = msgBucket;
+                
+                //var rawFolder = configuration.GetSection("AppSettings")["rawFolder"];
 
                 Settings.Initialize(builderConnectionString, Environment.MachineName);
-                Settings.Current.S3AwsAccessKeyId = s3awsAccessKeyId;
-                Settings.Current.S3AwsSecretAccessKey = s3awsSecretAccessKey;
-                Settings.Current.Bucket = bucket;
 
-                Settings.Current.MessageS3AwsAccessKeyId = s3MessagesAccessKeyId;
-                Settings.Current.MessageS3AwsSecretAccessKey = s3MessagesSecretAccessKey;
-                Settings.Current.MessageBucket = msgBucket;
+                Settings.Current.CloudStorageUri = configuration.GetSection("AppSettings")["cloudStorageUri"];
+                Settings.Current.CloudStorageHolder = configuration.GetSection("AppSettings")["cloudStorageHolder"];
+                Settings.Current.CloudPrefix = configuration.GetSection("AppSettings")["cloudPrefix"];
 
-                Settings.Current.CDMFolder = cdmFolder;
+                Settings.Current.CloudStorageKey = configuration.GetSection("AppSettings")["cloudStorageKey"];
+                Settings.Current.CloudStorageSecret = configuration.GetSection("AppSettings")["cloudStorageSecret"];
+                Settings.Current.CloudStorageName = configuration.GetSection("AppSettings")["cloudStorageName"];
+
+                Settings.Current.CDMFolder = configuration.GetSection("AppSettings")["cdmFolder"];
                 Settings.Current.Folder = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
-                Settings.Current.ParallelQueries = int.Parse(configuration.GetSection("AppSettings")["parallel_queries"]);
-                Settings.Current.ParallelChunks = int.Parse(configuration.GetSection("AppSettings")["parallel_chunks"]);
-                //Settings.Current.LocalPath = configuration.GetSection("AppSettings")["local_path"];
+                Settings.Current.ParallelQueries = int.Parse(configuration.GetSection("AppSettings")["parallelQueries"]);
+                Settings.Current.ParallelChunks = int.Parse(configuration.GetSection("AppSettings")["parallelChunks"]);
 
                 Console.WriteLine($"ParallelQueries {Settings.Current.ParallelQueries}; ParallelChunks {Settings.Current.ParallelChunks}");
 
@@ -209,21 +200,11 @@ namespace org.ohdsi.cdm.presentation.etl
                 Console.WriteLine($"BuildingId:{Settings.Current.Building.Id}");
                 Console.WriteLine("building settings - initialized successfully");
 
-                var useLocalSettings = string.IsNullOrEmpty(configuration.GetSection("AppSettings")["vendor_settings"]);
 
-                //if (useLocalSettings)
-                //{
-                //    Console.WriteLine("vendor settings loaded from local");
-                //}
-                //else
-                //{
-                //    SettingsLoader.LoadVendorSettings(configuration);
-                //}
-
-                var lambdaUtility = new LambdaUtility(Settings.Current.S3AwsAccessKeyId,
-                    Settings.Current.S3AwsSecretAccessKey,
-                    s3MessagesAccessKeyId, s3MessagesSecretAccessKey, msgBucket, Settings.Current.Bucket,
-                    msgBucketMerge, rawFolder);
+                //var lambdaUtility = new LambdaUtility(Settings.Current.CloudStorageKey,
+                //    Settings.Current.CloudStorageSecret,
+                //    s3MessagesAccessKeyId, s3MessagesSecretAccessKey, msgBucket, Settings.Current.CloudStorageName,
+                //    msgBucketMerge, rawFolder);
 
                 if (skipCdmsource)
                 {
@@ -268,7 +249,8 @@ namespace org.ohdsi.cdm.presentation.etl
                 else
                 {
                     var etl = new ETL();
-                    etl.Start(skipChunkCreation, resumeChunkCreation, skipLookupCreation, skipBuild, skipVocabularyCopying, lambdaUtility);
+                    //etl.Start(skipChunkCreation, resumeChunkCreation, skipLookupCreation, skipBuild, skipVocabularyCopying, lambdaUtility);
+                    etl.Start(skipChunkCreation, resumeChunkCreation, skipLookupCreation, skipBuild, skipVocabularyCopying);
                 }
 
                 if (skipValidation)
@@ -277,8 +259,8 @@ namespace org.ohdsi.cdm.presentation.etl
                 }
                 else
                 {
-                    var validation = new Validation();
-                    validation.Start(lambdaUtility, cdmFolderCsv);
+                    //var validation = new Validation();
+                    //validation.Start(lambdaUtility, cdmFolder);
                 }
 
                 if (skipTransformToSpectrum)
@@ -287,13 +269,13 @@ namespace org.ohdsi.cdm.presentation.etl
                 }
                 else
                 {
-                    lambdaUtility.TriggerMergeFunction(Settings.Current.Building.Vendor,
-                        Settings.Current.Building.Id.Value, versionId, cdmFolderCsv,
-                        false);
+                    //lambdaUtility.TriggerMergeFunction(Settings.Current.Building.Vendor,
+                    //    Settings.Current.Building.Id.Value, versionId, cdmFolderCsv,
+                    //    false);
 
-                    var checkMerging = Task.Run(() => lambdaUtility.AllChunksWereDone(Settings.Current.Building.Vendor,
-                      Settings.Current.Building.Id.Value, lambdaUtility.MergeMessageBucket));
-                    checkMerging.Wait();
+                    //var checkMerging = Task.Run(() => lambdaUtility.AllChunksWereDone(Settings.Current.Building.Vendor,
+                    //  Settings.Current.Building.Id.Value, lambdaUtility.MergeMessageBucket));
+                    //checkMerging.Wait();
                 }
 
                 
@@ -326,14 +308,14 @@ namespace org.ohdsi.cdm.presentation.etl
 
             var fileName = $"{vendor}/{buildingId}/{folder}/{table}/{table}.0.{index}.{extension}";
 
-            Console.WriteLine($"Bucket={Settings.Current.Bucket}");
+            Console.WriteLine($"Bucket={Settings.Current.CloudStorageName}");
             Console.WriteLine("Key=" + fileName);
 
-            using (var c = new AmazonS3Client(Settings.Current.S3AwsAccessKeyId, Settings.Current.S3AwsSecretAccessKey, config))
+            using (var c = new AmazonS3Client(Settings.Current.CloudStorageKey, Settings.Current.CloudStorageSecret, config))
             {
                 var putObject = c.PutObjectAsync(new PutObjectRequest
                 {
-                    BucketName = $"{Settings.Current.Bucket}",
+                    BucketName = $"{Settings.Current.CloudStorageName}",
                     Key = fileName,
                     ServerSideEncryptionMethod = ServerSideEncryptionMethod.AES256,
                     StorageClass = S3StorageClass.Standard,
