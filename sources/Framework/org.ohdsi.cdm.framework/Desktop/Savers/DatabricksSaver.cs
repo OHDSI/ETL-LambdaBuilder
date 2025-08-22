@@ -50,7 +50,7 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
 
                 var storage = Settings.Settings.Current.CloudStorageUri.Split("//")[1];
                 string query = $@"COPY INTO {schemaName}._chunks BY POSITION " +
-                    $@"FROM 'abfss://{storage}/{Settings.Settings.Current.CloudStorageName}/{Settings.Settings.Current.CloudPrefix}' " +
+                    $@"FROM 'abfss://{storage}/{Settings.Settings.Current.CloudStorageName}/{Settings.Settings.Current.BuildingPrefix}' " +
                     @"FILEFORMAT = CSV " +
                     @"PATTERN = 'chunks[0-9]{1,4}.txt.gz' " +
                     @"FORMAT_OPTIONS( " +

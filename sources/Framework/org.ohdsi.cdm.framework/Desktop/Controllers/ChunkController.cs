@@ -37,6 +37,7 @@ namespace org.ohdsi.cdm.framework.desktop.Controllers
             var chunkId = 0;
             var cnt = 0;
             var partitionId = 0;
+            var index = 0;
 
             var chunksConnectionString = Regex.Replace(Settings.Settings.Current.Building.RawSourceConnectionString, "sc=" + _chunksSchema + ";", "", RegexOptions.IgnoreCase);
             using (var saver = Settings.Settings.Current.Building.SourceEngine.GetSaver()
@@ -64,15 +65,16 @@ namespace org.ohdsi.cdm.framework.desktop.Controllers
                         cnt++;
                     }
 
-                    saver.AddChunk(chunks, partitionId, _chunksSchema);
+                    saver.AddChunk(chunks, index, _chunksSchema);
                     chunks.Clear();
 
                     chunkId++;
+                    index++;
                 }
 
                 if (chunks.Count > 0)
                 {
-                    saver.AddChunk(chunks, partitionId, _chunksSchema);
+                    saver.AddChunk(chunks, index, _chunksSchema);
                 }
 
                 saver.Commit();
