@@ -92,9 +92,9 @@ namespace org.ohdsi.cdm.framework.desktop.Controllers
             string query;
             if (Settings.Settings.Current.Building.SourceEngine.Database == Enums.Database.Databricks)
             {
-                var storage = Settings.Settings.Current.CloudStorageUri.Split("//")[1];
+                var storage = Settings.Settings.Current.CloudStorageUri.Split("//")[1].Replace(".blob.", ".dfs.");
                 query = $@"COPY INTO {_chunksSchema}._chunks BY POSITION " +
-                    $@"FROM 'abfss://{storage}/{Settings.Settings.Current.CloudStorageName}/{Settings.Settings.Current.BuildingPrefix}' " +
+                    $@"FROM 'abfss://{Settings.Settings.Current.CloudStorageName}@{storage}/{Settings.Settings.Current.BuildingPrefix}' " +
                     @"FILEFORMAT = CSV " +
                     @"PATTERN = 'chunks[0-9]{1,4}.txt.gz' " +
                     @"FORMAT_OPTIONS( " +

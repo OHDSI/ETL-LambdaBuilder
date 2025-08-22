@@ -13,7 +13,7 @@ namespace org.ohdsi.cdm.framework.desktop.DataReaders
 
         public int FieldCount
         {
-            get { return 3; }
+            get { return 4; }
         }
 
         public object GetValue(int i)
@@ -21,8 +21,9 @@ namespace org.ohdsi.cdm.framework.desktop.DataReaders
             return i switch
             {
                 0 => _enumerator.Current.Id,
-                1 => _enumerator.Current.PersonId,
-                2 => _enumerator.Current.PersonSource,
+                1 => _enumerator.Current.PartitionId,
+                3 => _enumerator.Current.PersonId,
+                4 => _enumerator.Current.PersonSource,
                 _ => throw new NotImplementedException(),
             };
         }
@@ -97,9 +98,10 @@ namespace org.ohdsi.cdm.framework.desktop.DataReaders
         {
             return i switch
             {
-                0 => "chunkid",
-                1 => "person_id",
-                2 => "person_source_value",
+                0 => "chunk_id",
+                1 => "partition_id",
+                2 => "person_id",
+                3 => "person_source_value",
                 _ => throw new NotImplementedException(),
             };
         }
@@ -129,8 +131,9 @@ namespace org.ohdsi.cdm.framework.desktop.DataReaders
             return i switch
             {
                 0 => typeof(int),
-                1 => typeof(long),
-                2 => typeof(string),
+                1 => typeof(int),
+                2 => typeof(long),
+                3 => typeof(string),
                 _ => throw new NotImplementedException(),
             };
         }
