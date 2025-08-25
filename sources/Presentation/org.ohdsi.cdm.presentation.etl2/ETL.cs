@@ -23,7 +23,7 @@ namespace org.ohdsi.cdm.presentation.etl
     {
         private static AmazonS3Client GetAwsStorageClient()
         {
-            if (string.IsNullOrEmpty(Settings.Current.CloudStorageKey))
+            if (!string.IsNullOrEmpty(Settings.Current.CloudStorageHolder))
                 return null;
 
             return new AmazonS3Client(
