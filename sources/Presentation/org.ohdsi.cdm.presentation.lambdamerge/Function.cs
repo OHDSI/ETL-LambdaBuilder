@@ -3,16 +3,13 @@ using Amazon.Lambda.S3Events;
 using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
-using CsvHelper.Configuration;
 using org.ohdsi.cdm.framework.common.DataReaders.v5;
 using org.ohdsi.cdm.framework.common.DataReaders.v5.v54;
 using org.ohdsi.cdm.framework.common.Enums;
-using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Utility;
 using org.ohdsi.cdm.framework.etl.Transformation.OptumPanther;
 using System;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -83,13 +80,6 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
                 AwsSecretAccessKey = Environment.GetEnvironmentVariable("S3AwsSecretAccessKey"),
                 CdmFolder = Environment.GetEnvironmentVariable("CDMFolder"),
                 ResultFolder = Environment.GetEnvironmentVariable("ResultFolder"),
-                CsvConfiguration = new CsvConfiguration(CultureInfo.InvariantCulture)
-                {
-                    HasHeaderRecord = false,
-                    Delimiter = ",",
-                    Encoding = Encoding.UTF8,
-                    BadDataFound = null
-                }
             };
 
             //var saveSize = int.Parse(Environment.GetEnvironmentVariable("SaveSize"));
@@ -171,13 +161,6 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
                 AwsSecretAccessKey = "",
                 CdmFolder = "cdmAPS",
                 ResultFolder = "cdmSpectrum",
-                CsvConfiguration = new CsvConfiguration(CultureInfo.InvariantCulture)
-                {
-                    HasHeaderRecord = false,
-                    Delimiter = ",",
-                    Encoding = Encoding.UTF8,
-                    BadDataFound = null
-                }
             };
 
             //_rowGroupSize = 250000;
@@ -200,13 +183,13 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
             if (cdm == CdmVersions.V54)
             {
                 var reader = new CdmSourceDataReader54();
-                using var stream = reader.GetStreamCsv();
+                using var stream = framework.common.Helpers.CsvHelper.GetStreamCsv(reader).First();
                 SaveToS3(stream, 0, _settings.CdmFolder, _table, "gz");
             }
             else
             {
                 var reader = new CdmSourceDataReader();
-                using var stream = reader.GetStreamCsv();
+                using var stream = framework.common.Helpers.CsvHelper.GetStreamCsv(reader).First();
                 SaveToS3(stream, 0, _settings.CdmFolder, _table, "gz");
             }
         }
@@ -222,7 +205,7 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
         private void SaveVersion()
         {
             var reader = new VersionDataReader(_versionId);
-            using var stream = reader.GetStreamCsv();
+            using var stream = framework.common.Helpers.CsvHelper.GetStreamCsv(reader).First();
             SaveToS3(stream, 0, _settings.CdmFolder, _table, "gz");
         }
 

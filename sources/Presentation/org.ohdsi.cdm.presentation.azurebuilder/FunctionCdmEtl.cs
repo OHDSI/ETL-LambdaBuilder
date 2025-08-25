@@ -289,13 +289,14 @@ public class FunctionCdmEtl
             using var bufferedStream = new BufferedStream(responseStream);
             using var gzipStream = new GZipStream(bufferedStream, CompressionMode.Decompress);
             using var reader = new StreamReader(gzipStream, Encoding.Default);
-            using var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
-            {
-                HasHeaderRecord = false,
-                Delimiter = ",",
-                Encoding = Encoding.UTF8,
-                BadDataFound = null
-            });
+            using var csv = framework.common.Helpers.CsvHelper.CreateCsvReader(reader);
+            //using var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
+            //{
+            //    HasHeaderRecord = false,
+            //    Delimiter = ",",
+            //    Encoding = Encoding.UTF8,
+            //    BadDataFound = null
+            //});
 
             while (csv.Read())
             {

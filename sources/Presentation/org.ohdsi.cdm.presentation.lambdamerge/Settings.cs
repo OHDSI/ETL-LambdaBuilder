@@ -1,5 +1,4 @@
-﻿using CsvHelper.Configuration;
-using org.ohdsi.cdm.framework.common.Enums;
+﻿using org.ohdsi.cdm.framework.common.Enums;
 
 namespace org.ohdsi.cdm.presentation.lambdamerge
 {
@@ -18,7 +17,5 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
         public Vendor Vendor { get; set; }
 
         public int BuildingId { get; set; }
-
-        public CsvConfiguration CsvConfiguration { get; set; }
     }
 }

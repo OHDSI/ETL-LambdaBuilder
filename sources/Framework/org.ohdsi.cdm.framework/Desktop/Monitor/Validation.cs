@@ -1,12 +1,9 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
-using CsvHelper;
-using CsvHelper.Configuration;
 using org.ohdsi.cdm.framework.common.Helpers;
 using org.ohdsi.cdm.framework.desktop.Settings;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO.Compression;
 using System.Text;
 
@@ -209,12 +206,13 @@ namespace org.ohdsi.cdm.framework.desktop3.Monitor
                         using var bufferedStream = new BufferedStream(responseStream);
                         using var gzipStream = new GZipStream(bufferedStream, CompressionMode.Decompress);
                         using var reader = new StreamReader(gzipStream, Encoding.Default);
-                        using var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
-                        {
-                            HasHeaderRecord = false,
-                            Delimiter = ",",
-                            Encoding = Encoding.UTF8
-                        });
+                        using var csv = common.Helpers.CsvHelper.CreateCsvReader(reader);
+                        //using var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
+                        //{
+                        //    HasHeaderRecord = false,
+                        //    Delimiter = ",",
+                        //    Encoding = Encoding.UTF8
+                        //});
                         while (csv.Read())
                         {
                             var personId = (long)csv.GetField(typeof(long), 0);

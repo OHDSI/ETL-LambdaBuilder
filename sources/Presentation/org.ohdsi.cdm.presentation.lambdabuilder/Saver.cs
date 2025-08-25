@@ -9,6 +9,7 @@ using System;
 using System.Data;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using cdm6 = org.ohdsi.cdm.framework.common.DataReaders.v6;
 
@@ -32,435 +33,268 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
         protected Tuple<IDataReader, int> CreateDataReader(ChunkData chunk, string table)
         {
             var cdm = Settings.Current.Building.Vendor.CdmVersion;
-            if (cdm == CdmVersions.V6)
+
+            switch (table)
             {
-                switch (table)
-                {
-                    case "PERSON":
-                        {
-                            return chunk.Persons.Count == 0
-                                ? null
-                                : new Tuple<IDataReader, int>(new cdm6.PersonDataReader([.. chunk.Persons]),
-                                    chunk.Persons.Count);
-                        }
+                case "PERSON":
+                    {
+                        return chunk.Persons.Count == 0
+                            ? null
+                            : new Tuple<IDataReader, int>(new PersonDataReader([.. chunk.Persons]),
+                                chunk.Persons.Count);
+                    }
 
-                    case "OBSERVATION_PERIOD":
-                        {
-                            return chunk.ObservationPeriods.Count == 0
-                                ? null
-                                : new Tuple<IDataReader, int>(
-                                    new cdm6.ObservationPeriodDataReader([.. chunk.ObservationPeriods], _offsetManager),
-                                    chunk.ObservationPeriods.Count);
-                        }
+                case "OBSERVATION_PERIOD":
+                    {
+                        return chunk.ObservationPeriods.Count == 0
+                            ? null
+                            : new Tuple<IDataReader, int>(
+                                new ObservationPeriodDataReader53([.. chunk.ObservationPeriods], _offsetManager),
+                                chunk.ObservationPeriods.Count);
+                    }
 
-                    case "PAYER_PLAN_PERIOD":
-                        {
-                            return chunk.PayerPlanPeriods.Count == 0
-                                ? null
-                                : new Tuple<IDataReader, int>(
-                                    new cdm6.PayerPlanPeriodDataReader([.. chunk.PayerPlanPeriods], _offsetManager),
-                                    chunk.PayerPlanPeriods.Count);
-                        }
+                case "PAYER_PLAN_PERIOD":
+                    {
+                        return chunk.PayerPlanPeriods.Count == 0
+                            ? null
+                            : new Tuple<IDataReader, int>(
+                                new PayerPlanPeriodDataReader53([.. chunk.PayerPlanPeriods], _offsetManager),
+                                chunk.PayerPlanPeriods.Count);
+                    }
 
-                    case "DRUG_EXPOSURE":
-                        {
-                            return chunk.DrugExposures.Count == 0
-                                ? null
-                                : new Tuple<IDataReader, int>(new cdm6.DrugExposureDataReader([.. chunk.DrugExposures], _offsetManager),
-                                    chunk.DrugExposures.Count);
-                        }
+                case "DEATH":
+                    {
+                        return chunk.Deaths.Count == 0
+                            ? null
+                            : new Tuple<IDataReader, int>(new DeathDataReader52([.. chunk.Deaths]),
+                                chunk.Deaths.Count);
+                    }
 
-                    case "OBSERVATION":
+                case "DRUG_EXPOSURE":
+                    {
+                        return chunk.DrugExposures.Count == 0
+                            ? null
+                            : new Tuple<IDataReader, int>(new DrugExposureDataReader53([.. chunk.DrugExposures], _offsetManager),
+                                chunk.DrugExposures.Count);
+                    }
+
+                case "OBSERVATION":
+                    {
+                        if (cdm == CdmVersions.V54)
                         {
                             return chunk.Observations.Count == 0
                                 ? null
-                                : new Tuple<IDataReader, int>(new cdm6.ObservationDataReader([.. chunk.Observations], _offsetManager),
-                                    chunk.Observations.Count);
+                                : new Tuple<IDataReader, int>(new ObservationDataReader54([.. chunk.Observations], _offsetManager),
+                                chunk.Observations.Count);
                         }
+                        else
+                        {
+                            return chunk.Observations.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(new ObservationDataReader53([.. chunk.Observations], _offsetManager),
+                                chunk.Observations.Count);
+                        }
+                    }
 
-                    case "VISIT_OCCURRENCE":
+                case "VISIT_OCCURRENCE":
+                    {
+                        if (cdm == CdmVersions.V54)
                         {
                             return chunk.VisitOccurrences.Count == 0
                                 ? null
                                 : new Tuple<IDataReader, int>(
-                                    new cdm6.VisitOccurrenceDataReader([.. chunk.VisitOccurrences], _offsetManager),
-                                    chunk.VisitOccurrences.Count);
+                                new VisitOccurrenceDataReader54([.. chunk.VisitOccurrences], _offsetManager),
+                                chunk.VisitOccurrences.Count);
                         }
+                        else
+                        {
+                            return chunk.VisitOccurrences.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(
+                                new VisitOccurrenceDataReader52([.. chunk.VisitOccurrences], _offsetManager),
+                                chunk.VisitOccurrences.Count);
+                        }
+                    }
 
-                    case "VISIT_DETAIL":
+                case "VISIT_DETAIL":
+                    {
+                        if (cdm == CdmVersions.V54)
                         {
                             return chunk.VisitDetails.Count == 0
-                                ? null
-                                : new Tuple<IDataReader, int>(new cdm6.VisitDetailDataReader([.. chunk.VisitDetails], _offsetManager),
-                                    chunk.VisitDetails.Count);
+                            ? null
+                            : new Tuple<IDataReader, int>(new VisitDetailDataReader54([.. chunk.VisitDetails], _offsetManager),
+                                chunk.VisitDetails.Count);
                         }
+                        else
+                        {
+                            return chunk.VisitDetails.Count == 0
+                            ? null
+                            : new Tuple<IDataReader, int>(new VisitDetailDataReader53([.. chunk.VisitDetails], _offsetManager),
+                                chunk.VisitDetails.Count);
+                        }
+                    }
 
-                    case "PROCEDURE_OCCURRENCE":
+                case "PROCEDURE_OCCURRENCE":
+                    {
+                        if (cdm == CdmVersions.V54)
                         {
                             return chunk.ProcedureOccurrences.Count == 0
-                                ? null
-                                : new Tuple<IDataReader, int>(
-                                    new cdm6.ProcedureOccurrenceDataReader([.. chunk.ProcedureOccurrences], _offsetManager),
-                                    chunk.ProcedureOccurrences.Count);
+                            ? null
+                            : new Tuple<IDataReader, int>(
+                                new ProcedureOccurrenceDataReader54([.. chunk.ProcedureOccurrences], _offsetManager),
+                                chunk.ProcedureOccurrences.Count);
                         }
-
-                    case "DRUG_ERA":
+                        else
                         {
-                            return chunk.DrugEra.Count == 0
-                                ? null
-                                : new Tuple<IDataReader, int>(
-                                    new cdm6.DrugEraDataReader([.. chunk.DrugEra], _offsetManager),
-                                    chunk.DrugEra.Count);
+                            return chunk.ProcedureOccurrences.Count == 0
+                            ? null
+                            : new Tuple<IDataReader, int>(
+                                new ProcedureOccurrenceDataReader53([.. chunk.ProcedureOccurrences], _offsetManager),
+                                chunk.ProcedureOccurrences.Count);
                         }
+                    }
 
-                    case "CONDITION_ERA":
-                        {
-                            return chunk.ConditionEra.Count == 0
-                                ? null
-                                : new Tuple<IDataReader, int>(
-                                    new cdm6.ConditionEraDataReader([.. chunk.ConditionEra], _offsetManager),
-                                    chunk.ConditionEra.Count);
-                        }
+                case "DRUG_ERA":
+                    {
+                        return chunk.DrugEra.Count == 0
+                            ? null
+                            : new Tuple<IDataReader, int>(
+                                new DrugEraDataReader([.. chunk.DrugEra], _offsetManager),
+                                chunk.DrugEra.Count);
+                    }
 
-                    case "DEVICE_EXPOSURE":
+                case "CONDITION_ERA":
+                    {
+                        return chunk.ConditionEra.Count == 0
+                            ? null
+                            : new Tuple<IDataReader, int>(
+                                new ConditionEraDataReader([.. chunk.ConditionEra], _offsetManager),
+                                chunk.ConditionEra.Count);
+                    }
+
+                case "DEVICE_EXPOSURE":
+                    {
+                        if (cdm == CdmVersions.V54)
                         {
                             return chunk.DeviceExposure.Count == 0
-                                ? null
-                                : new Tuple<IDataReader, int>(
-                                    new cdm6.DeviceExposureDataReader([.. chunk.DeviceExposure], _offsetManager),
-                                    chunk.DeviceExposure.Count);
+                              ? null
+                              : new Tuple<IDataReader, int>(
+                                  new DeviceExposureDataReader54([.. chunk.DeviceExposure], _offsetManager),
+                                  chunk.DeviceExposure.Count);
                         }
+                        else
+                        {
+                            return chunk.DeviceExposure.Count == 0
+                            ? null
+                            : new Tuple<IDataReader, int>(
+                                new DeviceExposureDataReader53([.. chunk.DeviceExposure], _offsetManager),
+                                chunk.DeviceExposure.Count);
+                        }
+                    }
 
-                    case "MEASUREMENT":
+                case "MEASUREMENT":
+                    {
+                        if (cdm == CdmVersions.V54)
                         {
                             return chunk.Measurements.Count == 0
-                                ? null
-                                : new Tuple<IDataReader, int>(
-                                    new cdm6.MeasurementDataReader([.. chunk.Measurements], _offsetManager),
-                                    chunk.Measurements.Count);
+                            ? null
+                            : new Tuple<IDataReader, int>(
+                                new MeasurementDataReader54([.. chunk.Measurements], _offsetManager),
+                                chunk.Measurements.Count);
                         }
-
-                    case "COHORT":
+                        else
                         {
-                            return chunk.Cohort.Count == 0
-                                ? null
-                                : new Tuple<IDataReader, int>(
-                                    new cdm6.CohortDataReader([.. chunk.Cohort]),
-                                    chunk.Cohort.Count);
+                            return chunk.Measurements.Count == 0
+                            ? null
+                            : new Tuple<IDataReader, int>(
+                                new MeasurementDataReader53([.. chunk.Measurements], _offsetManager),
+                                chunk.Measurements.Count);
                         }
+                    }
 
-                    case "CONDITION_OCCURRENCE":
-                        {
-                            return chunk.ConditionOccurrences.Count == 0
-                                ? null
-                                : new Tuple<IDataReader, int>(
-                                    new cdm6.ConditionOccurrenceDataReader([.. chunk.ConditionOccurrences], _offsetManager),
-                                    chunk.ConditionOccurrences.Count);
-                        }
+                case "COHORT":
+                    {
+                        return chunk.Cohort.Count == 0
+                            ? null
+                            : new Tuple<IDataReader, int>(
+                                new CohortDataReader([.. chunk.Cohort]),
+                                chunk.Cohort.Count);
+                    }
 
-                    case "COST":
-                        {
-                            return chunk.Cost.Count == 0
-                                ? null
-                                : new Tuple<IDataReader, int>(
-                                    new cdm6.CostDataReader([.. chunk.Cost], _offsetManager),
-                                    chunk.Cost.Count);
-                        }
+                case "CONDITION_OCCURRENCE":
+                    {
+                        return chunk.ConditionOccurrences.Count == 0
+                            ? null
+                            : new Tuple<IDataReader, int>(
+                                new ConditionOccurrenceDataReader53([.. chunk.ConditionOccurrences], _offsetManager),
+                                chunk.ConditionOccurrences.Count);
+                    }
 
-                    case "NOTE":
+                case "COST":
+                    {
+                        return chunk.Cost.Count == 0
+                            ? null
+                            : new Tuple<IDataReader, int>(
+                                new CostDataReader52([.. chunk.Cost], _offsetManager),
+                                chunk.Cost.Count);
+                    }
+
+                case "NOTE":
+                    {
+                        if (cdm == CdmVersions.V54)
                         {
                             return chunk.Note.Count == 0
-                                ? null
-                                : new Tuple<IDataReader, int>(
-                                    new cdm6.NoteDataReader([.. chunk.Note], _offsetManager),
-                                    chunk.Note.Count);
-                        }
-
-                    case "METADATA_TMP":
-                        {
-                            return chunk.Metadata.Count == 0
-                                ? null
-                                : new Tuple<IDataReader, int>(
-                                    new cdm6.MetadataDataReader([.. chunk.Metadata.Values]),
-                                    chunk.Metadata.Values.Count);
-                        }
-
-                    case "FACT_RELATIONSHIP":
-                        {
-                            return chunk.FactRelationships.Count == 0
-                                ? null
-                                : new Tuple<IDataReader, int>(
-                                    new cdm6.FactRelationshipDataReader([.. chunk.FactRelationships]),
-                                    chunk.FactRelationships.Count);
-                        }
-
-                    case "DEATH":
-                        return null;
-                }
-            }
-            else
-            {
-                switch (table)
-                {
-                    case "PERSON":
-                        {
-                            return chunk.Persons.Count == 0
-                                ? null
-                                : new Tuple<IDataReader, int>(new PersonDataReader([.. chunk.Persons]),
-                                    chunk.Persons.Count);
-                        }
-
-                    case "OBSERVATION_PERIOD":
-                        {
-                            return chunk.ObservationPeriods.Count == 0
-                                ? null
-                                : new Tuple<IDataReader, int>(
-                                    new ObservationPeriodDataReader53([.. chunk.ObservationPeriods], _offsetManager),
-                                    chunk.ObservationPeriods.Count);
-                        }
-
-                    case "PAYER_PLAN_PERIOD":
-                        {
-                            return chunk.PayerPlanPeriods.Count == 0
-                                ? null
-                                : new Tuple<IDataReader, int>(
-                                    new PayerPlanPeriodDataReader53([.. chunk.PayerPlanPeriods], _offsetManager),
-                                    chunk.PayerPlanPeriods.Count);
-                        }
-
-                    case "DEATH":
-                        {
-                            return chunk.Deaths.Count == 0
-                                ? null
-                                : new Tuple<IDataReader, int>(new DeathDataReader52([.. chunk.Deaths]),
-                                    chunk.Deaths.Count);
-                        }
-
-                    case "DRUG_EXPOSURE":
-                        {
-                            return chunk.DrugExposures.Count == 0
-                                ? null
-                                : new Tuple<IDataReader, int>(new DrugExposureDataReader53([.. chunk.DrugExposures], _offsetManager),
-                                    chunk.DrugExposures.Count);
-                        }
-
-                    case "OBSERVATION":
-                        {
-                            if (cdm == CdmVersions.V54)
-                            {
-                                return chunk.Observations.Count == 0
-                                    ? null
-                                    : new Tuple<IDataReader, int>(new ObservationDataReader54([.. chunk.Observations], _offsetManager),
-                                    chunk.Observations.Count);
-                            }
-                            else
-                            {
-                                return chunk.Observations.Count == 0
-                                    ? null
-                                    : new Tuple<IDataReader, int>(new ObservationDataReader53([.. chunk.Observations], _offsetManager),
-                                    chunk.Observations.Count);
-                            }
-                        }
-
-                    case "VISIT_OCCURRENCE":
-                        {
-                            if (cdm == CdmVersions.V54)
-                            {
-                                return chunk.VisitOccurrences.Count == 0
-                                    ? null
-                                    : new Tuple<IDataReader, int>(
-                                    new VisitOccurrenceDataReader54([.. chunk.VisitOccurrences], _offsetManager),
-                                    chunk.VisitOccurrences.Count);
-                            }
-                            else
-                            {
-                                return chunk.VisitOccurrences.Count == 0
-                                    ? null
-                                    : new Tuple<IDataReader, int>(
-                                    new VisitOccurrenceDataReader52([.. chunk.VisitOccurrences], _offsetManager),
-                                    chunk.VisitOccurrences.Count);
-                            }
-                        }
-
-                    case "VISIT_DETAIL":
-                        {
-                            if (cdm == CdmVersions.V54)
-                            {
-                                return chunk.VisitDetails.Count == 0
-                                ? null
-                                : new Tuple<IDataReader, int>(new VisitDetailDataReader54([.. chunk.VisitDetails], _offsetManager),
-                                    chunk.VisitDetails.Count);
-                            }
-                            else
-                            {
-                                return chunk.VisitDetails.Count == 0
-                                ? null
-                                : new Tuple<IDataReader, int>(new VisitDetailDataReader53([.. chunk.VisitDetails], _offsetManager),
-                                    chunk.VisitDetails.Count);
-                            }
-                        }
-
-                    case "PROCEDURE_OCCURRENCE":
-                        {
-                            if (cdm == CdmVersions.V54)
-                            {
-                                return chunk.ProcedureOccurrences.Count == 0
-                                ? null
-                                : new Tuple<IDataReader, int>(
-                                    new ProcedureOccurrenceDataReader54([.. chunk.ProcedureOccurrences], _offsetManager),
-                                    chunk.ProcedureOccurrences.Count);
-                            }
-                            else
-                            {
-                                return chunk.ProcedureOccurrences.Count == 0
-                                ? null
-                                : new Tuple<IDataReader, int>(
-                                    new ProcedureOccurrenceDataReader53([.. chunk.ProcedureOccurrences], _offsetManager),
-                                    chunk.ProcedureOccurrences.Count);
-                            }
-                        }
-
-                    case "DRUG_ERA":
-                        {
-                            return chunk.DrugEra.Count == 0
-                                ? null
-                                : new Tuple<IDataReader, int>(
-                                    new DrugEraDataReader([.. chunk.DrugEra], _offsetManager),
-                                    chunk.DrugEra.Count);
-                        }
-
-                    case "CONDITION_ERA":
-                        {
-                            return chunk.ConditionEra.Count == 0
-                                ? null
-                                : new Tuple<IDataReader, int>(
-                                    new ConditionEraDataReader([.. chunk.ConditionEra], _offsetManager),
-                                    chunk.ConditionEra.Count);
-                        }
-
-                    case "DEVICE_EXPOSURE":
-                        {
-                            if (cdm == CdmVersions.V54)
-                            {
-                                return chunk.DeviceExposure.Count == 0
-                                  ? null
-                                  : new Tuple<IDataReader, int>(
-                                      new DeviceExposureDataReader54([.. chunk.DeviceExposure], _offsetManager),
-                                      chunk.DeviceExposure.Count);
-                            }
-                            else
-                            {
-                                return chunk.DeviceExposure.Count == 0
-                                ? null
-                                : new Tuple<IDataReader, int>(
-                                    new DeviceExposureDataReader53([.. chunk.DeviceExposure], _offsetManager),
-                                    chunk.DeviceExposure.Count);
-                            }
-                        }
-
-                    case "MEASUREMENT":
-                        {
-                            if (cdm == CdmVersions.V54)
-                            {
-                                return chunk.Measurements.Count == 0
-                                ? null
-                                : new Tuple<IDataReader, int>(
-                                    new MeasurementDataReader54([.. chunk.Measurements], _offsetManager),
-                                    chunk.Measurements.Count);
-                            }
-                            else
-                            {
-                                return chunk.Measurements.Count == 0
-                                ? null
-                                : new Tuple<IDataReader, int>(
-                                    new MeasurementDataReader53([.. chunk.Measurements], _offsetManager),
-                                    chunk.Measurements.Count);
-                            }
-                        }
-
-                    case "COHORT":
-                        {
-                            return chunk.Cohort.Count == 0
-                                ? null
-                                : new Tuple<IDataReader, int>(
-                                    new CohortDataReader([.. chunk.Cohort]),
-                                    chunk.Cohort.Count);
-                        }
-
-                    case "CONDITION_OCCURRENCE":
-                        {
-                            return chunk.ConditionOccurrences.Count == 0
-                                ? null
-                                : new Tuple<IDataReader, int>(
-                                    new ConditionOccurrenceDataReader53([.. chunk.ConditionOccurrences], _offsetManager),
-                                    chunk.ConditionOccurrences.Count);
-                        }
-
-                    case "COST":
-                        {
-                            return chunk.Cost.Count == 0
-                                ? null
-                                : new Tuple<IDataReader, int>(
-                                    new CostDataReader52([.. chunk.Cost], _offsetManager),
-                                    chunk.Cost.Count);
-                        }
-
-                    case "NOTE":
-                        {
-                            if (cdm == CdmVersions.V54)
-                            {
-                                return chunk.Note.Count == 0
-                                ? null
-                                : new Tuple<IDataReader, int>(
-                                    new NoteDataReader54([.. chunk.Note], _offsetManager),
-                                    chunk.Note.Count);
-                            }
-                            else
-                            {
-                                return chunk.Note.Count == 0
-                                ? null
-                                : new Tuple<IDataReader, int>(
-                                    new NoteDataReader53([.. chunk.Note], _offsetManager),
-                                    chunk.Note.Count);
-                            }
-                        }
-
-                    case "METADATA_TMP":
-                        {
-                            return chunk.Metadata.Count == 0
-                                ? null
-                                : new Tuple<IDataReader, int>(
-                                    new MetadataDataReader([.. chunk.Metadata.Values]),
-                                    chunk.Metadata.Values.Count);
-                        }
-
-                    case "FACT_RELATIONSHIP":
-                        {
-                            return chunk.FactRelationships.Count == 0
-                                ? null
-                                : new Tuple<IDataReader, int>(
-                                    new FactRelationshipDataReader([.. chunk.FactRelationships]),
-                                    chunk.FactRelationships.Count);
-                        }
-
-                    case "EPISODE":
-                        {
-                            return chunk.Episode.Count == 0
                             ? null
                             : new Tuple<IDataReader, int>(
-                                new EpisodeDataReader54([.. chunk.Episode], _offsetManager),
-                                chunk.Episode.Count);
+                                new NoteDataReader54([.. chunk.Note], _offsetManager),
+                                chunk.Note.Count);
                         }
-
-                    case "EPISODE_EVENT":
+                        else
                         {
-                            return chunk.EpisodeEvent.Count == 0
+                            return chunk.Note.Count == 0
                             ? null
                             : new Tuple<IDataReader, int>(
-                                new EpisodeEventDataReader([.. chunk.EpisodeEvent], _offsetManager),
-                                chunk.EpisodeEvent.Count);
+                                new NoteDataReader53([.. chunk.Note], _offsetManager),
+                                chunk.Note.Count);
                         }
-                }
+                    }
+
+                case "METADATA_TMP":
+                    {
+                        return chunk.Metadata.Count == 0
+                            ? null
+                            : new Tuple<IDataReader, int>(
+                                new MetadataDataReader([.. chunk.Metadata.Values]),
+                                chunk.Metadata.Values.Count);
+                    }
+
+                case "FACT_RELATIONSHIP":
+                    {
+                        return chunk.FactRelationships.Count == 0
+                            ? null
+                            : new Tuple<IDataReader, int>(
+                                new FactRelationshipDataReader([.. chunk.FactRelationships]),
+                                chunk.FactRelationships.Count);
+                    }
+
+                case "EPISODE":
+                    {
+                        return chunk.Episode.Count == 0
+                        ? null
+                        : new Tuple<IDataReader, int>(
+                            new EpisodeDataReader54([.. chunk.Episode], _offsetManager),
+                            chunk.Episode.Count);
+                    }
+
+                case "EPISODE_EVENT":
+                    {
+                        return chunk.EpisodeEvent.Count == 0
+                        ? null
+                        : new Tuple<IDataReader, int>(
+                            new EpisodeEventDataReader([.. chunk.EpisodeEvent], _offsetManager),
+                            chunk.EpisodeEvent.Count);
+                    }
+
             }
 
             throw new Exception("CreateDataReader, unsupported table name: " + table);
@@ -482,7 +316,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
 
                 var fileName = $"{table}.{chunkId}.{prefix}.{personIds}.{rowCount}.txt.gz";
 
-                using var ms = reader.GetStream(S3StorageType.CSV);
+                using var ms = framework.common.Helpers.CsvHelper.GetStreamCsv(reader).First();
                 using var fs = new FileStream($"{TmpFolder}/{fileName}", FileMode.OpenOrCreate);
                 ms.WriteTo(fs);
             }

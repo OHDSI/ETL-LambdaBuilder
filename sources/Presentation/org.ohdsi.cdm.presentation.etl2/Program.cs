@@ -222,21 +222,21 @@ namespace org.ohdsi.cdm.presentation.etl
 
                     if (Settings.Current.Building.Cdm == CdmVersions.V54)
                     {
-                        var reader = new CdmSourceDataReader54(DateTime.Parse(sourceReleaseDate), vocabularyVersion);
-                        using var stream = reader.GetStreamCsv();
-                        SaveToS3(stream, 0, "cdmCSV", "CDM_SOURCE", "gz", vendor, Settings.Current.Building.Id.Value);
+                        //var reader = new CdmSourceDataReader54(DateTime.Parse(sourceReleaseDate), vocabularyVersion);
+                        //using var stream = reader.GetStreamCsv();
+                        //SaveToS3(stream, 0, "cdmCSV", "CDM_SOURCE", "gz", vendor, Settings.Current.Building.Id.Value);
 
-                        List<MetadataOMOP> metadata = [];
-                        metadata.Add(new MetadataOMOP { Id = 0, MetadataConceptId = 0, Name = "NativeLoadId", ValueAsString = sourceVersionId, MetadataDate = DateTime.Now.Date });
-                        var metadataReader = new MetadataOMOPDataReader54(metadata);
+                        //List<MetadataOMOP> metadata = [];
+                        //metadata.Add(new MetadataOMOP { Id = 0, MetadataConceptId = 0, Name = "NativeLoadId", ValueAsString = sourceVersionId, MetadataDate = DateTime.Now.Date });
+                        //var metadataReader = new MetadataOMOPDataReader54(metadata);
 
-                        SaveToS3(metadataReader.GetStreamCsv(), 1, "cdmCSV", "METADATA", "gz", vendor, Settings.Current.Building.Id.Value);
+                        //SaveToS3(metadataReader.GetStreamCsv(), 1, "cdmCSV", "METADATA", "gz", vendor, Settings.Current.Building.Id.Value);
                     }
                     else
                     {
-                        var reader = new CdmSourceDataReader(DateTime.Parse(sourceReleaseDate), vocabularyVersion);
-                        using var stream = reader.GetStreamCsv();
-                        SaveToS3(stream, 0, "cdmCSV", "CDM_SOURCE", "gz", vendor, Settings.Current.Building.Id.Value);
+                        //var reader = new CdmSourceDataReader(DateTime.Parse(sourceReleaseDate), vocabularyVersion);
+                        //using var stream = reader.GetStreamCsv();
+                        //SaveToS3(stream, 0, "cdmCSV", "CDM_SOURCE", "gz", vendor, Settings.Current.Building.Id.Value);
                     }
 
                     Console.WriteLine($"****************************************************************");

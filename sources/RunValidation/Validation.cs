@@ -1,20 +1,14 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
-using CsvHelper.Configuration;
-using CsvHelper;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Helpers;
+using Spectre.Console;
+using System.Collections.Concurrent;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO.Compression;
 using System.Text;
 using ZstdSharp;
-using Spectre.Console;
-using System.Collections.Concurrent;
-using System.IO;
-using System.Diagnostics.Eventing.Reader;
-using org.ohdsi.cdm.framework.common.Omop;
 
 namespace RunValidation
 {
@@ -465,12 +459,13 @@ namespace RunValidation
                             ? new GZipStream(bufferedStream, CompressionMode.Decompress)
                             : new DecompressionStream(bufferedStream);
                         using var reader = new StreamReader(compressedStream, Encoding.Default);
-                        using var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
-                        {
-                            HasHeaderRecord = false,
-                            Delimiter = ",",
-                            Encoding = Encoding.UTF8
-                        });
+                        using var csv = org.ohdsi.cdm.framework.common.Helpers.CsvHelper.CreateCsvReader(reader);
+                        //using var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
+                        //{
+                        //    HasHeaderRecord = false,
+                        //    Delimiter = ",",
+                        //    Encoding = Encoding.UTF8
+                        //});
                         while (csv.Read())
                         {
                             var personId = (long)csv.GetField(typeof(long), 0);

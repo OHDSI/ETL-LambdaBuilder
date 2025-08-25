@@ -2,16 +2,16 @@
 using Azure.Identity;
 using Azure.Storage.Blobs;
 using Microsoft.Extensions.Configuration;
+using org.ohdsi.cdm.framework.common.DataReaders.v5;
+using org.ohdsi.cdm.framework.common.DataReaders.v5.v54;
 using org.ohdsi.cdm.framework.common.Definitions;
 using org.ohdsi.cdm.framework.common.Omop;
 using org.ohdsi.cdm.framework.desktop;
 using org.ohdsi.cdm.framework.desktop.Controllers;
 using org.ohdsi.cdm.framework.desktop.Helpers;
-using org.ohdsi.cdm.framework.desktop.Savers;
 using org.ohdsi.cdm.framework.desktop.Settings;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Odbc;
 using System.IO;
 using System.Linq;
@@ -47,12 +47,15 @@ namespace org.ohdsi.cdm.presentation.etl
             return client.GetBlobContainerClient(Settings.Current.CloudStorageName);
         }
 
-        private static void CopyFile(IDataReader reader, string fileName)
-        {
-            FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.CloudStorageName,
-                fileName,
-                reader, "\t", '`', "\0");
-        }
+        //private static void CopyFile(IDataReader reader, string fileName)
+        //{
+        //    FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.CloudStorageName,
+        //        fileName,
+        //        reader);
+        //    //FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.CloudStorageName,
+        //    //    fileName,
+        //    //    reader, "\t", '`', "\0");
+        //}
 
         private static void SaveVocabularyToCloudStorage()
         {
@@ -64,7 +67,10 @@ namespace org.ohdsi.cdm.presentation.etl
 
                 var fileName = $"{Settings.Current.BuildingPrefix}/CombinedLookups/{name}.txt.gz";
                 Console.WriteLine(name + " - store to S3 | " + fileName);
-                CopyFile(reader, fileName);
+                //CopyFile(reader, fileName, "\t", '`', "\0");
+                FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.CloudStorageName,
+                fileName,
+                reader);
             }
 
             foreach (var ri in vocabulary.GetClinicalDataReaders())
@@ -73,7 +79,10 @@ namespace org.ohdsi.cdm.presentation.etl
                 {
                     var fileName = $"{Settings.Current.BuildingPrefix}/Lookups/{ri.Name}.txt.gz";
                     Console.WriteLine(ri.Name + " - store to S3 | " + fileName);
-                    CopyFile(ri.DataReader, fileName);
+                    //CopyFile(ri.DataReader, fileName, "\t", '`', "\0");
+                    FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.CloudStorageName,
+                        fileName,
+                        ri.DataReader);
                 }
             }
 
@@ -83,7 +92,10 @@ namespace org.ohdsi.cdm.presentation.etl
                 {
                     var fileName = $"{Settings.Current.BuildingPrefix}/Lookups/PregnancyDrug.txt.gz";
                     Console.WriteLine("PregnancyDrug - store to S3 | " + fileName);
-                    CopyFile(ri.DataReader, fileName);
+                    //CopyFile(ri.DataReader, fileName, "\t", '`', "\0");
+                    FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.CloudStorageName,
+                        fileName,
+                        ri.DataReader);
                 }
             }
 
@@ -101,7 +113,9 @@ namespace org.ohdsi.cdm.presentation.etl
                 {
                     var fileName = $"{Settings.Current.BuildingPrefix}/Lookups/ConceptIdToSourceVocabularyId.txt.gz";
                     Console.WriteLine("ConceptIdToSourceVocabularyId - store to S3 | " + fileName);
-                    CopyFile(reader, fileName);
+                    FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.CloudStorageName,
+                        fileName,
+                        reader);
                 }
                 Console.WriteLine("ConceptIdToSourceVocabularyId - Done");
             }
@@ -196,10 +210,11 @@ namespace org.ohdsi.cdm.presentation.etl
                     {
                         c.CommandTimeout = 600;
                         using var reader = c.ExecuteReader();
-
                         var fileName = $"{folder}/{tableName}/{tableName}.txt.gz";
-                        
-                        FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.CloudStorageName, fileName, reader, ",", '"', @"\N");
+                        //CopyFile(reader, fileName, ",", '"', @"\N");
+                        FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.CloudStorageName,
+                            fileName,
+                            reader);
                     }
 
                     Console.WriteLine("[Vocabulary] " + tableName + " SAVED");
@@ -229,13 +244,9 @@ namespace org.ohdsi.cdm.presentation.etl
                 vocabulary.Fill(true);
                 Console.WriteLine("[Creating lookup] Vocabulary was loaded");
 
-                var saver = new RedshiftSaver();
-                using (saver.Create(Settings.Current.Building.DestinationConnectionString))
-                {
-                    SaveLocation(saver);
-                    SaveCareSite(saver);
-                    SaveProvider(saver);
-                }
+                SaveLocation();
+                SaveCareSite();
+                SaveProvider();
 
                 Console.WriteLine("[Creating lookup] Lookups was saved " +
                                   Settings.Current.Building.DestinationEngine.Database);
@@ -247,65 +258,52 @@ namespace org.ohdsi.cdm.presentation.etl
             }
         }
 
-        private void SaveProvider(RedshiftSaver saver)
+        private static void SaveProvider()
         {
+            Console.WriteLine("[Creating lookup] Loading providers...");
+            var file = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}/PROVIDER/PROVIDER.txt.gz";
+
             var provider = Settings.Current.Building.SourceQueryDefinitions.FirstOrDefault(qd =>
                 qd.Providers != null && QueryDefinition.IsSuitable(qd.Query.Database, Settings.Current.Building.Vendor));
-            if (provider != null)
+
+            if (provider == null)
+                return;
+
+            var providerConcepts = new List<Provider>();
+            foreach (var entity in GetEntities<Provider>(provider, provider.Providers[0]))
             {
-                Console.WriteLine("[Creating lookup] Loading providers...");
-
-                var providerConcepts = new List<Provider>();
-                var count = 0;
-                var index = 0;
-                foreach (var entity in GetEntities<Provider>(provider, provider.Providers[0]))
-                {
-                    providerConcepts.Add(entity);
-                    if (providerConcepts.Count == 250 * 1000)
-                    {
-                        saver.SaveEntityLookup(providerConcepts, index, Settings.Current.CDMFolder);
-                        index++;
-                        providerConcepts.Clear();
-                    }
-
-                    count++;
-                }
-
-                if (providerConcepts.Count > 0)
-                    saver.SaveEntityLookup(providerConcepts, index, Settings.Current.CDMFolder);
-
-                Console.WriteLine("[Creating lookup] Providers was loaded");
+                providerConcepts.Add(entity);
             }
+
+            if (providerConcepts.Count > 0)
+                FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.CloudStorageName,
+                    file,
+                    new ProviderDataReader(providerConcepts));
+            //CopyFile(new ProviderDataReader(providerConcepts), file, ",", '"', @"\N");
+
+            Console.WriteLine("[Creating lookup] Providers was loaded");
         }
 
-        private void SaveCareSite(RedshiftSaver saver)
+        private static void SaveCareSite()
         {
             Console.WriteLine("[Creating lookup] Loading care sites...");
 
-            var careSiteConcepts = new List<CareSite>();
-            var count = 0;
-            var index = 0;
+            var file = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}/CARE_SITE/CARE_SITE.txt.gz";
 
             var careSite = Settings.Current.Building.SourceQueryDefinitions.FirstOrDefault(qd =>
                 qd.CareSites != null && QueryDefinition.IsSuitable(qd.Query.Database, Settings.Current.Building.Vendor));
 
-            if (careSite != null)
-            {
-                foreach (var entity in GetEntities<CareSite>(careSite, careSite.CareSites[0]))
-                {
-                    careSiteConcepts.Add(entity);
-                    if (careSiteConcepts.Count == 250 * 1000)
-                    {
-                        saver.SaveEntityLookup(careSiteConcepts, index, Settings.Current.CDMFolder);
-                        index++;
-                        careSiteConcepts.Clear();
-                    }
+            if (careSite == null)
+                return;
 
-                    count++;
-                }
+            var careSiteConcepts = new List<CareSite>();
+            foreach (var entity in GetEntities<CareSite>(careSite, careSite.CareSites[0]))
+            {
+                careSiteConcepts.Add(entity);
             }
 
-            if (count == 0)
+            if (careSiteConcepts.Count == 0)
+            {
                 careSiteConcepts.Add(new CareSite
                 {
                     Id = 0,
@@ -313,43 +311,40 @@ namespace org.ohdsi.cdm.presentation.etl
                     OrganizationId = 0,
                     PlaceOfSvcSourceValue = null
                 });
+            }
 
-            if (careSiteConcepts.Count > 0)
-                saver.SaveEntityLookup(careSiteConcepts, index, Settings.Current.CDMFolder);
+            FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.CloudStorageName,
+                    file,
+                    new CareSiteDataReader(careSiteConcepts));
+
+            //CopyFile(new CareSiteDataReader(careSiteConcepts), file, ",", '"', @"\N");
 
             Console.WriteLine("[Creating lookup] Care sites was loaded");
         }
 
-        private void SaveLocation(RedshiftSaver saver)
+        private static void SaveLocation()
         {
             Console.WriteLine("[Creating lookup] Loading locations...");
+
+            var file = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}/LOCATION/LOCATION.txt.gz";
 
             var location = Settings.Current.Building.SourceQueryDefinitions.FirstOrDefault(qd =>
                 qd.Locations != null && QueryDefinition.IsSuitable(qd.Query.Database, Settings.Current.Building.Vendor));
 
+            if (location == null)
+                return;
+
             var locationConcepts = new List<Location>();
-            var count = 0;
-            var index = 0;
-
-            if (location != null)
+            foreach (var entity in GetEntities<Location>(location, location.Locations[0]))
             {
-                foreach (var entity in GetEntities<Location>(location, location.Locations[0]))
-                {
-                    locationConcepts.Add(entity);
-                    if (locationConcepts.Count == 250 * 1000)
-                    {
-                        saver.SaveEntityLookup(locationConcepts, index, Settings.Current.CDMFolder, Settings.Current.Building.Cdm);
-                        index++;
-                        locationConcepts.Clear();
-                    }
-
-                    count++;
-                }
-
+                locationConcepts.Add(entity);
             }
 
             if (locationConcepts.Count > 0)
-                saver.SaveEntityLookup(locationConcepts, index, Settings.Current.CDMFolder, Settings.Current.Building.Cdm);
+                FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.CloudStorageName,
+                    file,
+                    new LocationDataReader54(locationConcepts));
+            //CopyFile(new LocationDataReader54(locationConcepts), file, ",", '"', @"\N");
 
             Console.WriteLine("[Creating lookup] Locations was loaded " + Settings.Current.Building.Cdm);
         }

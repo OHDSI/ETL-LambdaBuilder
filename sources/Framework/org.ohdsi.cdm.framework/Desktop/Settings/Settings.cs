@@ -159,8 +159,8 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
             {
                 CdmVersions.V52 => "v5.2",
                 CdmVersions.V53 => "v5.3",
-                CdmVersions.V6 => "v6.0",
-                _ => "v5.2",
+                CdmVersions.V54 => "v5.4",
+                _ => "v5.4",
             };
         }
 

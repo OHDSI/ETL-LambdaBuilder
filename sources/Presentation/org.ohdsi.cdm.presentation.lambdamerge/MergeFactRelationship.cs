@@ -1,9 +1,7 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
-using CsvHelper;
 using org.ohdsi.cdm.framework.common.DataReaders.v5;
-using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Omop;
 using System;
 using System.Collections.Concurrent;
@@ -54,7 +52,8 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
                         using (var bufferedStream = new BufferedStream(responseStream))
                         using (var gzipStream = new GZipStream(bufferedStream, CompressionMode.Decompress))
                         using (var reader = new StreamReader(gzipStream, Encoding.Default))
-                        using (var csv = new CsvReader(reader, _settings.CsvConfiguration))
+                        using (var csv = framework.common.Helpers.CsvHelper.CreateCsvReader(reader))
+                        //using (var csv = new CsvReader(reader, _settings.CsvConfiguration))
                         {
 
                             while (csv.Read())
@@ -114,12 +113,12 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
                 });
 
                 var reader = new FactRelationshipDataReader(factRelationships);
-                return reader.GetStream(framework.common.Enums.S3StorageType.CSV);
+                return framework.common.Helpers.CsvHelper.GetStreamCsv(reader).First();
             }
             else
             {
                 var reader = new FactRelationshipDataReader(Cleanup(factRelationships));
-                return reader.GetStream(framework.common.Enums.S3StorageType.CSV);
+                return framework.common.Helpers.CsvHelper.GetStreamCsv(reader).First();
             }
         }
 
@@ -209,7 +208,8 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
                     using (var bufferedStream = new BufferedStream(responseStream))
                     using (var gzipStream = new GZipStream(bufferedStream, CompressionMode.Decompress))
                     using (var reader = new StreamReader(gzipStream, Encoding.Default))
-                    using (var csv = new CsvReader(reader, _settings.CsvConfiguration))
+                    using (var csv = framework.common.Helpers.CsvHelper.CreateCsvReader(reader))
+                    //using (var csv = new CsvReader(reader, _settings.CsvConfiguration))
                     {
                         while (csv.Read())
                         {

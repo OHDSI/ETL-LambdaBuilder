@@ -7,6 +7,7 @@ using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Extensions;
 using System.Data;
 using System.Diagnostics;
+using static Azure.Core.HttpHeader;
 
 
 namespace org.ohdsi.cdm.presentation.azurebuilder
@@ -222,7 +223,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
 
                 var fileName = $"{AzureHelper.Path}/{Settings.Current.CDMFolder}/{table}.{chunkId}.{prefix}.{personIds}.{rowCount}.txt.gz";
 
-                using var ms = reader.GetStream(S3StorageType.CSV);
+                using var ms = framework.common.Helpers.CsvHelper.GetStreamCsv(reader).First();
                 AzureHelper.UploadStream(fileName, ms);
             }
             catch (Exception e)
