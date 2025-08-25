@@ -4,9 +4,9 @@ using System.Data;
 
 namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
 {
-    public class EpisodeEventDataReader(IEnumerable<EpisodeEvent> batch, KeyMasterOffsetManager o) : IDataReader
+    public class ConditionOccurrenceDataReader(List<ConditionOccurrence> batch, KeyMasterOffsetManager o) : IDataReader
     {
-        private readonly IEnumerator<EpisodeEvent> _enumerator = batch?.GetEnumerator();
+        private readonly IEnumerator<ConditionOccurrence> _enumerator = batch?.GetEnumerator();
         private readonly KeyMasterOffsetManager _offset = o;
 
         public bool Read()
@@ -16,22 +16,70 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
 
         public int FieldCount
         {
-            get { return 3; }
+            get { return 16; }
         }
 
-
+        // is this called only because the datatype specific methods are not implemented?  
+        // probably performance to be gained by not passing object back?
         public object GetValue(int i)
         {
-            if (_enumerator.Current == null) return null;
-
             switch (i)
             {
                 case 0:
-                    return _offset.GetId(_enumerator.Current.PersonId, _enumerator.Current.EpisodeId);
+                    {
+                        if (_offset.GetKeyOffset(_enumerator.Current.PersonId).ConditionOccurrenceIdChanged)
+                            return _offset.GetId(_enumerator.Current.PersonId, _enumerator.Current.Id);
+                        else 
+                            return _enumerator.Current.Id;
+                    }
                 case 1:
-                    return _offset.GetId(_enumerator.Current.PersonId, _enumerator.Current.EventId);
+                    return _enumerator.Current.PersonId;
                 case 2:
-                    return _enumerator.Current.EpisodeEventFieldConceptId;
+                    return _enumerator.Current.ConceptId;
+                case 3:
+                    return _enumerator.Current.StartDate;
+                case 4:
+                    return _enumerator.Current.StartDate;
+                case 5:
+                    return _enumerator.Current.EndDate;
+                case 6:
+                    return _enumerator.Current.EndDate;
+                case 7:
+                    return _enumerator.Current.TypeConceptId;
+                case 8:
+                    return _enumerator.Current.StopReason;
+                case 9:
+                    return _enumerator.Current.ProviderId == 0 ? null : _enumerator.Current.ProviderId;
+                case 10:
+                    if (_enumerator.Current.VisitOccurrenceId.HasValue)
+                    {
+                        if (_offset.GetKeyOffset(_enumerator.Current.PersonId).VisitOccurrenceIdChanged)
+                            return _offset.GetId(_enumerator.Current.PersonId,
+                                _enumerator.Current.VisitOccurrenceId.Value);
+
+                        return _enumerator.Current.VisitOccurrenceId.Value;
+                    }
+
+                    return null;
+                case 11:
+                    if (_enumerator.Current.VisitDetailId.HasValue)
+                    {
+                        if (_offset.GetKeyOffset(_enumerator.Current.PersonId).VisitDetailIdChanged)
+                            return _offset.GetId(_enumerator.Current.PersonId,
+                                _enumerator.Current.VisitDetailId.Value);
+
+                        return _enumerator.Current.VisitDetailId;
+                    }
+
+                    return null;
+                case 12:
+                    return _enumerator.Current.StatusConceptId;
+                case 13:
+                    return _enumerator.Current.SourceValue;
+                case 14:
+                    return _enumerator.Current.SourceConceptId;
+                case 15:
+                    return _enumerator.Current.StatusSourceValue;
                 default:
                     throw new NotImplementedException();
             }
@@ -41,15 +89,28 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
         {
             return i switch
             {
-                0 => "episode_id",
-                1 => "event_id",
-                2 => "episode_event_field_concept_id",
+                0 => "condition_occurrence_id",
+                1 => "person_id",
+                2 => "condition_concept_id",
+                3 => "condition_start_date",
+                4 => "condition_start_datetime",
+                5 => "condition_end_date",
+                6 => "condition_end_datetime",
+                7 => "condition_type_concept_id",
+                8 => "stop_reason",
+                9 => "provider_id",
+                10 => "visit_occurrence_id",
+                11 => "visit_detail_id",
+                12 => "condition_status_concept_id",
+                13 => "condition_source_value",
+                14 => "condition_source_concept_id",
+                15 => "condition_status_source_value",
                 _ => throw new NotImplementedException(),
             };
         }
 
-
         #region implementationn not required for SqlBulkCopy
+
         public bool NextResult()
         {
             throw new NotImplementedException();
@@ -142,6 +203,19 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
                 0 => typeof(long),
                 1 => typeof(long),
                 2 => typeof(long),
+                3 => typeof(DateTime),
+                4 => typeof(DateTime),
+                5 => typeof(DateTime?),
+                6 => typeof(DateTime),
+                7 => typeof(long?),
+                8 => typeof(string),
+                9 => typeof(long?),
+                10 => typeof(long?),
+                11 => typeof(long?),
+                12 => typeof(long),
+                13 => typeof(string),
+                14 => typeof(long),
+                15 => typeof(string),
                 _ => throw new NotImplementedException(),
             };
         }
@@ -207,6 +281,7 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
         {
             get { throw new NotImplementedException(); }
         }
+
         #endregion
     }
 }

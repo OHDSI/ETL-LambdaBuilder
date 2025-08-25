@@ -1,13 +1,11 @@
-﻿using org.ohdsi.cdm.framework.common.Builder;
-using org.ohdsi.cdm.framework.common.Omop;
+﻿using org.ohdsi.cdm.framework.common.Omop;
 using System.Data;
 
 namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
 {
-    public class EpisodeEventDataReader(IEnumerable<EpisodeEvent> batch, KeyMasterOffsetManager o) : IDataReader
+    public class LocationDataReader(List<Location> batch) : IDataReader
     {
-        private readonly IEnumerator<EpisodeEvent> _enumerator = batch?.GetEnumerator();
-        private readonly KeyMasterOffsetManager _offset = o;
+        private readonly IEnumerator<Location> _enumerator = batch?.GetEnumerator();
 
         public bool Read()
         {
@@ -16,38 +14,50 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
 
         public int FieldCount
         {
-            get { return 3; }
+            get { return 12; }
         }
-
 
         public object GetValue(int i)
         {
             if (_enumerator.Current == null) return null;
 
-            switch (i)
+            return i switch
             {
-                case 0:
-                    return _offset.GetId(_enumerator.Current.PersonId, _enumerator.Current.EpisodeId);
-                case 1:
-                    return _offset.GetId(_enumerator.Current.PersonId, _enumerator.Current.EventId);
-                case 2:
-                    return _enumerator.Current.EpisodeEventFieldConceptId;
-                default:
-                    throw new NotImplementedException();
-            }
+                0 => _enumerator.Current.Id,
+                1 => _enumerator.Current.Address1,
+                2 => _enumerator.Current.Address2,
+                3 => _enumerator.Current.City,
+                4 => _enumerator.Current.State,
+                5 => _enumerator.Current.Zip,
+                6 => _enumerator.Current.County,
+                7 => _enumerator.Current.SourceValue,
+                8 => _enumerator.Current.CountryConceptId,
+                9 => _enumerator.Current.CountrySourceValue,
+                10 => _enumerator.Current.Latitude,
+                11 => _enumerator.Current.Longitude,
+                _ => throw new NotImplementedException(),
+            };
         }
 
         public string GetName(int i)
         {
             return i switch
             {
-                0 => "episode_id",
-                1 => "event_id",
-                2 => "episode_event_field_concept_id",
+                0 => "location_id",
+                1 => "address_1",
+                2 => "address_2",
+                3 => "city",
+                4 => "state",
+                5 => "zip",
+                6 => "county",
+                7 => "location_source_value",
+                8 => "country_concept_id",
+                9 => "country_source_value",
+                10 => "latitude",
+                11 => "longitude",
                 _ => throw new NotImplementedException(),
             };
         }
-
 
         #region implementationn not required for SqlBulkCopy
         public bool NextResult()
@@ -140,8 +150,17 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
             return i switch
             {
                 0 => typeof(long),
-                1 => typeof(long),
-                2 => typeof(long),
+                1 => typeof(string),
+                2 => typeof(string),
+                3 => typeof(string),
+                4 => typeof(string),
+                5 => typeof(string),
+                6 => typeof(string),
+                7 => typeof(string),
+                8 => typeof(long),
+                9 => typeof(string),
+                10 => typeof(decimal),
+                11 => typeof(decimal),
                 _ => throw new NotImplementedException(),
             };
         }

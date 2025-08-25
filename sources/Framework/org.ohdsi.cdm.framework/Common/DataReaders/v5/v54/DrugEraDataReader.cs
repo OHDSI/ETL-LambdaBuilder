@@ -4,9 +4,9 @@ using System.Data;
 
 namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
 {
-    public class EpisodeEventDataReader(IEnumerable<EpisodeEvent> batch, KeyMasterOffsetManager o) : IDataReader
+    public class DrugEraDataReader(List<EraEntity> batch, KeyMasterOffsetManager o) : IDataReader
     {
-        private readonly IEnumerator<EpisodeEvent> _enumerator = batch?.GetEnumerator();
+        private readonly IEnumerator<EraEntity> _enumerator = batch?.GetEnumerator();
         private readonly KeyMasterOffsetManager _offset = o;
 
         public bool Read()
@@ -16,40 +16,43 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
 
         public int FieldCount
         {
-            get { return 3; }
+            get { return 7; }
         }
-
 
         public object GetValue(int i)
         {
             if (_enumerator.Current == null) return null;
 
-            switch (i)
+            return i switch
             {
-                case 0:
-                    return _offset.GetId(_enumerator.Current.PersonId, _enumerator.Current.EpisodeId);
-                case 1:
-                    return _offset.GetId(_enumerator.Current.PersonId, _enumerator.Current.EventId);
-                case 2:
-                    return _enumerator.Current.EpisodeEventFieldConceptId;
-                default:
-                    throw new NotImplementedException();
-            }
+                0 => _offset.GetId(_enumerator.Current.PersonId, _enumerator.Current.Id),
+                1 => _enumerator.Current.PersonId,
+                2 => _enumerator.Current.ConceptId,
+                3 => _enumerator.Current.StartDate,
+                4 => _enumerator.Current.EndDate,
+                5 => _enumerator.Current.OccurrenceCount,
+                6 => _enumerator.Current.GapDays,
+                _ => throw new NotImplementedException(),
+            };
         }
 
         public string GetName(int i)
         {
             return i switch
             {
-                0 => "episode_id",
-                1 => "event_id",
-                2 => "episode_event_field_concept_id",
+                0 => "drug_era_id",
+                1 => "person_id",
+                2 => "drug_concept_id",
+                3 => "drug_era_start_date",
+                4 => "drug_era_end_date",
+                5 => "drug_exposure_count",
+                6 => "gap_days",
                 _ => throw new NotImplementedException(),
             };
         }
 
-
         #region implementationn not required for SqlBulkCopy
+
         public bool NextResult()
         {
             throw new NotImplementedException();
@@ -142,6 +145,10 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
                 0 => typeof(long),
                 1 => typeof(long),
                 2 => typeof(long),
+                3 => typeof(DateTime),
+                4 => typeof(DateTime?),
+                5 => typeof(int),
+                6 => typeof(int),
                 _ => throw new NotImplementedException(),
             };
         }
@@ -207,6 +214,7 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
         {
             get { throw new NotImplementedException(); }
         }
+
         #endregion
     }
 }

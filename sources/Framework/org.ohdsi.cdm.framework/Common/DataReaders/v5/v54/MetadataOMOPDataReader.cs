@@ -1,13 +1,11 @@
-﻿using org.ohdsi.cdm.framework.common.Builder;
-using org.ohdsi.cdm.framework.common.Omop;
+﻿using org.ohdsi.cdm.framework.common.Omop;
 using System.Data;
 
 namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
 {
-    public class EpisodeEventDataReader(IEnumerable<EpisodeEvent> batch, KeyMasterOffsetManager o) : IDataReader
+    public class MetadataOMOPDataReader(List<MetadataOMOP> batch) : IDataReader
     {
-        private readonly IEnumerator<EpisodeEvent> _enumerator = batch?.GetEnumerator();
-        private readonly KeyMasterOffsetManager _offset = o;
+        private readonly IEnumerator<MetadataOMOP> _enumerator = batch?.GetEnumerator();
 
         public bool Read()
         {
@@ -16,40 +14,47 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
 
         public int FieldCount
         {
-            get { return 3; }
+            get { return 9; }
         }
-
 
         public object GetValue(int i)
         {
             if (_enumerator.Current == null) return null;
 
-            switch (i)
+            return i switch
             {
-                case 0:
-                    return _offset.GetId(_enumerator.Current.PersonId, _enumerator.Current.EpisodeId);
-                case 1:
-                    return _offset.GetId(_enumerator.Current.PersonId, _enumerator.Current.EventId);
-                case 2:
-                    return _enumerator.Current.EpisodeEventFieldConceptId;
-                default:
-                    throw new NotImplementedException();
-            }
+                0 => _enumerator.Current.Id,
+                1 => _enumerator.Current.MetadataConceptId,
+                2 => _enumerator.Current.MetadataTypeConceptId,
+                3 => _enumerator.Current.Name,
+                4 => _enumerator.Current.ValueAsString,
+                5 => _enumerator.Current.ValueAsConceptId,
+                6 => _enumerator.Current.ValueAsNumber,
+                7 => _enumerator.Current.MetadataDate,
+                8 => _enumerator.Current.MetadataDate,
+                _ => throw new NotImplementedException(),
+            };
         }
 
         public string GetName(int i)
         {
             return i switch
             {
-                0 => "episode_id",
-                1 => "event_id",
-                2 => "episode_event_field_concept_id",
+                0 => "metadata_id",
+                1 => "metadata_concept_id",
+                2 => "metadata_type_concept_id",
+                3 => "name",
+                4 => "value_as_string",
+                5 => "value_as_concept_id",
+                6 => "value_as_number",
+                7 => "metadata_date",
+                8 => "metadata_datetime",
                 _ => throw new NotImplementedException(),
             };
         }
 
-
         #region implementationn not required for SqlBulkCopy
+
         public bool NextResult()
         {
             throw new NotImplementedException();
@@ -137,11 +142,18 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
 
         public Type GetFieldType(int i)
         {
+
             return i switch
             {
-                0 => typeof(long),
+                0 => typeof(int),
                 1 => typeof(long),
                 2 => typeof(long),
+                3 => typeof(string),
+                4 => typeof(string),
+                5 => typeof(long),
+                6 => typeof(decimal),
+                7 => typeof(DateTime),
+                8 => typeof(DateTime),
                 _ => throw new NotImplementedException(),
             };
         }
@@ -207,6 +219,7 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
         {
             get { throw new NotImplementedException(); }
         }
+
         #endregion
     }
 }

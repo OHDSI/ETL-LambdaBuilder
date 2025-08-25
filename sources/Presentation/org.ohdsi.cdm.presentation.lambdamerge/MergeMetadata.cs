@@ -1,9 +1,7 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
-using org.ohdsi.cdm.framework.common.DataReaders.v5;
 using org.ohdsi.cdm.framework.common.DataReaders.v5.v54;
-using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Omop;
 using System;
 using System.Collections.Concurrent;
@@ -39,18 +37,8 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
 
         public MemoryStream GetMetadataCsvStream()
         {
-            var cdm = _settings.Vendor.CdmVersion;
-
-            if (cdm == CdmVersions.V54)
-            {
-                var reader = new MetadataOMOPDataReader54(_metadata);
-                return framework.common.Helpers.CsvHelper.GetStreamCsv(reader).First();
-            }
-            else
-            {
-                var reader = new MetadataOMOPDataReader(_metadata);
-                return framework.common.Helpers.CsvHelper.GetStreamCsv(reader).First();
-            }
+            var reader = new MetadataOMOPDataReader(_metadata);
+            return framework.common.Helpers.CsvHelper.GetStreamCsv(reader).First();
         }
 
         private List<MetadataOMOP> CreateMetadata()

@@ -4,9 +4,9 @@ using System.Data;
 
 namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
 {
-    public class EpisodeEventDataReader(IEnumerable<EpisodeEvent> batch, KeyMasterOffsetManager o) : IDataReader
+    public class PayerPlanPeriodDataReader(List<PayerPlanPeriod> batch, KeyMasterOffsetManager o) : IDataReader
     {
-        private readonly IEnumerator<EpisodeEvent> _enumerator = batch?.GetEnumerator();
+        private readonly IEnumerator<PayerPlanPeriod> _enumerator = batch?.GetEnumerator();
         private readonly KeyMasterOffsetManager _offset = o;
 
         public bool Read()
@@ -16,9 +16,8 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
 
         public int FieldCount
         {
-            get { return 3; }
+            get { return 17; }
         }
-
 
         public object GetValue(int i)
         {
@@ -27,29 +26,78 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
             switch (i)
             {
                 case 0:
-                    return _offset.GetId(_enumerator.Current.PersonId, _enumerator.Current.EpisodeId);
+                    {
+                        if (_offset.GetKeyOffset(_enumerator.Current.PersonId).PayerPlanPeriodIdChanged)
+                            return _offset.GetId(_enumerator.Current.PersonId, _enumerator.Current.Id);
+                        else
+                            return _enumerator.Current.Id;
+                    }
                 case 1:
-                    return _offset.GetId(_enumerator.Current.PersonId, _enumerator.Current.EventId);
+                    return _enumerator.Current.PersonId;
                 case 2:
-                    return _enumerator.Current.EpisodeEventFieldConceptId;
+                    return _enumerator.Current.StartDate;
+                case 3:
+                    return _enumerator.Current.EndDate;
+                case 4:
+                    return _enumerator.Current.PayerConceptId;
+                case 5:
+                    return _enumerator.Current.PayerSourceValue;
+                case 6:
+                    return _enumerator.Current.PayerSourceConceptId;
+                case 7:
+                    return _enumerator.Current.PlanConceptId;
+                case 8:
+                    return _enumerator.Current.PlanSourceValue;
+                case 9:
+                    return _enumerator.Current.PlanSourceConceptId;
+                case 10:
+                    return _enumerator.Current.SponsorConceptId;
+                case 11:
+                    return _enumerator.Current.SponsorSourceValue;
+                case 12:
+                    return _enumerator.Current.SponsorSourceConceptId;
+                case 13:
+                    return _enumerator.Current.FamilySourceValue;
+                case 14:
+                    return _enumerator.Current.StopReasonConceptId;
+                case 15:
+                    return _enumerator.Current.StopReasonSourceValue;
+                case 16:
+                    return _enumerator.Current.StopReasonSourceConceptId;
                 default:
                     throw new NotImplementedException();
             }
+
+           
         }
 
         public string GetName(int i)
         {
             return i switch
             {
-                0 => "episode_id",
-                1 => "event_id",
-                2 => "episode_event_field_concept_id",
+                0 => "payer_plan_period_id",
+                1 => "person_id",
+                2 => "payer_plan_period_start_date",
+                3 => "payer_plan_period_end_date",
+                4 => "payer_concept_id",
+                5 => "payer_source_value",
+                6 => "payer_source_concept_id",
+                7 => "plan_concept_id",
+                8 => "plan_source_value",
+                9 => "plan_source_concept_id",
+                10 => "sponsor_concept_id",
+                11 => "sponsor_source_value",
+                12 => "sponsor_source_concept_id",
+                13 => "family_source_value",
+                14 => "stop_reason_concept_id",
+                15 => "stop_reason_source_value",
+                16 => "stop_reason_source_concept_id",
                 _ => throw new NotImplementedException(),
             };
         }
 
-
         #region implementationn not required for SqlBulkCopy
+
         public bool NextResult()
         {
             throw new NotImplementedException();
@@ -141,7 +189,21 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
             {
                 0 => typeof(long),
                 1 => typeof(long),
-                2 => typeof(long),
+                2 => typeof(DateTime),
+                3 => typeof(DateTime?),
+                4 => typeof(long),
+                5 => typeof(string),
+                6 => typeof(long),
+                7 => typeof(long),
+                8 => typeof(string),
+                9 => typeof(long),
+                10 => typeof(long),
+                11 => typeof(string),
+                12 => typeof(long),
+                13 => typeof(string),
+                14 => typeof(long),
+                15 => typeof(string),
+                16 => typeof(long),
                 _ => throw new NotImplementedException(),
             };
         }
@@ -207,6 +269,7 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
         {
             get { throw new NotImplementedException(); }
         }
+
         #endregion
     }
 }

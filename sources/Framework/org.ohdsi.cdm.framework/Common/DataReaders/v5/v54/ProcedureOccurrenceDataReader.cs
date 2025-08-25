@@ -4,9 +4,9 @@ using System.Data;
 
 namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
 {
-    public class EpisodeEventDataReader(IEnumerable<EpisodeEvent> batch, KeyMasterOffsetManager o) : IDataReader
+    public class ProcedureOccurrenceDataReader(List<ProcedureOccurrence> batch, KeyMasterOffsetManager o) : IDataReader
     {
-        private readonly IEnumerator<EpisodeEvent> _enumerator = batch?.GetEnumerator();
+        private readonly IEnumerator<ProcedureOccurrence> _enumerator = batch?.GetEnumerator();
         private readonly KeyMasterOffsetManager _offset = o;
 
         public bool Read()
@@ -16,9 +16,8 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
 
         public int FieldCount
         {
-            get { return 3; }
+            get { return 16; }
         }
-
 
         public object GetValue(int i)
         {
@@ -27,11 +26,62 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
             switch (i)
             {
                 case 0:
-                    return _offset.GetId(_enumerator.Current.PersonId, _enumerator.Current.EpisodeId);
+                    //return _offset.GetId(_enumerator.Current.PersonId, _enumerator.Current.Id);
+                    {
+                        if (_offset.GetKeyOffset(_enumerator.Current.PersonId).ProcedureOccurrenceIdChanged)
+                            return _offset.GetId(_enumerator.Current.PersonId, _enumerator.Current.Id);
+                        else
+                            return _enumerator.Current.Id;
+                    }
                 case 1:
-                    return _offset.GetId(_enumerator.Current.PersonId, _enumerator.Current.EventId);
+                    return _enumerator.Current.PersonId;
                 case 2:
-                    return _enumerator.Current.EpisodeEventFieldConceptId;
+                    return _enumerator.Current.ConceptId;
+                case 3:
+                    return _enumerator.Current.StartDate;
+                case 4:
+                    return _enumerator.Current.StartDate;
+                case 5:
+                    return _enumerator.Current.EndDate;
+                case 6:
+                    return _enumerator.Current.EndDate;
+                case 7:
+                    return _enumerator.Current.TypeConceptId;
+                case 8:
+                    return _enumerator.Current.ModifierConceptId;
+                case 9:
+                    return _enumerator.Current.Quantity;
+                case 10:
+                    return _enumerator.Current.ProviderId == 0 ? null : _enumerator.Current.ProviderId;
+                case 11:
+                    if (_enumerator.Current.VisitOccurrenceId.HasValue)
+                    {
+                        if (_offset.GetKeyOffset(_enumerator.Current.PersonId).VisitOccurrenceIdChanged)
+                            return _offset.GetId(_enumerator.Current.PersonId,
+                                _enumerator.Current.VisitOccurrenceId.Value);
+
+                        return _enumerator.Current.VisitOccurrenceId.Value;
+                    }
+
+                    return null;
+                case 12:
+                    if (_enumerator.Current.VisitDetailId.HasValue)
+                    {
+                        if (_offset.GetKeyOffset(_enumerator.Current.PersonId).VisitDetailIdChanged)
+                            return _offset.GetId(_enumerator.Current.PersonId,
+                                _enumerator.Current.VisitDetailId.Value);
+
+                        return _enumerator.Current.VisitDetailId;
+                    }
+
+                    return null;
+                case 13:
+                    return _enumerator.Current.SourceValue;
+                case 14:
+                    return _enumerator.Current.SourceConceptId;
+                case 15:
+                    return _enumerator.Current.QualifierSourceValue;
+
                 default:
                     throw new NotImplementedException();
             }
@@ -41,15 +91,29 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
         {
             return i switch
             {
-                0 => "episode_id",
-                1 => "event_id",
-                2 => "episode_event_field_concept_id",
+                0 => "procedure_occurrence_id",
+                1 => "person_id",
+                2 => "procedure_concept_id",
+                3 => "procedure_date",
+                4 => "procedure_datetime",
+                5 => "procedure_end_date",
+                6 => "procedure_end_datetime",
+                7 => "procedure_type_concept_id",
+                8 => "modifier_concept_id",
+                9 => "quantity",
+                10 => "provider_id",
+                11 => "visit_occurrence_id",
+                12 => "visit_detail_id",
+                13 => "procedure_source_value",
+                14 => "procedure_source_concept_id",
+                15 => "modifier_source_value",
                 _ => throw new NotImplementedException(),
             };
         }
 
 
         #region implementationn not required for SqlBulkCopy
+
         public bool NextResult()
         {
             throw new NotImplementedException();
@@ -142,6 +206,19 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
                 0 => typeof(long),
                 1 => typeof(long),
                 2 => typeof(long),
+                3 => typeof(DateTime),
+                4 => typeof(DateTime),
+                5 => typeof(DateTime),
+                6 => typeof(DateTime),
+                7 => typeof(long?),
+                8 => typeof(long),
+                9 => typeof(int?),
+                10 => typeof(long?),
+                11 => typeof(long?),
+                12 => typeof(long?),
+                13 => typeof(string),
+                14 => typeof(long),
+                15 => typeof(string),
                 _ => throw new NotImplementedException(),
             };
         }
@@ -207,6 +284,8 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
         {
             get { throw new NotImplementedException(); }
         }
+
         #endregion
+
     }
 }

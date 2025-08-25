@@ -1,13 +1,8 @@
 ﻿using org.ohdsi.cdm.framework.common.Builder;
 using org.ohdsi.cdm.framework.common.DataReaders.v5;
-using org.ohdsi.cdm.framework.common.DataReaders.v5.v52;
-using org.ohdsi.cdm.framework.common.DataReaders.v5.v53;
 using org.ohdsi.cdm.framework.common.DataReaders.v5.v54;
-using org.ohdsi.cdm.framework.common.Enums;
-using org.ohdsi.cdm.framework.common.Extensions;
 using System.Data;
 using System.Diagnostics;
-using static Azure.Core.HttpHeader;
 
 
 namespace org.ohdsi.cdm.presentation.azurebuilder
@@ -33,7 +28,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                         return chunk.ObservationPeriods.Count == 0
                             ? null
                             : new Tuple<IDataReader, int>(
-                                new ObservationPeriodDataReader53([.. chunk.ObservationPeriods], _offsetManager),
+                                new ObservationPeriodDataReader([.. chunk.ObservationPeriods], _offsetManager),
                                 chunk.ObservationPeriods.Count);
                     }
 
@@ -42,7 +37,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                         return chunk.PayerPlanPeriods.Count == 0
                             ? null
                             : new Tuple<IDataReader, int>(
-                                new PayerPlanPeriodDataReader53([.. chunk.PayerPlanPeriods], _offsetManager),
+                                new PayerPlanPeriodDataReader([.. chunk.PayerPlanPeriods], _offsetManager),
                                 chunk.PayerPlanPeriods.Count);
                     }
 
@@ -50,7 +45,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                     {
                         return chunk.Deaths.Count == 0
                             ? null
-                            : new Tuple<IDataReader, int>(new DeathDataReader52([.. chunk.Deaths]),
+                            : new Tuple<IDataReader, int>(new DeathDataReader([.. chunk.Deaths]),
                                 chunk.Deaths.Count);
                     }
 
@@ -58,7 +53,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                     {
                         return chunk.DrugExposures.Count == 0
                             ? null
-                            : new Tuple<IDataReader, int>(new DrugExposureDataReader53([.. chunk.DrugExposures], _offsetManager),
+                            : new Tuple<IDataReader, int>(new DrugExposureDataReader([.. chunk.DrugExposures], _offsetManager),
                                 chunk.DrugExposures.Count);
                     }
 
@@ -66,7 +61,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                     {
                         return chunk.Observations.Count == 0
                             ? null
-                            : new Tuple<IDataReader, int>(new ObservationDataReader54([.. chunk.Observations], _offsetManager),
+                            : new Tuple<IDataReader, int>(new ObservationDataReader([.. chunk.Observations], _offsetManager),
                             chunk.Observations.Count);
                     }
 
@@ -75,7 +70,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                         return chunk.VisitOccurrences.Count == 0
                             ? null
                             : new Tuple<IDataReader, int>(
-                            new VisitOccurrenceDataReader54([.. chunk.VisitOccurrences], _offsetManager),
+                            new VisitOccurrenceDataReader([.. chunk.VisitOccurrences], _offsetManager),
                             chunk.VisitOccurrences.Count);
                     }
 
@@ -83,7 +78,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                     {
                         return chunk.VisitDetails.Count == 0
                         ? null
-                        : new Tuple<IDataReader, int>(new VisitDetailDataReader54([.. chunk.VisitDetails], _offsetManager),
+                        : new Tuple<IDataReader, int>(new VisitDetailDataReader([.. chunk.VisitDetails], _offsetManager),
                             chunk.VisitDetails.Count);
                     }
 
@@ -92,7 +87,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                         return chunk.ProcedureOccurrences.Count == 0
                         ? null
                         : new Tuple<IDataReader, int>(
-                            new ProcedureOccurrenceDataReader54([.. chunk.ProcedureOccurrences], _offsetManager),
+                            new ProcedureOccurrenceDataReader([.. chunk.ProcedureOccurrences], _offsetManager),
                             chunk.ProcedureOccurrences.Count);
                     }
 
@@ -119,7 +114,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                         return chunk.DeviceExposure.Count == 0
                           ? null
                           : new Tuple<IDataReader, int>(
-                              new DeviceExposureDataReader54([.. chunk.DeviceExposure], _offsetManager),
+                              new DeviceExposureDataReader([.. chunk.DeviceExposure], _offsetManager),
                               chunk.DeviceExposure.Count);
                     }
 
@@ -128,7 +123,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                         return chunk.Measurements.Count == 0
                         ? null
                         : new Tuple<IDataReader, int>(
-                            new MeasurementDataReader54([.. chunk.Measurements], _offsetManager),
+                            new MeasurementDataReader([.. chunk.Measurements], _offsetManager),
                             chunk.Measurements.Count);
                     }
 
@@ -146,7 +141,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                         return chunk.ConditionOccurrences.Count == 0
                             ? null
                             : new Tuple<IDataReader, int>(
-                                new ConditionOccurrenceDataReader53([.. chunk.ConditionOccurrences], _offsetManager),
+                                new ConditionOccurrenceDataReader([.. chunk.ConditionOccurrences], _offsetManager),
                                 chunk.ConditionOccurrences.Count);
                     }
 
@@ -155,7 +150,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                         return chunk.Cost.Count == 0
                             ? null
                             : new Tuple<IDataReader, int>(
-                                new CostDataReader52([.. chunk.Cost], _offsetManager),
+                                new CostDataReader([.. chunk.Cost], _offsetManager),
                                 chunk.Cost.Count);
                     }
 
@@ -164,7 +159,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                         return chunk.Note.Count == 0
                         ? null
                         : new Tuple<IDataReader, int>(
-                            new NoteDataReader54([.. chunk.Note], _offsetManager),
+                            new NoteDataReader([.. chunk.Note], _offsetManager),
                             chunk.Note.Count);
                     }
 
@@ -191,7 +186,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                         return chunk.Episode.Count == 0
                         ? null
                         : new Tuple<IDataReader, int>(
-                            new EpisodeDataReader54([.. chunk.Episode], _offsetManager),
+                            new EpisodeDataReader([.. chunk.Episode], _offsetManager),
                             chunk.Episode.Count);
                     }
 

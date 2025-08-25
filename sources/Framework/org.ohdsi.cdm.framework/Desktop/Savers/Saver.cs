@@ -1,13 +1,14 @@
 ﻿using org.ohdsi.cdm.framework.common.Builder;
 using org.ohdsi.cdm.framework.common.DataReaders.v5;
-using org.ohdsi.cdm.framework.common.DataReaders.v5.v52;
-using org.ohdsi.cdm.framework.common.DataReaders.v5.v53;
+using org.ohdsi.cdm.framework.common.DataReaders.v5.v54;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Omop;
+using org.ohdsi.cdm.framework.common.DataReaders.v5;
+using org.ohdsi.cdm.framework.common.DataReaders.v5.v54;
 using org.ohdsi.cdm.framework.desktop.DataReaders;
 using org.ohdsi.cdm.framework.desktop.Enums;
 using System.Data;
-using cdm6 = org.ohdsi.cdm.framework.common.DataReaders.v6;
+
 
 namespace org.ohdsi.cdm.framework.desktop.Savers
 {
@@ -43,10 +44,7 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
 
                         foreach (var list in SplitList(chunk.ObservationPeriods))
                         {
-                            if (Settings.Settings.Current.Building.Cdm == CdmVersions.V53)
-                                yield return new ObservationPeriodDataReader53(list, _offsetManager);
-                            else
-                                yield return new ObservationPeriodDataReader52(list, _offsetManager);
+                            yield return new ObservationPeriodDataReader(list, _offsetManager);
                         }
 
                         break;
@@ -56,10 +54,7 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
                     {
                         foreach (var list in SplitList(chunk.PayerPlanPeriods))
                         {
-                            if (Settings.Settings.Current.Building.Cdm == CdmVersions.V53)
-                                yield return new PayerPlanPeriodDataReader53(list, _offsetManager);
-                            else
-                                yield return new PayerPlanPeriodDataReader(list, _offsetManager);
+                            yield return new PayerPlanPeriodDataReader(list, _offsetManager);
                         }
                         break;
                     }
@@ -68,7 +63,7 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
                     {
                         foreach (var list in SplitList(chunk.Deaths))
                         {
-                            yield return new DeathDataReader52(list);
+                            yield return new DeathDataReader(list);
                         }
 
                         break;
@@ -78,10 +73,7 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
                     {
                         foreach (var list in SplitList(chunk.DrugExposures))
                         {
-                            if (Settings.Settings.Current.Building.Cdm == CdmVersions.V53)
-                                yield return new DrugExposureDataReader53(list, _offsetManager);
-                            else
-                                yield return new DrugExposureDataReader52(list, _offsetManager);
+                            yield return new DrugExposureDataReader(list, _offsetManager);
                         }
                         break;
                     }
@@ -91,10 +83,7 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
                     {
                         foreach (var list in SplitList(chunk.Observations))
                         {
-                            if (Settings.Settings.Current.Building.Cdm == CdmVersions.V53)
-                                yield return new ObservationDataReader53(list, _offsetManager);
-                            else
-                                yield return new ObservationDataReader(list, _offsetManager);
+                            yield return new ObservationDataReader(list, _offsetManager);
                         }
                         break;
                     }
@@ -103,7 +92,7 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
                     {
                         foreach (var list in SplitList(chunk.VisitOccurrences))
                         {
-                            yield return new VisitOccurrenceDataReader52(list, _offsetManager);
+                            yield return new VisitOccurrenceDataReader(list, _offsetManager);
                         }
 
                         break;
@@ -112,7 +101,7 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
                 case "VISIT_DETAIL":
                     foreach (var list in SplitList(chunk.VisitDetails))
                     {
-                        yield return new VisitDetailDataReader53(list, _offsetManager);
+                        yield return new VisitDetailDataReader(list, _offsetManager);
                     }
 
                     break;
@@ -121,10 +110,7 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
                     {
                         foreach (var list in SplitList(chunk.ProcedureOccurrences))
                         {
-                            if (Settings.Settings.Current.Building.Cdm == CdmVersions.V53)
-                                yield return new ProcedureOccurrenceDataReader53(list, _offsetManager);
-                            else
-                                yield return new ProcedureOccurrenceDataReader52(list, _offsetManager);
+                            yield return new ProcedureOccurrenceDataReader(list, _offsetManager);
                         }
                         break;
                     }
@@ -149,10 +135,7 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
                     {
                         foreach (var list in SplitList(chunk.DeviceExposure))
                         {
-                            if (Settings.Settings.Current.Building.Cdm == CdmVersions.V53)
-                                yield return new DeviceExposureDataReader53(list, _offsetManager);
-                            else
-                                yield return new DeviceExposureDataReader52(list, _offsetManager);
+                            yield return new DeviceExposureDataReader(list, _offsetManager);
                         }
                         break;
 
@@ -162,10 +145,7 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
                 case "MEASUREMENT":
                     foreach (var list in SplitList(chunk.Measurements))
                     {
-                        if (Settings.Settings.Current.Building.Cdm == CdmVersions.V53)
-                            yield return new MeasurementDataReader53(list, _offsetManager);
-                        else
-                            yield return new MeasurementDataReader(list, _offsetManager);
+                        yield return new MeasurementDataReader(list, _offsetManager);
                     }
                     break;
 
@@ -180,10 +160,7 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
                     {
                         foreach (var list in SplitList(chunk.ConditionOccurrences))
                         {
-                            if (Settings.Settings.Current.Building.Cdm == CdmVersions.V53)
-                                yield return new ConditionOccurrenceDataReader53(list, _offsetManager);
-                            else
-                                yield return new ConditionOccurrenceDataReader52(list, _offsetManager);
+                            yield return new ConditionOccurrenceDataReader(list, _offsetManager);
                         }
                         break;
                     }
@@ -192,7 +169,7 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
                     {
                         foreach (var list in SplitList(chunk.Cost))
                         {
-                            yield return new CostDataReader52(list, _offsetManager);
+                            yield return new CostDataReader(list, _offsetManager);
                         }
                         break;
                     }
@@ -200,10 +177,7 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
                 case "NOTE":
                     foreach (var list in SplitList(chunk.Note))
                     {
-                        if (Settings.Settings.Current.Building.Cdm == CdmVersions.V53)
-                            yield return new NoteDataReader53(list, _offsetManager);
-                        else
-                            yield return new NoteDataReader52(list, _offsetManager);
+                        yield return new NoteDataReader(list, _offsetManager);
                     }
                     break;
 
@@ -253,11 +227,9 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
                 Write(chunk, "COST");
                 Write(chunk, "NOTE");
 
-                if (Settings.Settings.Current.Building.Cdm == CdmVersions.V53 || Settings.Settings.Current.Building.Cdm == CdmVersions.V54)
-                {
-                    Write(chunk, "VISIT_DETAIL");
-                    Write(chunk.ChunkId, chunk.SubChunkId, new MetadataDataReader([.. chunk.Metadata.Values]), "METADATA_TMP");
-                }
+                Write(chunk, "VISIT_DETAIL");
+                Write(chunk.ChunkId, chunk.SubChunkId, new MetadataDataReader([.. chunk.Metadata.Values]), "METADATA_TMP");
+
 
                 Write(chunk, "FACT_RELATIONSHIP");
 
@@ -292,7 +264,7 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
 
                 if (cohortDefinition != null && cohortDefinition.Count > 0)
                 {
-                    Write(null, null, new cdm6.CohortDefinitionDataReader(cohortDefinition), "COHORT_DEFINITION");
+                    Write(null, null, new CohortDefinitionDataReader(cohortDefinition), "COHORT_DEFINITION");
                 }
 
                 Commit();

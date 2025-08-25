@@ -2,7 +2,7 @@
 using org.ohdsi.cdm.framework.common.Definitions;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Extensions;
-using org.ohdsi.cdm.framework.Common.Base;
+using org.ohdsi.cdm.framework.common.Base;
 using System.Linq;
 using System.Reflection;
 

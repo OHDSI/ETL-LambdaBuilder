@@ -4,9 +4,9 @@ using System.Data;
 
 namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
 {
-    public class EpisodeEventDataReader(IEnumerable<EpisodeEvent> batch, KeyMasterOffsetManager o) : IDataReader
+    public class NoteDataReader(List<Note> batch, KeyMasterOffsetManager o) : IDataReader
     {
-        private readonly IEnumerator<EpisodeEvent> _enumerator = batch?.GetEnumerator();
+        private readonly IEnumerator<Note> _enumerator = batch?.GetEnumerator();
         private readonly KeyMasterOffsetManager _offset = o;
 
         public bool Read()
@@ -16,22 +16,65 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
 
         public int FieldCount
         {
-            get { return 3; }
+            get { return 16; }
         }
 
-
+        // is this called only because the datatype specific methods are not implemented?  
+        // probably performance to be gained by not passing object back?
         public object GetValue(int i)
         {
-            if (_enumerator.Current == null) return null;
-
             switch (i)
             {
                 case 0:
-                    return _offset.GetId(_enumerator.Current.PersonId, _enumerator.Current.EpisodeId);
+                    return _offset.GetId(_enumerator.Current.PersonId, _enumerator.Current.Id);
                 case 1:
-                    return _offset.GetId(_enumerator.Current.PersonId, _enumerator.Current.EventId);
+                    return _enumerator.Current.PersonId;
                 case 2:
-                    return _enumerator.Current.EpisodeEventFieldConceptId;
+                    return _enumerator.Current.StartDate;
+                case 3:
+                    return _enumerator.Current.StartDate;
+                case 4:
+                    return _enumerator.Current.TypeConceptId;
+                case 5:
+                    return _enumerator.Current.Text;
+                case 6:
+                    return _enumerator.Current.ProviderId;
+                case 7:
+                    if (_enumerator.Current.VisitOccurrenceId.HasValue)
+                    {
+                        if (_offset.GetKeyOffset(_enumerator.Current.PersonId).VisitOccurrenceIdChanged)
+                            return _offset.GetId(_enumerator.Current.PersonId,
+                                _enumerator.Current.VisitOccurrenceId.Value);
+
+                        return _enumerator.Current.VisitOccurrenceId.Value;
+                    }
+
+                    return null;
+                case 8:
+                    if (_enumerator.Current.VisitDetailId.HasValue)
+                    {
+                        if (_offset.GetKeyOffset(_enumerator.Current.PersonId).VisitDetailIdChanged)
+                            return _offset.GetId(_enumerator.Current.PersonId,
+                                _enumerator.Current.VisitDetailId.Value);
+
+                        return _enumerator.Current.VisitDetailId;
+                    }
+
+                    return null;
+                case 9:
+                    return _enumerator.Current.SourceValue;
+                case 10:
+                    return _enumerator.Current.ConceptId;
+                case 11:
+                    return _enumerator.Current.Title;
+                case 12:
+                    return _enumerator.Current.EncodingConceptId;
+                case 13:
+                    return _enumerator.Current.LanguageConceptId;
+                case 14:
+                    return _enumerator.Current.EventId;
+                case 15:
+                    return _enumerator.Current.EventFieldConceptId;
                 default:
                     throw new NotImplementedException();
             }
@@ -41,15 +84,28 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
         {
             return i switch
             {
-                0 => "episode_id",
-                1 => "event_id",
-                2 => "episode_event_field_concept_id",
+                0 => "note_id",
+                1 => "person_id",
+                2 => "note_date",
+                3 => "note_datetime",
+                4 => "note_type_concept_id",
+                5 => "note_text",
+                6 => "provider_id",
+                7 => "visit_occurrence_id",
+                8 => "visit_detail_id",
+                9 => "note_source_value",
+                10 => "note_class_concept_id",
+                11 => "note_title",
+                12 => "encoding_concept_id",
+                13 => "language_concept_id",
+                14 => "note_event_id",
+                15 => "note_event_field_concept_id",
                 _ => throw new NotImplementedException(),
             };
         }
 
-
         #region implementationn not required for SqlBulkCopy
+
         public bool NextResult()
         {
             throw new NotImplementedException();
@@ -141,7 +197,20 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
             {
                 0 => typeof(long),
                 1 => typeof(long),
-                2 => typeof(long),
+                2 => typeof(DateTime),
+                3 => typeof(DateTime),
+                4 => typeof(long?),
+                5 => typeof(string),
+                6 => typeof(long?),
+                7 => typeof(long?),
+                8 => typeof(long?),
+                9 => typeof(string),
+                10 => typeof(long),
+                11 => typeof(string),
+                12 => typeof(long),
+                13 => typeof(long),
+                14 => typeof(long),
+                15 => typeof(long),
                 _ => throw new NotImplementedException(),
             };
         }
@@ -207,6 +276,7 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
         {
             get { throw new NotImplementedException(); }
         }
+
         #endregion
     }
 }

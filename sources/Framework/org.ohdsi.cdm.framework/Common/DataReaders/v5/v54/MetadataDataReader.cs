@@ -1,13 +1,11 @@
-﻿using org.ohdsi.cdm.framework.common.Builder;
-using org.ohdsi.cdm.framework.common.Omop;
+﻿using org.ohdsi.cdm.framework.common.Omop;
 using System.Data;
 
 namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
 {
-    public class EpisodeEventDataReader(IEnumerable<EpisodeEvent> batch, KeyMasterOffsetManager o) : IDataReader
+    public class MetadataDataReader(List<Metadata> batch) : IDataReader
     {
-        private readonly IEnumerator<EpisodeEvent> _enumerator = batch?.GetEnumerator();
-        private readonly KeyMasterOffsetManager _offset = o;
+        private readonly IEnumerator<Metadata> _enumerator = batch?.GetEnumerator();
 
         public bool Read()
         {
@@ -16,40 +14,33 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
 
         public int FieldCount
         {
-            get { return 3; }
+            get { return 2; }
         }
 
-
+        // is this called only because the datatype specific methods are not implemented?  
+        // probably performance to be gained by not passing object back?
         public object GetValue(int i)
         {
-            if (_enumerator.Current == null) return null;
-
-            switch (i)
+            return i switch
             {
-                case 0:
-                    return _offset.GetId(_enumerator.Current.PersonId, _enumerator.Current.EpisodeId);
-                case 1:
-                    return _offset.GetId(_enumerator.Current.PersonId, _enumerator.Current.EventId);
-                case 2:
-                    return _enumerator.Current.EpisodeEventFieldConceptId;
-                default:
-                    throw new NotImplementedException();
-            }
+                0 => _enumerator.Current.PersonId,
+                1 => _enumerator.Current.Name,
+                _ => throw new NotImplementedException(),
+            };
         }
 
         public string GetName(int i)
         {
             return i switch
             {
-                0 => "episode_id",
-                1 => "event_id",
-                2 => "episode_event_field_concept_id",
+                0 => "person_id",
+                1 => "name",
                 _ => throw new NotImplementedException(),
             };
         }
 
-
         #region implementationn not required for SqlBulkCopy
+
         public bool NextResult()
         {
             throw new NotImplementedException();
@@ -140,8 +131,7 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
             return i switch
             {
                 0 => typeof(long),
-                1 => typeof(long),
-                2 => typeof(long),
+                1 => typeof(string),
                 _ => throw new NotImplementedException(),
             };
         }
@@ -207,6 +197,7 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
         {
             get { throw new NotImplementedException(); }
         }
+
         #endregion
     }
 }

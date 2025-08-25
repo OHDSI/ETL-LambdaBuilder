@@ -191,8 +191,7 @@ namespace org.ohdsi.cdm.presentation.etl
 
                 Console.WriteLine("Copying vocabulary tables...");
 
-                var vocabQueriesPath = Path.Combine(Settings.Current.Folder, "Common", "Redshift", "v5.2",
-                    "Vocabulary");
+                var vocabQueriesPath = Path.Combine(Settings.Current.Folder, "Common", "Vocabulary");
 
                 foreach (var filePath in Directory.GetFiles(vocabQueriesPath))
                 {
@@ -343,7 +342,7 @@ namespace org.ohdsi.cdm.presentation.etl
             if (locationConcepts.Count > 0)
                 FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.CloudStorageName,
                     file,
-                    new LocationDataReader54(locationConcepts));
+                    new LocationDataReader(locationConcepts));
             //CopyFile(new LocationDataReader54(locationConcepts), file, ",", '"', @"\N");
 
             Console.WriteLine("[Creating lookup] Locations was loaded " + Settings.Current.Building.Cdm);

@@ -1,53 +1,73 @@
-﻿using org.ohdsi.cdm.framework.common.Builder;
-using org.ohdsi.cdm.framework.common.Omop;
+﻿using org.ohdsi.cdm.framework.common.Omop;
 using System.Data;
 
 namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
 {
-    public class EpisodeEventDataReader(IEnumerable<EpisodeEvent> batch, KeyMasterOffsetManager o) : IDataReader
+    public class PersonDataReader(List<Person> batch) : IDataReader
     {
-        private readonly IEnumerator<EpisodeEvent> _enumerator = batch?.GetEnumerator();
-        private readonly KeyMasterOffsetManager _offset = o;
+        private readonly IEnumerator<Person> _personEnumerator = batch?.GetEnumerator();
 
         public bool Read()
         {
-            return _enumerator.MoveNext();
+            return _personEnumerator.MoveNext();
         }
 
         public int FieldCount
         {
-            get { return 3; }
+            get { return 18; }
         }
-
 
         public object GetValue(int i)
         {
-            if (_enumerator.Current == null) return null;
-
-            switch (i)
+            return i switch
             {
-                case 0:
-                    return _offset.GetId(_enumerator.Current.PersonId, _enumerator.Current.EpisodeId);
-                case 1:
-                    return _offset.GetId(_enumerator.Current.PersonId, _enumerator.Current.EventId);
-                case 2:
-                    return _enumerator.Current.EpisodeEventFieldConceptId;
-                default:
-                    throw new NotImplementedException();
-            }
+                0 => _personEnumerator.Current.PersonId,
+                1 => _personEnumerator.Current.GenderConceptId,
+                2 => _personEnumerator.Current.YearOfBirth,
+                3 => _personEnumerator.Current.MonthOfBirth,
+                4 => _personEnumerator.Current.DayOfBirth,
+                5 => _personEnumerator.Current.TimeOfBirth ?? null,
+                6 => _personEnumerator.Current.RaceConceptId,
+                7 => _personEnumerator.Current.EthnicityConceptId,
+                8 => _personEnumerator.Current.LocationId,
+                9 => _personEnumerator.Current.ProviderId == 0 ? null : _personEnumerator.Current.ProviderId,
+                10 => _personEnumerator.Current.CareSiteId == 0 ? null : _personEnumerator.Current.CareSiteId,
+                11 => _personEnumerator.Current.PersonSourceValue,
+                12 => _personEnumerator.Current.GenderSourceValue,
+                13 => _personEnumerator.Current.GenderSourceConceptId,
+                14 => _personEnumerator.Current.RaceSourceValue,
+                15 => _personEnumerator.Current.RaceSourceConceptId,
+                16 => _personEnumerator.Current.EthnicitySourceValue,
+                17 => _personEnumerator.Current.EthnicitySourceConceptId,
+                _ => throw new NotImplementedException(),
+            };
         }
 
         public string GetName(int i)
         {
             return i switch
             {
-                0 => "episode_id",
-                1 => "event_id",
-                2 => "episode_event_field_concept_id",
+                0 => "person_id",
+                1 => "gender_concept_id",
+                2 => "year_of_birth",
+                3 => "month_of_birth",
+                4 => "day_of_birth",
+                5 => "birth_datetime",
+                6 => "race_concept_id",
+                7 => "ethnicity_concept_id",
+                8 => "location_id",
+                9 => "provider_id",
+                10 => "care_site_id",
+                11 => "person_source_value",
+                12 => "gender_source_value",
+                13 => "gender_source_concept_id",
+                14 => "race_source_value",
+                15 => "race_source_concept_id",
+                16 => "ethnicity_source_value",
+                17 => "ethnicity_source_concept_id",
                 _ => throw new NotImplementedException(),
             };
         }
-
 
         #region implementationn not required for SqlBulkCopy
         public bool NextResult()
@@ -140,8 +160,23 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
             return i switch
             {
                 0 => typeof(long),
-                1 => typeof(long),
-                2 => typeof(long),
+                1 => typeof(long?),
+                2 => typeof(int?),
+                3 => typeof(int?),
+                4 => typeof(int?),
+                5 => typeof(DateTime),
+                6 => typeof(long?),
+                7 => typeof(long?),
+                8 => typeof(long?),
+                9 => typeof(long?),
+                10 => typeof(long?),
+                11 => typeof(string),
+                12 => typeof(string),
+                13 => typeof(long?),
+                14 => typeof(string),
+                15 => typeof(long?),
+                16 => typeof(string),
+                17 => typeof(long?),
                 _ => throw new NotImplementedException(),
             };
         }

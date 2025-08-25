@@ -1,7 +1,7 @@
 ﻿using org.ohdsi.cdm.framework.common.Definitions;
 using System.Collections.Generic;
 using org.ohdsi.cdm.framework.common.Enums;
-using org.ohdsi.cdm.framework.Common.Base;
+using org.ohdsi.cdm.framework.common.Base;
 using org.ohdsi.cdm.framework.common.Utility;
 
 namespace org.ohdsi.cdm.presentation.lambdabuilder

@@ -1,53 +1,53 @@
-﻿using org.ohdsi.cdm.framework.common.Builder;
-using org.ohdsi.cdm.framework.common.Omop;
+﻿using org.ohdsi.cdm.framework.common.Omop;
 using System.Data;
 
 namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
 {
-    public class EpisodeEventDataReader(IEnumerable<EpisodeEvent> batch, KeyMasterOffsetManager o) : IDataReader
+    public class CohortDefinitionDataReader(List<CohortDefinition> batch) : IDataReader
     {
-        private readonly IEnumerator<EpisodeEvent> _enumerator = batch?.GetEnumerator();
-        private readonly KeyMasterOffsetManager _offset = o;
+        private readonly IEnumerator<CohortDefinition> _cohortEnumerator = batch?.GetEnumerator();
 
         public bool Read()
         {
-            return _enumerator.MoveNext();
+            return _cohortEnumerator.MoveNext();
         }
 
         public int FieldCount
         {
-            get { return 3; }
+            get { return 7; }
         }
 
-
+        // is this called only because the datatype specific methods are not implemented?  
+        // probably performance to be gained by not passing object back?
         public object GetValue(int i)
         {
-            if (_enumerator.Current == null) return null;
-
-            switch (i)
+            return i switch
             {
-                case 0:
-                    return _offset.GetId(_enumerator.Current.PersonId, _enumerator.Current.EpisodeId);
-                case 1:
-                    return _offset.GetId(_enumerator.Current.PersonId, _enumerator.Current.EventId);
-                case 2:
-                    return _enumerator.Current.EpisodeEventFieldConceptId;
-                default:
-                    throw new NotImplementedException();
-            }
+                0 => _cohortEnumerator.Current.Id,
+                1 => _cohortEnumerator.Current.Name,
+                2 => _cohortEnumerator.Current.Description,
+                3 => _cohortEnumerator.Current.TypeConceptId,
+                4 => _cohortEnumerator.Current.Syntax,
+                5 => _cohortEnumerator.Current.ConceptId,
+                6 => _cohortEnumerator.Current.Date,
+                _ => throw new NotImplementedException(),
+            };
         }
 
         public string GetName(int i)
         {
             return i switch
             {
-                0 => "episode_id",
-                1 => "event_id",
-                2 => "episode_event_field_concept_id",
+                0 => "cohort_definition_id",
+                1 => "cohort_definition_name",
+                2 => "cohort_definition_description",
+                3 => "definition_type_concept_id",
+                4 => "cohort_definition_syntax",
+                5 => "subject_concept_id",
+                6 => "cohort_initiation_date",
                 _ => throw new NotImplementedException(),
             };
         }
-
 
         #region implementationn not required for SqlBulkCopy
         public bool NextResult()
@@ -140,8 +140,12 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
             return i switch
             {
                 0 => typeof(long),
-                1 => typeof(long),
-                2 => typeof(long),
+                1 => typeof(string),
+                2 => typeof(string),
+                3 => typeof(long),
+                4 => typeof(string),
+                5 => typeof(long),
+                6 => typeof(DateTime),
                 _ => throw new NotImplementedException(),
             };
         }

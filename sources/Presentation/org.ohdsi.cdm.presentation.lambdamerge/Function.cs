@@ -182,7 +182,7 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
 
             if (cdm == CdmVersions.V54)
             {
-                var reader = new CdmSourceDataReader54();
+                var reader = new CdmSourceDataReader();
                 using var stream = framework.common.Helpers.CsvHelper.GetStreamCsv(reader).First();
                 SaveToS3(stream, 0, _settings.CdmFolder, _table, "gz");
             }
