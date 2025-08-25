@@ -62,7 +62,7 @@ namespace org.ohdsi.cdm.framework.common.Helpers
                 {
                     var type = reader.GetFieldType(i);
                     var value = reader.GetValue(i);
-                    if ((type == typeof(DateTime) || type == typeof(DateTime?)) && value != null && !(value is DBNull))
+                    if ((type == typeof(DateTime) || type == typeof(DateTime?)) && value != null && value is not DBNull)
                     {
                         if (reader.GetName(i).Contains("datetime", StringComparison.CurrentCultureIgnoreCase))
                         {
