@@ -99,9 +99,9 @@ namespace org.ohdsi.cdm.framework.desktop.Controllers
                     @"FORMAT_OPTIONS( " +
                     @"'recursiveFileLookup' = 'true', " +
                     @"'header' = 'false', " +
-                    @"'delimiter' = '\t', " +
-                    @"'quote' = '`', " +
-                    @"'nullValue' = '\\0', " +
+                    @"'delimiter' = ',', " +
+                    @"'quote' = '""', " +
+                    @"'nullValue' = '\N', " +
                     @"'unescapedQuoteHandling' = 'RAISE_ERROR', " +
                     @"'mode' = 'FAILFAST', " +
                     @"'multiLine' = 'true', " +
@@ -112,9 +112,9 @@ namespace org.ohdsi.cdm.framework.desktop.Controllers
                 query = $@"copy {_chunksSchema}._chunks from 's3://{Settings.Settings.Current.CloudStorageName}/_chunks' " +
                     $@"credentials 'aws_access_key_id={Settings.Settings.Current.CloudStorageKey};aws_secret_access_key={Settings.Settings.Current.CloudStorageSecret}' " +
                     @"IGNOREBLANKLINES " +
-                    @"DELIMITER '\t' " +
-                    @"NULL AS '\000' " +
-                    @"csv quote as '`' " +
+                    @"DELIMITER ',' " +
+                    @"NULL AS '\N' " +
+                    @"csv quote as '""' " +
                     @"GZIP";
             }
             else
