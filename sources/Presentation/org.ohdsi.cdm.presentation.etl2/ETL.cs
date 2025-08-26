@@ -260,7 +260,7 @@ namespace org.ohdsi.cdm.presentation.etl
         private static void SaveProvider()
         {
             Console.WriteLine("[Creating lookup] Loading providers...");
-            var file = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}/PROVIDER/PROVIDER.txt.gz";
+            var file = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}/provider/provider.txt.gz";
 
             var provider = Settings.Current.Building.SourceQueryDefinitions.FirstOrDefault(qd =>
                 qd.Providers != null && QueryDefinition.IsSuitable(qd.Query.Database, Settings.Current.Building.Vendor));
@@ -287,7 +287,7 @@ namespace org.ohdsi.cdm.presentation.etl
         {
             Console.WriteLine("[Creating lookup] Loading care sites...");
 
-            var file = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}/CARE_SITE/CARE_SITE.txt.gz";
+            var file = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}/care_site/care_site.txt.gz";
 
             var careSite = Settings.Current.Building.SourceQueryDefinitions.FirstOrDefault(qd =>
                 qd.CareSites != null && QueryDefinition.IsSuitable(qd.Query.Database, Settings.Current.Building.Vendor));
@@ -325,7 +325,7 @@ namespace org.ohdsi.cdm.presentation.etl
         {
             Console.WriteLine("[Creating lookup] Loading locations...");
 
-            var file = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}/LOCATION/LOCATION.txt.gz";
+            var file = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}/location/location.txt.gz";
 
             var location = Settings.Current.Building.SourceQueryDefinitions.FirstOrDefault(qd =>
                 qd.Locations != null && QueryDefinition.IsSuitable(qd.Query.Database, Settings.Current.Building.Vendor));
