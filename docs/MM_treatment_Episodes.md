@@ -272,12 +272,10 @@ by ‘ then ‘</td>
 
 | concept_id | concept_name              |
 |------------|---------------------------|
-| 739856     | lisocabtagene maraleucel  |
 | 779144     | ciltacabtagene autoleucel |
-| 792737     | tisagenlecleucel          |
-| 792844     | axicabtagene ciloleucel   |
 | 36026868   | idecabtagene vicleucel    |
-| 37002369   | brexucabtagene autoleucel |
+| 43018384   | Introduction of Engineered Autologous Chimeric Antigen Receptor T-cell Immunotherapy into Peripheral Vein... |
+| 43018388   | 	Introduction of Engineered Autologous Chimeric Antigen Receptor T-cell Immunotherapy into Central Vein...   |
 
 3.  Stem cell Transplant codes
 
