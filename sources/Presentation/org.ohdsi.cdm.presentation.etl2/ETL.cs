@@ -1,7 +1,6 @@
 ﻿using Amazon.S3;
 using Azure.Identity;
 using Azure.Storage.Blobs;
-using Microsoft.Extensions.Configuration;
 using org.ohdsi.cdm.framework.common.DataReaders.v5.v54;
 using org.ohdsi.cdm.framework.common.Definitions;
 using org.ohdsi.cdm.framework.common.Omop;
@@ -14,49 +13,12 @@ using System.Collections.Generic;
 using System.Data.Odbc;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace org.ohdsi.cdm.presentation.etl
 {
     class ETL
     {
-        private static AmazonS3Client GetAwsStorageClient()
-        {
-            if (!string.IsNullOrEmpty(Settings.Current.CloudStorageHolder))
-                return null;
-
-            return new AmazonS3Client(
-                    Settings.Current.CloudStorageKey,
-                    Settings.Current.CloudStorageSecret,
-                    new AmazonS3Config
-                    {
-                        Timeout = TimeSpan.FromMinutes(60),
-                        RegionEndpoint = Amazon.RegionEndpoint.USEast1,
-                        MaxErrorRetry = 20,
-                    });
-        }
-
-        private static BlobContainerClient GetAzureStorageClient()
-        {
-            if (string.IsNullOrEmpty(Settings.Current.CloudStorageHolder))
-                return null;
-
-            var credential = new ClientSecretCredential(Settings.Current.CloudStorageHolder, Settings.Current.CloudStorageKey, Settings.Current.CloudStorageSecret);
-            var client = new BlobServiceClient(new Uri(Settings.Current.CloudStorageUri), credential, null);
-            return client.GetBlobContainerClient(Settings.Current.CloudStorageName);
-        }
-
-        //private static void CopyFile(IDataReader reader, string fileName)
-        //{
-        //    FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.CloudStorageName,
-        //        fileName,
-        //        reader);
-        //    //FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.CloudStorageName,
-        //    //    fileName,
-        //    //    reader, "\t", '`', "\0");
-        //}
-
-        private static void SaveVocabularyToCloudStorage()
+        public static void SaveVocabularyToCloudStorage()
         {
             var vocabulary = new Vocabulary();
             foreach (var cl in vocabulary.GetCombinedLookups())
@@ -66,7 +28,7 @@ namespace org.ohdsi.cdm.presentation.etl
 
                 var fileName = $"{Settings.Current.BuildingPrefix}/CombinedLookups/{name}.txt.gz";
                 Console.WriteLine(name + " - store to S3 | " + fileName);
-                //CopyFile(reader, fileName, "\t", '`', "\0");
+
                 FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.CloudStorageName,
                 fileName,
                 reader);
@@ -78,7 +40,7 @@ namespace org.ohdsi.cdm.presentation.etl
                 {
                     var fileName = $"{Settings.Current.BuildingPrefix}/Lookups/{ri.Name}.txt.gz";
                     Console.WriteLine(ri.Name + " - store to S3 | " + fileName);
-                    //CopyFile(ri.DataReader, fileName, "\t", '`', "\0");
+
                     FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.CloudStorageName,
                         fileName,
                         ri.DataReader);
@@ -91,7 +53,7 @@ namespace org.ohdsi.cdm.presentation.etl
                 {
                     var fileName = $"{Settings.Current.BuildingPrefix}/Lookups/PregnancyDrug.txt.gz";
                     Console.WriteLine("PregnancyDrug - store to S3 | " + fileName);
-                    //CopyFile(ri.DataReader, fileName, "\t", '`', "\0");
+                    
                     FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.CloudStorageName,
                         fileName,
                         ri.DataReader);
@@ -121,73 +83,17 @@ namespace org.ohdsi.cdm.presentation.etl
 
             Console.WriteLine("Vocabulary was saved to S3");
         }
-
-        public void Start(bool skipChunkCreation, bool resumeChunkCreation, bool skipLookupCreation, bool skipBuild, bool skipVocabularyCopying)
+        public static void CreateChunks(string chunksSchema)
         {
-            var builder = new ConfigurationBuilder()
-                   .AddJsonFile("appsettings.json");
-            IConfigurationRoot configuration = builder.Build();
-
-            var chunksSchema = configuration.GetSection("AppSettings")["chunksSchema"];
-
-            SaveVocabularyToCloudStorage();
-
-            Task createLookupTables = null;
-            Task copyVocabularyTables = null;
-            Task checkCreation = null;
-
-            if (!skipChunkCreation)
-            {
-                Console.WriteLine("Chunks creation in progress...");
-
-                var chunkController = new ChunkController(chunksSchema);
-
-                if (!resumeChunkCreation)
-                {
-                    chunkController.CreateChunks(10_000);
-                }
-
-                CopyVocabularyTables(skipVocabularyCopying);
-                CreateLookupTables(skipLookupCreation);
-
-                //chunkController.MoveChunkDataToS3(true, true, utility);
-            }
-            else
-            {
-                Console.WriteLine("Chunk creation skipped");
-                createLookupTables = Task.Run(() => CreateLookupTables(skipLookupCreation));
-                copyVocabularyTables = Task.Run(() => CopyVocabularyTables(skipVocabularyCopying));
-
-                if (!skipBuild)
-                {
-                    //var tasks = utility.TriggerBuildFunction(Settings.Current.Building.Vendor, Settings.Current.Building.Id.Value, null, false);
-                    //Task.WaitAll([.. tasks]);
-                    //Console.WriteLine("CDM Build lambda functions were triggered");
-
-                    //checkCreation = Task.Run(() => utility.AllChunksWereDone(Settings.Current.Building.Vendor,
-                    //    Settings.Current.Building.Id.Value, utility.BuildMessageBucket));
-                }
-                else
-                {
-                    Console.WriteLine("Build step was skipped");
-                }
-            }
-
-            createLookupTables?.Wait();
-            copyVocabularyTables?.Wait();
-            checkCreation?.Wait();
+            Console.WriteLine("Chunks creation in progress...");
+            var chunkController = new ChunkController(chunksSchema);
+            chunkController.CreateChunks(10_000);
         }
 
-        private static void CopyVocabularyTables(bool skipVocabularyCopying)
+        public static void CopyVocabularyTables()
         {
             try
             {
-                if (skipVocabularyCopying)
-                {
-                    Console.WriteLine("Vocabulary tables copying skipped");
-                    return;
-                }
-
                 Console.WriteLine("Copying vocabulary tables...");
 
                 var vocabQueriesPath = Path.Combine(Settings.Current.Folder, "Common", "Queries", "Vocabulary");
@@ -209,7 +115,7 @@ namespace org.ohdsi.cdm.presentation.etl
                         c.CommandTimeout = 600;
                         using var reader = c.ExecuteReader();
                         var fileName = $"{folder}/{tableName}/{tableName}.txt.gz";
-                        //CopyFile(reader, fileName, ",", '"', @"\N");
+                        
                         FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.CloudStorageName,
                             fileName,
                             reader);
@@ -226,16 +132,10 @@ namespace org.ohdsi.cdm.presentation.etl
             }
         }
 
-        private void CreateLookupTables(bool skipLookupCreation)
+        public static void CreateLookupTables()
         {
             try
             {
-                if (skipLookupCreation)
-                {
-                    Console.WriteLine("Lookup tables creation skipped");
-                    return;
-                }
-
                 Console.WriteLine("Creating lookup tables...");
                 Console.WriteLine("[Creating lookup] Loading vocabulary...");
                 var vocabulary = new Vocabulary();
@@ -254,6 +154,42 @@ namespace org.ohdsi.cdm.presentation.etl
                 Console.WriteLine("[Creating lookup] Tables Location, Provider, Care site were not created due error " + e.Message);
                 Console.WriteLine(e.StackTrace);
             }
+        }
+
+        public static void Build()
+        {
+            //            //var tasks = utility.TriggerBuildFunction(Settings.Current.Building.Vendor, Settings.Current.Building.Id.Value, null, false);
+            //            //Task.WaitAll([.. tasks]);
+            //            //Console.WriteLine("CDM Build lambda functions were triggered");
+
+            //            //checkCreation = Task.Run(() => utility.AllChunksWereDone(Settings.Current.Building.Vendor,
+            //            //    Settings.Current.Building.Id.Value, utility.BuildMessageBucket));
+        }
+
+        private static AmazonS3Client GetAwsStorageClient()
+        {
+            if (!string.IsNullOrEmpty(Settings.Current.CloudStorageHolder))
+                return null;
+
+            return new AmazonS3Client(
+                    Settings.Current.CloudStorageKey,
+                    Settings.Current.CloudStorageSecret,
+                    new AmazonS3Config
+                    {
+                        Timeout = TimeSpan.FromMinutes(60),
+                        RegionEndpoint = Amazon.RegionEndpoint.USEast1,
+                        MaxErrorRetry = 20,
+                    });
+        }
+
+        private static BlobContainerClient GetAzureStorageClient()
+        {
+            if (string.IsNullOrEmpty(Settings.Current.CloudStorageHolder))
+                return null;
+
+            var credential = new ClientSecretCredential(Settings.Current.CloudStorageHolder, Settings.Current.CloudStorageKey, Settings.Current.CloudStorageSecret);
+            var client = new BlobServiceClient(new Uri(Settings.Current.CloudStorageUri), credential, null);
+            return client.GetBlobContainerClient(Settings.Current.CloudStorageName);
         }
 
         private static void SaveProvider()
@@ -277,8 +213,7 @@ namespace org.ohdsi.cdm.presentation.etl
                 FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.CloudStorageName,
                     file,
                     new ProviderDataReader(providerConcepts));
-            //CopyFile(new ProviderDataReader(providerConcepts), file, ",", '"', @"\N");
-
+            
             Console.WriteLine("[Creating lookup] Providers was loaded");
         }
 
@@ -314,9 +249,7 @@ namespace org.ohdsi.cdm.presentation.etl
             FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.CloudStorageName,
                     file,
                     new CareSiteDataReader(careSiteConcepts));
-
-            //CopyFile(new CareSiteDataReader(careSiteConcepts), file, ",", '"', @"\N");
-
+                        
             Console.WriteLine("[Creating lookup] Care sites was loaded");
         }
 
@@ -342,8 +275,7 @@ namespace org.ohdsi.cdm.presentation.etl
                 FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.CloudStorageName,
                     file,
                     new LocationDataReader(locationConcepts));
-            //CopyFile(new LocationDataReader54(locationConcepts), file, ",", '"', @"\N");
-
+            
             Console.WriteLine("[Creating lookup] Locations was loaded " + Settings.Current.Building.Cdm);
         }
 

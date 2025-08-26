@@ -23,7 +23,7 @@ namespace org.ohdsi.cdm.presentation.etl
             bool skipETL = true;
             bool skipValidation = true;
 
-            bool skipTransformToSpectrum = true;
+            bool skipMerge = true;
             var skipLookupCreation = true;
             var skipBuild = true;
             var skipVocabularyCopying = true;
@@ -54,7 +54,7 @@ namespace org.ohdsi.cdm.presentation.etl
                       skipChunkCreation = o.SkipChunk.Value;
                       skipValidation = o.SkipValidation.Value;
                       skipVocabularyCopying = o.SkipVocabulary.Value;
-                      skipTransformToSpectrum = o.SkipTransformToSpectrum.Value;
+                      skipMerge = o.SkipMerge.Value;
                       versionId = o.VersionId;
                       sourceCluster = o.SourceCluster;
                       sourceSchema = o.SourceSchema;
@@ -183,11 +183,11 @@ namespace org.ohdsi.cdm.presentation.etl
                     }
                 }
 
-                var sourceOdbc = new OdbcConnectionStringBuilder(sourceConnectionString);
+                //var sourceOdbc = new OdbcConnectionStringBuilder(sourceConnectionString);
                 var vocabOdbc = new OdbcConnectionStringBuilder(vocabularyConnectionString);
 
                 Settings.Current.Building.Save();
-                Console.WriteLine($"source:{sourceOdbc["server"]}; {sourceDb}; {sourceSchema}");
+                //Console.WriteLine($"source:{sourceOdbc["server"]}; {sourceDb}; {sourceSchema}");
                 Console.WriteLine($"vocabulary:{vocabOdbc["server"]}; {vocabularySchema}");
                 Console.WriteLine($"vendor:{vendor}");
                 Console.WriteLine($"Cdm:{Settings.Current.Building.Cdm}");
@@ -243,9 +243,47 @@ namespace org.ohdsi.cdm.presentation.etl
                 }
                 else
                 {
-                    var etl = new ETL();
-                    //etl.Start(skipChunkCreation, resumeChunkCreation, skipLookupCreation, skipBuild, skipVocabularyCopying, lambdaUtility);
-                    etl.Start(skipChunkCreation, resumeChunkCreation, skipLookupCreation, skipBuild, skipVocabularyCopying);
+                    ETL.SaveVocabularyToCloudStorage();
+
+                    if (skipChunkCreation)
+                    {
+                        Console.WriteLine("Chunk creation skipped");
+                    }
+                    else if (!resumeChunkCreation)
+                    {
+                        ETL.CreateChunks(configuration.GetSection("AppSettings")["chunksSchema"]);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Chunk creation resumed");
+                    }
+
+                    if(skipVocabularyCopying)
+                    {
+                        Console.WriteLine("Vocabulary tables copying skipped");
+                    }
+                    else
+                    {
+                        ETL.CopyVocabularyTables();
+                    }
+
+                    if(skipLookupCreation)
+                    {
+                        Console.WriteLine("Lookup tables creation skipped");
+                    }
+                    else
+                    {
+                        ETL.CreateLookupTables();
+                    }
+
+                    if(skipBuild)
+                    {
+                        ETL.Build();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Build step was skipped");
+                    }
                 }
 
                 if (skipValidation)
@@ -258,9 +296,9 @@ namespace org.ohdsi.cdm.presentation.etl
                     //validation.Start(lambdaUtility, cdmFolder);
                 }
 
-                if (skipTransformToSpectrum)
+                if (skipMerge)
                 {
-                    Console.WriteLine("Transform to Spectrum step was skipped");
+                    Console.WriteLine("Merge step was skipped");
                 }
                 else
                 {
