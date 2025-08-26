@@ -42,10 +42,10 @@ namespace org.ohdsi.cdm.framework.common.Helpers
 
         public static IEnumerable<MemoryStream> GetStreamCsv(IDataReader reader)
         {
-            return GetStreamCsv(reader, null);
+            return GetStreamCsv(reader, null, true);
         }
 
-        public static IEnumerable<MemoryStream> GetStreamCsv(IDataReader reader, int? breakUpSize)
+        public static IEnumerable<MemoryStream> GetStreamCsv(IDataReader reader, int? breakUpSize, bool compress)
         {
             var rowCount = 0;
             
@@ -82,7 +82,7 @@ namespace org.ohdsi.cdm.framework.common.Helpers
                 if(breakUpSize.HasValue && rowCount > breakUpSize.Value)
                 {
                     writer.Flush();
-                    yield return Compress(source);
+                    yield return Compress(source, compress);
 
                     csv.Dispose();
                     writer.Dispose();
@@ -96,15 +96,19 @@ namespace org.ohdsi.cdm.framework.common.Helpers
             }
 
             writer.Flush();
-            yield return Compress(source);
+            
+            yield return Compress(source, compress);
 
             csv.Dispose();
             writer.Dispose();
             source.Dispose();
         }
 
-        private static MemoryStream Compress(Stream inputStream)
+        private static MemoryStream Compress(MemoryStream inputStream, bool useCompression)
         {
+            if (!useCompression)
+                return inputStream;
+
             inputStream.Position = 0;
             var outputStream = new MemoryStream();
             using (var gz = new BufferedStream(new GZipStream(outputStream, CompressionLevel.Optimal, true)))

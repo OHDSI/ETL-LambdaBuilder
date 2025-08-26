@@ -22,10 +22,14 @@ namespace org.ohdsi.cdm.framework.desktop.Controllers
             _chunksSchema = chunksSchema;
         }
 
-
         public void CleanupChunks()
         {
             _dbSource.DropChunkTable(_chunksSchema);
+        }
+
+        public IEnumerable<int> GetNotMovedToCloudStorage()
+        {
+            return _dbChunk.GetNotMovedToCloudStorage(Settings.Settings.Current.Building.Id.Value);
         }
 
         public void CreateChunks(int partitionSize)

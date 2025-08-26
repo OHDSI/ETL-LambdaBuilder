@@ -116,7 +116,7 @@ namespace org.ohdsi.cdm.framework.desktop.DbLayer
             cmd.ExecuteNonQuery();
         }
 
-        public IEnumerable<int> GetNotMovedToS3Chunks(int buildingId)
+        public IEnumerable<int> GetNotMovedToCloudStorage(int buildingId)
         {
             using var connection = SqlConnectionHelper.OpenMssqlConnection(_connectionString);
             using var cmd = SqlConnectionHelper.CreateCommand($"SELECT Id FROM Chunk WHERE BuildingId = {buildingId} AND Created IS NULL", connection);

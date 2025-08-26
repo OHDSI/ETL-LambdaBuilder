@@ -233,13 +233,19 @@ namespace org.ohdsi.cdm.presentation.etl
                     {
                         Console.WriteLine("Chunk creation skipped");
                     }
-                    else if (!resumeChunkCreation)
+                    else 
                     {
-                        ETL.CreateChunks(configuration.GetSection("AppSettings")["chunksSchema"]);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Chunk creation resumed");
+                        var chunksSchema = configuration.GetSection("AppSettings")["chunksSchema"];
+                        if (!resumeChunkCreation)
+                        {
+                            ETL.CreateChunks(chunksSchema);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Chunk creation resumed");
+                        }
+
+                        ETL.MoveRawDataCloudStorage(chunksSchema);
                     }
 
                     if(skipVocabularyCopying)

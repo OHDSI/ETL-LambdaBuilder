@@ -7,12 +7,12 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
 {
     public class FileTransferHelper
     {
-        public static void UploadFile(IAmazonS3 awsClient, BlobContainerClient azureClient, string bucketName, string fileName, IDataReader reader)
+        public static void UploadFile(IAmazonS3 awsClient, BlobContainerClient azureClient, string bucketName, string fileName, IDataReader reader, bool compress)
         {
             int fileIndex = 0;
             var name = fileName;
 
-            foreach (var stream in common.Helpers.CsvHelper.GetStreamCsv(reader, 10_000_000))
+            foreach (var stream in common.Helpers.CsvHelper.GetStreamCsv(reader, 10_000_000, compress))
             {
                 if (fileIndex > 0)
                     name = fileName.Replace(".gz", "." + fileIndex + ".gz");
