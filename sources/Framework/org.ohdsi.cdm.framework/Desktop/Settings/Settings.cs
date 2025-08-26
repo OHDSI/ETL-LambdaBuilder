@@ -35,36 +35,36 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
         }
 
         public string DropVocabularyTablesScript => File.ReadAllText(
-            Path.Combine(Folder, "Common", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "DropVocabularyTables.sql"));
+            Path.Combine(Folder, "Queries", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "DropVocabularyTables.sql"));
 
         public string TruncateWithoutLookupTablesScript => File.ReadAllText(
-            Path.Combine(Folder, "Common", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "TruncateWithoutLookupTables.sql"));
+            Path.Combine(Folder, "Queries", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "TruncateWithoutLookupTables.sql"));
 
         public string TruncateTablesScript => File.ReadAllText(
-            Path.Combine(Folder, "Common", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "TruncateTables.sql"));
+            Path.Combine(Folder, "Queries", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "TruncateTables.sql"));
 
         public string DropTablesScript => File.ReadAllText(
-            Path.Combine(Folder, "Common", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "DropTables.sql"));
+            Path.Combine(Folder, "Queries", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "DropTables.sql"));
 
         public string TruncateLookupScript => File.ReadAllText(
-            Path.Combine(Folder, "Common", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "TruncateLookup.sql"));
+            Path.Combine(Folder, "Queries", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "TruncateLookup.sql"));
 
         public string CreateCdmTablesScript => File.ReadAllText(
-            Path.Combine(Folder, "Common", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "CreateTables.sql"));
+            Path.Combine(Folder, "Queries", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "CreateTables.sql"));
 
         public string CreateCdmDatabaseScript => File.ReadAllText(
             Path.Combine([
                 Folder,
-                "Common",
+                "Queries",
                 Building.DestinationEngine.Database.ToString(),
                 "CreateDestination.sql"
             ]));
 
         public string CopyVocabularyScript => File.ReadAllText(
-            Path.Combine(Folder, "Common", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "CopyVocabulary.sql"));
+            Path.Combine(Folder, "Queries", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "CopyVocabulary.sql"));
 
         public string CreateIndexesScript => File.ReadAllText(
-            Path.Combine(Folder, "Common", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "CreateIndexes.sql"));
+            Path.Combine(Folder, "Queries", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "CreateIndexes.sql"));
 
         /// <summary>
         /// AWS s3 - None; Azure Blob - ServiceUri
