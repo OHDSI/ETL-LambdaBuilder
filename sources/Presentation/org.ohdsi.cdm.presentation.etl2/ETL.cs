@@ -166,6 +166,27 @@ namespace org.ohdsi.cdm.presentation.etl
             //            //    Settings.Current.Building.Id.Value, utility.BuildMessageBucket));
         }
 
+        public static void SaveMetadata(string sourceVersionId)
+        {
+            var file = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}/metadata/metadata.0.txt.gz";
+
+            List<MetadataOMOP> metadata = [];
+            metadata.Add(new MetadataOMOP { Id = 0, MetadataConceptId = 0, Name = "NativeLoadId", ValueAsString = sourceVersionId, MetadataDate = DateTime.Now.Date });
+
+            FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.CloudStorageName,
+                    file,
+                    new MetadataOMOPDataReader(metadata));
+        }
+
+        public static void SaveCdmSource(DateTime sourceReleaseDate, string vocabularyVersion)
+        {
+            var file = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}/cdm_source/cdm_source.txt.gz";
+
+            FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.CloudStorageName,
+                    file,
+                    new CdmSourceDataReader(sourceReleaseDate, vocabularyVersion));
+        }
+
         private static AmazonS3Client GetAwsStorageClient()
         {
             if (!string.IsNullOrEmpty(Settings.Current.CloudStorageHolder))

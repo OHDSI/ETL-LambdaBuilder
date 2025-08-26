@@ -215,24 +215,8 @@ namespace org.ohdsi.cdm.presentation.etl
                     Console.WriteLine("SourceReleaseDate:" + sourceReleaseDate);
                     Console.WriteLine("VocabularyVersion:" + vocabularyVersion);
 
-                    if (Settings.Current.Building.Cdm == CdmVersions.V54)
-                    {
-                        //var reader = new CdmSourceDataReader54(DateTime.Parse(sourceReleaseDate), vocabularyVersion);
-                        //using var stream = reader.GetStreamCsv();
-                        //SaveToS3(stream, 0, "cdmCSV", "CDM_SOURCE", "gz", vendor, Settings.Current.Building.Id.Value);
-
-                        //List<MetadataOMOP> metadata = [];
-                        //metadata.Add(new MetadataOMOP { Id = 0, MetadataConceptId = 0, Name = "NativeLoadId", ValueAsString = sourceVersionId, MetadataDate = DateTime.Now.Date });
-                        //var metadataReader = new MetadataOMOPDataReader54(metadata);
-
-                        //SaveToS3(metadataReader.GetStreamCsv(), 1, "cdmCSV", "METADATA", "gz", vendor, Settings.Current.Building.Id.Value);
-                    }
-                    else
-                    {
-                        //var reader = new CdmSourceDataReader(DateTime.Parse(sourceReleaseDate), vocabularyVersion);
-                        //using var stream = reader.GetStreamCsv();
-                        //SaveToS3(stream, 0, "cdmCSV", "CDM_SOURCE", "gz", vendor, Settings.Current.Building.Id.Value);
-                    }
+                    ETL.SaveCdmSource(DateTime.Parse(sourceReleaseDate), vocabularyVersion);
+                    ETL.SaveMetadata(sourceVersionId);
 
                     Console.WriteLine($"****************************************************************");
                 }
@@ -311,8 +295,6 @@ namespace org.ohdsi.cdm.presentation.etl
                     //checkMerging.Wait();
                 }
 
-                
-
                 Console.WriteLine("DONE.");
                 return Settings.Current.Building.Id.Value;
             }
@@ -322,51 +304,6 @@ namespace org.ohdsi.cdm.presentation.etl
                 Console.WriteLine(e.StackTrace);
                 throw;
             }
-        }
-
-        private static void SaveToS3(Stream memoryStream, int index, string folder, string table, string extension, Vendor vendor, int buildingId)
-        {
-            if (memoryStream == null)
-                return;
-
-            Console.WriteLine($"{table}.{index} size={memoryStream.Length / 1024f / 1024f}Mb | Saving...");
-
-            var config = new AmazonS3Config
-            {
-                Timeout = TimeSpan.FromMinutes(60),
-                RegionEndpoint = Amazon.RegionEndpoint.USEast1,
-                BufferSize = 512 * 1024,
-                MaxErrorRetry = 20
-            };
-
-            var fileName = $"{vendor}/{buildingId}/{folder}/{table}/{table}.0.{index}.{extension}";
-
-            Console.WriteLine($"Bucket={Settings.Current.CloudStorageName}");
-            Console.WriteLine("Key=" + fileName);
-
-            using (var c = new AmazonS3Client(Settings.Current.CloudStorageKey, Settings.Current.CloudStorageSecret, config))
-            {
-                var putObject = c.PutObjectAsync(new PutObjectRequest
-                {
-                    BucketName = $"{Settings.Current.CloudStorageName}",
-                    Key = fileName,
-                    ServerSideEncryptionMethod = ServerSideEncryptionMethod.AES256,
-                    StorageClass = S3StorageClass.Standard,
-                    InputStream = memoryStream,
-                    AutoCloseStream = false
-                });
-                putObject.Wait();
-
-                var response = putObject.Result;
-
-                if (string.IsNullOrEmpty(response.ETag))
-                {
-                    Console.WriteLine("!!! PutObject response is empty !!! | " + fileName);
-                    throw new Exception("PutObject response.ETag is empty");
-                }
-
-            }
-            Console.WriteLine($"{table}.{index} SAVED");
         }
     }
 }
