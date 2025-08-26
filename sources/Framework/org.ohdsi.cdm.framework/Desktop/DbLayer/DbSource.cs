@@ -123,14 +123,14 @@ namespace org.ohdsi.cdm.framework.desktop.DbLayer
         {
             try
             {
-                string query = "SELECT VERSION_DATE VERSION_DATE FROM " + _schemaName + "._Version";
+                string query = "SELECT version_date version_date FROM " + _schemaName + "._version";
                 using var connection = SqlConnectionHelper.OpenOdbcConnection(_connectionString);
                 using var c = new OdbcCommand(query, connection) { CommandTimeout = 0 };
                 using var reader = c.ExecuteReader();
 
                 while (reader.Read())
                 {
-                    var dateString = reader.GetString("VERSION_DATE");
+                    var dateString = reader.GetString("version_date");
                     var date = DateTime.Parse(dateString);
 
                     return date.ToShortDateString();
@@ -149,7 +149,7 @@ namespace org.ohdsi.cdm.framework.desktop.DbLayer
         {
             try
             {
-                string query = "SELECT version_id FROM " + _schemaName + "._Version";
+                string query = "SELECT version_id FROM " + _schemaName + "._version";
                 using var connection = SqlConnectionHelper.OpenOdbcConnection(_connectionString);
                 using var c = new OdbcCommand(query, connection);
                 using var reader = c.ExecuteReader();
