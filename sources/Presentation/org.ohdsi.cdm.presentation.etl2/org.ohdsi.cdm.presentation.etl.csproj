@@ -21,10 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Azure.Identity" Version="1.13.1" />
-    <PackageReference Include="Azure.Storage.Blobs" Version="12.25.0" />
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
-    <PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.2" />
   </ItemGroup>
 

@@ -9,7 +9,6 @@ using org.ohdsi.cdm.framework.desktop.DbLayer;
 using org.ohdsi.cdm.framework.desktop.Settings;
 using System;
 using System.Data.Odbc;
-using System.Data.SqlClient;
 using System.IO;
 using System.Reflection;
 
@@ -83,24 +82,19 @@ namespace org.ohdsi.cdm.presentation.etl
 
                 var builderConnectionString = configuration.GetConnectionString("Builder");
 
-                if (builderConnectionString == "Data Source=builder.db")
-                {
-                    if (!File.Exists("builder.db"))
-                    {
-                        using var connection = new SqliteConnection("Data Source=builder.db");
-                        connection.Open();
 
-                        var command = connection.CreateCommand();
-                        command.CommandText = File.ReadAllText("builderddl.sql");
-                        command.ExecuteNonQuery();
-                    }
-
-                    Console.WriteLine("builder: local file (builder.db)");
-                }
-                else
+                if (!File.Exists("builder.db"))
                 {
-                    Console.WriteLine($"builder:{new SqlConnectionStringBuilder(builderConnectionString).DataSource};");
+                    using var connection = new SqliteConnection("Data Source=builder.db");
+                    connection.Open();
+
+                    var command = connection.CreateCommand();
+                    command.CommandText = File.ReadAllText("builderddl.sql");
+                    command.ExecuteNonQuery();
                 }
+
+                Console.WriteLine("builder: local file (builder.db)");
+
 
                 //var s3MessagesAccessKeyId = configuration.GetSection("AppSettings")["s3_messages_access_key_id"];
                 //var s3MessagesSecretAccessKey = configuration.GetSection("AppSettings")["s3_messages_secret_access_key"];
@@ -111,7 +105,7 @@ namespace org.ohdsi.cdm.presentation.etl
                 //Settings.Current.MessageS3AwsAccessKeyId = s3MessagesAccessKeyId;
                 //Settings.Current.MessageS3AwsSecretAccessKey = s3MessagesSecretAccessKey;
                 //Settings.Current.MessageBucket = msgBucket;
-                
+
                 //var rawFolder = configuration.GetSection("AppSettings")["rawFolder"];
 
                 Settings.Initialize(builderConnectionString, Environment.MachineName);
@@ -217,6 +211,7 @@ namespace org.ohdsi.cdm.presentation.etl
 
                     ETL.SaveCdmSource(DateTime.Parse(sourceReleaseDate), vocabularyVersion);
                     ETL.SaveMetadata(sourceVersionId);
+                    ETL.SaveVersion(versionId);
 
                     Console.WriteLine($"****************************************************************");
                 }
@@ -233,7 +228,7 @@ namespace org.ohdsi.cdm.presentation.etl
                     {
                         Console.WriteLine("Chunk creation skipped");
                     }
-                    else 
+                    else
                     {
                         var chunksSchema = configuration.GetSection("AppSettings")["chunksSchema"];
                         if (!resumeChunkCreation)
@@ -248,7 +243,7 @@ namespace org.ohdsi.cdm.presentation.etl
                         ETL.MoveRawDataCloudStorage(chunksSchema);
                     }
 
-                    if(skipVocabularyCopying)
+                    if (skipVocabularyCopying)
                     {
                         Console.WriteLine("Vocabulary tables copying skipped");
                     }
@@ -257,7 +252,7 @@ namespace org.ohdsi.cdm.presentation.etl
                         ETL.CopyVocabularyTables();
                     }
 
-                    if(skipLookupCreation)
+                    if (skipLookupCreation)
                     {
                         Console.WriteLine("Lookup tables creation skipped");
                     }
@@ -266,7 +261,7 @@ namespace org.ohdsi.cdm.presentation.etl
                         ETL.CreateLookupTables();
                     }
 
-                    if(skipBuild)
+                    if (skipBuild)
                     {
                         ETL.Build();
                     }

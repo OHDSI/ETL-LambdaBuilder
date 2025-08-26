@@ -2,6 +2,7 @@
 using Amazon.S3.Model;
 using Azure.Identity;
 using Azure.Storage.Blobs;
+using org.ohdsi.cdm.framework.common.DataReaders.v5;
 using org.ohdsi.cdm.framework.common.DataReaders.v5.v54;
 using org.ohdsi.cdm.framework.common.Definitions;
 using org.ohdsi.cdm.framework.common.Helpers;
@@ -180,6 +181,15 @@ namespace org.ohdsi.cdm.presentation.etl
             FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.CloudStorageName,
                     file,
                     new MetadataOMOPDataReader(metadata));
+        }
+
+        public static void SaveVersion(int versionId)
+        {
+            var file = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}/_version/version.txt.gz";
+
+            FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.CloudStorageName,
+                    file,
+                    new VersionDataReader(versionId));
         }
 
         public static void SaveCdmSource(DateTime sourceReleaseDate, string vocabularyVersion)
