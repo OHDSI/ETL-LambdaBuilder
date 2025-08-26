@@ -48,20 +48,20 @@ namespace org.ohdsi.cdm.framework.common.Helpers
         public static IEnumerable<MemoryStream> GetStreamCsv(IDataReader reader, int? breakUpSize, bool compress, bool schemaOnly)
         {
             var rowCount = 0;
-            
+
             var source = new MemoryStream();
             StreamWriter writer = new(source, new UTF8Encoding(false, true));
             var csv = CreateCsvWriter(writer);
-            while (reader.Read())
+            if (schemaOnly)
             {
-                for (var i = 0; i < reader.FieldCount; i++)
+                var fieldName = reader.GetName(i);
+                csv.WriteField(fieldName);
+            }
+            else
+            {
+                while (reader.Read())
                 {
-                    if (schemaOnly)
-                    {
-                        var fieldName = reader.GetName(i);
-                        csv.WriteField(fieldName);
-                    }
-                    else
+                    for (var i = 0; i < reader.FieldCount; i++)
                     {
                         var type = reader.GetFieldType(i);
                         var value = reader.GetValue(i);
@@ -83,28 +83,28 @@ namespace org.ohdsi.cdm.framework.common.Helpers
                             csv.WriteField(value ?? string.Empty);
                         }
                     }
-                }
-                csv.NextRecord();
-                rowCount++;
+                    csv.NextRecord();
+                    rowCount++;
 
-                if(breakUpSize.HasValue && rowCount > breakUpSize.Value)
-                {
-                    writer.Flush();
-                    yield return Compress(source, compress);
+                    if (breakUpSize.HasValue && rowCount > breakUpSize.Value)
+                    {
+                        writer.Flush();
+                        yield return Compress(source, compress);
 
-                    csv.Dispose();
-                    writer.Dispose();
-                    source.Dispose();
+                        csv.Dispose();
+                        writer.Dispose();
+                        source.Dispose();
 
-                    source = new MemoryStream();
-                    writer = new(source, new UTF8Encoding(false, true));
-                    csv = CreateCsvWriter(writer);
-                    rowCount = 0;
+                        source = new MemoryStream();
+                        writer = new(source, new UTF8Encoding(false, true));
+                        csv = CreateCsvWriter(writer);
+                        rowCount = 0;
+                    }
                 }
             }
 
             writer.Flush();
-            
+
             yield return Compress(source, compress);
 
             csv.Dispose();
