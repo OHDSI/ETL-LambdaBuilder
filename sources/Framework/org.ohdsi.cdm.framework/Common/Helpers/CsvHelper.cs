@@ -48,16 +48,12 @@ namespace org.ohdsi.cdm.framework.common.Helpers
         public static IEnumerable<MemoryStream> GetStreamCsv(IDataReader reader, int? breakUpSize)
         {
             var rowCount = 0;
-
-            using var source = new MemoryStream();
-            using StreamWriter writer = new(source, new UTF8Encoding(false, true));
-            using var csv = CreateCsvWriter(writer);
-
-            while (!breakUpSize.HasValue || rowCount < breakUpSize.Value)
+            
+            var source = new MemoryStream();
+            StreamWriter writer = new(source, new UTF8Encoding(false, true));
+            var csv = CreateCsvWriter(writer);
+            while (reader.Read())
             {
-                if (!reader.Read())
-                    break;
-
                 for (var i = 0; i < reader.FieldCount; i++)
                 {
                     var type = reader.GetFieldType(i);
@@ -82,10 +78,29 @@ namespace org.ohdsi.cdm.framework.common.Helpers
                 }
                 csv.NextRecord();
                 rowCount++;
-            }
-            writer.Flush();
 
+                if(breakUpSize.HasValue && rowCount > breakUpSize.Value)
+                {
+                    writer.Flush();
+                    yield return Compress(source);
+
+                    csv.Dispose();
+                    writer.Dispose();
+                    source.Dispose();
+
+                    source = new MemoryStream();
+                    writer = new(source, new UTF8Encoding(false, true));
+                    csv = CreateCsvWriter(writer);
+                    rowCount = 0;
+                }
+            }
+
+            writer.Flush();
             yield return Compress(source);
+
+            csv.Dispose();
+            writer.Dispose();
+            source.Dispose();
         }
 
         private static MemoryStream Compress(Stream inputStream)
