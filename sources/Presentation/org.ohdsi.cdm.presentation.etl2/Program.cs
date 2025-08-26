@@ -227,7 +227,7 @@ namespace org.ohdsi.cdm.presentation.etl
                 }
                 else
                 {
-                    ETL.SaveVocabularyToCloudStorage();
+                    ETL.SaveEtlLookupsToCloudStorage();
 
                     if (skipChunkCreation)
                     {

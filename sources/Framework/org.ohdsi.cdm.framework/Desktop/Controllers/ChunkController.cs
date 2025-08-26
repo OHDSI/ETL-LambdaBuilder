@@ -84,13 +84,13 @@ namespace org.ohdsi.cdm.framework.desktop.Controllers
                 saver.Commit();
             }
 
-            CopyIntoFromCloudStorage(chunksConnectionString);
+            SaveChunksToDatabase(chunksConnectionString);
 
             Console.WriteLine("***** Chunk ids were generated and saved, total count=" + chunkId + " *****");
         }
 
 
-        private void CopyIntoFromCloudStorage(string connectionString)
+        private void SaveChunksToDatabase(string connectionString)
         {
             string query;
             if (Settings.Settings.Current.Building.SourceEngine.Database == Enums.Database.Databricks)

@@ -22,7 +22,7 @@ namespace org.ohdsi.cdm.presentation.etl
 {
     class ETL
     {
-        public static void SaveVocabularyToCloudStorage()
+        public static void SaveEtlLookupsToCloudStorage()
         {
             var vocabulary = new Vocabulary();
             foreach (var cl in vocabulary.GetCombinedLookups())
@@ -343,16 +343,6 @@ namespace org.ohdsi.cdm.presentation.etl
             using (var c = Settings.Current.Building.SourceEngine.GetCommand(sql, conn))
             using (var reader = c.ExecuteReader(CommandBehavior.SchemaOnly))
             {
-                for (var i = 0; i < reader.FieldCount; i++)
-                {
-                    var fieldName = reader.GetName(i);
-                    if (Settings.Current.Building.PersonFileName == queryDefinition.FileName &&
-                        Settings.Current.Building.PersonIdFieldName == fieldName)
-                    {
-                        Settings.Current.Building.PersonIdFieldIndex = i;
-                    }
-                }
-
                 FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.CloudStorageName,
                     fileName,
                     reader,
