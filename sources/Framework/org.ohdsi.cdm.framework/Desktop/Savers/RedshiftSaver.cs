@@ -52,8 +52,8 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
 
             var name = "_chunks" + chunkId;
             var fileName = $"{Settings.Settings.Current.BuildingPrefix}/{name}.txt.gz";
-            //FileTransferHelper.UploadFile(currentClient, null, Settings.Settings.Current.CloudStorageName, fileName, reader, "\t", '`', "\0");
-            FileTransferHelper.UploadFile(currentClient, null, Settings.Settings.Current.CloudStorageName, fileName, reader);
+            
+            FileTransferHelper.UploadFile(currentClient, null, Settings.Settings.Current.CloudStorageName, fileName, reader, true);
         }               
     }
 }
