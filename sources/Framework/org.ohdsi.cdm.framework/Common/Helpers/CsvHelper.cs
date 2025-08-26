@@ -54,8 +54,11 @@ namespace org.ohdsi.cdm.framework.common.Helpers
             var csv = CreateCsvWriter(writer);
             if (schemaOnly)
             {
-                var fieldName = reader.GetName(i);
-                csv.WriteField(fieldName);
+                for (var i = 0; i < reader.FieldCount; i++)
+                {
+                    var fieldName = reader.GetName(i);
+                    csv.WriteField(fieldName);
+                }
             }
             else
             {
