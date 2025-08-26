@@ -59,6 +59,7 @@ namespace org.ohdsi.cdm.framework.common.Helpers
                     var fieldName = reader.GetName(i);
                     csv.WriteField(fieldName);
                 }
+                csv.NextRecord();
             }
             else
             {
@@ -110,6 +111,7 @@ namespace org.ohdsi.cdm.framework.common.Helpers
 
             yield return Compress(source, compress);
 
+            
             csv.Dispose();
             writer.Dispose();
             source.Dispose();
@@ -117,14 +119,17 @@ namespace org.ohdsi.cdm.framework.common.Helpers
 
         private static MemoryStream Compress(MemoryStream inputStream, bool useCompression)
         {
-            if (!useCompression)
-                return inputStream;
-
             inputStream.Position = 0;
             var outputStream = new MemoryStream();
-            using (var gz = new BufferedStream(new GZipStream(outputStream, CompressionLevel.Optimal, true)))
+
+            if (useCompression)
             {
+                using var gz = new BufferedStream(new GZipStream(outputStream, CompressionLevel.Optimal, true));
                 inputStream.CopyTo(gz);
+            }
+            else
+            {
+                inputStream.CopyTo(outputStream);
             }
 
             outputStream.Position = 0;
