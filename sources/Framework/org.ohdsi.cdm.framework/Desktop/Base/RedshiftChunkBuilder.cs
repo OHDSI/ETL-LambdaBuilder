@@ -2,7 +2,6 @@
 using Amazon.S3.Model;
 using org.ohdsi.cdm.framework.common.Base;
 using org.ohdsi.cdm.framework.desktop.DbLayer;
-using org.ohdsi.cdm.framework.desktop.Enums;
 using org.ohdsi.cdm.framework.desktop.Helpers;
 using System.Diagnostics;
 

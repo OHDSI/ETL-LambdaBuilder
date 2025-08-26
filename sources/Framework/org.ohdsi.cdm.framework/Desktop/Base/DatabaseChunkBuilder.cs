@@ -1,6 +1,5 @@
 ﻿using org.ohdsi.cdm.framework.common.Base;
 using org.ohdsi.cdm.framework.desktop.DbLayer;
-using org.ohdsi.cdm.framework.desktop.Enums;
 using System.Diagnostics;
 
 namespace org.ohdsi.cdm.framework.desktop.Base

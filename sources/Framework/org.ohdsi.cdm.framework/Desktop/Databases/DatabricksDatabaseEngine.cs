@@ -1,9 +1,6 @@
 ﻿using org.ohdsi.cdm.framework.common.Base;
 using org.ohdsi.cdm.framework.common.Definitions;
-using org.ohdsi.cdm.framework.desktop.Base;
-using org.ohdsi.cdm.framework.desktop.DataReaders;
 using org.ohdsi.cdm.framework.desktop.Enums;
-using org.ohdsi.cdm.framework.desktop.Helpers;
 using org.ohdsi.cdm.framework.desktop.Savers;
 using System.Data;
 using System.Data.Odbc;

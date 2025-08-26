@@ -2,7 +2,6 @@
 using Azure.Identity;
 using Azure.Storage.Blobs;
 using Microsoft.Extensions.Configuration;
-using org.ohdsi.cdm.framework.common.DataReaders.v5;
 using org.ohdsi.cdm.framework.common.DataReaders.v5.v54;
 using org.ohdsi.cdm.framework.common.Definitions;
 using org.ohdsi.cdm.framework.common.Omop;

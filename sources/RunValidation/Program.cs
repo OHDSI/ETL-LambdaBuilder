@@ -3,7 +3,6 @@ using CommandLine;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Utility;
 using System.Configuration;
-using org.ohdsi.cdm.framework.common.Omop;
 
 namespace RunValidation
 {

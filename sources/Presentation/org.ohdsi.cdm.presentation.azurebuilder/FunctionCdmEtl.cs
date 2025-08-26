@@ -1,28 +1,16 @@
-using Amazon.S3.Transfer;
 using Azure.Identity;
 using Azure.Storage.Blobs;
-using Azure.Storage.Blobs.Models;
-using CsvHelper;
-using CsvHelper.Configuration;
-using Google.Protobuf.WellKnownTypes;
-using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using org.ohdsi.cdm.framework.common.Base;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Utility;
-using org.ohdsi.cdm.framework.etl.Transformation.OptumExtended;
-using org.ohdsi.cdm.framework.etl.Transformation.OptumPanther;
 using org.ohdsi.cdm.presentation.azurebuilder.Base;
 using System.Diagnostics;
-using System.Globalization;
-using System.IO;
 using System.IO.Compression;
 using System.Net;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
-using static Amazon.S3.Util.S3EventNotification;
 
 namespace org.ohdsi.cdm.presentation.azurebuilder;
 

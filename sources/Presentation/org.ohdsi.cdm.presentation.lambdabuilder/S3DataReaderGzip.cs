@@ -1,14 +1,4 @@
-﻿using Amazon.S3;
-using Amazon.S3.Transfer;
-using org.ohdsi.cdm.framework.common.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.IO;
-using System.IO.Compression;
-using System.Text;
-
-namespace org.ohdsi.cdm.presentation.lambdabuilder
+﻿namespace org.ohdsi.cdm.presentation.lambdabuilder
 {
     //public class S3DataReaderGzip : IDataReader
     //{

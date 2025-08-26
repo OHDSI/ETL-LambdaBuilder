@@ -1,8 +1,4 @@
-﻿using Amazon.S3;
-using Amazon.S3.Model;
-using Settings = org.ohdsi.cdm.framework.desktop.Settings.Settings;
-
-namespace org.ohdsi.cdm.framework.desktop3.Monitor
+﻿namespace org.ohdsi.cdm.framework.desktop3.Monitor
 {
     //public class ChunksMonitor : IDisposable
     //{

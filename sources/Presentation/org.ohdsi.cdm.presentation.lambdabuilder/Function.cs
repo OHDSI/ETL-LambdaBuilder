@@ -18,9 +18,6 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using static Amazon.Lambda.S3Events.S3Event;
-using CsvHelper;
-using CsvHelper.Configuration;
-using System.Globalization;
 using org.ohdsi.cdm.framework.common.Utility;
 using System.Reflection;
 

@@ -1,5 +1,4 @@
-﻿using Amazon.S3.Model;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using org.ohdsi.cdm.framework.common.Base;
 using org.ohdsi.cdm.framework.common.Builder;
 using org.ohdsi.cdm.framework.common.Definitions;

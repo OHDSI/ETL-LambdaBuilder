@@ -3,7 +3,6 @@ using org.ohdsi.cdm.framework.common.Lookups;
 using org.ohdsi.cdm.framework.desktop.Helpers;
 using org.ohdsi.cdm.framework.Desktop.DataReaders;
 using System.Data;
-using System.Data.Common;
 using System.Data.Odbc;
 
 namespace org.ohdsi.cdm.framework.desktop

@@ -1,12 +1,4 @@
-﻿using Amazon.S3;
-using Amazon.S3.Model;
-using org.ohdsi.cdm.framework.desktop.DbLayer;
-using System.Diagnostics;
-using System.Timers;
-using org.ohdsi.cdm.framework.common.Enums;
-using Settings = org.ohdsi.cdm.framework.desktop.Settings.Settings;
-
-namespace org.ohdsi.cdm.framework.desktop3.Monitor
+﻿namespace org.ohdsi.cdm.framework.desktop3.Monitor
 {
 //    class ChunkMonitor : IDisposable
 //    {
