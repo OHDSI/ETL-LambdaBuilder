@@ -191,7 +191,7 @@ namespace org.ohdsi.cdm.presentation.etl
 
                 Console.WriteLine("Copying vocabulary tables...");
 
-                var vocabQueriesPath = Path.Combine(Settings.Current.Folder, "Queries", "Vocabulary");
+                var vocabQueriesPath = Path.Combine(Settings.Current.Folder, "Common", "Queries", "Vocabulary");
 
                 foreach (var filePath in Directory.GetFiles(vocabQueriesPath))
                 {
