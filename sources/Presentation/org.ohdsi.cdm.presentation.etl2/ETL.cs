@@ -35,8 +35,7 @@ namespace org.ohdsi.cdm.presentation.etl
 
                 FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.CloudStorageName,
                 fileName,
-                reader, 
-                true);
+                reader);
             }
 
             foreach (var ri in vocabulary.GetClinicalDataReaders())
@@ -48,8 +47,7 @@ namespace org.ohdsi.cdm.presentation.etl
 
                     FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.CloudStorageName,
                         fileName,
-                        ri.DataReader,
-                        true);
+                        ri.DataReader);
                 }
             }
 
@@ -62,8 +60,7 @@ namespace org.ohdsi.cdm.presentation.etl
                     
                     FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.CloudStorageName,
                         fileName,
-                        ri.DataReader,
-                        true);
+                        ri.DataReader);
                 }
             }
 
@@ -83,8 +80,7 @@ namespace org.ohdsi.cdm.presentation.etl
                     Console.WriteLine("ConceptIdToSourceVocabularyId - store to S3 | " + fileName);
                     FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.CloudStorageName,
                         fileName,
-                        reader,
-                        true);
+                        reader);
                 }
                 Console.WriteLine("ConceptIdToSourceVocabularyId - Done");
             }
@@ -126,8 +122,7 @@ namespace org.ohdsi.cdm.presentation.etl
                         
                         FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.CloudStorageName,
                             fileName,
-                            reader,
-                            true);
+                            reader);
                     }
 
                     Console.WriteLine("[Vocabulary] " + tableName + " SAVED");
@@ -184,8 +179,7 @@ namespace org.ohdsi.cdm.presentation.etl
 
             FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.CloudStorageName,
                     file,
-                    new MetadataOMOPDataReader(metadata),
-                    true);
+                    new MetadataOMOPDataReader(metadata));
         }
 
         public static void SaveCdmSource(DateTime sourceReleaseDate, string vocabularyVersion)
@@ -194,8 +188,7 @@ namespace org.ohdsi.cdm.presentation.etl
 
             FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.CloudStorageName,
                     file,
-                    new CdmSourceDataReader(sourceReleaseDate, vocabularyVersion),
-                    true);
+                    new CdmSourceDataReader(sourceReleaseDate, vocabularyVersion));
         }
 
         //public void MoveChunkDataToS3(bool useMonitor, bool triggerLambdas, LambdaUtility utility)
@@ -336,18 +329,19 @@ namespace org.ohdsi.cdm.presentation.etl
         private static void StoreMetadataToCloudStorage(QueryDefinition queryDefinition, string query)
         {
             Console.WriteLine("[Moving raw data] StoreMetadataToCloudStorage start - " + queryDefinition.FileName);
-            var sql = query + " limit 1";
             var fileName = $"{Settings.Current.BuildingPrefix}/raw/metadata/{queryDefinition.FileName + ".txt"}";
 
             using (var conn = SqlConnectionHelper.OpenOdbcConnection(Settings.Current.Building.SourceConnectionString))
-            using (var c = Settings.Current.Building.SourceEngine.GetCommand(sql, conn))
+            using (var c = Settings.Current.Building.SourceEngine.GetCommand(query, conn))
             using (var reader = c.ExecuteReader(CommandBehavior.SchemaOnly))
             {
-                FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.CloudStorageName,
+                FileTransferHelper.UploadFile(GetAwsStorageClient(), 
+                    GetAzureStorageClient(), 
+                    Settings.Current.CloudStorageName,
                     fileName,
                     reader,
-                    false);
-
+                    false,
+                    true);
             }
             Console.WriteLine("[Moving raw data] StoreMetadataToCloudStorage end - " + queryDefinition.FileName);
         }
@@ -398,7 +392,7 @@ namespace org.ohdsi.cdm.presentation.etl
             if (providerConcepts.Count > 0)
                 FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.CloudStorageName,
                     file,
-                    new ProviderDataReader(providerConcepts), true);
+                    new ProviderDataReader(providerConcepts));
 
             Console.WriteLine("[Creating lookup] Providers was loaded");
         }
@@ -434,8 +428,7 @@ namespace org.ohdsi.cdm.presentation.etl
 
             FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.CloudStorageName,
                     file,
-                    new CareSiteDataReader(careSiteConcepts), 
-                    true);
+                    new CareSiteDataReader(careSiteConcepts));
 
             Console.WriteLine("[Creating lookup] Care sites was loaded");
         }
@@ -461,8 +454,7 @@ namespace org.ohdsi.cdm.presentation.etl
             if (locationConcepts.Count > 0)
                 FileTransferHelper.UploadFile(GetAwsStorageClient(), GetAzureStorageClient(), Settings.Current.CloudStorageName,
                     file,
-                    new LocationDataReader(locationConcepts),
-                    true);
+                    new LocationDataReader(locationConcepts));
 
             Console.WriteLine("[Creating lookup] Locations was loaded " + Settings.Current.Building.Cdm);
         }

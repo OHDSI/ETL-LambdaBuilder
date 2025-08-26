@@ -42,10 +42,10 @@ namespace org.ohdsi.cdm.framework.common.Helpers
 
         public static IEnumerable<MemoryStream> GetStreamCsv(IDataReader reader)
         {
-            return GetStreamCsv(reader, null, true);
+            return GetStreamCsv(reader, null, true, false);
         }
 
-        public static IEnumerable<MemoryStream> GetStreamCsv(IDataReader reader, int? breakUpSize, bool compress)
+        public static IEnumerable<MemoryStream> GetStreamCsv(IDataReader reader, int? breakUpSize, bool compress, bool schemaOnly)
         {
             var rowCount = 0;
             
@@ -56,24 +56,32 @@ namespace org.ohdsi.cdm.framework.common.Helpers
             {
                 for (var i = 0; i < reader.FieldCount; i++)
                 {
-                    var type = reader.GetFieldType(i);
-                    var value = reader.GetValue(i);
-                    if ((type == typeof(DateTime) || type == typeof(DateTime?)) && value != null && value is not DBNull)
+                    if (schemaOnly)
                     {
-                        if (reader.GetName(i).Contains("datetime", StringComparison.CurrentCultureIgnoreCase))
-                        {
-                            csv.WriteField(((DateTime)value).ToString("yyyy-MM-dd HH:mm:ss.fff"));
-                        }
-                        else
-                            csv.WriteField(((DateTime)value).ToString("yyyy-MM-dd"));
-                    }
-                    else if (type == typeof(string) && (value == null || value is DBNull))
-                    {
-                        csv.WriteField(NullAs);
+                        var fieldName = reader.GetName(i);
+                        csv.WriteField(fieldName);
                     }
                     else
                     {
-                        csv.WriteField(value ?? string.Empty);
+                        var type = reader.GetFieldType(i);
+                        var value = reader.GetValue(i);
+                        if ((type == typeof(DateTime) || type == typeof(DateTime?)) && value != null && value is not DBNull)
+                        {
+                            if (reader.GetName(i).Contains("datetime", StringComparison.CurrentCultureIgnoreCase))
+                            {
+                                csv.WriteField(((DateTime)value).ToString("yyyy-MM-dd HH:mm:ss.fff"));
+                            }
+                            else
+                                csv.WriteField(((DateTime)value).ToString("yyyy-MM-dd"));
+                        }
+                        else if (type == typeof(string) && (value == null || value is DBNull))
+                        {
+                            csv.WriteField(NullAs);
+                        }
+                        else
+                        {
+                            csv.WriteField(value ?? string.Empty);
+                        }
                     }
                 }
                 csv.NextRecord();
