@@ -66,7 +66,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                 return new KeyValuePair<Person, Attrition>(null, Attrition.UnacceptablePatientQuality);
 
             var ordered = records.OrderByDescending(p => p.StartDate).ThenBy(p => p.EndDate);
-            var person = ordered.Take(1).Last();
+            var person = ordered.Last();
 
             person.LocationId = Entity.GetId(person.LocationSourceValue);
 
@@ -902,6 +902,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
             {
                 new()
                 {
+                    Id = Offset.GetKeyOffset(person.PersonId).ObservationPeriodId,
                     PersonId = person.PersonId,
                     StartDate = DateTime.MinValue,
                     EndDate = DateTime.MaxValue,

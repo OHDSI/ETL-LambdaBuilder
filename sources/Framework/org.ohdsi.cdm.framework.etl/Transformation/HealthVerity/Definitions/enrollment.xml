@@ -57,8 +57,8 @@
 		when 'asian' then 8515
 		else 0
 		end as most_likely_race_concept_id,
-		coalesce(pr.race, '') as race,
-		case lower(coalesce(pr.race, ''))
+		coalesce(pe.most_likely_race, '') as race,
+		case lower(coalesce(pe.most_likely_race, ''))
 		when 'white' then 8527
 		when 'black' then 8516
 		when 'asian' then 8515
@@ -78,7 +78,6 @@
 		else 0
 		end as payer_concept_id
 		from a
-		left join {sc}.patient_race pr on pr.hvid = a.hvid
 		left join {sc}.patient_race_ethnicity pe on pe.hvid = a.hvid
 		left join location l on l.patient_zip3 = a.patient_zip3 and coalesce(l.patient_state, '') = coalesce(a.patient_state, '')
 		order by 1

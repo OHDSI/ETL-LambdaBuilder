@@ -88,12 +88,12 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.JMDC
                 }
             }
 
-            var person = ordered.Take(1).First();
-            person.StartDate = ordered.Take(1).Last().StartDate;
+            var person = ordered.First();
+            person.StartDate = ordered.Last().StartDate;
 
             var gender =
-                records.GroupBy(p => p.GenderConceptId).OrderByDescending(gp => gp.Count()).Take(1).First().First();
-            var race = records.GroupBy(p => p.RaceConceptId).OrderByDescending(gp => gp.Count()).Take(1).First()
+                records.GroupBy(p => p.GenderConceptId).OrderByDescending(gp => gp.Count()).First().First();
+            var race = records.GroupBy(p => p.RaceConceptId).OrderByDescending(gp => gp.Count()).First()
                 .First();
 
             person.GenderConceptId = gender.GenderConceptId;
@@ -546,21 +546,35 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.JMDC
             var notes = BuildNote([.. NoteRecords], visitOccurrences, observationPeriods).ToArray();
             var episode = BuildEpisode([.. EpisodeRecords], visitOccurrences, observationPeriods).ToArray();
 
+
+            var visits = new List<VisitOccurrence>();
+            var dropedVisitIds = new Dictionary<long, bool>();
+            foreach (var vivitId in visitOccurrences.Keys)
+            {
+                var item = visitOccurrences[vivitId];
+                if (death == null)
+                    visits.Add(item);
+                else if (item.StartDate.Date <= death.StartDate.AddDays(60))
+                    visits.Add(item);
+                else
+                    dropedVisitIds.Add(vivitId, true);
+            }
+
             // push built entities to ChunkBuilder for further save to CDM database
             AddToChunk(
                 person,
                 death,
                 observationPeriods,
                 payerPlanPeriods,
-                FilterByDeathDate(drugExposures, death, 60).ToArray(),
-                FilterByDeathDate(conditionOccurrences, death, 60).ToArray(),
-                FilterByDeathDate(procedureOccurrences, death, 60).ToArray(),
-                FilterByDeathDate(observations, death, 60).ToArray(),
-                FilterByDeathDate(measurements, death, 60).ToArray(),
-                FilterByDeathDate(visitOccurrences.Values, death, 60).ToArray(),
-                FilterByDeathDate(visitDetails, death, 60).ToArray(),
+                [.. FilterByDeathDate(drugExposures, death, 60, dropedVisitIds)],
+                [.. FilterByDeathDate(conditionOccurrences, death, 60, dropedVisitIds)],
+                [.. FilterByDeathDate(procedureOccurrences, death, 60, dropedVisitIds)],
+                [.. FilterByDeathDate(observations, death, 60, dropedVisitIds)],
+                [.. FilterByDeathDate(measurements, death, 60, dropedVisitIds)],
+                [.. visits],
+                [.. FilterByDeathDate(visitDetails, death, 60, dropedVisitIds)],
                 cohort,
-                FilterByDeathDate(deviceExposure, death, 60).ToArray(),
+                [.. FilterByDeathDate(deviceExposure, death, 60, dropedVisitIds)],
                 notes,
                 episode);
 
@@ -610,6 +624,20 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.JMDC
             }
 
             return Attrition.None;
+        }
+
+        public static IEnumerable<T> FilterByDeathDate<T>(IEnumerable<T> items, Death death, int gap, Dictionary<long, bool> dropedVisitIds) where T : IEntity
+        {
+            foreach (var item in items)
+            {
+                if (item.VisitOccurrenceId.HasValue && dropedVisitIds.ContainsKey(item.VisitOccurrenceId.Value))
+                    item.VisitOccurrenceId = null;
+
+                if (death == null)
+                    yield return item;
+                else if (item.StartDate.Date <= death.StartDate.AddDays(gap))
+                    yield return item;
+            }
         }
 
         public override IEnumerable<T> BuildEntities<T>(IEnumerable<T> entitiesToBuild, IDictionary<long, VisitOccurrence> visitOccurrences, IEnumerable<ObservationPeriod> observationPeriods, bool withinTheObservationPeriod)

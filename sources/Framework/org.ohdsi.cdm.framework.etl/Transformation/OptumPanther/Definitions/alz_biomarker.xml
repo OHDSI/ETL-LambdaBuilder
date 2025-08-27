@@ -7,7 +7,7 @@
 		when biomarker_source != '' or biomarker_source is not null then concat(concat(biomarker,'|'), biomarker_source)
 		else biomarker
 		end as source_value,
-		encounterdate,
+		note_date,
 		numeric_result,
 		variant,
 		32858 type_concept_id,
@@ -67,7 +67,7 @@
 		<MeasurementDefinition>
 			<IsUnique>true</IsUnique>
 			<PersonId>PersonId</PersonId>
-			<StartDate>encounterdate</StartDate>
+			<StartDate>note_date</StartDate>
 			<ValueAsNumber>numeric_result</ValueAsNumber>
 			<ValueSourceValue>value_source_value</ValueSourceValue>
 			<AdditionalFields>

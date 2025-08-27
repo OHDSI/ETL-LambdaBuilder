@@ -56,7 +56,7 @@ To find a provider associated with a VISIT_DETAIL record, join to the encounter_
 | visit_detail_end_datetime |  carearea_time | Combine carearea_date and carearea_time into a datetime value  |   |
 | visit_detail_type_concept_id |   | 32828 | EHR episode record |
 | provider_id | encounter_provider.provid|  | Use the logic detailed above to choose a provider for the VISIT_DETAIL record. |
-| care_site_id |   |   |   |
+| care_site_id | sourceid  | Lookup the sourceid in the CARE_SITE table and put the care_site_id here  |   |
 | visit_detail_source_value | carearea |   |   |
 | visit_detail_source_concept_id | carearea | |Use the [SOURCE_TO_SOURCE](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_SOURCE.sql) with the filter:<br> Where SOURCE_VOCABULARY_ID = 'JNJ_OPTUM_EHR_VISIT'|
 | admitting_source_concept_id | 0 | |  |
@@ -82,7 +82,7 @@ Each record in the native Visit table will create a record in the VISIT_DETAIL t
 | visit_detail_end_datetime |  visit_end_time | Combine visit_end_date and visit_end_time into a datetime value  |   |
 | visit_detail_type_concept_id |   | 32827 | EHR encounter |
 | provider_id | |  |  |
-| care_site_id |   |   |   |
+| care_site_id |sourceid  | Lookup the sourceid in the CARE_SITE table and put the care_site_id here  |   |
 | visit_detail_source_value | visit_type |   |   |
 | visit_detail_source_concept_id | 0 | |   |
 | admitting_source_concept_id | 0 | |  |
@@ -108,7 +108,7 @@ Each record in the native Procedure table **where proc_code is 99221, 99222, 992
 | visit_detail_end_datetime |  proc_time | Combine proc_date and proc_time into a datetime value  |   |
 | visit_detail_type_concept_id |   | 32827 | EHR encounter |
 | provider_id | |  |  |
-| care_site_id |   |   |   |
+| care_site_id | sourceid  | Lookup the sourceid in the CARE_SITE table and put the care_site_id here  |   |
 | visit_detail_source_value | proc_code |   |   |
 | visit_detail_source_concept_id | proc_code | |Use the [SOURCE_TO_SOURCE](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_SOURCE.sql) with the filter:<br> Where SOURCE_VOCABULARY_ID = 'CPT4'   |
 | admitting_source_concept_id | 0 | |  |

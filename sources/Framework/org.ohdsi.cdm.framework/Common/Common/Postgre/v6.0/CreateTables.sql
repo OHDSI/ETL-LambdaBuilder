@@ -1,7 +1,7 @@
 CREATE TABLE {sc}.person
 (
   person_id						BIGINT	  	NOT NULL , 
-  gender_concept_id				INT8	  	NOT NULL ,
+  gender_concept_id				INTEGER	  	NOT NULL ,
   year_of_birth					INTEGER	  	NOT NULL ,
   month_of_birth				INTEGER	  	NULL,
   day_of_birth					INTEGER	  	NULL,
