@@ -2,11 +2,11 @@ DBMS:
 postgresql
 
 Error:
-org.postgresql.util.PSQLException: ERROR: column "poadx1" of relation "facility_header" does not exist
-  Position: 378
+org.postgresql.util.PSQLException: ERROR: column "varchar" does not exist
+  Position: 471
 
 SQL:
-INSERT INTO ccae_tests_native.facility_header(_flag, age, agegrp, billtyp, cap_svc, caseid, cob, coins, copay, datatyp, deduct, dobyr, dstatus, dx1, dx2, dx3, dx4, dx5, dx6, dx7, dx8, dx9, dxver, eeclass, eestatu, efamid, egeoloc, eidflag, emprel, enrflag, enrolid, fachdid, hlthplan, indstry, mdc, mhsacovg, msa, netpay, ntwkprov, paidntwk, pddate, phyflag, plankey, plantyp, poadx1, poadx2, poadx3, poadx4, poadx5, poadx6, poadx7, poadx8, poadx9, proc1, proc2, proc3, proc4, proc5, proc6, provid, region, rx, seqnum, sex, stdplac, stdprov, svcdate, tsvcdat, version, wgtkey, year, msclmid, npi, medadv) VALUES ('0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1024', '9', '0', '0', '0', '0', '0', '0', '0', '3', '4', '0', '0', '0', '0', '0', '0', '0', '0', '2024-03-01', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2012-10-16', '2012-10-16', '0', '0', '0', '0', '0', '0')
+INSERT INTO ccae_tests_cdm.test_results SELECT 163 AS id, 'Family source value derived from ENROLID. Id is PERSON_ID.' AS description, 'Expect payer_plan_period' AS test, CASE WHEN (SELECT COUNT(*) FROM ccae_tests_cdm.payer_plan_period WHERE person_id  = '163' AND payer_plan_period_start_date  = '2012-04-01' AND payer_plan_period_end_date  = '2012-04-30' AND payer_source_value  = 'C Commercial PPO' AND family_source_value  = (SUBSTRING(RIGHT('00000000000' + CONVERT(VARCHAR,163), 11), 1,9))) = 0 THEN 'FAIL' ELSE 'PASS' END AS status
 
 R version:
 R version 4.5.0 (2025-04-11 ucrt)

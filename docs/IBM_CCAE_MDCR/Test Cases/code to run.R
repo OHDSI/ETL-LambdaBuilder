@@ -36,12 +36,12 @@ setDefaults();
 createTests();
 
 connectionDetails <- DatabaseConnector::createConnectionDetails(
-  dbms     = Sys.getenv("R_CCAE_dbms"),
-  server   = Sys.getenv("R_CCAE_server"),
-  port     = as.numeric(Sys.getenv("R_CCAE_port")),
-  user     = Sys.getenv("R_CCAE_user"),
-  password = Sys.getenv("R_CCAE_password"),
-  pathToDriver = Sys.getenv("R_path_to_driver_pg")
+  dbms     = Sys.getenv("R_dbms"),
+  server   = Sys.getenv("R_server"),
+  port     = as.numeric(Sys.getenv("R_port")),
+  user     = Sys.getenv("R_user"), keeps getting wrong value
+  password = Sys.getenv("R_password"),
+  pathToDriver = Sys.getenv("R_pathToDriver")
 )
 connection <- DatabaseConnector::connect(connectionDetails)
 
@@ -104,6 +104,10 @@ if (frameworkType == "CCAE" ){
 
 testSql <- paste(generateTestSql(databaseSchema = cdm_schema),
                  sep = "", collapse = "\n")
+
+# this is required for the script to work in Postgres
+testSql <- gsub("= (SELECT", "IN (SELECT", testSql, fixed = TRUE)
+
 SqlRender::writeSql(testSql, "inst/sql/test.sql")
 DatabaseConnector::executeSql(connection, testSql)
 
