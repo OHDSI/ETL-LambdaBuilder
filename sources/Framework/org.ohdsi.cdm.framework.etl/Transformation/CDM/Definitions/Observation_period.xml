@@ -9,7 +9,7 @@
 		ch.PartitionId
 		FROM {sc}.observation_period op
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND op.PERSON_ID = ch.PERSON_ID
-		order by ch.PartitionId, t.person_id
+		order by ch.PartitionId, op.person_id
 	</Query>
 	<ObservationPeriods>
 		<ObservationPeriodDefinition>
