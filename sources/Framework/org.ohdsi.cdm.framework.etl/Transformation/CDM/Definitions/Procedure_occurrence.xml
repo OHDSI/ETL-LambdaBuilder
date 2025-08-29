@@ -16,9 +16,10 @@
 		, t.modifier_source_value
 		, t.procedure_end_date
 		, t.procedure_end_datetime
+		, ch.PartitionId
 		FROM {sc}.procedure_occurrence as t
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND t.PERSON_ID = ch.PERSON_ID
-		order by 2
+		order by ch.PartitionId, t.person_id
 	</Query>
 	<ProcedureOccurrence>
 		<ProcedureOccurrenceDefinition>

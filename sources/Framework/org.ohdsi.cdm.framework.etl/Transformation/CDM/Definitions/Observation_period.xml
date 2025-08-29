@@ -5,10 +5,11 @@
 		op.person_id,
 		op.observation_period_start_date,
 		op.observation_period_end_date,
-		op.period_type_concept_id
+		op.period_type_concept_id,
+		ch.PartitionId
 		FROM {sc}.observation_period op
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND op.PERSON_ID = ch.PERSON_ID
-		order by 1
+		order by ch.PartitionId, t.person_id
 	</Query>
 	<ObservationPeriods>
 		<ObservationPeriodDefinition>

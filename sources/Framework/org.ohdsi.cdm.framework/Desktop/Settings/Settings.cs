@@ -5,13 +5,13 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
 {
     public class Settings
     {
-        //public string MessageS3AwsAccessKeyId { get; set; }
-        //public string MessageS3AwsSecretAccessKey { get; set; }
-        //public string MessageBucket { get; set; }
-
         private string _cloudStorageKey;
         private string _cloudStorageSecret;
         private string _cloudStorageName;
+
+        private string _cloudTriggerStorageKey;
+        private string _cloudTriggerStorageSecret;
+        private string _cloudTriggerStorageName;
         private string _cdmFolder;
 
 
@@ -72,12 +72,33 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
         /// </summary>
         public string CloudStorageUri { get; set; }
 
+        public string CloudStorageUriDfs
+        {
+            get
+            {
+                return CloudStorageUri.Split("//")[1].Replace(".blob.", ".dfs.");
+            }
+        }
+
+
         /// <summary>
         /// AWS s3 - None; Azure Blob - TenantId
         /// </summary>
         public string CloudStorageHolder { get; set; }
 
         public string CloudPrefix { get; set; }
+
+        /// <summary>
+        /// AWS s3 - None; Azure Blob - ServiceUri
+        /// </summary>
+        public string CloudTriggerStorageUri { get; set; }
+
+        /// <summary>
+        /// AWS s3 - None; Azure Blob - TenantId
+        /// </summary>
+        public string CloudTriggerStorageHolder { get; set; }
+
+        public string CloudTriggerPrefix { get; set; }
 
         public string BuildingPrefix
         {
@@ -87,6 +108,16 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
                     return $"{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id}";
 
                 return $"{Settings.Current.CloudPrefix}/{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id}";
+            }
+        }
+        public string BuildingTriggerPrefix
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(Settings.Current.CloudTriggerPrefix))
+                    return $"{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id}";
+
+                return $"{Settings.Current.CloudTriggerPrefix}/{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id}";
             }
         }
 
@@ -133,6 +164,52 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
                 return ConfigurationManager.AppSettings["cloudStorageName"];
             }
             set => _cloudStorageName = value;
+        }
+
+
+        /// <summary>
+        /// AWS s3 - S3AwsAccessKeyId; Azure Blob - ClientId
+        /// </summary>
+        public string CloudTriggerStorageKey
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(_cloudTriggerStorageKey))
+                    return _cloudTriggerStorageKey;
+
+                return ConfigurationManager.AppSettings["cloudTriggerStorageKey"];
+            }
+            set => _cloudTriggerStorageKey = value;
+        }
+
+        /// <summary>
+        /// AWS s3 - S3AwsSecretAccessKey; Azure Blob - ClientSecret
+        /// </summary>
+        public string CloudTriggerStorageSecret
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(_cloudTriggerStorageSecret))
+                    return _cloudTriggerStorageSecret;
+
+                return ConfigurationManager.AppSettings["cloudTriggerStorageSecret"];
+            }
+            set => _cloudTriggerStorageSecret = value;
+        }
+
+        /// <summary>
+        /// AWS s3 - Bucket; Azure Blob - BlobContainerName
+        /// </summary>
+        public string CloudTriggerStorageName
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(_cloudTriggerStorageName))
+                    return _cloudTriggerStorageName;
+
+                return ConfigurationManager.AppSettings["cloudTriggerStorageName"];
+            }
+            set => _cloudTriggerStorageName = value;
         }
 
         public string CDMFolder

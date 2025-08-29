@@ -32,6 +32,11 @@ namespace org.ohdsi.cdm.framework.desktop.Controllers
             return _dbChunk.GetNotMovedToCloudStorage(Settings.Settings.Current.Building.Id.Value);
         }
 
+        public void ChunkCreated(int chunkId, int buildingId)
+        {
+            _dbChunk.ChunkCreated(chunkId, buildingId);
+        }
+
         public void CreateChunks(int partitionSize)
         {
             Console.WriteLine("Generating chunk ids...");
@@ -95,9 +100,8 @@ namespace org.ohdsi.cdm.framework.desktop.Controllers
             string query;
             if (Settings.Settings.Current.Building.SourceEngine.Database == Enums.Database.Databricks)
             {
-                var storage = Settings.Settings.Current.CloudStorageUri.Split("//")[1].Replace(".blob.", ".dfs.");
                 query = $@"COPY INTO {_chunksSchema}._chunks BY POSITION " +
-                    $@"FROM 'abfss://{Settings.Settings.Current.CloudStorageName}@{storage}/{Settings.Settings.Current.BuildingPrefix}' " +
+                    $@"FROM 'abfss://{Settings.Settings.Current.CloudStorageName}@{Settings.Settings.Current.CloudStorageUriDfs}/{Settings.Settings.Current.BuildingPrefix}' " +
                     @"FILEFORMAT = CSV " +
                     @"PATTERN = 'chunks*.txt.gz' " +
                     @"FORMAT_OPTIONS( " +

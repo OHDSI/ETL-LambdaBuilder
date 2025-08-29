@@ -240,7 +240,7 @@ namespace org.ohdsi.cdm.presentation.etl
                             Console.WriteLine("Chunk creation resumed");
                         }
 
-                        ETL.MoveRawDataCloudStorage(chunksSchema);
+                        ETL.MoveRawDataCloudStorage(chunksSchema, sourceSchema);
                     }
 
                     if (skipVocabularyCopying)

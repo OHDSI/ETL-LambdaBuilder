@@ -1,9 +1,9 @@
-﻿namespace org.ohdsi.cdm.framework.desktop3.Monitor
+﻿namespace org.ohdsi.cdm.presentation.etl.Monitor
 {
     enum ChunkState
     {
-        RunningLambda,
-        RunningLocal,
+        Running,
+        //RunningLocal,
         Timeout,
         Validating,
         Valid,

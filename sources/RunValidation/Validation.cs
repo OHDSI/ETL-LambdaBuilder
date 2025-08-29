@@ -83,8 +83,8 @@ namespace RunValidation
         private readonly string _bucket = bucket;
         private readonly string _tmpFolder = tmpFolder;
         private readonly string _cdmFolder = cdmFolder;
-        private readonly LambdaUtility _lambdaUtility = 
-            new LambdaUtility(awsAccessKeyId, awsSecretAccessKey, awsAccessKeyId, awsSecretAccessKey, bucket, bucket, bucket, cdmFolder);
+        //private readonly LambdaUtility _lambdaUtility = 
+        //    new LambdaUtility(awsAccessKeyId, awsSecretAccessKey, awsAccessKeyId, awsSecretAccessKey, bucket, bucket, bucket, cdmFolder);
         private readonly List<ChunkReport> _chunkReports = new List<ChunkReport>();
 
         #endregion
