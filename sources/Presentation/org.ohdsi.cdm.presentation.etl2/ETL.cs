@@ -494,7 +494,7 @@ namespace org.ohdsi.cdm.presentation.etl
                     // Azure
                     if (Settings.Current.Building.SourceEngine.Database == framework.desktop.Enums.Database.Databricks)
                     {
-                        tableName = $"{chunksSchema}.{sourceSchema}_{qd.FileName}_{chunkId}";
+                        tableName = $"{chunksSchema}.{sourceSchema.Split('.')[1]}_{qd.FileName}_{chunkId}";
 
                         unloadQuery =
                             $@"CREATE EXTERNAL TABLE {tableName} " +
@@ -538,14 +538,15 @@ namespace org.ohdsi.cdm.presentation.etl
             {
                 using var connection = SqlConnectionHelper.OpenOdbcConnection(Settings.Current.Building.SourceConnectionString);
                 using var c = new OdbcCommand($"select count(distinct PartitionId) from {chunksSchema}._chunks;", connection);
-                return (int)c.ExecuteScalar();
+                return Convert.ToInt32(c.ExecuteScalar());
             }
             // AWS
             else
             {
                 using var connection = SqlConnectionHelper.OpenOdbcConnection(Settings.Current.Building.SourceConnectionString);
                 using var c = new OdbcCommand("SELECT count(*) FROM stv_slices;", connection);
-                return (int)c.ExecuteScalar();
+                
+                return Convert.ToInt32(c.ExecuteScalar());
             }
         }
 
