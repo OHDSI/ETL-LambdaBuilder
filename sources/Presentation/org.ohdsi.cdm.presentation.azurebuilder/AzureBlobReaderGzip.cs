@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Azure.Storage.Blobs.Models;
 using org.ohdsi.cdm.framework.common.Helpers;
 using System.Data;
 using System.IO.Compression;
@@ -11,14 +11,19 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
         private string[] _currentLine;
 
         private readonly string _fileName;
-        
+        private readonly string _prefix;
+
+        private readonly long? _lastSavedPersonId;
+        private SortedList<int, string> _files;
+
         private readonly Dictionary<string, int> _fieldHeaders;
         private readonly StringSplitter _spliter;
 
-        private Stream _stream;
-        private BufferedStream _bufferedStream;
-        private GZipStream _gzipStream;
-        private StreamReader _reader;
+        //private Stream _stream;
+        //private BufferedStream _bufferedStream;
+        //private GZipStream _gzipStream;
+        //private StreamReader _reader;
+
         private long _rowIndex;
 
         private DateTime _lastReadTime;
@@ -52,67 +57,95 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
             Paused = false;
         }
 
-        public AzureBlobReaderGzip(string fileName, Dictionary<string, int> fieldHeaders, long initRow)
+        public AzureBlobReaderGzip(string prefix, Dictionary<string, int> fieldHeaders, long initRow, long? lastSavedPersonId)
         {
-
-            _fileName = fileName;
+            _prefix = prefix;
             _fieldHeaders = fieldHeaders;
 
             _spliter = new StringSplitter(this._fieldHeaders.Count);
-
-            Init(initRow);
-        }
-
-        private void Init(long initRow)
-        {
-            Close();
-            Dispose();
-
-            Settings.Current.Logger.LogInformation(_fileName + " " + initRow);
-
-            _stream = AzureHelper.OpenStream(_fileName);
-
-            _bufferedStream = new BufferedStream(_stream);
-            _gzipStream = new GZipStream(_bufferedStream, CompressionMode.Decompress);
-            _reader = new StreamReader(_gzipStream, Encoding.Default);
-
-            _rowIndex = initRow;
-            for (var i = 0; i < initRow; i++)
-            {
-                _reader.ReadLine();
-            }
+            _lastSavedPersonId = lastSavedPersonId;
 
             if (initRow > 0)
-                Settings.Current.Logger.LogInformation($"{_fileName}; Rows skipped={initRow}");
-
-            _lastReadTime = DateTime.MinValue;
+                throw new Exception("initRow > 0");
+            //Init(initRow);
+            GetFiles();
         }
+
+        private void GetFiles()
+        {
+            _files = [];
+            var bcc = AzureHelper.GetBlobContainer();
+            //"temp/tmp_aivanov3/CDM/28/raw/17/Condition_occurrence/PartitionId=10"
+            foreach (var b in bcc.GetBlobs(BlobTraits.None, BlobStates.None, _prefix))
+            {
+                if (!b.Name.EndsWith("csv.gz"))
+                    continue;
+
+                // part-00004-tid-3957083962449067901-cd3d81c9-b752-4836-b5b2-2f35fc986ab7-38842-3.c000.csv.gz
+                _files.Add(int.Parse(b.Name.Split('-')[1]), b.Name);
+            }
+        }
+
+        //private void Init(long initRow)
+        //{
+        //    Close();
+        //    Dispose();
+
+        //    Settings.Current.Logger.LogInformation(_fileName + ";initRow=" + initRow + ";lastSavedPersonId=" + _lastSavedPersonId);
+
+        //    _stream = AzureHelper.OpenStream(_fileName);
+
+        //    _bufferedStream = new BufferedStream(_stream);
+        //    _gzipStream = new GZipStream(_bufferedStream, CompressionMode.Decompress);
+        //    _reader = new StreamReader(_gzipStream, Encoding.Default);
+
+        //    _rowIndex = initRow;
+        //    //for (var i = 0; i < initRow; i++)
+        //    //{
+        //    //    _reader.ReadLine();
+        //    //}
+
+        //    if (initRow > 0)
+        //        Settings.Current.Logger.LogInformation($"{_fileName}; Rows skipped={initRow}");
+
+        //    _lastReadTime = DateTime.MinValue;
+        //}
+
+        //public void Close()
+        //{
+        //    _stream?.Close();
+        //    _bufferedStream?.Close();
+        //    _gzipStream?.Close();
+        //    _reader?.Close();
+        //}
+
+        //public void Dispose()
+        //{
+        //    _stream?.Dispose();
+        //    _bufferedStream?.Dispose();
+        //    _gzipStream?.Dispose();
+
+        //    _reader?.Dispose();
+
+        //    GC.Collect();
+        //    GC.WaitForPendingFinalizers();
+        //}
+
+        //public void Restart()
+        //{
+        //    Settings.Current.Logger.LogInformation($"{_fileName} - restarting... (IdleTime={IdleTime.TotalSeconds})");
+        //    Close();
+        //    Dispose();
+        //}
 
         public void Close()
         {
-            _stream?.Close();
-            _bufferedStream?.Close();
-            _gzipStream?.Close();
-            _reader?.Close();
+            
         }
 
         public void Dispose()
         {
-            _stream?.Dispose();
-            _bufferedStream?.Dispose();
-            _gzipStream?.Dispose();
-
-            _reader?.Dispose();
-
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-        }
-
-        public void Restart()
-        {
-            Settings.Current.Logger.LogInformation($"{_fileName} - restarting... (IdleTime={IdleTime.TotalSeconds})");
-            Close();
-            Dispose();
+            
         }
 
         public bool Read()
@@ -120,15 +153,24 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
             if (Paused)
                 return true;
 
-            var attempt = 0;
-            while (true)
+            //var attempt = 0;
+            //while (true)
+            //{
+            try
             {
-                try
+                //attempt++;
+
+                foreach (var file in _files)
                 {
-                    attempt++;
+                    using var stream = AzureHelper.OpenStream(file.Value);
+
+                    using var bufferedStream = new BufferedStream(stream);
+                    using var gzipStream = new GZipStream(bufferedStream, CompressionMode.Decompress);
+                    using var reader = new StreamReader(gzipStream, Encoding.Default);
+
                     string line;
 
-                    while ((line = _reader.ReadLine()) != null)
+                    while ((line = reader.ReadLine()) != null)
                     {
                         _lastReadTime = DateTime.Now;
 
@@ -144,24 +186,27 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                         }
                     }
 
-                    _lastReadTime = DateTime.MinValue;
-                    return false;
                 }
-                catch (Exception e)
-                {
-                    _lastReadTime = DateTime.Now;
 
-                    Settings.Current.Logger.LogInformation($"{_fileName} AzureBlobReaderGzip attempt={attempt} | Exception={e.Message}");
-                    Init(_rowIndex);
-                    if (attempt > 5)
-                    {
-                        Settings.Current.Logger.LogInformation("WARN_EXC - Read - throw");
-                        Settings.Current.Logger.LogInformation(e.Message);
-                        Settings.Current.Logger.LogInformation(e.StackTrace);
-                        throw;
-                    }
-                }
+                _lastReadTime = DateTime.MinValue;
+                return false;
             }
+            catch (Exception e)
+            {
+                throw;
+                //_lastReadTime = DateTime.Now;
+
+                //Settings.Current.Logger.LogInformation($"{_fileName} AzureBlobReaderGzip attempt={attempt} | Exception={e.Message}");
+                //Init(_rowIndex);
+                //if (attempt > 5)
+                //{
+                //    Settings.Current.Logger.LogInformation("WARN_EXC - Read - throw");
+                //    Settings.Current.Logger.LogInformation(e.Message);
+                //    Settings.Current.Logger.LogInformation(e.StackTrace);
+                //    throw;
+                //}
+            }
+            //}
         }
 
         object IDataRecord.this[int i]

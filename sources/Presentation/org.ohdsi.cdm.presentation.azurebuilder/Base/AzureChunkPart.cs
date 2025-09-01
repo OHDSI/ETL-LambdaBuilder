@@ -54,8 +54,9 @@ namespace org.ohdsi.cdm.presentation.azurebuilder.Base
             {
                 if (value.IdleTime != TimeSpan.Zero && value.IdleTime.TotalSeconds > 10)
                 {
-                    value.Restart();
-                    _readRestarted = true;
+                    throw new Exception("Watchdog");
+                    //value.Restart();
+                    //_readRestarted = true;
                 }
             }
         }
@@ -96,11 +97,10 @@ namespace org.ohdsi.cdm.presentation.azurebuilder.Base
                     var initRow = 0L;
                     if (_restorePoint.ContainsKey(qd.FileName))
                         initRow = _restorePoint[qd.FileName];
-
                     
-                    var fileName = $"{AzureHelper.Path}/raw/{_chunkId}/{qd.FileName}/{qd.FileName}{_prefix}_part_00.zst";
+                    //var fileName = $"{AzureHelper.Path}/raw/{_chunkId}/{qd.FileName}/{qd.FileName}{_prefix}_part_00.zst";
 
-                    _readers.Add(qd.FileName, new AzureBlobReaderGzip(fileName, qd.FieldHeaders, initRow));
+                    _readers.Add(qd.FileName, new AzureBlobReaderGzip($"{AzureHelper.Path}/raw/{_chunkId}/{qd.FileName}/{qd.FileName}{_prefix}", qd.FieldHeaders, initRow, _lastSavedPersonId));
 
                     if (qd.Persons != null && qd.Persons.Length > 0)
                     {
