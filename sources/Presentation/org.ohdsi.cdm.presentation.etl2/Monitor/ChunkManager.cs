@@ -15,7 +15,7 @@ namespace org.ohdsi.cdm.presentation.etl.Monitor
         private Task _trackDownStates;
         private string _chunksSchema;
         private int _numberOfPartitions;
-        private Dictionary<int, ChunkStateController> _chunks;
+        private Dictionary<int, ChunkStateController> _chunks = new Dictionary<int, ChunkStateController>();
         private bool _completeAdding;
 
         public ChunkManager(string chunksSchema, int numberOfPartitions)
@@ -122,9 +122,6 @@ namespace org.ohdsi.cdm.presentation.etl.Monitor
 
         public void Dispose()
         {
-            if (_chunks == null)
-                return;
-
             foreach (var item in _chunks.Values)
             {
                 item.Dispose();

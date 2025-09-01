@@ -77,6 +77,7 @@ namespace org.ohdsi.cdm.framework.desktop.Controllers
                     saver.AddChunk(chunks, index, _chunksSchema);
                     chunks.Clear();
 
+                    partitionId = 0;
                     chunkId++;
                     index++;
                 }

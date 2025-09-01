@@ -1,8 +1,6 @@
 ﻿using Amazon.S3;
-using Amazon.S3.Model;
 using Azure.Identity;
 using Azure.Storage.Blobs;
-using Microsoft.Extensions.Primitives;
 using org.ohdsi.cdm.framework.common.DataReaders.v5;
 using org.ohdsi.cdm.framework.common.DataReaders.v5.v54;
 using org.ohdsi.cdm.framework.common.Definitions;
@@ -16,7 +14,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Odbc;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -283,18 +280,25 @@ namespace org.ohdsi.cdm.presentation.etl
                     var unprocessed = 0;
                     do
                     {
-                        unprocessed = CloadStorageHelper.GetObjectInfo(
-                            GetAwsTriggerStorageClient(), 
-                            GetAzureTriggerStorageClient(), 
-                            Settings.Current.CloudTriggerStorageName,
-                            $"{Settings.Current.BuildingTriggerPrefix}.").Count();
-
-                        Console.WriteLine($"[Moving raw data] Unprocessed functions={unprocessed}");
-
-                        if (unprocessed > 700)
+                        try
                         {
-                            Console.WriteLine($"[Moving raw data] unprocessed > 700, waiting 3 minutes...");
-                            Thread.Sleep(TimeSpan.FromMinutes(3));
+                            unprocessed = CloadStorageHelper.GetObjectInfo(
+                                GetAwsTriggerStorageClient(),
+                                GetAzureTriggerStorageClient(),
+                                Settings.Current.CloudTriggerStorageName,
+                                $"{Settings.Current.BuildingTriggerPrefix}.").Count();
+
+                            Console.WriteLine($"[Moving raw data] Unprocessed functions={unprocessed}");
+
+                            if (unprocessed > 700)
+                            {
+                                Console.WriteLine($"[Moving raw data] unprocessed > 700, waiting 3 minutes...");
+                                Thread.Sleep(TimeSpan.FromMinutes(3));
+                            }
+                        }
+                        catch(Exception ex) // TMP
+                        {
+
                         }
                     }
                     while (unprocessed > 700);
