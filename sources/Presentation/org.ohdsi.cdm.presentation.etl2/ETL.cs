@@ -505,7 +505,7 @@ namespace org.ohdsi.cdm.presentation.etl
                             $@"USING csv " +
                             $@"PARTITIONED BY(PartitionId) " +
                             $@"LOCATION 'abfss://{Settings.Current.CloudStorageName}@{Settings.Current.CloudStorageUriDfs}/{folder}' " +
-                            $@"OPTIONS(delimiter = '\t', compression = 'gzip') " +
+                            $@"OPTIONS(delimiter = '\t', nullValue = '\\N',  compression = 'gzip') " +
                             $@"AS({sql});";
                     }
                     // AWS
