@@ -269,7 +269,7 @@ public class FunctionCdmEtl
     {
         try
         {
-            var key = $"{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id}/{Settings.Current.CDMFolder}/CDM_SOURCE/CDM_SOURCE.0.0.gz";
+            var key = $"{AzureHelper.Path}/{Settings.Current.CDMFolder}/cdm_source/cdm_source.txt.gz";
 
             _logger.LogInformation("GetSourceReleaseDate: " + key);
 

@@ -14,9 +14,9 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
         private static string GetVendorName(Vendor v)
         {
             if (v.Name.Contains("Truven_"))
-                return v.Name.Replace("Truven_", "").ToLower();
+                return v.Name.Replace("Truven_", "");
 
-            return v.Name.ToLower();
+            return v.Name;
         }
 
         internal static BlobContainerClient GetBlobContainer()

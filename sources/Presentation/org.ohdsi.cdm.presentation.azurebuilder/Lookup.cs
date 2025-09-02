@@ -52,7 +52,8 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                 return null;
 
             var v = value.Trim();
-            if (v == "\0")
+            
+            if (v == @"\N")
                 return null;
 
             return string.Intern(v);
@@ -63,7 +64,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
             if (string.IsNullOrEmpty(value))
                 return true;
 
-            if (value.Trim() == "\0")
+            if (value.Trim() == @"\N")
                 return true;
 
             return false;
@@ -83,7 +84,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
             {
                 if (!string.IsNullOrEmpty(line))
                 {
-                    spliter.SafeSplit(line, '\t');
+                    spliter.SafeSplit(line, ',');
                     var sourceCode = GetStringValue(spliter.Results[0]);
 
                     if (string.IsNullOrEmpty(sourceCode))

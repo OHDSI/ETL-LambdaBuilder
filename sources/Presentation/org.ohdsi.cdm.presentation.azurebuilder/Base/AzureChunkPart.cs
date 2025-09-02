@@ -42,7 +42,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder.Base
             _attempt = attempt;
 
             _personBuilders = [];
-            _offsetManager = new KeyMasterOffsetManager(_chunkId, int.Parse(_prefix), attempt);
+            _offsetManager = new KeyMasterOffsetManager(_chunkId, int.Parse(_prefix.Replace("PartitionId=", "")), attempt);
             _lastSavedPersonId = null;
             _watchdog = new System.Timers.Timer(Settings.Current.WatchdogValue);
             _watchdog.Elapsed += Watchdog_Elapsed;
@@ -97,10 +97,10 @@ namespace org.ohdsi.cdm.presentation.azurebuilder.Base
                     var initRow = 0L;
                     if (_restorePoint.ContainsKey(qd.FileName))
                         initRow = _restorePoint[qd.FileName];
-                    
-                    //var fileName = $"{AzureHelper.Path}/raw/{_chunkId}/{qd.FileName}/{qd.FileName}{_prefix}_part_00.zst";
 
-                    _readers.Add(qd.FileName, new AzureBlobReaderGzip($"{AzureHelper.Path}/raw/{_chunkId}/{qd.FileName}/{qd.FileName}{_prefix}", qd.FieldHeaders, initRow, _lastSavedPersonId));
+                    //var fileName = $"{AzureHelper.Path}/raw/{_chunkId}/{qd.FileName}/{qd.FileName}{_prefix}_part_00.zst";
+                    //temp/tmp_aivanov3/CDM/28/raw/17/Visit_occurrence/Visit_occurrencePartitionId=10
+                    _readers.Add(qd.FileName, new AzureBlobReaderGzip($"{AzureHelper.Path}/raw/{_chunkId}/{qd.FileName}/{_prefix}", qd.FieldHeaders, initRow, _lastSavedPersonId));
 
                     if (qd.Persons != null && qd.Persons.Length > 0)
                     {
@@ -126,7 +126,6 @@ namespace org.ohdsi.cdm.presentation.azurebuilder.Base
                         break;
 
                     var personIdsToSave = new HashSet<long>();
-
                     for (int i = 0; i < queries.Count; i++)
                     {
                         var qName = queries[i];
@@ -261,7 +260,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder.Base
 
             var personCount = 0;
             _readyToSave.ChunkId = _chunkId;
-            _readyToSave.SubChunkId = int.Parse(_prefix);
+            _readyToSave.SubChunkId = int.Parse(_prefix.Replace("PartitionId=", ""));
 
             var timer = new Stopwatch();
             timer.Start();
@@ -281,7 +280,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder.Base
                 key = _prefix + "." + _attempt + "." + _readyToSave.Metadata.Keys.Min() + "_" +
                       _readyToSave.Metadata.Keys.Max() + "." + _readyToSave.Metadata.Count;
 
-                saver.Write(_readyToSave, _chunkId, key, "METADATA_TMP");
+                saver.Write(_readyToSave, _chunkId, key, "metadata_tmp");
                 _lastSavedPersonId = _readyToSave.Metadata.Keys.Max();
             }
 

@@ -14,7 +14,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
         {
             switch (table)
             {
-                case "PERSON":
+                case "person":
                     {
                         return chunk.Persons.Count == 0
                             ? null
@@ -22,7 +22,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                                 chunk.Persons.Count);
                     }
 
-                case "OBSERVATION_PERIOD":
+                case "observation_period":
                     {
                         return chunk.ObservationPeriods.Count == 0
                             ? null
@@ -31,7 +31,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                                 chunk.ObservationPeriods.Count);
                     }
 
-                case "PAYER_PLAN_PERIOD":
+                case "payer_plan_period":
                     {
                         return chunk.PayerPlanPeriods.Count == 0
                             ? null
@@ -40,7 +40,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                                 chunk.PayerPlanPeriods.Count);
                     }
 
-                case "DEATH":
+                case "death":
                     {
                         return chunk.Deaths.Count == 0
                             ? null
@@ -48,7 +48,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                                 chunk.Deaths.Count);
                     }
 
-                case "DRUG_EXPOSURE":
+                case "drug_exposure":
                     {
                         return chunk.DrugExposures.Count == 0
                             ? null
@@ -56,7 +56,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                                 chunk.DrugExposures.Count);
                     }
 
-                case "OBSERVATION":
+                case "observation":
                     {
                         return chunk.Observations.Count == 0
                             ? null
@@ -64,7 +64,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                             chunk.Observations.Count);
                     }
 
-                case "VISIT_OCCURRENCE":
+                case "visit_occurrence":
                     {
                         return chunk.VisitOccurrences.Count == 0
                             ? null
@@ -73,7 +73,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                             chunk.VisitOccurrences.Count);
                     }
 
-                case "VISIT_DETAIL":
+                case "visit_detail":
                     {
                         return chunk.VisitDetails.Count == 0
                         ? null
@@ -81,7 +81,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                             chunk.VisitDetails.Count);
                     }
 
-                case "PROCEDURE_OCCURRENCE":
+                case "procedure_occurrence":
                     {
                         return chunk.ProcedureOccurrences.Count == 0
                         ? null
@@ -90,7 +90,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                             chunk.ProcedureOccurrences.Count);
                     }
 
-                case "DRUG_ERA":
+                case "drug_era":
                     {
                         return chunk.DrugEra.Count == 0
                             ? null
@@ -99,7 +99,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                                 chunk.DrugEra.Count);
                     }
 
-                case "CONDITION_ERA":
+                case "condition_era":
                     {
                         return chunk.ConditionEra.Count == 0
                             ? null
@@ -108,7 +108,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                                 chunk.ConditionEra.Count);
                     }
 
-                case "DEVICE_EXPOSURE":
+                case "device_exposure":
                     {
                         return chunk.DeviceExposure.Count == 0
                           ? null
@@ -117,7 +117,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                               chunk.DeviceExposure.Count);
                     }
 
-                case "MEASUREMENT":
+                case "measurement":
                     {
                         return chunk.Measurements.Count == 0
                         ? null
@@ -126,7 +126,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                             chunk.Measurements.Count);
                     }
 
-                case "COHORT":
+                case "cohort":
                     {
                         return chunk.Cohort.Count == 0
                             ? null
@@ -135,7 +135,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                                 chunk.Cohort.Count);
                     }
 
-                case "CONDITION_OCCURRENCE":
+                case "condition_occurrence":
                     {
                         return chunk.ConditionOccurrences.Count == 0
                             ? null
@@ -144,7 +144,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                                 chunk.ConditionOccurrences.Count);
                     }
 
-                case "COST":
+                case "cost":
                     {
                         return chunk.Cost.Count == 0
                             ? null
@@ -153,7 +153,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                                 chunk.Cost.Count);
                     }
 
-                case "NOTE":
+                case "note":
                     {
                         return chunk.Note.Count == 0
                         ? null
@@ -162,7 +162,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                             chunk.Note.Count);
                     }
 
-                case "METADATA_TMP":
+                case "metadata_tmp":
                     {
                         return chunk.Metadata.Count == 0
                             ? null
@@ -171,7 +171,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                                 chunk.Metadata.Values.Count);
                     }
 
-                case "FACT_RELATIONSHIP":
+                case "fact_relationship":
                     {
                         return chunk.FactRelationships.Count == 0
                             ? null
@@ -180,7 +180,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                                 chunk.FactRelationships.Count);
                     }
 
-                case "EPISODE":
+                case "episode":
                     {
                         return chunk.Episode.Count == 0
                         ? null
@@ -189,7 +189,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                             chunk.Episode.Count);
                     }
 
-                case "EPISODE_EVENT":
+                case "episode_event":
                     {
                         return chunk.EpisodeEvent.Count == 0
                         ? null
@@ -205,7 +205,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
         {
             try
             {
-                var prefix = int.Parse(subChunkId.Split('.')[0]);
+                var prefix = subChunkId.Split('.')[0];
                 var personIds = subChunkId.Split('.')[2];
 
                 var tuple = CreateDataReader(chunk, table);
@@ -215,7 +215,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                 var reader = tuple.Item1;
                 var rowCount = tuple.Item2;
 
-                var fileName = $"{AzureHelper.Path}/{Settings.Current.CDMFolder}/{table}.{chunkId}.{prefix}.{personIds}.{rowCount}.txt.gz";
+                var fileName = $"{AzureHelper.Path}/{Settings.Current.CDMFolder}/{table}/{table}.{chunkId}.{prefix}.{personIds}.{rowCount}.txt.gz";
 
                 using var ms = framework.common.Helpers.CsvHelper.GetStreamCsv(reader).First();
                 AzureHelper.UploadStream(fileName, ms);

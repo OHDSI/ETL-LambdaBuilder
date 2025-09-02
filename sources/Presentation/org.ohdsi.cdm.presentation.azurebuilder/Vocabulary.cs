@@ -171,7 +171,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                 {
                     if (!string.IsNullOrEmpty(line))
                     {
-                        spliter.SafeSplit(line, '\t');
+                        spliter.SafeSplit(line, ',');
                         _conceptIdToSourceVocabularyId.Add(long.Parse(spliter.Results[0]), new Tuple<string, string>(spliter.Results[1], spliter.Results[2]));
                     }
                 }

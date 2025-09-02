@@ -1,4 +1,5 @@
 ﻿using Azure.Storage.Blobs.Models;
+using Microsoft.Extensions.Logging;
 using org.ohdsi.cdm.framework.common.Helpers;
 using System.Data;
 using System.IO.Compression;
@@ -10,7 +11,9 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
     {
         private string[] _currentLine;
 
-        private readonly string _fileName;
+        private string _fileName;
+        private int _fileIndex = 0;
+
         private readonly string _prefix;
 
         private readonly long? _lastSavedPersonId;
@@ -19,10 +22,10 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
         private readonly Dictionary<string, int> _fieldHeaders;
         private readonly StringSplitter _spliter;
 
-        //private Stream _stream;
-        //private BufferedStream _bufferedStream;
-        //private GZipStream _gzipStream;
-        //private StreamReader _reader;
+        private Stream _stream;
+        private BufferedStream _bufferedStream;
+        private GZipStream _gzipStream;
+        private StreamReader _reader;
 
         private long _rowIndex;
 
@@ -69,10 +72,12 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                 throw new Exception("initRow > 0");
             //Init(initRow);
             GetFiles();
+            Init();
         }
 
         private void GetFiles()
         {
+
             _files = [];
             var bcc = AzureHelper.GetBlobContainer();
             //"temp/tmp_aivanov3/CDM/28/raw/17/Condition_occurrence/PartitionId=10"
@@ -84,6 +89,30 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                 // part-00004-tid-3957083962449067901-cd3d81c9-b752-4836-b5b2-2f35fc986ab7-38842-3.c000.csv.gz
                 _files.Add(int.Parse(b.Name.Split('-')[1]), b.Name);
             }
+        }
+
+        private void Init()
+        {
+            if (_files.Count == 0)
+                return;
+
+            Close();
+            Dispose();
+
+            var initRow = 0;
+
+            _fileName = _files.GetValueAtIndex(_fileIndex);
+
+            Settings.Current.Logger.LogInformation(_fileName + ";initRow=" + initRow + ";lastSavedPersonId=" + _lastSavedPersonId);
+
+            _stream = AzureHelper.OpenStream(_fileName);
+
+            _bufferedStream = new BufferedStream(_stream);
+            _gzipStream = new GZipStream(_bufferedStream, CompressionMode.Decompress);
+            _reader = new StreamReader(_gzipStream, Encoding.Default);
+            _fileIndex++;
+
+            _lastReadTime = DateTime.MinValue;
         }
 
         //private void Init(long initRow)
@@ -111,85 +140,72 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
         //    _lastReadTime = DateTime.MinValue;
         //}
 
-        //public void Close()
-        //{
-        //    _stream?.Close();
-        //    _bufferedStream?.Close();
-        //    _gzipStream?.Close();
-        //    _reader?.Close();
-        //}
-
-        //public void Dispose()
-        //{
-        //    _stream?.Dispose();
-        //    _bufferedStream?.Dispose();
-        //    _gzipStream?.Dispose();
-
-        //    _reader?.Dispose();
-
-        //    GC.Collect();
-        //    GC.WaitForPendingFinalizers();
-        //}
-
-        //public void Restart()
-        //{
-        //    Settings.Current.Logger.LogInformation($"{_fileName} - restarting... (IdleTime={IdleTime.TotalSeconds})");
-        //    Close();
-        //    Dispose();
-        //}
-
         public void Close()
         {
-            
+            _stream?.Close();
+            _bufferedStream?.Close();
+            _gzipStream?.Close();
+            _reader?.Close();
         }
 
         public void Dispose()
         {
-            
+            _stream?.Dispose();
+            _bufferedStream?.Dispose();
+            _gzipStream?.Dispose();
+
+            _reader?.Dispose();
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
         }
 
+        public void Restart()
+        {
+            Settings.Current.Logger.LogInformation($"{_fileName} - restarting... (IdleTime={IdleTime.TotalSeconds})");
+            Close();
+            Dispose();
+        }
+             
         public bool Read()
         {
+            if (_files.Count == 0)
+                return false;
+
             if (Paused)
                 return true;
 
-            //var attempt = 0;
-            //while (true)
-            //{
             try
             {
-                //attempt++;
+                string line;
 
-                foreach (var file in _files)
+                while ((line = _reader.ReadLine()) != null)
                 {
-                    using var stream = AzureHelper.OpenStream(file.Value);
+                    _lastReadTime = DateTime.Now;
 
-                    using var bufferedStream = new BufferedStream(stream);
-                    using var gzipStream = new GZipStream(bufferedStream, CompressionMode.Decompress);
-                    using var reader = new StreamReader(gzipStream, Encoding.Default);
-
-                    string line;
-
-                    while ((line = reader.ReadLine()) != null)
+                    if (!string.IsNullOrEmpty(line))
                     {
-                        _lastReadTime = DateTime.Now;
 
-                        if (!string.IsNullOrEmpty(line))
-                        {
+                        _spliter.Split(line, '\t');
 
-                            _spliter.Split(line, '\t');
+                        _currentLine = _spliter.Results;
+                        _rowIndex++;
 
-                            _currentLine = _spliter.Results;
-                            _rowIndex++;
-
-                            return true;
-                        }
+                        return true;
                     }
-
                 }
 
-                _lastReadTime = DateTime.MinValue;
-                return false;
+                if (_files.Count == _fileIndex)
+                {
+                    _lastReadTime = DateTime.MinValue;
+                    return false;
+                }
+                else
+                {
+                    Init();
+
+                    return Read();
+                }
             }
             catch (Exception e)
             {
