@@ -92,7 +92,7 @@ namespace org.ohdsi.cdm.presentation.etl
         {
             Console.WriteLine("Chunks creation in progress...");
             var chunkController = new ChunkController(chunksSchema);
-            chunkController.CreateChunks(10_000);
+            chunkController.CreateChunks(5_000);
         }
 
         public static void CopyVocabularyTables()
