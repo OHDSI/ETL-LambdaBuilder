@@ -71,11 +71,15 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
 
         public string CloudStorageHolder { get; set; }
 
+        public string CloudStorageConnectionString { get; set; }
+
         public string CloudPrefix { get; set; }
 
         public string CloudTriggerStorageUri { get; set; }
 
         public string CloudTriggerStorageHolder { get; set; }
+
+        public string CloudTriggerStorageConnectionString { get; set; }
 
         public string CloudTriggerPrefix { get; set; }
 

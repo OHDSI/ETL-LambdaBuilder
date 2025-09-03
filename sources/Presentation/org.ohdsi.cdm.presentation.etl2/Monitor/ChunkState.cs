@@ -7,7 +7,7 @@
         Timeout,
         Validating,
         Valid,
-        Ivalid,
+        Invalid,
         Error
     }
 }

@@ -80,7 +80,7 @@ namespace org.ohdsi.cdm.presentation.etl.Monitor
                                 case ChunkState.Valid:
                                     validCnt++;
                                     break;
-                                case ChunkState.Ivalid:
+                                case ChunkState.Invalid:
                                     invalidCnt++;
                                     break;
                                 case ChunkState.Error:

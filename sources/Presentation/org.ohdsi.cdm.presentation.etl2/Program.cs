@@ -113,10 +113,12 @@ namespace org.ohdsi.cdm.presentation.etl
                 Settings.Current.CloudStorageUri = configuration.GetSection("AppSettings")["cloudStorageUri"];
                 Settings.Current.CloudStorageHolder = configuration.GetSection("AppSettings")["cloudStorageHolder"];
                 Settings.Current.CloudPrefix = configuration.GetSection("AppSettings")["cloudPrefix"];
+                Settings.Current.CloudStorageConnectionString = configuration.GetSection("AppSettings")["cloudStorageConnectionString"];
 
                 Settings.Current.CloudTriggerStorageUri = configuration.GetSection("AppSettings")["cloudTriggerStorageUri"];
                 Settings.Current.CloudTriggerStorageHolder = configuration.GetSection("AppSettings")["cloudTriggerStorageHolder"];
                 Settings.Current.CloudTriggerPrefix = configuration.GetSection("AppSettings")["cloudTriggerPrefix"];
+                Settings.Current.CloudTriggerStorageConnectionString = configuration.GetSection("AppSettings")["cloudTriggerStorageConnectionString"];
 
                 Settings.Current.CloudStorageKey = configuration.GetSection("AppSettings")["cloudStorageKey"];
                 Settings.Current.CloudStorageSecret = configuration.GetSection("AppSettings")["cloudStorageSecret"];
