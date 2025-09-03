@@ -1,4 +1,6 @@
-﻿using org.ohdsi.cdm.framework.desktop.Helpers;
+﻿using Azure.Identity;
+using Azure.Storage.Blobs;
+using org.ohdsi.cdm.framework.desktop.Helpers;
 using org.ohdsi.cdm.framework.desktop.Settings;
 using System;
 using System.Linq;
@@ -50,7 +52,9 @@ namespace org.ohdsi.cdm.presentation.etl.Monitor
 
                 var prefix = $"{Settings.Current.Building.Vendor}.{Settings.Current.Building.Id.Value}.{_chunkId}.";
                 // TODO: add message storage
-                var info = CloadStorageHelper.GetObjectInfo(null, null, Settings.Current.CloudStorageName, prefix);
+                
+                var client = CloudStorageHelper.GetTriggerBlobContainerClient();
+                var info = CloudStorageHelper.GetObjectInfo(null, client, Settings.Current.CloudTriggerStorageName, prefix);
 
                 Console.WriteLine($"> {DateTime.Now.ToShortTimeString()} | {_chunkId} - not processed slices {info.Count()} | {prefix}");
                 if (!info.Any())
