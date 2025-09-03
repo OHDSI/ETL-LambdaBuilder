@@ -18,17 +18,12 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
 
         public override void Write(int? chunkId, int? subChunkId, IDataReader reader, string tableName)
         {
-            var credential = new ClientSecretCredential(
-               Settings.Settings.Current.CloudStorageHolder,
-               Settings.Settings.Current.CloudStorageKey,
-               Settings.Settings.Current.CloudStorageSecret);
-            var client = new BlobServiceClient(new Uri(Settings.Settings.Current.CloudStorageUri), credential, null);
-            var currentClient = client.GetBlobContainerClient(Settings.Settings.Current.CloudStorageName);
+            var currentClient = CloudStorageHelper.GetBlobContainerClient();
 
             var name = "chunks" + chunkId;
             var fileName = $"{Settings.Settings.Current.BuildingPrefix}/{name}.txt.gz";
             
-            CloadStorageHelper.UploadFile(null, currentClient, Settings.Settings.Current.CloudStorageName, fileName, reader);
+            CloudStorageHelper.UploadFile(null, currentClient, Settings.Settings.Current.CloudStorageName, fileName, reader);
         }
     }
 }

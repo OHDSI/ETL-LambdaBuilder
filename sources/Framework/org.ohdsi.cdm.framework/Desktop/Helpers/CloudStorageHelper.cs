@@ -1,17 +1,18 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
+using Azure.Identity;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using System.Data;
 
 namespace org.ohdsi.cdm.framework.desktop.Helpers
 {
-    public class CloadStorageHelper
+    public class CloudStorageHelper
     {
         public static void UploadFile(IAmazonS3 awsClient, BlobContainerClient azureClient, string storageName, string fileName, IDataReader reader)
         {
-            CloadStorageHelper.UploadFile(awsClient, azureClient, storageName, fileName, reader, true, false);
+            CloudStorageHelper.UploadFile(awsClient, azureClient, storageName, fileName, reader, true, false);
         }
 
         public static void UploadFile(IAmazonS3 awsClient, BlobContainerClient azureClient, string storageName, string fileName, IDataReader reader, bool compress, bool schemaOnly)
@@ -84,9 +85,48 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
                 foreach (var blob in azureClient.GetBlobs(BlobTraits.None, BlobStates.None, prefix))
                 {
                     yield return new Tuple<string, DateTime>(blob.Name, blob.Properties.LastModified.Value.DateTime);
-                    
                 }
             }
+        }
+
+        public static BlobContainerClient GetBlobContainerClient()
+        {
+            if (!string.IsNullOrEmpty(Settings.Settings.Current.CloudStorageHolder))
+            {
+                var credential = new ClientSecretCredential(
+                  Settings.Settings.Current.CloudStorageHolder,
+                  Settings.Settings.Current.CloudStorageKey,
+                  Settings.Settings.Current.CloudStorageSecret);
+                var client = new BlobServiceClient(new Uri(Settings.Settings.Current.CloudStorageUri), credential, null);
+                return client.GetBlobContainerClient(Settings.Settings.Current.CloudStorageName);
+            }
+            else if (!string.IsNullOrEmpty(Settings.Settings.Current.CloudStorageConnectionString))
+            {
+                var client = new BlobServiceClient(Settings.Settings.Current.CloudStorageConnectionString);
+                return client.GetBlobContainerClient(Settings.Settings.Current.CloudStorageName);
+            }
+
+            return null;
+        }
+
+        public static BlobContainerClient GetTriggerBlobContainerClient()
+        {
+            if (!string.IsNullOrEmpty(Settings.Settings.Current.CloudTriggerStorageHolder))
+            {
+                var credential = new ClientSecretCredential(
+                  Settings.Settings.Current.CloudTriggerStorageHolder,
+                  Settings.Settings.Current.CloudTriggerStorageKey,
+                  Settings.Settings.Current.CloudTriggerStorageSecret);
+                var client = new BlobServiceClient(new Uri(Settings.Settings.Current.CloudTriggerStorageUri), credential, null);
+                return client.GetBlobContainerClient(Settings.Settings.Current.CloudTriggerStorageName);
+            }
+            else if (!string.IsNullOrEmpty(Settings.Settings.Current.CloudTriggerStorageConnectionString))
+            {
+                var client = new BlobServiceClient(Settings.Settings.Current.CloudTriggerStorageConnectionString);
+                return client.GetBlobContainerClient(Settings.Settings.Current.CloudTriggerStorageName);
+            }
+
+            return null;
         }
     }
 }
