@@ -336,7 +336,7 @@ namespace org.ohdsi.cdm.presentation.etl
 
         private static AmazonS3Client GetAwsStorageClient()
         {
-            if (!string.IsNullOrEmpty(Settings.Current.CloudStorageHolder))
+            if (!string.IsNullOrEmpty(Settings.Current.CloudStorageHolder) || !string.IsNullOrEmpty(Settings.Current.CloudStorageConnectionString))
                 return null;
 
             return new AmazonS3Client(
@@ -352,7 +352,7 @@ namespace org.ohdsi.cdm.presentation.etl
 
         private static AmazonS3Client GetAwsTriggerStorageClient()
         {
-            if (!string.IsNullOrEmpty(Settings.Current.CloudTriggerStorageHolder))
+            if (!string.IsNullOrEmpty(Settings.Current.CloudTriggerStorageHolder) || !string.IsNullOrEmpty(Settings.Current.CloudTriggerStorageConnectionString))
                 return null;
 
             return new AmazonS3Client(

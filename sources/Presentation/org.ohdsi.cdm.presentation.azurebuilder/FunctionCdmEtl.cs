@@ -62,13 +62,9 @@ public class FunctionCdmEtl
             var blobContainerName = Environment.GetEnvironmentVariable("containerName");
             var prefix = Environment.GetEnvironmentVariable("prefix");
 
-            var credential = new ClientSecretCredential(tenantId, clientId, clientSecret);
-            var client = new BlobServiceClient(new Uri(blobURI), credential, null);
-            var bcc = client.GetBlobContainerClient(blobContainerName);
 
             // 0         1        2       3      4      5
             //vendor.buildingId.chunkId.prefix.attempt.txt
-
             var vendorName = name.Split('.')[0].Split('/').Last();
             vendor = EtlLibrary.CreateVendorInstance(EtlLibraryPath, vendorName);
 
@@ -122,57 +118,64 @@ public class FunctionCdmEtl
             _lastSavedPersonIdOutput = chunkBuilder.Process(_chunkId, _prefix, _restorePoint, attempt);
             var totalPersonConverted = chunkBuilder.TotalPersonConverted;
 
-            RemoveAttemptFile(name);
-
             if (_lastSavedPersonIdOutput.HasValue && totalPersonConverted > 0)
             {
-                attempt++;
-                CreateAttemptFile(_chunkId, _prefix, attempt);
+                //attempt++;
+                //CreateAttemptFile(_chunkId, _prefix, attempt);
 
-                _logger.LogInformation($"chunkId={_chunkId};prefix={_prefix} - FINISHED by timeout on PersonId={_lastSavedPersonIdOutput.Value}");
-                return;
+                //_logger.LogInformation($"chunkId={_chunkId};prefix={_prefix} - FINISHED by timeout on PersonId={_lastSavedPersonIdOutput.Value}");
+                //return;
+
+                using var streamErrorDetails = new MemoryStream(Encoding.UTF8.GetBytes($"FINISHED by timeout on PersonId={_lastSavedPersonIdOutput.Value}; totalPersonConverted={totalPersonConverted}"));
+                AzureHelper.UploadStream($"{AzureHelper.Path}/timeout/{_chunkId}.{_prefix}.txt", streamErrorDetails);
             }
-
-            _logger.LogInformation($"chunkId={_chunkId};prefix={_prefix} - FINISHED, {name} - removed");
+            else
+            {
+                RemoveAttemptFile(name);
+                _logger.LogInformation($"chunkId={_chunkId};prefix={_prefix} - FINISHED, {name} - removed");
+            }
         }
         catch (Exception e)
         {
             _logger.LogInformation("error: " + CreateExceptionString(e));
             _restorePoint.Clear();
+
+            using var streamErrorDetails = new MemoryStream(Encoding.UTF8.GetBytes(CreateExceptionString(e)));
+            AzureHelper.UploadStream($"{AzureHelper.Path}/error/{_chunkId}.{_prefix}.txt", streamErrorDetails);
         }
 
         _logger.LogInformation("DONE");
     }
 
-    private bool CreateAttemptFile(int chunkId, string prefix, int processAttempt)
-    {
-        if (!_attemptFileRemoved)
-            return false;
+    //private bool CreateAttemptFile(int chunkId, string prefix, int processAttempt)
+    //{
+    //    if (!_attemptFileRemoved)
+    //        return false;
 
-        var attempt = 0;
-        var key = $"{Settings.Current.Building.Vendor}.{Settings.Current.Building.Id}.{chunkId}.{prefix}.{processAttempt}.txt";
+    //    var attempt = 0;
+    //    var key = $"{Settings.Current.Building.Vendor}.{Settings.Current.Building.Id}.{chunkId}.{prefix}.{processAttempt}.txt";
 
-        attempt++;
+    //    attempt++;
 
-        var restore = new List<string>();
-        foreach (var rp in _restorePoint)
-        {
-            restore.Add($"{rp.Key}:{rp.Value}");
-        }
+    //    var restore = new List<string>();
+    //    foreach (var rp in _restorePoint)
+    //    {
+    //        restore.Add($"{rp.Key}:{rp.Value}");
+    //    }
 
-        _logger.LogInformation("restore.Count=" + restore.Count);
+    //    _logger.LogInformation("restore.Count=" + restore.Count);
 
-        var credential = new ClientSecretCredential(Settings.Current.TenantId, Settings.Current.ClientId, Settings.Current.ClientSecret);
-        var client = new BlobServiceClient(new Uri(Settings.Current.ServiceUri), credential, null);
-        var bcc = client.GetBlobContainerClient(Settings.Current.BlobContainerName);
+    //    var credential = new ClientSecretCredential(Settings.Current.TenantId, Settings.Current.ClientId, Settings.Current.ClientSecret);
+    //    var client = new BlobServiceClient(new Uri(Settings.Current.ServiceUri), credential, null);
+    //    var bcc = client.GetBlobContainerClient(Settings.Current.BlobContainerName);
 
-        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(string.Join(Environment.NewLine, restore)));
-        bcc.UploadBlob(key, stream);
+    //    using var stream = new MemoryStream(Encoding.UTF8.GetBytes(string.Join(Environment.NewLine, restore)));
+    //    bcc.UploadBlob(key, stream);
 
-        _logger.LogInformation($"Attempt file was created - {key} | attempt={attempt}");
+    //    _logger.LogInformation($"Attempt file was created - {key} | attempt={attempt}");
 
-        return true;
-    }
+    //    return true;
+    //}
 
     private void RemoveAttemptFile(string name)
     {
@@ -184,45 +187,6 @@ public class FunctionCdmEtl
         _logger.LogInformation($"Attempt file was removed - {name}");
         _attemptFileRemoved = true;
     }
-
-    //[Function(nameof(FunctionCdmEtl))]
-    //public async Task Run(
-    //    [BlobTrigger("cdm-etl-msg/{name}", Connection = "", Source = BlobTriggerSource.LogsAndContainerScan)] Stream stream,
-    //    string name)
-    //{
-    //    _logger.LogInformation("START - " + name);
-
-    //    try
-    //    {
-    //        var tenantId = Environment.GetEnvironmentVariable("tenantId");
-    //        var clientId = Environment.GetEnvironmentVariable("clientId");
-    //        var clientSecret = Environment.GetEnvironmentVariable("clientSecret");
-
-    //        var blobURI = Environment.GetEnvironmentVariable("blobURI");
-    //        var blobContainerName = Environment.GetEnvironmentVariable("containerName");
-    //        var prefix = Environment.GetEnvironmentVariable("prefix");
-
-    //        var credential = new ClientSecretCredential(tenantId, clientId, clientSecret);
-    //        var client = new BlobServiceClient(new Uri(blobURI), credential, null);
-    //        var bcc = client.GetBlobContainerClient(blobContainerName);
-
-    //        foreach (var blob in bcc.GetBlobs(BlobTraits.None, BlobStates.None, prefix))
-    //        {
-    //            _logger.LogInformation(blob.Name);
-    //        }
-
-    //        var bc = new BlobClient(Environment.GetEnvironmentVariable("AzureWebJobsStorage"), "cdm-etl-msg", name);
-    //        bc.DeleteIfExists();
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        _logger.LogInformation(ex.Message);
-
-    //        throw;
-    //    }
-
-    //    _logger.LogInformation("DONE");
-    //}
 
     private static PersonBuilder CreatePersonBuilder()
     {
@@ -278,13 +242,6 @@ public class FunctionCdmEtl
             using var gzipStream = new GZipStream(bufferedStream, CompressionMode.Decompress);
             using var reader = new StreamReader(gzipStream, Encoding.Default);
             using var csv = framework.common.Helpers.CsvHelper.CreateCsvReader(reader);
-            //using var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
-            //{
-            //    HasHeaderRecord = false,
-            //    Delimiter = ",",
-            //    Encoding = Encoding.UTF8,
-            //    BadDataFound = null
-            //});
 
             while (csv.Read())
             {
