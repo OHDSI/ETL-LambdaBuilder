@@ -212,7 +212,7 @@ namespace org.ohdsi.cdm.presentation.etl
                 return;
 
             var numberOfPartitions = GetNumberOfPartitions(chunksSchema);
-            Console.WriteLine("ТumberOfPartitions=" + numberOfPartitions);
+            Console.WriteLine("NumberOfPartitions=" + numberOfPartitions);
 
             Parallel.ForEach(Settings.Current.Building.SourceQueryDefinitions, queryDefinition =>
             {
@@ -273,7 +273,7 @@ namespace org.ohdsi.cdm.presentation.etl
 
                     //var tasks = utility.TriggerBuildFunction(Settings.Current.Building.Vendor, Settings.Current.Building.Id.Value, chunkId, false);
                     //Task.WaitAll([.. tasks]);
-                    //Console.WriteLine($"[Moving raw data] Lambda functions for cuhnkId={chunkId} were triggered | {tasks.Count} functions");
+                    //Console.WriteLine($"[Moving raw data] Lambda functions for chunkId={chunkId} were triggered | {tasks.Count} functions");
 
                     chunkManager.AddChunk(chunkId);
 

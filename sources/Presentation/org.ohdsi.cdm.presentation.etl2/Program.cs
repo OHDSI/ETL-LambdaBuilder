@@ -122,11 +122,17 @@ namespace org.ohdsi.cdm.presentation.etl
                 Settings.Current.CloudStorageSecret = configuration.GetSection("AppSettings")["cloudStorageSecret"];
                 Settings.Current.CloudStorageName = configuration.GetSection("AppSettings")["cloudStorageName"];
 
+                Settings.Current.CloudTriggerStorageKey = configuration.GetSection("AppSettings")["cloudTriggerStorageKey"];
+                Settings.Current.CloudTriggerStorageSecret = configuration.GetSection("AppSettings")["cloudTriggerStorageSecret"];
+                Settings.Current.CloudTriggerStorageName = configuration.GetSection("AppSettings")["cloudTriggerStorageName"];
+
+
                 Settings.Current.CDMFolder = configuration.GetSection("AppSettings")["cdmFolder"];
                 Settings.Current.Folder = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
                 Settings.Current.ParallelQueries = int.Parse(configuration.GetSection("AppSettings")["parallelQueries"]);
                 Settings.Current.ParallelChunks = int.Parse(configuration.GetSection("AppSettings")["parallelChunks"]);
+                
 
                 Console.WriteLine($"ParallelQueries {Settings.Current.ParallelQueries}; ParallelChunks {Settings.Current.ParallelChunks}");
 
@@ -165,6 +171,7 @@ namespace org.ohdsi.cdm.presentation.etl
                 Settings.Current.Building.RawDestinationConnectionString = destinationConnectionString;
                 Settings.Current.Building.Vendor = vendor;
                 Settings.Current.Building.EtlLibraryPath = configuration.GetSection("AppSettings")["etlLibraryPath"];
+                
 
                 if (!createNewBuildingId)
                 {
