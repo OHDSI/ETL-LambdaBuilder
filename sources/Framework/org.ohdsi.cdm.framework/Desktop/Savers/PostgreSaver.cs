@@ -2,6 +2,7 @@
 using NpgsqlTypes;
 using org.ohdsi.cdm.framework.desktop.Helpers;
 using System.Data.Odbc;
+using System.Text.RegularExpressions;
 
 namespace org.ohdsi.cdm.framework.desktop.Savers
 {
@@ -18,7 +19,6 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
                 .Replace("{database}", odbc["database"].ToString()).Replace("{username}", odbc["uid"].ToString())
                 .Replace("{password}", odbc["pwd"].ToString());
 
-            Console.WriteLine("npgsqlConnectionString=" + npgsqlConnectionString);
             _connection = SqlConnectionHelper.OpenNpgsqlConnection(npgsqlConnectionString);
 
             return this;
