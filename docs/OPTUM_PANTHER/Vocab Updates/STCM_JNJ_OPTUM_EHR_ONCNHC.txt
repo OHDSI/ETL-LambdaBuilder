@@ -81,7 +81,8 @@ conventional (clear cell) renal cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	convention
 dermatofibrosarcoma protuberans	0	JNJ_OPTUM_EHR_ONCNHC	dermatofibrosarcoma protuberans	4174440	SNOMED	2023-08-02	2099-12-31	
 desmoplastic small round cell tumor	0	JNJ_OPTUM_EHR_ONCNHC	desmoplastic small round cell tumor	603122	SNOMED	2023-08-02	2099-12-31	
 diffuse large b-cell lymphoma	0	JNJ_OPTUM_EHR_ONCNHC	diffuse large b-cell lymphoma	44808122	SNOMED	2023-08-02	2024-03-13	D
-diffuse large b-cell lymphoma	0	JNJ_OPTUM_EHR_ONCNHC	diffuse large b-cell lymphoma	4300704	SNOMED	2024-03-13	2099-12-31	
+diffuse large b-cell lymphoma	0	JNJ_OPTUM_EHR_ONCNHC	diffuse large b-cell lymphoma	4300704	SNOMED	2024-03-13	2025-09-05	D
+diffuse large b-cell lymphoma	0	JNJ_OPTUM_EHR_ONCNHC	diffuse large b-cell lymphoma	432574	SNOMED	2025-09-05	2099-12-31	
 ductal carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	ductal carcinoma	0	None	2023-08-02	2099-12-31	
 embryonal carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	embryonal carcinoma	607975	SNOMED	2023-08-02	2099-12-31	
 endometrial adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	endometrial adenocarcinoma	4048226	SNOMED	2023-08-02	2099-12-31	
@@ -167,7 +168,8 @@ kaposi sarcoma	0	JNJ_OPTUM_EHR_ONCNHC	kaposi sarcoma	434584	SNOMED	2023-08-02	20
 kidney neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	kidney neoplasm	4131748	SNOMED	2023-08-02	2099-12-31	
 langerhans cell sarcoma	0	JNJ_OPTUM_EHR_ONCNHC	langerhans cell sarcoma	37110403	SNOMED	2023-08-02	2099-12-31	
 large b-cell lymphoma	0	JNJ_OPTUM_EHR_ONCNHC	large b-cell lymphoma	44808122	SNOMED	2023-08-02	2024-03-13	D
-large b-cell lymphoma	0	JNJ_OPTUM_EHR_ONCNHC	large b-cell lymphoma	4300704	SNOMED	2024-03-13	2099-12-31	
+large b-cell lymphoma	0	JNJ_OPTUM_EHR_ONCNHC	large b-cell lymphoma	4300704	SNOMED	2024-03-13	2025-09-05	D
+large b-cell lymphoma	0	JNJ_OPTUM_EHR_ONCNHC	large b-cell lymphoma	432574	SNOMED	2025-09-05	2099-12-31	
 laryngeal carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	laryngeal carcinoma	4172359	SNOMED	2023-08-02	2099-12-31	
 laryngeal neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	laryngeal neoplasm	26052	SNOMED	2023-08-02	2099-12-31	
 laryngeal squamous cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	laryngeal squamous cell carcinoma	45768840	SNOMED	2023-08-02	2099-12-31	
