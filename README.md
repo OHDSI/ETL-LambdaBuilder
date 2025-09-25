@@ -1,5 +1,5 @@
 # ETL-LambdaBuilder
-CDM Builder leveraging AWS Lambda 
+The CDM Builder leveraging AWS Lambda was developed by Johnson & Johnson.
 
 Getting Started
 ===============

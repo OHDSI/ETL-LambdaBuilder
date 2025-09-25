@@ -9,7 +9,7 @@ permalink: /docs/CPRD
 
 # Clinical Practice Research Datalink GOLD (CPRD) ETL Documentation
 
-These materials are meant to serve as documentation and reference for how the [CPRD GOLD](https://cprd.com/home) database was converted to the [OMOP Common Data Model (CDM)](https://ohdsi.github.io/CommonDataModel/). This was a collaborative effort between the Observational Health Data Analytics team at Janssen Research & Development and the University of Oxford Nuffield Department of Orthopaedics, Rheumatology, and Musculoskeletal Sciences (NDORMS).
+These materials are meant to serve as documentation and reference for how the [CPRD GOLD](https://cprd.com/home) database was converted to the [OMOP Common Data Model (CDM)](https://ohdsi.github.io/CommonDataModel/). This was a collaborative effort between the Observational Health Data Analytics team at Johnson & Johnson and the University of Oxford Nuffield Department of Orthopaedics, Rheumatology, and Musculoskeletal Sciences (NDORMS).
 
 The Clinical Practice Research Datalink (CPRD) GOLD is a database of anonymised medical records from participating general practitioner (GP) practices throughout England, Scotland, Wales, and Northern Ireland (UK). In the UK, 98% of the population is registered with a GP who is the gatekeeper of care in the National Health Service (NHS). The GP is primarily responsible for non-emergency care and referral to secondary care as needed. Participating GPs provide their electronic health record data to CPRD on a monthly basis, which includes all patients registered with the practice unless the patient has specifically requested to opt out of data sharing<sup id="cprd1">[1](#f1)</sup>.
 
