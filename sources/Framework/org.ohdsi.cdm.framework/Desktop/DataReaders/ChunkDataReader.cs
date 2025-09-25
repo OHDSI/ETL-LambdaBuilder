@@ -98,8 +98,8 @@ namespace org.ohdsi.cdm.framework.desktop.DataReaders
         {
             return i switch
             {
-                0 => "chunk_id",
-                1 => "partition_id",
+                0 => "chunkid",
+                1 => "partitionid",
                 2 => "person_id",
                 3 => "person_source_value",
                 _ => throw new NotImplementedException(),
