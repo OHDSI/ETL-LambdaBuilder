@@ -1,6 +1,4 @@
 ﻿using Amazon.S3;
-using Azure.Identity;
-using Azure.Storage.Blobs;
 using org.ohdsi.cdm.framework.common.DataReaders.v5;
 using org.ohdsi.cdm.framework.common.DataReaders.v5.v54;
 using org.ohdsi.cdm.framework.common.Definitions;
@@ -92,7 +90,7 @@ namespace org.ohdsi.cdm.presentation.etl
         {
             Console.WriteLine("Chunks creation in progress...");
             var chunkController = new ChunkController(chunksSchema);
-            chunkController.CreateChunks(5_000);
+            chunkController.CreateChunks(35_000);
         }
 
         public static void CopyVocabularyTables()
@@ -241,7 +239,7 @@ namespace org.ohdsi.cdm.presentation.etl
             Console.WriteLine($"PersonFileName:{Settings.Current.Building.PersonFileName}");
             Console.WriteLine($"PersonIdFieldName:{Settings.Current.Building.PersonIdFieldName}");
             Console.WriteLine($"PersonIdFieldIndex:{Settings.Current.Building.PersonIdFieldIndex}");
-                  
+
             using (var chunkManager = new ChunkManager(chunksSchema, numberOfPartitions))
             {
                 Parallel.ForEach(chunkIds, new ParallelOptions { MaxDegreeOfParallelism = Settings.Current.ParallelChunks }, cId =>
@@ -271,9 +269,15 @@ namespace org.ohdsi.cdm.presentation.etl
                     chunkController.ChunkCreated(chunkId, Settings.Current.Building.Id.Value);
                     Console.WriteLine("[Moving raw data] Raw data for chunkId=" + chunkId + " is available on cloud storage");
 
-                    //var tasks = utility.TriggerBuildFunction(Settings.Current.Building.Vendor, Settings.Current.Building.Id.Value, chunkId, false);
-                    //Task.WaitAll([.. tasks]);
-                    //Console.WriteLine($"[Moving raw data] Lambda functions for chunkId={chunkId} were triggered | {tasks.Count} functions");
+                    //for (int i = 0; i < numberOfPartitions; i++)
+                    //{
+                    //    var key = $"{Settings.Current.Building.Vendor}.{Settings.Current.Building.Id}.{chunkId}.PartitionId={i}.txt";
+                    //    using var empty = new MemoryStream();
+
+                    //    CloudStorageHelper.GetTriggerBlobContainerClient().UploadBlob(key, empty);
+                    //}
+
+                    Console.WriteLine($"[Moving raw data] functions for chunkId={chunkId} were triggered | {numberOfPartitions} functions");
 
                     chunkManager.AddChunk(chunkId);
 
@@ -296,7 +300,7 @@ namespace org.ohdsi.cdm.presentation.etl
                                 Thread.Sleep(TimeSpan.FromMinutes(3));
                             }
                         }
-                        catch(Exception ex) // TMP
+                        catch (Exception ex) // TMP
                         {
 
                         }
