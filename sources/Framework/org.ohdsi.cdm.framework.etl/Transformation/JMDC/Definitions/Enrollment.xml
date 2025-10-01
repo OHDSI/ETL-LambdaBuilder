@@ -1,5 +1,5 @@
 ﻿<QueryDefinition>
-  <Query>
+	<Query>
 		with a as
 		(
 		SELECT CAST(RIGHT(Member_ID, LEN(Member_ID) - 1) AS BIGINT) AS person_id,
@@ -7,8 +7,8 @@
 		cast(left(Month_and_year_of_birth_of_member, 4) as int) AS year_of_birth,
 		cast(right(Month_and_year_of_birth_of_member, 2) as int) AS month_of_birth,
 		lower(Gender_of_member) AS gender_source_value,
-		CAST(CAST(e.observation_start AS VARCHAR(6)) + '01' AS DATE) AS observation_period_start_date,
-		DATEADD(DAY, -1, DATEADD(MONTH, 1, CAST(CAST(e.observation_end AS VARCHAR(6)) + '01' AS DATE))) AS observation_period_end_date,
+		to_date(CONCAT(CAST(e.observation_start AS VARCHAR(6)), '01'), 'yyyyMMdd') AS observation_period_start_date,
+		DATEADD(DAY, -1, DATEADD(MONTH, 1, to_date(CONCAT(CAST(e.observation_end AS VARCHAR(6)), '01'), 'yyyyMMdd'))) AS observation_period_end_date,
 		CASE
 		WHEN withdrawal_death_flag = 1 THEN 1
 		ELSE 0
@@ -26,7 +26,8 @@
 		case
 		when type_of_insurance = 4 then 32725
 		else 0
-		end payer_concept_id
+		end payer_concept_id,
+		ch.PartitionId
 		FROM {sc}.Enrollment e
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND e.Member_ID = ch.PERSON_SOURCE_VALUE
 		), a2 as
@@ -36,42 +37,55 @@
 		cast(left(Month_and_year_of_birth_of_member, 4) as int) AS year_of_birth,
 		cast(right(Month_and_year_of_birth_of_member, 2) as int) AS month_of_birth,
 		lower(Gender_of_member) AS gender_source_value,
-		CAST(CAST(e.observation_start AS VARCHAR(6)) + '01' AS DATE) AS observation_period_start_date,
+		to_date(CONCAT(CAST(e.observation_start AS VARCHAR(6)), '01'), 'yyyyMMdd') AS observation_period_start_date,
 		family_id
 		FROM {sc}.Enrollment e
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND e.Member_ID = ch.PERSON_SOURCE_VALUE
 		)
-		select a.*,
+		select a.person_id,
+		a.person_source_value,
+		a.year_of_birth,
+		a.month_of_birth,
+		a.gender_source_value,
+		a.observation_period_start_date,
+		a.observation_period_end_date,
+		a.died,
+		a.family_id,
+		a.has_payerplan,
+		a.payerplan_id,
+		a.type_of_insurance,
+		a.payer_concept_id,
 		m2.person_id as baby_person_id,
-		min(CAST((CAST(m2.year_of_birth AS VARCHAR) || '-' || CAST(m2.month_of_birth AS VARCHAR) || '-01') AS DATE) ) as baby_dob,
-		32813 as PeriodTypeConceptId
+		min(to_date(CONCAT(CAST(m2.year_of_birth AS VARCHAR(4)), lpad(CAST(m2.month_of_birth AS VARCHAR(2)), 2, '0'), '01'), 'yyyyMMdd')) baby_dob,
+		32813 as PeriodTypeConceptId,
+		a.PartitionId
 		from a
 		left join a2 m2 on a.person_id != m2.person_id and a.gender_source_value = 'female' and a.family_id is not null and a.family_id = m2.family_id and m2.year_of_birth - DATE_PART('YEAR', m2.observation_period_start_date) = 0
-		group by a.person_id, a.person_source_value, a.year_of_birth, a.month_of_birth, a.gender_source_value, a.observation_period_start_date, a.observation_period_end_date, a.died, a.family_id, a.has_payerplan, a.payerplan_id, a.type_of_insurance, a.payer_concept_id, baby_person_id, m2.year_of_birth, m2.month_of_birth, m2.observation_period_start_date
-		order by 1
+		group by a.PartitionId, a.person_id, a.person_source_value, a.year_of_birth, a.month_of_birth, a.gender_source_value, a.observation_period_start_date, a.observation_period_end_date, a.died, a.family_id, a.has_payerplan, a.payerplan_id, a.type_of_insurance, a.payer_concept_id, baby_person_id, m2.year_of_birth, m2.month_of_birth, m2.observation_period_start_date
+		order by a.PartitionId, a.person_id
 	</Query>
-  <Persons>
-    <PersonDefinition>
-      <PersonId>PERSON_ID</PersonId>
-      <PersonSourceValue>person_source_value</PersonSourceValue>
-      <StartDate>observation_period_start_date</StartDate>
-      <EndDate>observation_period_end_date</EndDate>
-      <Gender>gender_source_value</Gender>
-      <YearOfBirth>year_of_birth</YearOfBirth>
-      <MonthOfBirth>month_of_birth</MonthOfBirth>
-      <PeriodTypeConceptId>PeriodTypeConceptId</PeriodTypeConceptId>
+	<Persons>
+		<PersonDefinition>
+			<PersonId>PERSON_ID</PersonId>
+			<PersonSourceValue>person_source_value</PersonSourceValue>
+			<StartDate>observation_period_start_date</StartDate>
+			<EndDate>observation_period_end_date</EndDate>
+			<Gender>gender_source_value</Gender>
+			<YearOfBirth>year_of_birth</YearOfBirth>
+			<MonthOfBirth>month_of_birth</MonthOfBirth>
+			<PeriodTypeConceptId>PeriodTypeConceptId</PeriodTypeConceptId>
 			<PotentialChildId>baby_person_id</PotentialChildId>
 			<PotentialChildBirthDate>baby_dob</PotentialChildBirthDate>
-    </PersonDefinition>
-  </Persons>
-  <PayerPlanPeriods>
-    <PayerPlanPeriodDefinition>
-      <Condition>{has_payerplan} = 1</Condition>
-      <Id>payerplan_id</Id>
-      <PersonId>PERSON_ID</PersonId>
-      <StartDate>observation_period_start_date</StartDate>
-      <EndDate>observation_period_end_date</EndDate>
-      <FamilySource>family_id</FamilySource>
+		</PersonDefinition>
+	</Persons>
+	<PayerPlanPeriods>
+		<PayerPlanPeriodDefinition>
+			<Condition>{has_payerplan} = 1</Condition>
+			<Id>payerplan_id</Id>
+			<PersonId>PERSON_ID</PersonId>
+			<StartDate>observation_period_start_date</StartDate>
+			<EndDate>observation_period_end_date</EndDate>
+			<FamilySource>family_id</FamilySource>
 			<Concepts>
 				<Concept>
 					<Fields>
@@ -79,20 +93,20 @@
 					</Fields>
 				</Concept>
 			</Concepts>
-    </PayerPlanPeriodDefinition>
-  </PayerPlanPeriods>
-  <Death>
-    <DeathDefinition>
-      <Condition>{died} = 1</Condition>
-      <PersonId>PERSON_ID</PersonId>
-      <StartDate>observation_period_end_date</StartDate>
-      <Concepts>
-        <Concept>
-          <Fields>
-            <Field defaultConceptId="1" defaultTypeId="32815"/>
-          </Fields>
-        </Concept>
-      </Concepts>
-    </DeathDefinition>
-  </Death>
+		</PayerPlanPeriodDefinition>
+	</PayerPlanPeriods>
+	<Death>
+		<DeathDefinition>
+			<Condition>{died} = 1</Condition>
+			<PersonId>PERSON_ID</PersonId>
+			<StartDate>observation_period_end_date</StartDate>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field defaultConceptId="1" defaultTypeId="32815"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</DeathDefinition>
+	</Death>
 </QueryDefinition>

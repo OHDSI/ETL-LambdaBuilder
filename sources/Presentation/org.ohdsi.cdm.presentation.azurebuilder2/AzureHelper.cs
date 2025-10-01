@@ -36,5 +36,10 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
         {
             AzureHelper.GetBlobContainer().UploadBlob(fileName, stream);
         }
+
+        internal static void DeleteFile(string fileName)
+        {
+            AzureHelper.GetBlobContainer().DeleteBlobIfExists(fileName);
+        }
     }
 }

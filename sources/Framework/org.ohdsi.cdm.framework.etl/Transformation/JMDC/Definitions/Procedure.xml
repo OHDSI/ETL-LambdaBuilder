@@ -8,16 +8,17 @@
     THEN 32859
     ELSE 32853
     END AS procedure_type_concept_id,
-    CAST('1' + RIGHT(medical_facility_id, LEN(medical_facility_id) - 1) AS BIGINT) AS associated_provider_id,
+    CAST('1' || RIGHT(medical_facility_id, LEN(medical_facility_id) - 1) AS BIGINT) AS associated_provider_id,
     ICD9CM_level1 AS procedure_source_value,
     p.standardized_procedure_code,
     actual_point * 10 AS total_paid,
     number_of_times * 10 * procedure_standard_point as total_charge,
-    44818592 as CurrencyConceptId
+    44818592 as CurrencyConceptId,
+	ch.PartitionId
     FROM {sc}.procedure p
     JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND p.Member_ID = ch.PERSON_SOURCE_VALUE
     JOIN {sc}.procedure_master pm on p.standardized_procedure_code = pm.standardized_procedure_code and p.standardized_procedure_version = pm.standardized_procedure_version
-    order by CAST(RIGHT(Member_ID, LEN(Member_ID) - 1) AS BIGINT)
+    order by ch.PartitionId, CAST(RIGHT(Member_ID, LEN(Member_ID) - 1) AS BIGINT)
   </Query>
   <ProcedureOccurrence>
     <ProcedureOccurrenceDefinition>

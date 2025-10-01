@@ -9,7 +9,7 @@
 		THEN 32859
 		ELSE 32853
 		END AS condition_type_concept_id,
-		CAST('1' + RIGHT(d.medical_facility_id, LEN(d.medical_facility_id) - 1) AS BIGINT) AS associated_provider_id,
+		CAST('1' || RIGHT(d.medical_facility_id, LEN(d.medical_facility_id) - 1) AS BIGINT) AS associated_provider_id,
 		replace(dm.icd10_level4_code, '-', '') condition_lookup_key,
 		dm.icd10_level4_code AS condition_source_value,
 		CASE
@@ -30,12 +30,13 @@
 		ELSE 32908
 		END as condition_status_concept_id,
 		d.standard_disease_code || '|' || d.standard_disease_name source_value,
-		1 as fake
+		1 as fake,
+		ch.PartitionId
 		FROM {sc}.Diagnosis d
 		join {ch_sc}._chunks ch ON ch.ChunkId = {0} AND d.Member_ID = ch.PERSON_SOURCE_VALUE
 		left join {sc}.Claim c on c.claim_id = d.claim_id and c.member_id = d.member_id
 		left join {sc}.Diagnosis_master dm on d.standard_disease_code = dm.standard_disease_code
-		order by CAST(RIGHT(d.Member_ID, LEN(d.Member_ID) - 1) AS BIGINT)
+		order by ch.PartitionId, CAST(RIGHT(d.Member_ID, LEN(d.Member_ID) - 1) AS BIGINT)
 	</Query>
   <ConditionOccurrence>
     <!-- fake definition, only to load JMDC-ICD10-MapsToValue lookup for observation ValueAsConceptId  -->

@@ -1,6 +1,6 @@
 ﻿<QueryDefinition>
   <Query>
-    SELECT CAST('1' + RIGHT(medical_facility_id, LEN(medical_facility_id) - 1) AS BIGINT) AS care_site_id,
+    SELECT CAST('1' || RIGHT(medical_facility_id, LEN(medical_facility_id) - 1) AS BIGINT) AS care_site_id,
     medical_facility_id AS care_site_source_value
     FROM {sc}.Medical_facility
   </Query>

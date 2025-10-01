@@ -77,17 +77,42 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
 
         private void GetFiles()
         {
-
-            _files = [];
-            var bcc = AzureHelper.GetBlobContainer();
-            //"temp/tmp_aivanov3/CDM/28/raw/17/Condition_occurrence/PartitionId=10"
-            foreach (var b in bcc.GetBlobs(BlobTraits.None, BlobStates.None, _prefix))
+            try
             {
-                if (!b.Name.EndsWith("csv.gz"))
-                    continue;
+                _files = [];
+                var bcc = AzureHelper.GetBlobContainer();
+                //"temp/tmp_aivanov3/CDM/28/raw/17/Condition_occurrence/PartitionId=10"
+                foreach (var b in bcc.GetBlobs(BlobTraits.None, BlobStates.None, _prefix))
+                {
+                    if (!b.Name.EndsWith("csv.gz"))
+                        continue;
 
-                // part-00004-tid-3957083962449067901-cd3d81c9-b752-4836-b5b2-2f35fc986ab7-38842-3.c000.csv.gz
-                _files.Add(int.Parse(b.Name.Split('-')[1]), b.Name);
+                    // part-00004-tid-3957083962449067901-cd3d81c9-b752-4836-b5b2-2f35fc986ab7-38842-3.c000.csv.gz
+                    _files.Add(int.Parse(b.Name.Split('-')[1]), b.Name);
+                }
+            }
+            catch (Exception e)
+            {
+                Settings.Current.Logger.LogInformation($"*********>>>{_fileName}; {_prefix}");
+
+                Settings.Current.Logger.LogInformation($"----------------------------------------------");
+                foreach (var item in _files)
+                {
+                    Settings.Current.Logger.LogInformation($">{item.Key};{item.Value}");
+                }
+                Settings.Current.Logger.LogInformation($"----------------------------------------------");
+
+                var bcc2 = AzureHelper.GetBlobContainer();
+                foreach (var b in bcc2.GetBlobs(BlobTraits.None, BlobStates.None, _prefix))
+                {
+                    if (!b.Name.EndsWith("csv.gz"))
+                        continue;
+
+                    // part-00004-tid-3957083962449067901-cd3d81c9-b752-4836-b5b2-2f35fc986ab7-38842-3.c000.csv.gz
+                    //_files.Add(int.Parse(b.Name.Split('-')[1]), b.Name);
+                    Settings.Current.Logger.LogInformation($"==>>>{b.Name}; {int.Parse(b.Name.Split('-')[1])}");
+                }
+                throw;
             }
         }
 
@@ -115,31 +140,6 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
             _lastReadTime = DateTime.MinValue;
         }
 
-        //private void Init(long initRow)
-        //{
-        //    Close();
-        //    Dispose();
-
-        //    Settings.Current.Logger.LogInformation(_fileName + ";initRow=" + initRow + ";lastSavedPersonId=" + _lastSavedPersonId);
-
-        //    _stream = AzureHelper.OpenStream(_fileName);
-
-        //    _bufferedStream = new BufferedStream(_stream);
-        //    _gzipStream = new GZipStream(_bufferedStream, CompressionMode.Decompress);
-        //    _reader = new StreamReader(_gzipStream, Encoding.Default);
-
-        //    _rowIndex = initRow;
-        //    //for (var i = 0; i < initRow; i++)
-        //    //{
-        //    //    _reader.ReadLine();
-        //    //}
-
-        //    if (initRow > 0)
-        //        Settings.Current.Logger.LogInformation($"{_fileName}; Rows skipped={initRow}");
-
-        //    _lastReadTime = DateTime.MinValue;
-        //}
-
         public void Close()
         {
             _stream?.Close();
@@ -166,7 +166,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
             Close();
             Dispose();
         }
-             
+
         public bool Read()
         {
             if (_files.Count == 0)
@@ -210,19 +210,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
             catch (Exception e)
             {
                 throw;
-                //_lastReadTime = DateTime.Now;
-
-                //Settings.Current.Logger.LogInformation($"{_fileName} AzureBlobReaderGzip attempt={attempt} | Exception={e.Message}");
-                //Init(_rowIndex);
-                //if (attempt > 5)
-                //{
-                //    Settings.Current.Logger.LogInformation("WARN_EXC - Read - throw");
-                //    Settings.Current.Logger.LogInformation(e.Message);
-                //    Settings.Current.Logger.LogInformation(e.StackTrace);
-                //    throw;
-                //}
             }
-            //}
         }
 
         object IDataRecord.this[int i]
