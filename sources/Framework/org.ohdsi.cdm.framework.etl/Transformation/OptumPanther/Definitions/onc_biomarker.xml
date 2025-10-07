@@ -9,11 +9,12 @@
 		null neoplasm_histology_key,
 		1147127 as meas_event_field_concept_id,
 		1 as fake,
-		null as unit
+		null as unit,
+		ch.PartitionId
 		FROM {sc}.onc_biomarker l
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
 		where lower(temporal_status) = 'current' and biomarker is not NULL
-		order by 1
+		order by ch.PartitionId, 1
 	</Query>
 	<Measurement>
 		<MeasurementDefinition>

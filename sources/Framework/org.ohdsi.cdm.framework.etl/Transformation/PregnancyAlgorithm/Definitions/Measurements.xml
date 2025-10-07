@@ -1,25 +1,26 @@
 ﻿<QueryDefinition>
-  <Query>
+	<Query>
 		SELECT t.MEASUREMENT_ID
 		,t.PERSON_ID
 		,t.MEASUREMENT_CONCEPT_ID as CONCEPT_ID
 		,t.MEASUREMENT_DATE as START_DATE
 		,t.MEASUREMENT_TYPE_CONCEPT_ID as TYPE_CONCEPT_ID
+		,ch.PartitionId
 		FROM {sc}.MEASUREMENT as t
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND t.PERSON_ID = ch.PERSON_ID
-		order by t.PERSON_ID, t.MEASUREMENT_ID
+		order by ch.PartitionId, t.PERSON_ID, t.MEASUREMENT_ID
 	</Query>
 	<Measurement>
 		<MeasurementDefinition>
-      <PersonId>PERSON_ID</PersonId>
-      <StartDate>START_DATE</StartDate>
-       <Concepts>
-        <Concept>
-          <Fields>
-            <Field conceptId="CONCEPT_ID" typeId="TYPE_CONCEPT_ID"/>
-          </Fields>
-        </Concept>
-      </Concepts>
-    </MeasurementDefinition>
-  </Measurement>
+			<PersonId>PERSON_ID</PersonId>
+			<StartDate>START_DATE</StartDate>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field conceptId="CONCEPT_ID" typeId="TYPE_CONCEPT_ID"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</MeasurementDefinition>
+	</Measurement>
 </QueryDefinition>

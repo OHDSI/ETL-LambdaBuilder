@@ -1,19 +1,19 @@
 ﻿<QueryDefinition>
-  <Variables>
-    <Variable name="location" database="ses">me.region as Location</Variable>
-    <Variable name="location" database="dod">STATE as Location</Variable>
-  </Variables>
-  <Query>
-    with a as
-    (
-    SELECT DISTINCT
-    mce.PATID,
-    mce.YRDOB,
-    mce.GDR_CD,
-    me.ELIGEFF,
-    me.ELIGEND,
-    CASE
-    WHEN me.eligeff &lt; '05/01/2000' THEN '05/01/2000'
+	<Variables>
+		<Variable name="location" database="ses">me.region as Location</Variable>
+		<Variable name="location" database="dod">STATE as Location</Variable>
+	</Variables>
+	<Query>
+		with a as
+		(
+		SELECT DISTINCT
+		mce.PATID,
+		mce.YRDOB,
+		mce.GDR_CD,
+		me.ELIGEFF,
+		me.ELIGEND,
+		CASE
+		WHEN me.eligeff &lt; to_date('05/01/2000', 'MM/dd/yyyy') THEN to_date('05/01/2000', 'MM/dd/yyyy')
 		ELSE me.eligeff
 		END as startDate,
 		32813 as PeriodTypeConceptId,
@@ -44,7 +44,8 @@
 		CONCAT(me.bus, me.health_exch) as PAYER_SOURCE_VALUE,
 		CONCAT(me.product, me.cdhp) as PLAN_SOURCE_VALUE,
 		CONCAT(me.aso, me.group_nbr) as SPONSOR_SOURCE_VALUE,
-		me.family_id as FAMILY_SOURCE_VALUE
+		me.family_id as FAMILY_SOURCE_VALUE,
+		ch.PartitionId
 		FROM {sc}.MEMBER_CONTINUOUS_ENROLLMENT mce
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND mce.PATID = ch.PERSON_ID
 		LEFT JOIN {sc}.MEMBER_ENROLLMENT me ON mce.PATID = me.PATID
@@ -55,7 +56,7 @@
 		mce.PATID,
 		mce.YRDOB,
 		CASE
-		WHEN me.eligeff &lt; '05/01/2000' THEN '05/01/2000'
+		WHEN me.eligeff &lt; to_date('05/01/2000', 'MM/dd/yyyy') THEN to_date('05/01/2000', 'MM/dd/yyyy')
 		ELSE me.eligeff
 		END as startDate,
 		me.family_id as FAMILY_SOURCE_VALUE
@@ -63,61 +64,80 @@
 		LEFT JOIN {sc}.MEMBER_ENROLLMENT me ON mce.PATID = me.PATID
 		)
 
-		select a.*,
+		select
+		a.PATID,
+		a.YRDOB,
+		a.GDR_CD,
+		a.ELIGEFF,
+		a.ELIGEND,
+		a.startDate,
+		a.PeriodTypeConceptId,
+		a.RaceConceptId,
+		a.EthnicityConceptId,
+		a.RACE,
+		a.ETHNICITY,
+		a.Location,
+		a.PAYER_CONCEPT_ID,
+		a.PAYER_SOURCE_VALUE,
+		a.PLAN_SOURCE_VALUE,
+		a.SPONSOR_SOURCE_VALUE,
+		a.FAMILY_SOURCE_VALUE,
+
 		m2.patid as baby_person_id,
 		case
 		when DATE_PART('year', m2.startDate) = m2.yrdob then min(m2.startDate)
-		else min(CAST((CAST(m2.yrdob AS VARCHAR) || '-' || DATE_PART('MONTH', m2.startDate) || '-01') AS DATE))
-		end as baby_dob
+		else min(to_date((CAST(m2.yrdob AS VARCHAR(4)) || '-' || DATE_PART('MONTH', m2.startDate) || '-01'), 'yyyy-M-dd'))
+		end as baby_dob,
+		a.PartitionId
 		from a
 		left join a2 m2 on a.patid != m2.patid and a.gdr_cd = 'F' and a.FAMILY_SOURCE_VALUE is not null and a.FAMILY_SOURCE_VALUE = m2.FAMILY_SOURCE_VALUE and m2.yrdob - DATE_PART('YEAR', m2.startDate) = 0
-		group by a.patid, a.yrdob, a.gdr_cd, a.eligeff, a.eligend, a.startdate, a.periodtypeconceptid, a.raceconceptid, a.ethnicityconceptid, a.race, a.ethnicity, a.location, a.PAYER_CONCEPT_ID, a.PAYER_SOURCE_VALUE, a.PLAN_SOURCE_VALUE, a.SPONSOR_SOURCE_VALUE, a.FAMILY_SOURCE_VALUE, baby_person_id, m2.yrdob, m2.startDate
-		order by a.PATID
+		group by a.PartitionId, a.patid, a.yrdob, a.gdr_cd, a.eligeff, a.eligend, a.startdate, a.periodtypeconceptid, a.raceconceptid, a.ethnicityconceptid, a.race, a.ethnicity, a.location, a.PAYER_CONCEPT_ID, a.PAYER_SOURCE_VALUE, a.PLAN_SOURCE_VALUE, a.SPONSOR_SOURCE_VALUE, a.FAMILY_SOURCE_VALUE, baby_person_id, m2.yrdob, m2.startDate
+		order by a.PartitionId, a.PATID
 	</Query>
-  <Persons>
-    <PersonDefinition>
-      <PersonId>PATID</PersonId>
-      <PersonSourceValue>PATID</PersonSourceValue>
-      <StartDate>startDate</StartDate>
-      <EndDate>ELIGEND</EndDate>
-      <Gender>GDR_CD</Gender>
-      <YearOfBirth>YRDOB</YearOfBirth>
-      <RaceConceptId>RaceConceptId</RaceConceptId>
-      <Race>RACE</Race>
-      <EthnicityConceptId>EthnicityConceptId</EthnicityConceptId>
-      <Ethnicity>ETHNICITY</Ethnicity>
-      <PeriodTypeConceptId>PeriodTypeConceptId</PeriodTypeConceptId>
-      <Location>Location</Location>
-      <PotentialChildId>baby_person_id</PotentialChildId>
-      <PotentialChildBirthDate>baby_dob</PotentialChildBirthDate>
-    </PersonDefinition>
-  </Persons>
-  <PayerPlanPeriods>
-    <PayerPlanPeriodDefinition>
-      <PersonId>PATID</PersonId>
-      <StartDate>startDate</StartDate>
-      <EndDate>eligend</EndDate>
-      <FamilySource>FAMILY_SOURCE_VALUE</FamilySource>
-      <Concepts>
-        <!--payer_concept_id-->
-        <Concept>
-          <Fields>
-            <Field conceptId="PAYER_CONCEPT_ID" key="PAYER_SOURCE_VALUE" sourceKey="PAYER_SOURCE_VALUE" defaultTypeId="0"/>
-          </Fields>
-        </Concept>
-        <!--plan_concept_id-->
-        <Concept>
-          <Fields>
-            <Field defaultConceptId="0" key="PLAN_SOURCE_VALUE" sourceKey="PLAN_SOURCE_VALUE" defaultTypeId="0"/>
-          </Fields>
-        </Concept>
-        <!--sponsor_concept_id-->
-        <Concept>
-          <Fields>
-            <Field defaultConceptId="0" key="SPONSOR_SOURCE_VALUE" sourceKey="SPONSOR_SOURCE_VALUE" defaultTypeId="0"/>
-          </Fields>
-        </Concept>
-      </Concepts>
-    </PayerPlanPeriodDefinition>
-  </PayerPlanPeriods>
+	<Persons>
+		<PersonDefinition>
+			<PersonId>PATID</PersonId>
+			<PersonSourceValue>PATID</PersonSourceValue>
+			<StartDate>startDate</StartDate>
+			<EndDate>ELIGEND</EndDate>
+			<Gender>GDR_CD</Gender>
+			<YearOfBirth>YRDOB</YearOfBirth>
+			<RaceConceptId>RaceConceptId</RaceConceptId>
+			<Race>RACE</Race>
+			<EthnicityConceptId>EthnicityConceptId</EthnicityConceptId>
+			<Ethnicity>ETHNICITY</Ethnicity>
+			<PeriodTypeConceptId>PeriodTypeConceptId</PeriodTypeConceptId>
+			<Location>Location</Location>
+			<PotentialChildId>baby_person_id</PotentialChildId>
+			<PotentialChildBirthDate>baby_dob</PotentialChildBirthDate>
+		</PersonDefinition>
+	</Persons>
+	<PayerPlanPeriods>
+		<PayerPlanPeriodDefinition>
+			<PersonId>PATID</PersonId>
+			<StartDate>startDate</StartDate>
+			<EndDate>eligend</EndDate>
+			<FamilySource>FAMILY_SOURCE_VALUE</FamilySource>
+			<Concepts>
+				<!--payer_concept_id-->
+				<Concept>
+					<Fields>
+						<Field conceptId="PAYER_CONCEPT_ID" key="PAYER_SOURCE_VALUE" sourceKey="PAYER_SOURCE_VALUE" defaultTypeId="0"/>
+					</Fields>
+				</Concept>
+				<!--plan_concept_id-->
+				<Concept>
+					<Fields>
+						<Field defaultConceptId="0" key="PLAN_SOURCE_VALUE" sourceKey="PLAN_SOURCE_VALUE" defaultTypeId="0"/>
+					</Fields>
+				</Concept>
+				<!--sponsor_concept_id-->
+				<Concept>
+					<Fields>
+						<Field defaultConceptId="0" key="SPONSOR_SOURCE_VALUE" sourceKey="SPONSOR_SOURCE_VALUE" defaultTypeId="0"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</PayerPlanPeriodDefinition>
+	</PayerPlanPeriods>
 </QueryDefinition>

@@ -5,11 +5,12 @@
 		op.OBSERVATION_PERIOD_START_DATE,
 		op.OBSERVATION_PERIOD_END_DATE,
 		t.GENDER_SOURCE_VALUE,
-		t.YEAR_OF_BIRTH
+		t.YEAR_OF_BIRTH,
+		ch.PartitionId
 		FROM {sc}.PERSON as t
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND t.PERSON_ID = ch.PERSON_ID
 		JOIN {sc}.OBSERVATION_PERIOD op ON t.PERSON_ID = op.PERSON_ID
-		order by t.PERSON_ID
+		order by ch.PartitionId, t.PERSON_ID
 	</Query>
 	<Persons>
 		<PersonDefinition>

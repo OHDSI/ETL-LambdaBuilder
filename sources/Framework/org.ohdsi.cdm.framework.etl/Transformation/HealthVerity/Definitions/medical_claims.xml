@@ -31,16 +31,17 @@
 		case
 		when diagnosis_code_qual = '02' then '10'
 		when diagnosis_code_qual = '01' then '9'
-		when date_service &lt; '10/1/2015' then '9'
-		when date_service &gt;= '10/1/2015' then '10'
+		when date_service &lt; to_date('10/01/2015', 'MM/dd/yyyy') then '9'
+		when date_service &gt;= to_date('10/01/2015', 'MM/dd/yyyy') then '10'
 		end as icd_ver,
 		hv_enc_id,
-		1 as fake
+		1 as fake,
+		ch.PartitionId
 		FROM {sc}.medical_claims
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
 		where  date_service is not null and date_part('year', date_service) &gt;= 2009 and
 		(logical_delete_reason is null or logical_delete_reason = '' or logical_delete_reason = 'null' or lower(logical_delete_reason) not in ('denied claims', 'reversal to original claim'))
-		order by ch.person_id
+		order by ch.PartitionId, PersonId
 	</Query>
 	<ConditionOccurrence>
 		<ConditionOccurrenceDefinition>

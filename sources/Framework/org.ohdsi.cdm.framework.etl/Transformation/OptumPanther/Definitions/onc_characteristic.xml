@@ -1,12 +1,13 @@
 ﻿<QueryDefinition>
-  <Query>
+	<Query>
 		with neoplasm as
 		(
 		select
 		ch.person_id as PersonId,
 		note_date,
 		neoplasm_characteristic as source_value,
-		neoplasm_histology_key
+		neoplasm_histology_key,
+		ch.PartitionId
 		from {sc}.onc_characteristic l
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
 		where lower(neoplasm_char_temporal_status) = 'current'
@@ -19,7 +20,8 @@
 		ch.person_id as PersonId,
 		note_date,
 		histology_characteristic as source_value,
-		neoplasm_histology_key
+		neoplasm_histology_key,
+		ch.PartitionId
 		from {sc}.onc_characteristic l
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
 		where lower(histology_char_temporal_status) = 'current'
@@ -49,37 +51,43 @@
 		where e.PersonId is null
 		)
 
-		select distinct *,
+		select distinct
+		final.PersonId,
+		final.note_date,
+		final.source_value,
+		final.neoplasm_histology_key,
+
 		1147127 as meas_event_field_concept_id,
 		case
 		when lower(source_value) = 'metastatic' then 4181412
 		else 0
-		end as value_as_concept_id
+		end as value_as_concept_id,
+		final.PartitionId
 		from final
-		order by 1
+		order by final.PartitionId, 1
 	</Query>
-  <Measurement>
-    <MeasurementDefinition>
-	  <IsUnique>true</IsUnique>
-      <PersonId>PersonId</PersonId>
-      <StartDate>note_date</StartDate>
-      <EventFieldConceptId>meas_event_field_concept_id</EventFieldConceptId>
+	<Measurement>
+		<MeasurementDefinition>
+			<IsUnique>true</IsUnique>
+			<PersonId>PersonId</PersonId>
+			<StartDate>note_date</StartDate>
+			<EventFieldConceptId>meas_event_field_concept_id</EventFieldConceptId>
 			<ValueAsConceptId>value_as_concept_id</ValueAsConceptId>
-      <AdditionalFields>
-        <string>neoplasm_histology_key</string>
-      </AdditionalFields>
-      <Concepts>
-        <Concept>
-          <ConceptIdMappers>
-            <Mapper>
-              <Lookup>EhrOncchr</Lookup>
-            </Mapper>
-          </ConceptIdMappers>
-          <Fields>
-            <Field key="source_value" defaultTypeId="32882"/>
-          </Fields>
-        </Concept>
-      </Concepts>
-    </MeasurementDefinition>
-  </Measurement>
+			<AdditionalFields>
+				<string>neoplasm_histology_key</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>EhrOncchr</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="source_value" defaultTypeId="32882"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</MeasurementDefinition>
+	</Measurement>
 </QueryDefinition>

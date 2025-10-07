@@ -14,6 +14,6 @@
                         AND (C1.INVALID_REASON IS NULL or C1.INVALID_REASON = '')
 )
 
-SELECT REPLACE(SOURCE_CODE, '.', ''), max(TARGET_CONCEPT_ID) as CONCEPT_ID, 'None' as Domain, cast('1900/1/1' as date) as VALID_START_DATE, cast('2100/1/1' as date) as VALID_END_DATE
+SELECT REPLACE(SOURCE_CODE, '.', ''), max(TARGET_CONCEPT_ID) as CONCEPT_ID, 'None' as Domain, to_date('1900/1/1', 'yyyy/M/d') as VALID_START_DATE, to_date('2100/1/1', 'yyyy/M/d') as VALID_END_DATE
 FROM CTE_VOCAB_MAP
 group by REPLACE(SOURCE_CODE, '.', '')

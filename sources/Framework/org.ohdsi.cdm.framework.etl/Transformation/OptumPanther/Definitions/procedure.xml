@@ -1,8 +1,8 @@
 ﻿<QueryDefinition>
-  <Query>
+	<Query>
 		select
-		p.encid,
 		ch.person_id as PersonId,
+		p.encid,
 		proc_date,
 		pr.provid as provid,
 		case
@@ -24,39 +24,38 @@
 		case
 		when proc_code_type NOT IN ('CPT4', 'HCPCS', 'ICD10', 'ICD9', 'REV', 'SNOMED', 'SNOMEDCT') then proc_code
 		else NULL
-		end as unknown
-
+		end as unknown,
+		ch.PartitionId
 		from {sc}.procedure as p
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND p.ptid = ch.PERSON_SOURCE_VALUE
 		left join {sc}.provider pr on p.provid_perform  = pr.provid
-
 		where proc_code is not NULL
-		order by 2
+		order by ch.PartitionId, 1
 	</Query>
-  <Observation>
-    <ObservationDefinition>
-       <PersonId>PersonId</PersonId>
-      <StartDate>proc_date</StartDate>
-      <ProviderIdKey>provid</ProviderIdKey>
-      <AdditionalFields>
-        <string>encid</string>
-      </AdditionalFields>
-      <Concepts>
-        <Concept>
-          <ConceptIdMappers>
-            <Mapper>
-              <Lookup>RevenueCode</Lookup>
-            </Mapper>
-          </ConceptIdMappers>
-          <Fields>
-            <Field key="source_code_REV" defaultTypeId="32833" />
-          </Fields>
-        </Concept>
-      </Concepts>
-    </ObservationDefinition>
-  </Observation>
-  
-  <ProcedureOccurrence>
+	<Observation>
+		<ObservationDefinition>
+			<PersonId>PersonId</PersonId>
+			<StartDate>proc_date</StartDate>
+			<ProviderIdKey>provid</ProviderIdKey>
+			<AdditionalFields>
+				<string>encid</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>RevenueCode</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="source_code_REV" defaultTypeId="32833" />
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ObservationDefinition>
+	</Observation>
+
+	<ProcedureOccurrence>
 		<ProcedureOccurrenceDefinition>
 			<PersonId>PersonId</PersonId>
 			<StartDate>proc_date</StartDate>
@@ -72,68 +71,68 @@
 				</Concept>
 			</Concepts>
 		</ProcedureOccurrenceDefinition>
-		
-    <ProcedureOccurrenceDefinition>
-      <PersonId>PersonId</PersonId>
-      <StartDate>proc_date</StartDate>
-      <ProviderIdKey>provid</ProviderIdKey>
-      <AdditionalFields>
-        <string>encid</string>
-      </AdditionalFields>
-      <Concepts>
-        <Concept>
-          <ConceptIdMappers>
-            <Mapper>
-              <Lookup>ConditionFromProcedure</Lookup>
-            </Mapper>
-          </ConceptIdMappers>
-          <Fields>
-            <Field key="source_code" defaultTypeId="32833" />
-          </Fields>
-        </Concept>
-      </Concepts>
-    </ProcedureOccurrenceDefinition>
 
-    <ProcedureOccurrenceDefinition>
-      <PersonId>PersonId</PersonId>
-      <StartDate>proc_date</StartDate>
-      <ProviderIdKey>provid</ProviderIdKey>
-      <AdditionalFields>
-        <string>encid</string>
-      </AdditionalFields>
-      <Concepts>
-        <Concept>
-          <ConceptIdMappers>
-            <Mapper>
-              <Lookup>Icd9Proc</Lookup>
-            </Mapper>
-          </ConceptIdMappers>
-          <Fields>
-            <Field key="source_code_ICD9" defaultTypeId="32833" />
-          </Fields>
-        </Concept>
-      </Concepts>
-    </ProcedureOccurrenceDefinition>
-  
-    <ProcedureOccurrenceDefinition>
-      <PersonId>PersonId</PersonId>
-      <StartDate>proc_date</StartDate>
-      <ProviderIdKey>provid</ProviderIdKey>
-      <AdditionalFields>
-        <string>encid</string>
-      </AdditionalFields>
-      <Concepts>
-        <Concept>
-          <ConceptIdMappers>
-            <Mapper>
-              <Lookup>ConditionSNOMED</Lookup>
-            </Mapper>
-          </ConceptIdMappers>
-          <Fields>
-            <Field key="source_code_SNOMED" defaultTypeId="32833" />
-          </Fields>
-        </Concept>
-      </Concepts>
-    </ProcedureOccurrenceDefinition>
-  </ProcedureOccurrence>
+		<ProcedureOccurrenceDefinition>
+			<PersonId>PersonId</PersonId>
+			<StartDate>proc_date</StartDate>
+			<ProviderIdKey>provid</ProviderIdKey>
+			<AdditionalFields>
+				<string>encid</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>ConditionFromProcedure</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="source_code" defaultTypeId="32833" />
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ProcedureOccurrenceDefinition>
+
+		<ProcedureOccurrenceDefinition>
+			<PersonId>PersonId</PersonId>
+			<StartDate>proc_date</StartDate>
+			<ProviderIdKey>provid</ProviderIdKey>
+			<AdditionalFields>
+				<string>encid</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>Icd9Proc</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="source_code_ICD9" defaultTypeId="32833" />
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ProcedureOccurrenceDefinition>
+
+		<ProcedureOccurrenceDefinition>
+			<PersonId>PersonId</PersonId>
+			<StartDate>proc_date</StartDate>
+			<ProviderIdKey>provid</ProviderIdKey>
+			<AdditionalFields>
+				<string>encid</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>ConditionSNOMED</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="source_code_SNOMED" defaultTypeId="32833" />
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ProcedureOccurrenceDefinition>
+	</ProcedureOccurrence>
 </QueryDefinition>

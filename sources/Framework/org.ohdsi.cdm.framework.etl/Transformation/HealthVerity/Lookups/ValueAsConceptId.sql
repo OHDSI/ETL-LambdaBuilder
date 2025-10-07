@@ -6,5 +6,5 @@ where domain_id = 'Meas Value' and standard_concept = 'S' and invalid_reason is 
 group by concept_name
 )
 
-select concept_name, concept_id, 'None' as Domain, cast('1900/1/1' as date) as VALID_START_DATE, cast('2100/1/1' as date) as VALID_END_DATE
+select concept_name, concept_id, 'None' as Domain, to_date('1900/1/1', 'yyyy/M/d') as VALID_START_DATE, to_date('2100/1/1', 'yyyy/M/d') as VALID_END_DATE
 from a

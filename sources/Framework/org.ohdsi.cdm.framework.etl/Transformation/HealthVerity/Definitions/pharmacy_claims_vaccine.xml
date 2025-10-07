@@ -19,8 +19,8 @@
 		case
 		when diagnosis_code_qual = '02' then '10'
 		when diagnosis_code_qual = '01' then '9'
-		when date_service &lt; '10/1/2015' then '9'
-		when date_service &gt;= '10/1/2015' then '10'
+		when date_service &lt; to_date('10/01/2015', 'MM/dd/yyyy') then '9'
+		when date_service &gt;= to_date('10/01/2015', 'MM/dd/yyyy') then '10'
 		end as icd_ver
 
 		FROM {sc}.pharmacy_claims_vaccine

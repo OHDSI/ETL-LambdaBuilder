@@ -14,7 +14,7 @@ union
 select SOURCE_CODE from Source
 )
 
-select distinct S_S.SOURCE_CODE, Standard.TARGET_CONCEPT_ID, Standard.TARGET_DOMAIN_ID, Standard.VALID_START_DATE, Standard.VALID_END_DATE, Standard.SOURCE_VOCABULARY_ID, Source.TARGET_CONCEPT_ID as SOURCE_TARGET_CONCEPT_ID, cast('1900/1/1' as date) as SOURCE_validStartDate, cast('2100/1/1' as date) as SOURCE_validEndDate, ingredient_level.ingredient_concept_id, Standard.TARGET_VALUE_AS_CONCEPT_ID
+select distinct S_S.SOURCE_CODE, Standard.TARGET_CONCEPT_ID, Standard.TARGET_DOMAIN_ID, Standard.VALID_START_DATE, Standard.VALID_END_DATE, Standard.SOURCE_VOCABULARY_ID, Source.TARGET_CONCEPT_ID as SOURCE_TARGET_CONCEPT_ID, to_date('1900/1/1', 'yyyy/M/d') as SOURCE_validStartDate, to_date('2100/1/1', 'yyyy/M/d') as SOURCE_validEndDate, ingredient_level.ingredient_concept_id, Standard.TARGET_VALUE_AS_CONCEPT_ID
 from S_S
 left join Standard on Standard.SOURCE_CODE = S_S.SOURCE_CODE
 left join Source on Source.SOURCE_CODE = S_S.SOURCE_CODE 

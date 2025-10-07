@@ -1,5 +1,5 @@
 ﻿<QueryDefinition>
-  <Query>
+	<Query>
 		with l as
 		(
 		SELECT distinct patient_state, patient_zip3
@@ -24,7 +24,8 @@
 		data_vendor,
 		patient_zip3,
 		patient_state,
-		payer_type
+		payer_type,
+		ch.PartitionId
 		FROM {sc}.enrollment
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
 		where lower(benefit_type) = 'medical'
@@ -42,13 +43,26 @@
 		data_vendor,
 		patient_zip3,
 		patient_state,
-		payer_type
+		payer_type,
+		ch.PartitionId
 		FROM {sc}.enrollment
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
 		where lower(benefit_type) = 'pharmacy' or benefit_type is null
 		)
 
-		select a.*,
+		select
+		a.PersonId,
+		a.hvid,
+		a.patient_gender,
+		a.patient_year_of_birth,
+		a.date_start,
+		a.date_end,
+		a.benefit_type,
+		a.data_vendor,
+		a.patient_zip3,
+		a.patient_state,
+		a.payer_type,
+
 		l.Id as LocationId,
 		pe.most_likely_race,
 		case lower(coalesce(pe.most_likely_race, ''))
@@ -76,34 +90,35 @@
 		when 'medicare' then 281
 		when 'medicare advantage' then 281
 		else 0
-		end as payer_concept_id
+		end as payer_concept_id,
+		a.PartitionId
 		from a
 		left join {sc}.patient_race pr on pr.hvid = a.hvid
 		left join {sc}.patient_race_ethnicity pe on pe.hvid = a.hvid
 		left join location l on l.patient_zip3 = a.patient_zip3 and coalesce(l.patient_state, '') = coalesce(a.patient_state, '')
-		order by 1
+		order by a.PartitionId, a.PersonId
 	</Query>
-  <Persons>
-    <PersonDefinition>
-      <PersonId>PersonId</PersonId>
-      <PersonSourceValue>hvid</PersonSourceValue>
-      <Gender>patient_gender</Gender>
-      <YearOfBirth>patient_year_of_birth</YearOfBirth>
-      <StartDate>date_start</StartDate>
-      <EndDate>date_end</EndDate>
-      <PeriodTypeConceptId>benefit_type</PeriodTypeConceptId>
+	<Persons>
+		<PersonDefinition>
+			<PersonId>PersonId</PersonId>
+			<PersonSourceValue>hvid</PersonSourceValue>
+			<Gender>patient_gender</Gender>
+			<YearOfBirth>patient_year_of_birth</YearOfBirth>
+			<StartDate>date_start</StartDate>
+			<EndDate>date_end</EndDate>
+			<PeriodTypeConceptId>benefit_type</PeriodTypeConceptId>
 			<LocationId>LocationId</LocationId>
 			<Race>most_likely_race</Race>
 			<RaceConceptId>most_likely_race_concept_id</RaceConceptId>
 			<Ethnicity>most_likely_ethnicity</Ethnicity>
 			<EthnicityConceptId>ethnicity_concept_id</EthnicityConceptId>
 			<AdditionalFields>
-        <string>data_vendor</string>
+				<string>data_vendor</string>
 				<string>race_concept_id</string>
 				<string>race</string>
-      </AdditionalFields>
-    </PersonDefinition>
-  </Persons>
+			</AdditionalFields>
+		</PersonDefinition>
+	</Persons>
 	<PayerPlanPeriods>
 		<PayerPlanPeriodDefinition>
 			<PersonId>PersonId</PersonId>

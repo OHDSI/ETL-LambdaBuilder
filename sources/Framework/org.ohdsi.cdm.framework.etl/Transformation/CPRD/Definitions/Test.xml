@@ -1,5 +1,5 @@
 ﻿<QueryDefinition>
-  <Query>
+	<Query>
 		with careSite as
 		(
 		SELECT distinct pracid as id
@@ -17,9 +17,9 @@
 		a.range_high,
 		cs.id as care_site_id,
 		(cast(a.patid as bigint) * 10000000000) +
-		(cast(date_part('year',a.eventdate) as bigint) * 1000000) +
-		(cast(date_part('month',a.eventdate) as bigint) * 10000) +
-		(cast(date_part('day',a.eventdate) as bigint) * 100) + coalesce(a.constype, 99) as visit_occurrence_id,
+		(cast(EXTRACT(YEAR from a.eventdate) as bigint) * 1000000) +
+		(cast(EXTRACT(MONTH from a.eventdate) as bigint) * 10000) +
+		(cast(EXTRACT(DAY from a.eventdate) as bigint) * 100) + coalesce(a.constype, 99) as visit_occurrence_id,
 		a.constype,
 		case
 		when a.constype = 0 then 'Data Not Entered'
@@ -88,15 +88,15 @@
 		CASE a.operator
 		WHEN '=' THEN 4172703
 		WHEN '&gt;' THEN 4172704
-    WHEN '&lt;=' THEN 4171754
-    WHEN '&gt;=' THEN 4171755
-    WHEN '&lt;' THEN 4171756
+		WHEN '&lt;=' THEN 4171754
+		WHEN '&gt;=' THEN 4171755
+		WHEN '&lt;' THEN 4171756
 		WHEN '~' THEN 0
 		WHEN 'Data Not Entered' THEN 0
 		ELSE 0
 		END as operator_concept_id,
 		a.value_source_value,
-		CONCAT(CONCAT(cast(code as varchar),'-'), entity_description) as source_code,
+		CONCAT(CONCAT(cast(code as varchar(5)),'-'), entity_description) as source_code,
 		medical_description
 		from
 		(
@@ -119,7 +119,8 @@
 		else '' end as unit, --Data3 is the coded unit of the laboratory test. The join on line 32 looks up the text value and stores that here.
 		case when t.data4 != 0 then l3.text else '' end as value_source_value, --In this case 0 means 'data not entered' so it is set to blank. Data4 is the coded qualifier (high,low). The join on line 35 looks up the text value and stores that value here.
 		t.data5 as range_low,
-		t.data6 as range_high
+		t.data6 as range_high,
+		ch.PartitionId
 		FROM {sc}.test t
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND t.patid = ch.PERSON_SOURCE_VALUE
 		JOIN {sc}.entity e ON t.enttype = e.code
@@ -148,7 +149,8 @@
 		'' as unit,
 		case when t.data1 != 0 then l.text else '' end as value_source_value, --In this case 0 means 'data not entered' so it is set to blank. Data1 is the coded value for the qualifier (high,low) so the join on line 64 looks up the value and stores the text here.
 		t.data2 as range_low,
-		t.data3 as range_high
+		t.data3 as range_high,
+		ch.PartitionId
 		FROM {sc}.test t
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND t.patid = ch.PERSON_SOURCE_VALUE
 		JOIN {sc}.entity e ON t.enttype = e.code
@@ -157,76 +159,76 @@
 		left join {sc}.consultation c on t.patid = c.patid and t.consid = c.consid
 		WHERE e.data_fields = 4 --When data_fields equals 4 then only the value of the text and qualifier is available.
 		) as a
-		left join careSite cs ON cs.id = cast(right(cast(a.patid as varchar),5) as int)
+		left join careSite cs ON cs.id = cast(right(cast(a.patid as varchar(20)),5) as int)
 		where a.eventdate is not NULL
-		order by 1
+		order by a.PartitionId, a.patid
 	</Query>
 	<Observation>
 		<ObservationDefinition>
-      <PersonId>patid</PersonId>
-      <VisitDetailId>visit_occurrence_id</VisitDetailId>
-      <StartDate>eventdate</StartDate>
-      <ProviderId>staffid</ProviderId>
-      <ValueSourceValue>value_source_value</ValueSourceValue>
+			<PersonId>patid</PersonId>
+			<VisitDetailId>visit_occurrence_id</VisitDetailId>
+			<StartDate>eventdate</StartDate>
+			<ProviderId>staffid</ProviderId>
+			<ValueSourceValue>value_source_value</ValueSourceValue>
 			<ValuesAsNumber>
 				<string>value_as_number</string>
 			</ValuesAsNumber>
-      <RangeLow>range_low</RangeLow>
-      <RangeHigh>range_high</RangeHigh>
+			<RangeLow>range_low</RangeLow>
+			<RangeHigh>range_high</RangeHigh>
 			<QualifierConceptId>operator_concept_id</QualifierConceptId>
 			<QualifierSourceValue>operator</QualifierSourceValue>
-      <Concepts>
-        <Concept>
-          <ConceptIdMappers>
-            <Mapper>
-              <Lookup>Test_Ent</Lookup>
-            </Mapper>
-          </ConceptIdMappers>
-          <Fields>
-            <Field key="source_code" defaultTypeId="32856" sourceKey="read_code"/> 
-          </Fields>
-        </Concept>
-        <Concept>
-          <ConceptIdMappers>
-            <Mapper>
-              <Lookup>Units</Lookup>
-            </Mapper>
-          </ConceptIdMappers>
-          <Fields>
-            <Field key="unit" defaultTypeId="0" />
-          </Fields>
-        </Concept>
-        <Concept>
-          <ConceptIdMappers>
-            <Mapper>
-              <Lookup>ValueAsConceptId</Lookup>
-            </Mapper>
-          </ConceptIdMappers>
-          <Fields>
-            <Field key="value_source_value" defaultTypeId="0" />
-          </Fields>
-        </Concept>
-      </Concepts>
-    </ObservationDefinition>
-</Observation>
-  <VisitOccurrence>
-    <VisitOccurrenceDefinition>
-      <Id>visit_occurrence_id</Id>
-      <PersonId>patid</PersonId>
-      <StartDate>eventdate</StartDate>
-      <EndDate>eventdate</EndDate>
-      <CareSiteId>care_site_id</CareSiteId>
-      <ProviderId>staffid</ProviderId>
-      <AdditionalFields>
-        <string>constype</string>
-      </AdditionalFields>
-      <Concepts>
-        <Concept>
-          <Fields>
-            <Field defaultConceptId="9202" sourceKey="visit_description" defaultTypeId="32817"/>
-          </Fields>
-        </Concept>
-      </Concepts>
-    </VisitOccurrenceDefinition>
-  </VisitOccurrence>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>Test_Ent</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="source_code" defaultTypeId="32856" sourceKey="read_code"/>
+					</Fields>
+				</Concept>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>Units</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="unit" defaultTypeId="0" />
+					</Fields>
+				</Concept>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>ValueAsConceptId</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="value_source_value" defaultTypeId="0" />
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ObservationDefinition>
+	</Observation>
+	<VisitOccurrence>
+		<VisitOccurrenceDefinition>
+			<Id>visit_occurrence_id</Id>
+			<PersonId>patid</PersonId>
+			<StartDate>eventdate</StartDate>
+			<EndDate>eventdate</EndDate>
+			<CareSiteId>care_site_id</CareSiteId>
+			<ProviderId>staffid</ProviderId>
+			<AdditionalFields>
+				<string>constype</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field defaultConceptId="9202" sourceKey="visit_description" defaultTypeId="32817"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</VisitOccurrenceDefinition>
+	</VisitOccurrence>
 </QueryDefinition>

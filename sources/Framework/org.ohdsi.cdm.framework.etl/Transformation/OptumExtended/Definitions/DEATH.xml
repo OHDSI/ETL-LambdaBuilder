@@ -1,25 +1,26 @@
 ﻿<QueryDefinition>
-  <Query database="dod">
+	<Query database="dod">
 		select distinct
 		PATID,
-		cast(YMDOD || '01' as date) as Date,
-		1 as died
+		to_date(YMDOD || '01', 'yyyyMMdd') as Date,
+		1 as died,
+		ch.PartitionId
 		FROM {sc}.DEATH
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND DEATH.PATID = ch.PERSON_ID
-		order by PATID
+		order by ch.PartitionId, PATID
 	</Query>
-  <Death>
-    <DeathDefinition>
-      <PersonId>PATID</PersonId>
-      <StartDate>Date</StartDate>
+	<Death>
+		<DeathDefinition>
+			<PersonId>PATID</PersonId>
+			<StartDate>Date</StartDate>
 			<Died>died</Died>
-      <Concepts>
-        <Concept>
-          <Fields>
-            <Field defaultConceptId="1" defaultTypeId="32885"/>
-          </Fields>
-        </Concept>
-      </Concepts>
-    </DeathDefinition>
-  </Death>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field defaultConceptId="1" defaultTypeId="32885"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</DeathDefinition>
+	</Death>
 </QueryDefinition>

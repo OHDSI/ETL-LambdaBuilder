@@ -1,5 +1,5 @@
 ﻿<QueryDefinition>
-  <Query>
+	<Query>
 		SELECT
 		cast(pat.medrec_key as bigint) as medrec_key,
 		l.pat_key,
@@ -12,32 +12,33 @@
 		else 0
 		end as value_as_concept_id,
 		collection_datetime,
-		pat.adm_phy
+		pat.adm_phy,
+		ch.PartitionId
 		from {sc}.pat pat
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND pat.medrec_key = ch.PERSON_SOURCE_VALUE
 		join {sc}.lab_result l on pat.pat_key = l.pat_key
-		order by cast(pat.medrec_key as bigint)
+		order by ch.PartitionId, 1
 	</Query>
-  <Measurement>
-    <MeasurementDefinition>
-      <PersonId>medrec_key</PersonId>
-      <VisitOccurrenceId>pat_key</VisitOccurrenceId>
+	<Measurement>
+		<MeasurementDefinition>
+			<PersonId>medrec_key</PersonId>
+			<VisitOccurrenceId>pat_key</VisitOccurrenceId>
 			<StartDate>collection_datetime</StartDate>
-      <ProviderId>adm_phy</ProviderId>
-      <ValueSourceValue>value_source_value</ValueSourceValue>
-      <ValueAsConceptId>value_as_concept_id</ValueAsConceptId>
-      <Concepts>
-        <Concept>
-          <ConceptIdMappers>
-            <Mapper>
-              <Lookup>Lab_Result</Lookup>
-            </Mapper>
-          </ConceptIdMappers>
-          <Fields>
-            <Field key="test" defaultTypeId="5001"/>
-          </Fields>
-        </Concept>
-      </Concepts>
-    </MeasurementDefinition>
-  </Measurement>
+			<ProviderId>adm_phy</ProviderId>
+			<ValueSourceValue>value_source_value</ValueSourceValue>
+			<ValueAsConceptId>value_as_concept_id</ValueAsConceptId>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>Lab_Result</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="test" defaultTypeId="5001"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</MeasurementDefinition>
+	</Measurement>
 </QueryDefinition>

@@ -1,5 +1,5 @@
 ﻿<QueryDefinition>
-  <Query>
+	<Query>
 		with careSite as
 		(
 		SELECT distinct pracid as id
@@ -12,9 +12,9 @@
 		i.staffid,
 		m.read_code,
 		(cast(ch.person_id as bigint) * 10000000000) +
-		(cast(date_part('year',i.eventdate) as bigint) * 1000000) +
-		(cast(date_part('month',i.eventdate) as bigint) * 10000) +
-		(cast(date_part('day',i.eventdate) as bigint) * 100) + coalesce(c.constype, 99) as visit_occurrence_id,
+		(cast(EXTRACT(YEAR from i.eventdate) as bigint) * 1000000) +
+		(cast(EXTRACT(MONTH from i.eventdate) as bigint) * 10000) +
+		(cast(EXTRACT(DAY from i.eventdate) as bigint) * 100) + coalesce(c.constype, 99) as visit_occurrence_id,
 		cs.id as care_site_id,
 		case
 		when c.constype = 0 then 'Data Not Entered'
@@ -80,53 +80,54 @@
 		when c.constype = 60 then 'ePharmacy message'
 		when c.constype = 61 then 'Extended Hours'
 		end as description,
-		c.constype
+		c.constype,
+		ch.PartitionId
 		FROM {sc}.immunisation i
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND patid = ch.PERSON_SOURCE_VALUE
 		LEFT JOIN {sc}.Medical m on (i.medcode = m.medcode)
 		left join {sc}.consultation c on i.patid = c.patid and i.consid = c.consid
-		left join careSite cs ON cs.id = cast(right(cast(i.patid as varchar),5) as int)
+		left join careSite cs ON cs.id = cast(right(cast(i.patid as varchar(20)),5) as int)
 		WHERE i.eventdate is not NULL
-		order by ch.person_id
+		order by ch.PartitionId, ch.person_id
 	</Query>
-  <Observation>
-    <ObservationDefinition>
-      <PersonId>patid</PersonId>
-      <StartDate>eventdate</StartDate>
-      <ProviderId>staffid</ProviderId>
-      <VisitDetailId>visit_occurrence_id</VisitDetailId>
-      <Concepts>
-        <Concept>
-          <ConceptIdMappers>
-            <Mapper>
-              <Lookup>Read_Code</Lookup>
-            </Mapper>
-          </ConceptIdMappers>
-          <Fields>
-            <Field key="read_code" defaultTypeId="32818" caseSensitive="true"/>
-          </Fields>
-        </Concept>
-      </Concepts>
-    </ObservationDefinition>
-  </Observation>
-  <VisitOccurrence>
-    <VisitOccurrenceDefinition>
-      <Id>visit_occurrence_id</Id>
-      <PersonId>patid</PersonId>
-      <StartDate>eventdate</StartDate>
-      <EndDate>eventdate</EndDate>
-      <CareSiteId>care_site_id</CareSiteId>
-      <ProviderId>staffid</ProviderId>
-      <AdditionalFields>
-        <string>constype</string>
-      </AdditionalFields>
-      <Concepts>
-        <Concept>
-          <Fields>
-            <Field defaultConceptId="9202" sourceKey="description" defaultTypeId="32817"/>
-          </Fields>
-        </Concept>
-      </Concepts>
-    </VisitOccurrenceDefinition>
-  </VisitOccurrence>
+	<Observation>
+		<ObservationDefinition>
+			<PersonId>patid</PersonId>
+			<StartDate>eventdate</StartDate>
+			<ProviderId>staffid</ProviderId>
+			<VisitDetailId>visit_occurrence_id</VisitDetailId>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>Read_Code</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="read_code" defaultTypeId="32818" caseSensitive="true"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ObservationDefinition>
+	</Observation>
+	<VisitOccurrence>
+		<VisitOccurrenceDefinition>
+			<Id>visit_occurrence_id</Id>
+			<PersonId>patid</PersonId>
+			<StartDate>eventdate</StartDate>
+			<EndDate>eventdate</EndDate>
+			<CareSiteId>care_site_id</CareSiteId>
+			<ProviderId>staffid</ProviderId>
+			<AdditionalFields>
+				<string>constype</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field defaultConceptId="9202" sourceKey="description" defaultTypeId="32817"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</VisitOccurrenceDefinition>
+	</VisitOccurrence>
 </QueryDefinition>
