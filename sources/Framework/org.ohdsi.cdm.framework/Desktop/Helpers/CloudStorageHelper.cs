@@ -128,5 +128,37 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
 
             return null;
         }
+
+        public static AmazonS3Client GetAwsStorageClient()
+        {
+            if (!string.IsNullOrEmpty(Settings.Settings.Current.CloudStorageHolder) || !string.IsNullOrEmpty(Settings.Settings.Current.CloudStorageConnectionString))
+                return null;
+
+            return new AmazonS3Client(
+                    Settings.Settings.Current.CloudStorageKey,
+                    Settings.Settings.Current.CloudStorageSecret,
+                    new AmazonS3Config
+                    {
+                        Timeout = TimeSpan.FromMinutes(60),
+                        RegionEndpoint = Amazon.RegionEndpoint.USEast1,
+                        MaxErrorRetry = 20,
+                    });
+        }
+
+        public static AmazonS3Client GetAwsTriggerStorageClient()
+        {
+            if (!string.IsNullOrEmpty(Settings.Settings.Current.CloudTriggerStorageHolder) || !string.IsNullOrEmpty(Settings.Settings.Current.CloudTriggerStorageConnectionString))
+                return null;
+
+            return new AmazonS3Client(
+                    Settings.Settings.Current.CloudTriggerStorageKey,
+                    Settings.Settings.Current.CloudTriggerStorageSecret,
+                    new AmazonS3Config
+                    {
+                        Timeout = TimeSpan.FromMinutes(60),
+                        RegionEndpoint = Amazon.RegionEndpoint.USEast1,
+                        MaxErrorRetry = 20,
+                    });
+        }
     }
 }
