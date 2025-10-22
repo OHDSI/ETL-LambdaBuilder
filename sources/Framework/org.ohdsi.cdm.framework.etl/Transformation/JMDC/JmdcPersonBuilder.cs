@@ -536,6 +536,19 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.JMDC
             var death = BuildDeath([.. DeathRecords], visitOccurrences, observationPeriods);
             death = UpdateDeath(death, person, observationPeriods);
 
+            if (death != null)
+            {
+                foreach (var op in observationPeriods)
+                {
+                    // In the case that the OBSERVATION_PERIOD ends greater than 60 days after the patient's death date,
+                    if (op.EndDate.Value.Date > death.StartDate.AddDays(60).Date)
+                    {
+                        // set the OBSERVATION_PERIOD_END_DATE to be the death date + 60 days.
+                        op.EndDate = death.StartDate.AddDays(60).Date;
+                    }
+                }
+            }
+
             // TODO: TMP
             var drugCosts = BuildDrugCosts(drugExposures).ToArray();
             var procedureCosts = BuildProcedureCosts(procedureOccurrences).ToArray();
