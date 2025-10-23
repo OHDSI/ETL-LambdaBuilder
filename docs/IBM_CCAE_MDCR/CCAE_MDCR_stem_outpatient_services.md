@@ -23,6 +23,9 @@ Records will be written from the OUTPATIENT_SERVICES table mapping the field REV
 
 **NOTE** the revenue codes are mapped to concepts with the vocabulary_id “Revenue Code”. All these concepts have the domain of “Revenue Code” as well. Since there is no revenue table, all records coming from the REVCODE field should go to the OBSERVATION table.
 
+### Procedures and Procedure Modifiers
+* PROCMOD values are associated with PROC1 procedure codes. If PROCMOD = 'JW' then remove the procedure record as 'JW' stands for 'Amount not administered'. 
+
 ### Reading from **OUTPATIENT_SERVICES**
 
 ![](images/image3.png)
@@ -48,7 +51,7 @@ Records will be written from the OUTPATIENT_SERVICES table mapping the field REV
 | DOSE_UNIT_SOURCE_VALUE | - | NULL | - |
 | LOT_NUMBER | - | NULL | - |
 | MODIFIER_CONCEPT_ID | PROCMOD | Use the <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html">Source-to-Standard Query</a>.<br><br>`WHERE SOURCE_CONCEPT_CLASS_ID IN ('CPT4 Modifier')`<br/> `AND TARGET_CONCEPT_CLASS_ID IN ('CPT4 Modifier')` | If PROCMOD is blank then leave this field blank as well |
-| MODIFIER_SOURCE_VALUE | PROCMOD | - | - |
+| MODIFIER_SOURCE_VALUE | PROCMOD | - | PROCMODs are associated with PROC1 values. If PROCMOD is 'JW' then remove the procedure record as 'JW' means 'amount not administered'.|
 | OPERATOR_CONCEPT_ID | - | 0 | - |
 | QUANTITY | QTY | NULL | - |
 | RANGE_HIGH | - | NULL | - |
@@ -92,3 +95,6 @@ Records will be written from the OUTPATIENT_SERVICES table mapping the field REV
 * Added CONDITION_STATUS_CONCEPT_ID information
 
 * Added logic to map revenue codes
+  
+### October 23, 2025
+* Added logic to remove PROC records with PROCMOD = 'JW'
