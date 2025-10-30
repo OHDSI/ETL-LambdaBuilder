@@ -113,10 +113,10 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerityFull
                 return new KeyValuePair<Person, Attrition>(null, Attrition.UnknownGender);
             }*/
 
-            if (records.Any(r => r.GenderConceptId != 8551 && r.GenderConceptId != person.GenderConceptId))
-            {
-                return new KeyValuePair<Person, Attrition>(null, Attrition.GenderChanges); // Gender changed over different enrollment period 
-            }
+            //if (records.Any(r => r.GenderConceptId != 8551 && r.GenderConceptId != person.GenderConceptId))
+            //{
+            //    return new KeyValuePair<Person, Attrition>(null, Attrition.GenderChanges); // Gender changed over different enrollment period 
+            //}
 
             if (person.YearOfBirth < 1900)
                 return new KeyValuePair<Person, Attrition>(null, Attrition.ImplausibleYOBPast);
@@ -124,11 +124,11 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerityFull
             if (person.YearOfBirth > Vendor.SourceReleaseDate.Value.Date.Year)
                 return new KeyValuePair<Person, Attrition>(null, Attrition.ImplausibleYOBFuture);
 
-            if (records.Where(r => r.YearOfBirth.HasValue && r.YearOfBirth > 1900).Max(r => r.YearOfBirth) -
-                records.Where(r => r.YearOfBirth.HasValue && r.YearOfBirth > 1900).Min(r => r.YearOfBirth) > 2)
-            {
-                return new KeyValuePair<Person, Attrition>(null, Attrition.MultipleYearsOfBirth);
-            }
+            //if (records.Where(r => r.YearOfBirth.HasValue && r.YearOfBirth > 1900).Max(r => r.YearOfBirth) -
+            //    records.Where(r => r.YearOfBirth.HasValue && r.YearOfBirth > 1900).Min(r => r.YearOfBirth) > 2)
+            //{
+            //    return new KeyValuePair<Person, Attrition>(null, Attrition.MultipleYearsOfBirth);
+            //}
 
             var raceValues = filtered
                 .Where(item => item.AdditionalFields.ContainsKey("race") && !string.IsNullOrEmpty(item.AdditionalFields["race"]))
