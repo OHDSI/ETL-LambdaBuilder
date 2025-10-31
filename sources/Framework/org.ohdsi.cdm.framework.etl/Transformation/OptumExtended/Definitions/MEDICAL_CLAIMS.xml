@@ -97,6 +97,7 @@
         <string>pat_planid</string>
         <string>clmid</string>
         <string>loc_cd</string>
+		<string>procmod</string>
       </AdditionalFields>
       <Concepts>
         <Concept>
@@ -116,7 +117,7 @@
             </Mapper>
           </ConceptIdMappers>
           <Fields>
-            <Field key="PROCMOD"/>
+            <Field key="procmod"/>
           </Fields>
         </Concept>
       </Concepts>
@@ -132,6 +133,7 @@
         <string>pat_planid</string>
         <string>clmid</string>
         <string>loc_cd</string>
+		<string>procmod</string>
       </AdditionalFields>
       <Concepts>
         <Concept>
@@ -151,7 +153,7 @@
             </Mapper>
           </ConceptIdMappers>
           <Fields>
-            <Field key="PROCMOD"/>
+            <Field key="procmod"/>
           </Fields>
         </Concept>
       </Concepts>

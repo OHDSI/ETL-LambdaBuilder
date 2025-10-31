@@ -111,6 +111,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Truven
         private readonly Dictionary<string, Dictionary<DateTime, List<VisitDetail>>> _rawVisitDetailsByDate = [];
         private readonly Dictionary<long, VisitDetail> _visitDetails = [];
         private readonly Dictionary<long, HashSet<DateTime>> _potentialChilds = [];
+        private int _discardedDrugCount = 0;
 
         #endregion
 
@@ -924,6 +925,9 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Truven
                 }
             }
 
+            if (_discardedDrugCount > 0)
+                ChunkData.AddAttrition(person.PersonId, Attrition.DiscardedDrugCount, _discardedDrugCount);
+
             return Attrition.None;
         }
 
@@ -1016,6 +1020,18 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Truven
         {
             foreach (var entity in entities)
             {
+                if (entity.AdditionalFields != null && entity.AdditionalFields.ContainsKey("procmod"))
+                {
+                    var procmod = entity.AdditionalFields["procmod"];
+
+                    // The modifier JW applies to the discarded portion, not to the administered portion.
+                    if (!string.IsNullOrEmpty(procmod) && procmod.ToLower() == "jw")
+                    {
+                        _discardedDrugCount++;
+                        continue;
+                    }
+                }
+
                 if (!entity.VisitDetailId.HasValue)
                     SetVisitDetailId(entity, false);
 

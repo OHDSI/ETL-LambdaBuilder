@@ -142,7 +142,13 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
                     if (!metadata.ContainsKey(name))
                         metadata.Add(name, 0);
 
-                    metadata[name]++;
+                    if(csv.ColumnCount == 3)
+                    {
+                        var cnt = int.Parse(csv.GetField(2));
+                        metadata[name] += cnt;
+                    }
+                    else
+                        metadata[name]++;
                 }
             }
 

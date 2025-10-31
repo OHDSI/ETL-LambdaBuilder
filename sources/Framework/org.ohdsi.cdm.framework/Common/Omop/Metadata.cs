@@ -24,7 +24,9 @@ namespace org.ohdsi.cdm.framework.common.Omop
         [Description("Unknown gender")]
         UnknownGender,
         [Description("Unknown year of birth")]
-        UnknownYearOfBirth
+        UnknownYearOfBirth,
+        [Description("Discarded drug count")]
+        DiscardedDrugCount
     }
 
     public class MetadataOMOP
@@ -51,5 +53,7 @@ namespace org.ohdsi.cdm.framework.common.Omop
         public long PersonId { get; set; }
 
         public string Name { get; set; }
+
+        public int Count { get; set; }
     }
 }
