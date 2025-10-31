@@ -82,7 +82,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
         private readonly Dictionary<long, HashSet<DateTime>> _potentialChilds = [];
         private readonly string[] _neg = ["ldtnot", "neg", "not-detected", "notdet", "negative for covid"];
         private readonly string[] _pos = ["ldtdet", "pos", "positive for 2019-", "positive for covid"];
-
+        private int _discardedDrugCount = 0;
         #endregion
 
         #region Constructors
@@ -923,6 +923,10 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
                 }
             }
 
+
+            if(_discardedDrugCount > 0)
+                ChunkData.AddAttrition(person.PersonId, Attrition.DiscardedDrugCount, _discardedDrugCount);
+
             return Attrition.None;
         }
         public static IEnumerable<T> Clean<T>(IEnumerable<T> entities, Person person) where T : class, IEntity
@@ -946,6 +950,18 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
             foreach (var entity in entities)
             {
                 var entityDomain = GetDomain(domain, entity.Domain, "Observation");
+
+                if(entity.AdditionalFields != null && entity.AdditionalFields.ContainsKey("procmod"))
+                {
+                    var procmod = entity.AdditionalFields["procmod"];
+
+                    // The modifier JW applies to the discarded portion, not to the administered portion.
+                    if (!string.IsNullOrEmpty(procmod) && procmod.ToLower() == "jw")
+                    {
+                        _discardedDrugCount++;
+                        continue;
+                    }
+                }
 
                 switch (entityDomain)
                 {
