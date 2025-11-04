@@ -14,7 +14,7 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v53
 
         public int FieldCount
         {
-            get { return 2; }
+            get { return 3; }
         }
 
         // is this called only because the datatype specific methods are not implemented?  
@@ -25,6 +25,7 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v53
             {
                 0 => _enumerator.Current.PersonId,
                 1 => _enumerator.Current.Name,
+                2 => _enumerator.Current.Count,
                 _ => throw new NotImplementedException(),
             };
         }
@@ -35,6 +36,7 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v53
             {
                 0 => "person_id",
                 1 => "name",
+                2 => "count",
                 _ => throw new NotImplementedException(),
             };
         }
@@ -132,6 +134,7 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v53
             {
                 0 => typeof(long),
                 1 => typeof(string),
+                2 => typeof(int),
                 _ => throw new NotImplementedException(),
             };
         }
