@@ -5,6 +5,7 @@ using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Helpers;
 using org.ohdsi.cdm.framework.common.Omop;
 using org.ohdsi.cdm.framework.common.PregnancyAlgorithm;
+using System.Diagnostics.Metrics;
 
 namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerity
 {
@@ -55,6 +56,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerity
         private readonly DateTime _minDate = new(2009, 1, 1);
         private readonly HashSet<string> _races = [];
         private readonly HashSet<long> _racesConceptId = [];
+        private int _discardedDrugCount = 0;
 
         List<DateTime> _mins = [];
         //List<DateTime> _maxs = [];
@@ -127,6 +129,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerity
             var ordered = filtered.OrderByDescending(p => p.StartDate).ToArray();
             var person = ordered.First();
             person.StartDate = ordered.Last().StartDate;
+            person.YearOfBirth = filtered.Min(r => r.YearOfBirth);
 
             if (person.GenderConceptId == 8551)
             {
@@ -172,9 +175,11 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerity
 
             foreach (var visitOccurrence in rawVisitOccurrences)
             {
+                if (visitOccurrence.StartDate.Year < _personYoB)
+                    continue;
+
                 if (!visitOccurrence.EndDate.HasValue)
                     visitOccurrence.EndDate = visitOccurrence.StartDate;
-
 
                 if (visitOccurrence.StartDate > visitOccurrence.EndDate.Value)
                     visitOccurrence.EndDate = visitOccurrence.StartDate;
@@ -198,7 +203,6 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerity
                     othersRaw.Add(visitOccurrence);
                 }
             }
-
 
             var ipVisits = CollapseVisits(ipVisitsRaw);
 
@@ -293,14 +297,6 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerity
                             }
                             yield return visit;
                         }
-
-                        //var visit = byCareSiteId.OrderBy(v => v.ConceptId).First();
-                        //foreach (var vo in byCareSiteId)
-                        //{
-                        //    AddRawVisitOccurrence(vo, visit);
-                        //}
-
-                        //yield return visit;
                     }
                 }
             }
@@ -371,6 +367,9 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
         {
             foreach (var visitOccurrence in visitOccurrences)
             {
+                if (visitOccurrence.StartDate.Year < _personYoB)
+                    continue;
+
                 var visitDetail =
                     new VisitDetail(visitOccurrence)
                     {
@@ -837,6 +836,15 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
                     death = null;
             }
 
+            if (death != null)
+            {
+                foreach (var op in observationPeriods)
+                {
+                    if (op.EndDate.Value.Date > death.StartDate.Date.AddDays(60))
+                        op.EndDate = death.StartDate.Date.AddDays(60);
+                }
+            }
+
             var visits = FilterByDeathDate(visitOccurrences.Values, death, 60).ToArray();
             SetPrecedingVisitOccurrenceId(visits);
 
@@ -870,13 +878,74 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
                 ChunkData.ConditionEra.Add(r);
             }
 
+            if (_discardedDrugCount > 0)
+                ChunkData.AddAttrition(person.PersonId, Attrition.DiscardedDrugCount, _discardedDrugCount);
+
             return Attrition.None;
+        }
+
+        public override IEnumerable<ConditionOccurrence> BuildConditionOccurrences(ConditionOccurrence[] conditionOccurrences, Dictionary<long, VisitOccurrence> visitOccurrences, ObservationPeriod[] observationPeriods)
+        {
+            foreach (var i in base.BuildConditionOccurrences(conditionOccurrences, visitOccurrences, observationPeriods))
+            {
+                if (i.StartDate.Year < _personYoB)
+                    continue;
+
+                yield return i;
+            }
+        }
+
+        public override IEnumerable<ProcedureOccurrence> BuildProcedureOccurrences(ProcedureOccurrence[] procedureOccurrences, Dictionary<long, VisitOccurrence> visitOccurrences, ObservationPeriod[] observationPeriods)
+        {
+            foreach (var i in base.BuildProcedureOccurrences(procedureOccurrences, visitOccurrences, observationPeriods))
+            {
+                if (i.StartDate.Year < _personYoB)
+                    continue;
+
+                yield return i;
+            }
+        }
+
+        public override IEnumerable<Observation> BuildObservations(Observation[] observations, Dictionary<long, VisitOccurrence> visitOccurrences, ObservationPeriod[] observationPeriods)
+        {
+            foreach (var i in base.BuildObservations(observations, visitOccurrences, observationPeriods))
+            {
+                if (i.StartDate.Year < _personYoB)
+                    continue;
+
+                yield return i;
+            }
+        }
+
+        public override IEnumerable<Measurement> BuildMeasurement(Measurement[] measurements, Dictionary<long, VisitOccurrence> visitOccurrences, ObservationPeriod[] observationPeriods)
+        {
+            foreach (var i in base.BuildMeasurement(measurements, visitOccurrences, observationPeriods))
+            {
+                if (i.StartDate.Year < _personYoB)
+                    continue;
+
+                yield return i;
+            }
+        }
+
+        public override IEnumerable<DeviceExposure> BuildDeviceExposure(DeviceExposure[] devExposure, Dictionary<long, VisitOccurrence> visitOccurrences, ObservationPeriod[] observationPeriods)
+        {
+            foreach (var i in base.BuildDeviceExposure(devExposure, visitOccurrences, observationPeriods))
+            {
+                if (i.StartDate.Year < _personYoB)
+                    continue;
+
+                yield return i;
+            }
         }
 
         public override IEnumerable<DrugExposure> BuildDrugExposures(DrugExposure[] drugExposures, Dictionary<long, VisitOccurrence> visitOccurrences, ObservationPeriod[] observationPeriods)
         {
             foreach (var de in base.BuildDrugExposures(drugExposures, visitOccurrences, observationPeriods))
             {
+                if (de.StartDate.Year < _personYoB)
+                    continue;
+
                 if (de.AdditionalFields != null && de.AdditionalFields.ContainsKey("medctn_days_supply_cnt"))
                 {
                     int? daysSupply = 1;
@@ -1057,6 +1126,18 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
         {
             foreach (var entity in entities)
             {
+                if (entity.AdditionalFields != null && entity.AdditionalFields.ContainsKey("procedure_modifier_1"))
+                {
+                    var procedure_modifier = entity.AdditionalFields["procedure_modifier_1"];
+
+                    // The modifier JW applies to the discarded portion, not to the administered portion.
+                    if (!string.IsNullOrEmpty(procedure_modifier) && procedure_modifier.ToLower() == "jw")
+                    {
+                        _discardedDrugCount++;
+                        continue;
+                    }
+                }
+
                 var entityDomain = GetDomain(domain, entity.Domain, "Observation");
 
                 switch (entityDomain)

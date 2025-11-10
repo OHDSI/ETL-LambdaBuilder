@@ -594,6 +594,9 @@
     <EmbeddedResource Include="Transformation\HealthVerity\Lookups\loinc.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\HealthVerity\Lookups\Modifier.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Transformation\HealthVerity\Lookups\ndc.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
