@@ -1,8 +1,3 @@
-﻿CREATE TABLE {sc}."_version" (
-version_id int4 NOT NULL,
-version_date date NOT NULL
-);
-
 CREATE TABLE {sc}.care_site (
 care_site_id int8 NOT NULL,
 care_site_name varchar(255) NULL,
