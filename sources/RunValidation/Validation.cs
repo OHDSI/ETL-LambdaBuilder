@@ -5,16 +5,12 @@ using CsvHelper;
 using CsvHelper.Configuration;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Helpers;
-using org.ohdsi.cdm.framework.common.Omop;
 using Spectre.Console;
 using System.Collections.Concurrent;
 using System.Diagnostics;
-using System.Diagnostics.Eventing.Reader;
 using System.Globalization;
-using System.IO;
 using System.IO.Compression;
 using System.Text;
-using System.Threading.Tasks;
 using ZstdSharp;
 
 namespace RunValidation
@@ -104,7 +100,7 @@ namespace RunValidation
 
             var actualSlices = GetActualSlices(vendor.Name, buildingId).OrderBy(s => s).ToList();
 
-            ProcessChunks(vendor, buildingId, chunks, actualSlices);
+            Process(vendor, buildingId, chunks, actualSlices);
 
             foreach (var chunkReport in _chunkReports.OrderBy(c => c.ChunkId))
             {
@@ -162,7 +158,7 @@ namespace RunValidation
         }
 
 
-        private void ProcessChunks(Vendor vendor, int buildingId, List<int> chunks, List<int> slices)
+        private void Process(Vendor vendor, int buildingId, List<int> chunks, List<int> slices)
         {
             var prefix = $"{vendor}/{buildingId}/_chunks";
 
@@ -187,7 +183,7 @@ namespace RunValidation
                         new SpinnerColumn())
                     .Start(ctx =>
                     {
-                        var taskDescription = "Getting S3 chunk objects.";
+                        var taskDescription = "Getting S3 _chunks objects.";
                         var task = ctx.AddTask(taskDescription);
                         do
                         {
@@ -219,7 +215,7 @@ namespace RunValidation
                         new SpinnerColumn())
                     .Start(ctx =>
                     {
-                        var overallTask = ctx.AddTask("Processing chunks...", maxValue: s3ChunkObjects.Count);
+                        var overallTask = ctx.AddTask("Processing S3 _chunks objects...", maxValue: s3ChunkObjects.Count);
 
                         var processingTasks = new List<Task>();
                         int maxDegreeOfParallelism = Environment.ProcessorCount == 1 ? 1 : Environment.ProcessorCount - 1;
@@ -242,26 +238,7 @@ namespace RunValidation
                             {
                                 try
                                 {
-                                    var chunkPersonIds = new ConcurrentDictionary<int, ConcurrentDictionary<long, PersonInS3Chunk>>();
-
-                                    using var transferUtility = new TransferUtility(_awsAccessKeyId, _awsSecretAccessKey, Amazon.RegionEndpoint.USEast1);
-                                    using var responseStream = transferUtility.OpenStream(_bucket, s3obj.Key);
-                                    using var bufferedStream = new BufferedStream(responseStream);
-                                    using Stream compressedStream = s3obj.Key.EndsWith(".gz")
-                                        ? new GZipStream(bufferedStream, CompressionMode.Decompress)
-                                        : new DecompressionStream(bufferedStream); // .zst
-                                    using var reader = new StreamReader(compressedStream, Encoding.Default);
-                                    string? line = reader.ReadLine();
-                                    while (!string.IsNullOrEmpty(line))
-                                    {
-                                        var splits = line.Split('\t');
-                                        var personId = long.Parse(splits[1]);
-
-                                        var sliceIdDictionary = chunkPersonIds.GetOrAdd(-1, _ => new ConcurrentDictionary<long, PersonInS3Chunk>());
-                                        sliceIdDictionary.GetOrAdd(personId, _ => new PersonInS3Chunk(personId, vendor, buildingId, localChunkId));
-
-                                        line = reader.ReadLine();
-                                    }
+                                    var chunkPersonIds = ProcessChunkFile(s3obj, vendor, buildingId, localChunkId);
 
                                     ValidateChunkIdWithProgress(
                                         vendor,
@@ -285,6 +262,32 @@ namespace RunValidation
                         Task.WaitAll(processingTasks.ToArray());
                     });
             }
+        }
+
+        private ConcurrentDictionary<int, ConcurrentDictionary<long, PersonInS3Chunk>> ProcessChunkFile(S3Object s3obj, Vendor vendor, int buildingId, int localChunkId)
+        {
+            var chunkPersonIds = new ConcurrentDictionary<int, ConcurrentDictionary<long, PersonInS3Chunk>>();
+
+            using var transferUtility = new TransferUtility(_awsAccessKeyId, _awsSecretAccessKey, Amazon.RegionEndpoint.USEast1);
+            using var responseStream = transferUtility.OpenStream(_bucket, s3obj.Key);
+            using var bufferedStream = new BufferedStream(responseStream);
+            using Stream compressedStream = s3obj.Key.EndsWith(".gz")
+                ? new GZipStream(bufferedStream, CompressionMode.Decompress)
+                : new DecompressionStream(bufferedStream); // .zst
+            using var reader = new StreamReader(compressedStream, Encoding.Default);
+            string? line = reader.ReadLine();
+            while (!string.IsNullOrEmpty(line))
+            {
+                var splits = line.Split('\t');
+                var personId = long.Parse(splits[1]);
+
+                var sliceIdDictionary = chunkPersonIds.GetOrAdd(-1, _ => new ConcurrentDictionary<long, PersonInS3Chunk>());
+                sliceIdDictionary.GetOrAdd(personId, _ => new PersonInS3Chunk(personId, vendor, buildingId, localChunkId));
+
+                line = reader.ReadLine();
+            }
+
+            return chunkPersonIds;
         }
 
         private void ValidateChunkIdWithProgress(

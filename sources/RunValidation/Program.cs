@@ -1,10 +1,9 @@
-﻿using CommandLine.Text;
-using CommandLine;
+﻿using CommandLine;
+using CommandLine.Text;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Utility;
-using System.Configuration;
-using org.ohdsi.cdm.framework.common.Omop;
 using Spectre.Console;
+using System.Configuration;
 
 namespace RunValidation
 {
