@@ -143,6 +143,7 @@ namespace RunValidation
                     });
 
                 var errorMessages = new ConcurrentQueue<string>();
+                errorMessages.Enqueue("Below are messages for problematic pairs of ChunkId+SliceId:");
                 var consoleLock = new object();
 
                 AnsiConsole.Progress()
