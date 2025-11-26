@@ -27,9 +27,6 @@ namespace RunValidation
         private readonly string _bucket = bucket;
         private readonly string _tmpFolder = tmpFolder;
         private readonly string _cdmFolder = cdmFolder;
-        private readonly LambdaUtility _lambdaUtility = 
-            new LambdaUtility(awsAccessKeyId, awsSecretAccessKey, awsAccessKeyId, awsSecretAccessKey, bucket, bucket, bucket, cdmFolder);
-        private readonly List<ChunkReport> _chunkReports = new List<ChunkReport>();
 
         #endregion
 
@@ -42,34 +39,6 @@ namespace RunValidation
             var actualSlices = GetActualSlices(vendor.Name, buildingId).OrderBy(s => s).ToList();
 
             Process(vendor, buildingId, chunksToProcess, actualSlices);
-
-            foreach (var chunkReport in _chunkReports.OrderBy(c => c.ChunkId))
-            {
-                var sliceIdPersons = chunkReport.PersonsWithCalculatedSlice.DistinctBy(s => s.SliceId).OrderBy(s => s.SliceId).ToList();
-                foreach (var person in sliceIdPersons)
-                {
-                    var chunkMsg = $"chunkId={chunkReport.ChunkId}" +
-                        $" sliceId={person.SliceId}" +
-                        $" (personId={person.PersonId})" +
-                        $" | {vendor.Name} {buildingId} {chunkReport.ChunkId} {person.SliceId.ToString()!.PadLeft(4, '0')} true" +
-                        $" | Info: LostPersonCount={chunkReport.PersonsWithCalculatedSlice.Where(s => s.SliceId == person.SliceId).Count()})";
-                    AnsiConsole.MarkupLine($"[red]{chunkMsg}[/]");
-                }
-
-                foreach (var sliceReport in chunkReport.SliceReports.OrderBy(s => s.SliceId))
-                {
-                    if (sliceReport.WrongCount == 0 || sliceIdPersons.Any(s => s.SliceId == sliceReport.SliceId))
-                        continue;
-
-                    string sliceMsg = $"chunkId={sliceReport.ChunkId}" +
-                        $" sliceId={sliceReport.SliceId}" +
-                        $" (personId={sliceReport.ExampleWrongPersonId})" +
-                        $" | {vendor.Name} {buildingId} {chunkReport.ChunkId} {sliceReport.SliceId.ToString().PadLeft(4, '0')} true" +
-                        $" | Info: Duplicates={sliceReport.Duplicates}";
-                    AnsiConsole.MarkupLine($"[red]{sliceMsg}[/]");
-                }
-            }
-
 
             timer.Stop();
             AnsiConsole.MarkupLine($"[green]Done. Total seconds={timer.ElapsedMilliseconds / 1000}s[/]");
