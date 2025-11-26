@@ -332,33 +332,46 @@ namespace RunValidation
         {
             var slices = new HashSet<int>();
             var prefix = $"{vendorName}/{buildingId}/{_cdmFolder}/PERSON/PERSON.";
-            Console.WriteLine("Calculating slices " + _bucket + "|" + prefix);
-            using (var client = new AmazonS3Client(_awsAccessKeyId, _awsSecretAccessKey, Amazon.RegionEndpoint.USEast1))
-            {
-                var request = new ListObjectsV2Request
-                {
-                    BucketName = _bucket,
-                    Prefix = prefix
-                };
-                ListObjectsV2Response response;
 
-                do
-                {
-                    var responseTask = client.ListObjectsV2Async(request);
-                    responseTask.Wait();
-                    response = responseTask.Result;
+            AnsiConsole.Progress()
+               .AutoClear(false)
+               .HideCompleted(false)
+               .Columns(
+                   new TaskDescriptionColumn(),
+                   new ElapsedTimeColumn(),
+                   new SpinnerColumn())
+               .Start(ctx =>
+               {
+                   string taskDescription = "Calculating slices " + _bucket + "|" + prefix;
+                   var task = ctx.AddTask(taskDescription);
 
-                    foreach (var o in response.S3Objects)
-                    {
-                        slices.Add(int.Parse(o.Key.Split('.')[1]));
-                    }
+                   using (var client = new AmazonS3Client(_awsAccessKeyId, _awsSecretAccessKey, Amazon.RegionEndpoint.USEast1))
+                   {
+                       var request = new ListObjectsV2Request
+                       {
+                           BucketName = _bucket,
+                           Prefix = prefix
+                       };
+                       ListObjectsV2Response response;
 
-                    request.ContinuationToken = response.NextContinuationToken;
-                } while (response.IsTruncated);
-            }
+                       do
+                       {
+                           var responseTask = client.ListObjectsV2Async(request);
+                           responseTask.Wait();
+                           response = responseTask.Result;
 
-            Console.WriteLine("slices.Count=" + slices.Count);
-            Console.WriteLine();
+                           foreach (var o in response.S3Objects)
+                           {
+                               slices.Add(int.Parse(o.Key.Split('.')[1]));
+                           }
+
+                           task.Description = taskDescription + " | Count=" + slices.Count;
+                           request.ContinuationToken = response.NextContinuationToken;
+                       } while (response.IsTruncated);
+                   }
+               });
+
+            AnsiConsole.WriteLine();
 
             return slices;
         }
@@ -393,7 +406,7 @@ namespace RunValidation
             if (s3ObjectsBySlice.Count == 0)
             {
                 var msg = $"chunkId={chunkId} - MISSED";
-                Console.WriteLine(msg);
+                AnsiConsole.WriteLine(msg);
             }
 
             return s3ObjectsBySlice;
@@ -593,69 +606,6 @@ namespace RunValidation
                         }
                     }
 
-                }
-            }
-        }
-
-        private void Clean(Vendor vendor, int buildingId, int chunkId, string table, int slice)
-        {
-            var attempt = 0;
-            var complete = false;
-
-            while (!complete)
-            {
-                try
-                {
-                    attempt++;
-
-                    var perfix = $"{vendor}/{buildingId}/{_cdmFolder}/{table}/{table}.{slice}.{chunkId}.";
-
-                    using (var client = new AmazonS3Client(_awsAccessKeyId, _awsSecretAccessKey, Amazon.RegionEndpoint.USEast1))
-                    {
-                        var request = new ListObjectsV2Request
-                        {
-                            BucketName = _bucket,
-                            Prefix = perfix
-                        };
-                        ListObjectsV2Response response;
-                        do
-                        {
-                            using var getListObjects = client.ListObjectsV2Async(request);
-                            getListObjects.Wait();
-                            response = getListObjects.Result;
-
-                            var multiObjectDeleteRequest = new DeleteObjectsRequest
-                            {
-                                BucketName = _bucket
-                            };
-
-                            foreach (var o in response.S3Objects)
-                            {
-                                multiObjectDeleteRequest.AddKey(o.Key, null);
-                            }
-
-                            if (response.S3Objects.Count > 0)
-                            {
-                                using var deleteObjects = client.DeleteObjectsAsync(multiObjectDeleteRequest);
-                                deleteObjects.Wait();
-
-                                //Console.WriteLine(response.S3Objects.Count + " files deleted");
-                            }
-
-                            request.ContinuationToken = response.NextContinuationToken;
-                        } while (response.IsTruncated == true);
-                    }
-
-                    complete = true;
-                }
-                catch (Exception ex)
-                {
-                    Console.Write(" | [Clean] Exception | new attempt | " + attempt);
-                    Console.WriteLine(ex.Message);
-                    if (attempt > 3)
-                    {
-                        throw;
-                    }
                 }
             }
         }
