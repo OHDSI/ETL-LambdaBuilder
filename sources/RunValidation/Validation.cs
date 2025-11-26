@@ -5,6 +5,7 @@ using CsvHelper;
 using CsvHelper.Configuration;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Helpers;
+using RunValidation.Domain;
 using Spectre.Console;
 using System.Collections.Concurrent;
 using System.Diagnostics;
@@ -18,66 +19,6 @@ namespace RunValidation
 
     public class Validation(string awsAccessKeyId, string awsSecretAccessKey, string bucket, string tmpFolder, string cdmFolder)
     {
-        #region classes
-
-        class PersonInS3Chunk(long PersonId, Vendor Vendor, int BuildingId, int ChunkId, bool IsFromBatch = true)
-        {
-            public long PersonId { get; set; } = PersonId;
-            public Vendor Vendor { get; set; } = Vendor;
-            public int BuildingId { get; set; } = BuildingId;
-            public int ChunkId { get; set; } = ChunkId;
-
-            public bool IsFromBatch { get; set; } = IsFromBatch;
-            public int? SliceId { get; set; }
-            public int? InPersonFilesCount { get; set; } = 0;
-            public int? InMetadataFilesCount { get; set; } = 0;
-
-            public override string ToString()
-            {
-                return $"{Vendor} - {BuildingId} - {ChunkId} - {SliceId?.ToString() ?? "???"} - {PersonId}";
-            }
-            
-            public override bool Equals(object? obj)
-            {
-                if (obj is not PersonInS3Chunk other || other == null)
-                    return false;
-
-                return EqualityComparer<Vendor>.Default.Equals(this.Vendor, other.Vendor)
-                    && BuildingId == other.BuildingId
-                    && ChunkId == other.ChunkId
-                    && PersonId == other.PersonId;
-            }
-
-            public override int GetHashCode()
-            {
-                return HashCode.Combine(Vendor != null ? Vendor.GetHashCode() : 0,
-                    BuildingId,
-                    ChunkId,
-                    PersonId);
-            }
-        }
-        
-        class ChunkReport
-        {
-            public int BuildingId { get; set; }
-            public int ChunkId { get; set; }
-            public int OnlyInBatchIdsCount { get; set; }
-            public List<int> AllSlicesWithOnlyInBatchIds { get; set; } = new List<int>();
-            public List<PersonInS3Chunk> PersonsWithCalculatedSlice { get; set; } = new List<PersonInS3Chunk>();
-            public List<SliceReport> SliceReports { get; set; } = new List<SliceReport>();
-        }
-
-        class SliceReport
-        {
-            public int BuildingId { get; set; }
-            public int ChunkId { get; set; }
-            public int SliceId { get; set; }
-            public int WrongCount { get; set; }
-            public int Duplicates { get; set; }
-            public long ExampleWrongPersonId { get; set; }
-        }
-
-        #endregion
 
         #region Fields 
 
@@ -145,8 +86,8 @@ namespace RunValidation
         /// <param name="personId"></param>
         public void ValidatePersonIdInSlice(Vendor vendor, int buildingId, int chunkId, long personId)
         {
-            var person = new PersonInS3Chunk(personId, vendor, buildingId, chunkId) { IsFromBatch = false };
-            GetSlicesFromS3(new HashSet<PersonInS3Chunk>() { person }, vendor.PersonTableName, vendor.PersonIdIndex);
+            var person = new Person(chunkId, personId);
+            GetSlicesFromS3(new HashSet<Person>() { person }, vendor, buildingId, chunkId);
             if (person.SliceId.HasValue)
             {
                 AnsiConsole.MarkupLine($"[green]PersonId {person.PersonId} was found in raw SliceId {person.SliceId}![/]");
@@ -192,7 +133,7 @@ namespace RunValidation
                             response = responseTask.Result;
                             s3ChunkObjects.AddRange(response.S3Objects);
 
-                            task.Description = taskDescription + " Files=" + s3ChunkObjects.Count;
+                            task.Description = taskDescription + " | Files=" + s3ChunkObjects.Count;
                             request.ContinuationToken = response.NextContinuationToken;
                         } while (response.IsTruncated);
                         
@@ -209,6 +150,7 @@ namespace RunValidation
                     .HideCompleted(true)
                     .Columns(
                         new TaskDescriptionColumn(),
+                        new ElapsedTimeColumn(),
                         new ProgressBarColumn(),
                         new PercentageColumn(),
                         new RemainingTimeColumn(),
@@ -238,9 +180,9 @@ namespace RunValidation
                             {
                                 try
                                 {
-                                    var chunkPersonIds = ProcessChunkFile(s3obj, vendor, buildingId, localChunkId);
+                                    var chunkPersonIds = ReadChunkFile(s3obj, vendor, buildingId, localChunkId);
 
-                                    ValidateChunkIdWithProgress(
+                                    ValidateChunkFile(
                                         vendor,
                                         buildingId,
                                         localChunkId,
@@ -264,9 +206,9 @@ namespace RunValidation
             }
         }
 
-        private ConcurrentDictionary<int, ConcurrentDictionary<long, PersonInS3Chunk>> ProcessChunkFile(S3Object s3obj, Vendor vendor, int buildingId, int localChunkId)
+        private ConcurrentDictionary<int, ConcurrentDictionary<long, Person>> ReadChunkFile(S3Object s3obj, Vendor vendor, int buildingId, int localChunkId)
         {
-            var chunkPersonIds = new ConcurrentDictionary<int, ConcurrentDictionary<long, PersonInS3Chunk>>();
+            var chunkPersonIds = new ConcurrentDictionary<int, ConcurrentDictionary<long, Person>>();
 
             using var transferUtility = new TransferUtility(_awsAccessKeyId, _awsSecretAccessKey, Amazon.RegionEndpoint.USEast1);
             using var responseStream = transferUtility.OpenStream(_bucket, s3obj.Key);
@@ -279,10 +221,12 @@ namespace RunValidation
             while (!string.IsNullOrEmpty(line))
             {
                 var splits = line.Split('\t');
+                var chunkId = int.Parse(splits[0]);
                 var personId = long.Parse(splits[1]);
+                var personSourceValue = splits[2];
 
-                var sliceIdDictionary = chunkPersonIds.GetOrAdd(-1, _ => new ConcurrentDictionary<long, PersonInS3Chunk>());
-                sliceIdDictionary.GetOrAdd(personId, _ => new PersonInS3Chunk(personId, vendor, buildingId, localChunkId));
+                var sliceIdDictionary = chunkPersonIds.GetOrAdd(-1, _ => new ConcurrentDictionary<long, Person>());
+                sliceIdDictionary.GetOrAdd(personId, _ => new Person(chunkId, personId, personSourceValue));
 
                 line = reader.ReadLine();
             }
@@ -290,11 +234,11 @@ namespace RunValidation
             return chunkPersonIds;
         }
 
-        private void ValidateChunkIdWithProgress(
+        private void ValidateChunkFile(
             Vendor vendor,
             int buildingId,
             int chunkId,
-            ConcurrentDictionary<int, ConcurrentDictionary<long, PersonInS3Chunk>> chunkPersonIds,
+            ConcurrentDictionary<int, ConcurrentDictionary<long, Person>> chunkPersonIds,
             List<int> slices,
             ProgressTask task)
         {
@@ -324,7 +268,7 @@ namespace RunValidation
 
             if (personsInBatchOnly.Count > 0)
             {
-                GetSlicesFromS3(personsInBatchOnly, vendor.PersonTableName, vendor.PersonIdIndex);
+                GetSlicesFromS3(personsInBatchOnly, vendor, buildingId, chunkId);
 
                 var slicesToCheck = personsInBatchOnly
                     .Where(s => s.SliceId.HasValue)
@@ -465,7 +409,7 @@ namespace RunValidation
         /// <param name="MetadataObjects"></param>
         /// <returns>Subset of chunkPersonIds for the specified sliceId</returns>
         private void ValidateSliceId(
-            ConcurrentDictionary<int, ConcurrentDictionary<long, PersonInS3Chunk>> chunkPersonIds,
+            ConcurrentDictionary<int, ConcurrentDictionary<long, Person>> chunkPersonIds,
             Vendor vendor,
             int buildingId,
             int chunkId,
@@ -506,7 +450,7 @@ namespace RunValidation
                         {
                             var personId = (long)csv.GetField(typeof(long), 0);
 
-                            var sliceIdDictionary = chunkPersonIds.GetOrAdd(sliceId, new ConcurrentDictionary<long, PersonInS3Chunk>());
+                            var sliceIdDictionary = chunkPersonIds.GetOrAdd(sliceId, new ConcurrentDictionary<long, Person>());
                             var personToProcess = sliceIdDictionary.GetOrAdd(personId, chunkPersonIds[-1][personId]);
                             personToProcess.SliceId ??= sliceId;
 
@@ -531,7 +475,7 @@ namespace RunValidation
                         .ToHashSet();
 
                     var slicePersonIdsZero = slicePersonIds.Values
-                        .Where(s => s.InPersonFilesCount + s.InMetadataFilesCount == 0 || !s.IsFromBatch)
+                        .Where(s => s.InPersonFilesCount + s.InMetadataFilesCount == 0 || s.PersonSourceValue == null)
                         .ToHashSet();
 
                     timer.Stop();
@@ -569,16 +513,12 @@ namespace RunValidation
         /// <summary>
         /// Try to get sliceId which contains given PersonId and other parameters
         /// </summary>
-        /// <param name="person">This should have Vendor, BuildingId, ChunkId, and PersonId information</param>
+        /// <param name="person"></param>
         /// <param name="table"></param>
         /// <returns></returns>
-        private void GetSlicesFromS3(HashSet<PersonInS3Chunk> personsOfSingleChunkId, string table, int personIndex)
+        private void GetSlicesFromS3(HashSet<Person> personsOfSingleChunkId, Vendor vendor, int buildingId, int chunkId)
         {
-            var vendor = personsOfSingleChunkId.First().Vendor;
-            var buildingId = personsOfSingleChunkId.First().BuildingId;
-            var chunkId = personsOfSingleChunkId.First().ChunkId;
-
-            var prefix = $"{vendor.Name}/{buildingId}/raw/{chunkId}/{table}/{table}";
+            var prefix = $"{vendor.Name}/{buildingId}/raw/{chunkId}/{vendor.PersonTableName}/{vendor.PersonTableName}";
 
             using (var client = new AmazonS3Client(_awsAccessKeyId, _awsSecretAccessKey, Amazon.RegionEndpoint.USEast1))
             {
@@ -606,8 +546,8 @@ namespace RunValidation
                         string? line = reader.ReadLine();
                         while (!string.IsNullOrEmpty(line))
                         {
-                            var personId = long.Parse(line.Split('\t')[personIndex]);                            
-                            if (personsOfSingleChunkId.TryGetValue(new PersonInS3Chunk(personId, vendor, buildingId, chunkId, false), out var personProvided))
+                            var personId = long.Parse(line.Split('\t')[vendor.PersonIdIndex]);                            
+                            if (personsOfSingleChunkId.TryGetValue(new Person(chunkId, personId), out var personProvided))
                             {
                                 var chars = o.Key
                                             .Split('/')
