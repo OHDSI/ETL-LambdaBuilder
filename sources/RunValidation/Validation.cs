@@ -1,20 +1,21 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
-using CsvHelper.Configuration;
 using CsvHelper;
+using CsvHelper.Configuration;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Helpers;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO.Compression;
-using System.Text;
-using ZstdSharp;
+using org.ohdsi.cdm.framework.common.Omop;
 using Spectre.Console;
 using System.Collections.Concurrent;
-using System.IO;
+using System.Diagnostics;
 using System.Diagnostics.Eventing.Reader;
-using org.ohdsi.cdm.framework.common.Omop;
+using System.Globalization;
+using System.IO;
+using System.IO.Compression;
+using System.Text;
+using System.Threading.Tasks;
+using ZstdSharp;
 
 namespace RunValidation
 {
@@ -172,26 +173,40 @@ namespace RunValidation
                     BucketName = _bucket,
                     Prefix = prefix
                 };
+                ListObjectsV2Response response;
+                Task<ListObjectsV2Response> responseTask;
 
-                var s3Objects = client
-                    .ListObjectsV2Async(request)
-                    .GetAwaiter()
-                    .GetResult()
-                    .S3Objects
-                    .OrderBy(s => s.LastModified)
-                    .ToList();
+                List<S3Object> s3ChunkObjects = new List<S3Object>();
 
-                var chunkIds = s3Objects
-                    .Select(o => int.Parse(o.Key.Split(new[] { "_chunks", ".txt", ".gz", ".zst" }, StringSplitOptions.RemoveEmptyEntries).Last()))
-                    .Distinct()
-                    .ToList();
+                AnsiConsole.Progress()
+                    .AutoClear(false)
+                    .HideCompleted(false)
+                    .Columns(
+                        new TaskDescriptionColumn(),
+                        new ElapsedTimeColumn(),
+                        new SpinnerColumn())
+                    .Start(ctx =>
+                    {
+                        var taskDescription = "Getting S3 chunk objects.";
+                        var task = ctx.AddTask(taskDescription);
+                        do
+                        {
+                            responseTask = client.ListObjectsV2Async(request);
+                            responseTask.Wait();
+                            response = responseTask.Result;
+                            s3ChunkObjects.AddRange(response.S3Objects);
 
-                if (chunks.Any())
-                {
-                    chunkIds = chunkIds.Where(chunkId => chunks.Contains(chunkId)).ToList();
-                }
-
-                var totalChunks = chunkIds.Count;
+                            task.Description = taskDescription + " Files=" + s3ChunkObjects.Count;
+                            request.ContinuationToken = response.NextContinuationToken;
+                        } while (response.IsTruncated);
+                        
+                        s3ChunkObjects = s3ChunkObjects
+                            .OrderBy(s => int.Parse(new string(s.Key.Split('/')
+                                                                    .Last()
+                                                                    .Where(a => Char.IsDigit(a))
+                                                                    .ToArray())))
+                            .ToList();
+                    });
 
                 AnsiConsole.Progress()
                     .AutoClear(false)
@@ -204,13 +219,13 @@ namespace RunValidation
                         new SpinnerColumn())
                     .Start(ctx =>
                     {
-                        var overallTask = ctx.AddTask("Processing chunks...", maxValue: totalChunks);
+                        var overallTask = ctx.AddTask("Processing chunks...", maxValue: s3ChunkObjects.Count);
 
                         var processingTasks = new List<Task>();
                         int maxDegreeOfParallelism = Environment.ProcessorCount == 1 ? 1 : Environment.ProcessorCount - 1;
                         var semaphore = new SemaphoreSlim(maxDegreeOfParallelism);
 
-                        foreach (var s3obj in s3Objects)
+                        foreach (var s3obj in s3ChunkObjects)
                         {
                             var chunkId = int.Parse(s3obj.Key.Split(new[] { "_chunks", ".txt", ".gz", ".zst" }, StringSplitOptions.RemoveEmptyEntries).Last());
 
