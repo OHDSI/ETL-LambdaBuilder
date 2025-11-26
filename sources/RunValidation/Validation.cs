@@ -159,47 +159,51 @@ namespace RunValidation
                     {
                         var overallTask = ctx.AddTask("Processing S3 _chunks objects...", maxValue: s3ChunkObjects.Count);
 
-                        var processingTasks = new List<Task>();
-                        int maxDegreeOfParallelism = Environment.ProcessorCount == 1 ? 1 : Environment.ProcessorCount - 1;
-                        var semaphore = new SemaphoreSlim(maxDegreeOfParallelism);
+                        var degreeParallel = Math.Max(1, Environment.ProcessorCount - 1);
+                        var consoleLock = new object();
+                        int lastExclusive = s3ChunkObjects.Count;
+                        int nextFileId = - 1;
 
-                        foreach (var s3obj in s3ChunkObjects)
+                        var workers = new List<Task>(degreeParallel);
+                        for (int w = 0; w < degreeParallel; w++)
                         {
-                            var task = Task.Run(() =>
+                            workers.Add(Task.Run(() =>
                             {
-                                try
+                                while (true)
                                 {
-                                    var chunkFilePersonIds = ReadChunkFile(s3obj, vendor, buildingId, chunksToProcess);
-                                    var chunkId = chunkFilePersonIds.First().Value.ChunkId;
-
-                                    ValidateChunkFile(
-                                        vendor,
-                                        buildingId,
-                                        chunkId,
-                                        chunkFilePersonIds,
-                                        slicesToProcess,
-                                        errorMessages,
-                                        ctx.AddTask($"Chunk {chunkId}", maxValue: slicesToProcess.Count));
-
-                                    overallTask.Increment(1);
-                                }
-                                finally
-                                {
-                                    lock (consoleLock)
+                                    try
                                     {
-                                        while (errorMessages.TryDequeue(out var msg))
+                                        int chunkFileId = Interlocked.Increment(ref nextFileId);
+                                        if (chunkFileId >= lastExclusive) break;
+
+                                        var chunkFilePersonIds = ReadChunkFile(s3ChunkObjects[chunkFileId], vendor, buildingId, chunksToProcess);
+                                        var chunkId = chunkFilePersonIds.First().Value.ChunkId;
+
+                                        ValidateChunkFile(
+                                                vendor,
+                                                buildingId,
+                                                chunkId,
+                                                chunkFilePersonIds,
+                                                slicesToProcess,
+                                                errorMessages,
+                                                ctx.AddTask($"Chunk {chunkId}", maxValue: slicesToProcess.Count));
+
+                                        overallTask.Increment(1);
+                                    }
+                                    finally
+                                    {
+                                        lock (consoleLock)
                                         {
-                                            AnsiConsole.MarkupLine(msg); //not threadsafe
+                                            while (errorMessages.TryDequeue(out var msg))
+                                            {
+                                                AnsiConsole.MarkupLine(msg); //not threadsafe
+                                            }
                                         }
                                     }
-                                    semaphore.Release();
                                 }
-                            });
-
-                            processingTasks.Add(task);
+                            }));
                         }
-
-                        Task.WaitAll(processingTasks.ToArray());
+                        Task.WaitAll(workers.ToArray());
                     });
             }
         }
