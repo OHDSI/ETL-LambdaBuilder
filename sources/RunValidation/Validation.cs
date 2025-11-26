@@ -454,6 +454,9 @@ namespace RunValidation
                         .Where(s => s.InPersonFilesCount + s.InMetadataFilesCount == 0 || s.PersonSourceValue == null)
                         .ToHashSet();
 
+                    //not simple int so this can be viewed in debug
+                    var correctPersons = chunkFilePersons.Values.Where(s => s.InPersonFilesCount + s.InMetadataFilesCount == 1).ToList();
+
                     timer.Stop();
 
                     if (slicePersonsZero.Count > 0)
@@ -462,7 +465,7 @@ namespace RunValidation
                         $" sliceId={sliceId}" +
                         $" (personId={slicePersonsZero.First().PersonId})" +
                         $" | {vendor.Name} {buildingId} {chunkId} {sliceId.ToString().PadLeft(4, '0')} true" +
-                        $" | Info: Duplicates={slicePersonsDuplicated.Count}";
+                        $" | Duplicates={slicePersonsDuplicated.Count}";
 
                         errorMessages.Enqueue(sliceMsg);
                     }
