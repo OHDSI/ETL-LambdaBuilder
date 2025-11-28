@@ -243,7 +243,7 @@ namespace RunValidation
             //not simple int so this can be viewed in debug
             var personsCorrect = chunkFilePersons.Values
                 .Where(s => s.InPersonFilesCount + s.InMetadataFilesCount == 1
-                         || s.SliceId != null)
+                         && s.SliceId != null)
                 .ToHashSet();
 
             var personsWithoutSliceId = chunkFilePersons.Values
