@@ -239,6 +239,43 @@ namespace RunValidation
                 ValidateSliceId(chunkFilePersons, vendor, buildingId, chunkId, slice.Key, slice.Value.PersonObjects, slice.Value.MetadataObjects, errorMessages);
                 task.Increment(1);
             }
+
+            //not simple int so this can be viewed in debug
+            var personsCorrect = chunkFilePersons.Values
+                .Where(s => s.InPersonFilesCount + s.InMetadataFilesCount == 1
+                         || s.SliceId != null)
+                .ToHashSet();
+
+            var personsWithoutSliceId = chunkFilePersons.Values
+                .Where(s => s.SliceId == null)
+                .ToHashSet();
+
+            var personsDuplicated = chunkFilePersons.Values
+                .Where(s => s.InPersonFilesCount + s.InMetadataFilesCount > 1)
+                .ToHashSet();
+
+            var personsZero = chunkFilePersons.Values
+                .Where(s => s.InPersonFilesCount + s.InMetadataFilesCount == 0)
+                .ToHashSet();
+
+            var personsBadAll = personsWithoutSliceId
+                .Union(personsDuplicated)
+                .Union(personsZero)
+                .ToHashSet();
+
+            if (personsBadAll.Count > 0)
+            {
+                var sliceId = personsBadAll.FirstOrDefault(s => s.SliceId != null)?.SliceId.ToString() ?? "null";
+                var personId = personsBadAll.First().PersonId;
+
+                string sliceMsg = $"chunkId={chunkId}" +
+                $" sliceId={sliceId}" +
+                $" (personId={personId})" +
+                $" | {vendor.Name} {buildingId} {chunkId} {sliceId.ToString().PadLeft(4, '0')} true" +
+                $" | Correct={personsCorrect.Count}, NoSliceId={personsWithoutSliceId.Count}, Duplicated={personsDuplicated.Count}, Missing={personsZero.Count}";
+
+                errorMessages.Enqueue(sliceMsg);
+            }
         }
 
 
@@ -285,8 +322,6 @@ namespace RunValidation
                        } while (response.IsTruncated);
                    }
                });
-
-            AnsiConsole.WriteLine();
 
             return slices;
         }
@@ -415,30 +450,7 @@ namespace RunValidation
                         }
                     });
 
-                    var slicePersonsDuplicated = chunkFilePersons.Values
-                        .Where(s => s.InPersonFilesCount + s.InMetadataFilesCount > 1)
-                        .ToHashSet();
-
-                    var slicePersonsZero = chunkFilePersons.Values
-                        .Where(s => s.InPersonFilesCount + s.InMetadataFilesCount == 0 || s.PersonSourceValue == null)
-                        .ToHashSet();
-
-                    //not simple int so this can be viewed in debug
-                    var correctPersons = chunkFilePersons.Values.Where(s => s.InPersonFilesCount + s.InMetadataFilesCount == 1).ToList();
-
                     timer.Stop();
-
-                    if (slicePersonsZero.Count > 0)
-                    {
-                        string sliceMsg = $"chunkId={chunkId}" +
-                        $" sliceId={sliceId}" +
-                        $" (personId={slicePersonsZero.First().PersonId})" +
-                        $" | {vendor.Name} {buildingId} {chunkId} {sliceId.ToString().PadLeft(4, '0')} true" +
-                        $" | Duplicates={slicePersonsDuplicated.Count}";
-
-                        errorMessages.Enqueue(sliceMsg);
-                    }
-
                     complete = true;
                 }
                 catch (Exception ex)
