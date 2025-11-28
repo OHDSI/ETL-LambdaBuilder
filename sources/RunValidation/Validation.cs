@@ -127,7 +127,7 @@ namespace RunValidation
                         new SpinnerColumn())
                     .Start(ctx =>
                     {
-                        var overallTask = ctx.AddTask("Processing S3 _chunks objects...", maxValue: s3ChunkObjects.Count);
+                        var overallTask = ctx.AddTask($"Processing {s3ChunkObjects.Count} _chunks objects...", maxValue: s3ChunkObjects.Count);
 
                         var degreeParallel = Math.Max(1, Environment.ProcessorCount - 1);
                         var consoleLock = new object();
