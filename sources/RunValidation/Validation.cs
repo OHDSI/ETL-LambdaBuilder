@@ -105,18 +105,21 @@ namespace RunValidation
                             task.Description = taskDescription + " | Files=" + s3ChunkObjects.Count;
                             request.ContinuationToken = response.NextContinuationToken;
                         } while (response.IsTruncated);
-                        
+
                         s3ChunkObjects = s3ChunkObjects
                             .OrderBy(s => GetS3ChunksFileNumber(s.Key))
                             .ToList();
                     });
 
-                AnsiConsole.MarkupLine("Error messages keep this format:");
+                AnsiConsole.MarkupLine("Error messages are in this format:");
                 AnsiConsole.MarkupLine("{vendor.Name} {buildingId} {chunkId} {sliceId} true"
                     + "\r\n| {example personId for debug}"
                     + "\r\n| C={correct person ids} N={no sliceId} D={duplicated personId} M={missing personId}");
                 var errorMessages = new ConcurrentQueue<string>();
                 var consoleLock = new object();
+
+                int totalPersonsCount = 0;
+                int chunkErrorsCount = 0;
 
                 AnsiConsole.Progress()
                     .AutoClear(false)
@@ -135,12 +138,11 @@ namespace RunValidation
                         errorTask.Value = 0;
 
                         var overallTask = ctx.AddTask($"Processing {s3ChunkObjects.Count} _chunks objects...", maxValue: s3ChunkObjects.Count);
-                        int totalPersonsCount = 0;
 
                         var degreeParallel = Math.Max(1, Environment.ProcessorCount - 1);
                         var consoleLock = new object();
                         int lastExclusive = s3ChunkObjects.Count;
-                        int nextFileId = - 1;
+                        int nextFileId = -1;
 
                         var workers = new List<Task>(degreeParallel);
                         for (int w = 0; w < degreeParallel; w++)
@@ -150,7 +152,8 @@ namespace RunValidation
                                 while (true)
                                 {
                                     int chunkFilePersonIdsCount = 0;
-                                    var chunkTask = ctx.AddTask($"Chunk ???", maxValue: slicesToProcess.Count);
+                                    string chunkTaskInitMsg = "Chunk ???";
+                                    var chunkTask = ctx.AddTask(chunkTaskInitMsg, maxValue: slicesToProcess.Count);
                                     try
                                     {
                                         int chunkFileId = Interlocked.Increment(ref nextFileId);
@@ -181,6 +184,7 @@ namespace RunValidation
                                             while (errorMessages.TryDequeue(out var msg))
                                             {
                                                 errorTask.Value = errorTask.MaxValue; //hide
+                                                chunkErrorsCount++;
 
                                                 if (!msg.Contains("[red]"))
                                                     msg = "[red]" + msg + "[/]";
@@ -188,15 +192,19 @@ namespace RunValidation
                                                 chunkTask.Value = chunkTask.MaxValue - 0.001; // do not hide completed task
                                                 chunkTask.Description = msg; // display chunk error info 
                                             }
+                                            if (chunkTask.Description == chunkTaskInitMsg)
+                                                chunkTask.Value = chunkTask.MaxValue; //hide final chunkTasks which were created before the cycle break check
                                         }
                                     }
                                 }
                             }));
                         }
                         Task.WaitAll(workers.ToArray());
-                        AnsiConsole.MarkupLine("\r\nProcessed " + s3ChunkObjects.Count + " files or " + totalPersonsCount + " persons. Chunks with errors are written above in red.");
-                        overallTask.Increment(overallTask.MaxValue - overallTask.Value - 0.1); //this is herenot to hide the task upon completion
+                        overallTask.Increment(overallTask.MaxValue - overallTask.Value - 0.1); //this is here not to hide the task upon completion
                     });
+
+                AnsiConsole.MarkupLine("\r\nProcessed " + s3ChunkObjects.Count + " files or " + totalPersonsCount + " persons. " 
+                    + chunkErrorsCount + " Chunks with errors are written above in red.");
             }
         }
 
