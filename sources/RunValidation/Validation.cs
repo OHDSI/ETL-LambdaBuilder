@@ -111,8 +111,11 @@ namespace RunValidation
                             .ToList();
                     });
 
+                AnsiConsole.MarkupLine("Error messages keep this format:");
+                AnsiConsole.MarkupLine("{vendor.Name} {buildingId} {chunkId} {sliceId} true"
+                    + "\r\n| {example personId for debug}"
+                    + "\r\n| C={correct person ids} N={no sliceId} D={duplicated personId} M={missing personId}");
                 var errorMessages = new ConcurrentQueue<string>();
-                errorMessages.Enqueue("Below are messages for problematic pairs of ChunkId+SliceId:");
                 var consoleLock = new object();
 
                 AnsiConsole.Progress()
@@ -127,6 +130,10 @@ namespace RunValidation
                         new SpinnerColumn())
                     .Start(ctx =>
                     {
+                        var errorTask = ctx.AddTask("[grey]No errors yet[/]").IsIndeterminate();
+                        errorTask.MaxValue = 100;
+                        errorTask.Value = 0;
+
                         var overallTask = ctx.AddTask($"Processing {s3ChunkObjects.Count} _chunks objects...", maxValue: s3ChunkObjects.Count);
                         int totalPersonsCount = 0;
 
@@ -143,6 +150,7 @@ namespace RunValidation
                                 while (true)
                                 {
                                     int chunkFilePersonIdsCount = 0;
+                                    var chunkTask = ctx.AddTask($"Chunk ???", maxValue: slicesToProcess.Count);
                                     try
                                     {
                                         int chunkFileId = Interlocked.Increment(ref nextFileId);
@@ -152,6 +160,8 @@ namespace RunValidation
                                         var chunkId = chunkFilePersonIds.First().Value.ChunkId;
                                         chunkFilePersonIdsCount = chunkFilePersonIds.Count;
 
+                                        chunkTask.Description = chunkTask.Description.Replace("???", chunkId.ToString());
+
                                         ValidateChunkFile(
                                                 vendor,
                                                 buildingId,
@@ -159,7 +169,7 @@ namespace RunValidation
                                                 chunkFilePersonIds,
                                                 slicesToProcess,
                                                 errorMessages,
-                                                ctx.AddTask($"Chunk {chunkId}", maxValue: slicesToProcess.Count));
+                                                chunkTask);
 
                                         overallTask.Increment(1);
                                     }
@@ -170,9 +180,13 @@ namespace RunValidation
                                             totalPersonsCount += chunkFilePersonIdsCount;
                                             while (errorMessages.TryDequeue(out var msg))
                                             {
+                                                errorTask.Value = errorTask.MaxValue; //hide
+
                                                 if (!msg.Contains("[red]"))
                                                     msg = "[red]" + msg + "[/]";
-                                                AnsiConsole.MarkupLine(msg); //not threadsafe
+
+                                                chunkTask.Value = chunkTask.MaxValue - 0.001; // do not hide completed task
+                                                chunkTask.Description = msg; // display chunk error info 
                                             }
                                         }
                                     }
@@ -276,11 +290,10 @@ namespace RunValidation
                 var sliceId = personsBadAll.FirstOrDefault(s => s.SliceId != null)?.SliceId.ToString() ?? "null";
                 var personId = personsBadAll.First().PersonId;
 
-                string sliceMsg = $"chunkId={chunkId}" +
-                $" sliceId={sliceId}" +
-                $" (personId={personId})" +
-                $" | {vendor.Name} {buildingId} {chunkId} {sliceId.ToString().PadLeft(4, '0')} true" +
-                $" | Correct={personsCorrect.Count}, NoSliceId={personsWithoutSliceId.Count}, Duplicated={personsDuplicated.Count}, Missing={personsZero.Count}";
+                string sliceMsg = 
+                $"{vendor.Name} {buildingId} {chunkId} {sliceId.ToString().PadLeft(4, '0')} true" +
+                $" | {personId}" +
+                $" | C={personsCorrect.Count}, N={personsWithoutSliceId.Count}, D={personsDuplicated.Count}, M={personsZero.Count}";
 
                 errorMessages.Enqueue(sliceMsg);
             }
