@@ -128,6 +128,7 @@ namespace RunValidation
                     .Start(ctx =>
                     {
                         var overallTask = ctx.AddTask($"Processing {s3ChunkObjects.Count} _chunks objects...", maxValue: s3ChunkObjects.Count);
+                        int totalPersonsCount = 0;
 
                         var degreeParallel = Math.Max(1, Environment.ProcessorCount - 1);
                         var consoleLock = new object();
@@ -141,6 +142,7 @@ namespace RunValidation
                             {
                                 while (true)
                                 {
+                                    int chunkFilePersonIdsCount = 0;
                                     try
                                     {
                                         int chunkFileId = Interlocked.Increment(ref nextFileId);
@@ -148,6 +150,7 @@ namespace RunValidation
 
                                         var chunkFilePersonIds = ReadChunkFile(s3ChunkObjects[chunkFileId], vendor, buildingId, chunksToProcess);
                                         var chunkId = chunkFilePersonIds.First().Value.ChunkId;
+                                        chunkFilePersonIdsCount = chunkFilePersonIds.Count;
 
                                         ValidateChunkFile(
                                                 vendor,
@@ -164,8 +167,11 @@ namespace RunValidation
                                     {
                                         lock (consoleLock)
                                         {
+                                            totalPersonsCount += chunkFilePersonIdsCount;
                                             while (errorMessages.TryDequeue(out var msg))
                                             {
+                                                if (!msg.Contains("[red]"))
+                                                    msg = "[red]" + msg + "[/]";
                                                 AnsiConsole.MarkupLine(msg); //not threadsafe
                                             }
                                         }
@@ -174,6 +180,8 @@ namespace RunValidation
                             }));
                         }
                         Task.WaitAll(workers.ToArray());
+                        AnsiConsole.MarkupLine("\r\nProcessed " + s3ChunkObjects.Count + " files or " + totalPersonsCount + " persons. Chunks with errors are written above in red.");
+                        overallTask.Increment(overallTask.MaxValue - overallTask.Value - 0.1); //this is herenot to hide the task upon completion
                     });
             }
         }
