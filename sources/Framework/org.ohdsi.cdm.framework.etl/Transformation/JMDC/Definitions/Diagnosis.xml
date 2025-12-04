@@ -3,7 +3,12 @@
 		SELECT CAST(RIGHT(d.Member_ID, LEN(d.Member_ID) - 1) AS BIGINT) AS person_id,
 		CAST(RIGHT(d.Claim_ID, LEN(d.Claim_ID) - 1) AS BIGINT) AS visit_occurrence_id,
 		0 AS condition_concept_id,
-		c.admission_date  AS condition_start_date,
+		CASE
+        WHEN c.admission_date is null THEN CAST(CAST(c.Month_and_year_of_medical_care AS VARCHAR(6)) + '15' AS DATE)
+        WHEN DATEPART(year, CAST(CAST(c.Month_and_year_of_medical_care AS VARCHAR(6)) + '01' AS DATE)) = DATEPART(year, c.admission_date) AND
+        DATEPART(month, CAST(CAST(c.Month_and_year_of_medical_care AS VARCHAR(6)) + '01' AS DATE)) = DATEPART(month, c.admission_date) THEN c.admission_date
+        ELSE CAST(CAST(c.Month_and_year_of_medical_care AS VARCHAR(6)) + '01' AS DATE)
+        END AS condition_start_date,
 		CASE
 		WHEN d.Type_of_claim = 'Outpatient'
 		THEN 32859
