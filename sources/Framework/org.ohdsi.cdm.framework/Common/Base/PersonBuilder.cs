@@ -1125,6 +1125,48 @@ namespace org.ohdsi.cdm.framework.common.Base
             }
         }
 
+        public static EntityType GetEventType(string domain)
+        {
+            switch (domain)
+            {
+                case "Condition":
+                    return EntityType.ConditionOccurrence;
+                case "Measurement":
+                    return EntityType.Measurement;
+                case "Observation":
+                    return EntityType.Observation;
+                case "Procedure":
+                    return EntityType.ProcedureOccurrence;
+                case "Device":
+                    return EntityType.DeviceExposure;
+                case "Drug":
+                    return EntityType.DrugExposure;
+            }
+
+            return EntityType.Observation;
+        }
+
+        public static long GetEventFieldConceptId(string domain)
+        {
+            switch (domain)
+            {
+                case "Condition":
+                    return 1147127; // condition_occurrence.condition_occurrence_id
+                case "Measurement":
+                    return 1147138; // measurement.measurement_id
+                case "Observation":
+                    return 1147165; // observation.observation_id
+                case "Procedure":
+                    return 1147082; // procedure_occurrence.procedure_occurrence_id
+                case "Device":
+                    return 1147115; // device_exposure.device_exposure_id
+                case "Drug":
+                    return 1147094; // drug_exposure.drug_exposure_id
+            }
+
+            return 1147165; // observation.observation_id
+        }
+
         public string GetDomain(string entityDomain, string conceptDomain, string defaultDomain)
         {
             switch (conceptDomain)
