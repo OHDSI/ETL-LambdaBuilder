@@ -80,6 +80,7 @@
 		PROCTYP,
 		VALUE_AS_STRING,
 		hlthplan,
+		DXVER,
 
 		{vendor},
 		{ccae_mdcr},

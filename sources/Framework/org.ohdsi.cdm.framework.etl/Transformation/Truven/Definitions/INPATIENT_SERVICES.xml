@@ -119,6 +119,7 @@
 		qty,
 		1 as fake,
 		PROCMOD,
+		DXVER,
 
 		to_date((CAST(UPDATED_YEAR AS VARCHAR(4)) || '-01' || '-01'), 'yyyy-MM-dd') as UPDATED_DATE,
 		{vendor},

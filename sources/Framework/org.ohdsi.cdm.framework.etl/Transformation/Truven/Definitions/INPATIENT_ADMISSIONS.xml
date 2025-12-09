@@ -85,7 +85,7 @@
 		PROCTYP,
 		VALUE_AS_STRING,
 		CurrencyConceptId,
-		TOTPAY as TOTAL_PAID
+		TOTAL_PAID,
 		hlthplan,
 
 		{vendor},
