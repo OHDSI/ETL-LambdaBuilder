@@ -27,7 +27,8 @@ Fungus identified:Prid:Pt:XXX:Nom:Culture	0	JNJ_PMR_LAB_RES	Fungus identified:Pr
 Hepatitis A virus Ab.IgM:ACnc:Pt:Ser:Ord	0	JNJ_PMR_LAB_RES	Hepatitis A virus Ab.IgM:ACnc:Pt:Ser:Ord	3016650	LOINC	1970-01-01	2099-12-31	
 Hepatitis B virus core Ab:ACnc:Pt:Ser:Ord	0	JNJ_PMR_LAB_RES	Hepatitis B virus core Ab:ACnc:Pt:Ser:Ord	3021879	LOINC	1970-01-01	2099-12-31	
 Hepatitis B virus core Ab.IgM:ACnc:Pt:Ser:Ord	0	JNJ_PMR_LAB_RES	Hepatitis B virus core Ab.IgM:ACnc:Pt:Ser:Ord	3021879	LOINC	1970-01-01	2099-12-31	
-Hepatitis B virus surface Ab:ACnc:Pt:Ser:Qn	0	JNJ_PMR_LAB_RES	Hepatitis B virus surface Ab:ACnc:Pt:Ser:Qn	4318957	SNOMED	1970-01-01	2099-12-31	
+Hepatitis B virus surface Ab:ACnc:Pt:Ser:Qn	0	JNJ_PMR_LAB_RES	Hepatitis B virus surface Ab:ACnc:Pt:Ser:Qn	4318957	SNOMED	1970-01-01	2025-09-05	D
+Hepatitis B virus surface Ab:ACnc:Pt:Ser:Qn	0	JNJ_PMR_LAB_RES	Hepatitis B virus surface Ab:ACnc:Pt:Ser:Qn	528323	RxNorm	2025-09-05	2099-12-31	
 Hepatitis B virus surface Ab:ACnc:Pt:Ser:Qn:EIA	0	JNJ_PMR_LAB_RES	Hepatitis B virus surface Ab:ACnc:Pt:Ser:Qn:EIA	3006453	LOINC	1970-01-01	2099-12-31	
 Hepatitis B virus surface Ag:ACnc:Pt:Ser:Ord	0	JNJ_PMR_LAB_RES	Hepatitis B virus surface Ag:ACnc:Pt:Ser:Ord	3016650	LOINC	1970-01-01	2099-12-31	
 Hepatitis B virus surface Ag:ACnc:Pt:Ser:Ord:EIA	0	JNJ_PMR_LAB_RES	Hepatitis B virus surface Ag:ACnc:Pt:Ser:Ord:EIA	3019284	LOINC	1970-01-01	2099-12-31	

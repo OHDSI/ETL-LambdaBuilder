@@ -8,6 +8,7 @@
 		c.carearea,
 		c.carearea_date,
 		c.carearea_time,
+		cast(right(c.sourceid, 4) as int) care_site_id,
 		ch.PartitionId
 		FROM {sc}.care_area c
 		join {ch_sc}._chunks ch ON ch.ChunkId = {0} AND c.ptid = ch.PERSON_SOURCE_VALUE
@@ -20,6 +21,7 @@
 		a.carearea,
 		a.carearea_date,
 		a.carearea_time,
+		a.care_site_id,
 		pr.provid provid,
 		ROW_NUMBER() OVER(partition by a.encid ORDER BY case when lower(provider_role) = 'attending' then 0 else 1 end, provider_role) sort_index,
 		a.PartitionId
@@ -36,6 +38,7 @@
 			<StartTime>carearea_time</StartTime>
 			<EndTime>carearea_time</EndTime>
 			<ProviderIdKey>provid</ProviderIdKey>
+			<CareSiteId>care_site_id</CareSiteId>
 			<AdditionalFields>
 				<string>encid</string>
 				<string>sort_index</string>

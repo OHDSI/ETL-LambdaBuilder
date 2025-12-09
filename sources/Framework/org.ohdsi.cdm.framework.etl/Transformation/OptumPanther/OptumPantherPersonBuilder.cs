@@ -5,6 +5,7 @@ using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Helpers;
 using org.ohdsi.cdm.framework.common.Omop;
 using org.ohdsi.cdm.framework.common.PregnancyAlgorithm;
+using System.Diagnostics.Metrics;
 
 namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
 {
@@ -66,7 +67,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                 return new KeyValuePair<Person, Attrition>(null, Attrition.UnacceptablePatientQuality);
 
             var ordered = records.OrderByDescending(p => p.StartDate).ThenBy(p => p.EndDate);
-            var person = ordered.Take(1).Last();
+            var person = ordered.Last();
 
             person.LocationId = Entity.GetId(person.LocationSourceValue);
 
@@ -339,8 +340,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
 
                     if (conditionOccurrenceEvent != null)
                     {
-                        observation.AddEvent(common.Enums.EntityType.ConditionOccurrence,
-                                             conditionOccurrenceEvent.Id);
+                        observation.AddEvent(GetEventType(conditionOccurrenceEvent.Domain), conditionOccurrenceEvent.Id);
+                        observation.EventFieldConceptId = GetEventFieldConceptId(conditionOccurrenceEvent.Domain);
                     }
                 }
 
@@ -394,8 +395,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
 
                     if (conditionOccurrenceEvent != null)
                     {
-                        measurement.AddEvent(common.Enums.EntityType.ConditionOccurrence,
-                                             conditionOccurrenceEvent.Id);
+                        measurement.AddEvent(GetEventType(conditionOccurrenceEvent.Domain), conditionOccurrenceEvent.Id);
+                        measurement.EventFieldConceptId = GetEventFieldConceptId(conditionOccurrenceEvent.Domain);
                     }
 
                     if (measurement.AdditionalFields != null && measurement.AdditionalFields.ContainsKey("numeric_result"))
@@ -565,7 +566,10 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                     };
 
                     if (mes.EventId.HasValue)
-                        maxTumorSize.AddEvent(common.Enums.EntityType.ConditionOccurrence, mes.EventId.Value);
+                    {
+                        maxTumorSize.AddEvent(mes.EventType, mes.EventId.Value);
+                        maxTumorSize.EventFieldConceptId = mes.EventFieldConceptId;
+                    }
 
                     yield return maxTumorSize;
                 }
@@ -655,7 +659,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                     {
                         Id = GetVisitDetailId(visitOccurrence),
                         DischargeToConceptId = visitOccurrence.DischargeToConceptId,
-                        DischargeToSourceValue = visitOccurrence.DischargeToSourceValue
+                        DischargeToSourceValue = visitOccurrence.DischargeToSourceValue,
+                        CareSiteId = visitOccurrence.CareSiteId
                     };
 
                 details.Add(visitDetail);
@@ -901,6 +906,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
             {
                 new()
                 {
+                    Id = Offset.GetKeyOffset(person.PersonId).ObservationPeriodId,
                     PersonId = person.PersonId,
                     StartDate = DateTime.MinValue,
                     EndDate = DateTime.MaxValue,
@@ -913,7 +919,6 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
             var vDetails = BuildVisitDetails(null, dedupVisits, observationPeriods).ToArray();
 
             var visitOccurrences = new Dictionary<long, VisitOccurrence>();
-            var visitIds = new List<long>();
             foreach (var visitOccurrence in BuildVisitOccurrences(dedupVisits, observationPeriods))
             {
                 visitOccurrence.Id = Offset.GetKeyOffset(visitOccurrence.PersonId).VisitOccurrenceId;
@@ -926,7 +931,6 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
 
                 _rawVisits.TryAdd(visitOccurrence.SourceRecordGuid, visitOccurrence);
                 visitOccurrences.Add(visitOccurrence.Id, visitOccurrence);
-                visitIds.Add(visitOccurrence.Id);
             }
 
             var visitDetails = new Dictionary<long, VisitDetail>();
@@ -954,17 +958,6 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                 _visitDetailsByEncid.TryAdd(encid, vd);
             }
 
-            long? prevVisitId = null;
-            foreach (var visitId in visitIds.OrderBy(v => v))
-            {
-                if (prevVisitId.HasValue)
-                {
-                    visitOccurrences[visitId].PrecedingVisitOccurrenceId = prevVisitId;
-                }
-
-                prevVisitId = visitId;
-            }
-
             var drugExposures =
                 BuildDrugExposures([.. DrugExposuresRaw], visitOccurrences, observationPeriods).ToArray();
             var conditionOccurrences =
@@ -990,7 +983,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                 [.. visitOccurrences.Values],
                 deviceExposure);
 
-            var notes = BuildNote([.. NoteRecords], visitOccurrences, observationPeriods).ToArray();
+            var notes = BuildNote([.. NoteRecords], visitOccurrences, observationPeriods).ToList();
             var episodes = BuildEpisode([.. EpisodeRecords], visitOccurrences, observationPeriods).ToArray();
 
             List<DateTime> mins = [];
@@ -1098,29 +1091,51 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
             SetProviderIds(deviceExposure, visitOccurrences);
             SetProviderIds(observations, visitOccurrences);
 
-            if (notes.Length != 0)
+            int noteNlpId = 0;
+            if (notes.Count != 0)
             {
                 if (visitOccurrences.Count > 0)
                 {
-                    foreach (var e in notes.Where(e => !e.ProviderId.HasValue))
+                    foreach (var e in notes)
                     {
-                        if (e.AdditionalFields != null && e.AdditionalFields.ContainsKey("encid") && !string.IsNullOrEmpty(e.AdditionalFields["encid"]))
+                        //NoteNlp
+                        if (e.AdditionalFields != null && e.AdditionalFields.ContainsKey("temporality"))
                         {
-                            var encid = e.AdditionalFields["encid"];
-
-                            //var vd = visitDetails.Values.FirstOrDefault(v => v.AdditionalFields["encid"] == encid);
-                            //if (vd == null) continue;
-                            if (_visitDetailsByEncid.TryGetValue(encid, out VisitDetail? vd))
+                            ChunkData.AddNoteNlp(new NoteNlp
                             {
-                                e.VisitDetailId = vd.Id;
-                                e.VisitOccurrenceId = vd.VisitOccurrenceId;
-                            }
+                                NoteNlpId = noteNlpId,
+                                PersonId = e.PersonId,
+                                NoteId = e.Id,
+
+                                NlpDate = e.StartDate,
+                                LexicalVariant = e.Text,
+                                TermExists = e.AdditionalFields["qualifier"].Equals("actual", StringComparison.OrdinalIgnoreCase),
+                                TermTemporal = e.AdditionalFields["temporality"],
+                                TermModifiers = $"Severity={e.AdditionalFields["severity"]}| Chronicity={e.AdditionalFields["chronicity"]}| Stage={e.AdditionalFields["stage"]}| Change={e.AdditionalFields["change"]}"
+                            });
+                            noteNlpId++;
                         }
 
-                        if (!e.VisitOccurrenceId.HasValue) continue;
+                        if (!e.ProviderId.HasValue)
+                        {
+                            if (e.AdditionalFields != null && e.AdditionalFields.ContainsKey("encid") && !string.IsNullOrEmpty(e.AdditionalFields["encid"]))
+                            {
+                                var encid = e.AdditionalFields["encid"];
 
-                        if (visitOccurrences.ContainsKey(e.VisitOccurrenceId.Value))
-                            e.ProviderId = visitOccurrences[e.VisitOccurrenceId.Value].ProviderId;
+                                //var vd = visitDetails.Values.FirstOrDefault(v => v.AdditionalFields["encid"] == encid);
+                                //if (vd == null) continue;
+                                if (_visitDetailsByEncid.TryGetValue(encid, out VisitDetail? vd))
+                                {
+                                    e.VisitDetailId = vd.Id;
+                                    e.VisitOccurrenceId = vd.VisitOccurrenceId;
+                                }
+                            }
+
+                            if (!e.VisitOccurrenceId.HasValue) continue;
+
+                            if (visitOccurrences.ContainsKey(e.VisitOccurrenceId.Value))
+                                e.ProviderId = visitOccurrences[e.VisitOccurrenceId.Value].ProviderId;
+                        }
                     }
                 }
             }
@@ -1151,30 +1166,59 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                 return Attrition.UnacceptablePatientQuality;
             }
 
+            foreach (var p in procedureOccurrences)
+            {
+                if (p.TypeConceptId != 32858)
+                    continue;
+                
+                if (p.AdditionalFields == null || !p.AdditionalFields.ContainsKey("findings"))
+                    continue;
+
+                // alz_imaging
+                var note = new Note
+                {
+                    Id = Offset.GetKeyOffset(p.PersonId).NoteId,
+                    PersonId = p.PersonId,
+                    StartDate = p.StartDate,
+                    TypeConceptId = 32858,
+                    Text = string.Concat("imaging:", p.AdditionalFields["findings"]),
+                    LanguageConceptId = 40639387,
+                    ProviderId = p.ProviderId,
+                    VisitOccurrenceId = p.VisitOccurrenceId,
+                    SourceValue = $"{p.AdditionalFields["findings"]}|{p.AdditionalFields["reasons"]}"
+                };
+
+                note.AddEvent(GetEventType(p.Domain), p.Id);
+                note.EventFieldConceptId = GetEventFieldConceptId(p.Domain);
+
+                notes.Add(note);
+            }
+
+            SetPrecedingVisitOccurrenceId(visitOccurrences.Values);
             // push built entities to ChunkBuilder for further save to CDM database
             AddToChunk(person, 
                 death, 
                 [.. observationPeriodsFinal], 
                 payerPlanPeriods,
-                UpdateRSourceConcept(drugExposures).ToArray(),
-                UpdateRSourceConcept(conditionOccurrences).ToArray(),
-                UpdateRSourceConcept(procedureOccurrences).ToArray(),
-                UpdateRSourceConcept(observations).ToArray(),
-                UpdateRSourceConcept(measurements).ToArray(),
+                [.. UpdateRSourceConcept(drugExposures)],
+                [.. UpdateRSourceConcept(conditionOccurrences)],
+                [.. UpdateRSourceConcept(procedureOccurrences)],
+                [.. UpdateRSourceConcept(observations)],
+                [.. UpdateRSourceConcept(measurements)],
                 [.. visitOccurrences.Values], 
                 [.. visitDetails.Values], 
                 cohort,
-                UpdateRSourceConcept(deviceExposure).ToArray(), 
-                notes, 
+                [.. UpdateRSourceConcept(deviceExposure)],
+                [.. notes], 
                 episodes);
 
             var pg = new PregnancyAlgorithm();
             foreach (var r in pg.GetPregnancyEpisodes(Vocabulary, person, [.. observationPeriodsFinal],
-                ChunkData.ConditionOccurrences.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.ProcedureOccurrences.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.Observations.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.Measurements.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.DrugExposures.Where(e => e.PersonId == person.PersonId).ToArray()))
+                [.. ChunkData.ConditionOccurrences.Where(e => e.PersonId == person.PersonId)],
+                [.. ChunkData.ProcedureOccurrences.Where(e => e.PersonId == person.PersonId)],
+                [.. ChunkData.Observations.Where(e => e.PersonId == person.PersonId)],
+                [.. ChunkData.Measurements.Where(e => e.PersonId == person.PersonId)],
+                [.. ChunkData.DrugExposures.Where(e => e.PersonId == person.PersonId)]))
             {
                 r.Id = Offset.GetKeyOffset(r.PersonId).ConditionEraId;
                 ChunkData.ConditionEra.Add(r);

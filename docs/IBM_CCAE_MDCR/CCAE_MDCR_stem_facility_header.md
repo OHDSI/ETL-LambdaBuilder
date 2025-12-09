@@ -43,7 +43,7 @@ For every record in STEM there should be 1 row record in VISIT_DETAIL (n:1 join)
 | DAYS_SUPPLY | - | NULL | - |
 | DOSE_UNIT_SOURCE_VALUE | - | NULL | - |
 | LOT_NUMBER | - | NULL | - |
-| MODIFIER_CONCEPT_ID | PROCMOD | Use the <a href="https://ohdsi.github.io/CommonDataModel/sqlScripts.html">Source-to-Standard Query</a><BR /><br>When a code comes from a proc field:<br>`WHERE SOURCE_VOCABULARY_ID IN (‘ICD9Proc’,’HCPCS’,’CPT4’,’ICD10PCS’)  AND TARGET_STANDARD_CONCEPT = 'S' AND TARGET_INVALID_REASON IS NULL AND TARGET_CONCEPT_CLASS_IN ('HCPCS Modifier','CPT4 Modifier')`<BR><BR> If PROCMOD is blank then set to 0 | - |
+| MODIFIER_CONCEPT_ID | - | - | - |
 | MODIFIER_SOURCE_VALUE | - | NULL | - |
 | OPERATOR_CONCEPT_ID | - | 0 | - |
 | QUANTITY | - | NULL | - |
@@ -82,3 +82,6 @@ For every record in STEM there should be 1 row record in VISIT_DETAIL (n:1 join)
 * Update type concept
 
 * Added CONDITION_STATUS_CONCEPT_ID information
+
+### October 23, 2025
+* Removed PROCMOD logic as it is not present in FACILITY_HEADER

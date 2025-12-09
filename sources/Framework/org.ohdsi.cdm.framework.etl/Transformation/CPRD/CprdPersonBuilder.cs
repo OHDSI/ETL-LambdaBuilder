@@ -98,7 +98,6 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CPRD
                     pp.StartDate.Year <= DateTime.Now.Year).ToArray(), null).ToArray();
 
             var visitDetails = new Dictionary<long, VisitDetail>();
-            var visitDetIds = new List<long>();
             foreach (var vd in BuildVisitDetails(null, VisitOccurrencesRaw.Where(vo =>
                     vo.StartDate.Year >= person.YearOfBirth &&
                     vo.EndDate.Value.Year >= person.YearOfBirth &&
@@ -125,22 +124,9 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CPRD
                     continue;
 
                 visitDetails.Add(vd.Id, vd);
-                visitDetIds.Add(vd.Id);
-            }
-
-            long? prevVisitDetId = null;
-            foreach (var visitId in visitDetIds.OrderBy(v => v))
-            {
-                if (prevVisitDetId.HasValue)
-                {
-                    visitDetails[visitId].PrecedingVisitDetailId = prevVisitDetId;
-                }
-
-                prevVisitDetId = visitId;
             }
 
             var visitOccurrences = new Dictionary<long, VisitOccurrence>();
-            var visitIds = new List<long>();
             foreach (var byStartDate in visitDetails.Values.GroupBy(v => v.StartDate))
             {
                 var vd = byStartDate.First();
@@ -163,20 +149,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CPRD
                 }
 
                 visitOccurrences.Add(visitOccurrence.Id, visitOccurrence);
-                visitIds.Add(visitOccurrence.Id);
             }
 
-
-            long? prevVisitId = null;
-            foreach (var visitId in visitIds.OrderBy(v => v))
-            {
-                if (prevVisitId.HasValue)
-                {
-                    visitOccurrences[visitId].PrecedingVisitOccurrenceId = prevVisitId;
-                }
-
-                prevVisitId = visitId;
-            }
 
             SetVisitOccurrenceId(ConditionOccurrencesRaw, visitDetails);
             SetVisitOccurrenceId(ProcedureOccurrencesRaw, visitDetails);
@@ -214,30 +188,36 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CPRD
                 person.RaceSourceValue = pr.SourceValue;
             }
 
+            var visits = FilterByDeathDate(visitOccurrences.Values, death, 60).ToArray();
+            SetPrecedingVisitOccurrenceId(visits);
+
+            var details = FilterByDeathDate(visitDetails.Values, death, 60).ToArray();
+            SetPrecedingVisitDetailId(details);
+
             // push built entities to ChunkBuilder for further save to CDM database
             AddToChunk(person,
                 death,
                 observationPeriods,
                 payerPlanPeriods,
-                FilterByDeathDate(Clean(drugExposures, person), death, 60).ToArray(),
-                FilterByDeathDate(Clean(conditionOccurrences, person), death, 60).ToArray(),
-                FilterByDeathDate(Clean(procedureOccurrences, person), death, 60).ToArray(),
-                FilterByDeathDate(Clean(observations, person), death, 60).ToArray(),
-                FilterByDeathDate(Clean(measurements, person), death, 60).ToArray(),
-                FilterByDeathDate(visitOccurrences.Values, death, 60).ToArray(),
-                FilterByDeathDate(visitDetails.Values, death, 60).ToArray(),
+                [.. FilterByDeathDate(Clean(drugExposures, person), death, 60)],
+                [.. FilterByDeathDate(Clean(conditionOccurrences, person), death, 60)],
+                [.. FilterByDeathDate(Clean(procedureOccurrences, person), death, 60)],
+                [.. FilterByDeathDate(Clean(observations, person), death, 60)],
+                [.. FilterByDeathDate(Clean(measurements, person), death, 60)],
+                visits,
+                details,
                 null,
-                FilterByDeathDate(Clean(deviceExposure, person), death, 60).ToArray(), 
+                [.. FilterByDeathDate(Clean(deviceExposure, person), death, 60)], 
                 null, 
                 null);
 
             var pg = new PregnancyAlgorithm();
             foreach (var r in pg.GetPregnancyEpisodes(Vocabulary, person, observationPeriods,
-                ChunkData.ConditionOccurrences.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.ProcedureOccurrences.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.Observations.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.Measurements.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.DrugExposures.Where(e => e.PersonId == person.PersonId).ToArray()))
+                [.. ChunkData.ConditionOccurrences.Where(e => e.PersonId == person.PersonId)],
+                [.. ChunkData.ProcedureOccurrences.Where(e => e.PersonId == person.PersonId)],
+                [.. ChunkData.Observations.Where(e => e.PersonId == person.PersonId)],
+                [.. ChunkData.Measurements.Where(e => e.PersonId == person.PersonId)],
+                [.. ChunkData.DrugExposures.Where(e => e.PersonId == person.PersonId)]))
             {
                 r.Id = Offset.GetKeyOffset(r.PersonId).ConditionEraId;
                 ChunkData.ConditionEra.Add(r);
@@ -309,16 +289,16 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CPRD
                 return new KeyValuePair<Person, Attrition>(null, Attrition.UnacceptablePatientQuality);
 
             var ordered = records.OrderByDescending(p => p.StartDate).ToArray();
-            var person = ordered.Take(1).First();
+            var person = ordered.First();
 
             if (person.AdditionalFields["accept"] != "1")
                 return new KeyValuePair<Person, Attrition>(null, Attrition.UnacceptablePatientQuality);
 
-            person.StartDate = ordered.Take(1).Last().StartDate;
+            person.StartDate = ordered.Last().StartDate;
 
             var gender =
-                records.GroupBy(p => p.GenderConceptId).OrderByDescending(gp => gp.Count()).Take(1).First().First();
-            var race = records.GroupBy(p => p.RaceConceptId).OrderByDescending(gp => gp.Count()).Take(1).First()
+                records.GroupBy(p => p.GenderConceptId).OrderByDescending(gp => gp.Count()).First().First();
+            var race = records.GroupBy(p => p.RaceConceptId).OrderByDescending(gp => gp.Count()).First()
                 .First();
 
             person.GenderConceptId = gender.GenderConceptId;

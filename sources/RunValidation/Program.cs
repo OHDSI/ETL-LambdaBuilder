@@ -1,7 +1,8 @@
-﻿using CommandLine.Text;
-using CommandLine;
+﻿using CommandLine;
+using CommandLine.Text;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Utility;
+using Spectre.Console;
 using System.Configuration;
 
 namespace RunValidation
@@ -64,18 +65,18 @@ namespace RunValidation
         {
             var chunks = opts.Chunks.ToList() ?? new List<int>();
 
-            Console.WriteLine("Options:");
-            //Console.WriteLine($"Keys: {_awsAccessKeyId} - {_awsSecretAccessKey}");
-            Console.WriteLine($"Bucket - folder: {_bucket} - {_cdmFolder}");
+            AnsiConsole.WriteLine("Options:");
+            //AnsiConsole.WriteLine($"Keys: {_awsAccessKeyId} - {_awsSecretAccessKey}");
+            AnsiConsole.WriteLine($"Bucket - folder: {_bucket} - {_cdmFolder}");
 
-            Console.WriteLine($"Vendor: {opts.Vendor}");
-            Console.WriteLine($"Building ID: {opts.BuildingId}");
-            Console.WriteLine($"Chunks: {string.Join(", ", chunks)}");
-            Console.WriteLine($"EtlLibraryPath: {opts.EtlLibraryPath}");
-            Console.WriteLine($"LocalTmpPath: {opts.LocalTmpPath}");
-            Console.WriteLine($"Current directory: {Directory.GetCurrentDirectory()}");
-            Console.WriteLine($"PersonId: {opts.PersonId.ToString() ?? ""}");
-            Console.WriteLine();
+            AnsiConsole.WriteLine($"Vendor: {opts.Vendor}");
+            AnsiConsole.WriteLine($"Building ID: {opts.BuildingId}");
+            AnsiConsole.WriteLine($"Chunks: {string.Join(", ", chunks)}");
+            AnsiConsole.WriteLine($"EtlLibraryPath: {opts.EtlLibraryPath}");
+            AnsiConsole.WriteLine($"LocalTmpPath: {opts.LocalTmpPath}");
+            AnsiConsole.WriteLine($"Current directory: {Directory.GetCurrentDirectory()}");
+            AnsiConsole.WriteLine($"PersonId: {opts.PersonId.ToString() ?? ""}");
+            AnsiConsole.WriteLine();
 
             Vendor vendor = EtlLibrary.CreateVendorInstance(opts.EtlLibraryPath, opts.Vendor);            
             var validation = new Validation(_awsAccessKeyId, _awsSecretAccessKey, _bucket, opts.LocalTmpPath, _cdmFolder);
@@ -87,10 +88,10 @@ namespace RunValidation
 
         static void HandleParseError(IEnumerable<Error> errs)
         {
-            Console.WriteLine("Failed to parse command-line arguments.");
+            AnsiConsole.WriteLine("Failed to parse command-line arguments.");
             foreach (var error in errs)
             {
-                Console.WriteLine(error.ToString());
+                AnsiConsole.WriteLine(error.ToString());
             }            
         }
     }

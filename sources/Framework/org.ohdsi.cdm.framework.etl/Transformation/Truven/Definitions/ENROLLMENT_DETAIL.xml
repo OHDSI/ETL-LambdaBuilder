@@ -2,14 +2,13 @@
 	<Variables>
 		<Variable name="prefix" database="ccae">Commercial</Variable>
 		<Variable name="prefix" database="mdcr">Medicare</Variable>
-		<Variable name="vendor" database="ccae">'ccae' as vendor</Variable>
-		<Variable name="vendor" database="mdcr">'mdcr' as vendor</Variable>
-		<Variable name="vendor" database="mdcd">'mdcd' as vendor</Variable>
+		<Variable name="vendor" database="ccae">cast('ccae' as varchar(4)) as vendor</Variable>
+		<Variable name="vendor" database="mdcr">cast('mdcr' as varchar(4)) as vendor</Variable>
+		<Variable name="vendor" database="mdcd">cast('mdcd' as varchar(4)) as vendor</Variable>
 	</Variables>
 	<Query database="ccae,mdcr">
 		with a as (
-		SELECT
-		ENROLID,
+		SELECT ENROLID,
 		SEX,
 		DOBYR,
 		DTSTART,
@@ -35,44 +34,35 @@
 		RX,
 		ch.PartitionId
 		FROM {sc}.ENROLLMENT_DETAIL
-		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND ENROLID = ch.PERSON_ID)
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND ENROLID = ch.PERSON_ID),
 
-		select
-		a.ENROLID,
-		a.SEX,
-		a.DOBYR,
-		a.DTSTART,
-		a.DTEND,
-		a.Family,
-		a.ps,
-		a.datatyp,
-		a.egeoloc,
-		a.periodtypeconceptid,
-		a.value_as_number,
-		a.missinginsurance,
-		a.rx,
-
+		b AS
+		(
+		select a.*,
 		CASE
 		WHEN a.DATATYP IN (2,4) THEN 'C '
 		ELSE 'N '
-		END
-		|| ps
+		END || ps
 		PayerSource,
 		900000010 AS OBSERVATION_CONCEPT_ID,
-		'MHSACOVG' AS OBSERVATION_SOURCE_VALUE,
+		cast('MHSACOVG' as varchar(4)) AS OBSERVATION_SOURCE_VALUE,
 		{vendor},
-		null PLANKEY,
-		null RACE_SOURCE_VALUE,
-		null RACE_CONCEPT_ID,
-		null ETHNICITY_SOURCE_VALUE,
-		null ETHNICITY_CONCEPT_ID,
+		cast(null as varchar(4)) PLANKEY,
+		cast(null as varchar(4)) RACE_SOURCE_VALUE,
+		cast(null as bigint) RACE_CONCEPT_ID,
+		cast(null as varchar(4)) ETHNICITY_SOURCE_VALUE,
+		cast(null as bigint) ETHNICITY_CONCEPT_ID,
 		e2.ENROLID as baby_person_id,
-		min(to_date((CAST(e2.DOBYR AS VARCHAR(4)) || '-' || EXTRACT(MONTH from e2.DTSTART) || '-01'), 'yyyy-M-dd')) as baby_dob,
-		a.PartitionId
+		to_date((CAST(e2.DOBYR AS VARCHAR(4)) || '-' || EXTRACT(MONTH from e2.DTSTART) || '-01'), 'yyyy-M-dd') as baby_dob
 		from a
-		left join {sc}.ENROLLMENT_DETAIL e2 on a.ENROLID != e2.ENROLID and a.SEX = '2' and a.RX = '1' and e2.RX = '1' and a.Family = SUBSTRING(RIGHT('00000000000' || cast(e2.ENROLID as VARCHAR(20)), 11), 1,9) and e2.DOBYR - a.DOBYR >= 12 and e2.DOBYR - EXTRACT(YEAR from e2.DTSTART) = 0
-		group by a.PartitionId, a.enrolid, a.sex, a.dobyr, a.dtstart, a.dtend, a.family, a.ps, a.datatyp, a.egeoloc, a.periodtypeconceptid, a.value_as_number, a.missinginsurance, a.rx, payersource, observation_concept_id, observation_source_value, vendor, plankey, race_source_value, race_concept_id, ethnicity_source_value, ethnicity_concept_id, e2.ENROLID
-		ORDER BY a.PartitionId, a.ENROLID
+		left join {sc}.ENROLLMENT_DETAIL e2 on a.ENROLID != e2.ENROLID and a.SEX = '2' and a.RX = '1' and e2.RX = '1' and a.Family = SUBSTRING(RIGHT('00000000000' || cast(e2.ENROLID as VARCHAR(20)), 11), 1,9) and e2.DOBYR - a.DOBYR >= 12 and e2.DOBYR - DATEPART(YEAR, e2.DTSTART) = 0
+		)
+
+		select enrolid, sex, dobyr, dtstart, dtend, family, ps, datatyp, egeoloc, periodtypeconceptid, value_as_number, missinginsurance, rx, payersource, observation_concept_id, observation_source_value, vendor, plankey, race_source_value, ethnicity_source_value, race_concept_id, ethnicity_concept_id, baby_person_id,
+		min(baby_dob) as baby_dob
+		from b
+		group by PartitionId, enrolid, sex, dobyr, dtstart, dtend, family, ps, datatyp, egeoloc, periodtypeconceptid, value_as_number, missinginsurance, rx, payersource, observation_concept_id, observation_source_value, vendor, plankey, race_source_value, race_concept_id, ethnicity_source_value, ethnicity_concept_id, baby_person_id, baby_dob
+		ORDER BY PartitionId, ENROLID
 	</Query>
 	<Persons>
 		<PersonDefinition>

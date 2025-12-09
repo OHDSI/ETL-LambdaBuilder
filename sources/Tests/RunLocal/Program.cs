@@ -65,7 +65,8 @@ namespace RunLocal
                     "NOTE",
                     "METADATA_TMP",
                     "FACT_RELATIONSHIP",
-                    "EPISODE"
+                    "EPISODE",
+                    "NOTE_NLP"
                 };
 
                 if (clean)

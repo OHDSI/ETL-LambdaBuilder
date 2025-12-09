@@ -40,7 +40,6 @@
 		to_date(CONCAT(CAST(e.observation_start AS VARCHAR(6)), '01'), 'yyyyMMdd') AS observation_period_start_date,
 		family_id
 		FROM {sc}.Enrollment e
-		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND e.Member_ID = ch.PERSON_SOURCE_VALUE
 		)
 		select a.person_id,
 		a.person_source_value,

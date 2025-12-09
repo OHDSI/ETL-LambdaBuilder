@@ -104,25 +104,12 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CprdHES
             var visitDetails = BuildVisitDetails([.. VisitDetailsRaw], [.. VisitOccurrencesRaw], observationPeriods).ToArray();
 
             var visitOccurrences = new Dictionary<long, VisitOccurrence>();
-            var visitIds = new List<long>();
             foreach (var visitOccurrence in BuildVisitOccurrences([.. VisitOccurrencesRaw], observationPeriods))
             {
                 if (!visitOccurrence.EndDate.HasValue)
                     visitOccurrence.EndDate = visitOccurrence.StartDate;
 
                 visitOccurrences.Add(visitOccurrence.Id, visitOccurrence);
-                visitIds.Add(visitOccurrence.Id);
-            }
-
-            long? prevVisitId = null;
-            foreach (var visitId in visitIds.OrderBy(v => v))
-            {
-                if (prevVisitId.HasValue)
-                {
-                    visitOccurrences[visitId].PrecedingVisitOccurrenceId = prevVisitId;
-                }
-
-                prevVisitId = visitId;
             }
 
             var conditionOccurrences =
@@ -178,7 +165,9 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CprdHES
             SetProviderIds(visitDetails);
 
             // push built entities to ChunkBuilder for further save to CDM database
-            AddToChunk(person, null,
+            SetPrecedingVisitOccurrenceId(visitOccurrences.Values);
+            AddToChunk(person, 
+                null,
                 [],
                 [],
                 drugExposures,
@@ -186,7 +175,12 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CprdHES
                 procedureOccurrences,
                 observations,
                 measurements,
-                [.. visitOccurrences.Values], visitDetails, [], deviceExposure, [], []);
+                [.. visitOccurrences.Values],
+                visitDetails, 
+                [], 
+                deviceExposure, 
+                [], 
+                []);
 
             Complete = true;
 

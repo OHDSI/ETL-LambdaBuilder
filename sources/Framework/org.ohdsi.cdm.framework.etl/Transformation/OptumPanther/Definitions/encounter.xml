@@ -8,10 +8,11 @@
 		e.interaction_type,
 		e.interaction_date,
 		e.interaction_time,
+		cast(right(e.sourceid, 4) as int) care_site_id,
 		ch.PartitionId
 		from {sc}.encounter as e
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND e.ptid = ch.PERSON_SOURCE_VALUE
-		group by ch.PartitionId, encid, ch.person_id, interaction_type, interaction_date, interaction_time
+		group by encid, ch.person_id, interaction_type, interaction_date, interaction_time, cast(right(e.sourceid, 4) as int)
 		)
 
 		select
@@ -20,6 +21,7 @@
 		a.interaction_type,
 		a.interaction_date,
 		a.interaction_time,
+		a.care_site_id,
 
 		pr.provid provid,
 		1 as fake,
@@ -55,6 +57,7 @@
 			<StartTime>interaction_time</StartTime>
 			<EndTime>interaction_time</EndTime>
 			<ProviderIdKey>provid</ProviderIdKey>
+			<CareSiteId>care_site_id</CareSiteId>
 			<AdditionalFields>
 				<string>encid</string>
 				<string>sort_index</string>
