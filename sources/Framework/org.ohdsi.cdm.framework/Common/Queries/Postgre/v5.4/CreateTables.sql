@@ -316,7 +316,8 @@ metadata_datetime timestamp NULL
 
 CREATE TABLE {sc}.metadata_tmp (
 person_id int8 NOT NULL,
-name varchar(250) NOT NULL
+name varchar(250) NOT NULL,
+count int8 NULL
 );
 
 CREATE TABLE {sc}.note (
