@@ -1,7 +1,6 @@
 ﻿truncate TABLE {sc}.care_site;
 truncate TABLE {sc}.cdm_source;
 truncate TABLE {sc}.cohort;
-truncate TABLE {sc}.cohort_attribute;
 truncate TABLE {sc}.cohort_definition;
 truncate TABLE {sc}.concept;
 truncate TABLE {sc}.concept_ancestor;
