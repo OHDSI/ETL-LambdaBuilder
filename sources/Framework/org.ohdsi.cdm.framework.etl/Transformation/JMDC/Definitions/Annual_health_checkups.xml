@@ -189,7 +189,7 @@
 		WHEN Eating1_fast_eating = 1 THEN 'fast'
 		WHEN Eating1_fast_eating = 2 THEN 'average'
 		WHEN Eating1_fast_eating = 3 THEN 'slow'
-		ELSE Eating1_fast_eating || ' unknown'
+		ELSE cast(Eating1_fast_eating as varchar(1)) || ' unknown'
 		END AS Eating_speed,
 
 		CASE
