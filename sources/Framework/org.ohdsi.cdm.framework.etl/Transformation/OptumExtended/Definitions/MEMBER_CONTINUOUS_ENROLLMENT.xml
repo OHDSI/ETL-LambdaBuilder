@@ -83,7 +83,7 @@
 		a.mce_ELIGEFF,
 		a.mce_ELIGEND,
 		a.p_p_startDate,
-		a.o_p_startDate
+		a.o_p_startDate,
 		a.PeriodTypeConceptId,
 		a.RaceConceptId,
 		a.EthnicityConceptId,
@@ -104,7 +104,7 @@
 		a.PartitionId
 		from a
 		left join a2 m2 on a.patid != m2.patid and a.gdr_cd = 'F' and a.FAMILY_SOURCE_VALUE is not null and a.FAMILY_SOURCE_VALUE = m2.FAMILY_SOURCE_VALUE and m2.yrdob - DATE_PART('YEAR', m2.startDate) = 0
-		group by a.PartitionId, a.patid, a.yrdob, a.gdr_cd, a.me_ELIGEFF, a.me_ELIGEND, a.mce_ELIGEFF, a.mce_ELIGEND, a.p_p_startDate, a.o_p_startDate, a.periodtypeconceptid, a.raceconceptid, a.ethnicityconceptid, a.race, a.ethnicity, a.location, a.PAYER_CONCEPT_ID, a.PAYER_SOURCE_VALUE, a.PLAN_SOURCE_VALUE, a.SPONSOR_SOURCE_VALUE, a.FAMILY_SOURCE_VALUE, baby_person_id, m2.yrdob, m2.startDate
+		group by a.PartitionId, a.patid, a.yrdob, a.gdr_cd, a.me_ELIGEFF, a.me_ELIGEND, a.mce_ELIGEFF, a.mce_ELIGEND, a.p_p_startDate, a.o_p_startDate, a.periodtypeconceptid, a.raceconceptid, a.ethnicityconceptid, a.race, a.ethnicity, a.location, a.PAYER_CONCEPT_ID, a.PAYER_SOURCE_VALUE, a.PLAN_SOURCE_VALUE, a.SPONSOR_SOURCE_VALUE, a.FAMILY_SOURCE_VALUE, m2.patid, m2.yrdob, m2.startDate
 		order by a.PartitionId, a.PATID
 	</Query>
 	<Persons>
