@@ -99,7 +99,7 @@
 		m2.patid as baby_person_id,
 		case
 		when DATE_PART('year', m2.startDate) = m2.yrdob then min(m2.startDate)
-		else min(to_date((CAST(m2.yrdob AS VARCHAR(4)) || '-' || DATE_PART('MONTH', m2.startDate) || '-01'), 'yyyy-M-dd'))
+		else min(to_date((CAST(m2.yrdob AS VARCHAR(4)) || '-' || to_char(m2.startDate, 'MM') || '-01'), 'yyyy-MM-dd'))
 		end as baby_dob,
 		a.PartitionId
 		from a
