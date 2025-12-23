@@ -26,7 +26,7 @@
 		else NULL
 		end as unknown,
 		ch.PartitionId
-		from {sc}.procedure as p
+		from {sc}."procedure" as p
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND p.ptid = ch.PERSON_SOURCE_VALUE
 		left join {sc}.provider pr on p.provid_perform  = pr.provid
 		where proc_code is not NULL

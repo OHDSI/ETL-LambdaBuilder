@@ -3,7 +3,7 @@
 		select patid as PERSON_ID,
 		pat_planid,
 		clmid,
-		proc,
+		"proc",
 		CASE
 		WHEN proc_position = '01' THEN 44786630
 		ELSE 44786631
