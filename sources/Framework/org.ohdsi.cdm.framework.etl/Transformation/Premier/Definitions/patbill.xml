@@ -17,7 +17,7 @@
 		replace(replace(replace(nvl(chg.std_chg_desc, ''), chr(9), ' '), chr(10), ' '), chr(13), ' ') || ' / ' || replace(replace(replace(nvl(hosp.hosp_chg_desc, ''), chr(9), ' '), chr(10), ' '), chr(13), ' ')   as observation_source_value,
 		pat.adm_phy,
 		case
-		when lower(chg.clin_sum_desc) = 'surgery time' and chg.std_chg_code != 360360000530008 THEN 1
+		when lower(chg.clin_sum_desc) = 'surgery time' and chg.std_chg_code != '360360000530008' THEN 1
 		ELSE 0
 		end as surgery,
 		chg.std_chg_desc,
@@ -26,8 +26,8 @@
 		44818668 CurrencyConceptId,
 		sum_dept_desc || ' / ' || std_dept_desc AS revenue_code_source_value,
 		CASE
-		WHEN len(pat.ms_drg) = 1 THEN '00' || CAST(pat.ms_drg as varchar(5))
-		WHEN len(pat.ms_drg) = 2 THEN '0' || CAST(pat.ms_drg as varchar(5))
+		WHEN len(CAST(pat.ms_drg as varchar(5))) = 1 THEN '00' || CAST(pat.ms_drg as varchar(5))
+		WHEN len(CAST(pat.ms_drg as varchar(5))) = 2 THEN '0' || CAST(pat.ms_drg as varchar(5))
 		ELSE CAST(pat.ms_drg as varchar(5))
 		END AS ms_drg,
 		'patbill' as source,

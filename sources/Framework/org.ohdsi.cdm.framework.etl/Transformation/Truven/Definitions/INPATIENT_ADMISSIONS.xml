@@ -27,7 +27,7 @@
 		YEAR,
 		CASEID,
 		CASE
-		WHEN DSTATUS IN (20,40,41,42) THEN 1
+		WHEN DSTATUS IN ('20','40','41','42') THEN 1
 		ELSE 0
 		END as DIED,
 		2 priority,

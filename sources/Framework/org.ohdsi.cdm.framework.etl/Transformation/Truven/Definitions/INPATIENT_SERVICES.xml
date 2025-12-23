@@ -40,7 +40,7 @@
 		else cast(DSTATUS as int)
 		end as DSTATUS_INT,
 		CASE
-		WHEN DSTATUS IN (20,40,41,42) THEN 1
+		WHEN DSTATUS IN ('20','40','41','42') THEN 1
 		ELSE 0
 		END as DIED,
 		SEQNUM,
