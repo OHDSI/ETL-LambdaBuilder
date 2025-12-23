@@ -83,7 +83,7 @@
 		c.constype,
 		ch.PartitionId
 		FROM {sc}.Clinical a
-		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND a.patid = ch.PERSON_SOURCE_VALUE
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND a.patid = ch.person_id
 		LEFT JOIN {sc}.Medical m on (a.medcode = m.medcode)
 		left join {sc}.consultation c on a.patid = c.patid and a.consid = c.consid
 		left join careSite cs ON cs.id = cast(right(cast(a.patid as varchar(20)),5) as int)
