@@ -13,7 +13,11 @@
 		else 0
 		end as operator_concept_id,
 		lab_test_loinc_code,
-		regexp_replace(lab_test, '\\(.*\\)', '') snomed,
+		case
+		when charindex('(', lab_test) > 0
+		then substring(lab_test, 0, charindex('(', lab_test) - 1)
+		else lab_test
+		end snomed,
 		observation_datetime,
 		lab_test_result_unit,
 		test_result_numeric_value,

@@ -69,7 +69,7 @@
 		left join {sc}.medical m on m.medcode = a.data1_value and e.data1lkup = 'Medical Dictionary'
 		left join {sc}.product p on p.prodcode = a.data1_value and e.data1lkup = 'Product Dictionary'
 		left join {sc}.consultation con on a.patid = con.patid and c.consid = con.consid
-		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND a.patid = ch.PERSON_SOURCE_VALUE
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND a.patid = ch.person_id
 		where e.data_fields &gt; 0 and a.enttype not in (72,116,372,78) --These are enttypes where data1 is the value and data2 is the unit
 		group by ch.PartitionId, ch.person_id, c.eventdate, con.constype, c.consid, c.staffid, e.category, a.enttype, e.description, e.data_fields, e.data1,
 		a.data1_value, lu.text, e.data1lkup, m.read_code, m.description, a.data1_date,
@@ -122,7 +122,7 @@
 		on p.prodcode = a.data2_value
 		and e.data2lkup = 'Product Dictionary'
 		left join {sc}.consultation con on a.patid = con.patid and c.consid = con.consid
-		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND a.patid = ch.PERSON_SOURCE_VALUE
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND a.patid = ch.person_id
 		where e.data_fields &gt; 1 and a.enttype not in (72,116,78,60,119,120)
 		group by ch.PartitionId, ch.person_id, c.eventdate, con.constype, c.consid, c.staffid, e.category, a.enttype, e.description, e.data_fields, e.data2,
 		a.data2_value, lu.text, e.data2lkup, m.read_code, m.description, a.data2_date,
@@ -172,7 +172,7 @@
 		on p.prodcode = a.data3_value
 		and e.data3lkup = 'Product Dictionary'
 		left join {sc}.consultation con on a.patid = con.patid and c.consid = con.consid
-		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND a.patid = ch.PERSON_SOURCE_VALUE
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND a.patid = ch.person_id
 		where e.data_fields &gt; 2 and a.enttype not in (372,78,126) --For these enttypes data3 and data4 are coupled and handled farther down in the query
 
 		group by ch.PartitionId, ch.person_id, c.eventdate, con.constype, c.consid, c.staffid, e.category, a.enttype, e.description, e.data_fields, e.data3,
@@ -223,7 +223,7 @@
 		and e.data4lkup = 'Product Dictionary'
 		left join {sc}.consultation con on a.patid = con.patid and c.consid = con.consid
 
-		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND a.patid = ch.PERSON_SOURCE_VALUE
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND a.patid = ch.person_id
 		where e.data_fields &gt; 3 and a.enttype not in (372,78,126) --For these enttypes data3 and data4 are coupled and handled farther down in the query
 
 		group by ch.PartitionId, ch.person_id, c.eventdate, con.constype, c.consid, c.staffid, e.category, a.enttype, e.description, e.data_fields, e.data4,
@@ -274,7 +274,7 @@
 		on p.prodcode = a.data5_value
 		and e.data5lkup = 'Product Dictionary'
 		left join {sc}.consultation con on a.patid = con.patid and c.consid = con.consid
-		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND a.patid = ch.PERSON_SOURCE_VALUE
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND a.patid = ch.person_id
 		where e.data_fields &gt; 4 and a.enttype not in (78) --For this enttype data5 and data6 are coupled and handled farther down in the query
 
 		group by ch.PartitionId, ch.person_id, c.eventdate, con.constype, c.consid, c.staffid, e.category, a.enttype, e.description, e.data_fields, e.data5,
@@ -325,7 +325,7 @@
 		and e.data6lkup = 'Product Dictionary'
 		left join {sc}.consultation con on a.patid = con.patid and c.consid = con.consid
 
-		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND a.patid = ch.PERSON_SOURCE_VALUE
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND a.patid = ch.person_id
 		where e.data_fields &gt; 5 and a.enttype not in (78) --For this enttype data5 and data6 are coupled and handled farther down in the query
 
 		group by ch.PartitionId, ch.person_id, c.eventdate, con.constype, c.consid, c.staffid, e.category, a.enttype, e.description, e.data_fields, e.data6,
@@ -376,7 +376,7 @@
 		and e.data7lkup = 'Product Dictionary'
 		left join {sc}.consultation con on a.patid = con.patid and c.consid = con.consid
 
-		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND a.patid = ch.PERSON_SOURCE_VALUE
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND a.patid = ch.person_id
 		where e.data_fields &gt; 6
 
 		group by ch.PartitionId, ch.person_id, c.eventdate, con.constype, c.consid, c.staffid, e.category, a.enttype, e.description, e.data_fields, e.data7,
@@ -432,7 +432,7 @@
 		and e.data1lkup = 'Product Dictionary'
 		left join {sc}.consultation con on a.patid = con.patid and c.consid = con.consid
 
-		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND a.patid = ch.PERSON_SOURCE_VALUE
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND a.patid = ch.person_id
 		where a.enttype in (72,116,78) --For these enttypes data1 is the value and data2 is the unit
 
 		group by ch.PartitionId, ch.person_id, c.eventdate, con.constype, c.consid, c.staffid, e.category, a.enttype, e.description, e.data_fields, e.data1,
@@ -488,7 +488,7 @@
 		and e.data1lkup = 'Product Dictionary'
 		left join {sc}.consultation con on a.patid = con.patid and c.consid = con.consid
 
-		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND a.patid = ch.PERSON_SOURCE_VALUE
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND a.patid = ch.person_id
 		where a.enttype in (126,78) --For these datatypes data3 is the value and data4 is the unit
 
 		group by ch.PartitionId, ch.person_id, c.eventdate, con.constype, c.consid, c.staffid, e.category, a.enttype, e.description, e.data_fields, e.data3,
@@ -544,7 +544,7 @@
 		and e.data1lkup = 'Product Dictionary'
 		left join {sc}.consultation con on a.patid = con.patid and c.consid = con.consid
 
-		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND a.patid = ch.PERSON_SOURCE_VALUE
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND a.patid = ch.person_id
 		where a.enttype in (78) --For this enttype data5 is the value and data6 is the unit
 
 		group by ch.PartitionId, ch.person_id, c.eventdate, con.constype, c.consid, c.staffid, e.category, a.enttype, e.description, e.data_fields, e.data5,
@@ -585,7 +585,7 @@
 		on lt4.lookup_type_id = lu4.lookup_type_id
 		and lu4.code = a.data4_value
 		left join {sc}.consultation con on a.patid = con.patid and c.consid = con.consid
-		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND a.patid = ch.PERSON_SOURCE_VALUE
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND a.patid = ch.person_id
 		where a.enttype in (372) --This enttype is for the results of scores and questionnaires
 		group by ch.PartitionId, ch.person_id, c.eventdate, con.constype, c.consid, c.staffid, e.category, a.enttype, e.description, e.data_fields, sm.scoring_method,
 		a.data1_value, lu4.text, e.data4lkup, a.data1_date, e.data1lkup
