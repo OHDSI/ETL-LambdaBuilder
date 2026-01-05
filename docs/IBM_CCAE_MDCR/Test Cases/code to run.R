@@ -35,6 +35,18 @@ initFramework();
 setDefaults();
 createTests();
 
+
+insertSql <- paste(generateInsertSql(databaseSchema = source_schema),
+                   sep = "", collapse = "\n")
+SqlRender::writeSql(insertSql, "inst/sql/insert.sql")
+
+
+testSql <- paste(generateTestSql(databaseSchema = cdm_schema),
+                 sep = "", collapse = "\n")
+SqlRender::writeSql(testSql, "inst/sql/test.sql")
+
+
+
 connectionDetails <- DatabaseConnector::createConnectionDetails(
   dbms     = Sys.getenv("R_CCAE_dbms"),
   server   = Sys.getenv("R_CCAE_server"),
@@ -50,9 +62,6 @@ connection <- DatabaseConnector::connect(connectionDetails)
 #### BUILD TEST CASES                                                       ####
 ################################################################################
 
-insertSql <- paste(generateInsertSql(databaseSchema = source_schema),
-                   sep = "", collapse = "\n")
-SqlRender::writeSql(insertSql, "inst/sql/insert.sql")
 DatabaseConnector::executeSql(connection = connection, sql = insertSql)
 
 
@@ -102,9 +111,6 @@ if (frameworkType == "CCAE" ){
 #### TEST CDM                                                               ####
 ################################################################################
 
-testSql <- paste(generateTestSql(databaseSchema = cdm_schema),
-                 sep = "", collapse = "\n")
-SqlRender::writeSql(testSql, "inst/sql/test.sql")
 DatabaseConnector::executeSql(connection, testSql)
 
 ################################################################################
