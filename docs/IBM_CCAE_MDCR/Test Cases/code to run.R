@@ -46,6 +46,10 @@ testSql <- paste(generateTestSql(databaseSchema = cdm_schema),
 SqlRender::writeSql(testSql, "inst/sql/test.sql")
 
 
+################################################################################
+#### CONNECTION                                                             ####
+################################################################################
+
 
 connectionDetails <- DatabaseConnector::createConnectionDetails(
   dbms     = Sys.getenv("R_CCAE_dbms"),
