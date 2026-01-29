@@ -562,6 +562,10 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CPRD
                 if (result.StartDate.Year < 1900)
                     return null;
 
+                result.CauseConceptId = null;
+                result.SourceCauseConceptId = null;
+                result.CauseSource = null;
+
                 return result;
             }
 

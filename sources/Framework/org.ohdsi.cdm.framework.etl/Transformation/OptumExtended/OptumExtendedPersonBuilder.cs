@@ -124,7 +124,9 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
                 var maxStartDate = death.Max(d => d.StartDate);
                 var result = death.Where(d => d.StartDate == maxStartDate).OrderByDescending(d => d.Primary).First();
 
-                result.CauseConceptId = 0;
+                result.CauseConceptId = null;
+                result.SourceCauseConceptId = null;
+                result.CauseSource = null;
 
                 return result;
             }
