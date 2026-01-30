@@ -33,5 +33,8 @@ Use the staff table to populate the provider table. In CPRD, the staffid field r
 
 ## Change Log
 
+### January 30, 2026
+- Updated mapping logic for specialty_concept_id when role is missing and cannot be mapped
+
 ### March 12, 2024
 - specialty_concept_id added Unknown Physician Specialty for missing role

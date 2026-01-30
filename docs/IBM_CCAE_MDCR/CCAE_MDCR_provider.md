@@ -49,3 +49,8 @@ FROM LAB
 | SPECIALTY_SOURCE_CONCEPT_ID | - | 0 | - |
 | GENDER_SOURCE_VALUE | - | NULL | - |
 | GENDER_SOURCE_CONCEPT_ID | - | 0 | - |
+
+## Change Log
+
+### January 30, 2026
+- Updated mapping logic for specialty_concept_id when STDPROV is missing and cannot be mapped
