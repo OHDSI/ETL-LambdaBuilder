@@ -40,7 +40,7 @@ FROM LAB
 | PROVIDER_NAME |  | NULL |  |
 | NPI |  | NULL |  |
 | DEA |  | NULL |  |
-| SPECIALTY_CONCEPT_ID | STDPROV | Use the code in [SOURCE_TO_STANDARD.sql](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_STANDARD.sql). <br><br>Filters: ```WHERE SOURCE_VOCABULARY_ID IN ('JNJ_TRU_P_SPCLTY') AND TARGET_STANDARD_CONCEPT IS NOT NULL AND TARGET_INVALID_REASON IS NULL``` | Set SPECIALTY_CONCEPT_ID as 38004514 (Unknown Physician Specialty) if STDPROV is missing or cannot be mapped.<br> |
+| SPECIALTY_CONCEPT_ID | STDPROV | Use the code in [SOURCE_TO_STANDARD.sql](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_STANDARD.sql). <br><br>Filters: ```WHERE SOURCE_VOCABULARY_ID IN ('JNJ_TRU_P_SPCLTY') AND TARGET_STANDARD_CONCEPT IS NOT NULL AND TARGET_INVALID_REASON IS NULL``` | Set SPECIALTY_CONCEPT_ID as 0 "No Matching Concept" if STDPROV cannot be mapped. If STDPROV is missing do not populate specialty_concept_id <br> |
 | CARE_SITE_ID | - | 0 | - |
 | YEAR_OF_BIRTH | - | NULL | - |
 | GENDER_CONCEPT_ID | - | 0 | - |
