@@ -743,6 +743,10 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.JMDC
                                 mes.ValueAsConceptId = result[0].ConceptId.Value;
                             }
 
+                            // Annual_health_checkup, Remove any records where value_source_value is null.
+                            if (mes.TypeConceptId == 32836 && string.IsNullOrEmpty(mes.ValueSourceValue))
+                                continue;
+
                             ChunkData.AddData(mes);
                         }
 
