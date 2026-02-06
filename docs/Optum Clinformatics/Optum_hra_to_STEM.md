@@ -35,7 +35,7 @@ ISA13040|Observation |40767204 |44786634 |NULL |ISA13040 |0|NULL|(13040) High Bl
 ISA16010|Observation|0|44786634|NULL|ISA13021|0| NULL|(16010) During the past year, how much effect has stress had on your health
 ISA16016|Observation|0|44786634|NULL|ISA13021|0| NULL|(16016) In general, how often is stress a problem for you
 ISA16040|Measurement|40768653|44786633|NULL|ISA16040|0|NULL|(16040) How many hours of sleep on average do you get each night
-ISA17001|Measurement|4276526|44786633|NULL|ISA17001|0|NULL|(17001) Current use of cigarettes
+ISA17001|Measurement|903657|44786633|NULL|ISA17001|0|NULL|(17001) Current use of cigarettes
 ISA17015|Observation |903663|44786634|NULL|ISA17015|0|NULL|(17015) Current use of cigars or pipes
 ISA17021|Observation|0|44786634|NULL|ISA17021|0| NULL|(17021) Cigars/Pipes Former Users - Years since quitting -Actual
 ISA17023|Observation|903666|44786634|NULL|ISA17023|0|NULL|(17023) Current use of smokeless tobacco
