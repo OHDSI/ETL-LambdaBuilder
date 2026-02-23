@@ -11,4 +11,3 @@ SELECT hvid FROM {sc}.pharmacy_claims
 where hvid != '' and hvid is not null and data_vendor {param1} 
 ) a 
 order by 1
-limit 100000
