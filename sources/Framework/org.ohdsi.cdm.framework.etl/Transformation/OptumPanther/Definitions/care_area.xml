@@ -7,7 +7,8 @@
     c.encid,
     c.carearea,
     c.carearea_date,
-    c.carearea_time
+    c.carearea_time,
+	cast(right(c.sourceid, 4) as int) care_site_id
     FROM {sc}.care_area c
     join {ch_sc}._chunks ch ON ch.ChunkId = {0} AND c.ptid = ch.PERSON_SOURCE_VALUE
     where UPPER(c.carearea) not in ('OTHER CARE AREA', 'UNKNOWN CARE AREA')
@@ -29,6 +30,7 @@
       <StartTime>carearea_time</StartTime>
       <EndTime>carearea_time</EndTime>
       <ProviderIdKey>provid</ProviderIdKey>
+	  <CareSiteId>care_site_id</CareSiteId>
       <AdditionalFields>
         <string>encid</string>
         <string>sort_index</string>

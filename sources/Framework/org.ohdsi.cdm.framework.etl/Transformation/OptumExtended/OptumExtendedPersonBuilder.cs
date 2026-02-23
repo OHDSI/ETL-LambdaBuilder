@@ -82,7 +82,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
         private readonly Dictionary<long, HashSet<DateTime>> _potentialChilds = [];
         private readonly string[] _neg = ["ldtnot", "neg", "not-detected", "notdet", "negative for covid"];
         private readonly string[] _pos = ["ldtdet", "pos", "positive for 2019-", "positive for covid"];
-
+        private int _discardedDrugCount = 0;
         #endregion
 
         #region Constructors
@@ -124,7 +124,9 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
                 var maxStartDate = death.Max(d => d.StartDate);
                 var result = death.Where(d => d.StartDate == maxStartDate).OrderByDescending(d => d.Primary).First();
 
-                result.CauseConceptId = 0;
+                result.CauseConceptId = null;
+                result.SourceCauseConceptId = null;
+                result.CauseSource = null;
 
                 return result;
             }
@@ -701,14 +703,14 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
             foreach (var visitDetail in visitDetails)
             {
                 var patPlanid = visitDetail.AdditionalFields["pat_planid"];
-                var clmid = string.Empty;
-                var locCd = string.Empty;
 
-                if (visitDetail.AdditionalFields.ContainsKey("clmid"))
-                    clmid = visitDetail.AdditionalFields["clmid"];
+                visitDetail.AdditionalFields.TryGetValue("clmid", out string? clmid);
+                if (clmid == null)
+                    clmid = "";
 
-                if (visitDetail.AdditionalFields.ContainsKey("loc_cd"))
-                    locCd = visitDetail.AdditionalFields["loc_cd"];
+                visitDetail.AdditionalFields.TryGetValue("loc_cd", out string? locCd);
+                if (locCd == null)
+                    locCd = "";
 
                 if (!_rawVisitDetails.ContainsKey(patPlanid))
                     _rawVisitDetails.Add(patPlanid, []);
@@ -923,6 +925,10 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
                 }
             }
 
+
+            if(_discardedDrugCount > 0)
+                ChunkData.AddAttrition(person.PersonId, Attrition.DiscardedDrugCount, _discardedDrugCount);
+
             return Attrition.None;
         }
         public static IEnumerable<T> Clean<T>(IEnumerable<T> entities, Person person) where T : class, IEntity
@@ -946,6 +952,18 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
             foreach (var entity in entities)
             {
                 var entityDomain = GetDomain(domain, entity.Domain, "Observation");
+
+                if(entity.AdditionalFields != null && entity.AdditionalFields.ContainsKey("procmod"))
+                {
+                    var procmod = entity.AdditionalFields["procmod"];
+
+                    // The modifier JW applies to the discarded portion, not to the administered portion.
+                    if (!string.IsNullOrEmpty(procmod) && procmod.ToLower() == "jw")
+                    {
+                        _discardedDrugCount++;
+                        continue;
+                    }
+                }
 
                 switch (entityDomain)
                 {
@@ -1141,7 +1159,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
                 }
             }
 
-            var person = ordered.Take(1).Last();
+            var person = ordered.Last();
 
             if (records.Where(r => r.YearOfBirth.HasValue && r.YearOfBirth > 1900).Max(r => r.YearOfBirth) -
                 records.Where(r => r.YearOfBirth.HasValue && r.YearOfBirth > 1900).Min(r => r.YearOfBirth) > 2)
@@ -1149,7 +1167,11 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
                 return new KeyValuePair<Person, Attrition>(null, Attrition.MultipleYearsOfBirth);
             }
 
-            person.LocationId = Entity.GetId(person.LocationSourceValue);
+            var locationId = Entity.GetId(person.LocationSourceValue);
+            if(locationId != 0)
+                person.LocationId = locationId;
+            else
+                person.LocationId = null;
 
             if (person.GenderConceptId == 8551) //UNKNOWN
             {

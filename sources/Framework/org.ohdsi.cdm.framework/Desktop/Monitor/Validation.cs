@@ -3,7 +3,9 @@ using Amazon.S3.Model;
 using Amazon.S3.Transfer;
 using CsvHelper;
 using CsvHelper.Configuration;
+using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Helpers;
+using org.ohdsi.cdm.framework.common.Omop;
 using org.ohdsi.cdm.framework.desktop.Settings;
 using System.Diagnostics;
 using System.Globalization;
@@ -218,6 +220,16 @@ namespace org.ohdsi.cdm.framework.desktop3.Monitor
                         while (csv.Read())
                         {
                             var personId = (long)csv.GetField(typeof(long), 0);
+
+                            if (o.Key.Contains("METADATA", StringComparison.OrdinalIgnoreCase))
+                            {
+                                var attrition = csv.GetField(typeof(string), 1) as string;
+                                if(!string.IsNullOrEmpty(attrition) && attrition == Attrition.DiscardedDrugCount.ToName())
+                                {
+                                    continue;
+                                }
+                            }
+                            
 
                             chunk.Value[personId].Add(o.Key);
                         }

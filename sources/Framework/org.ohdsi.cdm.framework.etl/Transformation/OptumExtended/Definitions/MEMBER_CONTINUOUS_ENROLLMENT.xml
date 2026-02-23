@@ -3,19 +3,30 @@
     <Variable name="location" database="ses">me.region as Location</Variable>
     <Variable name="location" database="dod">STATE as Location</Variable>
   </Variables>
-  <Query>
-    with a as
-    (
-    SELECT DISTINCT
-    mce.PATID,
-    mce.YRDOB,
-    mce.GDR_CD,
-    me.ELIGEFF,
-    me.ELIGEND,
-    CASE
-    WHEN me.eligeff &lt; '05/01/2000' THEN '05/01/2000'
+	<Query>
+		with a as
+		(
+		SELECT DISTINCT
+		mce.PATID,
+		mce.YRDOB,
+		mce.GDR_CD,
+
+		me.ELIGEFF as me_ELIGEFF,
+		me.ELIGEND as me_ELIGEND,
+
+		mce.ELIGEFF as mce_ELIGEFF,
+		mce.ELIGEND as mce_ELIGEND,
+
+		CASE
+		WHEN me.eligeff &lt; '05/01/2000' THEN '05/01/2000'
 		ELSE me.eligeff
-		END as startDate,
+		END as p_p_startDate,
+
+		CASE
+		WHEN mce.eligeff &lt; '05/01/2000' THEN '05/01/2000'
+		ELSE mce.eligeff
+		END as o_p_startDate,
+		
 		32813 as PeriodTypeConceptId,
 		case
 		when me.race is null or me.race = '' or lower(me.race) = 'u' then 0
@@ -55,8 +66,8 @@
 		mce.PATID,
 		mce.YRDOB,
 		CASE
-		WHEN me.eligeff &lt; '05/01/2000' THEN '05/01/2000'
-		ELSE me.eligeff
+		WHEN mce.eligeff &lt; '05/01/2000' THEN '05/01/2000'
+		ELSE mce.eligeff
 		END as startDate,
 		me.family_id as FAMILY_SOURCE_VALUE
 		FROM {sc}.MEMBER_CONTINUOUS_ENROLLMENT mce
@@ -71,15 +82,15 @@
 		end as baby_dob
 		from a
 		left join a2 m2 on a.patid != m2.patid and a.gdr_cd = 'F' and a.FAMILY_SOURCE_VALUE is not null and a.FAMILY_SOURCE_VALUE = m2.FAMILY_SOURCE_VALUE and m2.yrdob - DATE_PART('YEAR', m2.startDate) = 0
-		group by a.patid, a.yrdob, a.gdr_cd, a.eligeff, a.eligend, a.startdate, a.periodtypeconceptid, a.raceconceptid, a.ethnicityconceptid, a.race, a.ethnicity, a.location, a.PAYER_CONCEPT_ID, a.PAYER_SOURCE_VALUE, a.PLAN_SOURCE_VALUE, a.SPONSOR_SOURCE_VALUE, a.FAMILY_SOURCE_VALUE, baby_person_id, m2.yrdob, m2.startDate
+		group by a.patid, a.yrdob, a.gdr_cd, a.me_ELIGEFF, a.me_ELIGEND, a.mce_ELIGEFF, a.mce_ELIGEND, a.p_p_startDate, a.o_p_startDate, a.periodtypeconceptid, a.raceconceptid, a.ethnicityconceptid, a.race, a.ethnicity, a.location, a.PAYER_CONCEPT_ID, a.PAYER_SOURCE_VALUE, a.PLAN_SOURCE_VALUE, a.SPONSOR_SOURCE_VALUE, a.FAMILY_SOURCE_VALUE, baby_person_id, m2.yrdob, m2.startDate
 		order by a.PATID
 	</Query>
   <Persons>
     <PersonDefinition>
       <PersonId>PATID</PersonId>
       <PersonSourceValue>PATID</PersonSourceValue>
-      <StartDate>startDate</StartDate>
-      <EndDate>ELIGEND</EndDate>
+      <StartDate>o_p_startDate</StartDate>
+      <EndDate>mce_ELIGEND</EndDate>
       <Gender>GDR_CD</Gender>
       <YearOfBirth>YRDOB</YearOfBirth>
       <RaceConceptId>RaceConceptId</RaceConceptId>
@@ -95,8 +106,8 @@
   <PayerPlanPeriods>
     <PayerPlanPeriodDefinition>
       <PersonId>PATID</PersonId>
-      <StartDate>startDate</StartDate>
-      <EndDate>eligend</EndDate>
+      <StartDate>p_p_startDate</StartDate>
+      <EndDate>me_ELIGEND</EndDate>
       <FamilySource>FAMILY_SOURCE_VALUE</FamilySource>
       <Concepts>
         <!--payer_concept_id-->

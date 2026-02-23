@@ -60,14 +60,16 @@ PERSON_ID|PATID||
 DEATH_DATE|**VISIT_OCCURRENCE** VISIT_END_DATE <br><br> **DEATH**<br/> ymdod or visit_end_date if MEDICAL_CLAIMS.DSTATUS logic is applied|**DEATH**<br/> Use the last day of the month|
 DEATH_DATETIME|Set time to 00:00:00 UTC Tz||
 DEATH_TYPE_CONCEPT_ID|Derived field|if death acquired from DOD DEATH - 32885, in the other cases - 32812 |
-CAUSE_OF_DEATH_CONCEPT_ID|0||
-CAUSE_OF_DEATH_SOURCE_VALUE|0||
-CAUSE_SOURCE_CONCEPT_ID|0||
+CAUSE_OF_DEATH_CONCEPT_ID|||
+CAUSE_OF_DEATH_SOURCE_VALUE|||
+CAUSE_SOURCE_CONCEPT_ID|||
 ---
 *Common Data Model ETL Mapping Specification for Optum Extended DOD*
 <br>*CDM Version = 5.4
 
 ## Change log
+### 28-Jan-2026
+- Updated death logic to remove placeholder "0" concepts in cause of death fields
 
 ### 02-Apr-2025
 - Updated death logic to reflect updates in ETL

@@ -111,6 +111,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Truven
         private readonly Dictionary<string, Dictionary<DateTime, List<VisitDetail>>> _rawVisitDetailsByDate = [];
         private readonly Dictionary<long, VisitDetail> _visitDetails = [];
         private readonly Dictionary<long, HashSet<DateTime>> _potentialChilds = [];
+        private int _discardedDrugCount = 0;
 
         #endregion
 
@@ -197,8 +198,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Truven
             }
 
             var ordered = filtered.OrderByDescending(p => p.StartDate).ToArray();
-            var person = ordered.Take(1).First();
-            person.StartDate = ordered.Take(1).Last().StartDate;
+            var person = ordered.First();
+            person.StartDate = ordered.Last().StartDate;
 
             if (person.GenderConceptId == 8551)
             {
@@ -222,8 +223,22 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Truven
                 return new KeyValuePair<Person, Attrition>(null, Attrition.MultipleYearsOfBirth);
             }
 
+            //  identify patients with > 1 DOBYR
+            if (records.GroupBy(person => person.YearOfBirth).Count() > 1)
+            {
+                var minYearOfBirth = records.Min(p => p.YearOfBirth);
+
+                //If the earliest DOBYR is equal to the year of their first enrollment period, use this value as the DOBYR
+                if (minYearOfBirth == person.StartDate.Year)
+                    person.YearOfBirth = minYearOfBirth;
+            }
+
             if (person.LocationId == 0)
                 person.LocationId = null;
+
+            // Delete individuals born >= 1 year after their first enrollment period.
+            if (person.YearOfBirth > person.StartDate.Year)
+                return new KeyValuePair<Person, Attrition>(null, Attrition.InvalidObservationTime);
 
             return new KeyValuePair<Person, Attrition>(person, Attrition.None);
         }
@@ -910,6 +925,9 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Truven
                 }
             }
 
+            if (_discardedDrugCount > 0)
+                ChunkData.AddAttrition(person.PersonId, Attrition.DiscardedDrugCount, _discardedDrugCount);
+
             return Attrition.None;
         }
 
@@ -1002,6 +1020,18 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Truven
         {
             foreach (var entity in entities)
             {
+                if (entity.AdditionalFields != null && entity.AdditionalFields.ContainsKey("procmod"))
+                {
+                    var procmod = entity.AdditionalFields["procmod"];
+
+                    // The modifier JW applies to the discarded portion, not to the administered portion.
+                    if (!string.IsNullOrEmpty(procmod) && procmod.ToLower() == "jw")
+                    {
+                        _discardedDrugCount++;
+                        continue;
+                    }
+                }
+
                 if (!entity.VisitDetailId.HasValue)
                     SetVisitDetailId(entity, false);
 

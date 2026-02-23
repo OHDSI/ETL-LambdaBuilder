@@ -1,86 +1,24 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
-using CsvHelper.Configuration;
 using CsvHelper;
+using CsvHelper.Configuration;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Helpers;
+using RunValidation.Domain;
+using Spectre.Console;
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO.Compression;
 using System.Text;
 using ZstdSharp;
-using Spectre.Console;
-using System.Collections.Concurrent;
-using System.IO;
-using System.Diagnostics.Eventing.Reader;
-using org.ohdsi.cdm.framework.common.Omop;
 
 namespace RunValidation
 {
 
     public class Validation(string awsAccessKeyId, string awsSecretAccessKey, string bucket, string tmpFolder, string cdmFolder)
     {
-        #region classes
-
-        class PersonInS3Chunk(long PersonId, Vendor Vendor, int BuildingId, int ChunkId, bool IsFromBatch = true)
-        {
-            public long PersonId { get; set; } = PersonId;
-            public Vendor Vendor { get; set; } = Vendor;
-            public int BuildingId { get; set; } = BuildingId;
-            public int ChunkId { get; set; } = ChunkId;
-
-            public bool IsFromBatch { get; set; } = IsFromBatch;
-            public int? SliceId { get; set; }
-            public int? InPersonFilesCount { get; set; } = 0;
-            public int? InMetadataFilesCount { get; set; } = 0;
-
-            public override string ToString()
-            {
-                return $"{Vendor} - {BuildingId} - {ChunkId} - {SliceId?.ToString() ?? "???"} - {PersonId}";
-            }
-            
-            public override bool Equals(object? obj)
-            {
-                if (obj is not PersonInS3Chunk other || other == null)
-                    return false;
-
-                return EqualityComparer<Vendor>.Default.Equals(this.Vendor, other.Vendor)
-                    && BuildingId == other.BuildingId
-                    && ChunkId == other.ChunkId
-                    && PersonId == other.PersonId;
-            }
-
-            public override int GetHashCode()
-            {
-                return HashCode.Combine(Vendor != null ? Vendor.GetHashCode() : 0,
-                    BuildingId,
-                    ChunkId,
-                    PersonId);
-            }
-        }
-        
-        class ChunkReport
-        {
-            public int BuildingId { get; set; }
-            public int ChunkId { get; set; }
-            public int OnlyInBatchIdsCount { get; set; }
-            public List<int> AllSlicesWithOnlyInBatchIds { get; set; } = new List<int>();
-            public List<PersonInS3Chunk> PersonsWithCalculatedSlice { get; set; } = new List<PersonInS3Chunk>();
-            public List<SliceReport> SliceReports { get; set; } = new List<SliceReport>();
-        }
-
-        class SliceReport
-        {
-            public int BuildingId { get; set; }
-            public int ChunkId { get; set; }
-            public int SliceId { get; set; }
-            public int WrongCount { get; set; }
-            public int Duplicates { get; set; }
-            public long ExampleWrongPersonId { get; set; }
-        }
-
-        #endregion
 
         #region Fields 
 
@@ -89,49 +27,18 @@ namespace RunValidation
         private readonly string _bucket = bucket;
         private readonly string _tmpFolder = tmpFolder;
         private readonly string _cdmFolder = cdmFolder;
-        private readonly LambdaUtility _lambdaUtility = 
-            new LambdaUtility(awsAccessKeyId, awsSecretAccessKey, awsAccessKeyId, awsSecretAccessKey, bucket, bucket, bucket, cdmFolder);
-        private readonly List<ChunkReport> _chunkReports = new List<ChunkReport>();
 
         #endregion
 
         #region Methods
-        public void ValidateBuildingId(Vendor vendor, int buildingId, List<int> chunks)
+        public void ValidateBuildingId(Vendor vendor, int buildingId, List<int> chunksToProcess)
         {
 
             var timer = Stopwatch.StartNew();
 
             var actualSlices = GetActualSlices(vendor.Name, buildingId).OrderBy(s => s).ToList();
 
-            ProcessChunks(vendor, buildingId, chunks, actualSlices);
-
-            foreach (var chunkReport in _chunkReports.OrderBy(c => c.ChunkId))
-            {
-                var sliceIdPersons = chunkReport.PersonsWithCalculatedSlice.DistinctBy(s => s.SliceId).OrderBy(s => s.SliceId).ToList();
-                foreach (var person in sliceIdPersons)
-                {
-                    var chunkMsg = $"chunkId={chunkReport.ChunkId}" +
-                        $" sliceId={person.SliceId}" +
-                        $" (personId={person.PersonId})" +
-                        $" | {vendor.Name} {buildingId} {chunkReport.ChunkId} {person.SliceId.ToString()!.PadLeft(4, '0')} true" +
-                        $" | Info: LostPersonCount={chunkReport.PersonsWithCalculatedSlice.Where(s => s.SliceId == person.SliceId).Count()})";
-                    AnsiConsole.MarkupLine($"[red]{chunkMsg}[/]");
-                }
-
-                foreach (var sliceReport in chunkReport.SliceReports.OrderBy(s => s.SliceId))
-                {
-                    if (sliceReport.WrongCount == 0 || sliceIdPersons.Any(s => s.SliceId == sliceReport.SliceId))
-                        continue;
-
-                    string sliceMsg = $"chunkId={sliceReport.ChunkId}" +
-                        $" sliceId={sliceReport.SliceId}" +
-                        $" (personId={sliceReport.ExampleWrongPersonId})" +
-                        $" | {vendor.Name} {buildingId} {chunkReport.ChunkId} {sliceReport.SliceId.ToString().PadLeft(4, '0')} true" +
-                        $" | Info: Duplicates={sliceReport.Duplicates}";
-                    AnsiConsole.MarkupLine($"[red]{sliceMsg}[/]");
-                }
-            }
-
+            Process(vendor, buildingId, chunksToProcess, actualSlices);
 
             timer.Stop();
             AnsiConsole.MarkupLine($"[green]Done. Total seconds={timer.ElapsedMilliseconds / 1000}s[/]");
@@ -148,8 +55,8 @@ namespace RunValidation
         /// <param name="personId"></param>
         public void ValidatePersonIdInSlice(Vendor vendor, int buildingId, int chunkId, long personId)
         {
-            var person = new PersonInS3Chunk(personId, vendor, buildingId, chunkId) { IsFromBatch = false };
-            GetSlicesFromS3(new HashSet<PersonInS3Chunk>() { person }, vendor.PersonTableName, vendor.PersonIdIndex);
+            var person = new Person(chunkId, personId);
+            GetSlicesFromS3(new HashSet<Person>() { person }, vendor, buildingId, chunkId);
             if (person.SliceId.HasValue)
             {
                 AnsiConsole.MarkupLine($"[green]PersonId {person.PersonId} was found in raw SliceId {person.SliceId}![/]");
@@ -161,7 +68,7 @@ namespace RunValidation
         }
 
 
-        private void ProcessChunks(Vendor vendor, int buildingId, List<int> chunks, List<int> slices)
+        private void Process(Vendor vendor, int buildingId, List<int> chunksToProcess, List<int> slicesToProcess)
         {
             var prefix = $"{vendor}/{buildingId}/_chunks";
 
@@ -172,157 +79,231 @@ namespace RunValidation
                     BucketName = _bucket,
                     Prefix = prefix
                 };
+                ListObjectsV2Response response;
+                Task<ListObjectsV2Response> responseTask;
 
-                var s3Objects = client
-                    .ListObjectsV2Async(request)
-                    .GetAwaiter()
-                    .GetResult()
-                    .S3Objects
-                    .OrderBy(s => s.LastModified)
-                    .ToList();
+                List<S3Object> s3ChunkObjects = new List<S3Object>();
 
-                var chunkIds = s3Objects
-                    .Select(o => int.Parse(o.Key.Split(new[] { "_chunks", ".txt", ".gz", ".zst" }, StringSplitOptions.RemoveEmptyEntries).Last()))
-                    .Distinct()
-                    .ToList();
+                AnsiConsole.Progress()
+                    .AutoClear(false)
+                    .HideCompleted(false)
+                    .Columns(
+                        new TaskDescriptionColumn(),
+                        new ElapsedTimeColumn(),
+                        new SpinnerColumn())
+                    .Start(ctx =>
+                    {
+                        var taskDescription = "Getting S3 _chunks objects.";
+                        var task = ctx.AddTask(taskDescription);
+                        do
+                        {
+                            responseTask = client.ListObjectsV2Async(request);
+                            responseTask.Wait();
+                            response = responseTask.Result;
+                            s3ChunkObjects.AddRange(response.S3Objects);
 
-                if (chunks.Any())
-                {
-                    chunkIds = chunkIds.Where(chunkId => chunks.Contains(chunkId)).ToList();
-                }
+                            task.Description = taskDescription + " | Files=" + s3ChunkObjects.Count;
+                            request.ContinuationToken = response.NextContinuationToken;
+                        } while (response.IsTruncated);
 
-                var totalChunks = chunkIds.Count;
+                        s3ChunkObjects = s3ChunkObjects
+                            .OrderBy(s => GetS3ChunksFileNumber(s.Key))
+                            .ToList();
+                    });
+
+                AnsiConsole.MarkupLine("Error messages are in this format:");
+                AnsiConsole.MarkupLine("{vendor.Name} {buildingId} {chunkId} {sliceId} true"
+                    + "\r\n| {example personId for debug}"
+                    + "\r\n| C={correct person ids} N={no sliceId} D={duplicated personId} M={missing personId}");
+                var errorMessages = new ConcurrentQueue<string>();
+                var consoleLock = new object();
+
+                int totalPersonsCount = 0;
+                int chunkErrorsCount = 0;
 
                 AnsiConsole.Progress()
                     .AutoClear(false)
                     .HideCompleted(true)
                     .Columns(
                         new TaskDescriptionColumn(),
+                        new ElapsedTimeColumn(),
                         new ProgressBarColumn(),
                         new PercentageColumn(),
                         new RemainingTimeColumn(),
                         new SpinnerColumn())
                     .Start(ctx =>
                     {
-                        var overallTask = ctx.AddTask("Processing chunks...", maxValue: totalChunks);
+                        var errorTask = ctx.AddTask("[grey]No errors yet[/]").IsIndeterminate();
+                        errorTask.MaxValue = 100;
+                        errorTask.Value = 0;
 
-                        var processingTasks = new List<Task>();
-                        int maxDegreeOfParallelism = Environment.ProcessorCount == 1 ? 1 : Environment.ProcessorCount - 1;
-                        var semaphore = new SemaphoreSlim(maxDegreeOfParallelism);
+                        var overallTask = ctx.AddTask($"Processing {s3ChunkObjects.Count} _chunks objects...", maxValue: s3ChunkObjects.Count);
 
-                        foreach (var s3obj in s3Objects)
+                        var degreeParallel = Math.Max(1, Environment.ProcessorCount - 1);
+                        var consoleLock = new object();
+                        int lastExclusive = s3ChunkObjects.Count;
+                        int nextFileId = -1;
+
+                        var workers = new List<Task>(degreeParallel);
+                        for (int w = 0; w < degreeParallel; w++)
                         {
-                            var chunkId = int.Parse(s3obj.Key.Split(new[] { "_chunks", ".txt", ".gz", ".zst" }, StringSplitOptions.RemoveEmptyEntries).Last());
-
-                            if (chunks.Any() && !chunks.Contains(chunkId))
+                            workers.Add(Task.Run(() =>
                             {
-                                overallTask.Increment(1);
-                                continue;
-                            }
-
-                            semaphore.Wait();
-                            var localChunkId = chunkId;
-
-                            var task = Task.Run(() =>
-                            {
-                                try
+                                while (true)
                                 {
-                                    var chunkPersonIds = new ConcurrentDictionary<int, ConcurrentDictionary<long, PersonInS3Chunk>>();
-
-                                    using var transferUtility = new TransferUtility(_awsAccessKeyId, _awsSecretAccessKey, Amazon.RegionEndpoint.USEast1);
-                                    using var responseStream = transferUtility.OpenStream(_bucket, s3obj.Key);
-                                    using var bufferedStream = new BufferedStream(responseStream);
-                                    using Stream compressedStream = s3obj.Key.EndsWith(".gz")
-                                        ? new GZipStream(bufferedStream, CompressionMode.Decompress)
-                                        : new DecompressionStream(bufferedStream); // .zst
-                                    using var reader = new StreamReader(compressedStream, Encoding.Default);
-                                    string? line = reader.ReadLine();
-                                    while (!string.IsNullOrEmpty(line))
+                                    int chunkFilePersonIdsCount = 0;
+                                    string chunkTaskInitMsg = "Chunk ???";
+                                    var chunkTask = ctx.AddTask(chunkTaskInitMsg, maxValue: slicesToProcess.Count);
+                                    try
                                     {
-                                        var splits = line.Split('\t');
-                                        var personId = long.Parse(splits[1]);
+                                        int chunkFileId = Interlocked.Increment(ref nextFileId);
+                                        if (chunkFileId >= lastExclusive) break;
 
-                                        var sliceIdDictionary = chunkPersonIds.GetOrAdd(-1, _ => new ConcurrentDictionary<long, PersonInS3Chunk>());
-                                        sliceIdDictionary.GetOrAdd(personId, _ => new PersonInS3Chunk(personId, vendor, buildingId, localChunkId));
+                                        var chunkFilePersonIds = ReadChunkFile(s3ChunkObjects[chunkFileId], vendor, buildingId, chunksToProcess);
+                                        var chunkId = chunkFilePersonIds.First().Value.ChunkId;
+                                        chunkFilePersonIdsCount = chunkFilePersonIds.Count;
 
-                                        line = reader.ReadLine();
+                                        chunkTask.Description = chunkTask.Description.Replace("???", chunkId.ToString());
+
+                                        ValidateChunkFile(
+                                                vendor,
+                                                buildingId,
+                                                chunkId,
+                                                chunkFilePersonIds,
+                                                slicesToProcess,
+                                                errorMessages,
+                                                chunkTask);
+
+                                        overallTask.Increment(1);
                                     }
+                                    finally
+                                    {
+                                        lock (consoleLock)
+                                        {
+                                            totalPersonsCount += chunkFilePersonIdsCount;
+                                            while (errorMessages.TryDequeue(out var msg))
+                                            {
+                                                errorTask.Value = errorTask.MaxValue; //hide
+                                                chunkErrorsCount++;
 
-                                    ValidateChunkIdWithProgress(
-                                        vendor,
-                                        buildingId,
-                                        localChunkId,
-                                        chunkPersonIds,
-                                        slices,
-                                        ctx.AddTask($"Chunk {localChunkId}", maxValue: slices.Count));
+                                                if (!msg.Contains("[red]"))
+                                                    msg = "[red]" + msg + "[/]";
 
-                                    overallTask.Increment(1);
+                                                chunkTask.Value = chunkTask.MaxValue - 0.001; // do not hide completed task
+                                                chunkTask.Description = msg; // display chunk error info 
+                                            }
+                                            if (chunkTask.Description == chunkTaskInitMsg)
+                                                chunkTask.Value = chunkTask.MaxValue; //hide final chunkTasks which were created before the cycle break check
+                                        }
+                                    }
                                 }
-                                finally
-                                {
-                                    semaphore.Release();
-                                }
-                            });
-
-                            processingTasks.Add(task);
+                            }));
                         }
-
-                        Task.WaitAll(processingTasks.ToArray());
+                        Task.WaitAll(workers.ToArray());
+                        overallTask.Increment(overallTask.MaxValue - overallTask.Value - 0.1); //this is here not to hide the task upon completion
                     });
+
+                AnsiConsole.MarkupLine("\r\nProcessed " + s3ChunkObjects.Count + " files or " + totalPersonsCount + " persons. " 
+                    + chunkErrorsCount + " Chunks with errors are written above in red.");
             }
         }
 
-        private void ValidateChunkIdWithProgress(
+        private int GetS3ChunksFileNumber(string filename)
+            =>
+            int.Parse(new string(filename.Split('/')
+                .Last()
+                .Where(a => Char.IsDigit(a))
+                .ToArray()));
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="s3obj"></param>
+        /// <param name="vendor"></param>
+        /// <param name="buildingId"></param>
+        /// <param name="chunksWhiteList"></param>
+        /// <returns>person.personId, person</returns>
+        /// <exception cref="Exception"></exception>
+        private ConcurrentDictionary<long, Person> ReadChunkFile(S3Object s3obj, Vendor vendor, int buildingId, List<int> chunksWhiteList)
+        {
+            var filePersonIds = new ConcurrentDictionary<long, Person>();
+
+            using var transferUtility = new TransferUtility(_awsAccessKeyId, _awsSecretAccessKey, Amazon.RegionEndpoint.USEast1);
+            using var responseStream = transferUtility.OpenStream(_bucket, s3obj.Key);
+            using var bufferedStream = new BufferedStream(responseStream);
+            using Stream compressedStream = s3obj.Key.EndsWith(".gz")
+                ? new GZipStream(bufferedStream, CompressionMode.Decompress)
+                : new DecompressionStream(bufferedStream); // .zst
+            using var reader = new StreamReader(compressedStream, Encoding.Default);
+            string? line = reader.ReadLine();
+            while (!string.IsNullOrEmpty(line))
+            {
+                var splits = line.Split('\t');
+                var chunkId = int.Parse(splits[0]);
+                var personId = long.Parse(splits[1]);
+                var personSourceValue = splits[2];
+
+                if (!chunksWhiteList.Any() || chunksWhiteList.Any(s => s == chunkId))
+                    if (!filePersonIds.TryAdd(personId, new Person(chunkId, personId, personSourceValue)))
+                        throw new Exception($"Failed to add a new person! ChunkId={chunkId}, PersonId={personId}, PersonSourceValue={personSourceValue}");
+
+                line = reader.ReadLine();
+            }
+
+            return filePersonIds;
+        }
+
+        private void ValidateChunkFile(
             Vendor vendor,
             int buildingId,
             int chunkId,
-            ConcurrentDictionary<int, ConcurrentDictionary<long, PersonInS3Chunk>> chunkPersonIds,
+            ConcurrentDictionary<long, Person> chunkFilePersons,
             List<int> slices,
+            ConcurrentQueue<string> errorMessages,
             ProgressTask task)
         {
-            var chunkReport = new ChunkReport
-            {
-                BuildingId = buildingId,
-                ChunkId = chunkId
-            };
-
-            var s3ObjectsBySlice = GetS3ObjectsBySlice(vendor, buildingId, chunkId, slices);
+            var s3ObjectsBySlice = GetS3ObjectsBySlice(vendor, buildingId, chunkId, slices, errorMessages);
 
             foreach (var slice in s3ObjectsBySlice)
             {
-                ValidateSliceId(chunkPersonIds, vendor, buildingId, chunkId, slice.Key, slice.Value.PersonObjects, slice.Value.MetadataObjects, chunkReport);
+                ValidateSliceId(chunkFilePersons, vendor, buildingId, chunkId, slice.Key, slice.Value.PersonObjects, slice.Value.MetadataObjects, errorMessages);
                 task.Increment(1);
             }
 
-            var personIdsInPersonOrMetadata = chunkPersonIds
-                .Where(s => s.Key != -1) // -1 has copies of all the personIds, even without assigned SliceId
-                .SelectMany(s => s.Value.Keys)
+            //not simple int so this can be viewed in debug
+            var personsCorrect = chunkFilePersons.Values
+                .Where(s => s.InPersonFilesCount + s.InMetadataFilesCount == 1
+                         && s.SliceId != null)
                 .ToHashSet();
 
-            var personsInBatchOnly = chunkPersonIds
-                .First(s => s.Key == -1).Value.Values
-                .Where(s => !personIdsInPersonOrMetadata.Contains(s.PersonId))
+            var personsWithoutSliceId = chunkFilePersons.Values
+                .Where(s => s.SliceId == null)
                 .ToHashSet();
 
-            if (personsInBatchOnly.Count > 0)
+            var personsDuplicated = chunkFilePersons.Values
+                .Where(s => s.InPersonFilesCount + s.InMetadataFilesCount > 1)
+                .ToHashSet();
+
+            var personsZero = chunkFilePersons.Values
+                .Where(s => s.InPersonFilesCount + s.InMetadataFilesCount == 0)
+                .ToHashSet();
+
+            var personsBadAll = personsWithoutSliceId
+                .Union(personsDuplicated)
+                .Union(personsZero)
+                .ToHashSet();
+
+            if (personsBadAll.Count > 0)
             {
-                GetSlicesFromS3(personsInBatchOnly, vendor.PersonTableName, vendor.PersonIdIndex);
+                var sliceId = personsBadAll.FirstOrDefault(s => s.SliceId != null)?.SliceId.ToString() ?? "null";
+                var personId = personsBadAll.First().PersonId;
 
-                var slicesToCheck = personsInBatchOnly
-                    .Where(s => s.SliceId.HasValue)
-                    .Select(s => s.SliceId!.Value)
-                    .Distinct()
-                    .OrderBy(s => s)
-                    .ToList();
+                string sliceMsg = 
+                $"{vendor.Name} {buildingId} {chunkId} {sliceId.ToString().PadLeft(4, '0')} true" +
+                $" | {personId}" +
+                $" | C={personsCorrect.Count}, N={personsWithoutSliceId.Count}, D={personsDuplicated.Count}, M={personsZero.Count}";
 
-                chunkReport.OnlyInBatchIdsCount = personsInBatchOnly.Count;
-                chunkReport.AllSlicesWithOnlyInBatchIds = slicesToCheck;
-                chunkReport.PersonsWithCalculatedSlice = personsInBatchOnly.ToList();
-            }
-
-            lock (_chunkReports)
-            {
-                _chunkReports.Add(chunkReport);
+                errorMessages.Enqueue(sliceMsg);
             }
         }
 
@@ -332,39 +313,50 @@ namespace RunValidation
         {
             var slices = new HashSet<int>();
             var prefix = $"{vendorName}/{buildingId}/{_cdmFolder}/PERSON/PERSON.";
-            Console.WriteLine("Calculating slices " + _bucket + "|" + prefix);
-            using (var client = new AmazonS3Client(_awsAccessKeyId, _awsSecretAccessKey, Amazon.RegionEndpoint.USEast1))
-            {
-                var request = new ListObjectsV2Request
-                {
-                    BucketName = _bucket,
-                    Prefix = prefix
-                };
-                ListObjectsV2Response response;
 
-                do
-                {
-                    var responseTask = client.ListObjectsV2Async(request);
-                    responseTask.Wait();
-                    response = responseTask.Result;
+            AnsiConsole.Progress()
+               .AutoClear(false)
+               .HideCompleted(false)
+               .Columns(
+                   new TaskDescriptionColumn(),
+                   new ElapsedTimeColumn(),
+                   new SpinnerColumn())
+               .Start(ctx =>
+               {
+                   string taskDescription = "Calculating slices " + _bucket + "|" + prefix;
+                   var task = ctx.AddTask(taskDescription);
 
-                    foreach (var o in response.S3Objects)
-                    {
-                        slices.Add(int.Parse(o.Key.Split('.')[1]));
-                    }
+                   using (var client = new AmazonS3Client(_awsAccessKeyId, _awsSecretAccessKey, Amazon.RegionEndpoint.USEast1))
+                   {
+                       var request = new ListObjectsV2Request
+                       {
+                           BucketName = _bucket,
+                           Prefix = prefix
+                       };
+                       ListObjectsV2Response response;
 
-                    request.ContinuationToken = response.NextContinuationToken;
-                } while (response.IsTruncated);
-            }
+                       do
+                       {
+                           var responseTask = client.ListObjectsV2Async(request);
+                           responseTask.Wait();
+                           response = responseTask.Result;
 
-            Console.WriteLine("slices.Count=" + slices.Count);
-            Console.WriteLine();
+                           foreach (var o in response.S3Objects)
+                           {
+                               slices.Add(int.Parse(o.Key.Split('.')[1]));
+                           }
+
+                           task.Description = taskDescription + " | Count=" + slices.Count;
+                           request.ContinuationToken = response.NextContinuationToken;
+                       } while (response.IsTruncated);
+                   }
+               });
 
             return slices;
         }
 
         private Dictionary<int, (List<S3Object> PersonObjects, List<S3Object> MetadataObjects)> GetS3ObjectsBySlice(Vendor vendor, 
-            int buildingId, int chunkId, List<int> slices2process)
+            int buildingId, int chunkId, List<int> slices2process, ConcurrentQueue<string> errorMessages)
         {
             var s3ObjectsBySlice = new Dictionary<int, (List<S3Object> PersonObjects, List<S3Object> MetadataObjects)>();
 
@@ -393,7 +385,7 @@ namespace RunValidation
             if (s3ObjectsBySlice.Count == 0)
             {
                 var msg = $"chunkId={chunkId} - MISSED";
-                Console.WriteLine(msg);
+                errorMessages.Enqueue(msg);
             }
 
             return s3ObjectsBySlice;
@@ -425,23 +417,23 @@ namespace RunValidation
         /// <summary>
         /// This method alters members of chunkPersonIds collection
         /// </summary>
-        /// <param name="chunkPersonIds"></param>
+        /// <param name="chunkFilePersons"></param>
         /// <param name="vendor"></param>
         /// <param name="buildingId"></param>
         /// <param name="chunkId"></param>
         /// <param name="sliceId"></param>
         /// <param name="PersonObjects"></param>
         /// <param name="MetadataObjects"></param>
-        /// <returns>Subset of chunkPersonIds for the specified sliceId</returns>
+        /// <returns></returns>
         private void ValidateSliceId(
-            ConcurrentDictionary<int, ConcurrentDictionary<long, PersonInS3Chunk>> chunkPersonIds,
+            ConcurrentDictionary<long, Person> chunkFilePersons,
             Vendor vendor,
             int buildingId,
             int chunkId,
             int sliceId,
             List<S3Object> PersonObjects,
             List<S3Object> MetadataObjects,
-            ChunkReport chunkReport)
+            ConcurrentQueue<string> errorMessages)
         {
             var attempt = 0;
             var complete = false;
@@ -475,51 +467,19 @@ namespace RunValidation
                         {
                             var personId = (long)csv.GetField(typeof(long), 0);
 
-                            var sliceIdDictionary = chunkPersonIds.GetOrAdd(sliceId, new ConcurrentDictionary<long, PersonInS3Chunk>());
-                            var personToProcess = sliceIdDictionary.GetOrAdd(personId, chunkPersonIds[-1][personId]);
-                            personToProcess.SliceId ??= sliceId;
+                            var person = chunkFilePersons[personId];
+                            person.SliceId ??= sliceId;
 
                             if (o.Key.Contains("PERSON"))
-                            {
-                                personToProcess.InPersonFilesCount++;
-                            }
+                                person.InPersonFilesCount++;
                             else if (o.Key.Contains("METADATA_TMP"))
-                            {
-                                personToProcess.InMetadataFilesCount++;
-                            }
+                                person.InMetadataFilesCount++;
                             else
                                 throw new NotImplementedException("o.Key=" + o.Key);
                         }
                     });
 
-                    if (!chunkPersonIds.TryGetValue(sliceId, out var slicePersonIds))
-                        return;
-
-                    var slicePersonIdsDuplicated = slicePersonIds.Values
-                        .Where(s => s.InPersonFilesCount + s.InMetadataFilesCount > 1)
-                        .ToHashSet();
-
-                    var slicePersonIdsZero = slicePersonIds.Values
-                        .Where(s => s.InPersonFilesCount + s.InMetadataFilesCount == 0 || !s.IsFromBatch)
-                        .ToHashSet();
-
                     timer.Stop();
-
-                    if (slicePersonIdsZero.Count > 0)
-                    {
-                        var sliceReport = new SliceReport
-                        {
-                            BuildingId = buildingId,
-                            ChunkId =  chunkId,
-                            SliceId = sliceId,
-                            WrongCount = slicePersonIdsZero.Count,
-                            Duplicates = slicePersonIdsDuplicated.Count,
-                            ExampleWrongPersonId = slicePersonIdsZero.First().PersonId
-                        };
-
-                        chunkReport.SliceReports.Add(sliceReport);
-                    }
-
                     complete = true;
                 }
                 catch (Exception ex)
@@ -538,16 +498,12 @@ namespace RunValidation
         /// <summary>
         /// Try to get sliceId which contains given PersonId and other parameters
         /// </summary>
-        /// <param name="person">This should have Vendor, BuildingId, ChunkId, and PersonId information</param>
+        /// <param name="person"></param>
         /// <param name="table"></param>
         /// <returns></returns>
-        private void GetSlicesFromS3(HashSet<PersonInS3Chunk> personsOfSingleChunkId, string table, int personIndex)
+        private void GetSlicesFromS3(HashSet<Person> personsOfSingleChunkId, Vendor vendor, int buildingId, int chunkId)
         {
-            var vendor = personsOfSingleChunkId.First().Vendor;
-            var buildingId = personsOfSingleChunkId.First().BuildingId;
-            var chunkId = personsOfSingleChunkId.First().ChunkId;
-
-            var prefix = $"{vendor.Name}/{buildingId}/raw/{chunkId}/{table}/{table}";
+            var prefix = $"{vendor.Name}/{buildingId}/raw/{chunkId}/{vendor.PersonTableName}/{vendor.PersonTableName}";
 
             using (var client = new AmazonS3Client(_awsAccessKeyId, _awsSecretAccessKey, Amazon.RegionEndpoint.USEast1))
             {
@@ -575,8 +531,8 @@ namespace RunValidation
                         string? line = reader.ReadLine();
                         while (!string.IsNullOrEmpty(line))
                         {
-                            var personId = long.Parse(line.Split('\t')[personIndex]);                            
-                            if (personsOfSingleChunkId.TryGetValue(new PersonInS3Chunk(personId, vendor, buildingId, chunkId, false), out var personProvided))
+                            var personId = long.Parse(line.Split('\t')[vendor.PersonIdIndex]);                            
+                            if (personsOfSingleChunkId.TryGetValue(new Person(chunkId, personId), out var personProvided))
                             {
                                 var chars = o.Key
                                             .Split('/')
@@ -593,69 +549,6 @@ namespace RunValidation
                         }
                     }
 
-                }
-            }
-        }
-
-        private void Clean(Vendor vendor, int buildingId, int chunkId, string table, int slice)
-        {
-            var attempt = 0;
-            var complete = false;
-
-            while (!complete)
-            {
-                try
-                {
-                    attempt++;
-
-                    var perfix = $"{vendor}/{buildingId}/{_cdmFolder}/{table}/{table}.{slice}.{chunkId}.";
-
-                    using (var client = new AmazonS3Client(_awsAccessKeyId, _awsSecretAccessKey, Amazon.RegionEndpoint.USEast1))
-                    {
-                        var request = new ListObjectsV2Request
-                        {
-                            BucketName = _bucket,
-                            Prefix = perfix
-                        };
-                        ListObjectsV2Response response;
-                        do
-                        {
-                            using var getListObjects = client.ListObjectsV2Async(request);
-                            getListObjects.Wait();
-                            response = getListObjects.Result;
-
-                            var multiObjectDeleteRequest = new DeleteObjectsRequest
-                            {
-                                BucketName = _bucket
-                            };
-
-                            foreach (var o in response.S3Objects)
-                            {
-                                multiObjectDeleteRequest.AddKey(o.Key, null);
-                            }
-
-                            if (response.S3Objects.Count > 0)
-                            {
-                                using var deleteObjects = client.DeleteObjectsAsync(multiObjectDeleteRequest);
-                                deleteObjects.Wait();
-
-                                //Console.WriteLine(response.S3Objects.Count + " files deleted");
-                            }
-
-                            request.ContinuationToken = response.NextContinuationToken;
-                        } while (response.IsTruncated == true);
-                    }
-
-                    complete = true;
-                }
-                catch (Exception ex)
-                {
-                    Console.Write(" | [Clean] Exception | new attempt | " + attempt);
-                    Console.WriteLine(ex.Message);
-                    if (attempt > 3)
-                    {
-                        throw;
-                    }
                 }
             }
         }

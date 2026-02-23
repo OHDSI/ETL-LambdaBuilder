@@ -465,8 +465,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Premier
                 return new KeyValuePair<Person, Attrition>(null, Attrition.UnacceptablePatientQuality);
 
             var ordered = records.OrderByDescending(p => p.StartDate);
-            var person = ordered.Take(1).First();
-            person.StartDate = ordered.Take(1).Last().StartDate;
+            var person = ordered.First();
+            person.StartDate = ordered.Last().StartDate;
 
             var gender = records[0];
 

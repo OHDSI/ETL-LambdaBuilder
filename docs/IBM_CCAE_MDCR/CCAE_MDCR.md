@@ -39,7 +39,7 @@ Consolidated Omnibus Budget Reconciliation Act
 retirees with employer-provided Medicare
 Supplemental plans.
 <br><br>
-The IBM MarketScan Research Databases include the Commercial Claims and Encounters Database and the Medicare Supplemental and Coordination of Benefits Database.The native format of these two databases have the following table structure:
+The IBM MarketScan Research Databases include the Commercial Claims and Encounters Database and the Medicare Supplemental and Coordination of Benefits Database. We recommend using **Set A** for all clinical research questions. If you are doing health economic research, you may also want to ETL **Set B**. The native format of these two databases have the following table structure:
 * Inpatient Admissions Table
 * Facility Header Table
 * Inpatient Services Table

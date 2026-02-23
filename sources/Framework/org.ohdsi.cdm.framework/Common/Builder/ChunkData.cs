@@ -1,5 +1,4 @@
-﻿using Amazon.S3.Model;
-using org.ohdsi.cdm.framework.common.Enums;
+﻿using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Omop;
 
@@ -44,7 +43,7 @@ namespace org.ohdsi.cdm.framework.common.Builder
             Init();
         }
 
-        public void AddAttrition(long personId, Attrition attrition)
+        public void AddAttrition(long personId, Attrition attrition, int count = 0) 
         {
             if (attrition == Attrition.None)
                 return;
@@ -52,7 +51,12 @@ namespace org.ohdsi.cdm.framework.common.Builder
             if (!Metadata.ContainsKey(personId))
                 Metadata.Add(personId, null);
 
-            Metadata[personId] = new Metadata { PersonId = personId, Name = attrition.ToName() };
+            Metadata[personId] = new Metadata 
+            { 
+                PersonId = personId, 
+                Name = attrition.ToName(), 
+                Count = count
+            };
         }
 
 

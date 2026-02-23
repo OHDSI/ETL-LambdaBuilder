@@ -72,7 +72,46 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
                 case 13:
                     return _enumerator.Current.LanguageConceptId;
                 case 14:
-                    return _enumerator.Current.EventId;
+                    if (_enumerator.Current.EventId.HasValue)
+                    {
+                        switch (_enumerator.Current.EventType)
+                        {
+                            case Enums.EntityType.ConditionOccurrence:
+                                if (_offset.GetKeyOffset(_enumerator.Current.PersonId).ConditionOccurrenceIdChanged)
+                                    return _offset.GetId(_enumerator.Current.PersonId,
+                                        _enumerator.Current.EventId.Value);
+                                break;
+                            case Enums.EntityType.DeviceExposure:
+                                if (_offset.GetKeyOffset(_enumerator.Current.PersonId).DeviceExposureIdChanged)
+                                    return _offset.GetId(_enumerator.Current.PersonId,
+                                        _enumerator.Current.EventId.Value);
+                                break;
+                            case Enums.EntityType.DrugExposure:
+                                if (_offset.GetKeyOffset(_enumerator.Current.PersonId).DrugExposureIdChanged)
+                                    return _offset.GetId(_enumerator.Current.PersonId,
+                                        _enumerator.Current.EventId.Value);
+                                break;
+                            case Enums.EntityType.Measurement:
+                                if (_offset.GetKeyOffset(_enumerator.Current.PersonId).MeasurementIdChanged)
+                                    return _offset.GetId(_enumerator.Current.PersonId,
+                                        _enumerator.Current.EventId.Value);
+                                break;
+                            case Enums.EntityType.Observation:
+                                if (_offset.GetKeyOffset(_enumerator.Current.PersonId).ObservationIdChanged)
+                                    return _offset.GetId(_enumerator.Current.PersonId,
+                                        _enumerator.Current.EventId.Value);
+                                break;
+                            case Enums.EntityType.ProcedureOccurrence:
+                                if (_offset.GetKeyOffset(_enumerator.Current.PersonId).ProcedureOccurrenceIdChanged)
+                                    return _offset.GetId(_enumerator.Current.PersonId,
+                                        _enumerator.Current.EventId.Value);
+                                break;
+                            default:
+                                throw new InvalidOperationException("EventId invalid EventType " + _enumerator.Current.EventType);
+                        }
+                        return _enumerator.Current.EventId;
+                    }
+                    return null;
                 case 15:
                     return _enumerator.Current.EventFieldConceptId;
                 default:

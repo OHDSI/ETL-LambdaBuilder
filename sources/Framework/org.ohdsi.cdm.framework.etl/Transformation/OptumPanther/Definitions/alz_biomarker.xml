@@ -16,10 +16,10 @@
 		when biomarker='amyloid beta 40 peptide' and biomarker_source='plasma' then 42868556
 		when biomarker='amyloid beta 40 peptide' and biomarker_source='cerebrospinal fluid' then 42868555
 		when biomarker='amyloid beta 40 peptide' then 42868556
-		when biomarker='amyloid beta 42 peptide/amyloid beta 40 peptide' and biomarker_source='blood' then 0 --Mapping available in August 2025 release of vocabulary loinc code =106941-8
+		when biomarker='amyloid beta 42 peptide/amyloid beta 40 peptide' and biomarker_source='blood' then 1469579 --(Amyloid beta 42 peptide/Amyloid beta 40 peptide [Mass Ratio] in Plasma by LC/MS/MS)
 		when biomarker='amyloid beta 42 peptide/amyloid beta 40 peptide' and biomarker_source='cerebrospinal fluid' then 1617024
-		when biomarker='amyloid beta 42 peptide/amyloid beta 40 peptide' and biomarker_source='plasma' then 0 --Mapping available in August 2025 release of vocabulary loinc code =106941-8
-		when biomarker='amyloid beta 42 peptide/amyloid beta 40 peptide' then 0 --Mapping available in August 2025 release of vocabulary loinc code =106941-8
+		when biomarker='amyloid beta 42 peptide/amyloid beta 40 peptide' and biomarker_source='plasma' then 1469579 --(Amyloid beta 42 peptide/Amyloid beta 40 peptide [Mass Ratio] in Plasma by LC/MS/MS)
+		when biomarker='amyloid beta 42 peptide/amyloid beta 40 peptide' then 1469579 --(Amyloid beta 42 peptide/Amyloid beta 40 peptide [Mass Ratio] in Plasma by LC/MS/MS)
 		when biomarker='amyloid beta-peptides' and biomarker_source='blood' then 1091801
 		when biomarker='amyloid beta-peptides' and biomarker_source='cerebrospinal fluid' then 1091801
 		when biomarker='amyloid beta-peptides' and biomarker_source='plasma' then 1091801
