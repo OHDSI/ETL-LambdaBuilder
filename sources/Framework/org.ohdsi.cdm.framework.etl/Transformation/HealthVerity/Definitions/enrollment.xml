@@ -27,7 +27,7 @@
 		payer_type
 		FROM {sc}.enrollment
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
-		where lower(benefit_type) = 'medical'
+		where replace(data_vendor, ' - Enrollment', '') {param1} and lower(benefit_type) = 'medical'
 
 		union
 
@@ -45,7 +45,7 @@
 		payer_type
 		FROM {sc}.enrollment
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
-		where lower(benefit_type) = 'pharmacy' or benefit_type is null
+		where replace(data_vendor, ' - Enrollment', '') {param1} and lower(benefit_type) = 'pharmacy' or benefit_type is null
 		)
 
 		select a.*,
