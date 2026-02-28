@@ -256,7 +256,12 @@ value.IdleTime.TotalSeconds > 10)
                         Settings.Current.S3AwsSecretAccessKey, _chunkId, qd.FileName, qd.FieldHeaders, _prefix,
                         initRow, _tmpFolder));
 
-                    if (qd.Persons != null && qd.Persons.Length > 0)
+                    // TMP
+                    if (v.Name == "HealthVerity" && qd.FileName == "person")
+                    {
+                        queries.Insert(0, qd.FileName);
+                    }
+                    else if (v.Name != "HealthVerity" && qd.Persons != null && qd.Persons.Length > 0)
                     {
                         queries.Insert(0, qd.FileName);
                     }
