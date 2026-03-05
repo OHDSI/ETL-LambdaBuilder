@@ -328,7 +328,7 @@
 		CASE
 		WHEN smoking_habit_after_apr_24 = 2 THEN 1
 		ELSE 0
-		END AS exsmoker
+		END AS exsmoker,
 
 		CASE
 		WHEN mastication IS NULL THEN NULL
