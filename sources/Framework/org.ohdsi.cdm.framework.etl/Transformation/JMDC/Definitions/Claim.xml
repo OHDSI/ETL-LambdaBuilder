@@ -5,8 +5,8 @@
     Type_of_claim as place_of_service_source_value,
     CASE
     WHEN admission_date is null THEN CAST(CAST(Month_and_year_of_medical_care AS VARCHAR(6)) + '15' AS DATE)
-    WHEN DATEPART(year, CAST(CAST(Month_and_year_of_medical_care AS VARCHAR(6)) + '01' AS DATE)) = DATEPART(year, admission_date) AND
-    DATEPART(month, CAST(CAST(Month_and_year_of_medical_care AS VARCHAR(6)) + '01' AS DATE)) = DATEPART(month, admission_date) THEN admission_date
+    WHEN DATEPART(year, CAST(CAST(Month_and_year_of_medical_care AS VARCHAR(6)) + '01' AS DATE)) = DATEPART(year, CAST(admission_date AS date)) AND
+    DATEPART(month, CAST(CAST(Month_and_year_of_medical_care AS VARCHAR(6)) + '01' AS DATE)) = DATEPART(month, CAST(admission_date AS date)) THEN CAST(admission_date AS date)
     ELSE CAST(CAST(Month_and_year_of_medical_care AS VARCHAR(6)) + '01' AS DATE)
     END as visit_start_date,
     days_of_medical_care as num_of_days,
