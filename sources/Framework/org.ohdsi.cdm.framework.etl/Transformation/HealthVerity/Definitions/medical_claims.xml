@@ -16,6 +16,8 @@
 		principal_proc_ind,
 		case
 		when diagnosis_priority = '1' then 32902
+		when diagnosis_priority != '1' AND trim(upper(admit_diagnosis_ind)) = 'Y' then 32890
+		when diagnosis_priority = '2' AND trim(upper(admit_diagnosis_ind)) != 'Y' then 32908
 		else 32908
 		end as condition_status_concept_id,
 
@@ -35,6 +37,7 @@
 		when date_service &gt;= '10/1/2015' then '10'
 		end as icd_ver,
 		hv_enc_id,
+		procedure_modifier_1,
 		1 as fake
 		FROM {sc}.medical_claims
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
@@ -106,6 +109,7 @@
 			<EndDate>date_service</EndDate>
 			<AdditionalFields>
 				<string>data_vendor</string>
+				<string>procedure_modifier_1</string>
 			</AdditionalFields>
 			<Concepts>
 				<Concept>
@@ -116,6 +120,16 @@
 					</ConceptIdMappers>
 					<Fields>
 						<Field key="procedure_code" typeId="type_concept_id" />
+					</Fields>
+				</Concept>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>Modifier</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="procedure_modifier_1"/>
 					</Fields>
 				</Concept>
 			</Concepts>
