@@ -232,7 +232,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.JMDC
                             !visitOccurrences.ContainsKey(parentCondition.VisitOccurrenceId.Value)) continue;
 
                         var endDate = episode.Max(c => c.StartDate);
-                        var startOfMedicalCare = DateTime.Parse(parentCondition.AdditionalFields["start_m_and_y_date"]);
+                        var startOfMedicalCare = DateTime.ParseExact(parentCondition.AdditionalFields["start_m_and_y_date"], "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
 
                         var newCondition = new ConditionOccurrence(parentCondition)
                         {
@@ -412,11 +412,11 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.JMDC
                             if (!_visitsDateDiagnosis.ContainsKey(diagnosis[0].VisitOccurrenceId.Value))
                             {
                                 _visitsDateDiagnosis.Add(diagnosis[0].VisitOccurrenceId.Value,
-                                    DateTime.Parse(diagnosis[0].AdditionalFields["start_m_and_y_date"]));
+                                    DateTime.ParseExact(diagnosis[0].AdditionalFields["start_m_and_y_date"], "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture));
                             }
                             else
                             {
-                                var newValue = DateTime.Parse(diagnosis[0].AdditionalFields["start_m_and_y_date"]);
+                                var newValue = DateTime.ParseExact(diagnosis[0].AdditionalFields["start_m_and_y_date"], "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
 
                                 if (_visitsDateDiagnosis[diagnosis[0].VisitOccurrenceId.Value] < newValue)
                                     _visitsDateDiagnosis[diagnosis[0].VisitOccurrenceId.Value] = newValue;
