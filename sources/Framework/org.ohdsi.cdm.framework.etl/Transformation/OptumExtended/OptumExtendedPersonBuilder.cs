@@ -879,7 +879,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
                 episode.Id = Offset.GetKeyOffset(episode.PersonId).ConditionEraId;
                 //episode.OccurrenceCount = episode.OccurrenceCount * -1; //TMP
                 episode.OccurrenceCount = 0;
-                ChunkData.ConditionEra.Add(episode);
+                //ChunkData.ConditionEra.Add(episode);
                 pregnancyEpisodes.Add(episode);
 
                 if (episode.ConceptId == 433260 && _potentialChilds.Count > 0)
