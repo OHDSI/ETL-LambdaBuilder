@@ -605,7 +605,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.JMDC
                 ChunkData.DrugExposures.Where(e => e.PersonId == person.PersonId).ToArray()))
             {
                 r.Id = Offset.GetKeyOffset(r.PersonId).ConditionEraId;
-                ChunkData.ConditionEra.Add(r);
+                //ChunkData.ConditionEra.Add(r);
 
                 if (r.ConceptId == 433260 && _potentialChilds.Count > 0)
                 {
