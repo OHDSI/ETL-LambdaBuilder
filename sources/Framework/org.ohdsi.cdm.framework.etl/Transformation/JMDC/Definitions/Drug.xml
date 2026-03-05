@@ -7,7 +7,7 @@
 		CASE
 		WHEN administered_days &lt; 1 THEN 1
     WHEN administered_days > 180 THEN 180
-		ELSE administered_days
+		ELSE cast(administered_days as int)
 		END AS days_supply,
 		CASE
 		WHEN Type_of_claim = 'Outpatient'
