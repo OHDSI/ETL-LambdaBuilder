@@ -308,20 +308,27 @@
 		END AS ecg_concept_name,
 
 		CASE
-		WHEN smoking_habit_until_mar_24 IS NULL and smoking_habit_after_apr_24 IS NULL
-		THEN NULL
-		WHEN smoking_habit_until_mar_24 = 1 or smoking_habit_after_apr_24 = 1 THEN 4298794
-		WHEN smoking_habit_after_apr_24 = 2 THEN 4310250
-		ELSE 4222303
+		WHEN smoking_habit_until_mar_24 IS NULL and smoking_habit_after_apr_24 IS NULL THEN NULL
+		WHEN smoking_habit_until_mar_24 = 1 or smoking_habit_after_apr_24 = 1 THEN 903657
+		WHEN smoking_habit_until_mar_24 = 2 and smoking_habit_after_apr_24 is NULL  THEN 903651
+		WHEN smoking_habit_after_apr_24 = 2 THEN 1340204
+		WHEN smoking_habit_after_apr_24 = 3 THEN 903651
+		ELSE NULL
 		END AS Smoking_habit_concept_id,
 
 		CASE
-		WHEN smoking_habit_until_mar_24 IS NULL and smoking_habit_after_apr_24 IS NULL
-		THEN NULL
+		WHEN smoking_habit_until_mar_24 IS NULL and smoking_habit_after_apr_24 IS NULL THEN NULL
 		WHEN smoking_habit_until_mar_24 = 1 or smoking_habit_after_apr_24 = 1 THEN 'Smoker'
+		WHEN smoking_habit_until_mar_24 = 2 and smoking_habit_after_apr_24 is NULL THEN 'Non-smoker'
 		WHEN smoking_habit_after_apr_24 = 2 THEN 'Ex-smoker'
-		ELSE 'Non-smoker'
+		WHEN smoking_habit_after_apr_24 = 3 THEN 'Non-smoker'
+		ELSE NULL
 		END AS Smoking_habit_concept_name,
+
+		CASE
+		WHEN smoking_habit_after_apr_24 = 2 THEN 1
+		ELSE 0
+		END AS exsmoker,
 
 		CASE
 		WHEN mastication IS NULL THEN NULL
@@ -870,6 +877,19 @@
 				<Concept>
 					<Fields>
 						<Field conceptId="Smoking_habit_concept_id" sourceKey="Smoking_habit_concept_name" defaultTypeId="32836"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ObservationDefinition>
+		<ObservationDefinition>
+			<Condition>{exsmoker} = 1</Condition>
+			<PersonId>PERSON_ID</PersonId>
+			<IsUnique>true</IsUnique>
+			<StartDate>observation_date</StartDate>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field defaultSource="Ex-smoker" defaultConceptId="903651" defaultTypeId="32836"/>
 					</Fields>
 				</Concept>
 			</Concepts>

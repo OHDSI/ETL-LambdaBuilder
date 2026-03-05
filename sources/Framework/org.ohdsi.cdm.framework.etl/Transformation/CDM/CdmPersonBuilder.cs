@@ -236,17 +236,17 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CDM
 
             Complete = true;
 
-            var pg = new PregnancyAlgorithm();
-            foreach (var r in pg.GetPregnancyEpisodes(Vocabulary, person, [.. observationPeriods],
-                ChunkData.ConditionOccurrences.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.ProcedureOccurrences.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.Observations.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.Measurements.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.DrugExposures.Where(e => e.PersonId == person.PersonId).ToArray()))
-            {
-                r.Id = Offset.GetKeyOffset(r.PersonId).ConditionEraId;
-                ChunkData.ConditionEra.Add(r);
-            }
+            //var pg = new PregnancyAlgorithm();
+            //foreach (var r in pg.GetPregnancyEpisodes(Vocabulary, person, [.. observationPeriods],
+            //    ChunkData.ConditionOccurrences.Where(e => e.PersonId == person.PersonId).ToArray(),
+            //    ChunkData.ProcedureOccurrences.Where(e => e.PersonId == person.PersonId).ToArray(),
+            //    ChunkData.Observations.Where(e => e.PersonId == person.PersonId).ToArray(),
+            //    ChunkData.Measurements.Where(e => e.PersonId == person.PersonId).ToArray(),
+            //    ChunkData.DrugExposures.Where(e => e.PersonId == person.PersonId).ToArray()))
+            //{
+            //    r.Id = Offset.GetKeyOffset(r.PersonId).ConditionEraId;
+            //    ChunkData.ConditionEra.Add(r);
+            //}
             return Attrition.None;
         }
 

@@ -19,7 +19,7 @@
 		else 0
 		end as has_payerplan,
 		case
-		when family_id != '' then cast(replace(family_id, 'M', '') as int)
+		when family_id != '' then cast(replace(family_id, left(family_id, 1), '') as int)
 		else 0
 		end as payerplan_id,
 		type_of_insurance,
