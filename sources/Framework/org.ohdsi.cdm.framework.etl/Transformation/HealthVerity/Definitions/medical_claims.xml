@@ -5,8 +5,8 @@
 		hvid,
 		date_service,
 		trim(replace(replace(replace(diagnosis_code, chr(9), ' '), chr(10), ' '), chr(13), ' ')) diagnosis_code,
-		procedure_code,
-		ndc_code,
+		trim(replace(replace(replace(procedure_code, chr(9), ' '), chr(10), ' '), chr(13), ' ')) procedure_code,
+		trim(replace(replace(replace(ndc_code, chr(9), ' '), chr(10), ' '), chr(13), ' ')) ndc_code,
 		claim_type,
 		case
 		when lower(claim_type) = 'p' then 32871
