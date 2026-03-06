@@ -10,15 +10,15 @@ Bacteria identified:Prid:Pt:Thrt:Nom:Culture	0	JNJ_PMR_LAB_RES	Bacteria identifi
 Bacteria identified:Prid:Pt:Urine:Nom:Culture	0	JNJ_PMR_LAB_RES	Bacteria identified:Prid:Pt:Urine:Nom:Culture	3026008	LOINC	1970-01-01	2099-12-31	
 Bacteria identified:Prid:Pt:Wound:Nom:Aerobic culture	0	JNJ_PMR_LAB_RES	Bacteria identified:Prid:Pt:Wound:Nom:Aerobic culture	3013146	LOINC	1970-01-01	2099-12-31	
 Bacteria identified:Prid:Pt:Wound:Nom:Culture	0	JNJ_PMR_LAB_RES	Bacteria identified:Prid:Pt:Wound:Nom:Culture	3003714	LOINC	1970-01-01	2099-12-31	
-Bacteria identified:Prid:Pt:XXX:Nom:Anaerobic+Aerobic culture	0	JNJ_PMR_LAB_RES	Bacteria identified:Prid:Pt:XXX:Nom:Anaerobic+Aerobic culture	3024447	LOINC	1970-01-01	2099-12-31	
 Bacteria identified:Prid:Pt:XXX:Nom:Anaerobic culture	0	JNJ_PMR_LAB_RES	Bacteria identified:Prid:Pt:XXX:Nom:Anaerobic culture	3011298	LOINC	1970-01-01	2099-12-31	
+Bacteria identified:Prid:Pt:XXX:Nom:Anaerobic+Aerobic culture	0	JNJ_PMR_LAB_RES	Bacteria identified:Prid:Pt:XXX:Nom:Anaerobic+Aerobic culture	3024447	LOINC	1970-01-01	2099-12-31	
 Bacteria identified:Prid:Pt:XXX:Nom:Culture	0	JNJ_PMR_LAB_RES	Bacteria identified:Prid:Pt:XXX:Nom:Culture	3002619	LOINC	1970-01-01	2099-12-31	
 Bacteria identified:Prid:Pt:XXX:Nom:Respiratory culture	0	JNJ_PMR_LAB_RES	Bacteria identified:Prid:Pt:XXX:Nom:Respiratory culture	3023764	LOINC	1970-01-01	2099-12-31	
 Bordetella parapertussis DNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Bordetella parapertussis DNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	3037875	LOINC	1970-01-01	2099-12-31	
 Bordetella pertussis DNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Bordetella pertussis DNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	3037875	LOINC	1970-01-01	2099-12-31	
 Chlamydia sp DNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Chlamydia sp DNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	3034878	LOINC	1970-01-01	2099-12-31	
-Chlamydia trachomatis DNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Chlamydia trachomatis DNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	3044125	LOINC	1970-01-01	2099-12-31	
 Chlamydia trachomatis DNA assay	0	JNJ_PMR_LAB_RES	Chlamydia trachomatis DNA assay	4044979	SNOMED	1970-01-01	2099-12-31	
+Chlamydia trachomatis DNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Chlamydia trachomatis DNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	3044125	LOINC	1970-01-01	2099-12-31	
 Chlamydophila pneumoniae DNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Chlamydophila pneumoniae DNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	3031478	LOINC	1970-01-01	2099-12-31	
 Clostridium difficile toxin A+B:ACnc:Pt:Stool:Ord	0	JNJ_PMR_LAB_RES	Clostridium difficile toxin A+B:ACnc:Pt:Stool:Ord	3032068	LOINC	1970-01-01	2099-12-31	
 Clue cells:ACnc:Pt:XXX:Ord:Wet preparation	0	JNJ_PMR_LAB_RES	Clue cells:ACnc:Pt:XXX:Ord:Wet preparation	3047152	LOINC	1970-01-01	2099-12-31	
@@ -67,10 +67,10 @@ Parainfluenza virus 2 RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Parain
 Parainfluenza virus 3 RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Parainfluenza virus 3 RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	3006262	LOINC	1970-01-01	2099-12-31	
 Parainfluenza virus 4 RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Parainfluenza virus 4 RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	3038297	LOINC	1970-01-01	2099-12-31	
 Reagin Ab:ACnc:Pt:Ser:Ord:RPR	0	JNJ_PMR_LAB_RES	Reagin Ab:ACnc:Pt:Ser:Ord:RPR	3021461	LOINC	1970-01-01	2099-12-31	
+Respiratory syncytial virus A RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Respiratory syncytial virus A RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	3044254	LOINC	1970-01-01	2099-12-31	
 Respiratory syncytial virus Ag:ACnc:Pt:XXX:Ord	0	JNJ_PMR_LAB_RES	Respiratory syncytial virus Ag:ACnc:Pt:XXX:Ord	3001684	LOINC	1970-01-01	2099-12-31	
 Respiratory syncytial virus Ag:ACnc:Pt:XXX:Ord:EIA	0	JNJ_PMR_LAB_RES	Respiratory syncytial virus Ag:ACnc:Pt:XXX:Ord:EIA	3020426	LOINC	1970-01-01	2099-12-31	
 Respiratory syncytial virus Ag:ACnc:Pt:XXX:Ord:IF	0	JNJ_PMR_LAB_RES	Respiratory syncytial virus Ag:ACnc:Pt:XXX:Ord:IF	3005444	LOINC	1970-01-01	2099-12-31	
-Respiratory syncytial virus A RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Respiratory syncytial virus A RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	3044254	LOINC	1970-01-01	2099-12-31	
 Respiratory syncytial virus B RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Respiratory syncytial virus B RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	3000108	LOINC	1970-01-01	2099-12-31	
 Respiratory syncytial virus RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Respiratory syncytial virus RNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	3044254	LOINC	1970-01-01	2099-12-31	
 Respiratory syncytial virus RNA:PrThr:Pt:Nph:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Respiratory syncytial virus RNA:PrThr:Pt:Nph:Ord:Probe.amp.tar	46235794	LOINC	1970-01-01	2099-12-31	
@@ -88,7 +88,7 @@ Streptococcus pyogenes Ag:ACnc:Pt:XXX:Ord	0	JNJ_PMR_LAB_RES	Streptococcus pyogen
 Streptococcus pyogenes Ag:ACnc:Pt:XXX:Ord:EIA	0	JNJ_PMR_LAB_RES	Streptococcus pyogenes Ag:ACnc:Pt:XXX:Ord:EIA	3017906	LOINC	1970-01-01	2099-12-31	
 Streptococcus pyogenes DNA:Prid:Pt:XXX:Nom:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Streptococcus pyogenes DNA:Prid:Pt:XXX:Nom:Probe.amp.tar	3032732	LOINC	1970-01-01	2099-12-31	
 Treponema pallidum Ab:ACnc:Pt:Ser:Qn	0	JNJ_PMR_LAB_RES	Treponema pallidum Ab:ACnc:Pt:Ser:Qn	3019832	LOINC	1970-01-01	2099-12-31	
-Trichomonas vaginalis:ACnc:Pt:XXX:Ord:Wet preparation	0	JNJ_PMR_LAB_RES	Trichomonas vaginalis:ACnc:Pt:XXX:Ord:Wet preparation	3047204	LOINC	1970-01-01	2099-12-31	
 Trichomonas vaginalis rRNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	0	JNJ_PMR_LAB_RES	Trichomonas vaginalis rRNA:ACnc:Pt:XXX:Ord:Probe.amp.tar	3045342	LOINC	1970-01-01	2099-12-31	
+Trichomonas vaginalis:ACnc:Pt:XXX:Ord:Wet preparation	0	JNJ_PMR_LAB_RES	Trichomonas vaginalis:ACnc:Pt:XXX:Ord:Wet preparation	3047204	LOINC	1970-01-01	2099-12-31	
 Urinalysis panel:-:Pt:Urine:-	0	JNJ_PMR_LAB_RES	Urinalysis panel:-:Pt:Urine:-	3030688	LOINC	1970-01-01	2099-12-31	
 Yeast:ACnc:Pt:XXX:Ord:Wet preparation	0	JNJ_PMR_LAB_RES	Yeast:ACnc:Pt:XXX:Ord:Wet preparation	3047178	LOINC	1970-01-01	2099-12-31	
