@@ -1,14 +1,14 @@
 source_code	source_concept_id	source_vocabulary_id	source_code_description	target_concept_id	target_vocabulary_id	valid_start_date	valid_end_date	invalid_reason
 761.6	44821216	JNJ_DEATH	Maternal death affecting fetus or newborn	0	None	1970-01-01	2099-12-31	
-798	44831614	JNJ_DEATH	Sudden death, cause unknown	0	None	1970-01-01	2099-12-31	
 79.8	2005559	JNJ_DEATH	Open reduction of dislocation	0	None	1970-01-01	2099-12-31	
 79.80	2005560	JNJ_DEATH	Open reduction of dislocation of unspecified site	0	None	1970-01-01	2099-12-31	
-798.0	44826990	JNJ_DEATH	Sudden infant death syndrome	0	None	1970-01-01	2099-12-31	
 79.81	2005561	JNJ_DEATH	Open reduction of dislocation of shoulder	0	None	1970-01-01	2099-12-31	
-798.1	44832725	JNJ_DEATH	Instantaneous death	0	None	1970-01-01	2099-12-31	
 79.82	2005572	JNJ_DEATH	Open reduction of dislocation of elbow	0	None	1970-01-01	2099-12-31	
-798.2	44837452	JNJ_DEATH	Death occurring in less than 24 hours from onset of symptoms, not otherwise explained	0	None	1970-01-01	2099-12-31	
 79.89	2005579	JNJ_DEATH	Open reduction of dislocation of other specified sites	0	None	1970-01-01	2099-12-31	
+798	44831614	JNJ_DEATH	Sudden death, cause unknown	0	None	1970-01-01	2099-12-31	
+798.0	44826990	JNJ_DEATH	Sudden infant death syndrome	0	None	1970-01-01	2099-12-31	
+798.1	44832725	JNJ_DEATH	Instantaneous death	0	None	1970-01-01	2099-12-31	
+798.2	44837452	JNJ_DEATH	Death occurring in less than 24 hours from onset of symptoms, not otherwise explained	0	None	1970-01-01	2099-12-31	
 798.9	44828177	JNJ_DEATH	Unattended death	0	None	1970-01-01	2099-12-31	
 E913.1	44821453	JNJ_DEATH	Accidental mechanical suffocation by plastic bag	0	None	1970-01-01	2099-12-31	
 E978	44831880	JNJ_DEATH	Legal execution	0	None	1970-01-01	2099-12-31	

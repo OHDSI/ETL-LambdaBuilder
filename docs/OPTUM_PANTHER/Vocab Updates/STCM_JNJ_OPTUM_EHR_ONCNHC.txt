@@ -19,9 +19,9 @@ anorectal squamous cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	anorectal squamous cell
 anus neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	anus neoplasm	4129882	SNOMED	2023-08-02	2099-12-31	
 anus squamous cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	anus squamous cell carcinoma	36716972	SNOMED	2023-08-02	2099-12-31	
 appendix adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	appendix adenocarcinoma	4184849	SNOMED	2023-08-02	2099-12-31	
+b-cell lymphomas	0	JNJ_OPTUM_EHR_ONCNHC	b-cell lymphomas	434592	SNOMED	2023-08-02	2099-12-31	
 back basal cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	back basal cell carcinoma	4307538	SNOMED	2023-08-02	2099-12-31	
 basal cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	basal cell carcinoma	42513061	ICDO3	2023-08-02	2099-12-31	
-b-cell lymphomas	0	JNJ_OPTUM_EHR_ONCNHC	b-cell lymphomas	434592	SNOMED	2023-08-02	2099-12-31	
 benign adenoma	0	JNJ_OPTUM_EHR_ONCNHC	benign adenoma	40481474	SNOMED	2023-08-02	2099-12-31	
 benign ascending colon carcinoid tumor	0	JNJ_OPTUM_EHR_ONCNHC	benign ascending colon carcinoid tumor	760937	SNOMED	2023-08-02	2025-03-11	D
 benign ascending colon carcinoid tumor	0	JNJ_OPTUM_EHR_ONCNHC	benign ascending colon carcinoid tumor	1077457	SNOMED	2025-03-11	2099-12-31	
@@ -352,8 +352,8 @@ ovarian serous carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	ovarian serous carcinoma	4449944
 ovarian teratoma	0	JNJ_OPTUM_EHR_ONCNHC	ovarian teratoma	37396311	SNOMED	2023-08-02	2099-12-31	
 pancreatic acinar cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	pancreatic acinar cell carcinoma	37204852	SNOMED	2023-08-02	2099-12-31	
 pancreatic adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	pancreatic adenocarcinoma	45763891	SNOMED	2023-08-02	2099-12-31	
-pancreatic ductal adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	pancreatic ductal adenocarcinoma	37311469	SNOMED	2023-08-02	2099-12-31	
 pancreatic duct ductal adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	pancreatic duct ductal adenocarcinoma	37311469	SNOMED	2023-08-02	2099-12-31	
+pancreatic ductal adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	pancreatic ductal adenocarcinoma	37311469	SNOMED	2023-08-02	2099-12-31	
 pancreatic mucinous cystadenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	pancreatic mucinous cystadenocarcinoma	37206235	SNOMED	2023-08-02	2099-12-31	
 pancreatic neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	pancreatic neoplasm	199754	SNOMED	2023-08-02	2099-12-31	
 papillary	0	JNJ_OPTUM_EHR_ONCNHC	papillary	42513030	ICDO3	2023-08-02	2099-12-31	

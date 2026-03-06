@@ -60,9 +60,9 @@ Other Nursing Facility	0	JNJ_OPTUM_EHR_SPCLTY	Other Nursing Facility	0	None	1970
 Otolaryngology	0	JNJ_OPTUM_EHR_SPCLTY	Otolaryngology	38004449	Medicare Specialty	1970-01-01	2099-12-31	
 Pain Medicine	0	JNJ_OPTUM_EHR_SPCLTY	Pain Medicine	38004494	Medicare Specialty	1970-01-01	2099-12-31	
 Pathology	0	JNJ_OPTUM_EHR_SPCLTY	Pathology	38004466	Medicare Specialty	1970-01-01	2099-12-31	
-Pediatrics	0	JNJ_OPTUM_EHR_SPCLTY	Pediatrics	38004477	Medicare Specialty	1970-01-01	2099-12-31	
 Pediatric Specialties	0	JNJ_OPTUM_EHR_SPCLTY	Pediatric Specialties	38004477	Medicare Specialty	1970-01-01	2099-12-31	
 Pediatric Surgery	0	JNJ_OPTUM_EHR_SPCLTY	Pediatric Surgery	38004447	Medicare Specialty	1970-01-01	2099-12-31	
+Pediatrics	0	JNJ_OPTUM_EHR_SPCLTY	Pediatrics	38004477	Medicare Specialty	1970-01-01	2099-12-31	
 Pharmacy	0	JNJ_OPTUM_EHR_SPCLTY	Pharmacy	38004520	Medicare Specialty	1970-01-01	2023-01-20	D
 Pharmacy	0	JNJ_OPTUM_EHR_SPCLTY	Pharmacy	581458	Visit	2023-01-20	2099-12-31	
 Physical Medicine and Rehabilitation	0	JNJ_OPTUM_EHR_SPCLTY	Physical Medicine and Rehabilitation	38004468	Medicare Specialty	1970-01-01	2099-12-31	
