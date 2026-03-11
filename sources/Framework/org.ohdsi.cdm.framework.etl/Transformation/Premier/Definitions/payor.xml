@@ -10,7 +10,9 @@
 		<PayerPlanPeriodDefinition>
 			<PersonId>medrec_key</PersonId>
 			<PayerSource>std_payor_desc</PayerSource>
-			<VisitOccurrenceId>pat_key</VisitOccurrenceId>
+			<AdditionalFields>
+				<string>pat_key</string>
+			</AdditionalFields>
 		</PayerPlanPeriodDefinition>
 	</PayerPlanPeriods>
 </QueryDefinition>

@@ -31,12 +31,14 @@
 		<MeasurementDefinition>
 			<Condition>{isloinc} = 1</Condition>
 			<PersonId>medrec_key</PersonId>
-			<VisitOccurrenceId>pat_key</VisitOccurrenceId>
 			<ProviderId>adm_phy</ProviderId>
 			<ValueSourceValue>value_source_value</ValueSourceValue>
 			<OperatorConceptId>operator_concept_id</OperatorConceptId>
 			<ValueAsNumber>test_result_numeric_value</ValueAsNumber>
 			<StartDate>observation_datetime</StartDate>
+			<AdditionalFields>
+				<string>pat_key</string>
+			</AdditionalFields>
 			<!--
 			<AdditionalFields>
 				<string>collection_day_number</string>
@@ -69,7 +71,9 @@
 		<MeasurementDefinition>
 			<Condition>{isloinc} = 0</Condition>
 			<PersonId>medrec_key</PersonId>
-			<VisitOccurrenceId>pat_key</VisitOccurrenceId>
+			<AdditionalFields>
+				<string>pat_key</string>
+			</AdditionalFields>
 			<ProviderId>adm_phy</ProviderId>
 			<ValueSourceValue>value_source_value</ValueSourceValue>
 			<OperatorConceptId>operator_concept_id</OperatorConceptId>

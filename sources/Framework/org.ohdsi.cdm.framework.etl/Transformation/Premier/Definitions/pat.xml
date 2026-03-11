@@ -143,7 +143,6 @@
 	</Persons>
 	<VisitOccurrence>
 		<VisitOccurrenceDefinition>
-			<Id>pat_key</Id>
 			<PersonId>medrec_key</PersonId>
 			<StartDate>adm_date</StartDate>
 			<EndDate>disc_date</EndDate>
@@ -153,6 +152,9 @@
 			<AdmittingSourceValue>POINT_OF_ORIGIN</AdmittingSourceValue>
 			<DischargeToConceptId>DISCHARGE_TO_CONCEPT_ID</DischargeToConceptId>
 			<DischargeToSourceValue>DISC_STATUS</DischargeToSourceValue>
+			<AdditionalFields>
+				<string>pat_key</string>
+			</AdditionalFields>
 			<Concepts>
 				<Concept>
 					<Fields>
@@ -165,8 +167,10 @@
 	<Observation>
 		<ObservationDefinition>
 			<PersonId>medrec_key</PersonId>
-			<VisitOccurrenceId>pat_key</VisitOccurrenceId>
 			<ProviderId>adm_phy</ProviderId>
+			<AdditionalFields>
+				<string>pat_key</string>
+			</AdditionalFields>
 			<ValuesAsString>
 				<string>mart_status</string>
 			</ValuesAsString>
@@ -180,8 +184,10 @@
 		</ObservationDefinition>
 		<ObservationDefinition>
 			<PersonId>medrec_key</PersonId>
-			<VisitOccurrenceId>pat_key</VisitOccurrenceId>
 			<ProviderId>adm_phy</ProviderId>
+			<AdditionalFields>
+				<string>pat_key</string>
+			</AdditionalFields>
 			<ValuesAsString>
 				<string>pat_type_desc</string>
 			</ValuesAsString>

@@ -18,7 +18,9 @@
 		<ProcedureOccurrenceDefinition>
 			<IsUnique>true</IsUnique>
 			<PersonId>medrec_key</PersonId>
-			<VisitOccurrenceId>pat_key</VisitOccurrenceId>
+			<AdditionalFields>
+				<string>pat_key</string>
+			</AdditionalFields>
 			<ProviderId>adm_phy</ProviderId>
 			<Concepts>
 				<Concept>
@@ -39,7 +41,9 @@
 		<DrugExposureDefinition>
 			<IsUnique>true</IsUnique>
 			<PersonId>medrec_key</PersonId>
-			<VisitOccurrenceId>pat_key</VisitOccurrenceId>
+			<AdditionalFields>
+				<string>pat_key</string>
+			</AdditionalFields>
 			<ProviderId>adm_phy</ProviderId>
 			<Concepts>
 				<Concept>
@@ -59,7 +63,9 @@
 	<Observation>
 		<ObservationDefinition>
 			<PersonId>medrec_key</PersonId>
-			<VisitOccurrenceId>pat_key</VisitOccurrenceId>
+			<AdditionalFields>
+				<string>pat_key</string>
+			</AdditionalFields>
 			<ProviderId>adm_phy</ProviderId>
 			<Concepts>
 				<Concept>
@@ -79,7 +85,9 @@
 	<Measurement>
 		<MeasurementDefinition>
 			<PersonId>medrec_key</PersonId>
-			<VisitOccurrenceId>pat_key</VisitOccurrenceId>
+			<AdditionalFields>
+				<string>pat_key</string>
+			</AdditionalFields>
 			<ProviderId>adm_phy</ProviderId>
 			<Concepts>
 				<Concept>
@@ -99,7 +107,9 @@
 	<DeviceExposure>
 		<DeviceExposureDefinition>
 			<PersonId>medrec_key</PersonId>
-			<VisitOccurrenceId>pat_key</VisitOccurrenceId>
+			<AdditionalFields>
+				<string>pat_key</string>
+			</AdditionalFields>
 			<ProviderId>adm_phy</ProviderId>
 			<Concepts>
 				<Concept>

@@ -46,7 +46,6 @@
 		<ConditionOccurrenceDefinition>
 			<IsUnique>true</IsUnique>
 			<PersonId>medrec_key</PersonId>
-			<VisitOccurrenceId>pat_key</VisitOccurrenceId>
 			<ProviderId>adm_phy</ProviderId>
 			<StartDate>serv_date</StartDate>
 			<AdditionalFields>
@@ -55,6 +54,7 @@
 				<string>source_value</string>
 				<string>quantity</string>
 				<string>source</string>
+				<string>pat_key</string>
 			</AdditionalFields>
 			<Concepts>
 				<Concept>
@@ -81,7 +81,6 @@
 			<IsUnique>true</IsUnique>
 			<PersonId>medrec_key</PersonId>
 			<Quantity>quantity</Quantity>
-			<VisitOccurrenceId>pat_key</VisitOccurrenceId>
 			<ProviderId>adm_phy</ProviderId>
 			<StartDate>serv_date</StartDate>
 			<AdditionalFields>
@@ -90,6 +89,7 @@
 				<string>std_chg_code</string>
 				<string>source_value</string>
 				<string>quantity</string>
+				<string>pat_key</string>
 			</AdditionalFields>
 			<Concepts>
 				<Concept>
@@ -140,13 +140,13 @@
 		<ProcedureOccurrenceDefinition>
 			<IsUnique>true</IsUnique>
 			<PersonId>medrec_key</PersonId>
-			<VisitOccurrenceId>pat_key</VisitOccurrenceId>
 			<ProviderId>adm_phy</ProviderId>
 			<Quantity>quantity</Quantity>
 			<StartDate>serv_date</StartDate>
 			<AdditionalFields>
 				<string>source_value</string>
 				<string>source</string>
+				<string>pat_key</string>
 				<!--<string>serv_day</string>-->
 			</AdditionalFields>
 			<Concepts>
@@ -196,7 +196,6 @@
 	<Observation>
 		<ObservationDefinition>
 			<PersonId>medrec_key</PersonId>
-			<VisitOccurrenceId>pat_key</VisitOccurrenceId>
 			<ProviderId>adm_phy</ProviderId>
 			<StartDate>serv_date</StartDate>
 			<AdditionalFields>
@@ -204,6 +203,7 @@
 				<string>source</string>
 				<string>source_value</string>
 				<string>quantity</string>
+				<string>pat_key</string>
 			</AdditionalFields>
 			<Concepts>
 				<Concept>
@@ -222,7 +222,6 @@
 		<ObservationDefinition>
 			<Condition>{surgery} = 1</Condition>
 			<PersonId>medrec_key</PersonId>
-			<VisitOccurrenceId>pat_key</VisitOccurrenceId>
 			<ProviderId>adm_phy</ProviderId>
 			<StartDate>serv_date</StartDate>
 			<AdditionalFields>
@@ -230,6 +229,7 @@
 				<!--<string>serv_day</string>-->
 				<string>quantity</string>
 				<string>std_chg_desc</string>
+				<string>pat_key</string>
 			</AdditionalFields>
 			<Concepts>
 				<Concept>
@@ -272,7 +272,6 @@
 	<Measurement>
 		<MeasurementDefinition>
 			<PersonId>medrec_key</PersonId>
-			<VisitOccurrenceId>pat_key</VisitOccurrenceId>
 			<ProviderId>adm_phy</ProviderId>
 			<StartDate>serv_date</StartDate>
 			<AdditionalFields>
@@ -280,6 +279,7 @@
 				<string>source</string>
 				<string>source_value</string>
 				<string>quantity</string>
+				<string>pat_key</string>
 			</AdditionalFields>
 			<Concepts>
 				<Concept>
@@ -328,7 +328,6 @@
 	<DeviceExposure>
 		<DeviceExposureDefinition>
 			<PersonId>medrec_key</PersonId>
-			<VisitOccurrenceId>pat_key</VisitOccurrenceId>
 			<ProviderId>adm_phy</ProviderId>
 			<StartDate>serv_date</StartDate>
 			<AdditionalFields>
@@ -336,6 +335,7 @@
 				<string>source</string>
 				<string>source_value</string>
 				<string>quantity</string>
+				<string>pat_key</string>
 			</AdditionalFields>
 			<Concepts>
 				<Concept>

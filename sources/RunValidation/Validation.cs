@@ -473,7 +473,12 @@ namespace RunValidation
                             if (o.Key.Contains("PERSON"))
                                 person.InPersonFilesCount++;
                             else if (o.Key.Contains("METADATA_TMP"))
-                                person.InMetadataFilesCount++;
+                            {
+                                var attrition = csv.GetField(typeof(string), 1) as string;
+
+                                if (attrition != "Discarded drug count")
+                                    person.InMetadataFilesCount++;
+                            }
                             else
                                 throw new NotImplementedException("o.Key=" + o.Key);
                         }

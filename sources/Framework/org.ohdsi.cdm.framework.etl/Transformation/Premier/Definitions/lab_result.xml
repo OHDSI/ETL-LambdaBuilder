@@ -21,7 +21,9 @@
 	<Measurement>
 		<MeasurementDefinition>
 			<PersonId>medrec_key</PersonId>
-			<VisitOccurrenceId>pat_key</VisitOccurrenceId>
+			<AdditionalFields>
+				<string>pat_key</string>
+			</AdditionalFields>
 			<StartDate>collection_datetime</StartDate>
 			<ProviderId>adm_phy</ProviderId>
 			<ValueSourceValue>value_source_value</ValueSourceValue>
