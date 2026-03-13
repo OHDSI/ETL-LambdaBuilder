@@ -1,14 +1,14 @@
 ﻿<QueryDefinition>
-  <Query>
+	<Query>
 		SELECT CAST(RIGHT(d.Member_ID, LEN(d.Member_ID) - 1) AS BIGINT) AS person_id,
 		CAST(RIGHT(d.Claim_ID, LEN(d.Claim_ID) - 1) AS BIGINT) AS visit_occurrence_id,
 		0 AS condition_concept_id,
 		CASE
-        WHEN c.admission_date is null THEN CAST(CAST(c.Month_and_year_of_medical_care AS VARCHAR(6)) + '15' AS DATE)
-        WHEN DATEPART(year, CAST(CAST(c.Month_and_year_of_medical_care AS VARCHAR(6)) + '01' AS DATE)) = DATEPART(year, cast(c.admission_date as date)) AND
-        DATEPART(month, CAST(CAST(c.Month_and_year_of_medical_care AS VARCHAR(6)) + '01' AS DATE)) = DATEPART(month, cast(c.admission_date as date)) THEN cast(c.admission_date as date)
-        ELSE CAST(CAST(c.Month_and_year_of_medical_care AS VARCHAR(6)) + '01' AS DATE)
-        END AS condition_start_date,
+		WHEN c.admission_date is null THEN CAST(CAST(c.Month_and_year_of_medical_care AS VARCHAR(6)) + '15' AS DATE)
+		WHEN DATEPART(year, CAST(CAST(c.Month_and_year_of_medical_care AS VARCHAR(6)) + '01' AS DATE)) = DATEPART(year, to_date(c.admission_date, 'YYYYMMDD', TRUE)) AND
+		DATEPART(month, CAST(CAST(c.Month_and_year_of_medical_care AS VARCHAR(6)) + '01' AS DATE)) = DATEPART(month, to_date(c.admission_date, 'YYYYMMDD', TRUE)) THEN to_date(c.admission_date, 'YYYYMMDD', TRUE)
+		ELSE CAST(CAST(c.Month_and_year_of_medical_care AS VARCHAR(6)) + '01' AS DATE)
+		END AS condition_start_date,
 		CASE
 		WHEN d.Type_of_claim = 'Outpatient'
 		THEN 32859
@@ -42,69 +42,69 @@
 		left join {sc}.Diagnosis_master dm on d.standard_disease_code = dm.standard_disease_code
 		order by CAST(RIGHT(d.Member_ID, LEN(d.Member_ID) - 1) AS BIGINT)
 	</Query>
-  <ConditionOccurrence>
-    <!-- fake definition, only to load JMDC-ICD10-MapsToValue lookup for observation ValueAsConceptId  -->
-    <ConditionOccurrenceDefinition>
-      <Condition>{fake} = 0</Condition>
-      <PersonId>person_id</PersonId>
-      <Concepts>
-        <Concept>
-          <ConceptIdMappers>
-            <Mapper>
-              <Lookup>JMDC-ICD10-MapsToValue</Lookup>
-            </Mapper>
-          </ConceptIdMappers>
-          <Fields>
-            <Field key="condition_lookup_key" typeId="condition_type_concept_id" sourceKey="condition_source_value"/>
-          </Fields>
-        </Concept>
-      </Concepts>
-    </ConditionOccurrenceDefinition>
-    
-    <ConditionOccurrenceDefinition>
-      <PersonId>person_id</PersonId>
-      <ProviderId>associated_provider_id</ProviderId>
-      <StartDate>condition_start_date</StartDate>
-      <VisitOccurrenceId>visit_occurrence_id</VisitOccurrenceId>
-      <AdditionalFields>
-        <string>month_and_year_of_start</string>
-        <string>start_m_and_y_date</string>
-        <string>month_and_year</string>
-        <string>suspicion_flag</string>
-      </AdditionalFields>
-      <Concepts>
-        <Concept>
-          <ConceptIdMappers>
-            <Mapper>
-              <Lookup>JMDC-ICD10-SNOMED</Lookup>
-            </Mapper>
-          </ConceptIdMappers>
-          <Fields>
-            <Field key="condition_lookup_key" typeId="condition_type_concept_id" sourceKey="source_value"/>
-          </Fields>
-        </Concept>
-        <Concept>
-          <Fields>
-            <Field conceptId="condition_status_concept_id" sourceKey="main_disease_flag" defaultTypeId="0"/>
-          </Fields>
-        </Concept>
-      </Concepts>
-    </ConditionOccurrenceDefinition>
-  </ConditionOccurrence>
-  <Death>
-    <DeathDefinition>
-      <Condition>{died1} = 1</Condition>
-      <PersonId>PERSON_ID</PersonId>
-      <Died>died1</Died>
-      <VisitOccurrenceId>visit_occurrence_id</VisitOccurrenceId>
-      <Concepts>
-        <Concept>
-          <Fields>
-            <Field defaultConceptId="1" defaultTypeId="1"/>
-          </Fields>
-        </Concept>
-      </Concepts>
-    </DeathDefinition>
+	<ConditionOccurrence>
+		<!-- fake definition, only to load JMDC-ICD10-MapsToValue lookup for observation ValueAsConceptId  -->
+		<ConditionOccurrenceDefinition>
+			<Condition>{fake} = 0</Condition>
+			<PersonId>person_id</PersonId>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>JMDC-ICD10-MapsToValue</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="condition_lookup_key" typeId="condition_type_concept_id" sourceKey="condition_source_value"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ConditionOccurrenceDefinition>
+
+		<ConditionOccurrenceDefinition>
+			<PersonId>person_id</PersonId>
+			<ProviderId>associated_provider_id</ProviderId>
+			<StartDate>condition_start_date</StartDate>
+			<VisitOccurrenceId>visit_occurrence_id</VisitOccurrenceId>
+			<AdditionalFields>
+				<string>month_and_year_of_start</string>
+				<string>start_m_and_y_date</string>
+				<string>month_and_year</string>
+				<string>suspicion_flag</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>JMDC-ICD10-SNOMED</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="condition_lookup_key" typeId="condition_type_concept_id" sourceKey="source_value"/>
+					</Fields>
+				</Concept>
+				<Concept>
+					<Fields>
+						<Field conceptId="condition_status_concept_id" sourceKey="main_disease_flag" defaultTypeId="0"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ConditionOccurrenceDefinition>
+	</ConditionOccurrence>
+	<Death>
+		<DeathDefinition>
+			<Condition>{died1} = 1</Condition>
+			<PersonId>PERSON_ID</PersonId>
+			<Died>died1</Died>
+			<VisitOccurrenceId>visit_occurrence_id</VisitOccurrenceId>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field defaultConceptId="1" defaultTypeId="1"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</DeathDefinition>
 		<DeathDefinition>
 			<Condition>{died2} = 1</Condition>
 			<PersonId>PERSON_ID</PersonId>
@@ -118,5 +118,5 @@
 				</Concept>
 			</Concepts>
 		</DeathDefinition>
-  </Death>
+	</Death>
 </QueryDefinition>

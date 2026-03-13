@@ -1,12 +1,12 @@
 ﻿<QueryDefinition>
-  <Query>
+	<Query>
 		SELECT CAST(RIGHT(Member_ID, LEN(Member_ID) - 1) AS BIGINT) AS person_id,
 		CAST(RIGHT(Claim_ID, LEN(Claim_ID) - 1) AS BIGINT) AS visit_occurrence_id,
 		0 AS drug_concept_id,
-		Date_of_prescription AS drug_exposure_start_date,
+		to_date(date_of_prescription, 'YYYYMMDD', TRUE) AS drug_exposure_start_date,
 		CASE
 		WHEN administered_days &lt; 1 THEN 1
-    WHEN administered_days > 180 THEN 180
+		WHEN administered_days > 180 THEN 180
 		ELSE cast(administered_days as int)
 		END AS days_supply,
 		CASE
@@ -41,34 +41,34 @@
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND d.Member_ID = ch.PERSON_SOURCE_VALUE
 		order by CAST(RIGHT(Member_ID, LEN(Member_ID) - 1) AS BIGINT)
 	</Query>
-  <DrugExposure>
-    <DrugExposureDefinition>
-      <PersonId>person_id</PersonId>
-      <DaysSupply>days_supply</DaysSupply>
-      <VisitOccurrenceId>visit_occurrence_id</VisitOccurrenceId>
-      <SourceValue>drug_source_value</SourceValue>
-      <StartDate>drug_exposure_start_date</StartDate>
-      <Sig>sig</Sig>
-      <ProviderId>provider_id</ProviderId>
-      <Concepts>
-        <Concept>
-          <ConceptIdMappers>
-            <Mapper>
-              <Lookup>JMDC_DRUGCODE_RXNORM</Lookup>
-            </Mapper>
-          </ConceptIdMappers>
-          <Fields>
-            <Field key="drug_source_value" typeId="drug_type_concept_id"/>
-          </Fields>
-        </Concept>
-      </Concepts>
-    </DrugExposureDefinition>
-  </DrugExposure>
-  <DrugCost>
-    <DrugCostDefinition>
-      <TotalPaid>total_paid</TotalPaid>
-      <PaidByCoordinationBenefits>total_charge</PaidByCoordinationBenefits>
-      <CurrencyConceptId>CurrencyConceptId</CurrencyConceptId>
-    </DrugCostDefinition>
-  </DrugCost>
+	<DrugExposure>
+		<DrugExposureDefinition>
+			<PersonId>person_id</PersonId>
+			<DaysSupply>days_supply</DaysSupply>
+			<VisitOccurrenceId>visit_occurrence_id</VisitOccurrenceId>
+			<SourceValue>drug_source_value</SourceValue>
+			<StartDate>drug_exposure_start_date</StartDate>
+			<Sig>sig</Sig>
+			<ProviderId>provider_id</ProviderId>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>JMDC_DRUGCODE_RXNORM</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="drug_source_value" typeId="drug_type_concept_id"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</DrugExposureDefinition>
+	</DrugExposure>
+	<DrugCost>
+		<DrugCostDefinition>
+			<TotalPaid>total_paid</TotalPaid>
+			<PaidByCoordinationBenefits>total_charge</PaidByCoordinationBenefits>
+			<CurrencyConceptId>CurrencyConceptId</CurrencyConceptId>
+		</DrugCostDefinition>
+	</DrugCost>
 </QueryDefinition>
