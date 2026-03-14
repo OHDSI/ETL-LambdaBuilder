@@ -56,12 +56,10 @@
     a.*,
     pre.most_likely_ethnicity,
     pre.most_likely_race,
-    pr.race
+    pre.most_likely_race as race
     from a
     left join {sc}.patient_race_ethnicity pre
     on a.hvid = pre.hvid
-    left join {sc}.patient_race pr
-    on a.hvid = pr.hvid
     order by 1
   </Query>
   <Persons>
