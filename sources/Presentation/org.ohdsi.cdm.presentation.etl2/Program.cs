@@ -82,10 +82,9 @@ namespace org.ohdsi.cdm.presentation.etl
 
                 var builderConnectionString = configuration.GetConnectionString("Builder");
 
-
-                if (!File.Exists("builder.db"))
+                if (!File.Exists(builderConnectionString.Replace("Data Source=", "")))
                 {
-                    using var connection = new SqliteConnection("Data Source=builder.db");
+                    using var connection = new SqliteConnection(builderConnectionString);
                     connection.Open();
 
                     var command = connection.CreateCommand();
@@ -190,12 +189,22 @@ namespace org.ohdsi.cdm.presentation.etl
                     }
                 }
 
-                //var sourceOdbc = new OdbcConnectionStringBuilder(sourceConnectionString);
+                var sourceOdbc = new OdbcConnectionStringBuilder(sourceConnectionString);
                 var vocabOdbc = new OdbcConnectionStringBuilder(vocabularyConnectionString);
 
                 Settings.Current.Building.Save();
-                //Console.WriteLine($"source:{sourceOdbc["server"]}; {sourceDb}; {sourceSchema}");
-                Console.WriteLine($"vocabulary:{vocabOdbc["server"]}; {vocabularySchema}");
+                if(sourceOdbc.ContainsKey("server"))
+                    Console.WriteLine($"source:{sourceOdbc["server"]}; {sourceDb}; {sourceSchema}");
+
+                if (sourceOdbc.ContainsKey("host"))
+                    Console.WriteLine($"host:{sourceOdbc["host"]}; {sourceDb}; {sourceSchema}");
+
+                if (vocabOdbc.ContainsKey("server"))
+                    Console.WriteLine($"vocabulary:{vocabOdbc["server"]}; {vocabularySchema}");
+
+                if (vocabOdbc.ContainsKey("host"))
+                    Console.WriteLine($"vocabulary:{vocabOdbc["host"]}; {vocabularySchema}");
+
                 Console.WriteLine($"vendor:{vendor}");
                 Console.WriteLine($"Cdm:{Settings.Current.Building.Cdm}");
                 Console.WriteLine($"BatchSize:{Settings.Current.Building.BatchSize}");

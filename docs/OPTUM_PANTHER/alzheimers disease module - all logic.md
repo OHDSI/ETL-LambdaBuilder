@@ -85,10 +85,10 @@ biomarker|biomarker_source|measurement_concept_id|Notes
 amyloid beta 40 peptide |	plasma| 42868556 (Amyloid beta 40 peptide [Mass/volume] in Plasma)
 amyloid beta 40 peptide |	cerebrospinal fluid| 42868555 (Amyloid beta 40 peptide [Mass/volume] in CSF)
 amyloid beta 40 peptide	||42868556 (Amyloid beta 40 peptide [Mass/volume] in Plasma)
-amyloid beta 42 peptide/amyloid beta 40 peptide	|blood| |Mapping available in August 2025 release of vocabulary loinc code =`106941-8`
+amyloid beta 42 peptide/amyloid beta 40 peptide	|blood| 1469579 (Amyloid beta 42 peptide/Amyloid beta 40 peptide [Mass Ratio] in Plasma by LC/MS/MS)
 amyloid beta 42 peptide/amyloid beta 40 peptide	|cerebrospinal fluid| 1617024 (Amyloid beta 42 peptide/Amyloid beta 40 peptide, Spinal fluid)
-amyloid beta 42 peptide/amyloid beta 40 peptide	|plasma| |Mapping available in August 2025 release of vocabulary loinc code =`106941-8`
-amyloid beta 42 peptide/amyloid beta 40 peptide	|| |Mapping available in August 2025 release of vocabulary loinc code =`106941-8`
+amyloid beta 42 peptide/amyloid beta 40 peptide	|plasma|1469579 (Amyloid beta 42 peptide/Amyloid beta 40 peptide [Mass Ratio] in Plasma by LC/MS/MS)
+amyloid beta 42 peptide/amyloid beta 40 peptide	|| 1469579 (Amyloid beta 42 peptide/Amyloid beta 40 peptide [Mass Ratio] in Plasma by LC/MS/MS)
 amyloid beta-peptides|	blood| 1091801 (Beta-Amyloid 1-42 and 1-40 panel, Spinal fluid)| Mapping to CSF in lieu of other concepts
 amyloid beta-peptides|	cerebrospinal fluid| 1091801 (Beta-Amyloid 1-42 and 1-40 panel, Spinal fluid)| Mapping to CSF in lieu of other concepts
 amyloid beta-peptides|	plasma| 1091801 (Beta-Amyloid 1-42 and 1-40 panel, Spinal fluid)| Mapping to CSF in lieu of other concepts

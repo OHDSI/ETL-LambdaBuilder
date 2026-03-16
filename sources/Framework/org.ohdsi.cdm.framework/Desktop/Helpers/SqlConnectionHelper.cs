@@ -37,9 +37,9 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
         {
             DbConnection connection;
 
-            if (connectionString == "Data Source=builder.db")
+            if (connectionString.EndsWith("builder.db"))
             {
-                connection = new SqliteConnection("Data Source=builder.db");
+                connection = new SqliteConnection(connectionString);
             }
             else
             {

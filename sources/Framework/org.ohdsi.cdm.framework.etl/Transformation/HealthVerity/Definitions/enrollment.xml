@@ -21,6 +21,7 @@
 		date_start,
 		date_end,
 		1 as benefit_type,
+		lower(benefit_type) as plan_source_value,
 		data_vendor,
 		patient_zip3,
 		patient_state,
@@ -40,6 +41,7 @@
 		date_start,
 		date_end,
 		2 as benefit_type,
+		lower(benefit_type) as plan_source_value,
 		data_vendor,
 		patient_zip3,
 		patient_state,
@@ -50,19 +52,7 @@
 		where lower(benefit_type) = 'pharmacy' or benefit_type is null
 		)
 
-		select
-		a.PersonId,
-		a.hvid,
-		a.patient_gender,
-		a.patient_year_of_birth,
-		a.date_start,
-		a.date_end,
-		a.benefit_type,
-		a.data_vendor,
-		a.patient_zip3,
-		a.patient_state,
-		a.payer_type,
-
+		select a.*,
 		l.Id as LocationId,
 		pe.most_likely_race,
 		case lower(coalesce(pe.most_likely_race, ''))
@@ -91,6 +81,11 @@
 		when 'medicare advantage' then 281
 		else 0
 		end as payer_concept_id,
+		case coalesce(a.plan_source_value, '')
+		when 'medical' then 270
+		when 'pharmacy' then 273
+		else 0
+		end as plan_concept_id,
 		a.PartitionId
 		from a
 		left join {sc}.patient_race_ethnicity pe on pe.hvid = a.hvid
@@ -124,9 +119,16 @@
 			<StartDate>date_start</StartDate>
 			<EndDate>date_end</EndDate>
 			<Concepts>
+				<!--payer_concept_id-->
 				<Concept>
 					<Fields>
 						<Field conceptId="payer_concept_id" key="payer_type" sourceKey="payer_type" defaultTypeId="0"/>
+					</Fields>
+				</Concept>
+				<!--plan_concept_id-->
+				<Concept>
+					<Fields>
+						<Field conceptId="plan_concept_id" key="plan_source_value" sourceKey="plan_source_value" defaultTypeId="0"/>
 					</Fields>
 				</Concept>
 			</Concepts>

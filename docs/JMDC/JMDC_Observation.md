@@ -66,6 +66,8 @@ The **annual_health_checkup** table is a wide table with one row per date and ma
 
 ## Change Log
 
+### January 30, 2026
+- Update smoking_habit mappings due to concepts being made non-standard
 ### March 10, 2025
 - Update smoking_habit, drinking_habit and and eating_habit mappings
 ### October 16, 2024

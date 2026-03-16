@@ -894,7 +894,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Truven
                 [.. ChunkData.DrugExposures.Where(e => e.PersonId == person.PersonId)]))
             {
                 episode.Id = Offset.GetKeyOffset(episode.PersonId).ConditionEraId;
-                ChunkData.ConditionEra.Add(episode);
+                //ChunkData.ConditionEra.Add(episode);
 
                 if (episode.ConceptId == 433260 && _potentialChilds.Count > 0)
                 {

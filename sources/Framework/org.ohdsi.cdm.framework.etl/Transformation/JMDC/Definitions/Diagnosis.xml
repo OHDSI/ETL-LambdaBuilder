@@ -5,8 +5,8 @@
 		0 AS condition_concept_id,
 		CASE
         WHEN c.admission_date is null THEN CAST(CAST(c.Month_and_year_of_medical_care AS VARCHAR(6)) + '15' AS DATE)
-        WHEN DATEPART(year, CAST(CAST(c.Month_and_year_of_medical_care AS VARCHAR(6)) + '01' AS DATE)) = DATEPART(year, c.admission_date) AND
-        DATEPART(month, CAST(CAST(c.Month_and_year_of_medical_care AS VARCHAR(6)) + '01' AS DATE)) = DATEPART(month, c.admission_date) THEN c.admission_date
+        WHEN DATEPART(year, CAST(CAST(c.Month_and_year_of_medical_care AS VARCHAR(6)) + '01' AS DATE)) = DATEPART(year, cast(c.admission_date as date)) AND
+        DATEPART(month, CAST(CAST(c.Month_and_year_of_medical_care AS VARCHAR(6)) + '01' AS DATE)) = DATEPART(month, cast(c.admission_date as date)) THEN cast(c.admission_date as date)
         ELSE CAST(CAST(c.Month_and_year_of_medical_care AS VARCHAR(6)) + '01' AS DATE)
         END AS condition_start_date,
 		CASE

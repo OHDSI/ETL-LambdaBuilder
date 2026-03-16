@@ -4,13 +4,13 @@
 		CAST(RIGHT(Claim_ID, LEN(Claim_ID) - 1) AS BIGINT) AS visit_occurrence_id,
 		Type_of_claim as place_of_service_source_value,
 		CASE
-		WHEN admission_date is null THEN to_date(CAST(Month_and_year_of_medical_care AS VARCHAR(6)) || '15', 'yyyyMMdd')
-		WHEN EXTRACT(YEAR FROM to_date(CAST(Month_and_year_of_medical_care AS VARCHAR(6)) || '01', 'yyyyMMdd')) = EXTRACT(YEAR FROM admission_date) AND
-		EXTRACT(MONTH FROM to_date(CAST(Month_and_year_of_medical_care AS VARCHAR(6)) || '01', 'yyyyMMdd')) = EXTRACT(MONTH FROM admission_date) THEN admission_date
-		ELSE to_date(CAST(Month_and_year_of_medical_care AS VARCHAR(6)) || '01', 'yyyyMMdd')
+		WHEN admission_date is null THEN CAST(CAST(Month_and_year_of_medical_care AS VARCHAR(6)) + '15' AS DATE)
+		WHEN DATEPART(year, CAST(CAST(Month_and_year_of_medical_care AS VARCHAR(6)) + '01' AS DATE)) = DATEPART(year, CAST(admission_date AS date)) AND
+		DATEPART(month, CAST(CAST(Month_and_year_of_medical_care AS VARCHAR(6)) + '01' AS DATE)) = DATEPART(month, CAST(admission_date AS date)) THEN CAST(admission_date AS date)
+		ELSE CAST(CAST(Month_and_year_of_medical_care AS VARCHAR(6)) + '01' AS DATE)
 		END as visit_start_date,
 		days_of_medical_care as num_of_days,
-		CAST('1' || RIGHT(medical_facility_id, LEN(medical_facility_id) - 1) AS BIGINT) AS care_site_id,
+		CAST('1' + RIGHT(medical_facility_id, LEN(medical_facility_id) - 1) AS BIGINT) AS care_site_id,
 		CASE
 		WHEN Type_of_claim LIKE 'Outpatient' THEN 9202
 		ELSE 9201
@@ -22,29 +22,29 @@
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND c.Member_ID = ch.PERSON_SOURCE_VALUE
 		order by ch.PartitionId, CAST(RIGHT(Member_ID, LEN(Member_ID) - 1) AS BIGINT)
 	</Query>
-  <VisitOccurrence>
-    <VisitOccurrenceDefinition>
-      <Id>visit_occurrence_id</Id>
-      <PersonId>person_id</PersonId>
-      <StartDate>visit_start_date</StartDate>
-      <EndDate>visit_start_date</EndDate>
-      <CareSiteId>care_site_id</CareSiteId>
-      <AdditionalFields>
-        <string>num_of_days</string>
-      </AdditionalFields>
-      <Concepts>
-        <Concept>
-          <Fields>
-            <Field conceptId = "place_of_service_concept_id" sourceKey = "place_of_service_source_value" defaultTypeId = "32810"/>
-          </Fields>
-        </Concept>
-      </Concepts>
-    </VisitOccurrenceDefinition>
-  </VisitOccurrence>
-  <VisitCost>
-    <VisitCostDefinition>
-      <TotalPaid>total_paid</TotalPaid>
-      <CurrencyConceptId>CurrencyConceptId</CurrencyConceptId>
-    </VisitCostDefinition>
-  </VisitCost>
+	<VisitOccurrence>
+		<VisitOccurrenceDefinition>
+			<Id>visit_occurrence_id</Id>
+			<PersonId>person_id</PersonId>
+			<StartDate>visit_start_date</StartDate>
+			<EndDate>visit_start_date</EndDate>
+			<CareSiteId>care_site_id</CareSiteId>
+			<AdditionalFields>
+				<string>num_of_days</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field conceptId = "place_of_service_concept_id" sourceKey = "place_of_service_source_value" defaultTypeId = "32810"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</VisitOccurrenceDefinition>
+	</VisitOccurrence>
+	<VisitCost>
+		<VisitCostDefinition>
+			<TotalPaid>total_paid</TotalPaid>
+			<CurrencyConceptId>CurrencyConceptId</CurrencyConceptId>
+		</VisitCostDefinition>
+	</VisitCost>
 </QueryDefinition>

@@ -178,7 +178,7 @@
 			<Concepts>
 				<Concept>
 					<Fields>
-						<Field defaultSource="(17001) Current use of cigarettes" defaultConceptId="4276526" defaultTypeId="32850"/>
+						<Field defaultSource="(17001) Current use of cigarettes" defaultConceptId="903657" defaultTypeId="32850"/>
 					</Fields>
 				</Concept>
 			</Concepts>
@@ -446,7 +446,7 @@
 			<Concepts>
 				<Concept>
 					<Fields>
-						<Field defaultSource="(17015) Current use of cigars or pipes" defaultConceptId="4218917" defaultTypeId="32850"/>
+						<Field defaultSource="(17015) Current use of cigars or pipes" defaultConceptId="903663" defaultTypeId="32850"/>
 					</Fields>
 				</Concept>
 			</Concepts>
@@ -460,7 +460,7 @@
 			<Concepts>
 				<Concept>
 					<Fields>
-						<Field defaultSource="(17023) Current use of smokeless tobacco" defaultConceptId="37017610" defaultTypeId="32850"/>
+						<Field defaultSource="(17023) Current use of smokeless tobacco" defaultConceptId="903666" defaultTypeId="32850"/>
 					</Fields>
 				</Concept>
 			</Concepts>
