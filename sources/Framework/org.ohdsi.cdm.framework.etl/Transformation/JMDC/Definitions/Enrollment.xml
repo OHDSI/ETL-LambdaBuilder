@@ -1,5 +1,5 @@
 ﻿<QueryDefinition>
-  <Query>
+	<Query>
 		with a as
 		(
 		SELECT CAST(RIGHT(Member_ID, LEN(Member_ID) - 1) AS BIGINT) AS person_id,
@@ -49,28 +49,28 @@
 		group by a.person_id, a.person_source_value, a.year_of_birth, a.month_of_birth, a.gender_source_value, a.observation_period_start_date, a.observation_period_end_date, a.died, a.family_id, a.has_payerplan, a.payerplan_id, a.type_of_insurance, a.payer_concept_id, baby_person_id, m2.year_of_birth, m2.month_of_birth, m2.observation_period_start_date
 		order by 1
 	</Query>
-  <Persons>
-    <PersonDefinition>
-      <PersonId>PERSON_ID</PersonId>
-      <PersonSourceValue>person_source_value</PersonSourceValue>
-      <StartDate>observation_period_start_date</StartDate>
-      <EndDate>observation_period_end_date</EndDate>
-      <Gender>gender_source_value</Gender>
-      <YearOfBirth>year_of_birth</YearOfBirth>
-      <MonthOfBirth>month_of_birth</MonthOfBirth>
-      <PeriodTypeConceptId>PeriodTypeConceptId</PeriodTypeConceptId>
+	<Persons>
+		<PersonDefinition>
+			<PersonId>PERSON_ID</PersonId>
+			<PersonSourceValue>person_source_value</PersonSourceValue>
+			<StartDate>observation_period_start_date</StartDate>
+			<EndDate>observation_period_end_date</EndDate>
+			<Gender>gender_source_value</Gender>
+			<YearOfBirth>year_of_birth</YearOfBirth>
+			<MonthOfBirth>month_of_birth</MonthOfBirth>
+			<PeriodTypeConceptId>PeriodTypeConceptId</PeriodTypeConceptId>
 			<PotentialChildId>baby_person_id</PotentialChildId>
 			<PotentialChildBirthDate>baby_dob</PotentialChildBirthDate>
-    </PersonDefinition>
-  </Persons>
-  <PayerPlanPeriods>
-    <PayerPlanPeriodDefinition>
-      <Condition>{has_payerplan} = 1</Condition>
-      <Id>payerplan_id</Id>
-      <PersonId>PERSON_ID</PersonId>
-      <StartDate>observation_period_start_date</StartDate>
-      <EndDate>observation_period_end_date</EndDate>
-      <FamilySource>family_id</FamilySource>
+		</PersonDefinition>
+	</Persons>
+	<PayerPlanPeriods>
+		<PayerPlanPeriodDefinition>
+			<Condition>{has_payerplan} = 1</Condition>
+			<Id>payerplan_id</Id>
+			<PersonId>PERSON_ID</PersonId>
+			<StartDate>observation_period_start_date</StartDate>
+			<EndDate>observation_period_end_date</EndDate>
+			<FamilySource>family_id</FamilySource>
 			<Concepts>
 				<Concept>
 					<Fields>
@@ -78,20 +78,20 @@
 					</Fields>
 				</Concept>
 			</Concepts>
-    </PayerPlanPeriodDefinition>
-  </PayerPlanPeriods>
-  <Death>
-    <DeathDefinition>
-      <Condition>{died} = 1</Condition>
-      <PersonId>PERSON_ID</PersonId>
-      <StartDate>observation_period_end_date</StartDate>
-      <Concepts>
-        <Concept>
-          <Fields>
-            <Field defaultConceptId="1" defaultTypeId="32815"/>
-          </Fields>
-        </Concept>
-      </Concepts>
-    </DeathDefinition>
-  </Death>
+		</PayerPlanPeriodDefinition>
+	</PayerPlanPeriods>
+	<Death>
+		<DeathDefinition>
+			<Condition>{died} = 1</Condition>
+			<PersonId>PERSON_ID</PersonId>
+			<StartDate>observation_period_end_date</StartDate>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field defaultConceptId="1" defaultTypeId="32815"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</DeathDefinition>
+	</Death>
 </QueryDefinition>

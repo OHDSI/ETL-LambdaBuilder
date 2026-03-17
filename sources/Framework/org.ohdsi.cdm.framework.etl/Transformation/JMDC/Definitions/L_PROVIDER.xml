@@ -1,21 +1,21 @@
 ﻿<QueryDefinition>
 	<Query>
-    SELECT CAST('1' + RIGHT(medical_facility_id, LEN(medical_facility_id) - 1) AS BIGINT) AS provider_id,
-    medical_facility_id AS provider_source_value,
-    Medium_classification_of_department AS specialty_source_value,
-    CAST('1' + RIGHT(medical_facility_id, LEN(medical_facility_id) - 1) AS BIGINT) AS care_site_id
-    FROM {sc}.Medical_facility
-  </Query>
+		SELECT CAST('1' + RIGHT(medical_facility_id, LEN(medical_facility_id) - 1) AS BIGINT) AS provider_id,
+		medical_facility_id AS provider_source_value,
+		Medium_classification_of_department AS specialty_source_value,
+		CAST('1' + RIGHT(medical_facility_id, LEN(medical_facility_id) - 1) AS BIGINT) AS care_site_id
+		FROM {sc}.Medical_facility
+	</Query>
 	<Providers>
 		<ProviderDefinition>
-      <Id>provider_id</Id>
+			<Id>provider_id</Id>
 			<CareSiteId>care_site_id</CareSiteId>
-      <ProviderSourceValue>provider_source_value</ProviderSourceValue>
+			<ProviderSourceValue>provider_source_value</ProviderSourceValue>
 			<Concepts>
 				<Concept>
 					<ConceptIdMappers>
 						<Mapper>
-              <Lookup>JMDC_SPECIALTY</Lookup>
+							<Lookup>JMDC_SPECIALTY</Lookup>
 						</Mapper>
 					</ConceptIdMappers>
 					<Fields>

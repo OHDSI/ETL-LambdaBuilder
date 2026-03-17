@@ -2,7 +2,7 @@
 	<Query>
 		SELECT
 		CAST(RIGHT(Member_ID, LEN(Member_ID) - 1) AS BIGINT) AS person_id,
-		date_of_health_checkup AS observation_date,
+		to_date(date_of_health_checkup, 'YYYYMMDD', TRUE) AS observation_date,
 		--value_as_number
 		BMI,
 		ast as Got,
@@ -1012,5 +1012,5 @@
 			</Concepts>
 		</ObservationDefinition>
 	</Observation>
-	
+
 </QueryDefinition>
