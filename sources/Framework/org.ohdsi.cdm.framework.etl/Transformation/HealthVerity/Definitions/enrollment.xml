@@ -52,7 +52,19 @@
 		where lower(benefit_type) = 'pharmacy' or benefit_type is null
 		)
 
-		select a.*,
+		select
+		a.PersonId,
+		a.hvid,
+		a.patient_gender,
+		a.patient_year_of_birth,
+		a.date_start,
+		a.date_end,
+		a.benefit_type,
+		a.plan_source_value,
+		a.data_vendor,
+		a.patient_zip3,
+		a.patient_state,
+		a.payer_type,
 		l.Id as LocationId,
 		pe.most_likely_race,
 		case lower(coalesce(pe.most_likely_race, ''))
