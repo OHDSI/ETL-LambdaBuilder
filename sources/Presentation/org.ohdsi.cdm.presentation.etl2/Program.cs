@@ -133,7 +133,8 @@ namespace org.ohdsi.cdm.presentation.etl
 
                 Settings.Current.ParallelQueries = int.Parse(configuration.GetSection("AppSettings")["parallelQueries"]);
                 Settings.Current.ParallelChunks = int.Parse(configuration.GetSection("AppSettings")["parallelChunks"]);
-                
+
+                Settings.Current.UseS3forDatabricks = bool.Parse(configuration.GetSection("AppSettings")["useS3forDatabricks"]);
 
                 Console.WriteLine($"ParallelQueries {Settings.Current.ParallelQueries}; ParallelChunks {Settings.Current.ParallelChunks}");
 
