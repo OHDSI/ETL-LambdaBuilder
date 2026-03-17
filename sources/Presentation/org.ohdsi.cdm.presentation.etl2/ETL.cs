@@ -323,18 +323,23 @@ namespace org.ohdsi.cdm.presentation.etl
             Console.WriteLine("[Moving raw data] StoreMetadataToCloudStorage start - " + queryDefinition.FileName);
             var fileName = $"{Settings.Current.BuildingPrefix}/raw/metadata/{queryDefinition.FileName + ".txt"}";
 
+            //int? timeout = 10 * 60;
             using (var conn = SqlConnectionHelper.OpenOdbcConnection(Settings.Current.Building.SourceConnectionString))
             using (var c = Settings.Current.Building.SourceEngine.GetCommand(query, conn))
-            using (var reader = c.ExecuteReader(CommandBehavior.SchemaOnly))
             {
-                CloudStorageHelper.UploadFile(CloudStorageHelper.GetAwsStorageClient(),
-                    CloudStorageHelper.GetBlobContainerClient(), 
-                    Settings.Current.CloudStorageName,
-                    fileName,
-                    reader,
-                    false,
-                    true);
+                c.CommandTimeout = 600;
+                using (var reader = c.ExecuteReader(CommandBehavior.SchemaOnly))
+                {
+                    CloudStorageHelper.UploadFile(CloudStorageHelper.GetAwsStorageClient(),
+                        CloudStorageHelper.GetBlobContainerClient(),
+                        Settings.Current.CloudStorageName,
+                        fileName,
+                        reader,
+                        false,
+                        true);
+                }
             }
+            
             Console.WriteLine("[Moving raw data] StoreMetadataToCloudStorage end - " + queryDefinition.FileName);
         }
  
