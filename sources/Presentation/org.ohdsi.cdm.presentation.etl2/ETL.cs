@@ -482,7 +482,7 @@ namespace org.ohdsi.cdm.presentation.etl
 
                     using var connection = SqlConnectionHelper.OpenOdbcConnection(Settings.Current.Building.SourceConnectionString);
                     using var c = new OdbcCommand(unloadQuery, connection);
-                    c.CommandTimeout = 900;
+                    c.CommandTimeout = 30 * 60;
                     c.ExecuteNonQuery();
 
                     if (Settings.Current.Building.SourceEngine.Database == framework.desktop.Enums.Database.Databricks)
@@ -499,7 +499,7 @@ namespace org.ohdsi.cdm.presentation.etl
             if (Settings.Current.Building.SourceEngine.Database == framework.desktop.Enums.Database.Databricks)
             {
                 using var connection = SqlConnectionHelper.OpenOdbcConnection(Settings.Current.Building.SourceConnectionString);
-                using var c = new OdbcCommand($"select count(distinct PartitionId) from {chunksSchema}._chunks;", connection);
+                using var c = new OdbcCommand($"select max(PartitionId) from {chunksSchema}._chunks;", connection);
                 return Convert.ToInt32(c.ExecuteScalar());
             }
             // AWS
