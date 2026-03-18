@@ -192,7 +192,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
         {
             try
             {
-                var key = $"{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id}/{Settings.Current.CDMFolder}/CDM_SOURCE/CDM_SOURCE.0.0.gz";
+                var key = $"{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id}/{Settings.Current.CDMFolder}/cdm_source/cdm_source.txt.gz";
                 
                 Console.WriteLine("GetSourceReleaseDate: " + key);
 
@@ -536,7 +536,8 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
         private Dictionary<string, List<string>> GetFiles()
         {
             var files = new Dictionary<string, List<string>>();
-            var pId = int.Parse(_prefix);
+
+            var pId = int.Parse(_prefix.Replace("PartitionId=", ""));
             var filteredFiles = Directory.GetFiles($@"{TmpFolder}/", "*.*")
                 .Where(file => file.ToLower().EndsWith("txt.gz") || file.ToLower().EndsWith("parquet")).ToList();
 
