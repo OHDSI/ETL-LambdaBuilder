@@ -137,7 +137,8 @@ namespace RunValidation
                         errorTask.MaxValue = 100;
                         errorTask.Value = 0;
 
-                        var overallTask = ctx.AddTask($"Processing {s3ChunkObjects.Count} _chunks objects...", maxValue: s3ChunkObjects.Count);
+                        var overallTaskInitMsg = $"Processing _chunks objects. (0/{s3ChunkObjects.Count})";
+                        var overallTask = ctx.AddTask(overallTaskInitMsg, maxValue: s3ChunkObjects.Count);
 
                         var degreeParallel = Math.Max(1, Environment.ProcessorCount - 1);
                         var consoleLock = new object();
@@ -160,8 +161,14 @@ namespace RunValidation
                                         if (chunkFileId >= lastExclusive) break;
 
                                         var chunkFilePersonIds = ReadChunkFile(s3ChunkObjects[chunkFileId], vendor, buildingId, chunksToProcess);
-                                        var chunkId = chunkFilePersonIds.First().Value.ChunkId;
                                         chunkFilePersonIdsCount = chunkFilePersonIds.Count;
+                                        if (chunkFilePersonIdsCount == 0)
+                                        {
+                                            overallTask.Increment(1);
+                                            continue;
+                                        }
+
+                                        var chunkId = chunkFilePersonIds.First().Value.ChunkId;                                    
 
                                         chunkTask.Description = chunkTask.Description.Replace("???", chunkId.ToString());
 
@@ -194,6 +201,8 @@ namespace RunValidation
                                             }
                                             if (chunkTask.Description == chunkTaskInitMsg)
                                                 chunkTask.Value = chunkTask.MaxValue; //hide final chunkTasks which were created before the cycle break check
+
+                                            overallTask.Description = overallTaskInitMsg.Replace("(0/", $"({overallTask.Value}/");
                                         }
                                     }
                                 }
