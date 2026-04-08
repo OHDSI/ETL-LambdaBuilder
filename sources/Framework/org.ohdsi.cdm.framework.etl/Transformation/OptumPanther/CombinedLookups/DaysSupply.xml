@@ -8,7 +8,6 @@
     <Query>
       SELECT distinct ndc, cast(days_supply as int) as days_supply
       FROM {sc}.prescriptions_written
-      where cast(days_supply as int) > 10
     </Query>
   </SourceLookup>
   <VocabularyLookup>
