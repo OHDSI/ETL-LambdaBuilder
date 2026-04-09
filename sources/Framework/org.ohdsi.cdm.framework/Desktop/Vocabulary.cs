@@ -166,7 +166,7 @@ namespace org.ohdsi.cdm.framework.desktop
                     {
                         var mostFrequent = item.Value.GroupBy(i => i).OrderByDescending(grp => grp.Count()).First();
 
-                        if (mostFrequent.Count() > 10)
+                        if (mostFrequent.Count() > lookup.MinFrequency)
                         {
                             finalLookup.Add(item.Key, mostFrequent.Key);
                         }
