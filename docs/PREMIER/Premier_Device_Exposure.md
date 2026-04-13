@@ -30,10 +30,11 @@ The field mapping is as follows:
 | DEVICE_TYPE_CONCEPT_ID | -  | All records within the device_exposure table should have a device_type_concept_id = 32875 (Provider financial system) |  |
 | UNIQUE_DEVICE_ID  | -  | NULL  |  |
 | PROVIDER_ID  | PAT.ADMPHY  |  |  |
-| VISIT_OCCURRENCE_ID  | PAT.PAT_KEY  |  |  |
+| VISIT_OCCURRENCE_ID  |  | Lookup the VISIT_OCCURRENCE_ID based on the pat_key |  |
 | DEVICE_SOURCE_VALUE  | PATCPT.CPT_CODE For all other procedures: CHGMSTR.STD_CHG_CODE_DESC/ HOSP_CHG.HOSP_CHG_DESC   | SELECT SOURCE_VALUE FROM  ( SELECT CONCAT(STD_CHG_DESC, ' / ', HOSP_CHG_DESC) AS SOURCE_VALUE FROM PATBILL A JOIN CHGMSTR B ON A.STD_CHG_CODE=B.STD_CHG_CODE JOIN hospchg C ON A.hosp_chg_id=C.hosp_chg_id  ) A UNION ( SELECT CPT_CODE AS SOURCE_VALUE FROM PATCPT )  | To preserve the most detailed description of procedures, if hospital charge descriptions are available, they are to be used, otherwise standard charge code description is displayed  |
 | DEVICE_SOURCE_CONCEPT_ID  | PATICD_PROC.ICD_CODE <br> PATICD_DIAG.ICD_CODE <br> PATCPT.CPT_CODE | QUERY:SOURCE To STANDARD: SELECT SOURCE_CONCEPT_ID FROM CTE_VOCAB_MAP WHERE SOURCE_VOCABULARY_ID IN ('HCPCS', 'ICD10CM') AND DOMAIN_ID IN ('Device')  | PATBILL.STD_CHG_CODE are codes unique to premier and do not have representation in the vocabulary  |
 
 ## Change Log:
+* 2026.03.11:  Update VISIT_OCCURRENCE_ID from pat_key (no longer fits to bigint) to system generated.
 * 2024.05.17: Updated DEVICE_SOURCE_CONCEPT_ID to be populated by mapping PATICD_PROC.ICD_CODE, PATICD_DIAG.ICD_CODE, and PATCPT.CPT_CODE using CTE_VOCAB_MAP
 * 2021.08.12:  Updated DEVICE_TYPE_CONCEPT_ID to leverage standard concept id.

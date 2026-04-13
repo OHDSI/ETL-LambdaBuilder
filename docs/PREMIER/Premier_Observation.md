@@ -42,11 +42,14 @@ The field mapping is performed as follows:
 |QUALIFER_CONCEPT_ID|-|NULL||
 |UNIT_CONCEPT_ID|-|For operation time records 8550 Else NULL|Set UNIT_CONCEPT_ID = NULL when the source unit value is NULL;Set UNIT_CONCEPT_ID = 0 when source unit value is not NULL but doesn't have a mapping|
 |PROVIDER_CONCEPT_ID|PAT.ADMPHY|When operation time PATICD_PROC.PROC_PHY Else PAT.ADMPHY||
-|VISIT_OCCURRENCE_ID|PAT.PAT_KEY|||
+|VISIT_OCCURRENCE_ID||Lookup the VISIT_OCCURRENCE_ID based on the pat_key||
 |OBSERVATION_SOURCE_VALUE|PAT.DRG<br>PATICD.ICD_CODE<br>PATCPT.CPT_CODE<br>CHARGE CODE|Standard charge code value:<br> <code>SELECT CONCAT(STD_CHG_DESC, ' / ', HOSP_CHG_DESC) AS SOURCE_VALUE FROM PATBILL AJOIN CHGMSTR B ON A.STD_CHG_CODE=B.STD_CHG_CODE JOIN hospchg C ON A.hosp_chg_id=C.hosp_chg_id</code>||
 |OBSERVATION_SOURCE_CONCEPT_ID|-|QUERY: SOURCE TO SOURCE <br> <code>SELECT SOURCE_CONCEPT_ID FROM CTE_VOCAB_MAP WHERE SOURCE_VOCABULARY_ID IN ('ICD9CM', 'ICD10CM', 'CPT4', 'HCPCS') AND TARGET_VOCABULARY_ID IN ('ICD9CM', 'ICD10CM', 'CPT4', 'HCPCS')</code> <br><br>For operation time records, NULL for now||
 |UNITS_SOURCE_VALUE|-|NULL||
 |QUALIFIER_SOURCE_VALUE|-|NULL||
+
+### 2026.03.11:  
+- Update VISIT_OCCURRENCE_ID from pat_key (no longer fits to bigint) to system generated.
 
 ### 27-Sept-2024 
 - Removed admitting source and discharge destination from cdm.observation
