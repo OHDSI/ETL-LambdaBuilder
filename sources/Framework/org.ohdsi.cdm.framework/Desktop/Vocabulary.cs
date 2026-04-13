@@ -164,9 +164,12 @@ namespace org.ohdsi.cdm.framework.desktop
 
                     foreach (var item in combinedLookup)
                     {
-                        var mostFrequent = item.Value.GroupBy(i => i).OrderByDescending(grp => grp.Count()).Select(grp => grp.Key).First();
+                        var mostFrequent = item.Value.GroupBy(i => i).OrderByDescending(grp => grp.Count()).First();
 
-                        finalLookup.Add(item.Key, mostFrequent);
+                        if (mostFrequent.Count() > lookup.MinFrequency)
+                        {
+                            finalLookup.Add(item.Key, mostFrequent.Key);
+                        }
                     }
 
                     if (storeToS3)

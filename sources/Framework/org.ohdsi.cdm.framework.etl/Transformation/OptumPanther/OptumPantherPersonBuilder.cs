@@ -96,10 +96,10 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                     DateTime.MinValue);
 
                     var daysSupply = result.Count != 0 ? result[0].ConceptId ?? 1 : 1;
-                    de.DaysSupply = Convert.ToInt32(daysSupply);
+                    //de.DaysSupply = Convert.ToInt32(daysSupply);
 
-                    if (de.DaysSupply > 0 && de.DaysSupply <= 365)
-                        de.EndDate = de.StartDate.AddDays(de.DaysSupply.Value - 1);
+                    if (daysSupply > 0 && daysSupply <= 365)
+                        de.EndDate = de.StartDate.AddDays(daysSupply - 1);
                 }
 
                 if (de.AdditionalFields != null && de.AdditionalFields.ContainsKey("itndc"))
