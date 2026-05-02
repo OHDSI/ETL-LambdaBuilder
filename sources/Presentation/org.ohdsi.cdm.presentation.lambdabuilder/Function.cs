@@ -321,7 +321,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                 var chunkBuilder = new LambdaChunkBuilder(CreatePersonBuilder, _tmpFolder);
                 var attempt1 = attempt;
 
-                _lastSavedPersonIdOutput = chunkBuilder.Process(s3Event.Object.Key, _restorePoint);
+                _lastSavedPersonIdOutput = chunkBuilder.Process(s3Event.Object.Key.Replace("%3D", "="), _restorePoint);
 
                 var totalPersonConverted = chunkBuilder.TotalPersonConverted;
                 try
@@ -720,7 +720,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
             Console.WriteLine("removing attempt file...");
 
             var attempt = 0;
-            var key = s3Event.Object.Key;
+            var key = s3Event.Object.Key.Replace("%3D", "=");
 
             while (true)
             {
