@@ -118,7 +118,7 @@ namespace org.ohdsi.cdm.framework.common.Utility
 
                 if (vendorType == null)
                 {
-                    name = name.ToLower().Replace("v5", "").Replace("full", "");
+                    //name = name.ToLower().Replace("v5", "").Replace("full", "");
 
                     vendorType = vendorTypes.FirstOrDefault(a => a.Name.Contains(name, StringComparison.CurrentCultureIgnoreCase));
                 }
