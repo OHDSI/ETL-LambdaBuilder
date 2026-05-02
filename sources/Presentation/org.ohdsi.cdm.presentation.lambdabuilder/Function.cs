@@ -673,6 +673,9 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
 
         private bool GetRestorePoint(S3Entity s3Event)
         {
+            // TMP
+            return true;
+
             var attempt = 0;
             while (true)
             {
