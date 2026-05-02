@@ -683,7 +683,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                     var timer = new Stopwatch();
                     timer.Start();
                     using (var transferUtility = new TransferUtility(this.S3Client))
-                    using (var responseStream = transferUtility.OpenStream(s3Event.Bucket.Name, s3Event.Object.Key))
+                    using (var responseStream = transferUtility.OpenStream(s3Event.Bucket.Name, s3Event.Object.Key.Replace("%3D", "=")))
                     using (var reader = new StreamReader(responseStream))
                     {
                         string line;
