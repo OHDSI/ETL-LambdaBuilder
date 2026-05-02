@@ -266,7 +266,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
 
                 buildingId = int.Parse(s3Event.Object.Key.Split('.')[1]);
                 _chunkId = int.Parse(s3Event.Object.Key.Split('.')[2]);
-                _prefix = s3Event.Object.Key.Split('.')[3].Trim();
+                _prefix = s3Event.Object.Key.Split('.')[3].Trim().Replace("%3D", "=");
 
                 if (s3Event.Object.Key.Split('.').Length == 6)
                 {
@@ -673,9 +673,6 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
 
         private bool GetRestorePoint(S3Entity s3Event)
         {
-            // TMP
-            return true;
-
             var attempt = 0;
             while (true)
             {
