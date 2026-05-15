@@ -24,11 +24,12 @@
 		icd.proc_phy,
 		icd.icd_version,
 		icd.proc_date,
-		'paticd_proc' as source
+		'paticd_proc' as source,
+		ch.PartitionId
 		from {sc}.pat pat
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND pat.medrec_key = ch.PERSON_SOURCE_VALUE
 		join {sc}.paticd_proc icd on pat.pat_key = icd.pat_key
-		order by cast(pat.medrec_key as bigint)
+		order by ch.PartitionId, 1
 	</Query>
 	<ProcedureOccurrence>
 		<ProcedureOccurrenceDefinition>
