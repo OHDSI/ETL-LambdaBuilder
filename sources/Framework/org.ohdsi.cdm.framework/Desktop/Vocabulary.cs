@@ -1,4 +1,5 @@
-﻿using org.ohdsi.cdm.framework.common.Definitions;
+﻿using Amazon.Runtime.Internal.Transform;
+using org.ohdsi.cdm.framework.common.Definitions;
 using org.ohdsi.cdm.framework.common.Lookups;
 using org.ohdsi.cdm.framework.desktop.Helpers;
 using org.ohdsi.cdm.framework.Desktop.DataReaders;
@@ -149,9 +150,12 @@ namespace org.ohdsi.cdm.framework.desktop
 
                     foreach (var item in combinedLookup)
                     {
-                        var mostFrequent = item.Value.GroupBy(i => i).OrderByDescending(grp => grp.Count()).Select(grp => grp.Key).First();
+                        var mostFrequent = item.Value.GroupBy(i => i).OrderByDescending(grp => grp.Count()).First();
 
-                        finalLookup.Add(item.Key, mostFrequent);
+                        if (mostFrequent.Count() > 10)
+                        {
+                            finalLookup.Add(item.Key, mostFrequent.Key);
+                        }
                     }
                 }
                 catch (Exception e)

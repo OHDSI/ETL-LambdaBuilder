@@ -1,8 +1,7 @@
-﻿using Azure.Identity;
-using Azure.Storage.Blobs;
-using org.ohdsi.cdm.framework.desktop.Helpers;
+﻿using org.ohdsi.cdm.framework.desktop.Helpers;
 using org.ohdsi.cdm.framework.desktop.Settings;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
 
@@ -14,7 +13,7 @@ namespace org.ohdsi.cdm.presentation.etl.Monitor
         private int _ckeckCount = 0;
 
         private int _chunkId;
-        private int _numberOfPartitions;
+        //private int _numberOfPartitions;
         
 
         private DateTime _previousLastModified = DateTime.MinValue;
@@ -26,7 +25,7 @@ namespace org.ohdsi.cdm.presentation.etl.Monitor
         public ChunkStateController(int chunkId, int numberOfPartitions)
         {
             _chunkId = chunkId;
-            _numberOfPartitions = numberOfPartitions;
+            //_numberOfPartitions = numberOfPartitions;
         }
 
         public void Start(string chunksSchema)
@@ -92,32 +91,6 @@ namespace org.ohdsi.cdm.presentation.etl.Monitor
             }
         }
 
-        //public async Task TryToConvertLocal()
-        //{
-        //    try
-        //    {
-        //        State = ChunkState.RunningLocal;
-        //        Console.WriteLine($"> {DateTime.Now.ToShortTimeString()} | ChunkId={ChunkId} {State}");
-
-        //        await Task.Run(() =>
-        //        {
-        //            var removed = new List<string>();
-        //            foreach (var item in CleanUpS3())
-        //            {
-        //                removed.Add(item.Split('.')[3]);
-        //            }
-
-        //            RunLocal(removed);
-        //            Validate(false);
-        //        });
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Console.WriteLine($"> {DateTime.Now.ToShortTimeString()} | ChunkId={ChunkId} ERROR | TryToConvertLocal {e.Message}");
-        //        State = ChunkState.Error;
-        //    }
-        //}
-
         //private void Validate(bool rerun)
         //{
         //    try
@@ -167,97 +140,6 @@ namespace org.ohdsi.cdm.presentation.etl.Monitor
         //    {
         //        Console.WriteLine($"> {DateTime.Now.ToShortTimeString()} | ChunkId={ChunkId} ERROR | Validate {ex.Message}");
         //        State = ChunkState.Error;
-        //    }
-        //}
-
-        //private List<string> CleanUpS3()
-        //{
-        //    try
-        //    {
-        //        Console.WriteLine($"> {DateTime.Now.ToShortTimeString()} | ChunkId={ChunkId} cleaning s3...");
-        //        var removed = new List<string>();
-
-        //        using (var client = new AmazonS3Client(Settings.Current.CloudStorageKey, Settings.Current.CloudStorageSecret, _config))
-        //        {
-        //            var request = new ListObjectsV2Request
-        //            {
-        //                BucketName = Settings.Current.CloudStorageName,
-        //                Prefix = $"{Settings.Current.Building.Vendor}.{Settings.Current.Building.Id.Value}.{ChunkId}."
-        //            };
-
-        //            Task<ListObjectsV2Response> getList;
-
-        //            getList = client.ListObjectsV2Async(request);
-        //            getList.Wait();
-
-        //            foreach (var item in getList.Result.S3Objects)
-        //            {
-        //                client.DeleteObjectAsync(new DeleteObjectRequest
-        //                {
-        //                    BucketName = Settings.Current.CloudStorageName,
-        //                    Key = item.Key
-        //                }).Wait();
-        //                removed.Add(item.Key);
-        //            }
-        //        }
-
-        //        Console.WriteLine($"> {DateTime.Now.ToShortTimeString()} | ChunkId={ChunkId} cleaning s3 ({removed.Count} files removed). DONE.");
-        //        return removed;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"> {DateTime.Now.ToShortTimeString()} | ChunkId={ChunkId} ERROR | CleanUpS3 {ex.Message}");
-        //        State = ChunkState.Error;
-        //        throw;
-        //    }
-        //}
-
-        //private void RunLocal(List<string> slices)
-        //{
-        //    try
-        //    {
-        //        Console.WriteLine($"> {DateTime.Now.ToShortTimeString()} | ChunkId={ChunkId} run local. ({slices.Count} slices)");
-
-        //        foreach (var prefix in slices)
-        //        {
-        //            Console.WriteLine($"> {DateTime.Now.ToShortTimeString()} | {Settings.Current.Building.Vendor} {Settings.Current.Building.Id.Value} {ChunkId} {prefix}");
-        //            ProcessChunkLocally(Settings.Current.Building.Vendor, Settings.Current.Building.Id.Value, ChunkId, prefix, true);
-        //        }
-
-        //        Console.WriteLine($"> {DateTime.Now.ToShortTimeString()} | ChunkId={ChunkId} run local. DONE.");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"> {DateTime.Now.ToShortTimeString()} | ChunkId={ChunkId} ERROR | RunLocal {ex.Message}");
-        //        State = ChunkState.Error;
-        //    }
-        //}
-
-        //private static string ProcessChunkLocally(Vendor vendor, int buildingId, int chunkId, string prefix, bool clean)
-        //{
-        //    try
-        //    {
-        //        var arguments = $"{vendor} {buildingId} {chunkId} {prefix}";
-        //        Console.WriteLine($"> {DateTime.Now.ToShortTimeString()} | {Settings.Current.LocalPath} {arguments}");
-        //        var psi = new ProcessStartInfo(Path.Combine(Settings.Current.LocalPath))
-        //        {
-        //            Arguments = arguments
-        //        };
-
-        //        using (var p = Process.Start(psi))
-        //        {
-        //            p.WaitForExit();
-        //            p.Close();
-        //        }
-
-        //        Console.WriteLine($"> {DateTime.Now.ToShortTimeString()} | ChunkId={chunkId};Prefix={prefix} - DONE");
-        //        return $"chunkId={chunkId};prefix={prefix}";
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Console.WriteLine($"{DateTime.Now.ToShortTimeString()} | ChunkId={chunkId};Prefix={prefix} - ERROR | ProcessChunkLocally {e.Message}");
-
-        //        return null;
         //    }
         //}
 

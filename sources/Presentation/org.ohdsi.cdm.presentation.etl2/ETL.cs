@@ -1,7 +1,9 @@
 ﻿using Amazon.S3;
+using Amazon.S3.Transfer;
 using org.ohdsi.cdm.framework.common.DataReaders.v5;
 using org.ohdsi.cdm.framework.common.DataReaders.v5.v54;
 using org.ohdsi.cdm.framework.common.Definitions;
+using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Omop;
 using org.ohdsi.cdm.framework.desktop;
 using org.ohdsi.cdm.framework.desktop.Controllers;
@@ -14,6 +16,7 @@ using System.Data;
 using System.Data.Odbc;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -90,7 +93,7 @@ namespace org.ohdsi.cdm.presentation.etl
         {
             Console.WriteLine("Chunks creation in progress...");
             var chunkController = new ChunkController(chunksSchema);
-            chunkController.CreateChunks(35_000);
+            chunkController.CreateChunks(10_000);
         }
 
         public static void CopyVocabularyTables()
@@ -209,8 +212,8 @@ namespace org.ohdsi.cdm.presentation.etl
             if (chunkIds.Length == 0)
                 return;
 
-            var numberOfPartitions = GetNumberOfPartitions(chunksSchema);
-            Console.WriteLine("NumberOfPartitions=" + numberOfPartitions);
+            //var numberOfPartitions = GetNumberOfPartitions(chunksSchema);
+            //Console.WriteLine("NumberOfPartitions=" + numberOfPartitions);
 
             Parallel.ForEach(Settings.Current.Building.SourceQueryDefinitions, queryDefinition =>
             {
@@ -240,7 +243,7 @@ namespace org.ohdsi.cdm.presentation.etl
             Console.WriteLine($"PersonIdFieldName:{Settings.Current.Building.PersonIdFieldName}");
             Console.WriteLine($"PersonIdFieldIndex:{Settings.Current.Building.PersonIdFieldIndex}");
 
-            using (var chunkManager = new ChunkManager(chunksSchema, numberOfPartitions))
+            using (var chunkManager = new ChunkManager(chunksSchema, 0)) // TMP: numberOfPartitions=0
             {
                 Parallel.ForEach(chunkIds, new ParallelOptions { MaxDegreeOfParallelism = Settings.Current.ParallelChunks }, cId =>
                 {
@@ -269,13 +272,39 @@ namespace org.ohdsi.cdm.presentation.etl
                     chunkController.ChunkCreated(chunkId, Settings.Current.Building.Id.Value);
                     Console.WriteLine("[Moving raw data] Raw data for chunkId=" + chunkId + " is available on cloud storage");
 
-                    //for (int i = 0; i < numberOfPartitions; i++)
-                    //{
-                    //    var key = $"{Settings.Current.Building.Vendor}.{Settings.Current.Building.Id}.{chunkId}.PartitionId={i}.txt";
-                    //    using var empty = new MemoryStream();
+                    var numberOfPartitions = GetNumberOfPartitions(chunksSchema, chunkId);
+                    var tasks = new List<Task>();
 
-                    //    CloudStorageHelper.GetTriggerBlobContainerClient().UploadBlob(key, empty);
-                    //}
+                    using (var client = CloudStorageHelper.GetAwsTriggerStorageClient())
+                    using (var tu = new TransferUtility(client))
+                    {
+                        for (int i = 0; i < numberOfPartitions; i++)
+                        {
+                            var slice = i.ToString("D4");
+
+                            if (Settings.Current.UseS3forDatabricks)
+                            {
+                                slice = $"PartitionId={i}";
+                            }
+
+                            var key = $"{Settings.Current.Building.Vendor}.{Settings.Current.Building.Id}.{chunkId}.{slice}.txt";
+                            using var empty = new MemoryStream();
+
+                            //CloudStorageHelper.GetAwsTriggerStorageClient().UploadBlob(key, empty);
+
+                            var t = tu.UploadAsync(new TransferUtilityUploadRequest
+                            {
+                                InputStream = new MemoryStream(),
+                                BucketName = Settings.Current.CloudTriggerStorageName,
+                                Key = key,
+                                ServerSideEncryptionMethod = ServerSideEncryptionMethod.AES256,
+                                StorageClass = S3StorageClass.Standard,
+                            });
+                            tasks.Add(t);
+                        }
+                    }
+
+                    Task.WaitAll([.. tasks]);
 
                     Console.WriteLine($"[Moving raw data] functions for chunkId={chunkId} were triggered | {numberOfPartitions} functions");
 
@@ -290,7 +319,7 @@ namespace org.ohdsi.cdm.presentation.etl
                                 CloudStorageHelper.GetAwsTriggerStorageClient(),
                                 CloudStorageHelper.GetTriggerBlobContainerClient(),
                                 Settings.Current.CloudTriggerStorageName,
-                                $"{Settings.Current.BuildingTriggerPrefix}.").Count();
+                                $"{Settings.Current.Building.Vendor}.{Settings.Current.Building.Id}").Count();
 
                             Console.WriteLine($"[Moving raw data] Unprocessed functions={unprocessed}");
 
@@ -482,7 +511,7 @@ namespace org.ohdsi.cdm.presentation.etl
 
                     using var connection = SqlConnectionHelper.OpenOdbcConnection(Settings.Current.Building.SourceConnectionString);
                     using var c = new OdbcCommand(unloadQuery, connection);
-                    c.CommandTimeout = 30 * 60;
+                    c.CommandTimeout = 60 * 60;
                     c.ExecuteNonQuery();
 
                     if (Settings.Current.Building.SourceEngine.Database == framework.desktop.Enums.Database.Databricks)
@@ -493,22 +522,23 @@ namespace org.ohdsi.cdm.presentation.etl
                 });
         }
 
-        private static int GetNumberOfPartitions(string chunksSchema)
+        private static int GetNumberOfPartitions(string chunksSchema, int chunkId)
         {
             // Azure
             if (Settings.Current.Building.SourceEngine.Database == framework.desktop.Enums.Database.Databricks)
             {
                 using var connection = SqlConnectionHelper.OpenOdbcConnection(Settings.Current.Building.SourceConnectionString);
-                using var c = new OdbcCommand($"select max(PartitionId) from {chunksSchema}._chunks;", connection);
+                using var c = new OdbcCommand($"select max(PartitionId) from {chunksSchema}._chunks where chunkid={chunkId};", connection);
                 return Convert.ToInt32(c.ExecuteScalar());
             }
             // AWS
             else
             {
-                using var connection = SqlConnectionHelper.OpenOdbcConnection(Settings.Current.Building.SourceConnectionString);
-                using var c = new OdbcCommand("SELECT count(*) FROM stv_slices;", connection);
-                
-                return Convert.ToInt32(c.ExecuteScalar());
+                return CloudStorageHelper.GetSlices(chunkId).Count();
+                //using var connection = SqlConnectionHelper.OpenOdbcConnection(Settings.Current.Building.SourceConnectionString);
+                //using var c = new OdbcCommand("SELECT count(*) FROM stv_slices;", connection);
+
+                //return Convert.ToInt32(c.ExecuteScalar());
             }
         }
 

@@ -4,6 +4,7 @@ using Amazon.S3.Transfer;
 using Azure.Identity;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using org.ohdsi.cdm.framework.common.Enums;
 using System.Data;
 
 namespace org.ohdsi.cdm.framework.desktop.Helpers
@@ -159,6 +160,57 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
                         RegionEndpoint = Amazon.RegionEndpoint.USEast1,
                         MaxErrorRetry = 20,
                     });
+        }
+
+        public static IEnumerable<string> GetSlices(int chunkId)
+        {
+            using var client = GetAwsStorageClient();
+
+            var prefix = $"{Settings.Settings.Current.Building.Vendor}/{Settings.Settings.Current.Building.Id}/raw/{chunkId}/";
+            var request = new ListObjectsV2Request
+            {
+                BucketName = Settings.Settings.Current.CloudStorageName,
+                Prefix = prefix
+            };
+
+            Task<ListObjectsV2Response> task;
+            var slices = new HashSet<string>();
+
+            do
+            {
+                task = client.ListObjectsV2Async(request);
+                task.Wait();
+
+                foreach (var o in task.Result.S3Objects)
+                {
+
+                    if (o.Key.Contains("/metadata/"))
+                        continue;
+
+                    if (o.Key.Split('/').Length < 6)
+                        continue;
+
+                    var tableName = o.Key.Split('/')[4];
+                    var fileName = o.Key.Split('/')[5];
+
+                    if (Settings.Settings.Current.UseS3forDatabricks)
+                    {
+                        slices.Add(fileName);
+                    }
+                    else
+                    {
+                        var tail = fileName[fileName.IndexOf("_part")..];
+                        var slice = fileName.Replace(tableName, "").Replace(tail, "");
+
+                        slices.Add(slice);
+                    }
+                }
+
+                request.ContinuationToken = task.Result.NextContinuationToken;
+
+            } while (task.Result.IsTruncated);
+
+            return slices;
         }
     }
 }
