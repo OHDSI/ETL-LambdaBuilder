@@ -152,7 +152,28 @@ namespace org.ohdsi.cdm.framework.desktop
                     {
                         var mostFrequent = item.Value.GroupBy(i => i).OrderByDescending(grp => grp.Count()).First();
 
-                        if (mostFrequent.Count() > 10)
+                        if (mostFrequent.Count() > lookup.MinFrequency)
+                        {
+                            finalLookup.Add(item.Key, mostFrequent.Key);
+                        }
+                    }
+
+                    if (storeToS3)
+                    {
+                        var fileName =
+                            $"{Settings.Settings.Current.Building.Vendor}/{Settings.Settings.Current.Building.Id}/CombinedLookups/{lookup.FileName}.txt.gz";
+
+                        Console.WriteLine(lookup.FileName + " - store to S3 | " + fileName);
+
+                        using (var client = new AmazonS3Client(
+                            Settings.Settings.Current.S3AwsAccessKeyId,
+                            Settings.Settings.Current.S3AwsSecretAccessKey,
+                            new AmazonS3Config
+                            {
+                                Timeout = TimeSpan.FromMinutes(60),
+                                RegionEndpoint = Amazon.RegionEndpoint.USEast1,
+                                MaxErrorRetry = 20,
+                            }))
                         {
                             finalLookup.Add(item.Key, mostFrequent.Key);
                         }

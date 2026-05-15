@@ -30,6 +30,7 @@
 
     public class LookupDefinition
     {
+        public int MinFrequency { get; set; } = 0;
         public Aggregation Aggregation { get; set; }
         public SourceLookup SourceLookup { get; set; }
         public VocabularyLookup VocabularyLookup { get; set; }

@@ -28,19 +28,20 @@
 		end as procedure_type_concept_id,
 		icd.icd_code,
 		pat.adm_phy,
-		icd.icd_version,
-		ch.PartitionId
+		icd.icd_version
 		from {sc}.pat pat
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND pat.medrec_key = ch.PERSON_SOURCE_VALUE
 		join {sc}.paticd_diag icd on pat.pat_key = icd.pat_key
-		order by ch.PartitionId, 1
+		order by cast(pat.medrec_key as bigint)
 	</Query>
 	<ConditionOccurrence>
 		<ConditionOccurrenceDefinition>
 			<IsUnique>true</IsUnique>
 			<Condition>{condition_type_concept_id} > 0</Condition>
 			<PersonId>medrec_key</PersonId>
-			<VisitOccurrenceId>pat_key</VisitOccurrenceId>
+			<AdditionalFields>
+				<string>pat_key</string>
+			</AdditionalFields>
 			<ProviderId>adm_phy</ProviderId>
 			<EndDate>condition_end_date</EndDate>
 			<Concepts>
@@ -66,7 +67,9 @@
 	<Measurement>
 		<MeasurementDefinition>
 			<PersonId>medrec_key</PersonId>
-			<VisitOccurrenceId>pat_key</VisitOccurrenceId>
+			<AdditionalFields>
+				<string>pat_key</string>
+			</AdditionalFields>
 			<ProviderId>adm_phy</ProviderId>
 			<Concepts>
 				<Concept>
@@ -87,7 +90,9 @@
 		<ObservationDefinition>
 			<Condition>{icd_version} = 9</Condition>
 			<PersonId>medrec_key</PersonId>
-			<VisitOccurrenceId>pat_key</VisitOccurrenceId>
+			<AdditionalFields>
+				<string>pat_key</string>
+			</AdditionalFields>
 			<ProviderId>adm_phy</ProviderId>
 			<Concepts>
 				<Concept>
@@ -106,7 +111,9 @@
 		<ObservationDefinition>
 			<Condition>{icd_version} = 10</Condition>
 			<PersonId>medrec_key</PersonId>
-			<VisitOccurrenceId>pat_key</VisitOccurrenceId>
+			<AdditionalFields>
+				<string>pat_key</string>
+			</AdditionalFields>
 			<ProviderId>adm_phy</ProviderId>
 			<Concepts>
 				<Concept>
@@ -126,7 +133,9 @@
 	<DeviceExposure>
 		<DeviceExposureDefinition>
 			<PersonId>medrec_key</PersonId>
-			<VisitOccurrenceId>pat_key</VisitOccurrenceId>
+			<AdditionalFields>
+				<string>pat_key</string>
+			</AdditionalFields>
 			<ProviderId>adm_phy</ProviderId>
 			<Concepts>
 				<Concept>

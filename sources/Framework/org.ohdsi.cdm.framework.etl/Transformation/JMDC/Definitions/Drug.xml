@@ -3,7 +3,7 @@
 		SELECT CAST(RIGHT(Member_ID, LEN(Member_ID) - 1) AS BIGINT) AS person_id,
 		CAST(RIGHT(Claim_ID, LEN(Claim_ID) - 1) AS BIGINT) AS visit_occurrence_id,
 		0 AS drug_concept_id,
-		Date_of_prescription AS drug_exposure_start_date,
+		to_date(date_of_prescription, 'YYYYMMDD', TRUE) AS drug_exposure_start_date,
 		CASE
 		WHEN administered_days &lt; 1 THEN 1
 		WHEN administered_days > 180 THEN 180

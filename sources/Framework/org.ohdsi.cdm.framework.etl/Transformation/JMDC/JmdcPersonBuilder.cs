@@ -547,6 +547,10 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.JMDC
                         op.EndDate = death.StartDate.AddDays(60).Date;
                     }
                 }
+
+                death.CauseConceptId = null;
+                death.SourceCauseConceptId = null;
+                death.CauseSource = null;
             }
 
             // TODO: TMP

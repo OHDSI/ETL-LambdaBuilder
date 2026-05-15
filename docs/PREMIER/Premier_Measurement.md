@@ -35,7 +35,7 @@ The field mapping is performed as follows:
 | RANGE_LOW | - | NULL |  |
 | RANGE_HIGH | - | NULL |  |
 | PROVIDER_ID | PATICD_PROC.PROC_PHY<br>PAT.ADMPHY |  |  |
-| VISIT_OCCURRENCE_ID | PAT.PAT_KEY |  |  |
+| VISIT_OCCURRENCE_ID |  | Lookup the VISIT_OCCURRENCE_ID based on the pat_key |  |
 | MEASUREMENT_SOURCE_VALUE |  | <code>SELECT SOURCE_VALUE FROM (SELECT CONCAT(STD_CHG_DESC, ' / ', HOSP_CHG_DESC) AS SOURCE_VALUE FROM PATBILL A JOIN CHGMSTR B ON A.STD_CHG_CODE=B.STD_CHG_CODE JOIN hospchg C ON A.hosp_chg_id=C.hosp_chg_id ) A UNION(SELECT CPT_CODE AS SOURCE_VALUE FROM PATCPT)</code> |  |
 | MEASUREMENT_SOURCE_CONCEPT_ID | - | QUERY: SOURCE TO SOURCE <br> <code>SELECT SOURCE_CONCEPT_ID FROM CTE_VOCAB_MAP WHERE SOURCE_VOCABULARY_ID IN ('CPT4', 'HCPCS') AND TARGET_VOCABULARY_ID IN ('CPT4', 'HCPCS') AND DOMAIN_ID='Measurement'</code> | Only populated for standard coding CPT4, and HCPCS codes |
 | UNIT_SOURCE_VALUE | - | NULL |  |
@@ -865,6 +865,10 @@ WHERE PAT.PAT_KEY = GEN_LAB.PAT_KEY
 
 
 ## Change Log:
+
+### 2026.03.11:  
+ Update VISIT_OCCURRENCE_ID from pat_key (no longer fits to bigint) to system generated.
+
 ### 2024.03.21: 
  Added mapping for genlab.lab_test_loinc_code ('LP17803-5-15' and 'LP30736-0-3')
 ### 2024.03.12: 

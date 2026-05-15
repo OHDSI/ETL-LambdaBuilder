@@ -5,8 +5,8 @@
 		Type_of_claim as place_of_service_source_value,
 		CASE
 		WHEN admission_date is null THEN CAST(CAST(Month_and_year_of_medical_care AS VARCHAR(6)) + '15' AS DATE)
-		WHEN DATEPART(year, CAST(CAST(Month_and_year_of_medical_care AS VARCHAR(6)) + '01' AS DATE)) = DATEPART(year, CAST(admission_date AS date)) AND
-		DATEPART(month, CAST(CAST(Month_and_year_of_medical_care AS VARCHAR(6)) + '01' AS DATE)) = DATEPART(month, CAST(admission_date AS date)) THEN CAST(admission_date AS date)
+		WHEN DATEPART(year, CAST(CAST(Month_and_year_of_medical_care AS VARCHAR(6)) + '01' AS DATE)) = DATEPART(year, to_date(admission_date, 'YYYYMMDD', TRUE)) AND
+		DATEPART(month, CAST(CAST(Month_and_year_of_medical_care AS VARCHAR(6)) + '01' AS DATE)) = DATEPART(month, to_date(admission_date, 'YYYYMMDD', TRUE)) THEN to_date(admission_date, 'YYYYMMDD', TRUE)
 		ELSE CAST(CAST(Month_and_year_of_medical_care AS VARCHAR(6)) + '01' AS DATE)
 		END as visit_start_date,
 		days_of_medical_care as num_of_days,
@@ -16,11 +16,10 @@
 		ELSE 9201
 		END as place_of_service_concept_id,
 		total_point * 10 AS total_paid,
-		44818592 as CurrencyConceptId,
-		ch.PartitionId
+		44818592 as CurrencyConceptId
 		FROM {sc}.Claim c
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND c.Member_ID = ch.PERSON_SOURCE_VALUE
-		order by ch.PartitionId, CAST(RIGHT(Member_ID, LEN(Member_ID) - 1) AS BIGINT)
+		order by CAST(RIGHT(Member_ID, LEN(Member_ID) - 1) AS BIGINT)
 	</Query>
 	<VisitOccurrence>
 		<VisitOccurrenceDefinition>

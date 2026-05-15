@@ -16,7 +16,7 @@ Admitting and discharge information is captured in Premier as the place of servi
 
 |Destination Field|Source Field|Applied Rule|Comment|
 |---|---|---|---|
-|VISIT_OCCURRENCE_ID|PAT.PAT_KEY|
+|VISIT_OCCURRENCE_ID||System generated.|
 |PERSON_ID|PAT.MEDREC_KEY|
 |VISIT_CONCEPT_ID||When POINT_OF_ORIGIN=7 and I_O_IND ='O' then concept_id=9203 <br> When POINT_OF_ORIGIN=7 and I_O_IND ='I' then concept_id=262 <br> When I_O_IND ='I' then concept_id=9201 <br> When I_O_IND ='O' then concept_id=9202||
 |VISIT_START_DATE|PAT.ADM_DATE <br>PATBILL.SERV_DATE|||
@@ -35,6 +35,7 @@ Admitting and discharge information is captured in Premier as the place of servi
 |PRECEDING_VISIT_OCCURRENCE_ID|VISIT_OCCURRENCE.VISIT_OCCURRENCE_ID|For a given person, find the visit prior to this one and reference it here|A foreign key to the VISIT_OCCURRENCE table of the visit immediately preceding this visit|
 
 ## Change Log:
+* 2026.03.11:  Update VISIT_OCCURRENCE_ID from pat_key (no longer fits to bigint) to system generated.
 * 2025.01.28:  Update mappings for discharge_to and admitted_from concept_ids to align with conventions and vocabulary rules.
 * 2024.10.16:  Updated mappings for discharge_to and admitted_from concept_ids to better represent source data.
 * 2024.03.12:  Updated VISIT_CONCEPT_ID  

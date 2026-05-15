@@ -26,13 +26,15 @@ The field mapping is performed as follows:
 | CONDITION_TYPE_CONCEPT_ID | | Records coming from the PATICD_DIAG table should be given a condition_type_concept_id = 32818 (EHR Administration Record) <BR> Records coming from the PATBILL.STD_CHG_CODE table should be given a condition_type_concept_id = 32852 (Hospital Cost)|  |
 | STOP_REASON | - | NULL |  |
 | PROVIDER_ID | PAT.ADMPHY | NULL |  |
-| VISIT_OCCURRENCE_ID | PAT.PAT_KEY |  |  |
+| VISIT_OCCURRENCE_ID |  | Lookup the VISIT_OCCURRENCE_ID based on the pat_key |  |
 | CONDITION_SOURCE_VALUE | PATICD_DIAG.ICD_CODE |  |  |
 | CONDITION_SOURCE_CONCEPT_ID |  | QUERY: SOURCE TO SOURCE SELECT SOURCE_CONCEPT_IDFROM CTE_VOCAB_MAPWHERE SOURCE_VOCABULARY_ID IN ('ICD9CM', 'ICD10', 'ICD10CM') AND TARGET_VOCABULARY_ID IN ('ICD9CM', 'ICD10', 'ICD10CM') AND DOMAIN_ID='CONDITION' |  |
 | CONDITION_STATUS_SOURCE_VALUE | PATICD_DIAG.ICD_PRI_SEC <br> PATBILL |  | Records coming from PATICD_DIAG will have condition_status_source_value = 'A', 'P' or 'S'.<br><br>  Records coming from PATBIL will have a condition_status_source_value = 'From PATBILL - No information provided' |
 | CONDITION_STATUS_CONCEPT_ID | PATICD_DIAG.ICD_PRI_SEC | Records from PATICD_DIAG: <br> ICD_PRI_SEC = A, then 32890 (admission diagnosis) <br> ICD_PRI_SEC = P, then 32902 (primary diagnosis) <br> ICD_PRI_SEC = S, then 32908 (secondary diagnosis) <br><br> Records from PATBILL: <br> Assign 32908 (secondary diagnosis)| |
 
 ## Change log:
+ * 2026.03.11:  
+     + Update VISIT_OCCURRENCE_ID from pat_key (no longer fits to bigint) to system generated.
  * 2023.10.23:
      + SERV_DAY changed to SERV_DATE
  * 2021.08.11:  
