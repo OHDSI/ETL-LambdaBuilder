@@ -29,7 +29,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder.Base
         private long? _lastSavedPersonId;
 
         private readonly System.Timers.Timer _watchdog;
-        private readonly Dictionary<string, S3DataReaderZstd> _readers = [];
+        private readonly Dictionary<string, IS3DataReader> _readers = [];
         private Dictionary<string, long> _restorePoint = [];
         private readonly string _tmpFolder;
         private bool _readRestarted;
@@ -45,7 +45,15 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder.Base
             _attempt = attempt;
 
             _personBuilders = [];
-            _offsetManager = new KeyMasterOffsetManager(_chunkId, int.Parse(_prefix), attempt);
+
+            int prefixNum;
+
+            if (_prefix.StartsWith("PartitionId="))
+                prefixNum = int.Parse(_prefix.Replace("PartitionId=", ""));
+            else
+                prefixNum = int.Parse(_prefix);
+
+            _offsetManager = new KeyMasterOffsetManager(_chunkId, prefixNum, attempt);
             _lastSavedPersonId = null;
             _watchdog = new System.Timers.Timer(Settings.Current.WatchdogValue);
             _watchdog.Elapsed += Watchdog_Elapsed;
@@ -54,152 +62,15 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder.Base
 
         private void Watchdog_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(_currentReaderName) && _readers != null && _readers.Count > 0 && _readers.TryGetValue(_currentReaderName, out S3DataReaderZstd value))
+            if (!string.IsNullOrEmpty(_currentReaderName) && _readers != null && _readers.Count > 0 && _readers.TryGetValue(_currentReaderName, out IS3DataReader value))
             {
-                if (value.IdleTime != TimeSpan.Zero &&
-value.IdleTime.TotalSeconds > 10)
+                if (value.IdleTime != TimeSpan.Zero && value.IdleTime.TotalSeconds > 10)
                 {
                     value.Restart();
                     _readRestarted = true;
                 }
             }
         }
-
-        public long? ProcessOrig(Dictionary<string, long> restorePoint)
-        {
-            try
-            {
-                Console.WriteLine("--- RAM: " + GC.GetTotalMemory(false) / 1024 / 1024 + "Mb");
-                _restorePoint = restorePoint;
-
-                if (_restorePoint.TryGetValue("_lastSavedPersonId", out long value))
-                {
-                    _lastSavedPersonId = value;
-                }
-
-                var timer = new Stopwatch();
-                timer.Start();
-
-                var folder = $"{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id}/raw";
-
-
-                var qds = new Dictionary<string, QueryDefinition>();
-                var queries = new List<string>();
-
-
-                foreach (var qd in Settings.Current.Building.SourceQueryDefinitions)
-                {
-                    if (qd.Providers != null) continue;
-                    if (qd.Locations != null) continue;
-                    if (qd.CareSites != null) continue;
-
-                    var sql = qd.GetSql(Settings.Current.Building.Vendor);
-
-                    if (string.IsNullOrEmpty(sql))
-                    {
-                        qd.DataProcessed = true;
-                        continue;
-                    }
-
-                    var initRow = 0L;
-                    if (_restorePoint.TryGetValue(qd.FileName, out long valueFileName))
-                        initRow = valueFileName;
-
-                    _readers.Add(qd.FileName, new S3DataReaderZstd(Settings.Current.Bucket, folder,
-                        Settings.Current.S3AwsAccessKeyId,
-                        Settings.Current.S3AwsSecretAccessKey, _chunkId, qd.FileName, qd.FieldHeaders, _prefix,
-                        initRow, _tmpFolder));
-                    qds.Add(qd.FileName, qd);
-                    queries.Add(qd.FileName);
-                }
-
-                _watchdog.Start();
-                var endedQueries = new List<string>();
-                var maxPersonIds = new HashSet<long>();
-                while (true)
-                {
-                    if (Settings.Current.Timeout || Settings.Current.Error)
-                        break;
-
-                    if (queries.Count == 0)
-                        break;
-
-                    for (int i = 0; i < queries.Count; i++)
-                    {
-                        var qName = queries[i];
-                        var reader = _readers[qName];
-                        var qd = qds[qName];
-                        _currentReaderName = qName;
-
-                        while (true)
-                        {
-                            if (!reader.Read())
-                            {
-                                endedQueries.Add(qName);
-                                if (qd.ProcessedPersonIds.Count > 0)
-                                    maxPersonIds.Add(qd.ProcessedPersonIds.Keys.Max());
-                                break;
-                            }
-
-                            var recordGuid = Guid.NewGuid();
-                            if (qd.ProcessedPersonIds.Count >= Settings.Current.MinPersonToBuild)
-                            {
-                                maxPersonIds.Add(qd.ProcessedPersonIds.Keys.Max());
-                                break;
-                            }
-                        }
-                    }
-
-                    if (maxPersonIds.Count > 0)
-                    {
-                        var minPersonId = maxPersonIds.Min();
-                        var ids = _personBuilders.Where(pb => pb.Key < minPersonId).Select(pb => pb.Key).ToArray();
-                        BuildAndSave(ids, false);
-                    }
-
-                    foreach (var ended in endedQueries)
-                    {
-                        queries.Remove(ended);
-                    }
-
-                    endedQueries.Clear();
-                    maxPersonIds.Clear();
-                }
-
-                _watchdog.Stop();
-
-                if (_personBuilders.Keys.Count > 0)
-                    BuildAndSave([.. _personBuilders.Keys], true);
-                timer.Stop();
-
-                Console.WriteLine(
-                    $"(Timeout={Settings.Current.Timeout}) Total: {timer.ElapsedMilliseconds}ms, Build: {_totalBuild}ms, Save: {_totalSave}ms || Total person: {TotalPersonConverted} || Duaration: {Settings.Current.Duration}s");
-
-                foreach (var qd in Settings.Current.Building.SourceQueryDefinitions)
-                {
-                    qd.Clean();
-                }
-
-                foreach (var reader in _readers.Values)
-                {
-                    reader.Close();
-                }
-
-                _readers.Clear();
-                _personBuilders.Clear();
-
-                return Settings.Current.Timeout || Settings.Current.Error ? _lastSavedPersonId : null;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("WARN_EXC - Process - throw");
-                Console.WriteLine(e.Message);
-                Console.WriteLine(e.StackTrace);
-                Settings.Current.Error = true;
-                throw;
-            }
-        }
-
 
         public long? Process(Dictionary<string, long> restorePoint)
         {
@@ -236,9 +107,6 @@ value.IdleTime.TotalSeconds > 10)
                     if (qd.CareSites != null) continue;
 
                     var v = Settings.Current.Building.Vendor;
-                    //if (v is OptumOncology)
-                    //    v = new OptumPantherFull();
-
                     var sql = qd.GetSql(v);
 
                     if (string.IsNullOrEmpty(sql))
@@ -251,10 +119,20 @@ value.IdleTime.TotalSeconds > 10)
                     if (_restorePoint.ContainsKey(qd.FileName))
                         initRow = _restorePoint[qd.FileName];
 
-                    _readers.Add(qd.FileName, new S3DataReaderZstd(Settings.Current.Bucket, folder,
-                        Settings.Current.S3AwsAccessKeyId,
-                        Settings.Current.S3AwsSecretAccessKey, _chunkId, qd.FileName, qd.FieldHeaders, _prefix,
-                        initRow, _tmpFolder));
+                    if (_prefix.StartsWith("PartitionId="))
+                    {
+                        _readers.Add(qd.FileName, new S3DataReaderGzip(Settings.Current.Bucket, folder,
+                                                  Settings.Current.S3AwsAccessKeyId,
+                                                  Settings.Current.S3AwsSecretAccessKey, _chunkId, qd.FileName, qd.FieldHeaders, _prefix,
+                                                  initRow, _tmpFolder));
+                    }
+                    else
+                    {
+                        _readers.Add(qd.FileName, new S3DataReaderZstd(Settings.Current.Bucket, folder,
+                            Settings.Current.S3AwsAccessKeyId,
+                            Settings.Current.S3AwsSecretAccessKey, _chunkId, qd.FileName, qd.FieldHeaders, _prefix,
+                            initRow, _tmpFolder));
+                    }
 
                     if (qd.Persons != null && qd.Persons.Length > 0)
                     {
@@ -414,8 +292,10 @@ value.IdleTime.TotalSeconds > 10)
             var saver = new Saver(_offsetManager, _tmpFolder);
 
             var personCount = 0;
+
+            var subChunkId = int.Parse(_prefix.Replace("PartitionId=", ""));
             _readyToSave.ChunkId = _chunkId;
-            _readyToSave.SubChunkId = int.Parse(_prefix);
+            _readyToSave.SubChunkId = subChunkId;
 
             var timer = new Stopwatch();
             timer.Start();
@@ -423,7 +303,7 @@ value.IdleTime.TotalSeconds > 10)
             if (_readyToSave.Persons.Count > 0)
             {
                 personCount = _readyToSave.Persons.Count;
-                key = _prefix + "." + _attempt + "." + _readyToSave.Persons.Min(p => p.PersonId) + "_" +
+                key = subChunkId + "." + _attempt + "." + _readyToSave.Persons.Min(p => p.PersonId) + "_" +
                       _readyToSave.Persons.Max(p => p.PersonId) + "." + _readyToSave.Persons.Count;
 
                 saver.Save(_readyToSave, _chunkId, key);
@@ -432,7 +312,7 @@ value.IdleTime.TotalSeconds > 10)
             else if (_readyToSave.Metadata.Count > 0)
             {
                 personCount = _readyToSave.Metadata.Count;
-                key = _prefix + "." + _attempt + "." + _readyToSave.Metadata.Keys.Min() + "_" +
+                key = subChunkId + "." + _attempt + "." + _readyToSave.Metadata.Keys.Min() + "_" +
                       _readyToSave.Metadata.Keys.Max() + "." + _readyToSave.Metadata.Count;
 
                 saver.Write(_readyToSave, _chunkId, key, "METADATA_TMP");
@@ -577,7 +457,7 @@ value.IdleTime.TotalSeconds > 10)
         }
 
         private void AddEntity(QueryDefinition queryDefinition, IEnumerable<EntityDefinition> definitions,
-            IDataRecord reader, Guid recordGuid, HashSet<long> personIdsToSave)
+            IS3DataReader reader, Guid recordGuid, HashSet<long> personIdsToSave)
         {
 
             if (definitions == null) return;
@@ -593,17 +473,17 @@ value.IdleTime.TotalSeconds > 10)
                 else
                 {
                     if (personIdsToSave.Contains(personId.Value))
-                        ((S3DataReaderZstd)reader).Resume();
+                        reader.Resume();
                     else
                     {
-                        ((S3DataReaderZstd)reader).Pause();
+                        reader.Pause();
                         return;
                     }
                 }
 
 
                 queryDefinition.ProcessedPersonIds.TryAdd(personId.Value, 0);
-                queryDefinition.ProcessedPersonIds[personId.Value] = ((S3DataReaderZstd)reader).RowIndex;
+                queryDefinition.ProcessedPersonIds[personId.Value] = reader.RowIndex;
 
                 if (_readRestarted)
                 {

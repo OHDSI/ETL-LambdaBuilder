@@ -1,6 +1,4 @@
-﻿using org.ohdsi.cdm.framework.desktop.DbLayer;
-using org.ohdsi.cdm.framework.desktop.Enums;
-using System.Text;
+﻿using System.Text;
 
 namespace org.ohdsi.cdm.framework.desktop
 {

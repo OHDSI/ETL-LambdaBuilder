@@ -1,5 +1,5 @@
 ﻿<QueryDefinition>
-  <Query>
+	<Query>
 		with careSite as
 		(
 		SELECT distinct pracid as id
@@ -22,25 +22,25 @@
 		JOIN {sc}.lookup l ON s.role = l.code  AND lookup_type_id = 76
 		LEFT JOIN careSite cs ON cs.id = cast(Right(cast(staffid as varchar), 5) as int)
 	</Query>
-  <Providers>
-    <ProviderDefinition>
-      <Id>PROVIDER_ID</Id>
-      <ProviderSourceValue>PROVIDER_SOURCE_VALUE</ProviderSourceValue>
-      <CareSiteId>CARE_SITE_ID</CareSiteId>
-      <GenderConceptId>gender_concept_id</GenderConceptId>
-      <GenderSourceValue>gender</GenderSourceValue>
-      <Concepts>
-        <Concept>
-          <ConceptIdMappers>
-            <Mapper>
-              <Lookup>Specialty</Lookup>
-            </Mapper>
-          </ConceptIdMappers>
-          <Fields>
-            <Field key="SPECIALTY_SOURCE_KEY" sourceKey="SPECIALTY_SOURCE_VALUE" defaultConceptId="0"/>
-          </Fields>
-        </Concept>
-      </Concepts>
-    </ProviderDefinition>
-  </Providers>
+	<Providers>
+		<ProviderDefinition>
+			<Id>PROVIDER_ID</Id>
+			<ProviderSourceValue>PROVIDER_SOURCE_VALUE</ProviderSourceValue>
+			<CareSiteId>CARE_SITE_ID</CareSiteId>
+			<GenderConceptId>gender_concept_id</GenderConceptId>
+			<GenderSourceValue>gender</GenderSourceValue>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>Specialty</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="SPECIALTY_SOURCE_KEY" sourceKey="SPECIALTY_SOURCE_VALUE" defaultConceptId="0"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ProviderDefinition>
+	</Providers>
 </QueryDefinition>

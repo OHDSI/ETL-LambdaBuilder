@@ -32,7 +32,14 @@ namespace org.ohdsi.cdm.framework.common.Definitions
             }
 
             int? q = null;
-            q = reader.GetInt2(Quantity);
+            if (!string.IsNullOrEmpty(Quantity))
+            {
+                var quantity = reader.GetDecimal(Quantity);
+                if (quantity.HasValue)
+                {
+                    q = Decimal.ToInt32(quantity.Value);
+                }
+            }
 
             foreach (var e in base.GetConcepts(concept, reader, offset))
             {

@@ -1,21 +1,9 @@
 ﻿using org.ohdsi.cdm.framework.common.Enums;
-using System.Configuration;
 
 namespace org.ohdsi.cdm.framework.desktop.Settings
 {
     public class Settings
     {
-        private string _s3AwsAccessKeyId;
-        private string _s3AwsSecretAccessKey;
-
-        private string _ec2AwsAccessKeyId;
-        private string _ec2AwsSecretAccessKey;
-        private string _bucket;
-
-        private string _cdmFolder;
-        private string _vendorSettings;
-
-
         #region Properties
         public static Settings Current { get; set; }
         public BuildingSettings Building { get; set; }
@@ -36,121 +24,131 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
         }
 
         public string DropVocabularyTablesScript => File.ReadAllText(
-            Path.Combine(Folder, "Common", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "DropVocabularyTables.sql"));
+            Path.Combine(Folder, "Common", "Queries", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "DropVocabularyTables.sql"));
 
         public string TruncateWithoutLookupTablesScript => File.ReadAllText(
-            Path.Combine(Folder, "Common", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "TruncateWithoutLookupTables.sql"));
+            Path.Combine(Folder, "Common", "Queries", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "TruncateWithoutLookupTables.sql"));
 
         public string TruncateTablesScript => File.ReadAllText(
-            Path.Combine(Folder, "Common", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "TruncateTables.sql"));
+            Path.Combine(Folder, "Common", "Queries", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "TruncateTables.sql"));
 
         public string DropTablesScript => File.ReadAllText(
-            Path.Combine(Folder, "Common", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "DropTables.sql"));
+            Path.Combine(Folder, "Common", "Queries", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "DropTables.sql"));
 
         public string TruncateLookupScript => File.ReadAllText(
-            Path.Combine(Folder, "Common", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "TruncateLookup.sql"));
+            Path.Combine(Folder, "Common", "Queries", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "TruncateLookup.sql"));
 
         public string CreateCdmTablesScript => File.ReadAllText(
-            Path.Combine(Folder, "Common", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "CreateTables.sql"));
+            Path.Combine(Folder, "Common", "Queries", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "CreateTables.sql"));
 
         public string CreateCdmDatabaseScript => File.ReadAllText(
             Path.Combine([
                 Folder,
                 "Common",
+                "Queries",
                 Building.DestinationEngine.Database.ToString(),
                 "CreateDestination.sql"
             ]));
 
         public string CopyVocabularyScript => File.ReadAllText(
-            Path.Combine(Folder, "Common", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "CopyVocabulary.sql"));
+            Path.Combine(Folder, "Common",  "Queries", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "CopyVocabulary.sql"));
 
         public string CreateIndexesScript => File.ReadAllText(
-            Path.Combine(Folder, "Common", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "CreateIndexes.sql"));
+            Path.Combine(Folder, "Common", "Queries", Building.DestinationEngine.Database.ToString(), GetCdmVersionFolder(), "CreateIndexes.sql"));
 
-        public string S3AwsAccessKeyId
+        /// <summary>
+        /// AWS s3 - None; Azure Blob - ServiceUri
+        /// </summary>
+        public string CloudStorageUri { get; set; }
+
+        public string CloudStorageUriDfs
         {
             get
             {
-                if (!string.IsNullOrEmpty(_s3AwsAccessKeyId))
-                    return _s3AwsAccessKeyId;
-
-                return ConfigurationManager.AppSettings["s3_aws_access_key_id"];
+                return CloudStorageUri.Split("//")[1].Replace(".blob.", ".dfs.");
             }
-            set => _s3AwsAccessKeyId = value;
         }
 
-        public string S3AwsSecretAccessKey
+        public string CloudStorageHolder { get; set; }
+
+        public string CloudStorageConnectionString { get; set; }
+
+        public string CloudPrefix { get; set; }
+
+        public string CloudTriggerStorageUri { get; set; }
+
+        public string CloudTriggerStorageHolder { get; set; }
+
+        public string CloudTriggerStorageConnectionString { get; set; }
+
+        public string CloudTriggerPrefix { get; set; }
+
+        public string BuildingPrefix
         {
             get
             {
-                if (!string.IsNullOrEmpty(_s3AwsSecretAccessKey))
-                    return _s3AwsSecretAccessKey;
+                if (string.IsNullOrEmpty(Settings.Current.CloudPrefix))
+                    return $"{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id}";
 
-                return ConfigurationManager.AppSettings["s3_aws_secret_access_key"];
+                return $"{Settings.Current.CloudPrefix}/{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id}";
             }
-            set => _s3AwsSecretAccessKey = value;
         }
-
-        public string MessageS3AwsAccessKeyId { get; set; }
-        public string MessageS3AwsSecretAccessKey { get; set; }
-
-        public string MessageBucket { get; set; }
-
-        public string Ec2AwsAccessKeyId
+        public string BuildingTriggerPrefix
         {
             get
             {
-                if (!string.IsNullOrEmpty(_ec2AwsAccessKeyId))
-                    return _ec2AwsAccessKeyId;
+                if (string.IsNullOrEmpty(Settings.Current.CloudTriggerPrefix))
+                    return $"{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id}";
 
-                return ConfigurationManager.AppSettings["ec2_aws_access_key_id"];
+                return $"{Settings.Current.CloudTriggerPrefix}/{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id}";
             }
-            set => _ec2AwsAccessKeyId = value;
         }
 
-        public string Ec2AwsSecretAccessKey
+        /// <summary>
+        /// AWS s3 - S3AwsAccessKeyId; Azure Blob - ClientId
+        /// </summary>
+        public string CloudStorageKey { get; set; }
+
+        /// <summary>
+        /// AWS s3 - S3AwsSecretAccessKey; Azure Blob - ClientSecret
+        /// </summary>
+        public string CloudStorageSecret { get; set; }
+
+        /// <summary>
+        /// AWS s3 - Bucket; Azure Blob - BlobContainerName
+        /// </summary>
+        public string CloudStorageName { get; set; }
+
+        /// <summary>
+        /// AWS s3 - S3AwsAccessKeyId; Azure Blob - ClientId
+        /// </summary>
+        public string CloudTriggerStorageKey { get; set; }
+
+        /// <summary>
+        /// AWS s3 - S3AwsSecretAccessKey; Azure Blob - ClientSecret
+        /// </summary>
+        public string CloudTriggerStorageSecret { get; set; }
+
+        /// <summary>
+        /// AWS s3 - Bucket; Azure Blob - BlobContainerName
+        /// </summary>
+        public string CloudTriggerStorageName { get; set; }
+
+        public string CDMFolder { get; set; }
+
+        
+        public bool UseS3forDatabricks { get; set; }
+
+        public string GetDatabricksStorage
         {
             get
             {
-                if (!string.IsNullOrEmpty(_ec2AwsSecretAccessKey))
-                    return _ec2AwsSecretAccessKey;
-
-                return ConfigurationManager.AppSettings["ec2_aws_secret_access_key"];
+                if (Current.UseS3forDatabricks)
+                    return $@"s3://{Current.CloudStorageName}";
+                else
+                    return $@"abfss://{Current.CloudStorageName}@{Current.CloudStorageUriDfs}";
             }
-            set => _ec2AwsSecretAccessKey = value;
         }
-
-        public string Bucket
-        {
-            get
-            {
-                if (!string.IsNullOrEmpty(_bucket))
-                    return _bucket;
-
-                return ConfigurationManager.AppSettings["bucket"];
-            }
-            set => _bucket = value;
-        }
-
-        public string CDMFolder
-        {
-            get
-            {
-                if (!string.IsNullOrEmpty(_cdmFolder))
-                    return _cdmFolder;
-
-                return ConfigurationManager.AppSettings["CDMFolder"];
-            }
-            set => _cdmFolder = value;
-        }
-
-        public string VendorSettings
-        {
-            get => _vendorSettings;
-            set => _vendorSettings = value;
-        }
-
-
         #endregion
 
         #region Methods
@@ -163,13 +161,9 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
         {
             return Building.Cdm switch
             {
-                CdmVersions.V52 => "v5.2",
-                CdmVersions.V53 => "v5.3",
-                CdmVersions.V6 => "v6.0",
-                _ => "v5.2",
+                CdmVersions.V54 => "v5.4",
             };
         }
-
         #endregion
     }
 }

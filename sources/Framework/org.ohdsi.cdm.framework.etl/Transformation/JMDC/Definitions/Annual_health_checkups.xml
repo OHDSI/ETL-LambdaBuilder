@@ -189,7 +189,7 @@
 		WHEN Eating1_fast_eating = 1 THEN 'fast'
 		WHEN Eating1_fast_eating = 2 THEN 'average'
 		WHEN Eating1_fast_eating = 3 THEN 'slow'
-		ELSE Eating1_fast_eating || ' unknown'
+		ELSE cast(Eating1_fast_eating as varchar(1)) || ' unknown'
 		END AS Eating_speed,
 
 		CASE
@@ -361,10 +361,11 @@
 		30 as Hemoglobin_max,
 		1000 as Red_blood_cell_count_max,
 		100 as Serum_uric_acid_max,
-		100 as Serum_creatinine_max
+		100 as Serum_creatinine_max,
+		ch.PartitionId
 		FROM {sc}.Annual_health_checkup h
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND h.Member_ID = ch.PERSON_SOURCE_VALUE
-		order by CAST(RIGHT(Member_ID, LEN(Member_ID) - 1) AS BIGINT)
+		order by ch.PartitionId, CAST(RIGHT(Member_ID, LEN(Member_ID) - 1) AS BIGINT)
 	</Query>
 
 	<Measurement>

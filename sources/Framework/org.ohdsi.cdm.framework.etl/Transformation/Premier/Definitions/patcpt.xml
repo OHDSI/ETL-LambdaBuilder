@@ -8,11 +8,12 @@
 		END AS procedure_type_concept_id,
 		pat.pat_key,
 		cpt.cpt_code,
-		pat.adm_phy
+		pat.adm_phy,
+		ch.PartitionId
 		FROM {sc}.pat
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND pat.medrec_key = ch.PERSON_SOURCE_VALUE
 		JOIN {sc}.patcpt cpt ON PAT.PAT_KEY = cpt.pat_key
-		ORDER BY cast(pat.medrec_key AS bigint)
+		ORDER BY ch.PartitionId, 1
 	</Query>
 	<ProcedureOccurrence>
 		<ProcedureOccurrenceDefinition>

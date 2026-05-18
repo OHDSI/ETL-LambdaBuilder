@@ -28,11 +28,12 @@
 		end as procedure_type_concept_id,
 		icd.icd_code,
 		pat.adm_phy,
-		icd.icd_version
+		icd.icd_version,
+		ch.PartitionId
 		from {sc}.pat pat
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND pat.medrec_key = ch.PERSON_SOURCE_VALUE
 		join {sc}.paticd_diag icd on pat.pat_key = icd.pat_key
-		order by cast(pat.medrec_key as bigint)
+		order by ch.PartitionId, 1
 	</Query>
 	<ConditionOccurrence>
 		<ConditionOccurrenceDefinition>

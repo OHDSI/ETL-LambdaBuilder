@@ -1,5 +1,4 @@
 ﻿using MySqlConnector;
-using org.ohdsi.cdm.framework.desktop.DbLayer;
 using org.ohdsi.cdm.framework.desktop.Helpers;
 using System.Data.Odbc;
 

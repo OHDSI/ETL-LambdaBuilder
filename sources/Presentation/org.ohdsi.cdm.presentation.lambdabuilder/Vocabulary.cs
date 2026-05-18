@@ -98,7 +98,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
             }
         }
 
-        public void Fill(bool forLookup, bool readFromS3)
+        public void Fill(bool forLookup)
         {
             _genderConcepts = new GenderLookup();
             _genderConcepts.Load();

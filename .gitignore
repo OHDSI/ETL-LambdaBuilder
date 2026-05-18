@@ -347,3 +347,4 @@ sources/Presentation/org.ohdsi.cdm.presentation.lambdabuilder/aws-lambda-tools-d
 sources/Presentation/org.ohdsi.cdm.presentation.lambdamerge/aws-lambda-tools-defaults.json
 /sources/Tests/RunLocal/App.config
 /sources/RunValidation/App.config
+/sources/Presentation/org.ohdsi.cdm.presentation.etl2/appsettings.json

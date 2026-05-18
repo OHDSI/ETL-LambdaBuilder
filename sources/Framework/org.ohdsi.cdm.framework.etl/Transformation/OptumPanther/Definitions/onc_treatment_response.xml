@@ -1,24 +1,25 @@
 ﻿<QueryDefinition>
-  <Query>
-    SELECT distinct
-    ch.person_id as PersonId,
-    note_date,
-    treatment_response || ' to ' || treatment as source
-    FROM {sc}.onc_treatment_response l
-    JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
-    order by 1
-  </Query>
-  <Observation>
-    <ObservationDefinition>
-      <PersonId>PersonId</PersonId>
-      <StartDate>note_date</StartDate>
-      <Concepts>
-        <Concept>
-          <Fields>
-            <Field defaultConceptId="0" sourceKey="source" defaultTypeId="32882"/>
-          </Fields>
-        </Concept>
-      </Concepts>
-    </ObservationDefinition>
-  </Observation>
+	<Query>
+		SELECT distinct
+		ch.person_id as PersonId,
+		note_date,
+		treatment_response || ' to ' || treatment as source,
+		ch.PartitionId
+		FROM {sc}.onc_treatment_response l
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
+		order by ch.PartitionId, 1
+	</Query>
+	<Observation>
+		<ObservationDefinition>
+			<PersonId>PersonId</PersonId>
+			<StartDate>note_date</StartDate>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field defaultConceptId="0" sourceKey="source" defaultTypeId="32882"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ObservationDefinition>
+	</Observation>
 </QueryDefinition>

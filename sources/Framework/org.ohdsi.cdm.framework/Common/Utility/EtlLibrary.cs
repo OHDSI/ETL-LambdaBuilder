@@ -2,8 +2,6 @@
 using org.ohdsi.cdm.framework.common.Definitions;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Extensions;
-using org.ohdsi.cdm.framework.Common.Base;
-using System.Linq;
 using System.Reflection;
 
 namespace org.ohdsi.cdm.framework.common.Utility
@@ -120,7 +118,7 @@ namespace org.ohdsi.cdm.framework.common.Utility
 
                 if (vendorType == null)
                 {
-                    name = name.ToLower().Replace("v5", "").Replace("full", "");
+                    //name = name.ToLower().Replace("v5", "").Replace("full", "");
 
                     vendorType = vendorTypes.FirstOrDefault(a => a.Name.Contains(name, StringComparison.CurrentCultureIgnoreCase));
                 }

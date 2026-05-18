@@ -2,7 +2,6 @@
 using Amazon.S3.Model;
 using org.ohdsi.cdm.framework.common.Base;
 using org.ohdsi.cdm.framework.desktop.DbLayer;
-using org.ohdsi.cdm.framework.desktop.Enums;
 using org.ohdsi.cdm.framework.desktop.Helpers;
 using System.Diagnostics;
 
@@ -44,10 +43,10 @@ namespace org.ohdsi.cdm.framework.desktop.Base
             if (string.IsNullOrEmpty(fileName))
                 fileName = Settings.Settings.Current.Building.SourceQueryDefinitions[0].FileName;
 
-            using var client = new AmazonS3Client(Settings.Settings.Current.S3AwsAccessKeyId, Settings.Settings.Current.S3AwsSecretAccessKey, Amazon.RegionEndpoint.USEast1);
+            using var client = new AmazonS3Client(Settings.Settings.Current.CloudStorageKey, Settings.Settings.Current.CloudStorageSecret, Amazon.RegionEndpoint.USEast1);
             var request = new ListObjectsV2Request
             {
-                BucketName = Settings.Settings.Current.Bucket,
+                BucketName = Settings.Settings.Current.CloudStorageName,
                 Prefix = $"{folder}/{_chunkId}/{fileName}/{fileName}"
             };
 
@@ -106,10 +105,10 @@ namespace org.ohdsi.cdm.framework.desktop.Base
 
                     var metadataKey = $"{folder}/metadata/{qd.FileName + ".txt"}";
 
-                    using var client = new AmazonS3Client(Settings.Settings.Current.S3AwsAccessKeyId, Settings.Settings.Current.S3AwsSecretAccessKey, Amazon.RegionEndpoint.USEast1);
+                    using var client = new AmazonS3Client(Settings.Settings.Current.CloudStorageKey, Settings.Settings.Current.CloudStorageSecret, Amazon.RegionEndpoint.USEast1);
                     using var stream = new MemoryStream();
                     using var sr = new StreamReader(stream);
-                    var request = new GetObjectRequest { BucketName = Settings.Settings.Current.Bucket, Key = metadataKey };
+                    var request = new GetObjectRequest { BucketName = Settings.Settings.Current.CloudStorageName, Key = metadataKey };
                     var getObject = client.GetObjectAsync(request);
                     getObject.Wait();
 

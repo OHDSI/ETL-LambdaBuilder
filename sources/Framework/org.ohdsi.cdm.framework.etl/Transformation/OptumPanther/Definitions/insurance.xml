@@ -1,5 +1,5 @@
 ﻿<QueryDefinition>
-  <Query>
+	<Query>
 		select
 		ch.person_id as PersonId,
 		i.ins_type,
@@ -11,29 +11,30 @@
 		when lower(i.ins_type) = 'medicare' then 280
 		when lower(i.ins_type) = 'medicaid' then 289
 		else 0
-		end as concept_id
+		end as concept_id,
+		ch.PartitionId
 		from {sc}.insurance i
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND i.ptid = ch.PERSON_SOURCE_VALUE
-		order by 1
+		order by ch.PartitionId, ch.person_id
 	</Query>
-  <Observation>
-    <ObservationDefinition>
-      <PersonId>PersonId</PersonId>
-      <StartDate>insurance_date</StartDate>
-      <Time>insurance_time</Time>
-      <ValuesAsString>
-        <string>ins_type</string>
-      </ValuesAsString>
-      <AdditionalFields>
-        <string>encid</string>
-      </AdditionalFields>
-      <Concepts>
-        <Concept>
-          <Fields>
-            <Field conceptId="concept_id" sourceKey="ins_type" defaultTypeId="32867"/>
-          </Fields>
-        </Concept>
-      </Concepts>
-    </ObservationDefinition>
-  </Observation>
+	<Observation>
+		<ObservationDefinition>
+			<PersonId>PersonId</PersonId>
+			<StartDate>insurance_date</StartDate>
+			<Time>insurance_time</Time>
+			<ValuesAsString>
+				<string>ins_type</string>
+			</ValuesAsString>
+			<AdditionalFields>
+				<string>encid</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<Fields>
+						<Field conceptId="concept_id" sourceKey="ins_type" defaultTypeId="32867"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ObservationDefinition>
+	</Observation>
 </QueryDefinition>

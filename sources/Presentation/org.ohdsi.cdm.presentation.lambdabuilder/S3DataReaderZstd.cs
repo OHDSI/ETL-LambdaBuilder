@@ -10,7 +10,7 @@ using ZstdSharp;
 
 namespace org.ohdsi.cdm.presentation.lambdabuilder
 {
-    public class S3DataReaderZstd : IDataReader
+    public class S3DataReaderZstd : IS3DataReader
     {
         private string[] _currentLine;
 

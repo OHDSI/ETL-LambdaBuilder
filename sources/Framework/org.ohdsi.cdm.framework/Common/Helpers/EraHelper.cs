@@ -123,78 +123,124 @@ namespace org.ohdsi.cdm.framework.common.Helpers
         public static List<PayerPlanPeriod> GetPayerPlanPeriods(PayerPlanPeriod[] entities, int gap, Func<PayerPlanPeriod, PayerPlanPeriod, bool> canBeCombined, KeyMasterOffsetManager offset)
         {
             var result = new List<PayerPlanPeriod>();
-            if (entities.Length == 0) return result;
 
-            var ordered =
-               entities.OrderBy(e => e.StartDate).ToList();
-            var payerPlanPeriod = ordered[0];
-            var list = new List<PayerPlanPeriod>();
+            if (entities.Length == 0)
+                return result;
 
-            foreach (var entity in ordered)
+            foreach (var group in entities.GroupBy(p => p.Key))
             {
-                if (canBeCombined(entity, payerPlanPeriod))
+                foreach (var era in GetEras(group, gap, -1))
                 {
-                    list.Add(entity);
-                    continue;
+                    result.Add(
+                        new PayerPlanPeriod
+                        {
+                            Id = offset.GetKeyOffset(era.PersonId).PayerPlanPeriodId,
+                            PersonId = era.PersonId,
+                            StartDate = era.StartDate,
+                            EndDate = era.EndDate,
+                            PayerSourceValue = group.First().PayerSourceValue,
+                            FamilySourceValue = group.First().FamilySourceValue,
+                            PlanSourceValue = group.First().PlanSourceValue,
+                            PayerConceptId = group.First().PayerConceptId,
+                            PayerSourceConceptId = group.First().PayerSourceConceptId,
+                            PlanConceptId = group.First().PlanConceptId,
+                            PlanSourceConceptId = group.First().PlanSourceConceptId,
+                            SponsorConceptId = group.First().SponsorConceptId,
+                            SponsorSourceConceptId = group.First().SponsorSourceConceptId,
+                            SponsorSourceValue = group.First().SponsorSourceValue,
+                            StopReasonConceptId = group.First().StopReasonConceptId,
+                            StopReasonSourceConceptId = group.First().StopReasonSourceConceptId,
+                            StopReasonSourceValue = group.First().StopReasonSourceValue,
+                            VisitOccurrenceId = era.VisitOccurrenceId
+                        });
                 }
-
-                result.AddRange(GetEras(list, gap, -1).Select(i => new PayerPlanPeriod
-                {
-                    Id = offset.GetKeyOffset(i.PersonId).PayerPlanPeriodId,
-                    PersonId = i.PersonId,
-                    StartDate = i.StartDate,
-                    EndDate = i.EndDate,
-                    PayerSourceValue =
-                                                                                    payerPlanPeriod.PayerSourceValue,
-                    FamilySourceValue =
-                                                                                    payerPlanPeriod.FamilySourceValue,
-                    PlanSourceValue =
-                                                                                    payerPlanPeriod.PlanSourceValue,
-                    PayerConceptId = payerPlanPeriod.PayerConceptId,
-                    PayerSourceConceptId = payerPlanPeriod.PayerSourceConceptId,
-                    PlanConceptId = payerPlanPeriod.PlanConceptId,
-                    PlanSourceConceptId = payerPlanPeriod.PlanSourceConceptId,
-                    SponsorConceptId = payerPlanPeriod.SponsorConceptId,
-                    SponsorSourceConceptId = payerPlanPeriod.SponsorSourceConceptId,
-                    SponsorSourceValue = payerPlanPeriod.SponsorSourceValue,
-                    StopReasonConceptId = payerPlanPeriod.StopReasonConceptId,
-                    StopReasonSourceConceptId = payerPlanPeriod.StopReasonSourceConceptId,
-                    StopReasonSourceValue = payerPlanPeriod.StopReasonSourceValue,
-                    VisitOccurrenceId = i.VisitOccurrenceId
-                }));
-
-                list.Clear();
-                payerPlanPeriod = entity;
-                list.Add(entity);
             }
-
-            result.AddRange(GetEras(list, gap, -1).Select(i => new PayerPlanPeriod
-            {
-                Id = offset.GetKeyOffset(i.PersonId).PayerPlanPeriodId,
-                PersonId = i.PersonId,
-                StartDate = i.StartDate,
-                EndDate = i.EndDate,
-                PayerSourceValue =
-                                                                                payerPlanPeriod.PayerSourceValue,
-                FamilySourceValue =
-                                                                                payerPlanPeriod.FamilySourceValue,
-                PlanSourceValue =
-                                                                                payerPlanPeriod.PlanSourceValue,
-                PayerConceptId = payerPlanPeriod.PayerConceptId,
-                PayerSourceConceptId = payerPlanPeriod.PayerSourceConceptId,
-                PlanConceptId = payerPlanPeriod.PlanConceptId,
-                PlanSourceConceptId = payerPlanPeriod.PlanSourceConceptId,
-                SponsorConceptId = payerPlanPeriod.SponsorConceptId,
-                SponsorSourceConceptId = payerPlanPeriod.SponsorSourceConceptId,
-                SponsorSourceValue = payerPlanPeriod.SponsorSourceValue,
-                StopReasonConceptId = payerPlanPeriod.StopReasonConceptId,
-                StopReasonSourceConceptId = payerPlanPeriod.StopReasonSourceConceptId,
-                StopReasonSourceValue = payerPlanPeriod.StopReasonSourceValue,
-                VisitOccurrenceId = i.VisitOccurrenceId
-            }));
-
 
             return result;
         }
+
+        //public static List<PayerPlanPeriod> GetPayerPlanPeriods(PayerPlanPeriod[] entities, int gap, Func<PayerPlanPeriod, PayerPlanPeriod, bool> canBeCombined, KeyMasterOffsetManager offset)
+        //{
+        //    var result = new List<PayerPlanPeriod>();
+
+        //    if (entities.Length == 0) 
+        //        return result;
+
+        //    var ordered =
+        //       entities.
+        //       OrderBy(e => e.StartDate).
+        //       ThenBy(e=> e.PayerSourceValue).
+        //       ThenBy(e => e.PlanSourceValue).ToList();
+
+        //    var payerPlanPeriod = ordered[0];
+        //    var list = new List<PayerPlanPeriod>();
+
+
+        //    foreach (var entity in ordered)
+        //    {
+        //        if (canBeCombined(entity, payerPlanPeriod))
+        //        {
+        //            list.Add(entity);
+        //            continue;
+        //        }
+
+        //        result.AddRange(GetEras(list, gap, -1).Select(i => new PayerPlanPeriod
+        //        {
+        //            Id = offset.GetKeyOffset(i.PersonId).PayerPlanPeriodId,
+        //            PersonId = i.PersonId,
+        //            StartDate = i.StartDate,
+        //            EndDate = i.EndDate,
+        //            PayerSourceValue =
+        //                                                                            payerPlanPeriod.PayerSourceValue,
+        //            FamilySourceValue =
+        //                                                                            payerPlanPeriod.FamilySourceValue,
+        //            PlanSourceValue =
+        //                                                                            payerPlanPeriod.PlanSourceValue,
+        //            PayerConceptId = payerPlanPeriod.PayerConceptId,
+        //            PayerSourceConceptId = payerPlanPeriod.PayerSourceConceptId,
+        //            PlanConceptId = payerPlanPeriod.PlanConceptId,
+        //            PlanSourceConceptId = payerPlanPeriod.PlanSourceConceptId,
+        //            SponsorConceptId = payerPlanPeriod.SponsorConceptId,
+        //            SponsorSourceConceptId = payerPlanPeriod.SponsorSourceConceptId,
+        //            SponsorSourceValue = payerPlanPeriod.SponsorSourceValue,
+        //            StopReasonConceptId = payerPlanPeriod.StopReasonConceptId,
+        //            StopReasonSourceConceptId = payerPlanPeriod.StopReasonSourceConceptId,
+        //            StopReasonSourceValue = payerPlanPeriod.StopReasonSourceValue,
+        //            VisitOccurrenceId = i.VisitOccurrenceId
+        //        }));
+
+        //        list.Clear();
+        //        payerPlanPeriod = entity;
+        //        list.Add(entity);
+        //    }
+
+        //    result.AddRange(GetEras(list, gap, -1).Select(i => new PayerPlanPeriod
+        //    {
+        //        Id = offset.GetKeyOffset(i.PersonId).PayerPlanPeriodId,
+        //        PersonId = i.PersonId,
+        //        StartDate = i.StartDate,
+        //        EndDate = i.EndDate,
+        //        PayerSourceValue =
+        //                                                                        payerPlanPeriod.PayerSourceValue,
+        //        FamilySourceValue =
+        //                                                                        payerPlanPeriod.FamilySourceValue,
+        //        PlanSourceValue =
+        //                                                                        payerPlanPeriod.PlanSourceValue,
+        //        PayerConceptId = payerPlanPeriod.PayerConceptId,
+        //        PayerSourceConceptId = payerPlanPeriod.PayerSourceConceptId,
+        //        PlanConceptId = payerPlanPeriod.PlanConceptId,
+        //        PlanSourceConceptId = payerPlanPeriod.PlanSourceConceptId,
+        //        SponsorConceptId = payerPlanPeriod.SponsorConceptId,
+        //        SponsorSourceConceptId = payerPlanPeriod.SponsorSourceConceptId,
+        //        SponsorSourceValue = payerPlanPeriod.SponsorSourceValue,
+        //        StopReasonConceptId = payerPlanPeriod.StopReasonConceptId,
+        //        StopReasonSourceConceptId = payerPlanPeriod.StopReasonSourceConceptId,
+        //        StopReasonSourceValue = payerPlanPeriod.StopReasonSourceValue,
+        //        VisitOccurrenceId = i.VisitOccurrenceId
+        //    }));
+
+
+        //    return result;
+        //}
     }
 }

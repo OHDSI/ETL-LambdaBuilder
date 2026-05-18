@@ -1,12 +1,13 @@
 ﻿<QueryDefinition>
-  <Query>
+	<Query>
 		SELECT distinct
 		ch.person_id as PersonId,
 		event_date,
-		1 as died
+		1 as died,
+		ch.PartitionId
 		FROM {sc}.events
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
-		order by 1
+		order by ch.PartitionId, PersonId
 	</Query>
 	<Death>
 		<DeathDefinition>

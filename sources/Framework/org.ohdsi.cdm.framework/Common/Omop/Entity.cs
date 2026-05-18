@@ -116,28 +116,5 @@ namespace org.ohdsi.cdm.framework.common.Omop
             using var md5 = MD5.Create();
             return BitConverter.ToInt64(md5.ComputeHash(Encoding.UTF8.GetBytes(key)), 0);
         }
-
-        public static long GetIdOld(string key)
-        {
-            var result = string.Empty;
-            foreach (var c in key)
-            {
-                if (char.IsPunctuation(c)) continue;
-
-                if (char.IsNumber(c))
-                {
-                    result += char.GetNumericValue(c);
-                }
-                else if (char.IsLetter(c))
-                {
-                    result += c % 32;
-                }
-            }
-
-            if (string.IsNullOrEmpty(result))
-                return long.MinValue;
-
-            return long.TryParse(result, out var id) ? id : result.GetHashCode();
-        }
     }
 }

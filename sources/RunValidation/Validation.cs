@@ -9,7 +9,6 @@ using RunValidation.Domain;
 using Spectre.Console;
 using System.Collections.Concurrent;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO.Compression;
 using System.Text;
 using ZstdSharp;
@@ -466,12 +465,13 @@ namespace RunValidation
                             ? new GZipStream(bufferedStream, CompressionMode.Decompress)
                             : new DecompressionStream(bufferedStream);
                         using var reader = new StreamReader(compressedStream, Encoding.Default);
-                        using var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
-                        {
-                            HasHeaderRecord = false,
-                            Delimiter = ",",
-                            Encoding = Encoding.UTF8
-                        });
+                        using var csv = org.ohdsi.cdm.framework.common.Helpers.CsvHelper.CreateCsvReader(reader);
+                        //using var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
+                        //{
+                        //    HasHeaderRecord = false,
+                        //    Delimiter = ",",
+                        //    Encoding = Encoding.UTF8
+                        //});
                         while (csv.Read())
                         {
                             var personId = (long)csv.GetField(typeof(long), 0);

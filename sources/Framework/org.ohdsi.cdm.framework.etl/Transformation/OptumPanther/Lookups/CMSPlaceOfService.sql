@@ -11,7 +11,7 @@ AS
 )
 
 /*Find all descendants of those ancestors*/
-SELECT distinct descendant.concept_id, top_level.concept_id as terminal_ancestor_concept_id, 'None' as Domain, cast('1900/1/1' as date) as VALID_START_DATE, cast('2100/1/1' as date) as VALID_END_DATE
+SELECT distinct descendant.concept_id, top_level.concept_id as terminal_ancestor_concept_id, 'None' as Domain, to_date('1900/1/1', 'yyyy/M/d') as VALID_START_DATE, to_date('2100/1/1', 'yyyy/M/d') as VALID_END_DATE
 FROM {sc}.concept_ancestor
 JOIN top_level  
 	ON top_level.concept_id = ancestor_concept_id

@@ -1,7 +1,7 @@
 ﻿using org.ohdsi.cdm.framework.common.Definitions;
 using org.ohdsi.cdm.framework.common.Enums;
 
-namespace org.ohdsi.cdm.framework.Common.Base
+namespace org.ohdsi.cdm.framework.common.Base
 {
     public interface IVendorSettings
     {

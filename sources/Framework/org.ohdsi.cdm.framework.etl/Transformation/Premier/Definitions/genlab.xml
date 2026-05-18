@@ -22,11 +22,12 @@
 		collection_datetime,
 		replace(replace(replace(result_unit, chr(9), ' '), chr(10), ' '), chr(13), ' ') result_unit,
 		numeric_value,
-		pat.adm_phy
+		pat.adm_phy,
+		ch.PartitionId
 		from {sc}.pat pat
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND pat.medrec_key = ch.PERSON_SOURCE_VALUE
 		join {sc}.genlab g on pat.pat_key = g.pat_key
-		order by cast(pat.medrec_key as bigint)
+		order by ch.PartitionId, 1
 	</Query>
 	<Measurement>
 		<MeasurementDefinition>

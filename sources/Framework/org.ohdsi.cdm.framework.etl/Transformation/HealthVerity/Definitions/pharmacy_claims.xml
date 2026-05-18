@@ -8,14 +8,14 @@
 		procedure_code,
 		diagnosis_code,
 		ndc_code,
-		
+
 		CASE
 		WHEN days_supply &lt; 0 THEN 0
-    WHEN days_supply &gt; 365 THEN 365
-    WHEN days_supply IS NULL THEN 0
-    ELSE days_supply
-    END as days_supply,
-		
+		WHEN days_supply &gt; 365 THEN 365
+		WHEN days_supply IS NULL THEN 0
+		ELSE days_supply
+		END as days_supply,
+
 		dispensed_quantity,
 		fill_number,
 		unit_of_measure,
@@ -25,9 +25,10 @@
 		case
 		when diagnosis_code_qual = '02' then '10'
 		when diagnosis_code_qual = '01' then '9'
-		when date_service &lt; '10/1/2015' then '9'
-		when date_service &gt;= '10/1/2015' then '10'
-		end as icd_ver
+		when date_service &lt; to_date('10/01/2015', 'MM/dd/yyyy') then '9'
+		when date_service &gt;= to_date('10/01/2015', 'MM/dd/yyyy') then '10'
+		end as icd_ver,
+		ch.PartitionId
 
 		FROM {sc}.pharmacy_claims
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
@@ -42,7 +43,7 @@
 		and reject_reason_code_4 is null
 		and reject_reason_code_5 is null
 		)
-		order by 1
+		order by ch.PartitionId, PersonId
 	</Query>
 	<DrugExposure>
 		<DrugExposureDefinition>

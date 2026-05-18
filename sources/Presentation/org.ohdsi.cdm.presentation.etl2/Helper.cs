@@ -16,7 +16,7 @@ namespace org.ohdsi.cdm.presentation.etl
 
             var request = new ListObjectsV2Request
             {
-                BucketName = Settings.Current.Bucket,
+                BucketName = Settings.Current.CloudStorageName,
                 Prefix = prefix
             };
 
@@ -27,8 +27,8 @@ namespace org.ohdsi.cdm.presentation.etl
                 MaxErrorRetry = 20
             };
 
-            using var client = new AmazonS3Client(Settings.Current.S3AwsAccessKeyId,
-                Settings.Current.S3AwsSecretAccessKey, config);
+            using var client = new AmazonS3Client(Settings.Current.CloudStorageKey,
+                Settings.Current.CloudStorageSecret, config);
             using var listObjects = client.ListObjectsV2Async(request);
             listObjects.Wait();
 
@@ -44,7 +44,7 @@ namespace org.ohdsi.cdm.presentation.etl
         public static string S3ReadAllText(string key)
         {
             key = key.Replace("\\", "/");
-            var fileName = $@"s3:\\{Settings.Current.Bucket}\{key}";
+            var fileName = $@"s3:\\{Settings.Current.CloudStorageName}\{key}";
 
             Console.Write($"loading {fileName}");
 
@@ -55,11 +55,11 @@ namespace org.ohdsi.cdm.presentation.etl
                 MaxErrorRetry = 20
             };
 
-            using var client = new AmazonS3Client(Settings.Current.S3AwsAccessKeyId,
-                Settings.Current.S3AwsSecretAccessKey, config);
+            using var client = new AmazonS3Client(Settings.Current.CloudStorageKey,
+                Settings.Current.CloudStorageSecret, config);
             var getObjectRequest = new GetObjectRequest
             {
-                BucketName = Settings.Current.Bucket,
+                BucketName = Settings.Current.CloudStorageName,
                 Key = key
             };
 

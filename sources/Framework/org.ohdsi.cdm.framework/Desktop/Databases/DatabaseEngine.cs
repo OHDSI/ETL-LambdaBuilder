@@ -77,6 +77,9 @@ namespace org.ohdsi.cdm.framework.desktop.Databases
             if (connectionString.Contains("mysql", StringComparison.CurrentCultureIgnoreCase))
                 return new MySqlDatabaseEngine();
 
+            if (connectionString.Contains("spark", StringComparison.CurrentCultureIgnoreCase))
+                return new DatabricksDatabaseEngine();
+
             return new MssqlDatabaseEngine();
         }
 

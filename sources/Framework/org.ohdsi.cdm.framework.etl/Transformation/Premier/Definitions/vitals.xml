@@ -21,11 +21,12 @@
 		case
 		when lab_test_loinc_code is null or lab_test_loinc_code = '' then 0
 		else 1
-		end as isloinc
+		end as isloinc,
+		ch.PartitionId
 		from {sc}.pat pat
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND pat.medrec_key = ch.PERSON_SOURCE_VALUE
 		join {sc}.vitals v on pat.pat_key = v.pat_key
-		order by cast(pat.medrec_key as bigint)
+		order by ch.PartitionId, 1
 	</Query>
 	<Measurement>
 		<MeasurementDefinition>

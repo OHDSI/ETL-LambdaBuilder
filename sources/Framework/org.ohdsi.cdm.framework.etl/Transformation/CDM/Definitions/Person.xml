@@ -19,10 +19,11 @@
 		t.race_source_concept_id,
 		t.ethnicity_source_value,
 		t.ethnicity_source_concept_id,
-		1 as fake
+		1 as fake,
+		ch.PartitionId
 		FROM {sc}.person t
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND t.PERSON_ID = ch.PERSON_ID
-		order by 1
+		order by ch.PartitionId, t.person_id
 	</Query>
 	<Persons>
 		<PersonDefinition>

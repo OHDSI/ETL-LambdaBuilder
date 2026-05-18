@@ -17,9 +17,10 @@
 		, t.discharged_to_concept_id
 		, t.discharged_to_source_value
 		, t.preceding_visit_occurrence_id
+		, ch.PartitionId
 		FROM {sc}.visit_occurrence t
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND t.PERSON_ID = ch.PERSON_ID
-		order by 2
+		order by ch.PartitionId, t.person_id
 	</Query>
 	<VisitOccurrence>
 		<VisitOccurrenceDefinition>

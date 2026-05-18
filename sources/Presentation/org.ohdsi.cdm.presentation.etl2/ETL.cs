@@ -1,91 +1,108 @@
 ﻿using Amazon.S3;
+using Amazon.S3.Transfer;
+using org.ohdsi.cdm.framework.common.DataReaders.v5;
+using org.ohdsi.cdm.framework.common.DataReaders.v5.v54;
 using org.ohdsi.cdm.framework.common.Definitions;
-using org.ohdsi.cdm.framework.common.Helpers;
+using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Omop;
 using org.ohdsi.cdm.framework.desktop;
 using org.ohdsi.cdm.framework.desktop.Controllers;
 using org.ohdsi.cdm.framework.desktop.Helpers;
-using org.ohdsi.cdm.framework.desktop.Savers;
 using org.ohdsi.cdm.framework.desktop.Settings;
+using org.ohdsi.cdm.presentation.etl.Monitor;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Odbc;
 using System.IO;
 using System.Linq;
+using System.Numerics;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace org.ohdsi.cdm.presentation.etl
 {
     class ETL
     {
-        private string _cdmFolderCsv;
-
-        public void Start(bool skipChunkCreation, bool resumeChunkCreation, bool skipLookupCreation, bool skipBuild, bool skipVocabularyCopying, LambdaUtility utility, string cdmFolderCsv, bool readFromS3, string chunksSchema)
+        public static void SaveEtlLookupsToCloudStorage()
         {
-            _cdmFolderCsv = cdmFolderCsv;
-
             var vocabulary = new Vocabulary();
-            vocabulary.SaveToS3(!string.IsNullOrEmpty(Settings.Current.VendorSettings));
-            Console.WriteLine("Vocabulary was saved to S3");
-
-            Task createLookupTables = null;
-            Task copyVocabularyTables = null;
-            Task checkCreation = null;
-
-            if (!skipChunkCreation)
+            foreach (var cl in vocabulary.GetCombinedLookups())
             {
-                Console.WriteLine("Chunks creation in progress...");
+                var reader = cl.Item1;
+                var name = cl.Item2;
 
-                var chunkController = new ChunkController(chunksSchema);
+                var fileName = $"{Settings.Current.BuildingPrefix}/CombinedLookups/{name}.txt.gz";
+                Console.WriteLine(name + " - store to CloudStorage | " + fileName);
 
-                if (!resumeChunkCreation)
-                    chunkController.CreateChunks();
-
-                CopyVocabularyTables(skipVocabularyCopying);
-                CreateLookupTables(vocabulary, skipLookupCreation, readFromS3);
-
-                chunkController.MoveChunkDataToS3(true, true, utility);
+                CloudStorageHelper.UploadFile(CloudStorageHelper.GetAwsStorageClient(), CloudStorageHelper.GetBlobContainerClient(), Settings.Current.CloudStorageName,
+                fileName,
+                reader);
             }
-            else
+
+            foreach (var ri in vocabulary.GetClinicalDataReaders())
             {
-                Console.WriteLine("Chunk creation skipped");
-                createLookupTables = Task.Run(() => CreateLookupTables(vocabulary, skipLookupCreation, readFromS3));
-                copyVocabularyTables = Task.Run(() => CopyVocabularyTables(skipVocabularyCopying));
-
-                if (!skipBuild)
+                using (ri)
                 {
-                    var tasks = utility.TriggerBuildFunction(Settings.Current.Building.Vendor, Settings.Current.Building.Id.Value, null, false);
-                    Task.WaitAll([.. tasks]);
-                    Console.WriteLine("CDM Build lambda functions were triggered");
+                    var fileName = $"{Settings.Current.BuildingPrefix}/Lookups/{ri.Name}.txt.gz";
+                    Console.WriteLine(ri.Name + " - store to CloudStorage | " + fileName);
 
-                    checkCreation = Task.Run(() => utility.AllChunksWereDone(Settings.Current.Building.Vendor,
-                        Settings.Current.Building.Id.Value, utility.BuildMessageBucket));
-                }
-                else
-                {
-                    Console.WriteLine("Build step was skipped");
+                    CloudStorageHelper.UploadFile(CloudStorageHelper.GetAwsStorageClient(), CloudStorageHelper.GetBlobContainerClient(), Settings.Current.CloudStorageName,
+                        fileName,
+                        ri.DataReader);
                 }
             }
 
-            createLookupTables?.Wait();
-            copyVocabularyTables?.Wait();
-            checkCreation?.Wait();
+            using (var ri = vocabulary.GetPregnancyDrug())
+            {
+                using (ri)
+                {
+                    var fileName = $"{Settings.Current.BuildingPrefix}/Lookups/PregnancyDrug.txt.gz";
+                    Console.WriteLine("PregnancyDrug - store to CloudStorage | " + fileName);
+                    
+                    CloudStorageHelper.UploadFile(CloudStorageHelper.GetAwsStorageClient(), CloudStorageHelper.GetBlobContainerClient(), Settings.Current.CloudStorageName,
+                        fileName,
+                        ri.DataReader);
+                }
+            }
+
+            if (Settings.Current.Building.Vendor.Name == "CDM")
+            {
+                Console.WriteLine("ConceptIdToSourceVocabularyId - Loading...");
+
+                var sql = File.ReadAllText(Path.Combine(Settings.Current.Folder, @"Core\Lookups\ConceptIdToSourceVocabularyId.sql"));
+                sql = sql.Replace("{sc}", Settings.Current.Building.VocabularySchemaName);
+
+                using (var connection =
+                    SqlConnectionHelper.OpenOdbcConnection(Settings.Current.Building.VocabularyConnectionString))
+                using (var command = new OdbcCommand(sql, connection) { CommandTimeout = 0 })
+                using (var reader = command.ExecuteReader())
+                {
+                    var fileName = $"{Settings.Current.BuildingPrefix}/Lookups/ConceptIdToSourceVocabularyId.txt.gz";
+                    Console.WriteLine("ConceptIdToSourceVocabularyId - store to CloudStorage | " + fileName);
+                    CloudStorageHelper.UploadFile(CloudStorageHelper.GetAwsStorageClient(), CloudStorageHelper.GetBlobContainerClient(), Settings.Current.CloudStorageName,
+                        fileName,
+                        reader);
+                }
+                Console.WriteLine("ConceptIdToSourceVocabularyId - Done");
+            }
+
+            Console.WriteLine("Vocabulary was saved to CloudStorage");
+        }
+        public static void CreateChunks(string chunksSchema)
+        {
+            Console.WriteLine("Chunks creation in progress...");
+            var chunkController = new ChunkController(chunksSchema);
+            chunkController.CreateChunks(10_000);
         }
 
-        private static void CopyVocabularyTables(bool skipVocabularyCopying)
+        public static void CopyVocabularyTables()
         {
             try
             {
-                if (skipVocabularyCopying)
-                {
-                    Console.WriteLine("Vocabulary tables copying skipped");
-                    return;
-                }
-
                 Console.WriteLine("Copying vocabulary tables...");
 
-                var vocabQueriesPath = Path.Combine(Settings.Current.Folder, "Common", "Redshift", "v5.2",
-                    "Vocabulary");
+                var vocabQueriesPath = Path.Combine(Settings.Current.Folder, "Common", "Queries", "Vocabulary");
 
                 foreach (var filePath in Directory.GetFiles(vocabQueriesPath))
                 {
@@ -96,26 +113,18 @@ namespace org.ohdsi.cdm.presentation.etl
                     var query = File.ReadAllText(filePath);
                     query = query.Replace("{sc}", schemaName);
 
-                    var folder =
-                        $"{Settings.Current.Building.Vendor}/" +
-                        $"{Settings.Current.Building.Id}/{Settings.Current.CDMFolder}";
-
-                    var config = new AmazonS3Config
-                    {
-                        Timeout = TimeSpan.FromMinutes(60),
-                        RegionEndpoint = Amazon.RegionEndpoint.USEast1,
-                        MaxErrorRetry = 20,
-                    };
-
-                    using (var currentClient = new AmazonS3Client(Settings.Current.S3AwsAccessKeyId, Settings.Current.S3AwsSecretAccessKey, config))
+                    var folder = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}";
+                    
                     using (var connection = SqlConnectionHelper.OpenOdbcConnection(Settings.Current.Building.VocabularyConnectionString))
                     using (var c = new OdbcCommand(query, connection))
                     {
                         c.CommandTimeout = 600;
                         using var reader = c.ExecuteReader();
-
                         var fileName = $"{folder}/{tableName}/{tableName}.txt.gz";
-                        AmazonS3Helper.CopyFile(currentClient, Settings.Current.Bucket, fileName, reader, ",", '"', @"\N");
+                        
+                        CloudStorageHelper.UploadFile(CloudStorageHelper.GetAwsStorageClient(), CloudStorageHelper.GetBlobContainerClient(), Settings.Current.CloudStorageName,
+                            fileName,
+                            reader);
                     }
 
                     Console.WriteLine("[Vocabulary] " + tableName + " SAVED");
@@ -129,29 +138,19 @@ namespace org.ohdsi.cdm.presentation.etl
             }
         }
 
-        private void CreateLookupTables(Vocabulary vocabulary, bool skipLookupCreation, bool readFromS3)
+        public static void CreateLookupTables()
         {
             try
             {
-                if (skipLookupCreation)
-                {
-                    Console.WriteLine("Lookup tables creation skipped");
-                    return;
-                }
-
                 Console.WriteLine("Creating lookup tables...");
                 Console.WriteLine("[Creating lookup] Loading vocabulary...");
-
-                vocabulary.Fill(true, readFromS3);
+                var vocabulary = new Vocabulary();
+                vocabulary.Fill(true);
                 Console.WriteLine("[Creating lookup] Vocabulary was loaded");
 
-                var saver = new RedshiftSaver();
-                using (saver.Create(Settings.Current.Building.DestinationConnectionString))
-                {
-                    SaveLocation(saver);
-                    SaveCareSite(saver);
-                    SaveProvider(saver);
-                }
+                SaveLocation();
+                SaveCareSite();
+                SaveProvider();
 
                 Console.WriteLine("[Creating lookup] Lookups was saved " +
                                   Settings.Current.Building.DestinationEngine.Database);
@@ -163,65 +162,262 @@ namespace org.ohdsi.cdm.presentation.etl
             }
         }
 
-        private void SaveProvider(RedshiftSaver saver)
+        public static void Build()
         {
-            var provider = Settings.Current.Building.SourceQueryDefinitions.FirstOrDefault(qd =>
-                qd.Providers != null && QueryDefinition.IsSuitable(qd.Query.Database, Settings.Current.Building.Vendor));
-            if (provider != null)
-            {
-                Console.WriteLine("[Creating lookup] Loading providers...");
+            //            //var tasks = utility.TriggerBuildFunction(Settings.Current.Building.Vendor, Settings.Current.Building.Id.Value, null, false);
+            //            //Task.WaitAll([.. tasks]);
+            //            //Console.WriteLine("CDM Build lambda functions were triggered");
 
-                var providerConcepts = new List<Provider>();
-                var count = 0;
-                var index = 0;
-                foreach (var entity in GetEntities<Provider>(provider, provider.Providers[0]))
-                {
-                    providerConcepts.Add(entity);
-                    if (providerConcepts.Count == 250 * 1000)
-                    {
-                        saver.SaveEntityLookup(providerConcepts, index, Settings.Current.CDMFolder, _cdmFolderCsv);
-                        index++;
-                        providerConcepts.Clear();
-                    }
-
-                    count++;
-                }
-
-                if (providerConcepts.Count > 0)
-                    saver.SaveEntityLookup(providerConcepts, index, Settings.Current.CDMFolder, _cdmFolderCsv);
-
-                Console.WriteLine("[Creating lookup] Providers was loaded");
-            }
+            //            //checkCreation = Task.Run(() => utility.AllChunksWereDone(Settings.Current.Building.Vendor,
+            //            //    Settings.Current.Building.Id.Value, utility.BuildMessageBucket));
         }
 
-        private void SaveCareSite(RedshiftSaver saver)
+        public static void SaveMetadata(string sourceVersionId)
+        {
+            var file = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}/metadata/metadata.0.txt.gz";
+
+            List<MetadataOMOP> metadata = [];
+            metadata.Add(new MetadataOMOP { Id = 0, MetadataConceptId = 0, Name = "NativeLoadId", ValueAsString = sourceVersionId, MetadataDate = DateTime.Now.Date });
+
+            CloudStorageHelper.UploadFile(CloudStorageHelper.GetAwsStorageClient(), CloudStorageHelper.GetBlobContainerClient(), Settings.Current.CloudStorageName,
+                    file,
+                    new MetadataOMOPDataReader(metadata));
+        }
+
+        public static void SaveVersion(int versionId)
+        {
+            var file = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}/_version/version.txt.gz";
+
+            CloudStorageHelper.UploadFile(CloudStorageHelper.GetAwsStorageClient(), CloudStorageHelper.GetBlobContainerClient(), Settings.Current.CloudStorageName,
+                    file,
+                    new VersionDataReader(versionId));
+        }
+
+        public static void SaveCdmSource(DateTime sourceReleaseDate, string vocabularyVersion)
+        {
+            var file = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}/cdm_source/cdm_source.txt.gz";
+
+            CloudStorageHelper.UploadFile(CloudStorageHelper.GetAwsStorageClient(), CloudStorageHelper.GetBlobContainerClient(), Settings.Current.CloudStorageName,
+                    file,
+                    new CdmSourceDataReader(sourceReleaseDate, vocabularyVersion));
+        }
+
+        //public void MoveChunkDataToS3(bool useMonitor, bool triggerLambdas, LambdaUtility utility)
+        public static void MoveRawDataCloudStorage(string chunksSchema, string sourceSchema)
+        {
+            var chunkController = new ChunkController(chunksSchema);
+            Console.WriteLine("Moving raw data to CloudStorage...");
+            var chunkIds = chunkController.GetNotMovedToCloudStorage().ToArray();
+
+            if (chunkIds.Length == 0)
+                return;
+
+            //var numberOfPartitions = GetNumberOfPartitions(chunksSchema);
+            //Console.WriteLine("NumberOfPartitions=" + numberOfPartitions);
+
+            Parallel.ForEach(Settings.Current.Building.SourceQueryDefinitions, queryDefinition =>
+            {
+                if (queryDefinition.Providers != null) return;
+                if (queryDefinition.Locations != null) return;
+                if (queryDefinition.CareSites != null) return;
+
+                var sql = GetSqlHelper.GetSql(Settings.Current.Building.SourceEngine.Database,
+                    queryDefinition.GetSql(Settings.Current.Building.Vendor, Settings.Current.Building.SourceSchemaName, chunksSchema), Settings.Current.Building.SourceSchemaName);
+
+                if (string.IsNullOrEmpty(sql)) return;
+
+                sql = string.Format(sql, chunkIds[0]);
+
+                if (queryDefinition.FieldHeaders == null)
+                {
+                    if (queryDefinition.Persons != null)
+                    {
+                        Settings.Current.Building.PersonIdFieldName = queryDefinition.GetPersonIdFieldName();
+                        Settings.Current.Building.PersonFileName = queryDefinition.FileName;
+                    }
+                    StoreMetadataToCloudStorage(queryDefinition, sql);
+                }
+            });
+
+            Console.WriteLine($"PersonFileName:{Settings.Current.Building.PersonFileName}");
+            Console.WriteLine($"PersonIdFieldName:{Settings.Current.Building.PersonIdFieldName}");
+            Console.WriteLine($"PersonIdFieldIndex:{Settings.Current.Building.PersonIdFieldIndex}");
+
+            using (var chunkManager = new ChunkManager(chunksSchema, 0)) // TMP: numberOfPartitions=0
+            {
+                Parallel.ForEach(chunkIds, new ParallelOptions { MaxDegreeOfParallelism = Settings.Current.ParallelChunks }, cId =>
+                {
+                    var chunkId = cId;
+
+                    var attempt = 0;
+                    var complete = false;
+                    while (!complete)
+                    {
+                        attempt++;
+                        try
+                        {
+                            MoveTableDataToCloudStorage(chunksSchema, chunkId, sourceSchema);
+                            complete = true;
+                        }
+                        catch (Exception e)
+                        {
+                            Console.Write(e.Message + " | Exception | new attempt | attempt=" + attempt);
+                            if (attempt > 3)
+                            {
+                                throw;
+                            }
+                        }
+                    }
+
+                    chunkController.ChunkCreated(chunkId, Settings.Current.Building.Id.Value);
+                    Console.WriteLine("[Moving raw data] Raw data for chunkId=" + chunkId + " is available on cloud storage");
+
+                    var numberOfPartitions = GetNumberOfPartitions(chunksSchema, chunkId);
+                    var tasks = new List<Task>();
+
+                    using (var client = CloudStorageHelper.GetAwsTriggerStorageClient())
+                    using (var tu = new TransferUtility(client))
+                    {
+                        for (int i = 0; i < numberOfPartitions; i++)
+                        {
+                            var slice = i.ToString("D4");
+
+                            if (Settings.Current.UseS3forDatabricks)
+                            {
+                                slice = $"PartitionId={i}";
+                            }
+
+                            var key = $"{Settings.Current.Building.Vendor}.{Settings.Current.Building.Id}.{chunkId}.{slice}.txt";
+                            using var empty = new MemoryStream();
+
+                            //CloudStorageHelper.GetAwsTriggerStorageClient().UploadBlob(key, empty);
+
+                            var t = tu.UploadAsync(new TransferUtilityUploadRequest
+                            {
+                                InputStream = new MemoryStream(),
+                                BucketName = Settings.Current.CloudTriggerStorageName,
+                                Key = key,
+                                ServerSideEncryptionMethod = ServerSideEncryptionMethod.AES256,
+                                StorageClass = S3StorageClass.Standard,
+                            });
+                            tasks.Add(t);
+                        }
+                    }
+
+                    Task.WaitAll([.. tasks]);
+
+                    Console.WriteLine($"[Moving raw data] functions for chunkId={chunkId} were triggered | {numberOfPartitions} functions");
+
+                    chunkManager.AddChunk(chunkId);
+
+                    var unprocessed = 0;
+                    do
+                    {
+                        try
+                        {
+                            unprocessed = CloudStorageHelper.GetObjectInfo(
+                                CloudStorageHelper.GetAwsTriggerStorageClient(),
+                                CloudStorageHelper.GetTriggerBlobContainerClient(),
+                                Settings.Current.CloudTriggerStorageName,
+                                $"{Settings.Current.Building.Vendor}.{Settings.Current.Building.Id}").Count();
+
+                            Console.WriteLine($"[Moving raw data] Unprocessed functions={unprocessed}");
+
+                            if (unprocessed > 700)
+                            {
+                                Console.WriteLine($"[Moving raw data] unprocessed > 700, waiting 3 minutes...");
+                                Thread.Sleep(TimeSpan.FromMinutes(3));
+                            }
+                        }
+                        catch (Exception ex) // TMP
+                        {
+
+                        }
+                    }
+                    while (unprocessed > 700);
+                });
+
+                chunkManager.CompleteAdding();
+                chunkManager.AwaitingCompletion();
+
+                if (chunkManager.InvalidCount > 0)
+                    throw new Exception($"ERROR - {chunkManager.InvalidCount} - Invalid chunks");
+            }
+
+            Console.WriteLine("Moving raw data to cloud storage - complete");
+        }
+
+        private static void StoreMetadataToCloudStorage(QueryDefinition queryDefinition, string query)
+        {
+            Console.WriteLine("[Moving raw data] StoreMetadataToCloudStorage start - " + queryDefinition.FileName);
+            var fileName = $"{Settings.Current.BuildingPrefix}/raw/metadata/{queryDefinition.FileName + ".txt"}";
+
+            //int? timeout = 10 * 60;
+            using (var conn = SqlConnectionHelper.OpenOdbcConnection(Settings.Current.Building.SourceConnectionString))
+            using (var c = Settings.Current.Building.SourceEngine.GetCommand(query, conn))
+            {
+                c.CommandTimeout = 600;
+                using (var reader = c.ExecuteReader(CommandBehavior.SchemaOnly))
+                {
+                    CloudStorageHelper.UploadFile(CloudStorageHelper.GetAwsStorageClient(),
+                        CloudStorageHelper.GetBlobContainerClient(),
+                        Settings.Current.CloudStorageName,
+                        fileName,
+                        reader,
+                        false,
+                        true);
+                }
+            }
+            
+            Console.WriteLine("[Moving raw data] StoreMetadataToCloudStorage end - " + queryDefinition.FileName);
+        }
+ 
+
+        private static void SaveProvider()
+        {
+            Console.WriteLine("[Creating lookup] Loading providers...");
+            var file = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}/provider/provider.txt.gz";
+
+            var provider = Settings.Current.Building.SourceQueryDefinitions.FirstOrDefault(qd =>
+                qd.Providers != null && QueryDefinition.IsSuitable(qd.Query.Database, Settings.Current.Building.Vendor));
+
+            if (provider == null)
+                return;
+
+            var providerConcepts = new List<Provider>();
+            foreach (var entity in GetEntities<Provider>(provider, provider.Providers[0]))
+            {
+                providerConcepts.Add(entity);
+            }
+
+            if (providerConcepts.Count > 0)
+                CloudStorageHelper.UploadFile(CloudStorageHelper.GetAwsStorageClient(), CloudStorageHelper.GetBlobContainerClient(), Settings.Current.CloudStorageName,
+                    file,
+                    new ProviderDataReader(providerConcepts));
+
+            Console.WriteLine("[Creating lookup] Providers was loaded");
+        }
+
+        private static void SaveCareSite()
         {
             Console.WriteLine("[Creating lookup] Loading care sites...");
 
-            var careSiteConcepts = new List<CareSite>();
-            var count = 0;
-            var index = 0;
+            var file = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}/care_site/care_site.txt.gz";
 
             var careSite = Settings.Current.Building.SourceQueryDefinitions.FirstOrDefault(qd =>
                 qd.CareSites != null && QueryDefinition.IsSuitable(qd.Query.Database, Settings.Current.Building.Vendor));
 
-            if (careSite != null)
-            {
-                foreach (var entity in GetEntities<CareSite>(careSite, careSite.CareSites[0]))
-                {
-                    careSiteConcepts.Add(entity);
-                    if (careSiteConcepts.Count == 250 * 1000)
-                    {
-                        saver.SaveEntityLookup(careSiteConcepts, index, Settings.Current.CDMFolder, _cdmFolderCsv);
-                        index++;
-                        careSiteConcepts.Clear();
-                    }
+            if (careSite == null)
+                return;
 
-                    count++;
-                }
+            var careSiteConcepts = new List<CareSite>();
+            foreach (var entity in GetEntities<CareSite>(careSite, careSite.CareSites[0]))
+            {
+                careSiteConcepts.Add(entity);
             }
 
-            if (count == 0)
+            if (careSiteConcepts.Count == 0)
+            {
                 careSiteConcepts.Add(new CareSite
                 {
                     Id = 0,
@@ -229,45 +425,121 @@ namespace org.ohdsi.cdm.presentation.etl
                     OrganizationId = 0,
                     PlaceOfSvcSourceValue = null
                 });
+            }
 
-            if (careSiteConcepts.Count > 0)
-                saver.SaveEntityLookup(careSiteConcepts, index, Settings.Current.CDMFolder, _cdmFolderCsv);
+            CloudStorageHelper.UploadFile(CloudStorageHelper.GetAwsStorageClient(), CloudStorageHelper.GetBlobContainerClient(), Settings.Current.CloudStorageName,
+                    file,
+                    new CareSiteDataReader(careSiteConcepts));
 
             Console.WriteLine("[Creating lookup] Care sites was loaded");
         }
 
-        private void SaveLocation(RedshiftSaver saver)
+        private static void SaveLocation()
         {
             Console.WriteLine("[Creating lookup] Loading locations...");
+
+            var file = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}/location/location.txt.gz";
 
             var location = Settings.Current.Building.SourceQueryDefinitions.FirstOrDefault(qd =>
                 qd.Locations != null && QueryDefinition.IsSuitable(qd.Query.Database, Settings.Current.Building.Vendor));
 
+            if (location == null)
+                return;
+
             var locationConcepts = new List<Location>();
-            var count = 0;
-            var index = 0;
-
-            if (location != null)
+            foreach (var entity in GetEntities<Location>(location, location.Locations[0]))
             {
-                foreach (var entity in GetEntities<Location>(location, location.Locations[0]))
-                {
-                    locationConcepts.Add(entity);
-                    if (locationConcepts.Count == 250 * 1000)
-                    {
-                        saver.SaveEntityLookup(locationConcepts, index, Settings.Current.CDMFolder, _cdmFolderCsv, Settings.Current.Building.Cdm);
-                        index++;
-                        locationConcepts.Clear();
-                    }
-
-                    count++;
-                }
-
+                locationConcepts.Add(entity);
             }
 
             if (locationConcepts.Count > 0)
-                saver.SaveEntityLookup(locationConcepts, index, Settings.Current.CDMFolder, _cdmFolderCsv, Settings.Current.Building.Cdm);
+                CloudStorageHelper.UploadFile(CloudStorageHelper.GetAwsStorageClient(), CloudStorageHelper.GetBlobContainerClient(), Settings.Current.CloudStorageName,
+                    file,
+                    new LocationDataReader(locationConcepts));
 
             Console.WriteLine("[Creating lookup] Locations was loaded " + Settings.Current.Building.Cdm);
+        }
+
+        private static void MoveTableDataToCloudStorage(string chunksSchema, int chunkId, string sourceSchema)
+        {
+            Parallel.ForEach(Settings.Current.Building.SourceQueryDefinitions,
+                new ParallelOptions { MaxDegreeOfParallelism = Settings.Current.ParallelQueries }, qd =>
+                {
+                    if (qd.Providers != null) return;
+                    if (qd.Locations != null) return;
+                    if (qd.CareSites != null) return;
+
+                    var sql = GetSqlHelper.GetSql(Settings.Current.Building.SourceEngine.Database,
+                               qd.GetSql(Settings.Current.Building.Vendor, Settings.Current.Building.SourceSchemaName,
+                                   chunksSchema), Settings.Current.Building.SourceSchemaName);
+
+                    if (string.IsNullOrEmpty(sql))
+                        return;
+
+                    sql = string.Format(sql, chunkId);
+                    string unloadQuery = null;
+
+                    var personIdField = qd.GetPersonIdFieldName();
+                    var tableName = "#" + qd.FileName + "_" + chunkId;
+                    var folder = $"{Settings.Current.BuildingPrefix}/raw/{chunkId}/{qd.FileName}/";
+                    // Azure
+                    if (Settings.Current.Building.SourceEngine.Database == framework.desktop.Enums.Database.Databricks)
+                    {
+                        tableName = $"{chunksSchema}.{sourceSchema.Split('.')[1]}_{qd.FileName}_{chunkId}";
+
+                        unloadQuery =
+                            $@"CREATE EXTERNAL TABLE {tableName} " +
+                            $@"USING csv " +
+                            $@"PARTITIONED BY(PartitionId) " +
+                            $@"LOCATION '{Settings.Current.GetDatabricksStorage}/{folder}' " +
+                            $@"OPTIONS(delimiter = '\t', nullValue = '\\N',  compression = 'gzip') " +
+                            $@"AS({sql});";
+                    }
+                    // AWS
+                    else
+                    {
+                        tableName = "#" + qd.FileName + "_" + chunkId;
+
+                        unloadQuery =
+                        $"create table {tableName} sortkey ({personIdField}) distkey ({personIdField}) as {sql}; " +
+                        $@"UNLOAD ('select * from {tableName} order by {personIdField}') to 's3://{folder}/{qd.FileName}' " +
+                        $@"DELIMITER AS '\t' " +
+                        $@"NULL AS '\\N' " +
+                        $@"credentials 'aws_access_key_id={Settings.Current.CloudStorageKey};aws_secret_access_key={Settings.Current.CloudStorageSecret}' " +
+                        $@"ZSTD ALLOWOVERWRITE PARALLEL ON";
+                    }
+
+                    using var connection = SqlConnectionHelper.OpenOdbcConnection(Settings.Current.Building.SourceConnectionString);
+                    using var c = new OdbcCommand(unloadQuery, connection);
+                    c.CommandTimeout = 60 * 60;
+                    c.ExecuteNonQuery();
+
+                    if (Settings.Current.Building.SourceEngine.Database == framework.desktop.Enums.Database.Databricks)
+                    {
+                        var drop = new OdbcCommand($"drop table {tableName}", connection);
+                        drop.ExecuteNonQuery();
+                    }
+                });
+        }
+
+        private static int GetNumberOfPartitions(string chunksSchema, int chunkId)
+        {
+            // Azure
+            if (Settings.Current.Building.SourceEngine.Database == framework.desktop.Enums.Database.Databricks)
+            {
+                using var connection = SqlConnectionHelper.OpenOdbcConnection(Settings.Current.Building.SourceConnectionString);
+                using var c = new OdbcCommand($"select max(PartitionId) from {chunksSchema}._chunks where chunkid={chunkId};", connection);
+                return Convert.ToInt32(c.ExecuteScalar());
+            }
+            // AWS
+            else
+            {
+                return CloudStorageHelper.GetSlices(chunkId).Count();
+                //using var connection = SqlConnectionHelper.OpenOdbcConnection(Settings.Current.Building.SourceConnectionString);
+                //using var c = new OdbcCommand("SELECT count(*) FROM stv_slices;", connection);
+
+                //return Convert.ToInt32(c.ExecuteScalar());
+            }
         }
 
         private static IEnumerable<T> GetEntities<T>(QueryDefinition qd, EntityDefinition ed) where T : IEntity

@@ -6,6 +6,7 @@
         MsSql,
         MySql,
         Postgre,
-        Redshift
+        Redshift,
+        Databricks
     }
 }
