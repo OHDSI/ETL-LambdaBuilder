@@ -1,6 +1,7 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
+using Azure;
 using Azure.Identity;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
@@ -73,17 +74,23 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
 
                         foreach (var o in task.Result.S3Objects)
                         {
-                            yield return new Tuple<string, DateTime>(o.Key, o.LastModified);
+                            if(o.LastModified.HasValue)
+                                yield return new Tuple<string, DateTime>(o.Key, o.LastModified.Value);
                         }
 
                         request.ContinuationToken = task.Result.NextContinuationToken;
-
-                    } while (task.Result.IsTruncated);
+                        
+                    } while (task.Result.IsTruncated ?? false);
                 }
             }
             else if (azureClient != null)
             {
-                foreach (var blob in azureClient.GetBlobs(BlobTraits.None, BlobStates.None, prefix))
+                foreach (var blob in azureClient.GetBlobs(new GetBlobsOptions
+                {
+                    Prefix = prefix,
+                    Traits = BlobTraits.None,
+                    States = BlobStates.None
+                }))
                 {
                     yield return new Tuple<string, DateTime>(blob.Name, blob.Properties.LastModified.Value.DateTime);
                 }
@@ -207,8 +214,8 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
                 }
 
                 request.ContinuationToken = task.Result.NextContinuationToken;
-
-            } while (task.Result.IsTruncated);
+                
+            } while (task.Result.IsTruncated ?? false);
 
             return slices;
         }

@@ -139,7 +139,7 @@ namespace org.ohdsi.cdm.framework.desktop.DataReaders
                 }
 
                 request.ContinuationToken = response.NextContinuationToken;
-            } while (response.IsTruncated);
+            } while (response.IsTruncated ?? false);
 
             return result;
         }

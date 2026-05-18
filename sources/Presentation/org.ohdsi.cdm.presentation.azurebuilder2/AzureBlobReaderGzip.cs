@@ -82,7 +82,12 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                 _files = [];
                 var bcc = AzureHelper.GetBlobContainer();
                 //"temp/tmp_aivanov3/CDM/28/raw/17/Condition_occurrence/PartitionId=10"
-                foreach (var b in bcc.GetBlobs(BlobTraits.None, BlobStates.None, _prefix))
+                foreach (var b in bcc.GetBlobs(new GetBlobsOptions
+                {
+                    Prefix = _prefix,
+                    Traits = BlobTraits.None,
+                    States = BlobStates.None
+                }))
                 {
                     if (!b.Name.EndsWith("csv.gz"))
                         continue;
@@ -103,7 +108,12 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                 Settings.Current.Logger.LogInformation($"----------------------------------------------");
 
                 var bcc2 = AzureHelper.GetBlobContainer();
-                foreach (var b in bcc2.GetBlobs(BlobTraits.None, BlobStates.None, _prefix))
+                foreach (var b in bcc2.GetBlobs(new GetBlobsOptions
+                {
+                    Prefix = _prefix,
+                    Traits = BlobTraits.None,
+                    States = BlobStates.None
+                }))
                 {
                     if (!b.Name.EndsWith("csv.gz"))
                         continue;
