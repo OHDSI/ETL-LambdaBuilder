@@ -74,7 +74,8 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
 
                         foreach (var o in task.Result.S3Objects)
                         {
-                            yield return new Tuple<string, DateTime>(o.Key, o.LastModified.Value);
+                            if(o.LastModified.HasValue)
+                                yield return new Tuple<string, DateTime>(o.Key, o.LastModified.Value);
                         }
 
                         request.ContinuationToken = task.Result.NextContinuationToken;
