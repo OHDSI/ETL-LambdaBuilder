@@ -77,7 +77,7 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
 
                     request.ContinuationToken = task.Result.NextContinuationToken;
 
-                } while (task.Result.IsTruncated);
+                } while (task.Result.IsTruncated ?? false);
             }
 
             Console.WriteLine("Metadata were merged | " + count);

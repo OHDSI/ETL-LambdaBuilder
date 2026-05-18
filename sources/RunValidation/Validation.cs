@@ -103,7 +103,7 @@ namespace RunValidation
 
                             task.Description = taskDescription + " | Files=" + s3ChunkObjects.Count;
                             request.ContinuationToken = response.NextContinuationToken;
-                        } while (response.IsTruncated);
+                        } while (response.IsTruncated ?? false);
 
                         s3ChunkObjects = s3ChunkObjects
                             .OrderBy(s => GetS3ChunksFileNumber(s.Key))
@@ -356,7 +356,7 @@ namespace RunValidation
 
                            task.Description = taskDescription + " | Count=" + slices.Count;
                            request.ContinuationToken = response.NextContinuationToken;
-                       } while (response.IsTruncated);
+                       } while (response.IsTruncated ?? false);
                    }
                });
 
@@ -418,7 +418,7 @@ namespace RunValidation
                     yield return Tuple.Create(orderedSlices[i], response.S3Objects);
                     request.ContinuationToken = response.NextContinuationToken;
                 } 
-                while (response.IsTruncated);
+                while (response.IsTruncated ?? false);
             }
         }
 

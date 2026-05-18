@@ -72,7 +72,7 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
 
                     request.ContinuationToken = task.Result.NextContinuationToken;
 
-                } while (task.Result.IsTruncated);
+                } while (task.Result.IsTruncated ?? false);
             }
 
             Console.WriteLine("Metadata count=" + count);
@@ -164,7 +164,7 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
 
 
                     request.ContinuationToken = task.Result.NextContinuationToken;
-                } while (task.Result.IsTruncated);
+                } while (task.Result.IsTruncated ?? false);
             }
 
             var result2 = new List<FactRelationship>();

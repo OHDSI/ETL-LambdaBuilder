@@ -23,7 +23,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
         {
             ClientSecretCredential credential = new(Settings.Current.TenantId, Settings.Current.ClientId, Settings.Current.ClientSecret);
             var client = new BlobServiceClient(new Uri(Settings.Current.ServiceUri), credential, null);
-            
+
             return client.GetBlobContainerClient(Settings.Current.BlobContainerName);
         }
 
