@@ -163,10 +163,13 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
             using var listObjects = client.ListObjectsV2Async(request);
             listObjects.Wait();
 
-            foreach (var o in listObjects.Result.S3Objects)
+            if (listObjects.Result.S3Objects != null)
             {
-                lookup.Fill(client, Settings.Current.Bucket, o.Key);
-                _lookups.Add(o.Key.Split('/')[3].Replace(".txt.gz", ""), lookup);
+                foreach (var o in listObjects.Result.S3Objects)
+                {
+                    lookup.Fill(client, Settings.Current.Bucket, o.Key);
+                    _lookups.Add(o.Key.Split('/')[3].Replace(".txt.gz", ""), lookup);
+                }
             }
 
             if (Vendor.Name == "CDM")
