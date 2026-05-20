@@ -282,7 +282,7 @@ namespace org.ohdsi.cdm.presentation.etl
                         {
                             var slice = i.ToString("D4");
 
-                            if (Settings.Current.UseS3forDatabricks)
+                            if (Settings.Current.Building.SourceEngine.Database == framework.desktop.Enums.Database.Databricks)
                             {
                                 slice = $"PartitionId={i}";
                             }
@@ -491,7 +491,7 @@ namespace org.ohdsi.cdm.presentation.etl
                             $@"CREATE EXTERNAL TABLE {tableName} " +
                             $@"USING csv " +
                             $@"PARTITIONED BY(PartitionId) " +
-                            $@"LOCATION '{Settings.Current.GetDatabricksStorage}/{folder}' " +
+                            $@"LOCATION 'abfss://{Settings.Current.CloudStorageName}@{Settings.Current.CloudStorageUriDfs}/{folder}' " +
                             $@"OPTIONS(delimiter = '\t', nullValue = '\\N',  compression = 'gzip') " +
                             $@"AS({sql});";
                     }
@@ -502,7 +502,7 @@ namespace org.ohdsi.cdm.presentation.etl
 
                         unloadQuery =
                         $"create table {tableName} sortkey ({personIdField}) distkey ({personIdField}) as {sql}; " +
-                        $@"UNLOAD ('select * from {tableName} order by {personIdField}') to 's3://{folder}/{qd.FileName}' " +
+                        $@"UNLOAD ('select * from {tableName} order by {personIdField}') to 's3://{Settings.Current.CloudStorageName}/{folder}' " +
                         $@"DELIMITER AS '\t' " +
                         $@"NULL AS '\\N' " +
                         $@"credentials 'aws_access_key_id={Settings.Current.CloudStorageKey};aws_secret_access_key={Settings.Current.CloudStorageSecret}' " +
