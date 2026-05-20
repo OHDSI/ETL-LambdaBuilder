@@ -502,7 +502,7 @@ namespace org.ohdsi.cdm.presentation.etl
 
                         unloadQuery =
                         $"create table {tableName} sortkey ({personIdField}) distkey ({personIdField}) as {sql}; " +
-                        $@"UNLOAD ('select * from {tableName} order by {personIdField}') to 's3://{Settings.Current.CloudStorageName}/{folder}' " +
+                        $@"UNLOAD ('select * from {tableName} order by {personIdField}') to 's3://{Settings.Current.CloudStorageName}/{folder}{qd.FileName}' " +
                         $@"DELIMITER AS '\t' " +
                         $@"NULL AS '\\N' " +
                         $@"credentials 'aws_access_key_id={Settings.Current.CloudStorageKey};aws_secret_access_key={Settings.Current.CloudStorageSecret}' " +
