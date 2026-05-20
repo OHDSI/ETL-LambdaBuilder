@@ -101,7 +101,7 @@ namespace org.ohdsi.cdm.framework.desktop.Controllers
             if (Settings.Settings.Current.Building.SourceEngine.Database == Enums.Database.Databricks)
             {
                 query = $@"COPY INTO {_chunksSchema}._chunks BY POSITION " +
-                    $@"FROM '{Settings.Settings.Current.GetDatabricksStorage}/{Settings.Settings.Current.BuildingPrefix}' " +
+                    $@"FROM 'abfss://{Settings.Settings.Current.CloudStorageName}@{Settings.Settings.Current.CloudStorageUriDfs}/{Settings.Settings.Current.BuildingPrefix}' " +
                     @"FILEFORMAT = CSV " +
                     @"PATTERN = 'chunks*.txt.gz' " +
                     @"FORMAT_OPTIONS( " +
@@ -117,7 +117,7 @@ namespace org.ohdsi.cdm.framework.desktop.Controllers
             }
             else if (Settings.Settings.Current.Building.SourceEngine.Database == Enums.Database.Redshift)
             {
-                query = $@"copy {_chunksSchema}._chunks from 's3://{Settings.Settings.Current.CloudStorageName}/_chunks' " +
+                query = $@"copy {_chunksSchema}._chunks from 's3://{Settings.Settings.Current.CloudStorageName}/{Settings.Settings.Current.BuildingPrefix}/_chunks' " +
                     $@"credentials 'aws_access_key_id={Settings.Settings.Current.CloudStorageKey};aws_secret_access_key={Settings.Settings.Current.CloudStorageSecret}' " +
                     @"IGNOREBLANKLINES " +
                     @"DELIMITER ',' " +
