@@ -50,10 +50,8 @@ namespace org.ohdsi.cdm.presentation.etl.Monitor
                 var lastModified = DateTime.MinValue;
 
                 var prefix = $"{Settings.Current.Building.Vendor}.{Settings.Current.Building.Id.Value}.{_chunkId}.";
-                // TODO: add message storage
                 
-                var client = CloudStorageHelper.GetTriggerBlobContainerClient();
-                var info = CloudStorageHelper.GetObjectInfo(null, client, Settings.Current.CloudTriggerStorageName, prefix);
+                var info = CloudStorageHelper.GetObjectInfo(prefix);
 
                 Console.WriteLine($"> {DateTime.Now.ToShortTimeString()} | {_chunkId} - not processed slices {info.Count()} | {prefix}");
                 if (!info.Any())

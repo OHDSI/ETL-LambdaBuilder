@@ -1,5 +1,4 @@
-﻿using Amazon.S3;
-using org.ohdsi.cdm.framework.common.Builder;
+﻿using org.ohdsi.cdm.framework.common.Builder;
 using org.ohdsi.cdm.framework.desktop.Helpers;
 using System.Data;
 
@@ -39,21 +38,21 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
 
         public override void Write(int? chunkId, int? subChunkId, IDataReader reader, string tableName)
         {
-            var config = new AmazonS3Config
-            {
-                Timeout = TimeSpan.FromMinutes(60),
-                RegionEndpoint = Amazon.RegionEndpoint.USEast1,
-                MaxErrorRetry = 20,
-            };
+            //var config = new AmazonS3Config
+            //{
+            //    Timeout = TimeSpan.FromMinutes(60),
+            //    RegionEndpoint = Amazon.RegionEndpoint.USEast1,
+            //    MaxErrorRetry = 20,
+            //};
 
-            using var currentClient = new AmazonS3Client(Settings.Settings.Current.CloudStorageKey,
-                Settings.Settings.Current.CloudStorageSecret,
-                config);
+            //using var currentClient = new AmazonS3Client(Settings.Settings.Current.CloudStorageKey,
+            //    Settings.Settings.Current.CloudStorageSecret,
+            //    config);
 
             var name = "_chunks" + chunkId;
             var fileName = $"{Settings.Settings.Current.BuildingPrefix}/{name}.txt.gz";
             
-            CloudStorageHelper.UploadFile(currentClient, null, Settings.Settings.Current.CloudStorageName, fileName, reader);
+            CloudStorageHelper.UploadFile(fileName, reader);
         }               
     }
 }
