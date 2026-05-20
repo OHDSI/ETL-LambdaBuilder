@@ -139,16 +139,6 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
         
         public bool UseS3forDatabricks { get; set; }
 
-        public string GetDatabricksStorage
-        {
-            get
-            {
-                if (Current.UseS3forDatabricks)
-                    return $@"s3://{Current.CloudStorageName}";
-                else
-                    return $@"abfss://{Current.CloudStorageName}@{Current.CloudStorageUriDfs}";
-            }
-        }
         #endregion
 
         #region Methods
