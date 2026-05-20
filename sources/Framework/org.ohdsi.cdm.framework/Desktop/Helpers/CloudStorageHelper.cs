@@ -200,7 +200,7 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
                     var tableName = o.Key.Split('/')[4];
                     var fileName = o.Key.Split('/')[5];
 
-                    if (Settings.Settings.Current.UseS3forDatabricks)
+                    if (Settings.Settings.Current.Building.SourceEngine.Database == Enums.Database.Databricks)
                     {
                         slices.Add(fileName);
                     }
