@@ -297,7 +297,7 @@ namespace org.ohdsi.cdm.presentation.etl
                     {
                         try
                         {
-                            unprocessed = CloudStorageHelper.GetObjectInfo($"{Settings.Current.Building.Vendor}.{Settings.Current.Building.Id}").Count();
+                            unprocessed = CloudStorageHelper.GetTriggerFilesInfo($"{Settings.Current.Building.Vendor}.{Settings.Current.Building.Id}").Count();
 
                             Console.WriteLine($"[Moving raw data] Unprocessed functions={unprocessed}");
 
@@ -455,7 +455,7 @@ namespace org.ohdsi.cdm.presentation.etl
                             $@"CREATE EXTERNAL TABLE {tableName} " +
                             $@"USING csv " +
                             $@"PARTITIONED BY(PartitionId) " +
-                            $@"LOCATION 'abfss://{Settings.Current.CloudStorageName}@{Settings.Current.CloudStorageUriDfs}/{folder}' " +
+                            $@"LOCATION '{Settings.Current.GetDatabricksStorage}/{folder}' " +
                             $@"OPTIONS(delimiter = '\t', nullValue = '\\N',  compression = 'gzip') " +
                             $@"AS({sql});";
                     }

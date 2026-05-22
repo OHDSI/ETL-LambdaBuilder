@@ -101,7 +101,7 @@ namespace org.ohdsi.cdm.framework.desktop.Controllers
             if (Settings.Settings.Current.Building.SourceEngine.Database == Enums.Database.Databricks)
             {
                 query = $@"COPY INTO {_chunksSchema}._chunks BY POSITION " +
-                    $@"FROM 'abfss://{Settings.Settings.Current.CloudStorageName}@{Settings.Settings.Current.CloudStorageUriDfs}/{Settings.Settings.Current.BuildingPrefix}' " +
+                    $@"FROM '{Settings.Settings.Current.GetDatabricksStorage}/{Settings.Settings.Current.BuildingPrefix}' " +
                     @"FILEFORMAT = CSV " +
                     @"PATTERN = 'chunks*.txt.gz' " +
                     @"FORMAT_OPTIONS( " +

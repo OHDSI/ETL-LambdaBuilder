@@ -59,11 +59,12 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
         }
 
 
-        public static IEnumerable<Tuple<string, DateTime>> GetObjectInfo(string prefix)
+        public static IEnumerable<Tuple<string, DateTime>> GetTriggerFilesInfo(string prefix)
         {
-            var storageName = Settings.Settings.Current.CloudStorageName;
-            IAmazonS3 awsClient = GetAwsStorageClient();
-            BlobContainerClient azureClient = GetBlobContainerClient();
+            var storageName = Settings.Settings.Current.CloudTriggerStorageName;
+
+            IAmazonS3 awsClient = GetAwsTriggerStorageClient();
+            BlobContainerClient azureClient = GetTriggerBlobContainerClient();
 
             if (awsClient != null)
             {
