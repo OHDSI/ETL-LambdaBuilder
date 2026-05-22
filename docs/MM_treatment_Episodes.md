@@ -55,26 +55,20 @@ storing lines and regimen.
 6.  Add CAR-T regimens. Currently the CAR-T events are divided into 3
     groups (subject of a discussion):
 
-    1.  'Apheresis Aph&CART' – when both Apheresis procedure and CAR-T
-injection event are present in the data. Apheresis date is both start
+    1.  'Apheresis' – Apheresis procedure Apheresis date is both start
 and end date of the regimen.
 
-    2.  CAR-T': drug_exposure_start_date and drug_exposure_end_date are
-considered a regimen start and end date.
+        If severeal Apheresis codes appear within one month, take the earliest one.
 
-    3.  'Apheresis no CART': Apheresis procedure is documented, but the
-CAR-T is not. Apheresis date is both start and end date of the regimen.
-
-Later both 'Apheresis Aph&CART' and 'Apheresis no CART' are mapped to
-the same Apheresis concept, but it’s reflected in episode_source_value,
-so we can track the Apheresis procedures which don’t have CAR-T infusion
-afterwards.
+      3.  CAR-T': drug_exposure_start_date and drug_exposure_end_date are considered a regimen start and end date.
 
 **Apheresis concept_ids:** 927059 “Chimeric antigen receptor T-cell
 (CAR-T) therapy; harvesting of blood-derived T lymphocytes for
 development of genetically modified autologous CAR-T cells, per day”
 
 **CAR-T** codes are in Appendix 2.
+
+Note, if patient has CAR-T drug codes and CAR-T procedure codes, take the date of drug code, since it's more specific 
 
 7.  Add Transplant regimen. Transplant date is regimen_start_date as
     well as regimen_end_date. If two transplants are given within 180
@@ -110,27 +104,31 @@ Regimens are combined into lines of therapy using the following rules:
         (**induction**) then HSCT (**autologous stem cell
         transplantation**) then lenalidomide (**maintenance);**
         Melphalan **(Pre-Transplant Conditioning)** then HSCT.
-
-        1.  Sometimes drug data is missing, so we end up with incomplete
+        
+           Sometimes drug data is missing, so we end up with incomplete
             therapies, for example **bortezomib then HSCT**, which
-            requires lenalidomide as part of induction therapy
+            requires lenalidomide as part of induction therapy (we don't fix it)
 
-    2.  Apheresis, anti-plasma cell treatment (cyclophosphamide,
+    3.  Apheresis, anti-plasma cell treatment (cyclophosphamide,
         fludarabine or cyclophosphamide monotherapy), CAR-T
 
-    3.  Regimen and its corresponding maintenance therapy
+    4.  Regimen and its corresponding maintenance therapy
 
-    4.  Addition of immunomodulatory (IMIDS = lenalidomide,
+    5.  Addition of immunomodulatory (IMIDS = lenalidomide,
         pomalidomide, thalidomide) or proteasome inhibitor drugs (PI =
         bortezomib, carfilzomib, ixazomib) within the first 90 days of
         the previous regimen start, if the previous regimen doesn’t have
         the drugs from the same group (2 IMIDs or 2 PIs can’t be in the
         same line)
 
-    5.  The addition of lenalidomide in 1L to a line that already
+    6.  The addition of lenalidomide in 1L to a line that already
         contained cyclophosphamide does not advance the line. Note: this
         addition must occur within 60 days of line start for this rule
         to be applied
+    7. Once all lines are defined, we additionaly aggregare two consequtive
+       lines into one line where previous line contains Bortezomib + Lenalidomide or Carfilzomib + Lenalidomide or Bortezomib + Thalidomide
+       and doesn't contain 'stem cell transplant' and the next line includes stem cell transplant'.
+    8. If regimen is not combined with any other lines, it will create a line containing from a single regimen. 
 
 11. Most of the regimen are mapped to HemOnc concepts by matching
     ingredients and populate EPISODE.episode_object_concept_id, if
@@ -211,7 +209,7 @@ patient</td>
 <tr class="even">
 <td>episode_object_concept_id</td>
 <td>mapped HemOnc regimen concept or 0 for episodes, 0 for lines of
-treatment</td>
+treatment made from several regimen, mapped HemOnc regimen if line consists from a single regimen</td>
 </tr>
 <tr class="odd">
 <td>episode_type_concept_id</td>
@@ -272,12 +270,10 @@ by ‘ then ‘</td>
 
 | concept_id | concept_name              |
 |------------|---------------------------|
-| 739856     | lisocabtagene maraleucel  |
 | 779144     | ciltacabtagene autoleucel |
-| 792737     | tisagenlecleucel          |
-| 792844     | axicabtagene ciloleucel   |
 | 36026868   | idecabtagene vicleucel    |
-| 37002369   | brexucabtagene autoleucel |
+| 43018384   | Introduction of Engineered Autologous Chimeric Antigen Receptor T-cell Immunotherapy into Peripheral Vein... |
+| 43018388   | 	Introduction of Engineered Autologous Chimeric Antigen Receptor T-cell Immunotherapy into Central Vein...   |
 
 3.  Stem cell Transplant codes
 
