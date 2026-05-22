@@ -1,24 +1,26 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
-using Azure;
 using Azure.Identity;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
-using org.ohdsi.cdm.framework.common.Enums;
 using System.Data;
 
 namespace org.ohdsi.cdm.framework.desktop.Helpers
 {
     public class CloudStorageHelper
     {
-        public static void UploadFile(IAmazonS3 awsClient, BlobContainerClient azureClient, string storageName, string fileName, IDataReader reader)
+        public static void UploadFile(string fileName, IDataReader reader)
         {
-            CloudStorageHelper.UploadFile(awsClient, azureClient, storageName, fileName, reader, true, false);
+            CloudStorageHelper.UploadFile(fileName, reader, true, false);
         }
 
-        public static void UploadFile(IAmazonS3 awsClient, BlobContainerClient azureClient, string storageName, string fileName, IDataReader reader, bool compress, bool schemaOnly)
+        public static void UploadFile(string fileName, IDataReader reader, bool compress, bool schemaOnly)
         {
+            var storageName = Settings.Settings.Current.CloudStorageName;
+            IAmazonS3 awsClient = GetAwsStorageClient();
+            BlobContainerClient azureClient = GetBlobContainerClient();
+
             int fileIndex = 0;
             var name = fileName;
 
@@ -43,9 +45,8 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
                                 InputStream = stream
                             });
                         }
-                    }
-
-                    if (azureClient != null)
+                    } 
+                    else if (azureClient != null)
                     {
                         azureClient.UploadBlob(name, stream);
                     }
@@ -58,8 +59,13 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
         }
 
 
-        public static IEnumerable<Tuple<string, DateTime>> GetObjectInfo(IAmazonS3 awsClient, BlobContainerClient azureClient, string storageName, string prefix)
+        public static IEnumerable<Tuple<string, DateTime>> GetTriggerFilesInfo(string prefix)
         {
+            var storageName = Settings.Settings.Current.CloudTriggerStorageName;
+
+            IAmazonS3 awsClient = GetAwsTriggerStorageClient();
+            BlobContainerClient azureClient = GetTriggerBlobContainerClient();
+
             if (awsClient != null)
             {
                 using (awsClient)
@@ -92,12 +98,13 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
                     States = BlobStates.None
                 }))
                 {
-                    yield return new Tuple<string, DateTime>(blob.Name, blob.Properties.LastModified.Value.DateTime);
+                    if (blob.Properties.LastModified.HasValue)
+                        yield return new Tuple<string, DateTime>(blob.Name, blob.Properties.LastModified.Value.DateTime);
                 }
             }
         }
 
-        public static BlobContainerClient GetBlobContainerClient()
+        private static BlobContainerClient GetBlobContainerClient()
         {
             if (!string.IsNullOrEmpty(Settings.Settings.Current.CloudStorageHolder))
             {
@@ -137,7 +144,7 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
             return null;
         }
 
-        public static AmazonS3Client GetAwsStorageClient()
+        private static AmazonS3Client GetAwsStorageClient()
         {
             if (!string.IsNullOrEmpty(Settings.Settings.Current.CloudStorageHolder) || !string.IsNullOrEmpty(Settings.Settings.Current.CloudStorageConnectionString))
                 return null;
@@ -200,7 +207,7 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
                     var tableName = o.Key.Split('/')[4];
                     var fileName = o.Key.Split('/')[5];
 
-                    if (Settings.Settings.Current.UseS3forDatabricks)
+                    if (Settings.Settings.Current.Building.SourceEngine.Database == Enums.Database.Databricks)
                     {
                         slices.Add(fileName);
                     }

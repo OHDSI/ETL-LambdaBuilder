@@ -135,9 +135,9 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
         public string CloudTriggerStorageName { get; set; }
 
         public string CDMFolder { get; set; }
-
-        
+                
         public bool UseS3forDatabricks { get; set; }
+
 
         public string GetDatabricksStorage
         {
@@ -149,6 +149,7 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
                     return $@"abfss://{Current.CloudStorageName}@{Current.CloudStorageUriDfs}";
             }
         }
+
         #endregion
 
         #region Methods
