@@ -23,9 +23,9 @@ description: "OPTUM EHR Procedure table to STEM"
 | end_date | proc_date | | | 
 | start_datetime | proc_date proc_time | Combine the proc_date and proc_time to create a datetime| |
 | end_datetime | proc_date proc_time | Combine the proc_date and proc_time to create a datetime| |
-| concept_id | proc_code_type <br> proc_code|Use the proc_code_type to find the source vocabulary of the code and use the [SOURCE_TO_STANDARD](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_STANDARD.sql) query to map the code to standard concept(s) with the following filters: <br> <br>  Where source_vocabulary_id = **see comments for how to assign this**  and Target_standard_concept = 'S'  and target_invalid_reason is NULL<br><br>If there is no mapping available, set concept_id to zero.| Use the following logic to match proc_code_type with the appropriate SOURCE_VOCABULARY_ID: 'CPT4' = CPT4<br>'HCPCS' = HCPCS<br>'ICD10' = ICD10PCS<br>'ICD9' = ICD9Proc<br>'REV' = Revenue Code<br>'SNOMED' = SNOMED<br><br>For proc_code_type = ICD10, strip dot from lookup<br><br>For proc_code_type = ICD9, leave dots in lookup. |
+| concept_id | proc_code_type <br> proc_code|Use the proc_code_type to find the source vocabulary of the code and use the [SOURCE_TO_STANDARD](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_STANDARD.sql) query to map the code to standard concept(s) with the following filters: <br> <br>  Where source_vocabulary_id = **see comments for how to assign this**  and Target_standard_concept = 'S'  and target_invalid_reason is NULL<br><br>If there is no mapping available, set concept_id to zero.| Use the following logic to match proc_code_type with the appropriate SOURCE_VOCABULARY_ID: 'CPT4' = CPT4<br>'HCPCS' = HCPCS<br>'ICD10' = ICD10PCS<br>'ICD9' = ICD9Proc<br>'REV' = Revenue Code<br>('SNOMED','SNOMEDCT') = SNOMED<br><br>For proc_code_type = ICD10, strip dot from lookup<br><br>For proc_code_type = ICD9, leave dots in lookup. |
 |source_value|proc_code|||
-| source_concept_id | proc_code_type <br> proc_code|Use the proc_code_type to find the source vocabulary of the code and use the [SOURCE_TO_SOURCE](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_SOURCE.sql) query to map the code to standard concept(s) with the following filters: <br> <br>  Where source_vocabulary_id = **see comments for how to assign this**<br><br> If there is no mapping available, set concept_id to zero.|Use the following logic to match proc_code_type with the appropriate SOURCE_VOCABULARY_ID: 'CPT4' = CPT4<br>'HCPCS' = HCPCS<br>'ICD10' = ICD10PCS<br>'ICD9' = ICD9Proc<br>'REV' = Revenue Code<br>'SNOMED' = SNOMED<br><br>For proc_code_type = ICD10, strip dot from lookup<br><br>For proc_code_type = ICD9, leave dots in lookup. |
+| source_concept_id | proc_code_type <br> proc_code|Use the proc_code_type to find the source vocabulary of the code and use the [SOURCE_TO_SOURCE](https://github.com/OHDSI/ETL-LambdaBuilder/blob/master/docs/Standard%20Queries/SOURCE_TO_SOURCE.sql) query to map the code to standard concept(s) with the following filters: <br> <br>  Where source_vocabulary_id = **see comments for how to assign this**<br><br> If there is no mapping available, set concept_id to zero.|Use the following logic to match proc_code_type with the appropriate SOURCE_VOCABULARY_ID: 'CPT4' = CPT4<br>'HCPCS' = HCPCS<br>'ICD10' = ICD10PCS<br>'ICD9' = ICD9Proc<br>'REV' = Revenue Code<br>('SNOMED','SNOMEDCT') = SNOMED<br><br>For proc_code_type = ICD10, strip dot from lookup<br><br>For proc_code_type = ICD9, leave dots in lookup. |
 | type_concept_id | 32833 | EHR order| | 
 | operator_concept_id |  | | |
 | unit_concept_id |   | | |
@@ -59,4 +59,9 @@ description: "OPTUM EHR Procedure table to STEM"
 | condition_status_source_value | | | |
 
 ## Change Log:
+
+### 01/28/2025
+- Added logic for SNOMEDCT proc_code_type
+
+### 07/29/2021
 - Explicitly lists the proc_code_types and how they should be mapped to standard concepts
