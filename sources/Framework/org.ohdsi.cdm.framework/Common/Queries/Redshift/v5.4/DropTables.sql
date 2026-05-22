@@ -1,7 +1,6 @@
 ﻿drop table {sc}.CDM_SOURCE;
 drop table {sc}.CARE_SITE; 
 drop table {sc}.COHORT; 
-drop table {sc}.COHORT_ATTRIBUTE; 
 drop table {sc}.COHORT_DEFINITION;
 drop table {sc}.CONDITION_ERA; 
 drop table {sc}.CONDITION_OCCURRENCE; 

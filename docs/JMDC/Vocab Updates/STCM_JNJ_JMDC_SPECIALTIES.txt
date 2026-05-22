@@ -13,8 +13,8 @@ Ophthalmology	0	JNJ_JMDC_SPECIALTIES	Ophthalmology	38004463	Medicare Specialty	1
 Orthopedics	0	JNJ_JMDC_SPECIALTIES	Orthopedics	38004465	Medicare Specialty	1970-01-01	2099-12-31	
 Other Internal Medicine	0	JNJ_JMDC_SPECIALTIES	Other Internal Medicine	38004456	Medicare Specialty	1970-01-01	2099-12-31	
 Other Orthopedics	0	JNJ_JMDC_SPECIALTIES	Other Orthopedics	38004465	Medicare Specialty	1970-01-01	2099-12-31	
-Others	0	JNJ_JMDC_SPECIALTIES	Others	0	None	1970-01-01	2099-12-31	
 Other Surgery	0	JNJ_JMDC_SPECIALTIES	Other Surgery	38004447	Medicare Specialty	1970-01-01	2099-12-31	
+Others	0	JNJ_JMDC_SPECIALTIES	Others	0	None	1970-01-01	2099-12-31	
 Otorhinolaryngology	0	JNJ_JMDC_SPECIALTIES	Otorhinolaryngology	38004449	Medicare Specialty	1970-01-01	2099-12-31	
 Pediatrics	0	JNJ_JMDC_SPECIALTIES	Pediatrics	38004477	Medicare Specialty	1970-01-01	2099-12-31	
 Psychiatry	0	JNJ_JMDC_SPECIALTIES	Psychiatry	38004469	Medicare Specialty	1970-01-01	2099-12-31	

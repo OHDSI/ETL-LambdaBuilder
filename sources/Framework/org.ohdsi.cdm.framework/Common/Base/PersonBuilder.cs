@@ -40,6 +40,7 @@ namespace org.ohdsi.cdm.framework.common.Base
         protected List<DrugExposure> DrugForEra = [];
         protected List<ConditionOccurrence> ConditionForEra = [];
         protected List<Note> NoteRecords = [];
+        protected List<NoteNlp> NoteNlpRecords = [];
         protected List<Episode> EpisodeRecords = [];
 
 
@@ -226,6 +227,9 @@ namespace org.ohdsi.cdm.framework.common.Base
             NoteRecords.Clear();
             NoteRecords = null;
 
+            NoteNlpRecords.Clear();
+            NoteNlpRecords = null;
+
             EpisodeRecords.Clear();
             EpisodeRecords = null;
 
@@ -288,6 +292,11 @@ namespace org.ohdsi.cdm.framework.common.Base
         {
             NoteRecords.Add(data);
         }
+
+        public void AddNoteNlpRecords(NoteNlp data)
+        {
+            NoteNlpRecords.Add(data);
+        }        
 
         public void AddEpisode(Episode data)
         {
@@ -425,6 +434,46 @@ namespace org.ohdsi.cdm.framework.common.Base
             foreach (var e in records.Where(e => !string.IsNullOrEmpty(e.ProviderKey)))
             {
                 e.ProviderId = Entity.GetId(e.ProviderKey);
+            }
+        }
+
+        protected static void SetPrecedingVisitOccurrenceId(IEnumerable<VisitOccurrence> visitOccurrences)
+        {
+            if (visitOccurrences == null)
+                return;
+
+            long? priorVisitId = null;
+            foreach (var visit in visitOccurrences
+                .OrderBy(v => v.StartDate)
+                .ThenBy(v => v.EndDate)
+                .ThenBy(v => v.Id))
+            {
+                if (priorVisitId.HasValue)
+                {
+                    visit.PrecedingVisitOccurrenceId = priorVisitId;
+                }
+
+                priorVisitId = visit.Id;
+            }
+        }
+
+        protected static void SetPrecedingVisitDetailId(IEnumerable<VisitDetail> visitDetails)
+        {
+            if (visitDetails == null)
+                return;
+
+            long? priorVisitId = null;
+            foreach (var visit in visitDetails
+                .OrderBy(v => v.StartDate)
+                .ThenBy(v => v.EndDate)
+                .ThenBy(v => v.Id))
+            {
+                if (priorVisitId.HasValue)
+                {
+                    visit.PrecedingVisitDetailId = priorVisitId;
+                }
+
+                priorVisitId = visit.Id;
             }
         }
 
@@ -574,12 +623,12 @@ namespace org.ohdsi.cdm.framework.common.Base
                 return new KeyValuePair<Person, Attrition>(null, Attrition.UnacceptablePatientQuality);
 
             var ordered = records.OrderByDescending(p => p.StartDate).ToArray();
-            var person = ordered.Take(1).First();
-            person.StartDate = ordered.Take(1).Last().StartDate;
+            var person = ordered.First();
+            person.StartDate = ordered.Last().StartDate;
 
             var gender =
-                records.GroupBy(p => p.GenderConceptId).OrderByDescending(gp => gp.Count()).Take(1).First().First();
-            var race = records.GroupBy(p => p.RaceConceptId).OrderByDescending(gp => gp.Count()).Take(1).First()
+                records.GroupBy(p => p.GenderConceptId).OrderByDescending(gp => gp.Count()).First().First();
+            var race = records.GroupBy(p => p.RaceConceptId).OrderByDescending(gp => gp.Count()).First()
                 .First();
 
             person.GenderConceptId = gender.GenderConceptId;
@@ -1074,6 +1123,48 @@ namespace org.ohdsi.cdm.framework.common.Base
             {
                 ChunkData.AddData(eraEntity, EntityType.ConditionEra);
             }
+        }
+
+        public static EntityType GetEventType(string domain)
+        {
+            switch (domain)
+            {
+                case "Condition":
+                    return EntityType.ConditionOccurrence;
+                case "Measurement":
+                    return EntityType.Measurement;
+                case "Observation":
+                    return EntityType.Observation;
+                case "Procedure":
+                    return EntityType.ProcedureOccurrence;
+                case "Device":
+                    return EntityType.DeviceExposure;
+                case "Drug":
+                    return EntityType.DrugExposure;
+            }
+
+            return EntityType.Observation;
+        }
+
+        public static long GetEventFieldConceptId(string domain)
+        {
+            switch (domain)
+            {
+                case "Condition":
+                    return 1147127; // condition_occurrence.condition_occurrence_id
+                case "Measurement":
+                    return 1147138; // measurement.measurement_id
+                case "Observation":
+                    return 1147165; // observation.observation_id
+                case "Procedure":
+                    return 1147082; // procedure_occurrence.procedure_occurrence_id
+                case "Device":
+                    return 1147115; // device_exposure.device_exposure_id
+                case "Drug":
+                    return 1147094; // drug_exposure.drug_exposure_id
+            }
+
+            return 1147165; // observation.observation_id
         }
 
         public string GetDomain(string entityDomain, string conceptDomain, string defaultDomain)

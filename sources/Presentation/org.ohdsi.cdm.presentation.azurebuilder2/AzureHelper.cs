@@ -23,7 +23,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
         {
             ClientSecretCredential credential = new(Settings.Current.TenantId, Settings.Current.ClientId, Settings.Current.ClientSecret);
             var client = new BlobServiceClient(new Uri(Settings.Current.ServiceUri), credential, null);
-            
+
             return client.GetBlobContainerClient(Settings.Current.BlobContainerName);
         }
 
@@ -35,6 +35,11 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
         internal static void UploadStream(string fileName, Stream stream)
         {
             AzureHelper.GetBlobContainer().UploadBlob(fileName, stream);
+        }
+
+        internal static void DeleteFile(string fileName)
+        {
+            AzureHelper.GetBlobContainer().DeleteBlobIfExists(fileName);
         }
     }
 }

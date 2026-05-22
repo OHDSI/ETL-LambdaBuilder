@@ -1,13 +1,13 @@
 ﻿<QueryDefinition>
-   <Query>
-	   SELECT distinct region + '_' + division as location_source_value,
-	   42046186 country_conceptId
-	   FROM {sc}.patient
-   </Query>
-   <Locations>
-      <LocationDefinition>
-		<CountryConceptId>country_conceptId</CountryConceptId>
-        <SourceValue>location_source_value</SourceValue>
-      </LocationDefinition>
-   </Locations>
+	<Query>
+		SELECT distinct region || '_' || division as location_source_value,
+		42046186 country_conceptId
+		FROM {sc}.patient
+	</Query>
+	<Locations>
+		<LocationDefinition>
+			<CountryConceptId>country_conceptId</CountryConceptId>
+			<SourceValue>location_source_value</SourceValue>
+		</LocationDefinition>
+	</Locations>
 </QueryDefinition>

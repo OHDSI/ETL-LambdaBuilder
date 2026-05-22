@@ -10,13 +10,17 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
 {
     public class CloudStorageHelper
     {
-        public static void UploadFile(IAmazonS3 awsClient, BlobContainerClient azureClient, string storageName, string fileName, IDataReader reader)
+        public static void UploadFile(string fileName, IDataReader reader)
         {
-            CloudStorageHelper.UploadFile(awsClient, azureClient, storageName, fileName, reader, true, false);
+            CloudStorageHelper.UploadFile(fileName, reader, true, false);
         }
 
-        public static void UploadFile(IAmazonS3 awsClient, BlobContainerClient azureClient, string storageName, string fileName, IDataReader reader, bool compress, bool schemaOnly)
+        public static void UploadFile(string fileName, IDataReader reader, bool compress, bool schemaOnly)
         {
+            var storageName = Settings.Settings.Current.CloudStorageName;
+            IAmazonS3 awsClient = GetAwsStorageClient();
+            BlobContainerClient azureClient = GetBlobContainerClient();
+
             int fileIndex = 0;
             var name = fileName;
 
@@ -41,9 +45,8 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
                                 InputStream = stream
                             });
                         }
-                    }
-
-                    if (azureClient != null)
+                    } 
+                    else if (azureClient != null)
                     {
                         azureClient.UploadBlob(name, stream);
                     }
@@ -56,8 +59,13 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
         }
 
 
-        public static IEnumerable<Tuple<string, DateTime>> GetObjectInfo(IAmazonS3 awsClient, BlobContainerClient azureClient, string storageName, string prefix)
+        public static IEnumerable<Tuple<string, DateTime>> GetTriggerFilesInfo(string prefix)
         {
+            var storageName = Settings.Settings.Current.CloudTriggerStorageName;
+
+            IAmazonS3 awsClient = GetAwsTriggerStorageClient();
+            BlobContainerClient azureClient = GetTriggerBlobContainerClient();
+
             if (awsClient != null)
             {
                 using (awsClient)
@@ -72,24 +80,31 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
 
                         foreach (var o in task.Result.S3Objects)
                         {
-                            yield return new Tuple<string, DateTime>(o.Key, o.LastModified);
+                            if(o.LastModified.HasValue)
+                                yield return new Tuple<string, DateTime>(o.Key, o.LastModified.Value);
                         }
 
                         request.ContinuationToken = task.Result.NextContinuationToken;
-
-                    } while (task.Result.IsTruncated);
+                        
+                    } while (task.Result.IsTruncated ?? false);
                 }
             }
             else if (azureClient != null)
             {
-                foreach (var blob in azureClient.GetBlobs(BlobTraits.None, BlobStates.None, prefix))
+                foreach (var blob in azureClient.GetBlobs(new GetBlobsOptions
                 {
-                    yield return new Tuple<string, DateTime>(blob.Name, blob.Properties.LastModified.Value.DateTime);
+                    Prefix = prefix,
+                    Traits = BlobTraits.None,
+                    States = BlobStates.None
+                }))
+                {
+                    if (blob.Properties.LastModified.HasValue)
+                        yield return new Tuple<string, DateTime>(blob.Name, blob.Properties.LastModified.Value.DateTime);
                 }
             }
         }
 
-        public static BlobContainerClient GetBlobContainerClient()
+        private static BlobContainerClient GetBlobContainerClient()
         {
             if (!string.IsNullOrEmpty(Settings.Settings.Current.CloudStorageHolder))
             {
@@ -127,6 +142,89 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
             }
 
             return null;
+        }
+
+        private static AmazonS3Client GetAwsStorageClient()
+        {
+            if (!string.IsNullOrEmpty(Settings.Settings.Current.CloudStorageHolder) || !string.IsNullOrEmpty(Settings.Settings.Current.CloudStorageConnectionString))
+                return null;
+
+            return new AmazonS3Client(
+                    Settings.Settings.Current.CloudStorageKey,
+                    Settings.Settings.Current.CloudStorageSecret,
+                    new AmazonS3Config
+                    {
+                        Timeout = TimeSpan.FromMinutes(60),
+                        RegionEndpoint = Amazon.RegionEndpoint.USEast1,
+                        MaxErrorRetry = 20,
+                    });
+        }
+
+        public static AmazonS3Client GetAwsTriggerStorageClient()
+        {
+            if (!string.IsNullOrEmpty(Settings.Settings.Current.CloudTriggerStorageHolder) || !string.IsNullOrEmpty(Settings.Settings.Current.CloudTriggerStorageConnectionString))
+                return null;
+
+            return new AmazonS3Client(
+                    Settings.Settings.Current.CloudTriggerStorageKey,
+                    Settings.Settings.Current.CloudTriggerStorageSecret,
+                    new AmazonS3Config
+                    {
+                        Timeout = TimeSpan.FromMinutes(60),
+                        RegionEndpoint = Amazon.RegionEndpoint.USEast1,
+                        MaxErrorRetry = 20,
+                    });
+        }
+
+        public static IEnumerable<string> GetSlices(int chunkId)
+        {
+            using var client = GetAwsStorageClient();
+
+            var prefix = $"{Settings.Settings.Current.Building.Vendor}/{Settings.Settings.Current.Building.Id}/raw/{chunkId}/";
+            var request = new ListObjectsV2Request
+            {
+                BucketName = Settings.Settings.Current.CloudStorageName,
+                Prefix = prefix
+            };
+
+            Task<ListObjectsV2Response> task;
+            var slices = new HashSet<string>();
+
+            do
+            {
+                task = client.ListObjectsV2Async(request);
+                task.Wait();
+
+                foreach (var o in task.Result.S3Objects)
+                {
+
+                    if (o.Key.Contains("/metadata/"))
+                        continue;
+
+                    if (o.Key.Split('/').Length < 6)
+                        continue;
+
+                    var tableName = o.Key.Split('/')[4];
+                    var fileName = o.Key.Split('/')[5];
+
+                    if (Settings.Settings.Current.Building.SourceEngine.Database == Enums.Database.Databricks)
+                    {
+                        slices.Add(fileName);
+                    }
+                    else
+                    {
+                        var tail = fileName[fileName.IndexOf("_part")..];
+                        var slice = fileName.Replace(tableName, "").Replace(tail, "");
+
+                        slices.Add(slice);
+                    }
+                }
+
+                request.ContinuationToken = task.Result.NextContinuationToken;
+                
+            } while (task.Result.IsTruncated ?? false);
+
+            return slices;
         }
     }
 }

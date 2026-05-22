@@ -100,7 +100,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder.Base
 
                     //var fileName = $"{AzureHelper.Path}/raw/{_chunkId}/{qd.FileName}/{qd.FileName}{_prefix}_part_00.zst";
                     //temp/tmp_aivanov3/CDM/28/raw/17/Visit_occurrence/Visit_occurrencePartitionId=10
-                    _readers.Add(qd.FileName, new AzureBlobReaderGzip($"{AzureHelper.Path}/raw/{_chunkId}/{qd.FileName}/{_prefix}", qd.FieldHeaders, initRow, _lastSavedPersonId));
+                    _readers.Add(qd.FileName, new AzureBlobReaderGzip($"{AzureHelper.Path}/raw/{_chunkId}/{qd.FileName}/{_prefix}/", qd.FieldHeaders, initRow, _lastSavedPersonId));
 
                     if (qd.Persons != null && qd.Persons.Length > 0)
                     {

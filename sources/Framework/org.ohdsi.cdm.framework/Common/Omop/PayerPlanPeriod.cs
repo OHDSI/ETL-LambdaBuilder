@@ -31,5 +31,13 @@ namespace org.ohdsi.cdm.framework.common.Omop
         {
             return EntityType.PayerPlanPeriod;
         }
+
+        public string Key
+        {
+            get
+            {
+                return $"{PlanSourceValue}|{PayerSourceValue}";
+            }
+        }
     }
 }

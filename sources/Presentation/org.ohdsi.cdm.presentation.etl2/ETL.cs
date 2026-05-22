@@ -1,6 +1,5 @@
 ﻿using Amazon.S3;
-using Azure.Identity;
-using Azure.Storage.Blobs;
+using Amazon.S3.Transfer;
 using org.ohdsi.cdm.framework.common.DataReaders.v5;
 using org.ohdsi.cdm.framework.common.DataReaders.v5.v54;
 using org.ohdsi.cdm.framework.common.Definitions;
@@ -34,9 +33,7 @@ namespace org.ohdsi.cdm.presentation.etl
                 var fileName = $"{Settings.Current.BuildingPrefix}/CombinedLookups/{name}.txt.gz";
                 Console.WriteLine(name + " - store to CloudStorage | " + fileName);
 
-                CloudStorageHelper.UploadFile(GetAwsStorageClient(), CloudStorageHelper.GetBlobContainerClient(), Settings.Current.CloudStorageName,
-                fileName,
-                reader);
+                CloudStorageHelper.UploadFile(fileName, reader);
             }
 
             foreach (var ri in vocabulary.GetClinicalDataReaders())
@@ -46,9 +43,7 @@ namespace org.ohdsi.cdm.presentation.etl
                     var fileName = $"{Settings.Current.BuildingPrefix}/Lookups/{ri.Name}.txt.gz";
                     Console.WriteLine(ri.Name + " - store to CloudStorage | " + fileName);
 
-                    CloudStorageHelper.UploadFile(GetAwsStorageClient(), CloudStorageHelper.GetBlobContainerClient(), Settings.Current.CloudStorageName,
-                        fileName,
-                        ri.DataReader);
+                    CloudStorageHelper.UploadFile(fileName, ri.DataReader);
                 }
             }
 
@@ -59,9 +54,7 @@ namespace org.ohdsi.cdm.presentation.etl
                     var fileName = $"{Settings.Current.BuildingPrefix}/Lookups/PregnancyDrug.txt.gz";
                     Console.WriteLine("PregnancyDrug - store to CloudStorage | " + fileName);
                     
-                    CloudStorageHelper.UploadFile(GetAwsStorageClient(), CloudStorageHelper.GetBlobContainerClient(), Settings.Current.CloudStorageName,
-                        fileName,
-                        ri.DataReader);
+                    CloudStorageHelper.UploadFile(fileName, ri.DataReader);
                 }
             }
 
@@ -79,9 +72,7 @@ namespace org.ohdsi.cdm.presentation.etl
                 {
                     var fileName = $"{Settings.Current.BuildingPrefix}/Lookups/ConceptIdToSourceVocabularyId.txt.gz";
                     Console.WriteLine("ConceptIdToSourceVocabularyId - store to CloudStorage | " + fileName);
-                    CloudStorageHelper.UploadFile(GetAwsStorageClient(), CloudStorageHelper.GetBlobContainerClient(), Settings.Current.CloudStorageName,
-                        fileName,
-                        reader);
+                    CloudStorageHelper.UploadFile(fileName, reader);
                 }
                 Console.WriteLine("ConceptIdToSourceVocabularyId - Done");
             }
@@ -92,7 +83,7 @@ namespace org.ohdsi.cdm.presentation.etl
         {
             Console.WriteLine("Chunks creation in progress...");
             var chunkController = new ChunkController(chunksSchema);
-            chunkController.CreateChunks(5_000);
+            chunkController.CreateChunks(10_000);
         }
 
         public static void CopyVocabularyTables()
@@ -121,9 +112,7 @@ namespace org.ohdsi.cdm.presentation.etl
                         using var reader = c.ExecuteReader();
                         var fileName = $"{folder}/{tableName}/{tableName}.txt.gz";
                         
-                        CloudStorageHelper.UploadFile(GetAwsStorageClient(), CloudStorageHelper.GetBlobContainerClient(), Settings.Current.CloudStorageName,
-                            fileName,
-                            reader);
+                        CloudStorageHelper.UploadFile(fileName, reader);
                     }
 
                     Console.WriteLine("[Vocabulary] " + tableName + " SAVED");
@@ -178,27 +167,21 @@ namespace org.ohdsi.cdm.presentation.etl
             List<MetadataOMOP> metadata = [];
             metadata.Add(new MetadataOMOP { Id = 0, MetadataConceptId = 0, Name = "NativeLoadId", ValueAsString = sourceVersionId, MetadataDate = DateTime.Now.Date });
 
-            CloudStorageHelper.UploadFile(GetAwsStorageClient(), CloudStorageHelper.GetBlobContainerClient(), Settings.Current.CloudStorageName,
-                    file,
-                    new MetadataOMOPDataReader(metadata));
+            CloudStorageHelper.UploadFile(file, new MetadataOMOPDataReader(metadata));
         }
 
         public static void SaveVersion(int versionId)
         {
             var file = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}/_version/version.txt.gz";
 
-            CloudStorageHelper.UploadFile(GetAwsStorageClient(), CloudStorageHelper.GetBlobContainerClient(), Settings.Current.CloudStorageName,
-                    file,
-                    new VersionDataReader(versionId));
+            CloudStorageHelper.UploadFile(file, new VersionDataReader(versionId));
         }
 
         public static void SaveCdmSource(DateTime sourceReleaseDate, string vocabularyVersion)
         {
             var file = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}/cdm_source/cdm_source.txt.gz";
 
-            CloudStorageHelper.UploadFile(GetAwsStorageClient(), CloudStorageHelper.GetBlobContainerClient(), Settings.Current.CloudStorageName,
-                    file,
-                    new CdmSourceDataReader(sourceReleaseDate, vocabularyVersion));
+            CloudStorageHelper.UploadFile(file, new CdmSourceDataReader(sourceReleaseDate, vocabularyVersion));
         }
 
         //public void MoveChunkDataToS3(bool useMonitor, bool triggerLambdas, LambdaUtility utility)
@@ -211,8 +194,8 @@ namespace org.ohdsi.cdm.presentation.etl
             if (chunkIds.Length == 0)
                 return;
 
-            var numberOfPartitions = GetNumberOfPartitions(chunksSchema);
-            Console.WriteLine("NumberOfPartitions=" + numberOfPartitions);
+            //var numberOfPartitions = GetNumberOfPartitions(chunksSchema);
+            //Console.WriteLine("NumberOfPartitions=" + numberOfPartitions);
 
             Parallel.ForEach(Settings.Current.Building.SourceQueryDefinitions, queryDefinition =>
             {
@@ -241,8 +224,8 @@ namespace org.ohdsi.cdm.presentation.etl
             Console.WriteLine($"PersonFileName:{Settings.Current.Building.PersonFileName}");
             Console.WriteLine($"PersonIdFieldName:{Settings.Current.Building.PersonIdFieldName}");
             Console.WriteLine($"PersonIdFieldIndex:{Settings.Current.Building.PersonIdFieldIndex}");
-                  
-            using (var chunkManager = new ChunkManager(chunksSchema, numberOfPartitions))
+
+            using (var chunkManager = new ChunkManager(chunksSchema, 0)) // TMP: numberOfPartitions=0
             {
                 Parallel.ForEach(chunkIds, new ParallelOptions { MaxDegreeOfParallelism = Settings.Current.ParallelChunks }, cId =>
                 {
@@ -271,9 +254,41 @@ namespace org.ohdsi.cdm.presentation.etl
                     chunkController.ChunkCreated(chunkId, Settings.Current.Building.Id.Value);
                     Console.WriteLine("[Moving raw data] Raw data for chunkId=" + chunkId + " is available on cloud storage");
 
-                    //var tasks = utility.TriggerBuildFunction(Settings.Current.Building.Vendor, Settings.Current.Building.Id.Value, chunkId, false);
-                    //Task.WaitAll([.. tasks]);
-                    //Console.WriteLine($"[Moving raw data] Lambda functions for chunkId={chunkId} were triggered | {tasks.Count} functions");
+                    var numberOfPartitions = GetNumberOfPartitions(chunksSchema, chunkId);
+                    var tasks = new List<Task>();
+
+                    using (var client = CloudStorageHelper.GetAwsTriggerStorageClient())
+                    using (var tu = new TransferUtility(client))
+                    {
+                        for (int i = 0; i < numberOfPartitions; i++)
+                        {
+                            var slice = i.ToString("D4");
+
+                            if (Settings.Current.Building.SourceEngine.Database == framework.desktop.Enums.Database.Databricks)
+                            {
+                                slice = $"PartitionId={i}";
+                            }
+
+                            var key = $"{Settings.Current.Building.Vendor}.{Settings.Current.Building.Id}.{chunkId}.{slice}.txt";
+                            using var empty = new MemoryStream();
+
+                            //CloudStorageHelper.GetAwsTriggerStorageClient().UploadBlob(key, empty);
+
+                            var t = tu.UploadAsync(new TransferUtilityUploadRequest
+                            {
+                                InputStream = new MemoryStream(),
+                                BucketName = Settings.Current.CloudTriggerStorageName,
+                                Key = key,
+                                ServerSideEncryptionMethod = ServerSideEncryptionMethod.AES256,
+                                StorageClass = S3StorageClass.Standard,
+                            });
+                            tasks.Add(t);
+                        }
+                    }
+
+                    Task.WaitAll([.. tasks]);
+
+                    Console.WriteLine($"[Moving raw data] functions for chunkId={chunkId} were triggered | {numberOfPartitions} functions");
 
                     chunkManager.AddChunk(chunkId);
 
@@ -282,11 +297,7 @@ namespace org.ohdsi.cdm.presentation.etl
                     {
                         try
                         {
-                            unprocessed = CloudStorageHelper.GetObjectInfo(
-                                GetAwsTriggerStorageClient(),
-                                CloudStorageHelper.GetTriggerBlobContainerClient(),
-                                Settings.Current.CloudTriggerStorageName,
-                                $"{Settings.Current.BuildingTriggerPrefix}.").Count();
+                            unprocessed = CloudStorageHelper.GetTriggerFilesInfo($"{Settings.Current.Building.Vendor}.{Settings.Current.Building.Id}").Count();
 
                             Console.WriteLine($"[Moving raw data] Unprocessed functions={unprocessed}");
 
@@ -296,7 +307,7 @@ namespace org.ohdsi.cdm.presentation.etl
                                 Thread.Sleep(TimeSpan.FromMinutes(3));
                             }
                         }
-                        catch(Exception ex) // TMP
+                        catch (Exception ex) // TMP
                         {
 
                         }
@@ -319,53 +330,17 @@ namespace org.ohdsi.cdm.presentation.etl
             Console.WriteLine("[Moving raw data] StoreMetadataToCloudStorage start - " + queryDefinition.FileName);
             var fileName = $"{Settings.Current.BuildingPrefix}/raw/metadata/{queryDefinition.FileName + ".txt"}";
 
+            //int? timeout = 10 * 60;
             using (var conn = SqlConnectionHelper.OpenOdbcConnection(Settings.Current.Building.SourceConnectionString))
             using (var c = Settings.Current.Building.SourceEngine.GetCommand(query, conn))
-            using (var reader = c.ExecuteReader(CommandBehavior.SchemaOnly))
             {
-                CloudStorageHelper.UploadFile(GetAwsStorageClient(),
-                    CloudStorageHelper.GetBlobContainerClient(), 
-                    Settings.Current.CloudStorageName,
-                    fileName,
-                    reader,
-                    false,
-                    true);
+                c.CommandTimeout = 600;
+                using var reader = c.ExecuteReader(CommandBehavior.SchemaOnly);
+                CloudStorageHelper.UploadFile(fileName, reader, false, true);
             }
+            
             Console.WriteLine("[Moving raw data] StoreMetadataToCloudStorage end - " + queryDefinition.FileName);
         }
-
-        private static AmazonS3Client GetAwsStorageClient()
-        {
-            if (!string.IsNullOrEmpty(Settings.Current.CloudStorageHolder) || !string.IsNullOrEmpty(Settings.Current.CloudStorageConnectionString))
-                return null;
-
-            return new AmazonS3Client(
-                    Settings.Current.CloudStorageKey,
-                    Settings.Current.CloudStorageSecret,
-                    new AmazonS3Config
-                    {
-                        Timeout = TimeSpan.FromMinutes(60),
-                        RegionEndpoint = Amazon.RegionEndpoint.USEast1,
-                        MaxErrorRetry = 20,
-                    });
-        }
-
-        private static AmazonS3Client GetAwsTriggerStorageClient()
-        {
-            if (!string.IsNullOrEmpty(Settings.Current.CloudTriggerStorageHolder) || !string.IsNullOrEmpty(Settings.Current.CloudTriggerStorageConnectionString))
-                return null;
-
-            return new AmazonS3Client(
-                    Settings.Current.CloudTriggerStorageKey,
-                    Settings.Current.CloudTriggerStorageSecret,
-                    new AmazonS3Config
-                    {
-                        Timeout = TimeSpan.FromMinutes(60),
-                        RegionEndpoint = Amazon.RegionEndpoint.USEast1,
-                        MaxErrorRetry = 20,
-                    });
-        }
-
  
 
         private static void SaveProvider()
@@ -386,9 +361,7 @@ namespace org.ohdsi.cdm.presentation.etl
             }
 
             if (providerConcepts.Count > 0)
-                CloudStorageHelper.UploadFile(GetAwsStorageClient(), CloudStorageHelper.GetBlobContainerClient(), Settings.Current.CloudStorageName,
-                    file,
-                    new ProviderDataReader(providerConcepts));
+                CloudStorageHelper.UploadFile(file, new ProviderDataReader(providerConcepts));
 
             Console.WriteLine("[Creating lookup] Providers was loaded");
         }
@@ -422,9 +395,7 @@ namespace org.ohdsi.cdm.presentation.etl
                 });
             }
 
-            CloudStorageHelper.UploadFile(GetAwsStorageClient(), CloudStorageHelper.GetBlobContainerClient(), Settings.Current.CloudStorageName,
-                    file,
-                    new CareSiteDataReader(careSiteConcepts));
+            CloudStorageHelper.UploadFile(file, new CareSiteDataReader(careSiteConcepts));
 
             Console.WriteLine("[Creating lookup] Care sites was loaded");
         }
@@ -448,9 +419,7 @@ namespace org.ohdsi.cdm.presentation.etl
             }
 
             if (locationConcepts.Count > 0)
-                CloudStorageHelper.UploadFile(GetAwsStorageClient(), CloudStorageHelper.GetBlobContainerClient(), Settings.Current.CloudStorageName,
-                    file,
-                    new LocationDataReader(locationConcepts));
+                CloudStorageHelper.UploadFile(file, new LocationDataReader(locationConcepts));
 
             Console.WriteLine("[Creating lookup] Locations was loaded " + Settings.Current.Building.Cdm);
         }
@@ -486,7 +455,7 @@ namespace org.ohdsi.cdm.presentation.etl
                             $@"CREATE EXTERNAL TABLE {tableName} " +
                             $@"USING csv " +
                             $@"PARTITIONED BY(PartitionId) " +
-                            $@"LOCATION 'abfss://{Settings.Current.CloudStorageName}@{Settings.Current.CloudStorageUriDfs}/{folder}' " +
+                            $@"LOCATION '{Settings.Current.GetDatabricksStorage}/{folder}' " +
                             $@"OPTIONS(delimiter = '\t', nullValue = '\\N',  compression = 'gzip') " +
                             $@"AS({sql});";
                     }
@@ -497,7 +466,7 @@ namespace org.ohdsi.cdm.presentation.etl
 
                         unloadQuery =
                         $"create table {tableName} sortkey ({personIdField}) distkey ({personIdField}) as {sql}; " +
-                        $@"UNLOAD ('select * from {tableName} order by {personIdField}') to 's3://{folder}/{qd.FileName}' " +
+                        $@"UNLOAD ('select * from {tableName} order by {personIdField}') to 's3://{Settings.Current.CloudStorageName}/{folder}{qd.FileName}' " +
                         $@"DELIMITER AS '\t' " +
                         $@"NULL AS '\\N' " +
                         $@"credentials 'aws_access_key_id={Settings.Current.CloudStorageKey};aws_secret_access_key={Settings.Current.CloudStorageSecret}' " +
@@ -506,7 +475,7 @@ namespace org.ohdsi.cdm.presentation.etl
 
                     using var connection = SqlConnectionHelper.OpenOdbcConnection(Settings.Current.Building.SourceConnectionString);
                     using var c = new OdbcCommand(unloadQuery, connection);
-                    c.CommandTimeout = 900;
+                    c.CommandTimeout = 60 * 60;
                     c.ExecuteNonQuery();
 
                     if (Settings.Current.Building.SourceEngine.Database == framework.desktop.Enums.Database.Databricks)
@@ -517,22 +486,23 @@ namespace org.ohdsi.cdm.presentation.etl
                 });
         }
 
-        private static int GetNumberOfPartitions(string chunksSchema)
+        private static int GetNumberOfPartitions(string chunksSchema, int chunkId)
         {
             // Azure
             if (Settings.Current.Building.SourceEngine.Database == framework.desktop.Enums.Database.Databricks)
             {
                 using var connection = SqlConnectionHelper.OpenOdbcConnection(Settings.Current.Building.SourceConnectionString);
-                using var c = new OdbcCommand($"select count(distinct PartitionId) from {chunksSchema}._chunks;", connection);
+                using var c = new OdbcCommand($"select max(PartitionId) from {chunksSchema}._chunks where chunkid={chunkId};", connection);
                 return Convert.ToInt32(c.ExecuteScalar());
             }
             // AWS
             else
             {
-                using var connection = SqlConnectionHelper.OpenOdbcConnection(Settings.Current.Building.SourceConnectionString);
-                using var c = new OdbcCommand("SELECT count(*) FROM stv_slices;", connection);
-                
-                return Convert.ToInt32(c.ExecuteScalar());
+                return CloudStorageHelper.GetSlices(chunkId).Count();
+                //using var connection = SqlConnectionHelper.OpenOdbcConnection(Settings.Current.Building.SourceConnectionString);
+                //using var c = new OdbcCommand("SELECT count(*) FROM stv_slices;", connection);
+
+                //return Convert.ToInt32(c.ExecuteScalar());
             }
         }
 

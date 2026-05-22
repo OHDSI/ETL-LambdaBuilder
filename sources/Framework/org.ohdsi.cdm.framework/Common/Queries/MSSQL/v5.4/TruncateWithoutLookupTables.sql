@@ -1,5 +1,4 @@
 ﻿IF OBJECT_ID (N'{sc}.COHORT', N'U') IS NOT NULL truncate table {sc}.COHORT; 
-IF OBJECT_ID (N'{sc}.COHORT_ATTRIBUTE', N'U') IS NOT NULL truncate table {sc}.COHORT_ATTRIBUTE; 
 IF OBJECT_ID (N'{sc}.CONDITION_ERA', N'U') IS NOT NULL truncate table {sc}.CONDITION_ERA; 
 IF OBJECT_ID (N'{sc}.CONDITION_OCCURRENCE', N'U') IS NOT NULL truncate table {sc}.CONDITION_OCCURRENCE; 
 IF OBJECT_ID (N'{sc}.DEATH', N'U') IS NOT NULL truncate table {sc}.DEATH; 

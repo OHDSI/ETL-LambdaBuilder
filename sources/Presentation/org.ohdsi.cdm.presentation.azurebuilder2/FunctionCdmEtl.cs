@@ -1,5 +1,4 @@
-using Azure.Identity;
-using Azure.Storage.Blobs;
+using Azure.Storage.Queues.Models;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using org.ohdsi.cdm.framework.common.Base;
@@ -35,11 +34,22 @@ public class FunctionCdmEtl
     }
 
     [Function(nameof(FunctionCdmEtl))]
-    public async Task Run(
-       [BlobTrigger("cdm-etl-msg/{name}", Connection = "", Source = BlobTriggerSource.LogsAndContainerScan)] Stream stream,
-       string name)
+    public void Run([QueueTrigger("cdm-test", Connection = "")] QueueMessage message)
     {
+        var started = DateTime.Now;
+        var name = message.MessageText;
         _logger.LogInformation("START - " + name);
+
+        string instanceId = Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID");
+        _logger.LogInformation($"Azure Function Instance ID: {instanceId}");
+
+        //string hostName = Environment.GetEnvironmentVariable("WEBSITE_HOSTNAME");
+        //_logger.LogInformation($"Function app hostname: {hostName}");
+
+        //string machineName = Environment.MachineName;
+        //_logger.LogInformation($"The machine name is: {machineName}");
+
+        //return;
 
         EtlLibraryPath = Path.Combine(Environment.CurrentDirectory, "EtlLibrary");
 
@@ -79,7 +89,7 @@ public class FunctionCdmEtl
 
             Settings.Initialize(buildingId, vendor, EtlLibraryPath, _logger);
 
-            Settings.Current.TimeoutValue = 600; // TMP
+            Settings.Current.TimeoutValue = 6000; // TMP
 
             Settings.Current.WatchdogValue = 30 * 1000;
             Settings.Current.MinPersonToBuild = 100;
@@ -101,16 +111,22 @@ public class FunctionCdmEtl
                 return;
             }
 
-            _logger.LogInformation($"vendor={vendor};buildingId={buildingId};chunkId={_chunkId};prefix={_prefix};attempt={attempt}");
-            _logger.LogInformation($"Bucket={Settings.Current.BlobContainerName};CDMFolder={Settings.Current.CDMFolder};");
-            _logger.LogInformation($"TimeoutValue={Settings.Current.TimeoutValue}s;WatchdogValue={Settings.Current.WatchdogValue}ms;MinPersonToBuild={Settings.Current.MinPersonToBuild}; MinPersonToSave={Settings.Current.MinPersonToSave}");
+            //_logger.LogInformation($"**********************************************************************************************************");
+            //_logger.LogInformation($"tenantId={tenantId}");
+            //_logger.LogInformation($"clientId={clientId}");
+            //_logger.LogInformation($"clientSecret={clientSecret}");
+            //_logger.LogInformation($"blobURI={blobURI}");
+            //_logger.LogInformation($"blobContainerName={blobContainerName}");
+            //_logger.LogInformation($"**********************************************************************************************************");
+            //_logger.LogInformation($"vendor={vendor};buildingId={buildingId};chunkId={_chunkId};prefix={_prefix};attempt={attempt}");
+            //_logger.LogInformation($"Bucket={Settings.Current.BlobContainerName};CDMFolder={Settings.Current.CDMFolder};");
+            //_logger.LogInformation($"TimeoutValue={Settings.Current.TimeoutValue}s;WatchdogValue={Settings.Current.WatchdogValue}ms;MinPersonToBuild={Settings.Current.MinPersonToBuild}; MinPersonToSave={Settings.Current.MinPersonToSave}");
 
-            Initialize();
+            //return;
 
-            getRestorePointDone = GetRestorePoint(stream, name);
+            AzureHelper.UploadStream($"{AzureHelper.Path}/running/{_chunkId}.{_prefix}.txt", new MemoryStream());
 
-            if (!getRestorePointDone)
-                throw new Exception("GetRestorePoint error");
+            Initialize();                     
 
             var chunkBuilder = new AzureChunkBuilder(CreatePersonBuilder);
             var attempt1 = attempt;
@@ -120,20 +136,17 @@ public class FunctionCdmEtl
 
             if (_lastSavedPersonIdOutput.HasValue && totalPersonConverted > 0)
             {
-                //attempt++;
-                //CreateAttemptFile(_chunkId, _prefix, attempt);
-
-                //_logger.LogInformation($"chunkId={_chunkId};prefix={_prefix} - FINISHED by timeout on PersonId={_lastSavedPersonIdOutput.Value}");
-                //return;
-
                 using var streamErrorDetails = new MemoryStream(Encoding.UTF8.GetBytes($"FINISHED by timeout on PersonId={_lastSavedPersonIdOutput.Value}; totalPersonConverted={totalPersonConverted}"));
                 AzureHelper.UploadStream($"{AzureHelper.Path}/timeout/{_chunkId}.{_prefix}.txt", streamErrorDetails);
             }
             else
             {
-                RemoveAttemptFile(name);
                 _logger.LogInformation($"chunkId={_chunkId};prefix={_prefix} - FINISHED, {name} - removed");
             }
+
+            var completed = DateTime.Now;
+            using var streamCompleteDetails = new MemoryStream(Encoding.UTF8.GetBytes($"Started={started.ToShortDateString} {started.ToShortTimeString}; Completed={completed.ToShortDateString} {completed.ToShortTimeString}; totalPersonConverted={totalPersonConverted}; Duration={(completed - started).TotalSeconds}s"));
+            AzureHelper.UploadStream($"{AzureHelper.Path}/complete/{_chunkId}.{_prefix}.txt", streamCompleteDetails);
         }
         catch (Exception e)
         {
@@ -145,49 +158,8 @@ public class FunctionCdmEtl
         }
 
         _logger.LogInformation("DONE");
+        AzureHelper.DeleteFile($"{AzureHelper.Path}/running/{_chunkId}.{_prefix}.txt");
     }
-
-    //private bool CreateAttemptFile(int chunkId, string prefix, int processAttempt)
-    //{
-    //    if (!_attemptFileRemoved)
-    //        return false;
-
-    //    var attempt = 0;
-    //    var key = $"{Settings.Current.Building.Vendor}.{Settings.Current.Building.Id}.{chunkId}.{prefix}.{processAttempt}.txt";
-
-    //    attempt++;
-
-    //    var restore = new List<string>();
-    //    foreach (var rp in _restorePoint)
-    //    {
-    //        restore.Add($"{rp.Key}:{rp.Value}");
-    //    }
-
-    //    _logger.LogInformation("restore.Count=" + restore.Count);
-
-    //    var credential = new ClientSecretCredential(Settings.Current.TenantId, Settings.Current.ClientId, Settings.Current.ClientSecret);
-    //    var client = new BlobServiceClient(new Uri(Settings.Current.ServiceUri), credential, null);
-    //    var bcc = client.GetBlobContainerClient(Settings.Current.BlobContainerName);
-
-    //    using var stream = new MemoryStream(Encoding.UTF8.GetBytes(string.Join(Environment.NewLine, restore)));
-    //    bcc.UploadBlob(key, stream);
-
-    //    _logger.LogInformation($"Attempt file was created - {key} | attempt={attempt}");
-
-    //    return true;
-    //}
-
-    private void RemoveAttemptFile(string name)
-    {
-        _logger.LogInformation("removing attempt file...");
-
-        var bc = new BlobClient(Environment.GetEnvironmentVariable("AzureWebJobsStorage"), "cdm-etl-msg", name);
-        bc.DeleteIfExists();
-
-        _logger.LogInformation($"Attempt file was removed - {name}");
-        _attemptFileRemoved = true;
-    }
-
     private static PersonBuilder CreatePersonBuilder()
     {
         if (_personBuilderConstructor == null)
@@ -257,45 +229,6 @@ public class FunctionCdmEtl
         }
 
         return null;
-    }
-
-    private bool GetRestorePoint(Stream stream, string name)
-    {
-        var attempt = 0;
-        while (true)
-        {
-            try
-            {
-                attempt++;
-                var msg = new StringBuilder();
-                var timer = new Stopwatch();
-                timer.Start();
-                using (var reader = new StreamReader(stream))
-                {
-                    string line;
-                    while ((line = reader.ReadLine()) != null)
-                    {
-                        var fileName = line.Split(':')[0];
-                        var rowIndex = long.Parse(line.Split(':')[1]);
-                        _restorePoint.Add(fileName, rowIndex);
-                        msg.Append($"{fileName}:{rowIndex};");
-                    }
-                }
-
-                timer.Stop();
-                _logger.LogInformation("Restore point:" + msg + " | " + timer.ElapsedMilliseconds + "ms");
-                return true;
-            }
-            catch (Exception e)
-            {
-                if (attempt > 5)
-                {
-                    _logger.LogInformation($"WARN_EXC - GetRestorePoint [{name}]");
-                    _logger.LogInformation(CreateExceptionString(e));
-                    return false;
-                }
-            }
-        }
     }
 
     public static string CreateExceptionString(Exception e)

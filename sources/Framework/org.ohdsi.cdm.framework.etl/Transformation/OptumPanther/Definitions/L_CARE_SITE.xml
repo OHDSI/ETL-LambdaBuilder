@@ -1,0 +1,27 @@
+﻿<QueryDefinition>
+	<Query>
+		with idn as
+		(
+		select sourceid, max(idn_indicator) idn_indicator
+		from {sc}.patient
+		where length(sourceid) = 5
+		group by sourceid
+		)
+
+		SELECT distinct cast(right(e.sourceid, 4) as int) CARE_SITE_ID,
+		e.sourceid CARE_SITE_SOURCE_VALUE,
+		case
+		when idn.idn_indicator = '1' then 'IDN'
+		else NULL
+		end as PLACE_OF_SERVICE_SOURCE_VALUE
+		FROM {sc}.encounter e
+		LEFT JOIN idn on e.sourceid = idn.sourceid
+	</Query>
+	<CareSites>
+		<CareSiteDefinition>
+			<Id>CARE_SITE_ID</Id>
+			<CareSiteSourceValue>CARE_SITE_SOURCE_VALUE</CareSiteSourceValue>
+			<PlaceOfSvcSourceValue>PLACE_OF_SERVICE_SOURCE_VALUE</PlaceOfSvcSourceValue>
+		</CareSiteDefinition>
+	</CareSites>
+</QueryDefinition>

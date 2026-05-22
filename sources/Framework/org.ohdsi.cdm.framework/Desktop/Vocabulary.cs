@@ -1,4 +1,5 @@
-﻿using org.ohdsi.cdm.framework.common.Definitions;
+﻿using Amazon.Runtime.Internal.Transform;
+using org.ohdsi.cdm.framework.common.Definitions;
 using org.ohdsi.cdm.framework.common.Lookups;
 using org.ohdsi.cdm.framework.desktop.Helpers;
 using org.ohdsi.cdm.framework.Desktop.DataReaders;
@@ -149,10 +150,34 @@ namespace org.ohdsi.cdm.framework.desktop
 
                     foreach (var item in combinedLookup)
                     {
-                        var mostFrequent = item.Value.GroupBy(i => i).OrderByDescending(grp => grp.Count()).Select(grp => grp.Key).First();
+                        var mostFrequent = item.Value.GroupBy(i => i).OrderByDescending(grp => grp.Count()).First();
 
-                        finalLookup.Add(item.Key, mostFrequent);
+                        if (mostFrequent.Count() > lookup.MinFrequency)
+                        {
+                            finalLookup.Add(item.Key, mostFrequent.Key);
+                        }
                     }
+
+                    //if (storeToS3)
+                    //{
+                    //    var fileName =
+                    //        $"{Settings.Settings.Current.Building.Vendor}/{Settings.Settings.Current.Building.Id}/CombinedLookups/{lookup.FileName}.txt.gz";
+
+                    //    Console.WriteLine(lookup.FileName + " - store to S3 | " + fileName);
+
+                    //    using (var client = new AmazonS3Client(
+                    //        Settings.Settings.Current.S3AwsAccessKeyId,
+                    //        Settings.Settings.Current.S3AwsSecretAccessKey,
+                    //        new AmazonS3Config
+                    //        {
+                    //            Timeout = TimeSpan.FromMinutes(60),
+                    //            RegionEndpoint = Amazon.RegionEndpoint.USEast1,
+                    //            MaxErrorRetry = 20,
+                    //        }))
+                    //    {
+                    //        finalLookup.Add(item.Key, mostFrequent.Key);
+                    //    }
+                    //}
                 }
                 catch (Exception e)
                 {

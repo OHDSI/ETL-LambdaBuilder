@@ -67,6 +67,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Premier
 
         private static readonly char[] separator = [' '];
 
+        private Dictionary<string, long> _visitIds = [];
         #endregion
 
         #region Constructors
@@ -100,9 +101,9 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Premier
             var visitOccurrences = new Dictionary<long, VisitOccurrence>();
             foreach (var visitOccurrence in BuildVisitOccurrences([.. VisitOccurrencesRaw], null))
             {
+                visitOccurrence.Id = Offset.GetKeyOffset(visitOccurrence.PersonId).VisitOccurrenceId;
                 visitOccurrences.TryAdd(visitOccurrence.Id, visitOccurrence);
             }
-
 
             var death = BuildDeath([.. DeathRecords], visitOccurrences, null);
 
@@ -111,13 +112,16 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Premier
             visitOccurrences.Clear();
 
             // Create set of observation period entities from set of visit entities
-            var visitIds = new List<long>();
             var visitsDictionary = new Dictionary<Guid, VisitOccurrence>();
+            _visitIds = new Dictionary<string, long>(cleanedVisits.Length);
             foreach (var vo in cleanedVisits)
             {
+                var pat_key = vo.AdditionalFields["pat_key"];
+                _visitIds.Add(pat_key, vo.Id);
+
                 visitOccurrences.Add(vo.Id, vo);
                 visitsDictionary.Add(vo.SourceRecordGuid, vo);
-                visitIds.Add(vo.Id);
+                
                 observationPeriodsFromVisits.Add(new EraEntity
                 {
                     Id = Offset.GetKeyOffset(vo.PersonId).ObservationPeriodId,
@@ -126,17 +130,6 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Premier
                     EndDate = vo.EndDate,
                     TypeConceptId = 32880
                 });
-            }
-
-            long? prevVisitId = null;
-            foreach (var visit in visitOccurrences.Values.OrderBy(v => v.EndDate.Value))
-            {
-                if (prevVisitId.HasValue)
-                {
-                    visit.PrecedingVisitOccurrenceId = prevVisitId;
-                }
-
-                prevVisitId = visit.Id;
             }
 
             var minYearOfBirth = 9999;
@@ -272,32 +265,52 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Premier
 
             ConditionForEra.Clear();
 
+            SetPrecedingVisitOccurrenceId(visitOccurrences.Values);
+
             // push built entities to ChunkBuilder for further save to CDM database
             AddToChunk(person, death,
                 observationPeriods,
                 payerPlanPeriods,
-                UpdateRSourceConcept(drugExposures).ToArray(),
-                UpdateRSourceConcept(conditionOccurrences).ToArray(),
-                UpdateRSourceConcept(procedureOccurrences).ToArray(),
-                UpdateRSourceConcept(observations).ToArray(),
-                UpdateRSourceConcept(measurements).ToArray(),
-                [.. visitOccurrences.Values], null, [], UpdateRSourceConcept(deviceExposure).ToArray(),
-                [], []);
+                [.. UpdateRSourceConcept(drugExposures)],
+                [.. UpdateRSourceConcept(conditionOccurrences)],
+                [.. UpdateRSourceConcept(procedureOccurrences)],
+                [.. UpdateRSourceConcept(observations)],
+                [.. UpdateRSourceConcept(measurements)],
+                [.. visitOccurrences.Values], 
+                null, 
+                [], 
+                [.. UpdateRSourceConcept(deviceExposure)],
+                [], 
+                []);
 
-            var pg = new PregnancyAlgorithm();
-            foreach (var r in pg.GetPregnancyEpisodes(Vocabulary, person, observationPeriods,
-                ChunkData.ConditionOccurrences.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.ProcedureOccurrences.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.Observations.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.Measurements.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.DrugExposures.Where(e => e.PersonId == person.PersonId).ToArray()))
-            {
-                r.Id = Offset.GetKeyOffset(r.PersonId).ConditionEraId;
-                ChunkData.ConditionEra.Add(r);
-            }
+            //var pg = new PregnancyAlgorithm();
+            //foreach (var r in pg.GetPregnancyEpisodes(Vocabulary, person, observationPeriods,
+            //    [.. ChunkData.ConditionOccurrences.Where(e => e.PersonId == person.PersonId)],
+            //    [.. ChunkData.ProcedureOccurrences.Where(e => e.PersonId == person.PersonId)],
+            //    [.. ChunkData.Observations.Where(e => e.PersonId == person.PersonId)],
+            //    [.. ChunkData.Measurements.Where(e => e.PersonId == person.PersonId)],
+            //    [.. ChunkData.DrugExposures.Where(e => e.PersonId == person.PersonId)]))
+            //{
+            //    r.Id = Offset.GetKeyOffset(r.PersonId).ConditionEraId;
+            //    ChunkData.ConditionEra.Add(r);
+            //}
 
             return Attrition.None;
         }
+
+        protected void SetVisitOccurrenceId<T>(T record) where T : class, IEntity
+        {
+            if (record.AdditionalFields != null && record.AdditionalFields.ContainsKey("pat_key") && !string.IsNullOrEmpty(record.AdditionalFields["pat_key"]))
+            {
+                var pat_key = record.AdditionalFields["pat_key"];
+
+                if (_visitIds.TryGetValue(pat_key, out long visitOccurrenceId))
+                {
+                    record.VisitOccurrenceId = visitOccurrenceId;
+                }
+            }
+        }
+
 
         private static void SetTypeConceptId(IEntity e)
         {
@@ -471,8 +484,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Premier
                 return new KeyValuePair<Person, Attrition>(null, Attrition.UnacceptablePatientQuality);
 
             var ordered = records.OrderByDescending(p => p.StartDate);
-            var person = ordered.Take(1).First();
-            person.StartDate = ordered.Take(1).Last().StartDate;
+            var person = ordered.First();
+            person.StartDate = ordered.Last().StartDate;
 
             var gender = records[0];
 
@@ -530,6 +543,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Premier
             var patbillEntities = new HashSet<DeviceExposure>(new PatbillDeviceExposureComparer());
             foreach (var de in devExposure)
             {
+                SetVisitOccurrenceId(de);
+
                 if (!de.VisitOccurrenceId.HasValue) continue;
                 if (!visitOccurrences.ContainsKey(de.VisitOccurrenceId.Value)) continue;
 
@@ -590,6 +605,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Premier
 
             foreach (var drugExposure in drugExposures)
             {
+                SetVisitOccurrenceId(drugExposure);
+
                 if (!drugExposure.VisitOccurrenceId.HasValue) continue;
                 if (!visitOccurrences.ContainsKey(drugExposure.VisitOccurrenceId.Value)) continue;
 
@@ -640,6 +657,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Premier
             var uniqueEntities = new HashSet<ConditionOccurrence>();
             foreach (var conditionOccurrence in conditionOccurrences)
             {
+                SetVisitOccurrenceId(conditionOccurrence);
+
                 if (!conditionOccurrence.VisitOccurrenceId.HasValue) continue;
                 if (!visitOccurrences.ContainsKey(conditionOccurrence.VisitOccurrenceId.Value)) continue;
 
@@ -689,6 +708,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Premier
             var uniqueEntities = new HashSet<ProcedureOccurrence>(new PatbillProcedureOccurrenceComparer());
             foreach (var procedureOccurrence in procedureOccurrences)
             {
+                SetVisitOccurrenceId(procedureOccurrence);
+
                 if (!procedureOccurrence.VisitOccurrenceId.HasValue) continue;
                 if (!visitOccurrences.ContainsKey(procedureOccurrence.VisitOccurrenceId.Value)) continue;
 
@@ -718,6 +739,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Premier
             var ppp = new List<PayerPlanPeriod>();
             foreach (var pp in payerPlanPeriods)
             {
+                SetVisitOccurrenceId(pp);
+
                 if (!pp.VisitOccurrenceId.HasValue) continue;
                 if (!visitOccurrences.ContainsKey(pp.VisitOccurrenceId.Value)) continue;
 
@@ -798,6 +821,11 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Premier
             var deaths = inputDeaths.ToList();
             if (deaths.Count > 0)
             {
+                foreach (var d in deaths)
+                {
+                    SetVisitOccurrenceId(d);
+                }
+
                 deaths.RemoveAll(
                     d => !d.VisitOccurrenceId.HasValue || !visitOccurrences.ContainsKey(d.VisitOccurrenceId.Value));
 
@@ -841,6 +869,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Premier
                 {
                     continue;
                 }
+
+                SetVisitOccurrenceId(observation);
 
                 if (!observation.VisitOccurrenceId.HasValue) continue;
                 if (!visitOccurrences.ContainsKey(observation.VisitOccurrenceId.Value)) continue;
@@ -945,6 +975,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Premier
             var surgeryEntities = new List<Measurement>();
             foreach (var m in measurements)
             {
+                SetVisitOccurrenceId(m);
+
                 if (!m.VisitOccurrenceId.HasValue) continue;
                 if (!visitOccurrences.ContainsKey(m.VisitOccurrenceId.Value)) continue;
 

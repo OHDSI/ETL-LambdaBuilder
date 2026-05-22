@@ -14,14 +14,14 @@ namespace org.ohdsi.cdm.presentation.etl.Monitor
 
         private Task _trackDownStates;
         private string _chunksSchema;
-        private int _numberOfPartitions;
+        //private int _numberOfPartitions;
         private Dictionary<int, ChunkStateController> _chunks = new Dictionary<int, ChunkStateController>();
         private bool _completeAdding;
 
         public ChunkManager(string chunksSchema, int numberOfPartitions)
         {
             _chunksSchema = chunksSchema;
-            _numberOfPartitions = numberOfPartitions;
+            //_numberOfPartitions = numberOfPartitions;
         }
 
         public void CompleteAdding()
@@ -36,7 +36,7 @@ namespace org.ohdsi.cdm.presentation.etl.Monitor
             if (_chunks.ContainsKey(chunkId))
                 return;
 
-            var chunk = new ChunkStateController(chunkId, _numberOfPartitions);
+            var chunk = new ChunkStateController(chunkId, 0); // TMP _numberOfPartitions=0
             chunk.Start(_chunksSchema);
             _chunks.Add(chunkId, chunk);
 

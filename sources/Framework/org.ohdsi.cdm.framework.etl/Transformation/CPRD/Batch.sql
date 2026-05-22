@@ -1,4 +1,4 @@
-﻿SELECT DISTINCT {0} row_number() over (order by patid) person_id, patid 
+﻿SELECT DISTINCT {0} patid, patid 
 FROM 
 (
 select a.patid, yob,

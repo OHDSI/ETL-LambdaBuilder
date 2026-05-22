@@ -1,0 +1,28 @@
+DBMS:
+postgresql
+
+Error:
+org.postgresql.util.PSQLException: ERROR: invalid input syntax for type numeric: ""
+  Position: 396
+
+SQL:
+INSERT INTO optum_panther_ehr_tests_native.patient(ptid, birth_yr, gender, race, ethnicity, region, division, avg_hh_income, pct_college_educ, deceased_indicator, date_of_death, provid_pcp, idn_indicator, first_month_active, last_month_active, notes_eligible, has_notes, sourceid, source_data_through) VALUES ('PT1', '1950', 'Male', 'Caucasian', 'Not Hispanic', 'Midwest', 'East North Central', '', '', '0', '      ', '', '1', '200701', '201001', '1', 'Y', 'S0115', '202206')
+
+R version:
+R version 4.5.0 (2025-04-11 ucrt)
+
+Platform:
+x86_64-w64-mingw32
+
+Attached base packages:
+- stats
+- graphics
+- grDevices
+- utils
+- datasets
+- methods
+- base
+
+Other attached packages:
+- SqlRender (1.19.2)
+- DatabaseConnector (6.4.0)

@@ -222,14 +222,24 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                             chunk.Note.Count);
                     }
 
-                case "METADATA_TMP":
-                    {
-                        return chunk.Metadata.Count == 0
+                    case "NOTE_NLP":
+                        {
+                            return chunk.NoteNlp.Count == 0
                             ? null
                             : new Tuple<IDataReader, int>(
-                                new MetadataDataReader([.. chunk.Metadata.Values]),
-                                chunk.Metadata.Values.Count);
-                    }
+                                new NoteNlpDataReader54([.. chunk.NoteNlp], _offsetManager),
+                                chunk.NoteNlp.Count);
+
+                        }
+
+                    case "METADATA_TMP":
+                        {
+                            return chunk.Metadata.Count == 0
+                                ? null
+                                : new Tuple<IDataReader, int>(
+                                    new MetadataDataReader([.. chunk.Metadata.Values]),
+                                    chunk.Metadata.Values.Count);
+                        }
 
                 case "FACT_RELATIONSHIP":
                     {
@@ -321,7 +331,8 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                     "METADATA_TMP",
                     "FACT_RELATIONSHIP",
                     "EPISODE_EVENT",
-                    "EPISODE"
+                    "EPISODE",
+                    "NOTE_NLP"
                 };
 
                 Parallel.ForEach(tables, t => { Write(chunk, chunkId, subChunkId, t); });

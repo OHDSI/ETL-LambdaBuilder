@@ -1,8 +1,8 @@
 ﻿<QueryDefinition>
-  <Query>
+	<Query>
 		select distinct
-		m.encid,
 		ch.person_id as PersonId,
+		m.encid,
 		m.provid provid,
 		coalesce(cast(m.admin_date || ' ' || m.admin_time as TIMESTAMP), m.order_date) as order_date,
 		m.route,
@@ -13,47 +13,48 @@
 		m.ndc,
 		SUBSTRING(m.ndc,1,9) ndc_9,
 		m.orderid,
-		1 as itNdc
+		1 as itNdc,
+		ch.PartitionId
 		from {sc}.medication_administrations as m
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND m.ptid = ch.PERSON_SOURCE_VALUE
 		where ndc is not NULL
-		order by 2
+		order by ch.PartitionId, 1
 	</Query>
-  <DrugExposure>
-    <DrugExposureDefinition>
-      <PersonId>PersonId</PersonId>
-      <StartDate>order_date</StartDate>
-      <EndDate>order_date</EndDate>
-      <ProviderIdKey>provid</ProviderIdKey>
-      <DoseUnitSourceValue>strength_unit</DoseUnitSourceValue>
-      <Quantity>quantity_of_dose</Quantity>
-      <AdditionalFields>
-        <string>encid</string>
-        <string>itNdc</string>
-      </AdditionalFields>
-      <Concepts>
-        <Concept>
-          <ConceptIdMappers>
-            <Mapper>
-              <Lookup>Drug</Lookup>
-            </Mapper>
-          </ConceptIdMappers>
-          <Fields>
-            <Field key="ndc" defaultTypeId="32818" />
-            <Field key="ndc_9" sourceKey="ndc"  defaultTypeId="32818" />
-          </Fields>
-        </Concept>
-        <Concept>
-          <ConceptIdMappers>
-            <Mapper>
-              <Lookup>Route</Lookup>
-            </Mapper>
-          </ConceptIdMappers>
-          <Fields>
-            <Field key="route" defaultTypeId="0"/>
-          </Fields>
-        </Concept>
-      </Concepts>
-    </DrugExposureDefinition>
-  </DrugExposure>
+	<DrugExposure>
+		<DrugExposureDefinition>
+			<PersonId>PersonId</PersonId>
+			<StartDate>order_date</StartDate>
+			<EndDate>order_date</EndDate>
+			<ProviderIdKey>provid</ProviderIdKey>
+			<DoseUnitSourceValue>strength_unit</DoseUnitSourceValue>
+			<Quantity>quantity_of_dose</Quantity>
+			<AdditionalFields>
+				<string>encid</string>
+				<string>itNdc</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>Drug</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="ndc" defaultTypeId="32818" />
+						<Field key="ndc_9" sourceKey="ndc"  defaultTypeId="32818" />
+					</Fields>
+				</Concept>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>Route</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="route" defaultTypeId="0"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</DrugExposureDefinition>
+	</DrugExposure>
 </QueryDefinition>

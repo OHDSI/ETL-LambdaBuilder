@@ -146,10 +146,14 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
             var lookup = new Lookup();
             lookup.Fill(AzureHelper.OpenStream($"{AzureHelper.Path}/Lookups/PregnancyDrug.txt.gz"));
             _lookups.Add("PregnancyDrug", lookup);
-
-
+                       
             lookup = new Lookup();
-            foreach (var blob in AzureHelper.GetBlobContainer().GetBlobs(BlobTraits.None, BlobStates.None, $"{AzureHelper.Path}/CombinedLookups"))
+            foreach (var blob in AzureHelper.GetBlobContainer().GetBlobs(new GetBlobsOptions
+            {
+                Prefix = $"{AzureHelper.Path}/CombinedLookups",
+                Traits = BlobTraits.None,
+                States = BlobStates.None
+            }))
             {
                 Settings.Current.Logger.LogInformation(blob.Name);
 
