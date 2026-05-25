@@ -20301,7 +20301,7 @@ generateInsertSql <- function(databaseSchema = NULL) {
   insertSql <- c(insertSql, "TRUNCATE TABLE @cdm_database_schema.health_risk_assessment;")
   insertSql <- c(insertSql, "TRUNCATE TABLE @cdm_database_schema.enrollment_summary;")
   insertSql <- c(insertSql, "TRUNCATE TABLE @cdm_database_schema.loinc;")
-  insertSql <- c(insertSql, "TRUNCATE TABLE @cdm_database_schema._pos_episode_visit;")
+  insertSql <- c(insertSql, "--TRUNCATE TABLE @cdm_database_schema._pos_episode_visit;")
   insertSql <- c(insertSql, "TRUNCATE TABLE @cdm_database_schema.geoloc;")
   insertSql <- c(insertSql, "TRUNCATE TABLE @cdm_database_schema.icd9;")
   insertSql <- c(insertSql, "TRUNCATE TABLE @cdm_database_schema.enrollment_detail;")
@@ -20386,7 +20386,7 @@ extractTestTypeString <- function(x) {
 
 generateTestSql <- function(databaseSchema = NULL) {
   testSql <- c()
-  testSql <- c(testSql, "IF OBJECT_ID('@cdm_database_schema.test_results', 'U') IS NOT NULL DROP TABLE @cdm_database_schema.test_results;")
+  testSql <- c(testSql, "DROP TABLE IF EXISTS @cdm_database_schema.test_results;")
   testSql <- c(testSql, "CREATE TABLE @cdm_database_schema.test_results (id INT, description VARCHAR(512), test VARCHAR(256), status VARCHAR(5));")
   createExpectStatement <- function(expect, env) {
     s <- c()

@@ -1,0 +1,26 @@
+DBMS:
+postgresql
+
+Error:
+org.postgresql.util.PSQLException: ERROR: column "varchar" does not exist
+  Position: 471
+
+SQL:
+INSERT INTO ccae_tests_cdm.test_results SELECT 163 AS id, 'Family source value derived from ENROLID. Id is PERSON_ID.' AS description, 'Expect payer_plan_period' AS test, CASE WHEN (SELECT COUNT(*) FROM ccae_tests_cdm.payer_plan_period WHERE person_id  = '163' AND payer_plan_period_start_date  = '2012-04-01' AND payer_plan_period_end_date  = '2012-04-30' AND payer_source_value  = 'C Commercial PPO' AND family_source_value  = (SUBSTRING(RIGHT('00000000000' + CONVERT(VARCHAR,163), 11), 1,9))) = 0 THEN 'FAIL' ELSE 'PASS' END AS status
+
+R version:
+R version 4.5.0 (2025-04-11 ucrt)
+
+Platform:
+x86_64-w64-mingw32
+
+Attached base packages:
+- stats
+- graphics
+- grDevices
+- utils
+- datasets
+- methods
+- base
+
+Other attached packages:

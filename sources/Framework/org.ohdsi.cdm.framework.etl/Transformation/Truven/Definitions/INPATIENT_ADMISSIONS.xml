@@ -65,7 +65,7 @@
 		{field2},
 		ch.PartitionId
 		FROM {sc}.inpatient_admissions
-		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND ENROLID = ch.PERSON_ID
+		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND ENROLID = ch.person_source_value
 		)
 
 		select

@@ -81,7 +81,7 @@ namespace RunValidation
             Vendor vendor = EtlLibrary.CreateVendorInstance(opts.EtlLibraryPath, opts.Vendor);            
             var validation = new Validation(_awsAccessKeyId, _awsSecretAccessKey, _bucket, opts.LocalTmpPath, _cdmFolder);
             if (opts.PersonId.HasValue)
-                validation.ValidatePersonIdInSlice(vendor, opts.BuildingId, opts.Chunks.First(), opts.PersonId.Value);
+                validation.ValidatePersonIdInSlice(vendor, opts.BuildingId, opts.Chunks.FirstOrDefault(), opts.PersonId.Value);
             else
                 validation.ValidateBuildingId(vendor, opts.BuildingId, chunks);
         }
