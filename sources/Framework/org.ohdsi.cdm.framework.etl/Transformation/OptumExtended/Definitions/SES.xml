@@ -1,8 +1,8 @@
 ﻿<QueryDefinition>
-  <Query database="ses">
+	<Query database="ses">
 		SELECT distinct patid,
 		32813 type_concept_id,
-		last_day(cast(extract_ym || '01' as date)) date,
+		last_day(to_date(extract_ym || '01', 'yyyyMMdd')) date,
 		case
 		when d_education_level_code = 'A' then 'Less than 12th Grade'
 		when d_education_level_code = 'B' then 'High School Diploma'
@@ -49,10 +49,11 @@
 		when d_household_income_range_code = '6' then 35819437
 		when d_household_income_range_code = '0' then 0
 		end value_as_concept_id_3,
-		d_household_income_range_code source_value_3
+		d_household_income_range_code source_value_3,
+		ch.PartitionId
 		FROM {sc}.ses
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND ses.PATID = ch.PERSON_ID
-		order by PATID
+		order by ch.PartitionId, PATID
 	</Query>
 	<Observation>
 		<ObservationDefinition>

@@ -23,6 +23,9 @@ The STEM table is a staging area where source codes like ICD9 codes will first b
 Records will be written from the **MEDICAL_CLAIMS** table mapping the field **RVNU_CD** to **STEM.CONCEPT_ID**. Please see the table below for how this logic will be handled. 
 - **NOTE** the revenue codes are mapped to concepts with the vocabulary_id "Revenue Code". All these concepts have the domain of "Revenue Code" as well. Since there is no revenue table, all records coming from the **RVNU_CD** field should go to the **OBSERVATION** table.
 
+### Procedure Modifier codes
+If a record is written to STEM from the **PROC_CD** field in the **MEDICAL_CLAIMS** table, and if the **PROCMOD** field is JW, then remove the record as 'JW' means 'amount not administered'. If the **PROCMOD** field has any other value, populate the **MODIFIER_CONCEPT_ID** and **MODIFIER_SOURCE_VALUE** fields in STEM using the **PROCMOD** value.
+
 ## **Mapping from MEDICAL_CLAIMS**
 ![](images/image16.png)
 
@@ -55,7 +58,7 @@ Records will be written from the **MEDICAL_CLAIMS** table mapping the field **RV
 | days_supply | |If record is created using **MEDICAL_CLAIMS**<br/>NDC set days_supply to 1||
 | dose_unit_source_value |**NDC**<br>**MEDICAL_CLAIMS** NDC_UOM |||
 | lot_number | |||
-|MODIFIER_CONCEPT_ID|**MEDICAL_CLAIMS**<br/>PROCMOD| Use SOURCE_TO_STANDARD query and filter with `WHERE SOURCE_CONCEPT_CLASS_ID IN ('CPT4 Modifier') AND TARGET_CONCEPT_CLASS_ID IN ('CPT4 Modifier')`| Populate only if record is created using  **MEDICAL_CLAIMS**<br/>PROC_CD|
+|MODIFIER_CONCEPT_ID|**MEDICAL_CLAIMS**<br/>PROCMOD| Use SOURCE_TO_STANDARD query and filter with `WHERE SOURCE_CONCEPT_CLASS_ID IN ('CPT4 Modifier') AND TARGET_CONCEPT_CLASS_ID IN ('CPT4 Modifier')`| Populate only if record is created using  **MEDICAL_CLAIMS**<br/>PROC_CD. If PROCMOD = 'JW' then remove the record as 'JW' means 'amount not administered'.|
 | modifier_source_value | **MEDICAL_CLAIMS**<br/>PROCMOD|||
 | quantity | **PROC_CD**<br>**MEDICAL_CLAIMS** UNITS<br><br>**NDC**<br>**MEDICAL_CLAIMS** NDC_QTY|||
 | refills | |||
@@ -76,3 +79,6 @@ Records will be written from the **MEDICAL_CLAIMS** table mapping the field **RV
 
 ### 13-Nov-2023
 Set drug start and end dates as fst_dt - dates are extracted from the med_claims table itself
+
+### October 23, 2025
+Added logic about remove records where procmod = 'JW'

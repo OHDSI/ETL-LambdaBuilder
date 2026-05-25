@@ -8,8 +8,8 @@
 		diag_cd,
 		diag_cd_qual,
 		case
-		when diag_cd_qual = '02' OR diag_cd_qual IS NULL and hv_diag_dt >= '2015-10-01' then '10'
-		when diag_cd_qual = '01' OR diag_cd_qual IS NULL and hv_diag_dt &lt; '2015-10-01' then '9'
+		when diag_cd_qual = '02' OR diag_cd_qual IS NULL and hv_diag_dt >= to_date('10/01/2015', 'MM/dd/yyyy') then '10'
+		when diag_cd_qual = '01' OR diag_cd_qual IS NULL and hv_diag_dt &lt; to_date('10/01/2015', 'MM/dd/yyyy') then '9'
 		end as icd_ver,
 		diag_prov_id,
 		diag_stat_desc,

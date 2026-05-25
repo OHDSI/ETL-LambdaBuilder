@@ -1,20 +1,17 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
-using CsvHelper;
-using org.ohdsi.cdm.framework.common.DataReaders.v5;
 using org.ohdsi.cdm.framework.common.DataReaders.v5.v54;
-using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Omop;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using org.ohdsi.cdm.framework.common.Enums;
 
 namespace org.ohdsi.cdm.presentation.lambdamerge
 {
@@ -40,18 +37,8 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
 
         public MemoryStream GetMetadataCsvStream()
         {
-            var cdm = _settings.Vendor.CdmVersion;
-
-            if (cdm == CdmVersions.V54)
-            {
-                var reader = new MetadataOMOPDataReader54(_metadata);
-                return reader.GetStreamCsv();
-            }
-            else
-            {
-                var reader = new MetadataOMOPDataReader(_metadata);
-                return reader.GetStreamCsv();
-            }
+            var reader = new MetadataOMOPDataReader(_metadata);
+            return framework.common.Helpers.CsvHelper.GetStreamCsv(reader).First();
         }
 
         private List<MetadataOMOP> CreateMetadata()
@@ -90,7 +77,7 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
 
                     request.ContinuationToken = task.Result.NextContinuationToken;
 
-                } while (task.Result.IsTruncated);
+                } while (task.Result.IsTruncated ?? false);
             }
 
             Console.WriteLine("Metadata were merged | " + count);
@@ -133,7 +120,8 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
             using (var bufferedStream = new BufferedStream(responseStream))
             using (var gzipStream = new GZipStream(bufferedStream, CompressionMode.Decompress))
             using (var reader = new StreamReader(gzipStream, Encoding.Default))
-            using (var csv = new CsvReader(reader, _settings.CsvConfiguration))
+            using (var csv = framework.common.Helpers.CsvHelper.CreateCsvReader(reader))
+            //using (var csv = new CsvReader(reader, _settings.CsvConfiguration))
             {
 
                 while (csv.Read())
@@ -142,7 +130,16 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
                     if (!metadata.ContainsKey(name))
                         metadata.Add(name, 0);
 
-                    metadata[name]++;
+                    if(csv.ColumnCount == 3)
+                    {
+                        var cnt = int.Parse(csv.GetField(2));
+                        if(cnt == 0)
+                            metadata[name]++;
+                        else
+                            metadata[name] += cnt;
+                    }
+                    else
+                        metadata[name]++;
                 }
             }
 

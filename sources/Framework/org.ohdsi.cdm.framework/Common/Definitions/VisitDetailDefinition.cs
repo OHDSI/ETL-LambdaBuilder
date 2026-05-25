@@ -71,7 +71,7 @@ namespace org.ohdsi.cdm.framework.common.Definitions
                     AdmittingSourceValue = admittingSourceValue,
                     DischargeToConceptId = dischargeToConceptId,
                     DischargeToSourceValue = dischargeToSourceValue,
-                    PrecedingVisitDetailId = reader.GetInt(PrecedingVisitDetailId),
+                    PrecedingVisitDetailId = reader.GetLong(PrecedingVisitDetailId),
                     VisitDetailParentId = reader.GetLong(ParentId),
                 };
                 if (id.HasValue)

@@ -1,7 +1,4 @@
-﻿using CsvHelper;
-using CsvHelper.Configuration;
-using System.Globalization;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Text;
 
 namespace org.ohdsi.cdm.framework.common.Lookups
@@ -22,18 +19,19 @@ namespace org.ohdsi.cdm.framework.common.Lookups
             var pregnancyConceptsResource = resourceNames.First(a => a.EndsWith("npa_pregnancy_concepts.csv"));
             using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(pregnancyConceptsResource);
             using var reader = new StreamReader(stream, Encoding.Default);
-            using var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
-            {
-                HasHeaderRecord = true,
-                Delimiter = ",",
-                Encoding = Encoding.UTF8
-            });
+            using var csv = Helpers.CsvHelper.CreateCsvReader(reader);
+            //using var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
+            //{
+            //    HasHeaderRecord = true,
+            //    Delimiter = ",",
+            //    Encoding = Encoding.UTF8
+            //});
             int cnt = 0;
             while (csv.Read())
             {
                 cnt++;
-                if (cnt == 1)
-                    continue;
+                //if (cnt == 1)
+                //    continue;
 
                 var conceptId = long.Parse(csv.GetField(0));
                 var category = csv.GetField(1).Trim();

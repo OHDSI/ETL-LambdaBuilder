@@ -19,9 +19,10 @@
 		, t.unit_concept_id
 		, t.unit_source_value
 		, t.unit_source_concept_id
+		, ch.PartitionId
 		FROM {sc}.device_exposure as t
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND t.PERSON_ID = ch.PERSON_ID
-		order by 2
+		order by ch.PartitionId, t.person_id
 	</Query>
 	<DeviceExposure>
 		<DeviceExposureDefinition>

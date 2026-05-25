@@ -63,13 +63,13 @@ namespace org.ohdsi.cdm.framework.common.Definitions
                 var id = reader.GetLong(Id);
 
                 var visitOccurrence = new VisitOccurrence((Entity)visitOccurrences[0])
-                {
+                { 
                     CareSiteId = reader.GetLong(CareSiteId) ?? 0,
                     AdmittingSourceConceptId = admittingSourceConceptId,
                     AdmittingSourceValue = admittingSourceValue,
                     DischargeToConceptId = dischargeToConceptId,
                     DischargeToSourceValue = dischargeToSourceValue,
-                    PrecedingVisitOccurrenceId = reader.GetInt(PrecedingVisitOccurrenceId)
+                    PrecedingVisitOccurrenceId = reader.GetLong(PrecedingVisitOccurrenceId)
                 };
                 if (id.HasValue)
                 {

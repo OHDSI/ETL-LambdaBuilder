@@ -29,7 +29,7 @@ namespace org.ohdsi.cdm.presentation.etl
         public bool? SkipValidation { get; set; }
 
         [Option("skip_merge", Required = true)]
-        public bool? SkipTransformToSpectrum { get; set; }
+        public bool? SkipMerge { get; set; }
 
         [Option("rawcluster")]
         public string SourceCluster { get; set; }

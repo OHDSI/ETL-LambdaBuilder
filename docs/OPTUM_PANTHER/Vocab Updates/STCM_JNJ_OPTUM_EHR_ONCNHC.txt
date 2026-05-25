@@ -19,9 +19,9 @@ anorectal squamous cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	anorectal squamous cell
 anus neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	anus neoplasm	4129882	SNOMED	2023-08-02	2099-12-31	
 anus squamous cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	anus squamous cell carcinoma	36716972	SNOMED	2023-08-02	2099-12-31	
 appendix adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	appendix adenocarcinoma	4184849	SNOMED	2023-08-02	2099-12-31	
+b-cell lymphomas	0	JNJ_OPTUM_EHR_ONCNHC	b-cell lymphomas	434592	SNOMED	2023-08-02	2099-12-31	
 back basal cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	back basal cell carcinoma	4307538	SNOMED	2023-08-02	2099-12-31	
 basal cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	basal cell carcinoma	42513061	ICDO3	2023-08-02	2099-12-31	
-b-cell lymphomas	0	JNJ_OPTUM_EHR_ONCNHC	b-cell lymphomas	434592	SNOMED	2023-08-02	2099-12-31	
 benign adenoma	0	JNJ_OPTUM_EHR_ONCNHC	benign adenoma	40481474	SNOMED	2023-08-02	2099-12-31	
 benign ascending colon carcinoid tumor	0	JNJ_OPTUM_EHR_ONCNHC	benign ascending colon carcinoid tumor	760937	SNOMED	2023-08-02	2025-03-11	D
 benign ascending colon carcinoid tumor	0	JNJ_OPTUM_EHR_ONCNHC	benign ascending colon carcinoid tumor	1077457	SNOMED	2025-03-11	2099-12-31	
@@ -81,7 +81,8 @@ conventional (clear cell) renal cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	convention
 dermatofibrosarcoma protuberans	0	JNJ_OPTUM_EHR_ONCNHC	dermatofibrosarcoma protuberans	4174440	SNOMED	2023-08-02	2099-12-31	
 desmoplastic small round cell tumor	0	JNJ_OPTUM_EHR_ONCNHC	desmoplastic small round cell tumor	603122	SNOMED	2023-08-02	2099-12-31	
 diffuse large b-cell lymphoma	0	JNJ_OPTUM_EHR_ONCNHC	diffuse large b-cell lymphoma	44808122	SNOMED	2023-08-02	2024-03-13	D
-diffuse large b-cell lymphoma	0	JNJ_OPTUM_EHR_ONCNHC	diffuse large b-cell lymphoma	4300704	SNOMED	2024-03-13	2099-12-31	
+diffuse large b-cell lymphoma	0	JNJ_OPTUM_EHR_ONCNHC	diffuse large b-cell lymphoma	4300704	SNOMED	2024-03-13	2025-09-05	D
+diffuse large b-cell lymphoma	0	JNJ_OPTUM_EHR_ONCNHC	diffuse large b-cell lymphoma	432574	SNOMED	2025-09-05	2099-12-31	
 ductal carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	ductal carcinoma	0	None	2023-08-02	2099-12-31	
 embryonal carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	embryonal carcinoma	607975	SNOMED	2023-08-02	2099-12-31	
 endometrial adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	endometrial adenocarcinoma	4048226	SNOMED	2023-08-02	2099-12-31	
@@ -167,7 +168,8 @@ kaposi sarcoma	0	JNJ_OPTUM_EHR_ONCNHC	kaposi sarcoma	434584	SNOMED	2023-08-02	20
 kidney neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	kidney neoplasm	4131748	SNOMED	2023-08-02	2099-12-31	
 langerhans cell sarcoma	0	JNJ_OPTUM_EHR_ONCNHC	langerhans cell sarcoma	37110403	SNOMED	2023-08-02	2099-12-31	
 large b-cell lymphoma	0	JNJ_OPTUM_EHR_ONCNHC	large b-cell lymphoma	44808122	SNOMED	2023-08-02	2024-03-13	D
-large b-cell lymphoma	0	JNJ_OPTUM_EHR_ONCNHC	large b-cell lymphoma	4300704	SNOMED	2024-03-13	2099-12-31	
+large b-cell lymphoma	0	JNJ_OPTUM_EHR_ONCNHC	large b-cell lymphoma	4300704	SNOMED	2024-03-13	2025-09-05	D
+large b-cell lymphoma	0	JNJ_OPTUM_EHR_ONCNHC	large b-cell lymphoma	432574	SNOMED	2025-09-05	2099-12-31	
 laryngeal carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	laryngeal carcinoma	4172359	SNOMED	2023-08-02	2099-12-31	
 laryngeal neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	laryngeal neoplasm	26052	SNOMED	2023-08-02	2099-12-31	
 laryngeal squamous cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	laryngeal squamous cell carcinoma	45768840	SNOMED	2023-08-02	2099-12-31	
@@ -350,8 +352,8 @@ ovarian serous carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	ovarian serous carcinoma	4449944
 ovarian teratoma	0	JNJ_OPTUM_EHR_ONCNHC	ovarian teratoma	37396311	SNOMED	2023-08-02	2099-12-31	
 pancreatic acinar cell carcinoma	0	JNJ_OPTUM_EHR_ONCNHC	pancreatic acinar cell carcinoma	37204852	SNOMED	2023-08-02	2099-12-31	
 pancreatic adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	pancreatic adenocarcinoma	45763891	SNOMED	2023-08-02	2099-12-31	
-pancreatic ductal adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	pancreatic ductal adenocarcinoma	37311469	SNOMED	2023-08-02	2099-12-31	
 pancreatic duct ductal adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	pancreatic duct ductal adenocarcinoma	37311469	SNOMED	2023-08-02	2099-12-31	
+pancreatic ductal adenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	pancreatic ductal adenocarcinoma	37311469	SNOMED	2023-08-02	2099-12-31	
 pancreatic mucinous cystadenocarcinoma	0	JNJ_OPTUM_EHR_ONCNHC	pancreatic mucinous cystadenocarcinoma	37206235	SNOMED	2023-08-02	2099-12-31	
 pancreatic neoplasm	0	JNJ_OPTUM_EHR_ONCNHC	pancreatic neoplasm	199754	SNOMED	2023-08-02	2099-12-31	
 papillary	0	JNJ_OPTUM_EHR_ONCNHC	papillary	42513030	ICDO3	2023-08-02	2099-12-31	

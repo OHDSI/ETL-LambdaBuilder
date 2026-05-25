@@ -18,9 +18,6 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using static Amazon.Lambda.S3Events.S3Event;
-using CsvHelper;
-using CsvHelper.Configuration;
-using System.Globalization;
 using org.ohdsi.cdm.framework.common.Utility;
 using System.Reflection;
 
@@ -93,7 +90,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                 var timer = new Stopwatch();
                 timer.Start();
                 _vocabulary = new Vocabulary(Settings.Current.Building.Vendor);
-                _vocabulary.Fill(false, false);
+                _vocabulary.Fill(false);
                 timer.Stop();
 
                 Console.WriteLine("Vocabulary initialized for " + Settings.Current.Building.Vendor + " | " +
@@ -195,7 +192,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
         {
             try
             {
-                var key = $"{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id}/{Settings.Current.CDMFolder}/CDM_SOURCE/CDM_SOURCE.0.0.gz";
+                var key = $"{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id}/{Settings.Current.CDMFolder}/cdm_source/cdm_source.txt.gz";
                 
                 Console.WriteLine("GetSourceReleaseDate: " + key);
 
@@ -205,13 +202,14 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                 using var bufferedStream = new BufferedStream(responseStream);
                 using var gzipStream = new GZipStream(bufferedStream, CompressionMode.Decompress);
                 using var reader = new StreamReader(gzipStream, Encoding.Default);
-                using var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
-                {
-                    HasHeaderRecord = false,
-                    Delimiter = ",",
-                    Encoding = Encoding.UTF8,
-                    BadDataFound = null
-                });
+                using var csv = framework.common.Helpers.CsvHelper.CreateCsvReader(reader);
+                //using var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
+                //{
+                //    HasHeaderRecord = false,
+                //    Delimiter = ",",
+                //    Encoding = Encoding.UTF8,
+                //    BadDataFound = null
+                //});
 
                 while (csv.Read())
                 {
@@ -268,7 +266,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
 
                 buildingId = int.Parse(s3Event.Object.Key.Split('.')[1]);
                 _chunkId = int.Parse(s3Event.Object.Key.Split('.')[2]);
-                _prefix = s3Event.Object.Key.Split('.')[3].Trim();
+                _prefix = s3Event.Object.Key.Split('.')[3].Trim().Replace("%3D", "=");
 
                 if (s3Event.Object.Key.Split('.').Length == 6)
                 {
@@ -323,7 +321,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                 var chunkBuilder = new LambdaChunkBuilder(CreatePersonBuilder, _tmpFolder);
                 var attempt1 = attempt;
 
-                _lastSavedPersonIdOutput = chunkBuilder.Process(s3Event.Object.Key, _restorePoint);
+                _lastSavedPersonIdOutput = chunkBuilder.Process(s3Event.Object.Key.Replace("%3D", "="), _restorePoint);
 
                 var totalPersonConverted = chunkBuilder.TotalPersonConverted;
                 try
@@ -538,7 +536,8 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
         private Dictionary<string, List<string>> GetFiles()
         {
             var files = new Dictionary<string, List<string>>();
-            var pId = int.Parse(_prefix);
+
+            var pId = int.Parse(_prefix.Replace("PartitionId=", ""));
             var filteredFiles = Directory.GetFiles($@"{TmpFolder}/", "*.*")
                 .Where(file => file.ToLower().EndsWith("txt.gz") || file.ToLower().EndsWith("parquet")).ToList();
 
@@ -684,7 +683,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                     var timer = new Stopwatch();
                     timer.Start();
                     using (var transferUtility = new TransferUtility(this.S3Client))
-                    using (var responseStream = transferUtility.OpenStream(s3Event.Bucket.Name, s3Event.Object.Key))
+                    using (var responseStream = transferUtility.OpenStream(s3Event.Bucket.Name, s3Event.Object.Key.Replace("%3D", "=")))
                     using (var reader = new StreamReader(responseStream))
                     {
                         string line;
@@ -721,7 +720,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
             Console.WriteLine("removing attempt file...");
 
             var attempt = 0;
-            var key = s3Event.Object.Key;
+            var key = s3Event.Object.Key.Replace("%3D", "=");
 
             while (true)
             {

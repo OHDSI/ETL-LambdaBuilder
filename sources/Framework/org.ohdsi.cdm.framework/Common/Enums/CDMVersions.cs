@@ -2,9 +2,6 @@
 {
     public enum CdmVersions
     {
-        V52,
-        V53,
-        V54,
-        V6
+        V54
     }
 }

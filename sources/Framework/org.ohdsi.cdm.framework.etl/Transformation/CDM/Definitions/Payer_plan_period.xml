@@ -17,9 +17,10 @@
 		, t.stop_reason_concept_id
 		, t.stop_reason_source_value
 		, t.stop_reason_source_concept_id
+		, ch.PartitionId
 		FROM {sc}.payer_plan_period t
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND t.PERSON_ID = ch.PERSON_ID
-		order by 2
+		order by ch.PartitionId, t.person_id
 	</Query>
 	<PayerPlanPeriods>
 		<PayerPlanPeriodDefinition>

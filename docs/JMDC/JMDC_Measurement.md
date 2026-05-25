@@ -42,6 +42,9 @@ The **annual_health_checkup** table is a wide table with one row per date and ma
 
 ![](images/meas_annual_health.png)
 
+#### Clean-up
+- Remove any records where `value_source_value` is null.
+
 |     Destination Field    |     Source   Field    |     Logic    |     Comment    |
 |-|-|-|-|
 |     measurement_id    |          |          |          |
@@ -65,6 +68,8 @@ The **annual_health_checkup** table is a wide table with one row per date and ma
 
 ## Change Log
 
+### January 30, 2026
+- Updated clean-up logic to remove records with null `value_source_value` values.
 ### March 13, 2025
 - Remove ecg mapping from measurement table and added ophthalmology examination tests.
 ### April 6, 2022

@@ -5,6 +5,7 @@ using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Helpers;
 using org.ohdsi.cdm.framework.common.Omop;
 using org.ohdsi.cdm.framework.common.PregnancyAlgorithm;
+using System.Diagnostics.Metrics;
 
 namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
 {
@@ -95,10 +96,10 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                     DateTime.MinValue);
 
                     var daysSupply = result.Count != 0 ? result[0].ConceptId ?? 1 : 1;
-                    de.DaysSupply = Convert.ToInt32(daysSupply);
+                    //de.DaysSupply = Convert.ToInt32(daysSupply);
 
-                    if (de.DaysSupply > 0 && de.DaysSupply <= 365)
-                        de.EndDate = de.StartDate.AddDays(de.DaysSupply.Value - 1);
+                    if (daysSupply > 0 && daysSupply <= 365)
+                        de.EndDate = de.StartDate.AddDays(daysSupply - 1);
                 }
 
                 if (de.AdditionalFields != null && de.AdditionalFields.ContainsKey("itndc"))
@@ -339,8 +340,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
 
                     if (conditionOccurrenceEvent != null)
                     {
-                        observation.AddEvent(common.Enums.EntityType.ConditionOccurrence,
-                                             conditionOccurrenceEvent.Id);
+                        observation.AddEvent(GetEventType(conditionOccurrenceEvent.Domain), conditionOccurrenceEvent.Id);
+                        observation.EventFieldConceptId = GetEventFieldConceptId(conditionOccurrenceEvent.Domain);
                     }
                 }
 
@@ -394,8 +395,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
 
                     if (conditionOccurrenceEvent != null)
                     {
-                        measurement.AddEvent(common.Enums.EntityType.ConditionOccurrence,
-                                             conditionOccurrenceEvent.Id);
+                        measurement.AddEvent(GetEventType(conditionOccurrenceEvent.Domain), conditionOccurrenceEvent.Id);
+                        measurement.EventFieldConceptId = GetEventFieldConceptId(conditionOccurrenceEvent.Domain);
                     }
 
                     if (measurement.AdditionalFields != null && measurement.AdditionalFields.ContainsKey("numeric_result"))
@@ -565,7 +566,10 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                     };
 
                     if (mes.EventId.HasValue)
-                        maxTumorSize.AddEvent(common.Enums.EntityType.ConditionOccurrence, mes.EventId.Value);
+                    {
+                        maxTumorSize.AddEvent(mes.EventType, mes.EventId.Value);
+                        maxTumorSize.EventFieldConceptId = mes.EventFieldConceptId;
+                    }
 
                     yield return maxTumorSize;
                 }
@@ -1166,26 +1170,28 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
             {
                 if (p.TypeConceptId != 32858)
                     continue;
-
                 
                 if (p.AdditionalFields == null || !p.AdditionalFields.ContainsKey("findings"))
                     continue;
 
                 // alz_imaging
-                notes.Add(
-                    new Note
-                    {
-                        Id = Offset.GetKeyOffset(p.PersonId).NoteId,
-                        PersonId = p.PersonId,
-                        StartDate = p.StartDate,
-                        TypeConceptId = 32858,
-                        Text = string.Concat("imaging:", p.AdditionalFields["findings"]),
-                        LanguageConceptId = 40639387,
-                        ProviderId = p.ProviderId,
-                        VisitOccurrenceId = p.VisitOccurrenceId,
-                        SourceValue = $"{p.AdditionalFields["findings"]}|{p.AdditionalFields["reasons"]}",
-                        EventId = p.Id
-                    });
+                var note = new Note
+                {
+                    Id = Offset.GetKeyOffset(p.PersonId).NoteId,
+                    PersonId = p.PersonId,
+                    StartDate = p.StartDate,
+                    TypeConceptId = 32858,
+                    Text = string.Concat("imaging:", p.AdditionalFields["findings"]),
+                    LanguageConceptId = 40639387,
+                    ProviderId = p.ProviderId,
+                    VisitOccurrenceId = p.VisitOccurrenceId,
+                    SourceValue = $"{p.AdditionalFields["findings"]}|{p.AdditionalFields["reasons"]}"
+                };
+
+                note.AddEvent(GetEventType(p.Domain), p.Id);
+                note.EventFieldConceptId = GetEventFieldConceptId(p.Domain);
+
+                notes.Add(note);
             }
 
             SetPrecedingVisitOccurrenceId(visitOccurrences.Values);
@@ -1206,17 +1212,17 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                 [.. notes], 
                 episodes);
 
-            var pg = new PregnancyAlgorithm();
-            foreach (var r in pg.GetPregnancyEpisodes(Vocabulary, person, [.. observationPeriodsFinal],
-                [.. ChunkData.ConditionOccurrences.Where(e => e.PersonId == person.PersonId)],
-                [.. ChunkData.ProcedureOccurrences.Where(e => e.PersonId == person.PersonId)],
-                [.. ChunkData.Observations.Where(e => e.PersonId == person.PersonId)],
-                [.. ChunkData.Measurements.Where(e => e.PersonId == person.PersonId)],
-                [.. ChunkData.DrugExposures.Where(e => e.PersonId == person.PersonId)]))
-            {
-                r.Id = Offset.GetKeyOffset(r.PersonId).ConditionEraId;
-                ChunkData.ConditionEra.Add(r);
-            }
+            //var pg = new PregnancyAlgorithm();
+            //foreach (var r in pg.GetPregnancyEpisodes(Vocabulary, person, [.. observationPeriodsFinal],
+            //    [.. ChunkData.ConditionOccurrences.Where(e => e.PersonId == person.PersonId)],
+            //    [.. ChunkData.ProcedureOccurrences.Where(e => e.PersonId == person.PersonId)],
+            //    [.. ChunkData.Observations.Where(e => e.PersonId == person.PersonId)],
+            //    [.. ChunkData.Measurements.Where(e => e.PersonId == person.PersonId)],
+            //    [.. ChunkData.DrugExposures.Where(e => e.PersonId == person.PersonId)]))
+            //{
+            //    r.Id = Offset.GetKeyOffset(r.PersonId).ConditionEraId;
+            //    ChunkData.ConditionEra.Add(r);
+            //}
 
             return Attrition.None;
         }

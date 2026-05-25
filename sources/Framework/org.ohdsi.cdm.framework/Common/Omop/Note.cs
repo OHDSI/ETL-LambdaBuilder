@@ -1,4 +1,6 @@
-﻿namespace org.ohdsi.cdm.framework.common.Omop
+﻿using org.ohdsi.cdm.framework.common.Enums;
+
+namespace org.ohdsi.cdm.framework.common.Omop
 {
     public class Note : IEquatable<Note>
     {
@@ -30,7 +32,15 @@
 
         public long? EventFieldConceptId { get; set; }
 
+        public EntityType EventType { get; private set; }
+
         public Dictionary<string, string> AdditionalFields { get; set; }
+
+        public void AddEvent(EntityType eventType, long eventId)
+        {
+            EventType = eventType;
+            EventId = eventId;
+        }
 
         public Note()
         {

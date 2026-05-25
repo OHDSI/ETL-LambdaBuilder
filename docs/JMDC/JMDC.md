@@ -9,7 +9,7 @@ permalink: /docs/JMDC
 
 # Japan Medical Data Center (JMDC) ETL Documentation
 
-This document reflects the requirements, assumptions, business rules and transformations for the Japan Medical Data Center (JMDC) implementation of the Common Data Model Version 5.3.1 (CDM) as implemented by Janssen. This document assumes JMDC follows the structure and conventions used in 2020 onwards, which may be a different structure than the one used previously.
+This document reflects the requirements, assumptions, business rules and transformations for the Japan Medical Data Center (JMDC) implementation of the Common Data Model Version 5.3.1 (CDM) as implemented by Johnson & Johnson. This document assumes JMDC follows the structure and conventions used in 2020 onwards, which may be a different structure than the one used previously.
 
 The purpose of this document is to describe the ETL mapping of the licensed data from JMDC into the OMOP Common Data Model. 
 

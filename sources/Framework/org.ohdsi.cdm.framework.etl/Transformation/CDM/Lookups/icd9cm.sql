@@ -9,11 +9,11 @@ AND (TARGET_INVALID_REASON IS NULL or TARGET_INVALID_REASON = '')
 SELECT distinct SOURCE_CODE, TARGET_CONCEPT_ID,
 case
 when TARGET_INVALID_REASON = 'R' then SOURCE_VALID_START_DATE
-else cast('1900/1/1' as date)
+else to_date('1900/1/1', 'yyyy/M/d')
 end SOURCE_VALID_START_DATE,
 case
 when TARGET_INVALID_REASON = 'R' then SOURCE_VALID_END_DATE
-else cast('1900/1/1' as date)
+else to_date('1900/1/1', 'yyyy/M/d')
 end SOURCE_VALID_END_DATE
 FROM Source_to_Source
 WHERE lower(SOURCE_VOCABULARY_ID) IN ('icd9cm')

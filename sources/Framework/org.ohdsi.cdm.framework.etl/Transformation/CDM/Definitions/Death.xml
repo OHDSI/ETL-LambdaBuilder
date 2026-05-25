@@ -7,9 +7,10 @@
 		, t.cause_concept_id
 		, t.cause_source_value
 		, t.cause_source_concept_id
+		, ch.PartitionId
 		FROM {sc}.death t
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND t.PERSON_ID = ch.PERSON_ID
-		order by 1
+		order by ch.PartitionId, t.person_id
 	</Query>
 	<Death>
 		<DeathDefinition>

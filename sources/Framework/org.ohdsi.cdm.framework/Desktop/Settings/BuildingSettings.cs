@@ -7,7 +7,7 @@ using System.Configuration;
 using System.Data;
 using System.Text.RegularExpressions;
 using org.ohdsi.cdm.framework.common.Utility;
-using org.ohdsi.cdm.framework.Common.Base;
+using org.ohdsi.cdm.framework.common.Base;
 
 namespace org.ohdsi.cdm.framework.desktop.Settings
 {

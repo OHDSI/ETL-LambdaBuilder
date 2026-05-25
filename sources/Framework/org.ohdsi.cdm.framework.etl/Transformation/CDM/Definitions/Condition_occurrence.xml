@@ -1,25 +1,26 @@
 ﻿<QueryDefinition>
   <Query>
-		SELECT t.condition_occurrence_id
-		, t.person_id
-		, t.condition_concept_id
-		, t.condition_start_date
-		, t.condition_start_datetime
-		, t.condition_end_date
-		, t.condition_end_datetime
-		, t.condition_type_concept_id
-		, t.stop_reason
-		, t.provider_id
-		, t.visit_occurrence_id
-		, t.visit_detail_id
-		, t.condition_source_value
-		, t.condition_source_concept_id
-		, t.condition_status_source_value
-		, t.condition_status_concept_id
-		FROM {sc}.CONDITION_OCCURRENCE as t
-		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND t.PERSON_ID = ch.PERSON_ID
-		order by 2
-	</Query>
+	  SELECT t.condition_occurrence_id
+	  , t.person_id
+	  , t.condition_concept_id
+	  , t.condition_start_date
+	  , t.condition_start_datetime
+	  , t.condition_end_date
+	  , t.condition_end_datetime
+	  , t.condition_type_concept_id
+	  , t.stop_reason
+	  , t.provider_id
+	  , t.visit_occurrence_id
+	  , t.visit_detail_id
+	  , t.condition_source_value
+	  , t.condition_source_concept_id
+	  , t.condition_status_source_value
+	  , t.condition_status_concept_id
+	  , ch.PartitionId
+	  FROM {sc}.CONDITION_OCCURRENCE as t
+	  JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND t.PERSON_ID = ch.PERSON_ID
+	  order by ch.PartitionId, t.person_id
+  </Query>
   <ConditionOccurrence>
     <ConditionOccurrenceDefinition>
 			<Id>condition_occurrence_id</Id>

@@ -232,7 +232,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.JMDC
                             !visitOccurrences.ContainsKey(parentCondition.VisitOccurrenceId.Value)) continue;
 
                         var endDate = episode.Max(c => c.StartDate);
-                        var startOfMedicalCare = DateTime.Parse(parentCondition.AdditionalFields["start_m_and_y_date"]);
+                        var startOfMedicalCare = DateTime.ParseExact(parentCondition.AdditionalFields["start_m_and_y_date"], "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
 
                         var newCondition = new ConditionOccurrence(parentCondition)
                         {
@@ -412,11 +412,11 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.JMDC
                             if (!_visitsDateDiagnosis.ContainsKey(diagnosis[0].VisitOccurrenceId.Value))
                             {
                                 _visitsDateDiagnosis.Add(diagnosis[0].VisitOccurrenceId.Value,
-                                    DateTime.Parse(diagnosis[0].AdditionalFields["start_m_and_y_date"]));
+                                    DateTime.ParseExact(diagnosis[0].AdditionalFields["start_m_and_y_date"], "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture));
                             }
                             else
                             {
-                                var newValue = DateTime.Parse(diagnosis[0].AdditionalFields["start_m_and_y_date"]);
+                                var newValue = DateTime.ParseExact(diagnosis[0].AdditionalFields["start_m_and_y_date"], "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture);
 
                                 if (_visitsDateDiagnosis[diagnosis[0].VisitOccurrenceId.Value] < newValue)
                                     _visitsDateDiagnosis[diagnosis[0].VisitOccurrenceId.Value] = newValue;
@@ -536,6 +536,23 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.JMDC
             var death = BuildDeath([.. DeathRecords], visitOccurrences, observationPeriods);
             death = UpdateDeath(death, person, observationPeriods);
 
+            if (death != null)
+            {
+                foreach (var op in observationPeriods)
+                {
+                    // In the case that the OBSERVATION_PERIOD ends greater than 60 days after the patient's death date,
+                    if (op.EndDate.Value.Date > death.StartDate.AddDays(60).Date)
+                    {
+                        // set the OBSERVATION_PERIOD_END_DATE to be the death date + 60 days.
+                        op.EndDate = death.StartDate.AddDays(60).Date;
+                    }
+                }
+
+                death.CauseConceptId = null;
+                death.SourceCauseConceptId = null;
+                death.CauseSource = null;
+            }
+
             // TODO: TMP
             var drugCosts = BuildDrugCosts(drugExposures).ToArray();
             var procedureCosts = BuildProcedureCosts(procedureOccurrences).ToArray();
@@ -592,7 +609,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.JMDC
                 ChunkData.DrugExposures.Where(e => e.PersonId == person.PersonId).ToArray()))
             {
                 r.Id = Offset.GetKeyOffset(r.PersonId).ConditionEraId;
-                ChunkData.ConditionEra.Add(r);
+                //ChunkData.ConditionEra.Add(r);
 
                 if (r.ConceptId == 433260 && _potentialChilds.Count > 0)
                 {
@@ -729,6 +746,10 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.JMDC
                             {
                                 mes.ValueAsConceptId = result[0].ConceptId.Value;
                             }
+
+                            // Annual_health_checkup, Remove any records where value_source_value is null.
+                            if (mes.TypeConceptId == 32836 && string.IsNullOrEmpty(mes.ValueSourceValue))
+                                continue;
 
                             ChunkData.AddData(mes);
                         }

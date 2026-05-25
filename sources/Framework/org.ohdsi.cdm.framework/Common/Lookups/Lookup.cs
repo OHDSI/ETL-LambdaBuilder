@@ -106,7 +106,8 @@ namespace org.ohdsi.cdm.framework.common.Lookups
             {
                 if (!string.IsNullOrEmpty(line))
                 {
-                    spliter.SafeSplit(line, '\t');
+                    //spliter.SafeSplit(line, '\t');
+                    spliter.SafeSplit(line, ',');
                     var sourceCode = GetStringValue(spliter.Results[0]);
 
                     if (string.IsNullOrEmpty(sourceCode))

@@ -8,7 +8,7 @@
 		, total_charge
 		, total_cost
 		, total_paid
-		
+
 		, paid_by_payer
 		, paid_by_patient
 		, paid_patient_copay
@@ -17,15 +17,16 @@
 		, paid_by_primary
 		, paid_ingredient_cost
 		, paid_dispensing_fee
-		
+
 		, payer_plan_period_id
-		
+
 		, amount_allowed
 		, revenue_code_concept_id
 		, revenue_code_source_value
 		, drg_concept_id
 		, drg_source_value
 		, coalesce(po.person_id, o.person_id, d.person_id, dev.person_id, m.person_id, v.person_id) person_id
+		, ch.PartitionId
 		FROM {sc}.cost
 		left join {sc}.procedure_occurrence po on cost_domain_id = 'Procedure' and cost_event_id = po.procedure_occurrence_id
 		left join {sc}.observation o on cost_domain_id = 'Observation' and cost_event_id = o.observation_id
@@ -34,7 +35,7 @@
 		left join {sc}.measurement m on cost_domain_id = 'Measurement' and cost_event_id = m.measurement_id
 		left join {sc}.visit_occurrence v on cost_domain_id = 'Visit' and cost_event_id = v.visit_occurrence_id
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND coalesce(po.person_id, o.person_id, d.person_id, dev.person_id, m.person_id, v.person_id) = ch.PERSON_ID
-		order by 1
+		order by ch.PartitionId, person_id
 	</Query>
 	<Costs>
 		<CostRawDefinition>

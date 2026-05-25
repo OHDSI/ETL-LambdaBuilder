@@ -2,7 +2,7 @@
 using org.ohdsi.cdm.framework.common.Omop;
 using System.Data;
 
-namespace org.ohdsi.cdm.framework.common.DataReaders.v5
+namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v54
 {
     public class EpisodeEventDataReader(IEnumerable<EpisodeEvent> batch, KeyMasterOffsetManager o) : IDataReader
     {
