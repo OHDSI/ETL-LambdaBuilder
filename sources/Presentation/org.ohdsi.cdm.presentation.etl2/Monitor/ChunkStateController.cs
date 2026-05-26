@@ -52,9 +52,7 @@ namespace org.ohdsi.cdm.presentation.etl.Monitor
                 var prefix = $"{Settings.Current.Building.Vendor}.{Settings.Current.Building.Id.Value}.{_chunkId}.";
                 
                 var info = CloudStorageHelper.GetTriggerFilesInfo(prefix);
-
-                Console.WriteLine($"> {DateTime.Now.ToShortTimeString()} | {_chunkId} - not processed slices {info.Count()} | {prefix}");
-                if (!info.Any())
+                if (info == null || !info.Any())
                 {
                     _timer.Enabled = false;
 
@@ -63,6 +61,8 @@ namespace org.ohdsi.cdm.presentation.etl.Monitor
                     //Validate(false);
                     return;
                 }
+
+                Console.WriteLine($"> {DateTime.Now.ToShortTimeString()} | {_chunkId} - not processed slices {info.Count()} | {prefix}");
 
                 lastModified = info.Select(i => i.Item2).Max();
 
