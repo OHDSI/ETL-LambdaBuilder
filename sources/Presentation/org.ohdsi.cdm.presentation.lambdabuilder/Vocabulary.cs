@@ -1,15 +1,18 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
+using nietras.SeparatedValues;
 using org.ohdsi.cdm.framework.common.Definitions;
+using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Helpers;
 using org.ohdsi.cdm.framework.common.Lookups;
+using SQLitePCL;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
-using org.ohdsi.cdm.framework.common.Enums;
 
 namespace org.ohdsi.cdm.presentation.lambdabuilder
 {
@@ -44,8 +47,9 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                     Console.WriteLine(Settings.Current.Bucket + "/" + prefix);
                     try
                     {
+                        Stopwatch sw = Stopwatch.StartNew();
                         lookup.Fill(client, Settings.Current.Bucket, prefix);
-                        Console.WriteLine(lookup.KeysCount);
+                        Console.WriteLine(lookup.KeysCount + " | " + sw.Elapsed.TotalMilliseconds + "ms");
                         _lookups.Add(conceptIdMapper.Lookup, lookup);
                     }
                     catch (Exception e)
@@ -54,8 +58,6 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                         Console.WriteLine(e.StackTrace);
                         throw;
                     }
-
-
                 }
             }
         }
@@ -111,35 +113,30 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
             using var client = new AmazonS3Client(Settings.Current.S3AwsAccessKeyId,
                 Settings.Current.S3AwsSecretAccessKey, Amazon.RegionEndpoint.USEast1);
             foreach (var qd in Settings.Current.Building.SourceQueryDefinitions)
-                try
-                {
-                    if (!QueryDefinition.IsSuitable(qd.Query.Database, Settings.Current.Building.Vendor))
-                        continue;
+            {
+                if (!QueryDefinition.IsSuitable(qd.Query.Database, Settings.Current.Building.Vendor))
+                    continue;
 
-                    Load(client, qd.ConditionOccurrence);
-                    Load(client, qd.DrugExposure);
-                    Load(client, qd.ProcedureOccurrence);
-                    Load(client, qd.Observation);
-                    Load(client, qd.VisitOccurrence);
-                    Load(client, qd.VisitDetail);
+                Load(client, qd.ConditionOccurrence);
+                Load(client, qd.DrugExposure);
+                Load(client, qd.ProcedureOccurrence);
+                Load(client, qd.Observation);
+                Load(client, qd.VisitOccurrence);
+                Load(client, qd.VisitDetail);
 
-                    Load(client, qd.Death);
-                    Load(client, qd.Measurement);
-                    Load(client, qd.DeviceExposure);
-                    Load(client, qd.Note);
-                    Load(client, qd.Episodes);
+                Load(client, qd.Death);
+                Load(client, qd.Measurement);
+                Load(client, qd.DeviceExposure);
+                Load(client, qd.Note);
+                Load(client, qd.Episodes);
 
-                    Load(client, qd.VisitCost);
-                    Load(client, qd.ProcedureCost);
-                    Load(client, qd.DeviceCost);
-                    Load(client, qd.ObservationCost);
-                    Load(client, qd.MeasurementCost);
-                    Load(client, qd.DrugCost);
-                }
-                catch (Exception e)
-                {
-                    
-                }
+                Load(client, qd.VisitCost);
+                Load(client, qd.ProcedureCost);
+                Load(client, qd.DeviceCost);
+                Load(client, qd.ObservationCost);
+                Load(client, qd.MeasurementCost);
+                Load(client, qd.DrugCost);
+            }
 
             var lookup = new Lookup();
             var prefix =
@@ -182,21 +179,19 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                 var getObject = client.GetObjectAsync(getObjectRequest);
                 getObject.Wait();
 
-                var spliter = new StringSplitter(3);
 
                 using var responseStream = getObject.Result.ResponseStream;
                 using var bufferedStream = new BufferedStream(responseStream);
                 using var gzipStream = new GZipStream(bufferedStream, CompressionMode.Decompress);
-                using var reader = new StreamReader(gzipStream, Encoding.Default);
-                string line;
-
-                while ((line = reader.ReadLine()) != null)
+                using var reader = Sep.Reader(o => o with
                 {
-                    if (!string.IsNullOrEmpty(line))
-                    {
-                        spliter.SafeSplit(line, '\t');
-                        _conceptIdToSourceVocabularyId.Add(long.Parse(spliter.Results[0]), new Tuple<string, string>(spliter.Results[1], spliter.Results[2]));
-                    }
+                    HasHeader = false,
+                    Trim = SepTrim.All,
+                    Unescape = true
+                }).From(gzipStream);
+                foreach (var row in reader)
+                {
+                    _conceptIdToSourceVocabularyId.Add(row[0].Parse<long>(), new Tuple<string, string>(row[1].ToString(), row[2].ToString()));
                 }
 
                 _conceptIdToSourceVocabularyId.TrimExcess();

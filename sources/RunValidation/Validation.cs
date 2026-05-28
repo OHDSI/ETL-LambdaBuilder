@@ -246,10 +246,11 @@ namespace RunValidation
             string? line = reader.ReadLine();
             while (!string.IsNullOrEmpty(line))
             {
-                var splits = line.Split('\t');
+                //var splits = line.Split('\t');
+                var splits = line.Split(',');
                 var chunkId = int.Parse(splits[0]);
-                var personId = long.Parse(splits[1]);
-                var personSourceValue = splits[2];
+                var personId = long.Parse(splits[2]);
+                var personSourceValue = splits[3];
 
                 if (!chunksWhiteList.Any() || chunksWhiteList.Any(s => s == chunkId))
                     if (!filePersonIds.TryAdd(personId, new Person(chunkId, personId, personSourceValue)))
