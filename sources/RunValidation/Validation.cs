@@ -119,6 +119,7 @@ namespace RunValidation
 
                 int totalPersonsCount = 0;
                 int chunkErrorsCount = 0;
+                int actuallyProcessed = 0;
 
                 AnsiConsole.Progress()
                     .AutoClear(false)
@@ -181,6 +182,7 @@ namespace RunValidation
                                                 chunkTask);
 
                                         overallTask.Increment(1);
+                                        Interlocked.Increment(ref actuallyProcessed);
                                     }
                                     finally
                                     {
@@ -211,7 +213,7 @@ namespace RunValidation
                         overallTask.Increment(overallTask.MaxValue - overallTask.Value - 0.1); //this is here not to hide the task upon completion
                     });
 
-                AnsiConsole.MarkupLine("\r\nProcessed " + s3ChunkObjects.Count + " files or " + totalPersonsCount + " persons. " 
+                AnsiConsole.MarkupLine("\r\nProcessed " + actuallyProcessed + " out of total " + s3ChunkObjects.Count + " files or " + totalPersonsCount + " persons. " 
                     + chunkErrorsCount + " Chunks with errors are written above in red.");
             }
         }
@@ -251,9 +253,11 @@ namespace RunValidation
                 var personId = long.Parse(splits[1]);
                 var personSourceValue = splits[2];
 
-                if (!chunksWhiteList.Any() || chunksWhiteList.Any(s => s == chunkId))
-                    if (!filePersonIds.TryAdd(personId, new Person(chunkId, personId, personSourceValue)))
-                        throw new Exception($"Failed to add a new person! ChunkId={chunkId}, PersonId={personId}, PersonSourceValue={personSourceValue}");
+                if (chunksWhiteList.Any() && !chunksWhiteList.Any(s => s == chunkId))
+                    return filePersonIds; // each file seem only to contain a single chunkId
+
+                if (!filePersonIds.TryAdd(personId, new Person(chunkId, personId, personSourceValue)))
+                    throw new Exception($"Failed to add a new person! ChunkId={chunkId}, PersonId={personId}, PersonSourceValue={personSourceValue}");
 
                 line = reader.ReadLine();
             }
