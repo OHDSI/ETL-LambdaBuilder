@@ -1,11 +1,7 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
-using CsvHelper;
-using CsvHelper.Configuration;
 using org.ohdsi.cdm.framework.common.Enums;
-using org.ohdsi.cdm.framework.common.Helpers;
-using RunValidation.Domain;
 using Spectre.Console;
 using System.Collections.Concurrent;
 using System.Diagnostics;
@@ -13,7 +9,7 @@ using System.IO.Compression;
 using System.Text;
 using ZstdSharp;
 
-namespace RunValidation
+namespace org.ohdsi.cdm.framework.Common.Utility.Validation
 {
 
     public class Validation(string awsAccessKeyId, string awsSecretAccessKey, string bucket, string tmpFolder, string cdmFolder)
