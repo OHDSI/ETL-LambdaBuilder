@@ -249,7 +249,7 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
                 var personId = long.Parse(splits[1]);
                 var personSourceValue = splits[2];
 
-                if (chunksWhiteList.Any() && !chunksWhiteList.Any(s => s == chunkId))
+                if (chunksWhiteList != null && chunksWhiteList.Any() && !chunksWhiteList.Any(s => s == chunkId))
                     return filePersonIds; // each file seem only to contain a single chunkId
 
                 if (!filePersonIds.TryAdd(personId, new Person(chunkId, personId, personSourceValue)))
