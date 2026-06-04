@@ -144,7 +144,7 @@ namespace org.ohdsi.cdm.framework.common.Lookups
                     _lookup[sourceCode].Add(conceptId, value);
                 }
 
-                if (row.ColCount > 5)
+                if (row.ColCount > 6)
                 {
                     var sourceConceptId = IsNullOrEmpty(row[6].ToString())
                            ? 0
@@ -154,7 +154,7 @@ namespace org.ohdsi.cdm.framework.common.Lookups
                     var sourceValidEndDate = DateTime.MaxValue;
                     var invalidReason = char.MinValue;
 
-                    if (row.ColCount > 6)
+                    if (row.ColCount > 7)
                     {
                         row[7].TryParse<DateTime>(out sourceValidStartDate);
                         row[8].TryParse<DateTime>(out sourceValidEndDate);
