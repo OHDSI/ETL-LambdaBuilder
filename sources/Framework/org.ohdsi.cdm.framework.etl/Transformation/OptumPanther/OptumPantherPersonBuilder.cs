@@ -556,11 +556,16 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                 var mes = byDate.First();
                 foreach (var mv in byDate.Select(t => t.AdditionalFields["max_value"]).Distinct())
                 {
+                    decimal valueAsNumber = 0;
+
+                    if (decimal.TryParse(mv, out var value))
+                        valueAsNumber = value;
+
                     var maxTumorSize = new Measurement(mes)
                     {
                         Id = Offset.GetKeyOffset(mes.PersonId).MeasurementId,
                         ConceptId = 36768255,
-                        ValueAsNumber = decimal.Parse(mv),
+                        ValueAsNumber = valueAsNumber,
                         UnitConceptId = mes.UnitConceptId,
                         UnitSourceValue = mes.UnitSourceValue
                     };
@@ -577,7 +582,10 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
 
             foreach (var ts in tumorSize)
             {
-                var maxValue = decimal.Parse(ts.AdditionalFields["max_value"]);
+                decimal maxValue = 0;
+
+                if (decimal.TryParse(ts.AdditionalFields["max_value"], out var value))
+                    maxValue = value;
 
                 if (ts.ValueAsNumber != maxValue)
                     yield return ts;
