@@ -65,7 +65,7 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
 
         private void Process(Vendor vendor, int buildingId, List<int> chunksToProcess, List<int> slicesToProcess)
         {
-            var prefix = $"{vendor}/{buildingId}/_chunks";
+            var prefix = $"{vendor}/{buildingId}/chunks";
 
             using (var client = new AmazonS3Client(_awsAccessKeyId, _awsSecretAccessKey, Amazon.RegionEndpoint.USEast1))
             {
@@ -244,10 +244,10 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
             string? line = reader.ReadLine();
             while (!string.IsNullOrEmpty(line))
             {
-                var splits = line.Split('\t');
+                var splits = line.Split(',');
                 var chunkId = int.Parse(splits[0]);
-                var personId = long.Parse(splits[1]);
-                var personSourceValue = splits[2];
+                var personId = long.Parse(splits[2]);
+                var personSourceValue = splits[3];
 
                 if (chunksWhiteList != null && chunksWhiteList.Any() && !chunksWhiteList.Any(s => s == chunkId))
                     return filePersonIds; // each file seem only to contain a single chunkId
@@ -376,7 +376,8 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
                 if (!s3ObjectsBySlice.ContainsKey(sliceId))
                     s3ObjectsBySlice[sliceId] = (new List<S3Object>(), new List<S3Object>());
 
-                s3ObjectsBySlice[sliceId].PersonObjects.AddRange(PersonObjects);
+                if(PersonObjects != null)
+                    s3ObjectsBySlice[sliceId].PersonObjects.AddRange(PersonObjects);
             }
 
             foreach (var tuple in GetObjects(vendor, buildingId, "METADATA_TMP", chunkId, slices2process))
@@ -387,7 +388,8 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
                 if (!s3ObjectsBySlice.ContainsKey(sliceId))
                     s3ObjectsBySlice[sliceId] = (new List<S3Object>(), new List<S3Object>());
 
-                s3ObjectsBySlice[sliceId].MetadataObjects.AddRange(MetadataObjects);
+                if (MetadataObjects != null)
+                    s3ObjectsBySlice[sliceId].MetadataObjects.AddRange(MetadataObjects);
             }
 
             if (s3ObjectsBySlice.Count == 0)
