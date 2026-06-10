@@ -1,11 +1,7 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
-using CsvHelper;
-using CsvHelper.Configuration;
 using org.ohdsi.cdm.framework.common.Enums;
-using org.ohdsi.cdm.framework.common.Helpers;
-using RunValidation.Domain;
 using Spectre.Console;
 using System.Collections.Concurrent;
 using System.Diagnostics;
@@ -13,7 +9,7 @@ using System.IO.Compression;
 using System.Text;
 using ZstdSharp;
 
-namespace RunValidation
+namespace org.ohdsi.cdm.framework.Common.Utility.Validation
 {
 
     public class Validation(string awsAccessKeyId, string awsSecretAccessKey, string bucket, string tmpFolder, string cdmFolder)
@@ -69,7 +65,7 @@ namespace RunValidation
 
         private void Process(Vendor vendor, int buildingId, List<int> chunksToProcess, List<int> slicesToProcess)
         {
-            var prefix = $"{vendor}/{buildingId}/_chunks";
+            var prefix = $"{vendor}/{buildingId}/chunks";
 
             using (var client = new AmazonS3Client(_awsAccessKeyId, _awsSecretAccessKey, Amazon.RegionEndpoint.USEast1))
             {
@@ -119,6 +115,7 @@ namespace RunValidation
 
                 int totalPersonsCount = 0;
                 int chunkErrorsCount = 0;
+                int actuallyProcessed = 0;
 
                 AnsiConsole.Progress()
                     .AutoClear(false)
@@ -181,6 +178,7 @@ namespace RunValidation
                                                 chunkTask);
 
                                         overallTask.Increment(1);
+                                        Interlocked.Increment(ref actuallyProcessed);
                                     }
                                     finally
                                     {
@@ -211,7 +209,7 @@ namespace RunValidation
                         overallTask.Increment(overallTask.MaxValue - overallTask.Value - 0.1); //this is here not to hide the task upon completion
                     });
 
-                AnsiConsole.MarkupLine("\r\nProcessed " + s3ChunkObjects.Count + " files or " + totalPersonsCount + " persons. " 
+                AnsiConsole.MarkupLine("\r\nProcessed " + actuallyProcessed + " out of total " + s3ChunkObjects.Count + " files or " + totalPersonsCount + " persons. " 
                     + chunkErrorsCount + " Chunks with errors are written above in red.");
             }
         }
@@ -246,14 +244,16 @@ namespace RunValidation
             string? line = reader.ReadLine();
             while (!string.IsNullOrEmpty(line))
             {
-                var splits = line.Split('\t');
+                var splits = line.Split(',');
                 var chunkId = int.Parse(splits[0]);
-                var personId = long.Parse(splits[1]);
-                var personSourceValue = splits[2];
+                var personId = long.Parse(splits[2]);
+                var personSourceValue = splits[3];
 
-                if (!chunksWhiteList.Any() || chunksWhiteList.Any(s => s == chunkId))
-                    if (!filePersonIds.TryAdd(personId, new Person(chunkId, personId, personSourceValue)))
-                        throw new Exception($"Failed to add a new person! ChunkId={chunkId}, PersonId={personId}, PersonSourceValue={personSourceValue}");
+                if (chunksWhiteList != null && chunksWhiteList.Any() && !chunksWhiteList.Any(s => s == chunkId))
+                    return filePersonIds; // each file seem only to contain a single chunkId
+
+                if (!filePersonIds.TryAdd(personId, new Person(chunkId, personId, personSourceValue)))
+                    throw new Exception($"Failed to add a new person! ChunkId={chunkId}, PersonId={personId}, PersonSourceValue={personSourceValue}");
 
                 line = reader.ReadLine();
             }
@@ -376,7 +376,8 @@ namespace RunValidation
                 if (!s3ObjectsBySlice.ContainsKey(sliceId))
                     s3ObjectsBySlice[sliceId] = (new List<S3Object>(), new List<S3Object>());
 
-                s3ObjectsBySlice[sliceId].PersonObjects.AddRange(PersonObjects);
+                if(PersonObjects != null)
+                    s3ObjectsBySlice[sliceId].PersonObjects.AddRange(PersonObjects);
             }
 
             foreach (var tuple in GetObjects(vendor, buildingId, "METADATA_TMP", chunkId, slices2process))
@@ -387,7 +388,8 @@ namespace RunValidation
                 if (!s3ObjectsBySlice.ContainsKey(sliceId))
                     s3ObjectsBySlice[sliceId] = (new List<S3Object>(), new List<S3Object>());
 
-                s3ObjectsBySlice[sliceId].MetadataObjects.AddRange(MetadataObjects);
+                if (MetadataObjects != null)
+                    s3ObjectsBySlice[sliceId].MetadataObjects.AddRange(MetadataObjects);
             }
 
             if (s3ObjectsBySlice.Count == 0)

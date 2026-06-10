@@ -2,6 +2,7 @@
 using CommandLine.Text;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Utility;
+using org.ohdsi.cdm.framework.Common.Utility.Validation;
 using Spectre.Console;
 using System.Configuration;
 

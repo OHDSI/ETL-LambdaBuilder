@@ -49,7 +49,7 @@ namespace org.ohdsi.cdm.framework.desktop.Savers
             //    Settings.Settings.Current.CloudStorageSecret,
             //    config);
 
-            var name = "_chunks" + chunkId;
+            var name = "chunks" + chunkId;
             var fileName = $"{Settings.Settings.Current.BuildingPrefix}/{name}.txt.gz";
             
             CloudStorageHelper.UploadFile(fileName, reader);
