@@ -426,6 +426,16 @@ namespace org.ohdsi.cdm.framework.desktop
                 {
                     yield return item;
                 }
+
+                foreach (var item in GetDataReaders(qd.Episodes))
+                {
+                    yield return item;
+                }
+
+                foreach (var item in GetDataReaders(qd.EpisodeEvents))
+                {
+                    yield return item;
+                }
             }
         }
 
@@ -459,20 +469,19 @@ namespace org.ohdsi.cdm.framework.desktop
             _genderConcepts = new GenderLookup();
             _genderConcepts.Load();
 
-            _pregnancyConcepts = new PregnancyConcepts(Settings.Settings.Current.Folder);
-
-            FillCombinedLookups();
-
             if (forLookup)
             {
                 Fill(GetHealthSystemDataReaders());
             }
             else
             {
-                Fill(GetClinicalDataReaders());
-            }
+                _pregnancyConcepts = new PregnancyConcepts(Settings.Settings.Current.Folder);
 
-            FillPregnancyDrug();
+                FillCombinedLookups();
+                Fill(GetClinicalDataReaders());
+
+                FillPregnancyDrug();
+            }
         }
 
         public List<LookupValue> Lookup(string sourceValue, string key, DateTime eventDate)

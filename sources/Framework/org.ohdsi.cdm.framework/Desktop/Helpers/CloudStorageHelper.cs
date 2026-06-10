@@ -78,10 +78,13 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
                         task = awsClient.ListObjectsV2Async(request);
                         task.Wait();
 
-                        foreach (var o in task.Result.S3Objects)
+                        if (task.Result.S3Objects != null)
                         {
-                            if(o.LastModified.HasValue)
-                                yield return new Tuple<string, DateTime>(o.Key, o.LastModified.Value);
+                            foreach (var o in task.Result.S3Objects)
+                            {
+                                if (o.LastModified.HasValue)
+                                    yield return new Tuple<string, DateTime>(o.Key, o.LastModified.Value);
+                            }
                         }
 
                         request.ContinuationToken = task.Result.NextContinuationToken;
