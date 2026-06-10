@@ -52,11 +52,12 @@
 		note_date,
 		32858 type_concept_id,
 		0 source_concept_id,
-		map.concept_id
+		map.concept_id,
+		ch.PartitionId
 		FROM {sc}.alz_medication l
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
 		LEFT JOIN map on l.drug = map.drug_name
-		order by 1
+		order by ch.PartitionId, 1
 	</Query>
 	<DrugExposure>
 		<DrugExposureDefinition>

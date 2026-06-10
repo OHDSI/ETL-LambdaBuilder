@@ -58,10 +58,11 @@
 		end unit_concept_id,
 		0 unit_source_concept_id,
 		narrative_result,
-		concat(concat(coalesce(numeric_result,coalesce(narrative_result, '')),'|'), coalesce(variant, '')) value_source_value
+		concat(concat(coalesce(numeric_result,coalesce(narrative_result, '')),'|'), coalesce(variant, '')) value_source_value,
+		ch.PartitionId
 		FROM {sc}.alz_biomarker l
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
-		order by 1
+		order by ch.PartitionId, 1
 	</Query>
 	<Measurement>
 		<MeasurementDefinition>

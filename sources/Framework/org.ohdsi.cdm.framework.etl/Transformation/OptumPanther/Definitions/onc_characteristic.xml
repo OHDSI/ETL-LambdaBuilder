@@ -28,7 +28,7 @@
 		and lower(histology_characteristic) not in ('in situ', 'malignant', 'benign')
 		and histology_characteristic != ''
 		),
-		exclude as
+		excl as
 		(
 		select
 		ch.person_id as PersonId,
@@ -47,7 +47,7 @@
 		union
 		select distinct h.*
 		from histology h
-		left join exclude e on h.PersonId = e.PersonId and h.note_date = e.note_date and h.source_value = e.source_value and h.neoplasm_histology_key = e.neoplasm_histology_key
+		left join excl e on h.PersonId = e.PersonId and h.note_date = e.note_date and h.source_value = e.source_value and h.neoplasm_histology_key = e.neoplasm_histology_key
 		where e.PersonId is null
 		)
 
