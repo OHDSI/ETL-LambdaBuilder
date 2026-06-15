@@ -69,7 +69,8 @@ namespace RunValidation
 
         private void Process(Vendor vendor, int buildingId, List<int> chunksToProcess, List<int> slicesToProcess)
         {
-            var prefix = $"{vendor}/{buildingId}/_chunks";
+            //var prefix = $"{vendor}/{buildingId}/_chunks";
+            var prefix = $"{vendor}/{buildingId}/chunks";
 
             using (var client = new AmazonS3Client(_awsAccessKeyId, _awsSecretAccessKey, Amazon.RegionEndpoint.USEast1))
             {
@@ -377,7 +378,8 @@ namespace RunValidation
                 if (!s3ObjectsBySlice.ContainsKey(sliceId))
                     s3ObjectsBySlice[sliceId] = (new List<S3Object>(), new List<S3Object>());
 
-                s3ObjectsBySlice[sliceId].PersonObjects.AddRange(PersonObjects);
+                if(PersonObjects != null)
+                    s3ObjectsBySlice[sliceId].PersonObjects.AddRange(PersonObjects);
             }
 
             foreach (var tuple in GetObjects(vendor, buildingId, "METADATA_TMP", chunkId, slices2process))
@@ -388,7 +390,8 @@ namespace RunValidation
                 if (!s3ObjectsBySlice.ContainsKey(sliceId))
                     s3ObjectsBySlice[sliceId] = (new List<S3Object>(), new List<S3Object>());
 
-                s3ObjectsBySlice[sliceId].MetadataObjects.AddRange(MetadataObjects);
+                if (MetadataObjects != null)
+                    s3ObjectsBySlice[sliceId].MetadataObjects.AddRange(MetadataObjects);
             }
 
             if (s3ObjectsBySlice.Count == 0)

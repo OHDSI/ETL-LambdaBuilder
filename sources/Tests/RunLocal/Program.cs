@@ -73,7 +73,7 @@ namespace RunLocal
                 {
                     foreach (var table in tables)
                     {
-                        Clean(vendor, buildingId, chunkId, table, int.Parse(prefix));
+                        Clean(vendor, buildingId, chunkId, table, int.Parse(prefix.Replace("PartitionId=", "")));
                     }
                     Console.WriteLine($"chunkId={chunkId};prefix={prefix} - CLEANED");
                 }
