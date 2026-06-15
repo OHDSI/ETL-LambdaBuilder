@@ -7,6 +7,7 @@ using org.ohdsi.cdm.framework.common.Omop;
 using org.ohdsi.cdm.framework.desktop;
 using org.ohdsi.cdm.framework.desktop.Controllers;
 using org.ohdsi.cdm.framework.desktop.Helpers;
+using org.ohdsi.cdm.framework.desktop.Savers;
 using org.ohdsi.cdm.framework.desktop.Settings;
 using org.ohdsi.cdm.presentation.etl.Monitor;
 using System;
@@ -83,7 +84,8 @@ namespace org.ohdsi.cdm.presentation.etl
         {
             Console.WriteLine("Chunks creation in progress...");
             var chunkController = new ChunkController(chunksSchema);
-            chunkController.CreateChunks(10_000);
+            chunkController.CreateChunks(3_000);
+            //chunkController.CreateChunks(10_000);
         }
 
         public static void CopyVocabularyTables()
@@ -162,7 +164,7 @@ namespace org.ohdsi.cdm.presentation.etl
 
         public static void SaveMetadata(string sourceVersionId)
         {
-            var file = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}/metadata/metadata.0.txt.gz";
+            var file = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}/METADATA/METADATA.0.gz";
 
             List<MetadataOMOP> metadata = [];
             metadata.Add(new MetadataOMOP { Id = 0, MetadataConceptId = 0, Name = "NativeLoadId", ValueAsString = sourceVersionId, MetadataDate = DateTime.Now.Date });
@@ -197,7 +199,7 @@ namespace org.ohdsi.cdm.presentation.etl
             //var numberOfPartitions = GetNumberOfPartitions(chunksSchema);
             //Console.WriteLine("NumberOfPartitions=" + numberOfPartitions);
 
-            Parallel.ForEach(Settings.Current.Building.SourceQueryDefinitions, queryDefinition =>
+            Parallel.ForEach(Settings.Current.Building.SourceQueryDefinitions, new ParallelOptions { MaxDegreeOfParallelism = 1 },  queryDefinition =>
             {
                 if (queryDefinition.Providers != null) return;
                 if (queryDefinition.Locations != null) return;
@@ -217,6 +219,7 @@ namespace org.ohdsi.cdm.presentation.etl
                         Settings.Current.Building.PersonIdFieldName = queryDefinition.GetPersonIdFieldName();
                         Settings.Current.Building.PersonFileName = queryDefinition.FileName;
                     }
+
                     StoreMetadataToCloudStorage(queryDefinition, sql);
                 }
             });
@@ -260,7 +263,7 @@ namespace org.ohdsi.cdm.presentation.etl
                     using (var client = CloudStorageHelper.GetAwsTriggerStorageClient())
                     using (var tu = new TransferUtility(client))
                     {
-                        for (int i = 0; i < numberOfPartitions; i++)
+                        for (int i = 0; i <= numberOfPartitions; i++)
                         {
                             var slice = i.ToString("D4");
 
@@ -330,7 +333,6 @@ namespace org.ohdsi.cdm.presentation.etl
             Console.WriteLine("[Moving raw data] StoreMetadataToCloudStorage start - " + queryDefinition.FileName);
             var fileName = $"{Settings.Current.BuildingPrefix}/raw/metadata/{queryDefinition.FileName + ".txt"}";
 
-            //int? timeout = 10 * 60;
             using (var conn = SqlConnectionHelper.OpenOdbcConnection(Settings.Current.Building.SourceConnectionString))
             using (var c = Settings.Current.Building.SourceEngine.GetCommand(query, conn))
             {
@@ -346,7 +348,7 @@ namespace org.ohdsi.cdm.presentation.etl
         private static void SaveProvider()
         {
             Console.WriteLine("[Creating lookup] Loading providers...");
-            var file = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}/provider/provider.txt.gz";
+            var path = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}/provider/";
 
             var provider = Settings.Current.Building.SourceQueryDefinitions.FirstOrDefault(qd =>
                 qd.Providers != null && QueryDefinition.IsSuitable(qd.Query.Database, Settings.Current.Building.Vendor));
@@ -354,14 +356,22 @@ namespace org.ohdsi.cdm.presentation.etl
             if (provider == null)
                 return;
 
-            var providerConcepts = new List<Provider>();
+            var index = 0;
+            var providers = new List<Provider>();
             foreach (var entity in GetEntities<Provider>(provider, provider.Providers[0]))
             {
-                providerConcepts.Add(entity);
+                providers.Add(entity);
+
+                if (providers.Count == 250 * 1000)
+                {
+                    CloudStorageHelper.UploadFile(path + $"provider{index}.txt.gz", new ProviderDataReader(providers));
+                    index++;
+                    providers.Clear();
+                }
             }
 
-            if (providerConcepts.Count > 0)
-                CloudStorageHelper.UploadFile(file, new ProviderDataReader(providerConcepts));
+            if (providers.Count > 0)
+                CloudStorageHelper.UploadFile(path + $"provider{index}.txt.gz", new ProviderDataReader(providers));
 
             Console.WriteLine("[Creating lookup] Providers was loaded");
         }
@@ -370,7 +380,7 @@ namespace org.ohdsi.cdm.presentation.etl
         {
             Console.WriteLine("[Creating lookup] Loading care sites...");
 
-            var file = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}/care_site/care_site.txt.gz";
+            var path = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}/care_site/";
 
             var careSite = Settings.Current.Building.SourceQueryDefinitions.FirstOrDefault(qd =>
                 qd.CareSites != null && QueryDefinition.IsSuitable(qd.Query.Database, Settings.Current.Building.Vendor));
@@ -378,15 +388,23 @@ namespace org.ohdsi.cdm.presentation.etl
             if (careSite == null)
                 return;
 
-            var careSiteConcepts = new List<CareSite>();
+            var index = 0;
+            var careSites = new List<CareSite>();
             foreach (var entity in GetEntities<CareSite>(careSite, careSite.CareSites[0]))
             {
-                careSiteConcepts.Add(entity);
+                careSites.Add(entity);
+
+                if (careSites.Count == 250 * 1000)
+                {
+                    CloudStorageHelper.UploadFile(path + $"care_site{index}.txt.gz", new CareSiteDataReader(careSites));
+                    index++;
+                    careSites.Clear();
+                }
             }
 
-            if (careSiteConcepts.Count == 0)
+            if (careSites.Count == 0)
             {
-                careSiteConcepts.Add(new CareSite
+                careSites.Add(new CareSite
                 {
                     Id = 0,
                     LocationId = null,
@@ -395,7 +413,7 @@ namespace org.ohdsi.cdm.presentation.etl
                 });
             }
 
-            CloudStorageHelper.UploadFile(file, new CareSiteDataReader(careSiteConcepts));
+            CloudStorageHelper.UploadFile(path + $"care_site{index}.txt.gz", new CareSiteDataReader(careSites));
 
             Console.WriteLine("[Creating lookup] Care sites was loaded");
         }
@@ -404,7 +422,7 @@ namespace org.ohdsi.cdm.presentation.etl
         {
             Console.WriteLine("[Creating lookup] Loading locations...");
 
-            var file = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}/location/location.txt.gz";
+            var path = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}/location/";
 
             var location = Settings.Current.Building.SourceQueryDefinitions.FirstOrDefault(qd =>
                 qd.Locations != null && QueryDefinition.IsSuitable(qd.Query.Database, Settings.Current.Building.Vendor));
@@ -412,14 +430,22 @@ namespace org.ohdsi.cdm.presentation.etl
             if (location == null)
                 return;
 
-            var locationConcepts = new List<Location>();
+            var index = 0;
+            var locations = new List<Location>();
             foreach (var entity in GetEntities<Location>(location, location.Locations[0]))
             {
-                locationConcepts.Add(entity);
+                locations.Add(entity);
+
+                if (locations.Count == 250 * 1000)
+                {
+                    CloudStorageHelper.UploadFile(path + $"location{index}.txt.gz", new LocationDataReader(locations));
+                    index++;
+                    locations.Clear();
+                }
             }
 
-            if (locationConcepts.Count > 0)
-                CloudStorageHelper.UploadFile(file, new LocationDataReader(locationConcepts));
+            if (locations.Count > 0)
+                CloudStorageHelper.UploadFile(path + $"location{index}.txt.gz", new LocationDataReader(locations));
 
             Console.WriteLine("[Creating lookup] Locations was loaded " + Settings.Current.Building.Cdm);
         }
@@ -493,6 +519,7 @@ namespace org.ohdsi.cdm.presentation.etl
             {
                 using var connection = SqlConnectionHelper.OpenOdbcConnection(Settings.Current.Building.SourceConnectionString);
                 using var c = new OdbcCommand($"select max(PartitionId) from {chunksSchema}._chunks where chunkid={chunkId};", connection);
+                c.CommandTimeout = 900;
                 return Convert.ToInt32(c.ExecuteScalar());
             }
             // AWS
