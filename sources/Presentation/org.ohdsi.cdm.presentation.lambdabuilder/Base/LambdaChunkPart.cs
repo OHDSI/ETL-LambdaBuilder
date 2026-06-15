@@ -307,7 +307,9 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder.Base
                       _readyToSave.Persons.Max(p => p.PersonId) + "." + _readyToSave.Persons.Count;
 
                 saver.Save(_readyToSave, _chunkId, key);
-                _lastSavedPersonId = _readyToSave.Persons.Max(p => p.PersonId);
+                var max = _readyToSave.Persons.Max(p => p.PersonId);
+                if (!_lastSavedPersonId.HasValue || max > _lastSavedPersonId)
+                    _lastSavedPersonId = max;
             }
             else if (_readyToSave.Metadata.Count > 0)
             {
@@ -316,7 +318,9 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder.Base
                       _readyToSave.Metadata.Keys.Max() + "." + _readyToSave.Metadata.Count;
 
                 saver.Write(_readyToSave, _chunkId, key, "METADATA_TMP");
-                _lastSavedPersonId = _readyToSave.Metadata.Keys.Max();
+                var max = _readyToSave.Metadata.Keys.Max();
+                if (!_lastSavedPersonId.HasValue || max > _lastSavedPersonId)
+                    _lastSavedPersonId = max;
             }
 
             UpdateRestorePoint(localRestorePoint);
