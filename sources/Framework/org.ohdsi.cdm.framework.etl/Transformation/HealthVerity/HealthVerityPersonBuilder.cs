@@ -825,8 +825,9 @@ value.SourceRecordGuid != ent.SourceRecordGuid)
 
             FixStartEndDates(PayerPlanPeriodsRaw, null);
             var payerPlanPeriods = BuildPayerPlanPeriods([.. PayerPlanPeriodsRaw], visitOccurrences).ToArray();
-
             var death = BuildDeath([.. DeathRecords], visitOccurrences, observationPeriods);
+            // Update death_date to be the last day of the corresponding year and month
+            death?.StartDate = new(death.StartDate.Year, death.StartDate.Month, DateTime.DaysInMonth(death.StartDate.Year, death.StartDate.Month));
             death = UpdateDeath(death, person, observationPeriods);
 
             // Remove any death dates where the associated observation_period_end_date >= 365 days after the death.

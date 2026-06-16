@@ -118,7 +118,7 @@ namespace org.ohdsi.cdm.framework.desktop.Controllers
             }
             else if (Settings.Settings.Current.Building.SourceEngine.Database == Enums.Database.Redshift)
             {
-                query = $@"copy {_chunksSchema}._chunks from 's3://{Settings.Settings.Current.CloudStorageName}/{Settings.Settings.Current.BuildingPrefix}/_chunks' " +
+                query = $@"copy {_chunksSchema}._chunks from 's3://{Settings.Settings.Current.CloudStorageName}/{Settings.Settings.Current.BuildingPrefix}/chunks' " +
                     $@"credentials 'aws_access_key_id={Settings.Settings.Current.CloudStorageKey};aws_secret_access_key={Settings.Settings.Current.CloudStorageSecret}' " +
                     @"IGNOREBLANKLINES " +
                     @"DELIMITER ',' " +
