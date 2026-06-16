@@ -24,16 +24,16 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
             int fileIndex = 0;
             var name = fileName;
 
-            foreach (var stream in common.Helpers.CsvHelper.GetStreamCsv(reader, 10_000_000, compress, schemaOnly))
+            using (awsClient)
             {
-                if (fileIndex > 0)
-                    name = fileName.Replace(".gz", "." + fileIndex + ".gz");
-
-                using (stream)
+                foreach (var stream in common.Helpers.CsvHelper.GetStreamCsv(reader, 10_000_000, compress, schemaOnly))
                 {
-                    if (awsClient != null)
+                    if (fileIndex > 0)
+                        name = fileName.Replace(".gz", "." + fileIndex + ".gz");
+
+                    using (stream)
                     {
-                        using (awsClient)
+                        if (awsClient != null)
                         {
                             using var directoryTransferUtility = new TransferUtility(awsClient);
                             directoryTransferUtility.Upload(new TransferUtilityUploadRequest
@@ -45,16 +45,16 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
                                 InputStream = stream
                             });
                         }
-                    } 
-                    else if (azureClient != null)
-                    {
-                        azureClient.UploadBlob(name, stream);
-                    }
+                        else if (azureClient != null)
+                        {
+                            azureClient.UploadBlob(name, stream);
+                        }
 
-                    Console.WriteLine("BucketName=" + storageName);
-                    Console.WriteLine("Key=" + name);
+                        Console.WriteLine("BucketName=" + storageName);
+                        Console.WriteLine("Key=" + name);
+                    }
+                    fileIndex++;
                 }
-                fileIndex++;
             }
         }
 
