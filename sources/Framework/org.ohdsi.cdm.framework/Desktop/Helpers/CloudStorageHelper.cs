@@ -179,7 +179,7 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
                     });
         }
 
-        public static IEnumerable<string> GetSlices(int chunkId)
+        public static IEnumerable<int> GetSlices(int chunkId)
         {
             using var client = GetAwsStorageClient();
 
@@ -191,7 +191,7 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
             };
 
             Task<ListObjectsV2Response> task;
-            var slices = new HashSet<string>();
+            var slices = new HashSet<int>();
 
             do
             {
@@ -210,17 +210,17 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
                     var tableName = o.Key.Split('/')[4];
                     var fileName = o.Key.Split('/')[5];
 
-                    if (Settings.Settings.Current.Building.SourceEngine.Database == Enums.Database.Databricks)
-                    {
-                        slices.Add(fileName);
-                    }
-                    else
-                    {
-                        var tail = fileName[fileName.IndexOf("_part")..];
-                        var slice = fileName.Replace(tableName, "").Replace(tail, "");
+                    //if (Settings.Settings.Current.Building.SourceEngine.Database == Enums.Database.Databricks)
+                    //{
+                    //    slices.Add(int.Parse(fileName));
+                    //}
+                    //else
+                    //{
+                    var tail = fileName[fileName.IndexOf("_part")..];
+                    var slice = fileName.Replace(tableName, "").Replace(tail, "");
 
-                        slices.Add(slice);
-                    }
+                    slices.Add(int.Parse(slice));
+                    //}
                 }
 
                 request.ContinuationToken = task.Result.NextContinuationToken;

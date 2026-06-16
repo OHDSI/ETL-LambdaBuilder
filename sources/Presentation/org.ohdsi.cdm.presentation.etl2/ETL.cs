@@ -525,11 +525,7 @@ namespace org.ohdsi.cdm.presentation.etl
             // AWS
             else
             {
-                return CloudStorageHelper.GetSlices(chunkId).Count();
-                //using var connection = SqlConnectionHelper.OpenOdbcConnection(Settings.Current.Building.SourceConnectionString);
-                //using var c = new OdbcCommand("SELECT count(*) FROM stv_slices;", connection);
-
-                //return Convert.ToInt32(c.ExecuteScalar());
+                return CloudStorageHelper.GetSlices(chunkId).Max();
             }
         }
 
