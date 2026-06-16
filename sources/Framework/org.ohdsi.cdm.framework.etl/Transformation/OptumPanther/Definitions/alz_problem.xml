@@ -5,7 +5,7 @@
 		encid,
 		case
 		when text_date ilike 'yy%' or text_date ilike '%mm%' or text_date ilike '%dd' or text_date = '' or text_date is null then note_date
-		else to_date(text_date, 'YYYYMMDD', FALSE)
+		else to_date(text_date, 'yyyyMMdd')
 		end as start_date,
 		section note_title,
 		concat('problem:',problem) note_text,
@@ -19,10 +19,11 @@
 		severity,
 		chronicity,
 		stage,
-		change
+		change,
+		ch.PartitionId
 		FROM {sc}.alz_problem l
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
-		order by 1
+		order by ch.PartitionId, 1
 	</Query>
 	<Note>
 		<NoteDefinition>

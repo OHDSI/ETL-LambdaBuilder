@@ -24,16 +24,16 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
             int fileIndex = 0;
             var name = fileName;
 
-            foreach (var stream in common.Helpers.CsvHelper.GetStreamCsv(reader, 10_000_000, compress, schemaOnly))
+            using (awsClient)
             {
-                if (fileIndex > 0)
-                    name = fileName.Replace(".gz", "." + fileIndex + ".gz");
-
-                using (stream)
+                foreach (var stream in common.Helpers.CsvHelper.GetStreamCsv(reader, 10_000_000, compress, schemaOnly))
                 {
-                    if (awsClient != null)
+                    if (fileIndex > 0)
+                        name = fileName.Replace(".gz", "." + fileIndex + ".gz");
+
+                    using (stream)
                     {
-                        using (awsClient)
+                        if (awsClient != null)
                         {
                             using var directoryTransferUtility = new TransferUtility(awsClient);
                             directoryTransferUtility.Upload(new TransferUtilityUploadRequest
@@ -45,16 +45,16 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
                                 InputStream = stream
                             });
                         }
-                    } 
-                    else if (azureClient != null)
-                    {
-                        azureClient.UploadBlob(name, stream);
-                    }
+                        else if (azureClient != null)
+                        {
+                            azureClient.UploadBlob(name, stream);
+                        }
 
-                    Console.WriteLine("BucketName=" + storageName);
-                    Console.WriteLine("Key=" + name);
+                        Console.WriteLine("BucketName=" + storageName);
+                        Console.WriteLine("Key=" + name);
+                    }
+                    fileIndex++;
                 }
-                fileIndex++;
             }
         }
 
@@ -78,10 +78,13 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
                         task = awsClient.ListObjectsV2Async(request);
                         task.Wait();
 
-                        foreach (var o in task.Result.S3Objects)
+                        if (task.Result.S3Objects != null)
                         {
-                            if(o.LastModified.HasValue)
-                                yield return new Tuple<string, DateTime>(o.Key, o.LastModified.Value);
+                            foreach (var o in task.Result.S3Objects)
+                            {
+                                if (o.LastModified.HasValue)
+                                    yield return new Tuple<string, DateTime>(o.Key, o.LastModified.Value);
+                            }
                         }
 
                         request.ContinuationToken = task.Result.NextContinuationToken;
@@ -176,7 +179,7 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
                     });
         }
 
-        public static IEnumerable<string> GetSlices(int chunkId)
+        public static IEnumerable<int> GetSlices(int chunkId)
         {
             using var client = GetAwsStorageClient();
 
@@ -188,7 +191,7 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
             };
 
             Task<ListObjectsV2Response> task;
-            var slices = new HashSet<string>();
+            var slices = new HashSet<int>();
 
             do
             {
@@ -207,17 +210,17 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
                     var tableName = o.Key.Split('/')[4];
                     var fileName = o.Key.Split('/')[5];
 
-                    if (Settings.Settings.Current.Building.SourceEngine.Database == Enums.Database.Databricks)
-                    {
-                        slices.Add(fileName);
-                    }
-                    else
-                    {
-                        var tail = fileName[fileName.IndexOf("_part")..];
-                        var slice = fileName.Replace(tableName, "").Replace(tail, "");
+                    //if (Settings.Settings.Current.Building.SourceEngine.Database == Enums.Database.Databricks)
+                    //{
+                    //    slices.Add(int.Parse(fileName));
+                    //}
+                    //else
+                    //{
+                    var tail = fileName[fileName.IndexOf("_part")..];
+                    var slice = fileName.Replace(tableName, "").Replace(tail, "");
 
-                        slices.Add(slice);
-                    }
+                    slices.Add(int.Parse(slice));
+                    //}
                 }
 
                 request.ContinuationToken = task.Result.NextContinuationToken;

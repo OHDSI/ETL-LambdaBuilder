@@ -1,9 +1,8 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
+using nietras.SeparatedValues;
 using org.ohdsi.cdm.framework.common.Extensions;
-using org.ohdsi.cdm.framework.common.Helpers;
 using System.IO.Compression;
-using System.Text;
 
 namespace org.ohdsi.cdm.framework.common.Lookups
 {
@@ -53,7 +52,7 @@ namespace org.ohdsi.cdm.framework.common.Lookups
                 return null;
 
             var v = value.Trim();
-            if (v == "\0")
+            if (v == "\\N")
                 return null;
 
             return string.Intern(v);
@@ -64,7 +63,7 @@ namespace org.ohdsi.cdm.framework.common.Lookups
             if (string.IsNullOrEmpty(value))
                 return true;
 
-            if (value.Trim() == "\0")
+            if (value.Trim() == "\\N")
                 return true;
 
             return false;
@@ -72,7 +71,6 @@ namespace org.ohdsi.cdm.framework.common.Lookups
 
         public void Fill(AmazonS3Client client, string bucket, string prefix)
         {
-            var spliter = new StringSplitter(5);
             var result = new List<string>();
 
             Console.WriteLine(bucket);
@@ -99,95 +97,100 @@ namespace org.ohdsi.cdm.framework.common.Lookups
             using var responseStream = getObject.Result.ResponseStream;
             using var bufferedStream = new BufferedStream(responseStream);
             using var gzipStream = new GZipStream(bufferedStream, CompressionMode.Decompress);
-            using var reader = new StreamReader(gzipStream, Encoding.Default);
-            string line;
-
-            while ((line = reader.ReadLine()) != null)
+            using var reader = Sep.Reader(o => o with { 
+                HasHeader = false, 
+                Trim = SepTrim.All,
+                Unescape = true
+            }).From(gzipStream);
+            foreach (var row in reader)
             {
-                if (!string.IsNullOrEmpty(line))
+
+                var sourceCode = GetStringValue(row[0].ToString());
+
+                if (string.IsNullOrEmpty(sourceCode))
+                    continue;
+
+                if (!_lookup.ContainsKey(sourceCode))
+                    _lookup.Add(sourceCode, []);
+
+                long conceptId = -1;
+                if (row[1].TryParse<long>(out var cptId))
+                    conceptId = cptId;
+
+                if (!_lookup[sourceCode].TryGetValue(conceptId, out LookupValue value))
                 {
-                    //spliter.SafeSplit(line, '\t');
-                    spliter.SafeSplit(line, ',');
-                    var sourceCode = GetStringValue(spliter.Results[0]);
+                    if (row.ColCount < 3 || !row[3].TryParse<DateTime>(out var validStartDate))
+                        validStartDate = DateTime.MinValue;
 
-                    if (string.IsNullOrEmpty(sourceCode))
-                        continue;
+                    if (row.ColCount < 4 || !row[4].TryParse<DateTime>(out var validEndDate))
+                        validEndDate = DateTime.MaxValue;
 
-                    if (!_lookup.ContainsKey(sourceCode))
-                        _lookup.Add(sourceCode, []);
-
-                    long conceptId = -1;
-                    if (long.TryParse(spliter.Results[1], out var cptId))
-                        conceptId = cptId;
-
-                    if (!_lookup[sourceCode].TryGetValue(conceptId, out LookupValue value))
+                    string domain = null;
+                    if (row.ColCount != 2)
                     {
-                        if (!DateTime.TryParse(spliter.Results[3], out var validStartDate))
-                            validStartDate = DateTime.MinValue;
-
-                        if (!DateTime.TryParse(spliter.Results[4], out var validEndDate))
-                            validEndDate = DateTime.MaxValue;
-
-                        var lv = new LookupValue
-                        {
-                            ConceptId = conceptId,
-                            SourceCode = sourceCode,
-                            Domain = GetStringValue(spliter.Results[2]),
-                            ValidStartDate = validStartDate,
-                            ValidEndDate = validEndDate
-                        };
-
-                        value = lv;
-                        _lookup[sourceCode].Add(conceptId, value);
+                        domain = GetStringValue(row[2].ToString());
                     }
 
-                    if (spliter.Results.Length > 5)
+                    var lv = new LookupValue
                     {
-                        var sourceConceptId = IsNullOrEmpty(spliter.Results[6])
-                               ? 0
-                               : long.Parse(spliter.Results[6]);
+                        ConceptId = conceptId,
+                        SourceCode = sourceCode,
+                        Domain = domain,
+                        ValidStartDate = validStartDate,
+                        ValidEndDate = validEndDate
+                    };
 
-                        var sourceValidStartDate = DateTime.MinValue;
-                        var sourceValidEndDate = DateTime.MaxValue;
-                        var invalidReason = char.MinValue;
+                    value = lv;
+                    _lookup[sourceCode].Add(conceptId, value);
+                }
 
-                        if (spliter.Results.Length > 6)
+                if (row.ColCount > 6)
+                {
+                    var sourceConceptId = IsNullOrEmpty(row[6].ToString())
+                           ? 0
+                           : row[6].Parse<long>();
+
+                    var sourceValidStartDate = DateTime.MinValue;
+                    var sourceValidEndDate = DateTime.MaxValue;
+                    var invalidReason = char.MinValue;
+
+                    if (row.ColCount > 7)
+                    {
+                        row[7].TryParse<DateTime>(out sourceValidStartDate);
+                        row[8].TryParse<DateTime>(out sourceValidEndDate);
+                    }
+
+                    if (row.ColCount > 11)
+                    {
+                        if (!IsNullOrEmpty(row[11].ToString()))
                         {
-                            DateTime.TryParse(spliter.Results[7], out sourceValidStartDate);
-                            DateTime.TryParse(spliter.Results[8], out sourceValidEndDate);
-                        }
-
-                        if (spliter.Results.Length > 11)
-                        {
-                            if (!IsNullOrEmpty(spliter.Results[11]))
-                                invalidReason = spliter.Results[11][0];
-                        }
-
-                        value.SourceConcepts.Add(new SourceConcepts
-                        {
-                            ConceptId = sourceConceptId,
-                            ValidStartDate = sourceValidStartDate,
-                            ValidEndDate = sourceValidEndDate,
-                            InvalidReason = invalidReason
-                        });
-
-                        if (!IsNullOrEmpty(spliter.Results[9]) &&
-                            long.TryParse(spliter.Results[9], out var ingredient))
-                        {
-                            value.Ingredients ??= [];
-                            value.Ingredients.Add(ingredient);
+                            invalidReason = row[11].Span[0];
                         }
                     }
 
-                     if (spliter.Results.Length > 10)
+                    value.SourceConcepts.Add(new SourceConcepts
                     {
+                        ConceptId = sourceConceptId,
+                        ValidStartDate = sourceValidStartDate,
+                        ValidEndDate = sourceValidEndDate,
+                        InvalidReason = invalidReason
+                    });
 
-                        if (!IsNullOrEmpty(spliter.Results[10]) &&
-                           long.TryParse(spliter.Results[10], out var valueAsConceptId))
-                        {
-                            value.ValueAsConceptIds ??= [];
-                            value.ValueAsConceptIds.Add(valueAsConceptId);
-                        }
+                    if (!IsNullOrEmpty(row[9].ToString()) &&
+                       row[9].TryParse<long>(out var ingredient))
+                    {
+                        value.Ingredients ??= [];
+                        value.Ingredients.Add(ingredient);
+                    }
+                }
+
+                if (row.ColCount > 10)
+                {
+                    if (!IsNullOrEmpty(row[10].ToString()) &&
+                        row[10].TryParse<long>(out var valueAsConceptId))
+                    {
+                        value.ValueAsConceptIds ??= [];
+                        value.ValueAsConceptIds.Add(valueAsConceptId);
                     }
                 }
             }
@@ -206,7 +209,7 @@ namespace org.ohdsi.cdm.framework.common.Lookups
             _lookup.TrimExcess();
 
             GC.Collect();
-        }
+        }      
 
         public IEnumerable<LookupValue> LookupValues(string sourceCode, DateTime? eventDate)
         {

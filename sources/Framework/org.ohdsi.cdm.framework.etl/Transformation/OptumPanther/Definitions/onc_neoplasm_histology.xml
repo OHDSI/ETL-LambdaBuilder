@@ -8,11 +8,11 @@
 		|| coalesce (histology, 'neoplasm')), ' +',' ')
 		end as source_concept_name,
 		case
-		when lower(h.neoplasm_dx_date_type) = 'exact' then to_date(h.neoplasm_dx_date, 'YYYYMMDD')
+		when lower(h.neoplasm_dx_date_type) = 'exact' then to_date(h.neoplasm_dx_date, 'yyyyMMdd')
 		when left(h.neoplasm_dx_date, 4) != 'yyyy' and right(h.neoplasm_dx_date, 4) = 'mmdd' and cast(EXTRACT(YEAR from h.note_date) as varchar(4)) = left(h.neoplasm_dx_date, 4) then h.note_date
-		when left(h.neoplasm_dx_date, 4) != 'yyyy' and right(h.neoplasm_dx_date, 4) = 'mmdd' then to_date(replace(h.neoplasm_dx_date, 'mmdd', '0630'), 'YYYYMMDD')
+		when left(h.neoplasm_dx_date, 4) != 'yyyy' and right(h.neoplasm_dx_date, 4) = 'mmdd' then to_date(replace(h.neoplasm_dx_date, 'mmdd', '0630'), 'yyyyMMdd')
 		when left(h.neoplasm_dx_date, 4) != 'yyyy' and right(h.neoplasm_dx_date, 2) = 'dd' and cast(EXTRACT(YEAR from h.note_date) as varchar(4)) || cast(EXTRACT(MONTH from h.note_date) as varchar(2)) = left(h.neoplasm_dx_date, 6) then h.note_date
-		when left(h.neoplasm_dx_date, 4) != 'yyyy' and right(h.neoplasm_dx_date, 2) = 'dd' then to_date(replace(h.neoplasm_dx_date, 'dd', '15'), 'YYYYMMDD')
+		when left(h.neoplasm_dx_date, 4) != 'yyyy' and right(h.neoplasm_dx_date, 2) = 'dd' then to_date(replace(h.neoplasm_dx_date, 'dd', '15'), 'yyyyMMdd')
 		else h.note_date
 		end as date,
 		h.neoplasm_histology_key,

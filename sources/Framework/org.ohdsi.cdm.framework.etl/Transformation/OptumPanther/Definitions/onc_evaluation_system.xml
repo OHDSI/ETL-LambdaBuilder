@@ -11,7 +11,7 @@
 		system_name || ' grade nuclear ' || grade_nuclear as source2,
 		system_name || ' grade mitotic ' || grade_mitotic as source3,
 		null as source4,
-		null as neoplasm_histology_key,
+		cast(null as string) as neoplasm_histology_key,
 		ch.PartitionId
 		FROM {sc}.onc_evaluation_system l
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
@@ -28,7 +28,7 @@
 		system_name || ' grade secondary ' || grade_secondary as source2,
 		system_name || ' grade tertiary '  || grade_tertiary as source3,
 		system_name || ' result numeric '  || result_numeric as source4,
-		null as neoplasm_histology_key,
+		cast(null as string) as neoplasm_histology_key,
 		ch.PartitionId
 		FROM {sc}.onc_evaluation_system l
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
@@ -45,7 +45,7 @@
 		null as source2,
 		null as source3,
 		null as source4,
-		null as neoplasm_histology_key,
+		cast(null as string) as neoplasm_histology_key,
 		ch.PartitionId
 		FROM {sc}.onc_evaluation_system l
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
@@ -69,7 +69,7 @@
 		null as source2,
 		null as source3,
 		null as source4,
-		null as neoplasm_histology_key,
+		cast(null as string) as neoplasm_histology_key,
 		ch.PartitionId
 		FROM {sc}.onc_evaluation_system l
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
@@ -91,7 +91,7 @@
 		source4,
 		neoplasm_histology_key,
 		1147127 as meas_event_field_concept_id,
-		null as unit,
+		cast(null as string) as unit,
 		PartitionId
 		from a
 

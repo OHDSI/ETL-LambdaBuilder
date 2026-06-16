@@ -124,12 +124,15 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
             using var listObjects = client.ListObjectsV2Async(request);
             listObjects.Wait();
 
-            foreach (var entry in listObjects.Result.S3Objects)
+            if (listObjects.Result.S3Objects != null)
             {
-                if (!entry.Key.EndsWith("csv.gz"))
-                    continue;
+                foreach (var entry in listObjects.Result.S3Objects)
+                {
+                    if (!entry.Key.EndsWith("csv.gz"))
+                        continue;
 
-                _files.Add(int.Parse(entry.Key.Split('-')[1]), entry.Key);
+                    _files.Add(int.Parse(entry.Key.Split('-')[1]), entry.Key);
+                }
             }
         }
 

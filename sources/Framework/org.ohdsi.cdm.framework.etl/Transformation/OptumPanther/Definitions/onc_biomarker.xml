@@ -6,10 +6,10 @@
 		numeric_result,
 		note_date,
 		trim(coalesce(numeric_result, '') ||' '|| coalesce (narrative_result, '') ||' '|| coalesce(modifier_narrative, '')) as value_source_value,
-		null neoplasm_histology_key,
+		cast(null as string) neoplasm_histology_key,
 		1147127 as meas_event_field_concept_id,
 		1 as fake,
-		null as unit,
+		cast(null as string) as unit,
 		ch.PartitionId
 		FROM {sc}.onc_biomarker l
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE

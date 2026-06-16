@@ -24,10 +24,11 @@
 		when system_name = 'MOCA Blind' then 44808666
 		when system_name = 'Minicog' then 37017073
 		when system_name = 'SLUMS' then 605634
-		end as concept_id
+		end as concept_id,
+		ch.PartitionId
 		FROM {sc}.alz_assessment l
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND l.ptid = ch.PERSON_SOURCE_VALUE
-		order by 1
+		order by ch.PartitionId, 1
 	</Query>
 	<Measurement>
 		<MeasurementDefinition>

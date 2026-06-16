@@ -301,6 +301,7 @@
     <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.8" />
     <PackageReference Include="MySqlConnector" Version="2.5.0" />
     <PackageReference Include="Npgsql" Version="10.0.2" />
+    <PackageReference Include="Sep" Version="0.14.1" />
     <PackageReference Include="Spectre.Console" Version="0.55.2" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.8" />
     <PackageReference Include="System.Data.Odbc" Version="10.0.8" />
