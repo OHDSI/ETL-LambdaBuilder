@@ -43,6 +43,8 @@ namespace org.ohdsi.cdm.presentation.etl
             bool skipCdmsource = true;
             string chunkSchema = null;
 
+            int functionChunkSize = 0;
+
             var r = Parser.Default.ParseArguments<Options>(arguments)
                   .WithParsed<Options>(o =>
                   {
@@ -64,6 +66,7 @@ namespace org.ohdsi.cdm.presentation.etl
                       skipCdmsource = o.CdmSource.Value;
                       resumeChunkCreation = o.ResumeChunk.Value;
                       chunkSchema = o.ChunkSchema;
+                      functionChunkSize = o.FunctionChunkSize;
                   });
 
             if (r.Tag.ToString() != "Parsed")
@@ -236,7 +239,7 @@ namespace org.ohdsi.cdm.presentation.etl
                     {
                         if (!resumeChunkCreation)
                         {
-                            ETL.CreateChunks(chunkSchema);
+                            ETL.CreateChunks(chunkSchema, functionChunkSize);
                         }
                         else
                         {

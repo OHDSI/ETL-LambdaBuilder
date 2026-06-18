@@ -80,12 +80,11 @@ namespace org.ohdsi.cdm.presentation.etl
 
             Console.WriteLine("Vocabulary was saved to CloudStorage");
         }
-        public static void CreateChunks(string chunksSchema)
+        public static void CreateChunks(string chunksSchema, int functionChunkSize)
         {
             Console.WriteLine("Chunks creation in progress...");
             var chunkController = new ChunkController(chunksSchema);
-            chunkController.CreateChunks(3_000);
-            //chunkController.CreateChunks(10_000);
+            chunkController.CreateChunks(functionChunkSize);
         }
 
         public static void CopyVocabularyTables()

@@ -1,4 +1,5 @@
 ﻿using CommandLine;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace org.ohdsi.cdm.presentation.etl
 {
@@ -45,6 +46,9 @@ namespace org.ohdsi.cdm.presentation.etl
 
         [Option("batch")]
         public int BatchSize { get; set; }
+
+        [Option("function_batch", Required = true)]
+        public int FunctionChunkSize { get; set; }
 
         [Option("vocabularyschema")]
         public string VocabularySchema { get; set; }
