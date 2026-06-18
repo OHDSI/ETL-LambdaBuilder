@@ -49,6 +49,9 @@ namespace org.ohdsi.cdm.presentation.etl
         [Option("vocabularyschema")]
         public string VocabularySchema { get; set; }
 
+        [Option("chunkschema", Required = true)]
+        public string ChunkSchema { get; set; }
+
         [Option("versionid")]
         public int VersionId { get; set; }
 
