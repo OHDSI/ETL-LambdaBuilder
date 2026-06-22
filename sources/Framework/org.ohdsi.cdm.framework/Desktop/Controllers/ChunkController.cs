@@ -37,7 +37,7 @@ namespace org.ohdsi.cdm.framework.desktop.Controllers
             _dbChunk.ChunkCreated(chunkId, buildingId);
         }
 
-        public void CreateChunks(int partitionSize)
+        public void CreateChunks(int functionChunkSize)
         {
             Console.WriteLine("Generating chunk ids...");
             _dbChunk.ClearChunks(Settings.Settings.Current.Building.Id.Value);
@@ -58,7 +58,7 @@ namespace org.ohdsi.cdm.framework.desktop.Controllers
                     _dbChunk.AddChunk(chunkId, Settings.Settings.Current.Building.Id.Value);
                     foreach (var item in chunk)
                     {
-                        if (cnt == partitionSize)
+                        if (cnt == functionChunkSize)
                         {
                             cnt = 0;
                             partitionId++;

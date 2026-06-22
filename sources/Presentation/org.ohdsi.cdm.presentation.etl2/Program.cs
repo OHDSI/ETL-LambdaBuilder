@@ -1,6 +1,4 @@
-﻿using Amazon.S3;
-using Amazon.S3.Model;
-using CommandLine;
+﻿using CommandLine;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
 using org.ohdsi.cdm.framework.common.Enums;
@@ -43,6 +41,9 @@ namespace org.ohdsi.cdm.presentation.etl
             bool createNewBuildingId = true;
 
             bool skipCdmsource = true;
+            string chunkSchema = null;
+
+            int functionChunkSize = 0;
 
             var r = Parser.Default.ParseArguments<Options>(arguments)
                   .WithParsed<Options>(o =>
@@ -64,6 +65,8 @@ namespace org.ohdsi.cdm.presentation.etl
                       createNewBuildingId = o.CreateNewBuildingId.Value;
                       skipCdmsource = o.CdmSource.Value;
                       resumeChunkCreation = o.ResumeChunk.Value;
+                      chunkSchema = o.ChunkSchema;
+                      functionChunkSize = o.FunctionChunkSize;
                   });
 
             if (r.Tag.ToString() != "Parsed")
@@ -93,19 +96,6 @@ namespace org.ohdsi.cdm.presentation.etl
                 }
 
                 Console.WriteLine("builder: local file (builder.db)");
-
-
-                //var s3MessagesAccessKeyId = configuration.GetSection("AppSettings")["s3_messages_access_key_id"];
-                //var s3MessagesSecretAccessKey = configuration.GetSection("AppSettings")["s3_messages_secret_access_key"];
-
-                //var msgBucket = configuration.GetSection("AppSettings")["messages_bucket"];
-                //var msgBucketMerge = configuration.GetSection("AppSettings")["messages_bucket_merge"];
-
-                //Settings.Current.MessageS3AwsAccessKeyId = s3MessagesAccessKeyId;
-                //Settings.Current.MessageS3AwsSecretAccessKey = s3MessagesSecretAccessKey;
-                //Settings.Current.MessageBucket = msgBucket;
-
-                //var rawFolder = configuration.GetSection("AppSettings")["rawFolder"];
 
                 Settings.Initialize(builderConnectionString, Environment.MachineName);
 
@@ -212,12 +202,6 @@ namespace org.ohdsi.cdm.presentation.etl
                 Console.WriteLine($"BuildingId:{Settings.Current.Building.Id}");
                 Console.WriteLine("building settings - initialized successfully");
 
-
-                //var lambdaUtility = new LambdaUtility(Settings.Current.CloudStorageKey,
-                //    Settings.Current.CloudStorageSecret,
-                //    s3MessagesAccessKeyId, s3MessagesSecretAccessKey, msgBucket, Settings.Current.CloudStorageName,
-                //    msgBucketMerge, rawFolder);
-
                 if (skipCdmsource)
                 {
                     Console.WriteLine("Update CDM_SOURCE table step was skipped");
@@ -253,17 +237,16 @@ namespace org.ohdsi.cdm.presentation.etl
                     }
                     else
                     {
-                        var chunksSchema = configuration.GetSection("AppSettings")["chunksSchema"];
                         if (!resumeChunkCreation)
                         {
-                            ETL.CreateChunks(chunksSchema);
+                            ETL.CreateChunks(chunkSchema, functionChunkSize);
                         }
                         else
                         {
                             Console.WriteLine("Chunk creation resumed");
                         }
 
-                        ETL.MoveRawDataCloudStorage(chunksSchema, sourceSchema);
+                        ETL.MoveRawDataCloudStorage(chunkSchema, sourceSchema);
                     }
 
                     if (skipVocabularyCopying)
