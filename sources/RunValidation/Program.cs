@@ -99,30 +99,13 @@ namespace RunValidation
 
             try
             {
-                AnsiConsole.WriteLine($"Validation. Processed ChunkIds: ");
-                bool isFirstChunkIdMessage = true;
-
-                var consoleLock = new object();
+                AnsiConsole.WriteLine($"Validation in progress...");
 
                 var validation = new Validation(
                     _awsAccessKeyId,
                     _awsSecretAccessKey,
                     _bucket,
                     _cdmFolder);
-
-                validation.ProgressChanged += (_, eventArgs) =>
-                {
-                    lock (consoleLock)
-                    {
-                        if (isFirstChunkIdMessage)
-                        {
-                            AnsiConsole.Write(eventArgs.LastProcessedChunkId);
-                            isFirstChunkIdMessage = false;
-                        }
-                        else
-                            AnsiConsole.Write(", "+ eventArgs.LastProcessedChunkId);
-                    }
-                };
 
                 var result = validation.ValidateBuildingId(
                     vendor,

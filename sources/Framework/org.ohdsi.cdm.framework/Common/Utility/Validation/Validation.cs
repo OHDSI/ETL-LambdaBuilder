@@ -12,106 +12,6 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
 {
     public class Validation
     {
-        #region ValidationProgressChangedEvent
-
-        public sealed class ValidationProgressChangedEventArgs : EventArgs
-        {
-            public ValidationProgressChangedEventArgs(
-                int lastProcessedChunkId,
-                int processedChunksCount,
-                int totalChunksCount)
-            {
-                LastProcessedChunkId = lastProcessedChunkId;
-                ProcessedChunksCount = processedChunksCount;
-                TotalChunksCount = totalChunksCount;
-            }
-
-            public int LastProcessedChunkId { get; }
-
-            public int ProcessedChunksCount { get; }
-
-            public int TotalChunksCount { get; }
-        }
-
-        public event EventHandler<ValidationProgressChangedEventArgs>? ProgressChanged;
-
-        private readonly object _progressLock = new object();
-
-        private int _lastProcessedChunkId;
-        private int _processedChunksCount;
-        private int _totalChunksCount;
-
-        public int LastProcessedChunkId
-        {
-            get
-            {
-                lock (_progressLock)
-                {
-                    return _lastProcessedChunkId;
-                }
-            }
-        }
-
-        public int ProcessedChunksCount
-        {
-            get
-            {
-                lock (_progressLock)
-                {
-                    return _processedChunksCount;
-                }
-            }
-        }
-
-        public int TotalChunksCount
-        {
-            get
-            {
-                lock (_progressLock)
-                {
-                    return _totalChunksCount;
-                }
-            }
-        }
-
-        private void SetTotalChunksCount(int totalChunksCount, bool showProgress = true)
-        {
-            ValidationProgressChangedEventArgs args;
-
-            lock (_progressLock)
-            {
-                _totalChunksCount = totalChunksCount;
-
-                args = new ValidationProgressChangedEventArgs(
-                    _lastProcessedChunkId,
-                    _processedChunksCount,
-                    _totalChunksCount);
-            }
-
-            if (showProgress)
-                ProgressChanged?.Invoke(this, args);
-        }
-
-        private void MarkChunkProcessed(int chunkId)
-        {
-            ValidationProgressChangedEventArgs args;
-
-            lock (_progressLock)
-            {
-                _lastProcessedChunkId = chunkId;
-                _processedChunksCount++;
-
-                args = new ValidationProgressChangedEventArgs(
-                    _lastProcessedChunkId,
-                    _processedChunksCount,
-                    _totalChunksCount);
-            }
-
-            ProgressChanged?.Invoke(this, args);
-        }
-
-        #endregion
-
         private const int MaxReadAttempts = 3;
 
         private static readonly char[] ChunkFileSeparators = new[] { ',', ' ', '\t' };
@@ -148,7 +48,6 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
                 .ToList();
 
             var s3ChunkObjects = GetS3ChunkObjects(vendor, buildingId);
-            SetTotalChunksCount(s3ChunkObjects.Count, false);
             var chunkFilesSkipped = 0;
 
             var parallelOptions = new ParallelOptions
@@ -439,8 +338,6 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
 
             var counts = CalculatePersonValidationCounts(chunkFilePersons.Values);
             var personProblems = GetPersonProblems(chunkFilePersons.Values).ToList();
-
-            MarkChunkProcessed(chunkId);
 
             timer.Stop();
 
@@ -829,17 +726,17 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
             var materialized = persons.ToList();
 
             var correct = materialized.Count(s =>
-                s.InPersonFilesCount + s.InMetadataFilesCount == 1 &&
-                s.SliceId != null);
-
-            var withoutSliceId = materialized.Count(s =>
-                s.SliceId == null);
+                s.InPersonFilesCount + s.InMetadataFilesCount == 1 
+                && s.SliceId != null);
 
             var duplicated = materialized.Count(s =>
                 s.InPersonFilesCount + s.InMetadataFilesCount > 1);
 
             var missing = materialized.Count(s =>
                 s.InPersonFilesCount + s.InMetadataFilesCount == 0);
+
+            var withoutSliceId = materialized.Count(s =>
+                s.SliceId == null);
 
             return new PersonValidationCounts(
                 materialized.Count,
@@ -853,7 +750,9 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
         {
             foreach (var person in persons)
             {
-                if (person.SliceId == null)
+                if (person.SliceId == null 
+                    //avoid single personId display for 2 error categories
+                    && !(person.InPersonFilesCount + person.InMetadataFilesCount == 0))
                 {
                     yield return new PersonValidationProblem(
                         person.PersonId,
