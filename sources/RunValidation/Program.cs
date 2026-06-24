@@ -64,20 +64,6 @@ namespace RunValidation
             }
         }
 
-        private sealed class ChannelValidationReporter : IValidationReporter
-        {
-            private readonly ChannelWriter<ValidationProgressEvent> _writer;
-
-            public ChannelValidationReporter(ChannelWriter<ValidationProgressEvent> writer)
-            {
-                _writer = writer;
-            }
-
-            public void Report(ValidationProgressEvent progressEvent)
-            {
-                _writer.TryWrite(progressEvent);
-            }
-        }
 
         private static string _awsAccessKeyId => ConfigurationManager.AppSettings["awsAccessKeyId"] ?? throw new NullReferenceException("awsAccessKeyId");
         private static string _awsSecretAccessKey => ConfigurationManager.AppSettings["awsSecretAccessKey"] ?? throw new NullReferenceException("awsSecretAccessKey");
@@ -91,6 +77,7 @@ namespace RunValidation
                 .WithNotParsed(HandleParseError);
 
             GC.Collect(GC.MaxGeneration, GCCollectionMode.Aggressive, true, true);
+            Console.WriteLine("Press Enter to exit.");
             Console.ReadLine();
         }
 
@@ -112,249 +99,74 @@ namespace RunValidation
 
             try
             {
-                await RunValidationWithProgressAsync(reporter =>
-                {
-                    var validation = new Validation(
-                        _awsAccessKeyId,
-                        _awsSecretAccessKey,
-                        _bucket,
-                        _cdmFolder,
-                        reporter);
+                AnsiConsole.WriteLine($"Validation. Processed ChunkIds: ");
+                bool isFirstChunkIdMessage = true;
 
-                    if (opts.PersonId.HasValue)
+                var consoleLock = new object();
+
+                var validation = new Validation(
+                    _awsAccessKeyId,
+                    _awsSecretAccessKey,
+                    _bucket,
+                    _cdmFolder);
+
+                validation.ProgressChanged += (_, eventArgs) =>
+                {
+                    lock (consoleLock)
                     {
-                        validation.ValidatePersonIdInSlice(
-                            vendor,
-                            opts.BuildingId,
-                            chunks.FirstOrDefault(),
-                            opts.PersonId.Value);
+                        if (isFirstChunkIdMessage)
+                        {
+                            AnsiConsole.Write(eventArgs.LastProcessedChunkId);
+                            isFirstChunkIdMessage = false;
+                        }
+                        else
+                            AnsiConsole.Write(", "+ eventArgs.LastProcessedChunkId);
                     }
-                    else
+                };
+
+                var result = validation.ValidateBuildingId(
+                    vendor,
+                    opts.BuildingId,
+                    chunks);
+
+                AnsiConsole.WriteLine("\r\n\r\n");
+
+                AnsiConsole.WriteLine($"BuildingId: {result.BuildingId}");
+                AnsiConsole.WriteLine($"IsValid: {result.IsValid}");
+                AnsiConsole.WriteLine($"Chunks found: {result.TotalChunkFilesFound}");
+                AnsiConsole.WriteLine($"Chunks validated: {result.ChunkFilesValidated}");
+                AnsiConsole.WriteLine($"Chunks skipped: {result.ChunkFilesSkipped}");
+                AnsiConsole.WriteLine($"Chunks with errors: {result.ChunksWithErrors}");
+                AnsiConsole.WriteLine($"Persons: {result.TotalPersons}");
+                AnsiConsole.WriteLine($"Elapsed: {result.Elapsed}");
+
+                foreach (var chunkResult in result.ChunkResults.Where(c => !c.IsValid))
+                {
+                    AnsiConsole.MarkupLine($"[red]Chunk {chunkResult.ChunkId} is invalid[/]");
+                    AnsiConsole.WriteLine($"Persons in chunk file: {chunkResult.PersonsInChunkFile}");
+                    AnsiConsole.WriteLine($"Correct: {chunkResult.Counts.Correct}");
+                    AnsiConsole.WriteLine($"Without sliceId: {chunkResult.Counts.WithoutSliceId}");
+                    AnsiConsole.WriteLine($"Duplicated: {chunkResult.Counts.Duplicated}");
+                    AnsiConsole.WriteLine($"Missing: {chunkResult.Counts.Missing}");
+
+                    foreach (var issue in chunkResult.Issues)
                     {
-                        validation.ValidateBuildingId(
-                            vendor,
-                            opts.BuildingId,
-                            chunks);
+                        AnsiConsole.MarkupLine($"[red]{Markup.Escape(issue.Message)}[/]");
                     }
-                });
+
+                    foreach (var problem in chunkResult.PersonProblems.Take(10))
+                    {
+                        AnsiConsole.MarkupLine(
+                            $"[red]PersonId={problem.PersonId}, SliceId={problem.SliceId}, InPerson={problem.InPersonFilesCount}, InMetadata={problem.InMetadataFilesCount}, Type={problem.Type}[/]");
+                    }
+                }
+
+                AnsiConsole.WriteLine($"\r\nValidation complete!");
             }
             catch (Exception exception)
             {
                 AnsiConsole.MarkupLine("[red]Validation failed.[/]");
                 AnsiConsole.WriteException(exception);
-            }
-        }
-
-        private static async Task RunValidationWithProgressAsync(Action<IValidationReporter> validationAction)
-        {
-            var channel = Channel.CreateUnbounded<ValidationProgressEvent>(
-                new UnboundedChannelOptions
-                {
-                    SingleReader = true,
-                    SingleWriter = false
-                });
-
-            var reporter = new ChannelValidationReporter(channel.Writer);
-            var bufferedLogs = new List<ValidationProgressEvent>();
-
-            var workerTask = Task.Run(() =>
-            {
-                try
-                {
-                    validationAction(reporter);
-                }
-                finally
-                {
-                    channel.Writer.TryComplete();
-                }
-            });
-
-            try
-            {
-                await AnsiConsole.Progress()
-                    .AutoClear(false)
-                    .HideCompleted(true)
-                    .Columns(
-                        new TaskDescriptionColumn(),
-                        new ElapsedTimeColumn(),
-                        new ProgressBarColumn(),
-                        new PercentageColumn(),
-                        new RemainingTimeColumn(),
-                        new SpinnerColumn())
-                    .StartAsync(async progressContext =>
-                    {
-                        var progressTasks = new Dictionary<string, ProgressTask>();
-
-                        await foreach (var progressEvent in channel.Reader.ReadAllAsync())
-                        {
-                            ApplyProgressEvent(
-                                progressContext,
-                                progressTasks,
-                                bufferedLogs,
-                                progressEvent);
-                        }
-
-                        await workerTask;
-                    });
-            }
-            finally
-            {
-                PrintBufferedLogs(bufferedLogs);
-            }
-        }
-
-        private static void ApplyProgressEvent(
-            ProgressContext progressContext,
-            Dictionary<string, ProgressTask> progressTasks,
-            List<ValidationProgressEvent> bufferedLogs,
-            ValidationProgressEvent progressEvent)
-        {
-            switch (progressEvent.Kind)
-            {
-                case ValidationProgressEventKind.Log:
-                    bufferedLogs.Add(progressEvent);
-                    break;
-
-                case ValidationProgressEventKind.StartTask:
-                    {
-                        var maxValue = progressEvent.MaxValue <= 0
-                            ? 1
-                            : progressEvent.MaxValue;
-
-                        var task = progressContext.AddTask(
-                            FormatMarkup(progressEvent.Message, progressEvent.Level),
-                            maxValue: maxValue);
-
-                        if (progressEvent.IsIndeterminate)
-                        {
-                            task.IsIndeterminate();
-                        }
-
-                        progressTasks[progressEvent.TaskId] = task;
-                        break;
-                    }
-
-                case ValidationProgressEventKind.UpdateTask:
-                    {
-                        if (!progressTasks.TryGetValue(progressEvent.TaskId, out var task))
-                        {
-                            break;
-                        }
-
-                        if (!string.IsNullOrWhiteSpace(progressEvent.Message))
-                        {
-                            task.Description = FormatMarkup(progressEvent.Message, progressEvent.Level);
-                        }
-
-                        if (progressEvent.Value.HasValue)
-                        {
-                            var value = progressEvent.Value.Value;
-
-                            if (value < 0)
-                            {
-                                value = 0;
-                            }
-
-                            if (value > task.MaxValue)
-                            {
-                                value = task.MaxValue;
-                            }
-
-                            task.Value = value;
-                        }
-
-                        break;
-                    }
-
-                case ValidationProgressEventKind.IncrementTask:
-                    {
-                        if (!progressTasks.TryGetValue(progressEvent.TaskId, out var task))
-                        {
-                            break;
-                        }
-
-                        if (!string.IsNullOrWhiteSpace(progressEvent.Message))
-                        {
-                            task.Description = FormatMarkup(progressEvent.Message, progressEvent.Level);
-                        }
-
-                        var nextValue = task.Value + progressEvent.Increment;
-
-                        if (nextValue > task.MaxValue)
-                        {
-                            task.Value = task.MaxValue;
-                        }
-                        else
-                        {
-                            task.Increment(progressEvent.Increment);
-                        }
-
-                        break;
-                    }
-
-                case ValidationProgressEventKind.CompleteTask:
-                    {
-                        if (!progressTasks.TryGetValue(progressEvent.TaskId, out var task))
-                        {
-                            break;
-                        }
-
-                        if (!string.IsNullOrWhiteSpace(progressEvent.Message))
-                        {
-                            task.Description = FormatMarkup(progressEvent.Message, progressEvent.Level);
-                        }
-
-                        task.Value = task.MaxValue;
-                        task.StopTask();
-                        break;
-                    }
-
-                case ValidationProgressEventKind.KeepTaskWithMessage:
-                    {
-                        if (!progressTasks.TryGetValue(progressEvent.TaskId, out var task))
-                        {
-                            break;
-                        }
-
-                        task.Description = FormatMarkup(progressEvent.Message, progressEvent.Level);
-
-                        var value = task.MaxValue - 0.001;
-
-                        if (value < 0)
-                        {
-                            value = 0;
-                        }
-
-                        task.Value = value;
-                        break;
-                    }
-
-                default:
-                    throw new ArgumentOutOfRangeException(
-                        nameof(progressEvent.Kind),
-                        progressEvent.Kind,
-                        "Unknown validation progress event kind.");
-            }
-        }
-
-        private static string FormatMarkup(string message, ValidationLogLevel level)
-        {
-            var escaped = Markup.Escape(message);
-
-            return level switch
-            {
-                ValidationLogLevel.Success => $"[green]{escaped}[/]",
-                ValidationLogLevel.Warning => $"[yellow]{escaped}[/]",
-                ValidationLogLevel.Error => $"[red]{escaped}[/]",
-                _ => escaped
-            };
-        }
-
-        private static void PrintBufferedLogs(List<ValidationProgressEvent> bufferedLogs)
-        {
-            foreach (var log in bufferedLogs)
-            {
-                AnsiConsole.MarkupLine(FormatMarkup(log.Message, log.Level));
             }
         }
 
