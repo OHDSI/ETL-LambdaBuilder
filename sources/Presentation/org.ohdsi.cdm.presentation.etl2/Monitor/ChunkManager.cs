@@ -13,16 +13,9 @@ namespace org.ohdsi.cdm.presentation.etl.Monitor
         public int TotalCount { get; private set; }
 
         private Task _trackDownStates;
-        private string _chunksSchema;
-        //private int _numberOfPartitions;
-        private Dictionary<int, ChunkStateController> _chunks = new Dictionary<int, ChunkStateController>();
-        private bool _completeAdding;
 
-        public ChunkManager(string chunksSchema, int numberOfPartitions)
-        {
-            _chunksSchema = chunksSchema;
-            //_numberOfPartitions = numberOfPartitions;
-        }
+        private readonly Dictionary<int, ChunkStateController> _chunks = [];
+        private bool _completeAdding;
 
         public void CompleteAdding()
         {
@@ -36,8 +29,8 @@ namespace org.ohdsi.cdm.presentation.etl.Monitor
             if (_chunks.ContainsKey(chunkId))
                 return;
 
-            var chunk = new ChunkStateController(chunkId, 0); // TMP _numberOfPartitions=0
-            chunk.Start(_chunksSchema);
+            var chunk = new ChunkStateController(chunkId);
+            chunk.Start();
             _chunks.Add(chunkId, chunk);
 
             if (_trackDownStates == null)
@@ -91,7 +84,7 @@ namespace org.ohdsi.cdm.presentation.etl.Monitor
                             }
                         }
 
-                        Console.WriteLine($"*** {DateTime.Now.ToShortTimeString()} | Running: lambda {runningCnt} local {local}; Validating {validatingCnt}; Valid {validCnt}; Timeout {timeout}; Invalid {invalidCnt}; Error {error}; Total {_chunks.Values.Count}");
+                        Console.WriteLine($"*** {DateTime.Now:t} | Running: lambda {runningCnt} local {local}; Validating {validatingCnt}; Valid {validCnt}; Timeout {timeout}; Invalid {invalidCnt}; Error {error}; Total {_chunks.Values.Count}");
 
                         ValidCount = validCnt;
                         InvalidCount = invalidCnt;
@@ -99,7 +92,7 @@ namespace org.ohdsi.cdm.presentation.etl.Monitor
 
                         if (_completeAdding && error + validCnt + invalidCnt == _chunks.Values.Count)
                         {
-                            Console.WriteLine($"*** {DateTime.Now.ToShortTimeString()} | ChunksMonitor - DONE");
+                            Console.WriteLine($"*** {DateTime.Now:t} | ChunksMonitor - DONE");
                             return;
                         }
 
