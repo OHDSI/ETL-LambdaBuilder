@@ -5,7 +5,6 @@ using org.ohdsi.cdm.framework.common.Utility;
 using org.ohdsi.cdm.framework.Common.Utility.Validation;
 using Spectre.Console;
 using System.Configuration;
-using System.Threading.Channels;
 
 namespace RunValidation
 {

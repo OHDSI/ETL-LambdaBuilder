@@ -7,7 +7,6 @@ using org.ohdsi.cdm.framework.common.Omop;
 using org.ohdsi.cdm.framework.desktop;
 using org.ohdsi.cdm.framework.desktop.Controllers;
 using org.ohdsi.cdm.framework.desktop.Helpers;
-using org.ohdsi.cdm.framework.desktop.Savers;
 using org.ohdsi.cdm.framework.desktop.Settings;
 using org.ohdsi.cdm.presentation.etl.Monitor;
 using System;
@@ -185,7 +184,6 @@ namespace org.ohdsi.cdm.presentation.etl
             CloudStorageHelper.UploadFile(file, new CdmSourceDataReader(sourceReleaseDate, vocabularyVersion));
         }
 
-        //public void MoveChunkDataToS3(bool useMonitor, bool triggerLambdas, LambdaUtility utility)
         public static void MoveRawDataCloudStorage(string chunksSchema, string sourceSchema)
         {
             var chunkController = new ChunkController(chunksSchema);
@@ -194,9 +192,6 @@ namespace org.ohdsi.cdm.presentation.etl
 
             if (chunkIds.Length == 0)
                 return;
-
-            //var numberOfPartitions = GetNumberOfPartitions(chunksSchema);
-            //Console.WriteLine("NumberOfPartitions=" + numberOfPartitions);
 
             Parallel.ForEach(Settings.Current.Building.SourceQueryDefinitions, new ParallelOptions { MaxDegreeOfParallelism = 1 },  queryDefinition =>
             {
@@ -227,7 +222,7 @@ namespace org.ohdsi.cdm.presentation.etl
             Console.WriteLine($"PersonIdFieldName:{Settings.Current.Building.PersonIdFieldName}");
             Console.WriteLine($"PersonIdFieldIndex:{Settings.Current.Building.PersonIdFieldIndex}");
 
-            using (var chunkManager = new ChunkManager(chunksSchema, 0)) // TMP: numberOfPartitions=0
+            using (var chunkManager = new ChunkManager())
             {
                 Parallel.ForEach(chunkIds, new ParallelOptions { MaxDegreeOfParallelism = Settings.Current.ParallelChunks }, cId =>
                 {

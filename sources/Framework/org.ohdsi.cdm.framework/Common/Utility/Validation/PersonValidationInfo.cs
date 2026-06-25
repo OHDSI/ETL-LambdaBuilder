@@ -1,6 +1,6 @@
 ﻿namespace org.ohdsi.cdm.framework.Common.Utility.Validation
 {
-    public class Person(int ChunkId, long PersonId, string? PersonSourceValue = null)
+    public class PersonValidationInfo(int ChunkId, long PersonId, string? PersonSourceValue = null)
     {
         public int ChunkId { get; set; } = ChunkId;
         public long PersonId { get; set; } = PersonId;
@@ -17,7 +17,7 @@
 
         public override bool Equals(object? obj)
         {
-            if (obj is not Person other || other == null)
+            if (obj is not PersonValidationInfo other || other == null)
                 return false;
 
             return ToString() == other.ToString();
