@@ -1,5 +1,4 @@
 ﻿using CommandLine;
-using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Utility;
@@ -7,6 +6,7 @@ using org.ohdsi.cdm.framework.desktop.DbLayer;
 using org.ohdsi.cdm.framework.desktop.Settings;
 using System;
 using System.Data.Odbc;
+using System.Data.SQLite;
 using System.IO;
 using System.Reflection;
 
@@ -87,7 +87,7 @@ namespace org.ohdsi.cdm.presentation.etl
 
                 if (!File.Exists(builderConnectionString.Replace("Data Source=", "")))
                 {
-                    using var connection = new SqliteConnection(builderConnectionString);
+                    using var connection = new SQLiteConnection(builderConnectionString);
                     connection.Open();
 
                     var command = connection.CreateCommand();

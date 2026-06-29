@@ -1,11 +1,11 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using Microsoft.Data.SqlClient;
 using MySqlConnector;
 using Npgsql;
 using org.ohdsi.cdm.framework.desktop.Enums;
 using System.Data;
 using System.Data.Common;
 using System.Data.Odbc;
-using System.Data.SqlClient;
+using System.Data.SQLite;
 
 namespace org.ohdsi.cdm.framework.desktop.Helpers
 {
@@ -18,9 +18,10 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
 
         public static DbCommand CreateCommand(string cmdText, DbConnection connection, DbTransaction transaction)
         {
-            if(connection is SqliteConnection)
+            
+            if(connection is SQLiteConnection)
             {
-                var command = ((SqliteConnection)connection).CreateCommand();
+                var command = ((SQLiteConnection)connection).CreateCommand();
                 command.CommandText = cmdText;
                 return command;
             }
@@ -39,7 +40,7 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
 
             if (connectionString.EndsWith("builder.db"))
             {
-                connection = new SqliteConnection(connectionString);
+                connection = new SQLiteConnection(connectionString);
             }
             else
             {

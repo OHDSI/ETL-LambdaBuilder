@@ -1,6 +1,6 @@
-﻿using org.ohdsi.cdm.framework.desktop.Helpers;
+﻿using Microsoft.Data.SqlClient;
+using org.ohdsi.cdm.framework.desktop.Helpers;
 using System.Data.Odbc;
-using System.Data.SqlClient;
 
 namespace org.ohdsi.cdm.framework.desktop.Savers
 {

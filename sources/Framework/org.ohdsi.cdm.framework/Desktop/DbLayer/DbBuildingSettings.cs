@@ -2,8 +2,8 @@
 using org.ohdsi.cdm.framework.desktop.Helpers;
 using System.Data;
 using System.Data.Odbc;
-using System.Data.SqlClient;
 using org.ohdsi.cdm.framework.common.Enums;
+using Microsoft.Data.SqlClient;
 
 namespace org.ohdsi.cdm.framework.desktop.DbLayer
 {

@@ -3,16 +3,13 @@ using Amazon.S3.Model;
 using nietras.SeparatedValues;
 using org.ohdsi.cdm.framework.common.Definitions;
 using org.ohdsi.cdm.framework.common.Enums;
-using org.ohdsi.cdm.framework.common.Helpers;
 using org.ohdsi.cdm.framework.common.Lookups;
-using SQLitePCL;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Text;
 
 namespace org.ohdsi.cdm.presentation.lambdabuilder
 {
