@@ -5,6 +5,7 @@ using org.ohdsi.cdm.framework.common.Utility;
 using org.ohdsi.cdm.framework.Common.Utility.Validation;
 using Spectre.Console;
 using System.Configuration;
+using System.Diagnostics;
 using System.Threading.Channels;
 
 namespace RunValidation
@@ -99,52 +100,57 @@ namespace RunValidation
 
             try
             {
-                AnsiConsole.WriteLine($"Validation in progress...");
+                var sw = new Stopwatch();
+                sw.Start();
+                AnsiConsole.WriteLine($"Getting actual chunks and slices...");
 
                 var validation = new Validation(
                     _awsAccessKeyId,
                     _awsSecretAccessKey,
                     _bucket,
-                    _cdmFolder);
-
-                var result = validation.ValidateBuildingId(
+                    _cdmFolder,
                     vendor,
-                    opts.BuildingId,
-                    chunks);
+                    opts.BuildingId);
 
-                AnsiConsole.WriteLine("\r\n\r\n");
+                if (chunks is not { Count: > 0 })
+                    chunks = validation.Chunks.ToList();
 
-                AnsiConsole.WriteLine($"BuildingId: {result.BuildingId}");
-                AnsiConsole.WriteLine($"IsValid: {result.IsValid}");
-                AnsiConsole.WriteLine($"Chunks found: {result.TotalChunkFilesFound}");
-                AnsiConsole.WriteLine($"Chunks validated: {result.ChunkFilesValidated}");
-                AnsiConsole.WriteLine($"Chunks skipped: {result.ChunkFilesSkipped}");
-                AnsiConsole.WriteLine($"Chunks with errors: {result.ChunksWithErrors}");
-                AnsiConsole.WriteLine($"Persons: {result.TotalPersons}");
-                AnsiConsole.WriteLine($"Elapsed: {result.Elapsed}");
+                sw.Stop();
+                AnsiConsole.WriteLine($"Done. Chunks count = {validation.Chunks.Count}, slices count = {validation.Slices.Count}. "
+                    + $"{Convert.ToInt32(sw.Elapsed.TotalSeconds)}s");
 
-                foreach (var chunkResult in result.ChunkResults.Where(c => !c.IsValid))
+                sw.Reset();
+                sw.Start();
+                AnsiConsole.WriteLine($"\r\nValidation in progress...");
+
+                foreach (var chunkId in chunks)
                 {
-                    AnsiConsole.MarkupLine($"[red]Chunk {chunkResult.ChunkId} is invalid[/]");
-                    AnsiConsole.WriteLine($"Persons in chunk file: {chunkResult.PersonsInChunkFile}");
-                    AnsiConsole.WriteLine($"Correct: {chunkResult.Counts.Correct}");
-                    AnsiConsole.WriteLine($"Without sliceId: {chunkResult.Counts.WithoutSliceId}");
-                    AnsiConsole.WriteLine($"Duplicated: {chunkResult.Counts.Duplicated}");
-                    AnsiConsole.WriteLine($"Missing: {chunkResult.Counts.Missing}");
-
-                    foreach (var issue in chunkResult.Issues)
+                    var result = validation.ValidateChunkId(chunkId);
+                    if (result.IsValid)
+                        AnsiConsole.MarkupLine($"[green]ChunkId {chunkId} - OK. {Convert.ToInt32(result.Elapsed.TotalSeconds)}s[/]");
+                    else
                     {
-                        AnsiConsole.MarkupLine($"[red]{Markup.Escape(issue.Message)}[/]");
-                    }
+                        AnsiConsole.MarkupLine($"[red]Chunk {result.ChunkId} - FAIL. {Convert.ToInt32(result.Elapsed.TotalSeconds)}s[/]");
+                        AnsiConsole.WriteLine($"Persons in chunk file: {result.PersonsInChunkFile}");
+                        AnsiConsole.WriteLine($"Correct: {result.Counts.Correct}");
+                        AnsiConsole.WriteLine($"Duplicated: {result.Counts.Duplicated}");
+                        AnsiConsole.WriteLine($"Missing: {result.Counts.Missing}");
 
-                    foreach (var problem in chunkResult.PersonProblems.Take(10))
-                    {
-                        AnsiConsole.MarkupLine(
-                            $"[red]PersonId={problem.PersonId}, SliceId={problem.SliceId}, InPerson={problem.InPersonFilesCount}, InMetadata={problem.InMetadataFilesCount}, Type={problem.Type}[/]");
+                        foreach (var issue in result.Issues)
+                        {
+                            AnsiConsole.WriteLine($"{Markup.Escape(issue.Message)}");
+                        }
+
+                        foreach (var problem in result.PersonProblems.Take(3))
+                        {
+                            AnsiConsole.WriteLine(
+                                $"PersonId={problem.PersonId}, SliceId={problem.SliceId}, InPerson={problem.InPersonFilesCount}, InMetadata={problem.InMetadataFilesCount}, Type={problem.Type}");
+                        }
                     }
                 }
 
-                AnsiConsole.WriteLine($"\r\nValidation complete!");
+                sw.Stop();
+                AnsiConsole.MarkupLine($"[green]\r\nValidation complete! Total time: {Convert.ToInt32(sw.Elapsed.TotalSeconds)}s[/]");
             }
             catch (Exception exception)
             {

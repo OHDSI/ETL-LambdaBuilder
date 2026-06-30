@@ -4,7 +4,7 @@
     {
         public int ChunkId { get; set; } = ChunkId;
         public long PersonId { get; set; } = PersonId;
-        public string PersonSourceValue { get; set; } = PersonSourceValue;
+        public string? PersonSourceValue { get; set; } = PersonSourceValue;
 
         public int? SliceId { get; set; }
         public int? InPersonFilesCount { get; set; } = 0;
@@ -12,7 +12,7 @@
 
         public override string ToString()
         {
-            return $"{ChunkId} - {PersonId} - {PersonSourceValue} - {SliceId?.ToString() ?? "???"}";
+            return $"{ChunkId} - {PersonId} - {PersonSourceValue ?? ""} - {SliceId?.ToString() ?? "???"}";
         }
 
         public override bool Equals(object? obj)
