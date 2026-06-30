@@ -122,6 +122,7 @@ namespace RunValidation
                 sw.Reset();
                 sw.Start();
                 AnsiConsole.WriteLine($"\r\nValidation in progress...");
+                int errorChunks = 0;
 
                 foreach (var chunkId in chunks)
                 {
@@ -130,6 +131,7 @@ namespace RunValidation
                         AnsiConsole.MarkupLine($"[green]ChunkId {chunkId} - OK. {Convert.ToInt32(result.Elapsed.TotalSeconds)}s[/]");
                     else
                     {
+                        errorChunks++;
                         AnsiConsole.MarkupLine($"[red]Chunk {result.ChunkId} - FAIL. {Convert.ToInt32(result.Elapsed.TotalSeconds)}s[/]");
                         AnsiConsole.WriteLine($"Persons in chunk file: {result.PersonsInChunkFile}");
                         AnsiConsole.WriteLine($"Correct: {result.Counts.Correct}");
@@ -150,7 +152,8 @@ namespace RunValidation
                 }
 
                 sw.Stop();
-                AnsiConsole.MarkupLine($"[green]\r\nValidation complete! Total time: {Convert.ToInt32(sw.Elapsed.TotalSeconds)}s[/]");
+                AnsiConsole.WriteLine($"\r\n{errorChunks} chunks with errors!");
+                AnsiConsole.MarkupLine($"[green]Validation complete! Total time: {Convert.ToInt32(sw.Elapsed.TotalSeconds)}s[/]");
             }
             catch (Exception exception)
             {
