@@ -102,7 +102,6 @@ namespace RunValidation
             {
                 var sw = new Stopwatch();
                 sw.Start();
-                AnsiConsole.WriteLine($"Getting actual chunks and slices...");
 
                 var validation = new Validation(
                     _awsAccessKeyId,
@@ -112,23 +111,50 @@ namespace RunValidation
                     vendor,
                     opts.BuildingId);
 
+                #region GetS3InfoForValidation
+                AnsiConsole.WriteLine($"Getting actual chunks and slices...");
+                validation.GetS3InfoForValidation();
+
                 if (chunks is not { Count: > 0 })
                     chunks = validation.Chunks.ToList();
 
                 sw.Stop();
                 AnsiConsole.WriteLine($"Done. Chunks count = {validation.Chunks.Count}, slices count = {validation.Slices.Count}. "
                     + $"{Convert.ToInt32(sw.Elapsed.TotalSeconds)}s");
+                #endregion
 
+                #region validation
                 sw.Reset();
                 sw.Start();
                 AnsiConsole.WriteLine($"\r\nValidation in progress...");
-                int errorChunks = 0;
 
-                foreach (var chunkId in chunks)
+                int errorChunks = 0;
+                int maxDegreeOfParallelism = Math.Max(1, Environment.ProcessorCount - 1);
+                using var semaphore = new SemaphoreSlim(maxDegreeOfParallelism);
+
+                var chunkTasks = chunks
+                    .Select(chunkId => Task.Run(async () =>
+                    {
+                        await semaphore.WaitAsync();
+
+                        try
+                        {
+                            return validation.ValidateChunkId(chunkId);
+                        }
+                        finally
+                        {
+                            semaphore.Release();
+                        }
+                    }))
+                    .ToList();
+
+
+                foreach (var chunkTask in chunkTasks)
                 {
-                    var result = validation.ValidateChunkId(chunkId);
-                    if (result.IsValid)
-                        AnsiConsole.MarkupLine($"[green]ChunkId {chunkId} - OK. {Convert.ToInt32(result.Elapsed.TotalSeconds)}s[/]");
+                    var result = await chunkTask;
+
+                    if (result.IsValid)                    
+                        AnsiConsole.MarkupLine($"[green]ChunkId {result.ChunkId} - OK. {Convert.ToInt32(result.Elapsed.TotalSeconds)}s[/]");                    
                     else
                     {
                         errorChunks++;
@@ -150,6 +176,7 @@ namespace RunValidation
                         }
                     }
                 }
+                #endregion
 
                 sw.Stop();
                 AnsiConsole.WriteLine($"\r\n{errorChunks} chunks with errors!");

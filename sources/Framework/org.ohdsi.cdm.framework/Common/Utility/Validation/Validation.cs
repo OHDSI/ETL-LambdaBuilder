@@ -13,8 +13,8 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
 {
     public class Validation
     {
-        public readonly ImmutableHashSet<int> Slices;
-        public readonly ImmutableList<int> Chunks;
+        public ImmutableHashSet<int> Slices { get; protected set; }
+        public ImmutableList<int> Chunks { get; protected set; }
 
         private const int MaxReadAttempts = 3;
 
@@ -26,7 +26,9 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
         private readonly string _cdmFolder;
         private readonly Vendor _vendor;
         private readonly int _buildingId;
-        private readonly List<(int ChunkId, S3Object S3Object)> _s3ChunkObjects;
+        private List<(int ChunkId, S3Object S3Object)> _s3ChunkObjects;
+
+        private bool _s3InfoRetrieved => _s3ChunkObjects != null && Chunks != null && Slices != null;
 
         public Validation(
             string awsAccessKeyId,
@@ -42,7 +44,11 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
             _cdmFolder = cdmFolder;
             _vendor = vendor;
             _buildingId = buildingId;
+        }
 
+
+        public void GetS3InfoForValidation()
+        {
             _s3ChunkObjects = GetS3ChunkObjects();
             Chunks = _s3ChunkObjects.Select(s => s.ChunkId).Distinct().OrderBy(s => s).ToImmutableList();
 
@@ -56,6 +62,9 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
             var timer = Stopwatch.StartNew();
             var issues = new ConcurrentBag<ValidationIssue>();
             var chunkResults = new ConcurrentBag<ChunkValidationResult>();
+
+            if (!_s3InfoRetrieved)
+                GetS3InfoForValidation();
 
             var chunkFilesSkipped = 0;
 
@@ -111,6 +120,9 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
         {
             var timer = Stopwatch.StartNew();
 
+            if (!_s3InfoRetrieved)
+                GetS3InfoForValidation();
+
             var slices = slicesToProcess is { Count: > 0 }
                 ? slicesToProcess.OrderBy(s => s).ToList()
                 : Slices.OrderBy(s => s).ToList();
@@ -165,6 +177,9 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
         {
             var timer = Stopwatch.StartNew();
             var issues = new List<ValidationIssue>();
+
+            if (!_s3InfoRetrieved)
+                GetS3InfoForValidation();
 
             var chunkPersons = TryReadChunkPersonsByChunkId(
                 chunkId,
