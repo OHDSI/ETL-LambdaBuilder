@@ -853,9 +853,19 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
             };
 
             var response = client.ListObjectsV2Async(request).GetAwaiter().GetResult();
+            if (response.S3Objects == null)
+                return;
 
             foreach (var s3Object in response.S3Objects)
             {
+                var chars = s3Object.Key
+                    .Split('/')
+                    .Last()
+                    .SkipWhile(s => !char.IsDigit(s))
+                    .TakeWhile(s => char.IsDigit(s))
+                    .ToArray();
+                var s3objectSliceId = int.Parse(new string(chars));
+
                 using var transferUtility = new TransferUtility(_awsAccessKeyId, _awsSecretAccessKey, Amazon.RegionEndpoint.USEast1);
                 using var responseStream = transferUtility.OpenStream(_bucket, s3Object.Key);
                 using var bufferedStream = new BufferedStream(responseStream);
@@ -872,14 +882,7 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
 
                     if (personsOfSingleChunkId.TryGetValue(new Person(chunkId, personId), out var personProvided))
                     {
-                        var chars = s3Object.Key
-                            .Split('/')
-                            .Last()
-                            .SkipWhile(s => !char.IsDigit(s))
-                            .TakeWhile(s => char.IsDigit(s))
-                            .ToArray();
-
-                        personProvided.SliceId = int.Parse(new string(chars));
+                        personProvided.SliceId = s3objectSliceId;
 
                         if (personsOfSingleChunkId.All(s => s.SliceId.HasValue))
                         {

@@ -4,6 +4,7 @@ using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Utility;
 using org.ohdsi.cdm.framework.Common.Utility.Validation;
 using Spectre.Console;
+using System.ComponentModel.DataAnnotations;
 using System.Configuration;
 using System.Diagnostics;
 using System.Threading.Channels;
@@ -111,6 +112,7 @@ namespace RunValidation
                     vendor,
                     opts.BuildingId);
 
+
                 #region GetS3InfoForValidation
                 AnsiConsole.WriteLine($"Getting actual chunks and slices...");
                 validation.GetS3InfoForValidation();
@@ -118,68 +120,20 @@ namespace RunValidation
                 if (chunks is not { Count: > 0 })
                     chunks = validation.Chunks.ToList();
 
-                sw.Stop();
                 AnsiConsole.WriteLine($"Done. Chunks count = {validation.Chunks.Count}, slices count = {validation.Slices.Count}. "
                     + $"{Convert.ToInt32(sw.Elapsed.TotalSeconds)}s");
                 #endregion
 
-                #region validation
-                sw.Reset();
-                sw.Start();
-                AnsiConsole.WriteLine($"\r\nValidation in progress...");
-
-                int errorChunks = 0;
-                int maxDegreeOfParallelism = Math.Max(1, Environment.ProcessorCount - 1);
-                using var semaphore = new SemaphoreSlim(maxDegreeOfParallelism);
-
-                var chunkTasks = chunks
-                    .Select(chunkId => Task.Run(async () =>
-                    {
-                        await semaphore.WaitAsync();
-
-                        try
-                        {
-                            return validation.ValidateChunkId(chunkId);
-                        }
-                        finally
-                        {
-                            semaphore.Release();
-                        }
-                    }))
-                    .ToList();
-
-
-                foreach (var chunkTask in chunkTasks)
+                if (opts.PersonId.HasValue)
                 {
-                    var result = await chunkTask;
-
-                    if (result.IsValid)                    
-                        AnsiConsole.MarkupLine($"[green]ChunkId {result.ChunkId} - OK. {Convert.ToInt32(result.Elapsed.TotalSeconds)}s[/]");                    
-                    else
-                    {
-                        errorChunks++;
-                        AnsiConsole.MarkupLine($"[red]Chunk {result.ChunkId} - FAIL. {Convert.ToInt32(result.Elapsed.TotalSeconds)}s[/]");
-                        AnsiConsole.WriteLine($"Persons in chunk file: {result.PersonsInChunkFile}");
-                        AnsiConsole.WriteLine($"Correct: {result.Counts.Correct}");
-                        AnsiConsole.WriteLine($"Duplicated: {result.Counts.Duplicated}");
-                        AnsiConsole.WriteLine($"Missing: {result.Counts.Missing}");
-
-                        foreach (var issue in result.Issues)
-                        {
-                            AnsiConsole.WriteLine($"{Markup.Escape(issue.Message)}");
-                        }
-
-                        foreach (var problem in result.PersonProblems.Take(3))
-                        {
-                            AnsiConsole.WriteLine(
-                                $"PersonId={problem.PersonId}, SliceId={problem.SliceId}, InPerson={problem.InPersonFilesCount}, InMetadata={problem.InMetadataFilesCount}, Type={problem.Type}");
-                        }
-                    }
+                    await ValidatePersonId(validation, chunks, opts.PersonId.Value);
                 }
-                #endregion
+                else
+                {
+                    await ValidateChunk(validation, chunks);
+                }
 
                 sw.Stop();
-                AnsiConsole.WriteLine($"\r\n{errorChunks} chunks with errors!");
                 AnsiConsole.MarkupLine($"[green]Validation complete! Total time: {Convert.ToInt32(sw.Elapsed.TotalSeconds)}s[/]");
             }
             catch (Exception exception)
@@ -187,6 +141,105 @@ namespace RunValidation
                 AnsiConsole.MarkupLine("[red]Validation failed.[/]");
                 AnsiConsole.WriteException(exception);
             }
+        }
+
+        static async Task ValidatePersonId(Validation validation, List<int> chunks, long personId)
+        {
+            AnsiConsole.WriteLine($"\r\nValidation in progress...");
+
+            int maxDegreeOfParallelism = Math.Max(1, Environment.ProcessorCount - 1);
+            using var semaphore = new SemaphoreSlim(maxDegreeOfParallelism);
+
+            var chunkTasks = chunks
+                .Select(chunkId => Task.Run(async () =>
+                {
+                    await semaphore.WaitAsync();
+
+                    try
+                    {
+                        return validation.ValidatePersonId(chunkId, personId);
+                    }
+                    finally
+                    {
+                        semaphore.Release();
+                    }
+                }))
+                .ToList();
+
+            bool found = false;
+            foreach (var chunkTask in chunkTasks)
+            {
+                var result = await chunkTask;
+
+                if (result.IsValid)
+                {
+                    AnsiConsole.MarkupLine($"[green]Person is found in chunk {result.ChunkId} slice {result.SliceId}. {Convert.ToInt32(result.Elapsed.TotalSeconds)}s[/]");
+                    found = true;
+                    chunkTasks.ForEach(t => t.Dispose());
+                    break;
+                }
+            }
+
+            if(!found)
+                AnsiConsole.MarkupLine($"[red]Person is not found![/]");
+        }
+
+        static async Task ValidateChunk(Validation validation, List<int> chunks)
+        {
+            #region validation
+            AnsiConsole.WriteLine($"\r\nValidation in progress...");
+
+            int errorChunks = 0;
+            int maxDegreeOfParallelism = Math.Max(1, Environment.ProcessorCount - 1);
+            using var semaphore = new SemaphoreSlim(maxDegreeOfParallelism);
+
+            var chunkTasks = chunks
+                .Select(chunkId => Task.Run(async () =>
+                {
+                    await semaphore.WaitAsync();
+
+                    try
+                    {
+                        return validation.ValidateChunkId(chunkId);
+                    }
+                    finally
+                    {
+                        semaphore.Release();
+                    }
+                }))
+                .ToList();
+
+
+            foreach (var chunkTask in chunkTasks)
+            {
+                var result = await chunkTask;
+
+                if (result.IsValid)
+                    AnsiConsole.MarkupLine($"[green]ChunkId {result.ChunkId} - OK. {Convert.ToInt32(result.Elapsed.TotalSeconds)}s[/]");
+                else
+                {
+                    errorChunks++;
+                    AnsiConsole.MarkupLine($"[red]Chunk {result.ChunkId} - FAIL. {Convert.ToInt32(result.Elapsed.TotalSeconds)}s[/]");
+                    AnsiConsole.WriteLine($"Persons in chunk file: {result.PersonsInChunkFile}");
+                    AnsiConsole.WriteLine($"Correct: {result.Counts.Correct}");
+                    AnsiConsole.WriteLine($"Duplicated: {result.Counts.Duplicated}");
+                    AnsiConsole.WriteLine($"Missing: {result.Counts.Missing}");
+
+                    foreach (var issue in result.Issues)
+                    {
+                        AnsiConsole.WriteLine($"{Markup.Escape(issue.Message)}");
+                    }
+
+                    foreach (var problem in result.PersonProblems.Take(3))
+                    {
+                        AnsiConsole.WriteLine(
+                            $"PersonId={problem.PersonId}, SliceId={problem.SliceId}, InPerson={problem.InPersonFilesCount}, InMetadata={problem.InMetadataFilesCount}, Type={problem.Type}");
+                    }
+                }
+            }
+            #endregion
+
+            AnsiConsole.WriteLine($"\r\n{errorChunks} chunks with errors!");
         }
 
         static void HandleParseError(IEnumerable<Error> errs)
