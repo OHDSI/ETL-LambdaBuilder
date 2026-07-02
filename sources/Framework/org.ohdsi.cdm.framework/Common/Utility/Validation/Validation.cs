@@ -708,10 +708,9 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
                 ? new GZipStream(bufferedStream, CompressionMode.Decompress)
                 : new DecompressionStream(bufferedStream);
             using var reader = new StreamReader(compressedStream, Encoding.Default);
-            var txt = reader.ReadToEnd();
 
-            var lines = txt.Split(new[] { "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (var line in lines)
+            var line = reader.ReadLine();
+            while (!string.IsNullOrEmpty(line))
             {
                 var splits = line.Split(ChunkFileSeparators, StringSplitOptions.RemoveEmptyEntries);
 
@@ -733,7 +732,10 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
 
                 if (returnChunkIdOnly)
                     return filePersonIds;
+
+                line = reader.ReadLine();
             }
+
             return filePersonIds;
         }
 
