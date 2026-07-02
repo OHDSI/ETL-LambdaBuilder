@@ -92,9 +92,9 @@ namespace RunValidation
             AnsiConsole.WriteLine($"Vendor: {opts.Vendor}");
             AnsiConsole.WriteLine($"Building ID: {opts.BuildingId}");
             AnsiConsole.WriteLine($"Chunks: {string.Join(", ", chunks)}");
+            AnsiConsole.WriteLine($"PersonId: {opts.PersonId?.ToString() ?? ""}");
             AnsiConsole.WriteLine($"EtlLibraryPath: {opts.EtlLibraryPath}");
             AnsiConsole.WriteLine($"Current directory: {Directory.GetCurrentDirectory()}");
-            AnsiConsole.WriteLine($"PersonId: {opts.PersonId?.ToString() ?? ""}");
             AnsiConsole.WriteLine();
 
             Vendor vendor = EtlLibrary.CreateVendorInstance(opts.EtlLibraryPath, opts.Vendor);
@@ -148,15 +148,20 @@ namespace RunValidation
             AnsiConsole.WriteLine($"\r\nValidation in progress...");
 
             int maxDegreeOfParallelism = Math.Max(1, Environment.ProcessorCount - 1);
+
+            using var cts = new CancellationTokenSource();
             using var semaphore = new SemaphoreSlim(maxDegreeOfParallelism);
 
             var chunkTasks = chunks
                 .Select(chunkId => Task.Run(async () =>
                 {
-                    await semaphore.WaitAsync();
+                    await semaphore.WaitAsync(cts.Token);
 
                     try
                     {
+                        if (cts.Token.IsCancellationRequested)
+                            return null;
+
                         return validation.ValidatePersonId(chunkId, personId);
                     }
                     finally
@@ -167,20 +172,43 @@ namespace RunValidation
                 .ToList();
 
             bool found = false;
+
             foreach (var chunkTask in chunkTasks)
             {
-                var result = await chunkTask;
+                PersonIdValidationResult? result;
 
-                if (result.IsValid)
+                try
                 {
-                    AnsiConsole.MarkupLine($"[green]Person is found in chunk {result.ChunkId} slice {result.SliceId}. {Convert.ToInt32(result.Elapsed.TotalSeconds)}s[/]");
+                    result = await chunkTask;
+                }
+                catch (OperationCanceledException)
+                {
+                    continue;
+                }
+
+                if (result == null)
+                    continue;
+
+                if (result.Found)
+                {
+                    AnsiConsole.MarkupLine(
+                        $"[green]PersonId {result.PersonId} was found in ChunkId {result.ChunkId}, SliceId {result.SliceId}. {Convert.ToInt32(result.Elapsed.TotalSeconds)}s[/]");
+
                     found = true;
-                    chunkTasks.ForEach(t => t.Dispose());
+                    cts.Cancel();
                     break;
                 }
             }
 
-            if(!found)
+            try
+            {
+                await Task.WhenAll(chunkTasks);
+            }
+            catch (OperationCanceledException)
+            {
+            }
+
+            if (!found)
                 AnsiConsole.MarkupLine($"[red]Person is not found![/]");
         }
 
