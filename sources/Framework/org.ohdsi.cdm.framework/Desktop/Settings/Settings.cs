@@ -150,6 +150,21 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
             }
         }
 
+        public string GetCDMBuildingPrefix
+        {
+            get
+            {
+                return $"cdm/{Current.Building.Vendor}.{Current.Building.Id}";
+            }
+        }
+
+        public string GetMergeBuildingPrefix
+        {
+            get
+            {
+                return $"merge/{Current.Building.Vendor}.{Current.Building.Id}";
+            }
+        }
         #endregion
 
         #region Methods

@@ -44,31 +44,33 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
                     task = client.ListObjectsV2Async(request);
                     task.Wait();
 
-                    Parallel.ForEach(task.Result.S3Objects, o =>
+                    if (task.Result.S3Objects != null)
                     {
-                        using (var transferUtility = new TransferUtility(_settings.AwsAccessKeyId, _settings.AwsSecretAccessKey,
-              Amazon.RegionEndpoint.USEast1))
-                        using (var responseStream = transferUtility.OpenStream(_settings.Bucket, o.Key))
-                        using (var bufferedStream = new BufferedStream(responseStream))
-                        using (var gzipStream = new GZipStream(bufferedStream, CompressionMode.Decompress))
-                        using (var reader = new StreamReader(gzipStream, Encoding.Default))
-                        using (var csv = framework.common.Helpers.CsvHelper.CreateCsvReader(reader))
-                        //using (var csv = new CsvReader(reader, _settings.CsvConfiguration))
+                        Parallel.ForEach(task.Result.S3Objects, o =>
                         {
-
-                            while (csv.Read())
+                            using (var transferUtility = new TransferUtility(_settings.AwsAccessKeyId, _settings.AwsSecretAccessKey,
+                  Amazon.RegionEndpoint.USEast1))
+                            using (var responseStream = transferUtility.OpenStream(_settings.Bucket, o.Key))
+                            using (var bufferedStream = new BufferedStream(responseStream))
+                            using (var gzipStream = new GZipStream(bufferedStream, CompressionMode.Decompress))
+                            using (var reader = new StreamReader(gzipStream, Encoding.Default))
+                            using (var csv = framework.common.Helpers.CsvHelper.CreateCsvReader(reader))
+                            //using (var csv = new CsvReader(reader, _settings.CsvConfiguration))
                             {
-                                var id = long.Parse(csv.GetField(0));
-                                personIdsToDrop.TryAdd(id, false);
+
+                                while (csv.Read())
+                                {
+                                    var id = long.Parse(csv.GetField(0));
+                                    personIdsToDrop.TryAdd(id, false);
+                                }
                             }
-                        }
 
-                        Interlocked.Increment(ref count);
+                            Interlocked.Increment(ref count);
 
-                        if (count % 1000 == 0)
-                            Console.WriteLine(o.Key + " | " + count);
-                    });
-
+                            if (count % 1000 == 0)
+                                Console.WriteLine(o.Key + " | " + count);
+                        });
+                    }
 
                     request.ContinuationToken = task.Result.NextContinuationToken;
 
@@ -145,23 +147,25 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
                     task = client.ListObjectsV2Async(request);
                     task.Wait();
 
-                    Parallel.ForEach(task.Result.S3Objects, o =>
+                    if (task.Result.S3Objects != null)
                     {
-                        foreach (var factRelationship in ReadFactRelationships(o))
+                        Parallel.ForEach(task.Result.S3Objects, o =>
                         {
-                            var childId = factRelationship.FactId2;
-                            if (!fr.ContainsKey(childId))
-                                fr.TryAdd(childId, []);
+                            foreach (var factRelationship in ReadFactRelationships(o))
+                            {
+                                var childId = factRelationship.FactId2;
+                                if (!fr.ContainsKey(childId))
+                                    fr.TryAdd(childId, []);
 
-                            fr[childId].Add(factRelationship);
-                        }
+                                fr[childId].Add(factRelationship);
+                            }
 
-                        Interlocked.Increment(ref filesProcessed);
+                            Interlocked.Increment(ref filesProcessed);
 
-                        if (filesProcessed % 1000 == 0)
-                            Console.WriteLine(o.Key + " | " + filesProcessed);
-                    });
-
+                            if (filesProcessed % 1000 == 0)
+                                Console.WriteLine(o.Key + " | " + filesProcessed);
+                        });
+                    }
 
                     request.ContinuationToken = task.Result.NextContinuationToken;
                 } while (task.Result.IsTruncated ?? false);

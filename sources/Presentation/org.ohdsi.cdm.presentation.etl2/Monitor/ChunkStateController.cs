@@ -42,9 +42,9 @@ namespace org.ohdsi.cdm.presentation.etl.Monitor
                 Console.WriteLine($"> {DateTime.Now:t} | Checking ChunkId={_chunkId}... (Attempt {_ckeckCount})");
                 var lastModified = DateTime.MinValue;
 
-                var prefix = $"{Settings.Current.Building.Vendor}.{Settings.Current.Building.Id.Value}.{_chunkId}.";
+                var prefix = $"{Settings.Current.GetCDMBuildingPrefix}.{_chunkId}.";
                 
-                var info = CloudStorageHelper.GetTriggerFilesInfo(prefix);
+                var info = CloudStorageHelper.GetTriggerFilesInfo(Settings.Current.CloudTriggerStorageName, prefix);
                 if (info == null || !info.Any())
                 {
                     _timer.Enabled = false;
@@ -93,11 +93,11 @@ namespace org.ohdsi.cdm.presentation.etl.Monitor
 
                 if (result.ChunkResults[0].IsValid)
                 {
-                    State = ChunkState.Invalid;
+                    State = ChunkState.Valid;
                 }
                 else
                 {
-                    State = ChunkState.Valid;
+                    State = ChunkState.Invalid;
                 }
             }
             catch (Exception ex)

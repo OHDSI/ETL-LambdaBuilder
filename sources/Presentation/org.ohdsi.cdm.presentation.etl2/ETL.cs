@@ -222,9 +222,12 @@ namespace org.ohdsi.cdm.presentation.etl
             Console.WriteLine($"PersonIdFieldName:{Settings.Current.Building.PersonIdFieldName}");
             Console.WriteLine($"PersonIdFieldIndex:{Settings.Current.Building.PersonIdFieldIndex}");
 
+            var oneChunk = new List<int>();
+            oneChunk.Add(chunkIds.First());
             using (var chunkManager = new ChunkManager())
             {
-                Parallel.ForEach(chunkIds, new ParallelOptions { MaxDegreeOfParallelism = Settings.Current.ParallelChunks }, cId =>
+                //Parallel.ForEach(chunkIds, new ParallelOptions { MaxDegreeOfParallelism = Settings.Current.ParallelChunks }, cId =>
+                Parallel.ForEach(oneChunk, new ParallelOptions { MaxDegreeOfParallelism = Settings.Current.ParallelChunks }, cId =>
                 {
                     var chunkId = cId;
 
@@ -266,7 +269,7 @@ namespace org.ohdsi.cdm.presentation.etl
                                 slice = $"PartitionId={i}";
                             }
 
-                            var key = $"{Settings.Current.Building.Vendor}.{Settings.Current.Building.Id}.{chunkId}.{slice}.txt";
+                            var key = $"{Settings.Current.GetCDMBuildingPrefix}.{chunkId}.{slice}.txt";
                             using var empty = new MemoryStream();
 
                             //CloudStorageHelper.GetAwsTriggerStorageClient().UploadBlob(key, empty);
@@ -294,7 +297,7 @@ namespace org.ohdsi.cdm.presentation.etl
                     {
                         try
                         {
-                            unprocessed = CloudStorageHelper.GetTriggerFilesInfo($"{Settings.Current.Building.Vendor}.{Settings.Current.Building.Id}").Count();
+                            unprocessed = CloudStorageHelper.GetTriggerFilesInfo(Settings.Current.CloudTriggerStorageName, $"{Settings.Current.GetCDMBuildingPrefix}").Count();
 
                             Console.WriteLine($"[Moving raw data] Unprocessed functions={unprocessed}");
 
