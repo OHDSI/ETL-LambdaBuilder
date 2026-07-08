@@ -30,6 +30,9 @@ namespace RunValidation
             [Option('p', "personId", Default = null, HelpText = "(Optional) If specified, the usual check changes to finding SliceId for the given PersonId within the first specified ChunkId.")]
             public long? PersonId { get; set; } = null;
 
+            [Option('s', "singleTreadedMode", Default = 0, HelpText = "(Optional) Set to 1 to only allow a single thread to save memory at cost of processing speed")]
+            public int? SingleTreadedMode { get; set; } = null;
+
             [Usage(ApplicationAlias = "RunValidation")]
             public static IEnumerable<Example> Examples
             {
@@ -86,6 +89,7 @@ namespace RunValidation
         static async Task RunWithOptionsAsync(Options opts)
         {
             var chunks = opts.Chunks.ToList();
+            var singleThreadedMode = opts.SingleTreadedMode == 1;
 
             AnsiConsole.WriteLine("Options:");
             AnsiConsole.WriteLine($"Bucket - folder: {_bucket} - {_cdmFolder}");
@@ -93,6 +97,7 @@ namespace RunValidation
             AnsiConsole.WriteLine($"Building ID: {opts.BuildingId}");
             AnsiConsole.WriteLine($"Chunks: {string.Join(", ", chunks)}");
             AnsiConsole.WriteLine($"PersonId: {opts.PersonId?.ToString() ?? ""}");
+            AnsiConsole.WriteLine($"SingleTreadedMode: {opts.SingleTreadedMode?.ToString() ?? ""}");
             AnsiConsole.WriteLine($"EtlLibraryPath: {opts.EtlLibraryPath}");
             AnsiConsole.WriteLine($"Current directory: {Directory.GetCurrentDirectory()}");
             AnsiConsole.WriteLine();
@@ -120,17 +125,17 @@ namespace RunValidation
                 if (chunks is not { Count: > 0 })
                     chunks = validation.Chunks.ToList();
 
-                AnsiConsole.WriteLine($"Done. Chunks count = {validation.Chunks.Count}, slices count = {validation.Slices.Count}. "
+                AnsiConsole.WriteLine($"Done. Chunks count = {validation.Chunks.Count}, Chunk size = {validation.ChunkSize}, slices count = {validation.Slices.Count}. "
                     + $"{Convert.ToInt32(sw.Elapsed.TotalSeconds)}s");
                 #endregion
 
                 if (opts.PersonId.HasValue)
                 {
-                    await ValidatePersonId(validation, chunks, opts.PersonId.Value);
+                    await ValidatePersonId(validation, chunks, opts.PersonId.Value, singleThreadedMode);
                 }
                 else
                 {
-                    await ValidateChunk(validation, chunks);
+                    await ValidateChunk(validation, chunks, singleThreadedMode);
                 }
 
                 sw.Stop();
@@ -143,16 +148,45 @@ namespace RunValidation
             }
         }
 
-        static async Task ValidatePersonId(Validation validation, List<int> chunks, long personId)
+        static async Task ValidatePersonId(Validation validation, List<int> chunks, long personId, bool singleThreadedMode)
         {
             AnsiConsole.WriteLine($"\r\nValidation in progress...");
 
             int maxDegreeOfParallelism = Math.Max(1, Environment.ProcessorCount - 1);
+            if (singleThreadedMode)
+                maxDegreeOfParallelism = 1;
+
+            #region orderedChunks -> check a probable location, then 2 adjusted chunks, then another 2, then the rest
+            List<int> orderedChunks = new List<int>();
+
+            var chunkToStart = Convert.ToInt32(personId / validation.ChunkSize);
+            orderedChunks.Add(chunkToStart);
+            
+            var nextChunk = chunkToStart - 1;
+            if (chunks.Any(s => s == nextChunk))
+                orderedChunks.Add(nextChunk);
+
+            nextChunk = chunkToStart + 1;
+            if (chunks.Any(s => s == nextChunk))
+                orderedChunks.Add(nextChunk);
+
+            nextChunk = chunkToStart - 2;
+            if (chunks.Any(s => s == nextChunk))
+                orderedChunks.Add(nextChunk);
+
+            nextChunk = chunkToStart + 2;
+            if (chunks.Any(s => s == nextChunk))
+                orderedChunks.Add(nextChunk);
+
+            foreach (var chunk in chunks)
+                if (!orderedChunks.Contains(chunk))
+                    orderedChunks.Add(chunk);
+            #endregion
 
             using var cts = new CancellationTokenSource();
             using var semaphore = new SemaphoreSlim(maxDegreeOfParallelism);
 
-            var chunkTasks = chunks
+            var chunkTasks = orderedChunks
                 .Select(chunkId => Task.Run(async () =>
                 {
                     await semaphore.WaitAsync(cts.Token);
@@ -168,57 +202,92 @@ namespace RunValidation
                     {
                         semaphore.Release();
                     }
-                }))
+                }, cts.Token))
                 .ToList();
 
-            bool found = false;
+            PersonIdValidationResult? foundResult = null;
 
-            foreach (var chunkTask in chunkTasks)
-            {
-                PersonIdValidationResult? result;
-
-                try
+            await AnsiConsole.Progress()
+                .AutoClear(false)
+                .Columns(
+                    new TaskDescriptionColumn(),
+                    new ProgressBarColumn(),
+                    new ElapsedTimeColumn(),
+                    new PercentageColumn(),
+                    new SpinnerColumn())
+                .StartAsync(async ctx =>
                 {
-                    result = await chunkTask;
-                }
-                catch (OperationCanceledException)
-                {
-                    continue;
-                }
+                    var progressTask = ctx.AddTask(
+                        $"Processed 0/{chunkTasks.Count} chunks",
+                        maxValue: chunkTasks.Count);
 
-                if (result == null)
-                    continue;
+                    var pendingTasks = chunkTasks.ToList();
+                    int processedChunks = 0;
 
-                if (result.Found)
-                {
-                    AnsiConsole.MarkupLine(
-                        $"[green]PersonId {result.PersonId} was found in ChunkId {result.ChunkId}, SliceId {result.SliceId}. {Convert.ToInt32(result.Elapsed.TotalSeconds)}s[/]");
+                    while (pendingTasks.Count > 0)
+                    {
+                        var completedTask = await Task.WhenAny(pendingTasks);
+                        pendingTasks.Remove(completedTask);
 
-                    found = true;
-                    cts.Cancel();
-                    break;
-                }
-            }
+                        PersonIdValidationResult? result;
 
-            try
+                        try
+                        {
+                            result = await completedTask;
+                        }
+                        catch (OperationCanceledException)
+                        {
+                            result = null;
+                        }
+
+                        processedChunks++;
+
+                        progressTask.Value = processedChunks;
+                        progressTask.Description = $"Processed {processedChunks}/{chunkTasks.Count} chunks";
+
+                        if (result == null)
+                            continue;
+
+                        if (result.Found)
+                        {
+                            foundResult = result;
+                            cts.Cancel();
+                            break;
+                        }
+                    }
+
+                    try
+                    {
+                        await Task.WhenAll(pendingTasks);
+                    }
+                    catch (OperationCanceledException)
+                    {
+                    }
+                });
+
+            if (foundResult != null)
             {
-                await Task.WhenAll(chunkTasks);
+                AnsiConsole.MarkupLine(
+                    $"[green]PersonId {foundResult.PersonId} was found in ChunkId {foundResult.ChunkId}, SliceId {foundResult.SliceId}. {Convert.ToInt32(foundResult.Elapsed.TotalSeconds)}s[/]");
             }
-            catch (OperationCanceledException)
+            else
             {
-            }
-
-            if (!found)
                 AnsiConsole.MarkupLine($"[red]Person is not found![/]");
+            }
         }
 
-        static async Task ValidateChunk(Validation validation, List<int> chunks)
+        static async Task ValidateChunk(Validation validation, List<int> chunks, bool singleThreadedMode)
         {
             #region validation
             AnsiConsole.WriteLine($"\r\nValidation in progress...");
 
             int errorChunks = 0;
+
             int maxDegreeOfParallelism = Math.Max(1, Environment.ProcessorCount - 1);
+            if (singleThreadedMode)
+                maxDegreeOfParallelism = 1;
+
+
             using var semaphore = new SemaphoreSlim(maxDegreeOfParallelism);
 
             var chunkTasks = chunks

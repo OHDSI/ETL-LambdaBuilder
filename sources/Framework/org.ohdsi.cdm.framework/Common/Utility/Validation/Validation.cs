@@ -15,10 +15,10 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
     {
         public ImmutableHashSet<int> Slices { get; protected set; }
         public ImmutableList<int> Chunks { get; protected set; }
+        public int ChunkSize { get; protected set; }
 
         private const int MaxReadAttempts = 3;
 
-        private static readonly char[] ChunkFileSeparators = new[] { ',', ' ', '\t' };
 
         private readonly string _awsAccessKeyId;
         private readonly string _awsSecretAccessKey;
@@ -26,9 +26,10 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
         private readonly string _cdmFolder;
         private readonly Vendor _vendor;
         private readonly int _buildingId;
-        private List<(int ChunkId, S3Object S3Object)> _s3ChunkObjects;
+        private Dictionary<int, ChunkFile> _chunkFiles; //ChunkId, files
+        private Dictionary<int, List<PersonFile>> _personFiles; //ChunkId, files
 
-        private bool _s3InfoRetrieved => _s3ChunkObjects != null && Chunks != null && Slices != null;
+        private bool _s3InfoRetrieved => _chunkFiles != null && _personFiles != null && Chunks != null && Slices != null;
 
         public Validation(
             string awsAccessKeyId,
@@ -49,10 +50,46 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
 
         public void GetS3InfoForValidation()
         {
-            _s3ChunkObjects = GetS3ChunkObjects();
-            Chunks = _s3ChunkObjects.Select(s => s.ChunkId).Distinct().OrderBy(s => s).ToImmutableList();
+            _chunkFiles = new Dictionary<int, ChunkFile>();
+            var chunkFilesRaw = GetS3ChunkObjects();
+            foreach (var v in chunkFilesRaw)
+            {
+                if (_chunkFiles.TryGetValue(v.ChunkId, out ChunkFile? value))
+                {
+                    // do nothing
+                }
+                else
+                {
+                    _chunkFiles.Add(v.ChunkId, v);
+                }
+            }
 
-            Slices = GetActualSlices().ToImmutableHashSet();
+            Chunks = _chunkFiles.Select(s => s.Key).Distinct().OrderBy(s => s).ToImmutableList();
+            ChunkSize = _chunkFiles.First(s => s.Key == _chunkFiles.Values.Min(a => a.ChunkId)).Value.ReadChunkFile().Count();
+
+
+
+
+            _personFiles = new Dictionary<int, List<PersonFile>>();
+            var personFilesRaw = GetPersonFiles();
+            foreach (var v in personFilesRaw)
+            {
+                if (_personFiles.TryGetValue(v.ChunkId, out List<PersonFile>? value))
+                {
+                    value.Add(v);
+                }
+                else
+                {
+                    var list = new List<PersonFile>() { v };
+                    _personFiles.Add(v.ChunkId, list);
+                }                
+            }
+
+            Slices = _personFiles
+                .SelectMany(s => s.Value.Select(a => a.SliceId))
+                .Distinct()
+                .OrderBy(s => s)
+                .ToImmutableHashSet();
         }
 
         public BuildingValidationResult ValidateBuildingId(
@@ -64,7 +101,7 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
             var chunkResults = new ConcurrentBag<ChunkValidationResult>();
 
             if (!_s3InfoRetrieved)
-                GetS3InfoForValidation();
+                throw new Exception("Lacking information about S3 storage. Run GetS3InfoForValidation first!");
 
             var chunkFilesSkipped = 0;
 
@@ -73,17 +110,17 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
                 MaxDegreeOfParallelism = degreeOfParallelism.GetValueOrDefault(Math.Max(1, Environment.ProcessorCount - 1))
             };
 
-            Parallel.ForEach(_s3ChunkObjects, parallelOptions, s3ChunkObject =>
+            Parallel.ForEach(_chunkFiles, parallelOptions, s3ChunkObject =>
             {
                 if (chunksToProcess is { Count: > 0 }
-                   && !chunksToProcess!.Any(s => s == s3ChunkObject.ChunkId))
+                   && !chunksToProcess!.Any(s => s == s3ChunkObject.Value.ChunkId))
                 {
                     //skip chunk file if not in chunksToProcess
                 }
                 else
                 {
                     var result = ValidateChunkObject(
-                        s3ChunkObject.S3Object,
+                        s3ChunkObject.Value,
                         Slices);
 
                     if (result == null)
@@ -105,7 +142,7 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
             return new BuildingValidationResult(
                 _vendor.Name,
                 _buildingId,
-                _s3ChunkObjects.Count,
+                _chunkFiles.Count,
                 orderedChunkResults.Count,
                 chunkFilesSkipped,
                 Slices.Count,
@@ -121,20 +158,20 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
             var timer = Stopwatch.StartNew();
 
             if (!_s3InfoRetrieved)
-                GetS3InfoForValidation();
+                throw new Exception("Lacking information about S3 storage. Run GetS3InfoForValidation first!");
 
             var slices = slicesToProcess is { Count: > 0 }
                 ? slicesToProcess.OrderBy(s => s).ToList()
                 : Slices.OrderBy(s => s).ToList();
 
-            var relevantS3ChunkObjects = _s3ChunkObjects
-                .Where(s => s.ChunkId == chunkId)
+            var relevantS3ChunkObjects = _chunkFiles
+                .Where(s => s.Value.ChunkId == chunkId)
                 .ToList();
 
             foreach (var chunkObject in relevantS3ChunkObjects)
             {
                 var result = ValidateChunkObject(
-                    chunkObject.S3Object,
+                    chunkObject.Value,
                     slices);
 
                 if (result != null)
@@ -190,11 +227,14 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
                 issues.Add(chunkFileIssue);
             }
 
-            var objectsBySlice = GetS3ObjectsBySlice(
-                chunkId,
-                new List<int> { sliceId });
+            var sliceObjects = new List<PersonFile>();
 
-            if (!objectsBySlice.TryGetValue(sliceId, out var sliceObjects))
+            if (_personFiles.TryGetValue(chunkId, out List<PersonFile>? chunkFiles))
+                sliceObjects = chunkFiles
+                    .Where(s => s.SliceId == sliceId)
+                    .ToList();
+
+            if (!sliceObjects.Any())
             {
                 issues.Add(new ValidationIssue(
                     ValidationIssueType.SliceObjectsMissing,
@@ -243,9 +283,8 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
 
             try
             {
-                var chunkObjects = _s3ChunkObjects
-                    .Where(s => s.ChunkId == chunkId)
-                    .Select(s => s.S3Object)
+                var chunkObjects = _chunkFiles
+                    .Where(s => s.Value.ChunkId == chunkId)
                     .ToList();
 
                 if (chunkObjects.Count == 0)
@@ -271,24 +310,23 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
                         timer.Elapsed);
                 }
 
-                Dictionary<long, Person>? chunkFilePersons = null;
                 Person? person = null;
+                Dictionary<long, Person> persons = new Dictionary<long, Person>();
 
                 foreach (var chunkObject in chunkObjects)
                 {
-                    var personsFromChunkFile = ReadChunkFile(chunkObject);
-                    if (personsFromChunkFile.Count == 0)
-                        continue;
+                    persons = chunkObject.Value
+                        .ReadChunkFile()
+                        .Select(s => KeyValuePair.Create(s.PersonId, s))
+                        .ToDictionary();
 
-                    if (personsFromChunkFile.TryGetValue(personId, out var foundPerson))
+                    if (persons.TryGetValue(personId, out Person? value))
                     {
-                        chunkFilePersons = personsFromChunkFile;
-                        person = foundPerson;
-                        break;
+                        person = value;
                     }
                 }
 
-                if (chunkFilePersons == null || person == null)
+                if (person == null || persons.Count == 0)
                 {
                     issues.Add(new ValidationIssue(
                         ValidationIssueType.MissingPersonId,
@@ -311,9 +349,13 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
                         timer.Elapsed);
                 }
 
-                var objectsBySlice = GetS3ObjectsBySlice(
-                    chunkId,
-                    Slices);
+                var objectsBySlice = new List<IGrouping<int, PersonFile>>();
+
+                if (_personFiles.TryGetValue(chunkId, out List<PersonFile>? chunkFiles))
+                    objectsBySlice = chunkFiles
+                        .Where(s => Slices.Any(a => a == s.SliceId))
+                        .GroupBy(s => s.SliceId)
+                        .ToList();
 
                 if (objectsBySlice.Count == 0)
                 {
@@ -338,12 +380,12 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
                         timer.Elapsed);
                 }
 
-                foreach (var sliceObjects in objectsBySlice.Values.OrderBy(s => s.SliceId))
+                foreach (var sliceObjects in objectsBySlice)
                 {
                     var sliceResult = ValidateSliceObjects(
                         chunkId,
-                        sliceObjects,
-                        chunkFilePersons);
+                        sliceObjects.ToList(),
+                        persons);
 
                     foreach (var issue in sliceResult.Issues)
                     {
@@ -396,7 +438,7 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
         }
 
         private ChunkValidationResult? ValidateChunkObject(
-            S3Object chunkObject,
+            ChunkFile chunkObject,
             IReadOnlyCollection<int> slicesToProcess)
         {
             var timer = Stopwatch.StartNew();
@@ -406,17 +448,18 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
 
             try
             {
-                chunkFilePersons = ReadChunkFile(chunkObject);
+                chunkFilePersons = chunkObject
+                    .ReadChunkFile()
+                    .Select(s => KeyValuePair.Create(s.PersonId, s))
+                    .ToDictionary();
             }
             catch (Exception exception)
             {
-                var chunkIdFromFileName = TryGetS3ChunksFileNumber(chunkObject.Key)
-                    ?? throw new Exception("Failed to extract chunkId from file name!");
 
                 issues.Add(new ValidationIssue(
                     ValidationIssueType.Exception,
                     _buildingId,
-                    chunkIdFromFileName,
+                    chunkObject.ChunkId,
                     null,
                     null,
                     exception.Message));
@@ -426,7 +469,7 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
                 return new ChunkValidationResult(
                     _vendor.Name,
                     _buildingId,
-                    chunkIdFromFileName,
+                    chunkObject.ChunkId,
                     0,
                     0,
                     new PersonValidationCounts(0, 0, 0, 0, 0),
@@ -443,11 +486,15 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
 
             var chunkId = chunkFilePersons.First().Value.ChunkId;
 
-            var objectsBySlice = GetS3ObjectsBySlice(
-                chunkId,
-                slicesToProcess);
+            var objectsBySlice = new List<IGrouping<int, PersonFile>>();
 
-            if (objectsBySlice.Count == 0)
+            if (_personFiles.TryGetValue(chunkId, out List<PersonFile>? chunkFiles))
+                objectsBySlice = chunkFiles
+                    .Where(s => Slices.Any(a => a == s.SliceId))
+                    .GroupBy(s => s.SliceId)
+                    .ToList();
+
+            if (!objectsBySlice.Any())
             {
                 issues.Add(new ValidationIssue(
                     ValidationIssueType.SliceObjectsMissing,
@@ -460,11 +507,11 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
 
             var sliceResults = new List<SliceValidationResult>();
 
-            foreach (var sliceObjects in objectsBySlice.Values.OrderBy(s => s.SliceId))
+            foreach (var sliceObjects in objectsBySlice)
             {
                 var sliceResult = ValidateSliceObjects(
                     chunkId,
-                    sliceObjects,
+                    sliceObjects.ToList(),
                     chunkFilePersons);
 
                 sliceResults.Add(sliceResult);
@@ -490,9 +537,12 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
 
         private SliceValidationResult ValidateSliceObjects(
             int chunkId,
-            SliceObjects sliceObjects,
+            List<PersonFile> sliceObjects,
             Dictionary<long, Person> chunkFilePersons)
         {
+            if (!sliceObjects.Any())
+                throw new ArgumentException("sliceObjects is empty!");
+
             var timer = Stopwatch.StartNew();
             var issues = new List<ValidationIssue>();
 
@@ -501,15 +551,15 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
             var unexpectedPersonIds = new HashSet<long>();
             var localCounters = new Dictionary<long, PersonSliceCounters>();
 
-            if (sliceObjects.PersonObjects.Count == 0 && sliceObjects.MetadataObjects.Count == 0)
+            if (!sliceObjects.Any(s => s.ObjectKind == "PERSON") && !sliceObjects.Any(s => s.ObjectKind == "METADATA_TMP"))
             {
                 issues.Add(new ValidationIssue(
                     ValidationIssueType.SliceObjectsMissing,
                     _buildingId,
                     chunkId,
-                    sliceObjects.SliceId,
+                    sliceObjects.First().SliceId,
                     null,
-                    $"No PERSON or METADATA_TMP objects found for Vendor={_vendor.Name}, BuildingId={_buildingId}, ChunkId={chunkId}, SliceId={sliceObjects.SliceId}"));
+                    $"No PERSON or METADATA_TMP objects found for Vendor={_vendor.Name}, BuildingId={_buildingId}, ChunkId={chunkId}, SliceId={sliceObjects.First().SliceId}"));
 
                 timer.Stop();
 
@@ -517,7 +567,7 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
                     _vendor.Name,
                     _buildingId,
                     chunkId,
-                    sliceObjects.SliceId,
+                    sliceObjects.First().SliceId,
                     0,
                     0,
                     0,
@@ -526,10 +576,6 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
                     issues,
                     timer.Elapsed);
             }
-
-            var allObjects = sliceObjects.PersonObjects
-                .Concat(sliceObjects.MetadataObjects)
-                .ToList();
 
             var complete = false;
             var attempt = 0;
@@ -545,22 +591,14 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
 
                 try
                 {
-                    foreach (var s3Object in allObjects)
+                    foreach (var s3Object in sliceObjects)
                     {
-                        var objectKind = DetectObjectKind(s3Object.Key);
+                        var personIdsFull = s3Object.ReadPersonIds();
 
-                        using var transferUtility = new TransferUtility(_awsAccessKeyId, _awsSecretAccessKey, Amazon.RegionEndpoint.USEast1);
-                        using var responseStream = transferUtility.OpenStream(_bucket, s3Object.Key);
-                        using var bufferedStream = new BufferedStream(responseStream);
-                        using Stream compressedStream = s3Object.Key.EndsWith(".gz")
-                            ? new GZipStream(bufferedStream, CompressionMode.Decompress)
-                            : new DecompressionStream(bufferedStream);
-                        using var reader = new StreamReader(compressedStream, Encoding.Default);
-                        using var csv = org.ohdsi.cdm.framework.common.Helpers.CsvHelper.CreateCsvReader(reader);
-
-                        while (csv.Read())
+                        foreach (var personIdFull in personIdsFull)
                         {
-                            var personId = (long)csv.GetField(typeof(long), 0);
+                            var personId = personIdFull.PersonId;
+                            var attritionReason = personIdFull.AttritionReason;
 
                             if (!chunkFilePersons.ContainsKey(personId))
                             {
@@ -574,16 +612,14 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
                                 localCounters[personId] = counters;
                             }
 
-                            if (objectKind == "PERSON")
+                            if (s3Object.ObjectKind == "PERSON")
                             {
                                 counters.InPersonFilesCount++;
                                 personRowsRead++;
                             }
-                            else if (objectKind == "METADATA_TMP")
+                            else if (s3Object.ObjectKind == "METADATA_TMP")
                             {
-                                var attrition = csv.GetField(typeof(string), 1) as string;
-
-                                if (attrition != "Discarded drug count")
+                                if (attritionReason != "Discarded drug count")
                                 {
                                     counters.InMetadataFilesCount++;
                                 }
@@ -592,9 +628,9 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
                             }
                             else
                             {
-                                throw new NotImplementedException("Unsupported object key: " + s3Object.Key);
+                                throw new NotImplementedException("Unsupported object key: " + s3Object.S3Object.Key);
                             }
-                        }
+                        }                        
                     }
 
                     complete = true;
@@ -607,7 +643,7 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
                             ValidationIssueType.ObjectReadFailed,
                             _buildingId,
                             chunkId,
-                            sliceObjects.SliceId,
+                            sliceObjects.First().SliceId,
                             null,
                             $"{exception.Message} | attempt={attempt}"));
 
@@ -622,7 +658,7 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
                 var counters = pair.Value;
 
                 var person = chunkFilePersons[personId];
-                person.SliceId ??= sliceObjects.SliceId;
+                person.SliceId ??= sliceObjects.First().SliceId;
                 person.InPersonFilesCount += counters.InPersonFilesCount;
                 person.InMetadataFilesCount += counters.InMetadataFilesCount;
             }
@@ -633,7 +669,7 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
                     ValidationIssueType.UnexpectedPersonIdInRawFile,
                     _buildingId,
                     chunkId,
-                    sliceObjects.SliceId,
+                    sliceObjects.First().SliceId,
                     unexpectedPersonId,
                     $"PersonId={unexpectedPersonId} exists in raw PERSON/METADATA_TMP files but does not exist in _chunks file."));
             }
@@ -644,9 +680,9 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
                 _vendor.Name,
                 _buildingId,
                 chunkId,
-                sliceObjects.SliceId,
-                sliceObjects.PersonObjects.Count,
-                sliceObjects.MetadataObjects.Count,
+                sliceObjects.First().SliceId,
+                sliceObjects.Count(s => s.ObjectKind == "PERSON"),
+                sliceObjects.Count(s => s.ObjectKind == "METADATA_TMP"),
                 personRowsRead,
                 metadataRowsRead,
                 unexpectedPersonIds.Count,
@@ -654,7 +690,7 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
                 timer.Elapsed);
         }
 
-        private List<(int ChunkId, S3Object S3Object)> GetS3ChunkObjects()
+        private List<ChunkFile> GetS3ChunkObjects()
         {
             var prefix = $"{_vendor.Name}/{_buildingId}/chunks";
 
@@ -694,16 +730,18 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
             while (response?.IsTruncated ?? false);
 
             var result = s3ObjectsTotal
-                .Select(s => (ReadChunkFile(s, true).Values.First().ChunkId, s))
+                .Select(s => new ChunkFile(s, _awsAccessKeyId, _awsSecretAccessKey, _bucket))
                 .OrderBy(s => s.ChunkId)
                 .ToList();
 
             return result;
         }
 
-        private HashSet<int> GetActualSlices()
+        private List<PersonFile> GetPersonFiles()
         {
-            var slices = new HashSet<int>();
+            var files = new List<PersonFile>();
+
+            #region person
             var prefix = $"{_vendor.Name}/{_buildingId}/{_cdmFolder}/PERSON/PERSON.";
 
             using var client = new AmazonS3Client(_awsAccessKeyId, _awsSecretAccessKey, Amazon.RegionEndpoint.USEast1);
@@ -720,76 +758,38 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
             {
                 response = client.ListObjectsV2Async(request).GetAwaiter().GetResult();
 
-                foreach (var s3Object in response.S3Objects)
+                foreach (var s3Object in response?.S3Objects ?? new List<S3Object>())
                 {
-                    slices.Add(int.Parse(s3Object.Key.Split('.')[1]));
+                    files.Add(new PersonFile(s3Object, _awsAccessKeyId, _awsSecretAccessKey, _bucket));
                 }
 
-                request.ContinuationToken = response.NextContinuationToken;
+                request.ContinuationToken = response?.NextContinuationToken;
             }
-            while (response.IsTruncated ?? false);
+            while (response?.IsTruncated ?? false);
+            #endregion
 
-            return slices;
-        }
-
-        private Dictionary<int, SliceObjects> GetS3ObjectsBySlice(
-            int chunkId,
-            IReadOnlyCollection<int> slices)
-        {
-            var result = new Dictionary<int, SliceObjects>();
-            var orderedSlices = slices.Distinct().OrderBy(s => s).ToList();
-
-            foreach (var sliceId in orderedSlices)
-            {
-                var personObjects = GetObjects("PERSON", chunkId, sliceId);
-                var metadataObjects = GetObjects("METADATA_TMP", chunkId, sliceId);
-
-                if (personObjects.Count == 0 && metadataObjects.Count == 0)
-                {
-                    continue;
-                }
-
-                result[sliceId] = new SliceObjects(
-                    sliceId,
-                    personObjects,
-                    metadataObjects);
-            }
-
-            return result;
-        }
-
-        private List<S3Object> GetObjects(
-            string table,
-            int chunkId,
-            int sliceId)
-        {
-            var prefix = $"{_vendor.Name}/{_buildingId}/{_cdmFolder}/{table}/{table}.{sliceId}.{chunkId}.";
-
-            using var client = new AmazonS3Client(_awsAccessKeyId, _awsSecretAccessKey, Amazon.RegionEndpoint.USEast1);
-
-            var request = new ListObjectsV2Request
+            #region metadata_tmp
+            prefix = $"{_vendor.Name}/{_buildingId}/{_cdmFolder}/METADATA_TMP/METADATA_TMP.";
+            request = new ListObjectsV2Request
             {
                 BucketName = _bucket,
                 Prefix = prefix
             };
-
-            var result = new List<S3Object>();
-            ListObjectsV2Response response;
-
             do
             {
                 response = client.ListObjectsV2Async(request).GetAwaiter().GetResult();
-                
-                if (response.S3Objects == null || response.S3Objects.Count == 0)
-                    return result;
 
-                result.AddRange(response.S3Objects);
-                
-                request.ContinuationToken = response.NextContinuationToken;
+                foreach (var s3Object in response?.S3Objects ?? new List<S3Object>())
+                {
+                    files.Add(new PersonFile(s3Object, _awsAccessKeyId, _awsSecretAccessKey, _bucket));
+                }
+
+                request.ContinuationToken = response?.NextContinuationToken;
             }
-            while (response.IsTruncated ?? false);
+            while (response?.IsTruncated ?? false);
+            #endregion
 
-            return result;
+            return files;
         }
 
         private Dictionary<long, Person> TryReadChunkPersonsByChunkId(
@@ -799,9 +799,12 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
             issue = null;
 
 
-            foreach (var chunkObject in _s3ChunkObjects)
+            foreach (var chunkObject in _chunkFiles)
             {
-                var persons = ReadChunkFile(chunkObject.S3Object);
+                var persons = chunkObject.Value
+                    .ReadChunkFile()
+                    .Select(s => KeyValuePair.Create(s.PersonId, s))
+                    .ToDictionary();
 
                 if (persons.Count > 0)
                 {
@@ -818,50 +821,6 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
                 $"Chunk file was not found for Vendor={_vendor.Name}, BuildingId={_buildingId}, ChunkId={chunkId}");
 
             return new Dictionary<long, Person>();
-        }
-
-        private Dictionary<long, Person> ReadChunkFile(
-            S3Object s3Object,
-            bool returnChunkIdOnly = false)
-        {
-            var filePersonIds = new Dictionary<long, Person>();
-
-            using var transferUtility = new TransferUtility(_awsAccessKeyId, _awsSecretAccessKey, Amazon.RegionEndpoint.USEast1);
-            using var responseStream = transferUtility.OpenStream(_bucket, s3Object.Key);
-            using var bufferedStream = new BufferedStream(responseStream);
-            using Stream compressedStream = s3Object.Key.EndsWith(".gz")
-                ? new GZipStream(bufferedStream, CompressionMode.Decompress)
-                : new DecompressionStream(bufferedStream);
-            using var reader = new StreamReader(compressedStream, Encoding.Default);
-
-            var line = reader.ReadLine();
-            while (!string.IsNullOrEmpty(line))
-            {
-                var splits = line.Split(ChunkFileSeparators, StringSplitOptions.RemoveEmptyEntries);
-
-                var person = splits.Length switch
-                {
-                    3 => new Person(ChunkId: int.Parse(splits[0]),
-                                    PersonId: long.Parse(splits[1]),
-                                    PersonSourceValue: splits[2]),
-
-                    4 => new Person(ChunkId: int.Parse(splits[0]),
-                                    //PartitionId: int.Parse(splits[1]),
-                                    PersonId: long.Parse(splits[2]),
-                                    PersonSourceValue: splits[3]),
-
-                    _ => throw new FormatException($"Invalid _chunks line format. Key={s3Object.Key}, Line={line}")
-                };
-
-                filePersonIds.TryAdd(person.PersonId, person);
-
-                if (returnChunkIdOnly)
-                    return filePersonIds;
-
-                line = reader.ReadLine();
-            }
-
-            return filePersonIds;
         }
 
         private static PersonValidationCounts CalculatePersonValidationCounts(IEnumerable<Person> persons)
@@ -925,36 +884,6 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
                         PersonValidationProblemType.Missing);
                 }
             }
-        }
-
-        private static string DetectObjectKind(string key)
-        {
-            if (key.Contains("/PERSON/") || key.Contains("PERSON."))
-            {
-                return "PERSON";
-            }
-
-            if (key.Contains("/METADATA_TMP/") || key.Contains("METADATA_TMP."))
-            {
-                return "METADATA_TMP";
-            }
-
-            throw new NotImplementedException("Unsupported object key: " + key);
-        }
-
-        private static int? TryGetS3ChunksFileNumber(string filename)
-        {
-            var digits = new string(filename.Split('/')
-                .Last()
-                .Where(char.IsDigit)
-                .ToArray());
-
-            if (int.TryParse(digits, out var result))
-            {
-                return result;
-            }
-
-            return null;
         }
     }
 }
