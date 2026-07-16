@@ -179,7 +179,8 @@ namespace RunValidation
                 orderedChunks.Add(nextChunk);
 
             foreach (var chunk in chunks)
-                if (!orderedChunks.Contains(chunk))
+                if (!orderedChunks.Contains(chunk) 
+                    && chunk < validation.ChunkSize)
                     orderedChunks.Add(chunk);
             #endregion
 
