@@ -618,6 +618,10 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
 
                     complete = true;
                 }
+                catch (OperationCanceledException)
+                {
+                    throw;
+                }
                 catch (Exception exception)
                 {
                     if (attempt >= MaxReadAttempts)
