@@ -1,10 +1,11 @@
 ﻿namespace org.ohdsi.cdm.framework.Common.Utility.Validation
 {
-    public class Person(int ChunkId, long PersonId, string? PersonSourceValue = null)
+    public class Person(int ChunkId, long PersonId, string? PersonSourceValue = null, string? AttritionReason = null)
     {
         public int ChunkId { get; set; } = ChunkId;
         public long PersonId { get; set; } = PersonId;
         public string? PersonSourceValue { get; set; } = PersonSourceValue;
+        public string? AttritionReason { get; set; } = AttritionReason;
 
         public int? SliceId { get; set; }
         public int? InPersonFilesCount { get; set; } = 0;

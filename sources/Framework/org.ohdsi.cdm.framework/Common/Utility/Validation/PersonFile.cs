@@ -1,8 +1,6 @@
 ﻿using Amazon.S3.Model;
 using Amazon.S3.Transfer;
-using org.ohdsi.cdm.framework.common.Enums;
 using System.IO.Compression;
-using System.Net.Sockets;
 using System.Text;
 using ZstdSharp;
 
@@ -35,8 +33,10 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
         private string _bucket;
 
 
-        public IEnumerable<(long PersonId, string? AttritionReason)> ReadPersonIds()
+        public IEnumerable<Person> ReadPersonIds(CancellationToken cancellationToken = default)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             using var transferUtility = new TransferUtility(_awsAccessKeyId, _awsSecretAccessKey, Amazon.RegionEndpoint.USEast1);
             using var responseStream = transferUtility.OpenStream(_bucket, S3Object.Key);
             using var bufferedStream = new BufferedStream(responseStream);
@@ -46,17 +46,57 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
             using var reader = new StreamReader(compressedStream, Encoding.Default);
             using var csv = org.ohdsi.cdm.framework.common.Helpers.CsvHelper.CreateCsvReader(reader);
 
-            while (csv.Read())
+            if (ObjectKind == "PERSON")
             {
-                var personId = (long)csv.GetField(typeof(long), 0);
-                
-                var attritionReason = ObjectKind == "METADATA_TMP"
-                    ? csv.GetField(typeof(string), 1) as string
-                    : "";
+                while (csv.Read())
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
 
-                yield return (personId, attritionReason);
+                    var personId = (long)csv.GetField(typeof(long), 0);
+
+                    var person = new Person(ChunkId, personId, null, null);
+                    person.SliceId = SliceId;
+                    person.InPersonFilesCount++;
+
+                    yield return person;
+                }
+            }
+            else if (ObjectKind == "METADATA_TMP")
+            {
+                while (csv.Read())
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+
+                    var personId = (long)csv.GetField(typeof(long), 0);
+                    var attritionReason = csv.GetField(typeof(string), 1) as string;
+
+                    var person = new Person(ChunkId, personId, null, attritionReason);
+                    person.SliceId = SliceId;
+                    if (person.AttritionReason != "Discarded drug count")
+                        person.InMetadataFilesCount++;
+
+                    yield return person;
+                }
+            }
+            else
+            {
+                throw new NotSupportedException("Unsupported object kind: " + ObjectKind);
             }
         }
+
+        public Person? CheckPersonFileForPersonId(long personIdToFind, CancellationToken cancellationToken = default)
+        {
+            foreach (var person in ReadPersonIds(cancellationToken))
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                if (person.PersonId == personIdToFind)
+                    return person;
+            }
+
+            return null;
+        }
+
 
         private string DetectObjectKind()
         {

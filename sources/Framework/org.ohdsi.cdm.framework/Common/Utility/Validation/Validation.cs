@@ -274,7 +274,10 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
             };
         }
 
-        public PersonIdValidationResult ValidatePersonId(int chunkId, long personId)
+        public PersonIdValidationResult ValidatePersonId(
+            int chunkId,
+            long personId,
+            CancellationToken cancellationToken = default)
         {
             var timer = Stopwatch.StartNew();
             var issues = new List<ValidationIssue>();
@@ -283,11 +286,12 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
 
             try
             {
-                var chunkObjects = _chunkFiles
-                    .Where(s => s.Value.ChunkId == chunkId)
-                    .ToList();
+                cancellationToken.ThrowIfCancellationRequested();
 
-                if (chunkObjects.Count == 0)
+                if (!_s3InfoRetrieved)
+                    throw new Exception("Lacking information about S3 storage. Run GetS3InfoForValidation first!");
+
+                if (!_chunkFiles.TryGetValue(chunkId, out var chunkObject))
                 {
                     issues.Add(new ValidationIssue(
                         ValidationIssueType.ChunkFileMissing,
@@ -310,23 +314,9 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
                         timer.Elapsed);
                 }
 
-                Person? person = null;
-                Dictionary<long, Person> persons = new Dictionary<long, Person>();
+                var person = chunkObject.CheckChunkFileForPersonId(personId, cancellationToken);
 
-                foreach (var chunkObject in chunkObjects)
-                {
-                    persons = chunkObject.Value
-                        .ReadChunkFile()
-                        .Select(s => KeyValuePair.Create(s.PersonId, s))
-                        .ToDictionary();
-
-                    if (persons.TryGetValue(personId, out Person? value))
-                    {
-                        person = value;
-                    }
-                }
-
-                if (person == null || persons.Count == 0)
+                if (person == null)
                 {
                     issues.Add(new ValidationIssue(
                         ValidationIssueType.MissingPersonId,
@@ -349,15 +339,9 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
                         timer.Elapsed);
                 }
 
-                var objectsBySlice = new List<IGrouping<int, PersonFile>>();
+                cancellationToken.ThrowIfCancellationRequested();
 
-                if (_personFiles.TryGetValue(chunkId, out List<PersonFile>? chunkFiles))
-                    objectsBySlice = chunkFiles
-                        .Where(s => Slices.Any(a => a == s.SliceId))
-                        .GroupBy(s => s.SliceId)
-                        .ToList();
-
-                if (objectsBySlice.Count == 0)
+                if (!_personFiles.TryGetValue(chunkId, out var personFiles) || personFiles.Count == 0)
                 {
                     issues.Add(new ValidationIssue(
                         ValidationIssueType.SliceObjectsMissing,
@@ -380,26 +364,21 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
                         timer.Elapsed);
                 }
 
-                foreach (var sliceObjects in objectsBySlice)
+                foreach (var personFile in personFiles)
                 {
-                    var sliceResult = ValidateSliceObjects(
-                        chunkId,
-                        sliceObjects.ToList(),
-                        persons);
+                    cancellationToken.ThrowIfCancellationRequested();
 
-                    foreach (var issue in sliceResult.Issues)
-                    {
-                        if (issue.PersonId == personId || issue.PersonId == null)
-                        {
-                            issues.Add(issue);
-                        }
-                    }
+                    if (!Slices.Contains(personFile.SliceId))
+                        continue;
 
-                    if (person.SliceId.HasValue)
-                    {
-                        foundSliceId = person.SliceId.Value;
-                        break;
-                    }
+                    var foundInPersonFile = personFile.CheckPersonFileForPersonId(personId, cancellationToken);
+
+                    if (foundInPersonFile == null)
+                        continue;
+
+                    foundSliceId = personFile.SliceId;
+
+                    break;
                 }
 
                 if (!foundSliceId.HasValue)
@@ -412,6 +391,10 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
                         personId,
                         $"PersonId={personId} exists in _chunks file for ChunkId={chunkId}, but was not found in PERSON/METADATA_TMP files."));
                 }
+            }
+            catch (OperationCanceledException)
+            {
+                throw;
             }
             catch (Exception exception)
             {
@@ -661,17 +644,6 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
                 person.SliceId ??= sliceObjects.First().SliceId;
                 person.InPersonFilesCount += counters.InPersonFilesCount;
                 person.InMetadataFilesCount += counters.InMetadataFilesCount;
-            }
-
-            foreach (var unexpectedPersonId in unexpectedPersonIds.OrderBy(id => id))
-            {
-                issues.Add(new ValidationIssue(
-                    ValidationIssueType.UnexpectedPersonIdInRawFile,
-                    _buildingId,
-                    chunkId,
-                    sliceObjects.First().SliceId,
-                    unexpectedPersonId,
-                    $"PersonId={unexpectedPersonId} exists in raw PERSON/METADATA_TMP files but does not exist in _chunks file."));
             }
 
             timer.Stop();
