@@ -69,7 +69,6 @@ namespace RunValidation
             }
         }
 
-
         private static string _awsAccessKeyId => ConfigurationManager.AppSettings["awsAccessKeyId"] ?? throw new NullReferenceException("awsAccessKeyId");
         private static string _awsSecretAccessKey => ConfigurationManager.AppSettings["awsSecretAccessKey"] ?? throw new NullReferenceException("awsSecretAccessKey");
         private static string _bucket => ConfigurationManager.AppSettings["bucket"] ?? throw new NullReferenceException("bucket");
@@ -117,7 +116,6 @@ namespace RunValidation
                     vendor,
                     opts.BuildingId);
 
-
                 #region GetS3InfoForValidation
                 AnsiConsole.WriteLine($"Getting actual chunks and slices...");
                 validation.GetS3InfoForValidation();
@@ -152,10 +150,117 @@ namespace RunValidation
         {
             AnsiConsole.WriteLine($"\r\nValidation in progress...");
 
+            if (chunks.Count == 0)
+            {
+                AnsiConsole.MarkupLine("[red]No chunks to process![/]");
+                return;
+            }
+
             int maxDegreeOfParallelism = Math.Max(1, Environment.ProcessorCount - 1);
+
             if (singleThreadedMode)
                 maxDegreeOfParallelism = 1;
 
+            var totalTimer = Stopwatch.StartNew();
+
+            var orderedChunks = GetBinaryProbeOrder(chunks.OrderBy(s => s).ToList()).ToList();
+
+            var chunkResult = await FindPersonIdInChunkFiles(
+                validation,
+                orderedChunks,
+                personId,
+                maxDegreeOfParallelism);
+
+            if (chunkResult == null)
+            {
+                AnsiConsole.MarkupLine($"[red]PersonId {personId} was not found in _chunks files.[/]");
+                return;
+            }
+
+            AnsiConsole.MarkupLine(
+                $"[yellow]PersonId {chunkResult.PersonId} was found in _chunks file for ChunkId {chunkResult.ChunkId}. Checking PERSON/METADATA_TMP files...[/]");
+
+            var personFilesCount = validation.GetPersonFilesCountForChunk(
+                chunkResult.ChunkId,
+                chunkResult.SliceId);
+
+            if (personFilesCount == 0)
+            {
+                AnsiConsole.MarkupLine(
+                    $"[red]No PERSON/METADATA_TMP files found for ChunkId {chunkResult.ChunkId}.[/]");
+                return;
+            }
+
+            PersonIdValidationResult? finalResult = null;
+
+            using var fileCts = new CancellationTokenSource();
+
+            await AnsiConsole.Progress()
+                .AutoClear(false)
+                .Columns(
+                    new TaskDescriptionColumn(),
+                    new ProgressBarColumn(),
+                    new ElapsedTimeColumn(),
+                    new PercentageColumn(),
+                    new SpinnerColumn())
+                .StartAsync(async ctx =>
+                {
+                    var progressTask = ctx.AddTask(
+                        $"Phase 2/2. Checked 0/{personFilesCount} PERSON/METADATA_TMP files",
+                        maxValue: personFilesCount);
+
+                    var progressLock = new object();
+
+                    finalResult = await Task.Run(() =>
+                        validation.ValidatePersonIdInPersonFiles(
+                            chunkId: chunkResult.ChunkId,
+                            personId: personId,
+                            degreeOfParallelism: maxDegreeOfParallelism,
+                            sliceIdToSearch: chunkResult.SliceId,
+                            progress: (processedFiles, totalFiles) =>
+                            {
+                                lock (progressLock)
+                                {
+                                    progressTask.Value = Math.Min(processedFiles, totalFiles);
+                                    progressTask.Description =
+                                        $"Phase 2/2. Checked {processedFiles}/{totalFiles} PERSON/METADATA_TMP files";
+                                }
+                            },
+                            cancellationToken: fileCts.Token));
+                });
+
+            totalTimer.Stop();
+
+            if (finalResult is { Found: true })
+            {
+                var sliceText = finalResult.SliceId.HasValue
+                    ? $", SliceId {finalResult.SliceId.Value}"
+                    : "";
+
+                AnsiConsole.MarkupLine(
+                    $"[green]PersonId {finalResult.PersonId} was found in ChunkId {finalResult.ChunkId}{sliceText}. {Convert.ToInt32(totalTimer.Elapsed.TotalSeconds)}s[/]");
+            }
+            else
+            {
+                AnsiConsole.MarkupLine(
+                    $"[red]PersonId {personId} exists in _chunks file for ChunkId {chunkResult.ChunkId}, but was not found in PERSON/METADATA_TMP files.[/]");
+
+                if (finalResult != null)
+                {
+                    foreach (var issue in finalResult.Issues)
+                    {
+                        AnsiConsole.WriteLine($"{Markup.Escape(issue.Message)}");
+                    }
+                }
+            }
+        }
+
+        static async Task<PersonIdValidationResult?> FindPersonIdInChunkFiles(
+            Validation validation,
+            List<int> chunks,
+            long personId,
+            int maxDegreeOfParallelism)
+        {
             using var cts = new CancellationTokenSource();
 
             PersonIdValidationResult? foundResult = null;
@@ -175,7 +280,7 @@ namespace RunValidation
                 .StartAsync(async ctx =>
                 {
                     var progressTask = ctx.AddTask(
-                        $"Processed 0/{chunks.Count} chunks",
+                        $"Phase 1/2. Checked 0/{chunks.Count} chunk files",
                         maxValue: chunks.Count);
 
                     var progressLock = new object();
@@ -193,11 +298,14 @@ namespace RunValidation
 
                                 var chunkId = chunks[chunkIndex];
 
-                                PersonIdValidationResult? result;
+                                PersonIdValidationResult result;
 
                                 try
                                 {
-                                    result = validation.ValidatePersonId(chunkId, personId, cts.Token);
+                                    result = validation.CheckPersonIdInChunkFile(
+                                        chunkId,
+                                        personId,
+                                        cts.Token);
                                 }
                                 catch (OperationCanceledException)
                                 {
@@ -210,19 +318,19 @@ namespace RunValidation
                                 {
                                     progressTask.Value = currentProcessedChunks;
                                     progressTask.Description =
-                                        $"Processed {currentProcessedChunks}/{chunks.Count} chunks";
+                                        $"Phase 1/2. Checked {currentProcessedChunks}/{chunks.Count} chunk files";
                                 }
 
-                                if (result.Found)
+                                if (!result.Found)
+                                    continue;
+
+                                if (Interlocked.CompareExchange(ref foundFlag, 1, 0) == 0)
                                 {
-                                    if (Interlocked.CompareExchange(ref foundFlag, 1, 0) == 0)
-                                    {
-                                        foundResult = result;
-                                        cts.Cancel();
-                                    }
-
-                                    break;
+                                    foundResult = result;
+                                    cts.Cancel();
                                 }
+
+                                break;
                             }
                         }))
                         .ToList();
@@ -236,14 +344,30 @@ namespace RunValidation
                     }
                 });
 
-            if (foundResult != null)
+            return foundResult;
+        }
+
+        static IEnumerable<int> GetBinaryProbeOrder(IReadOnlyList<int> chunks)
+        {
+            if (chunks.Count == 0)
+                yield break;
+
+            var ranges = new Queue<(int Left, int Right)>();
+            ranges.Enqueue((0, chunks.Count - 1));
+
+            while (ranges.Count > 0)
             {
-                AnsiConsole.MarkupLine(
-                    $"[green]PersonId {foundResult.PersonId} was found in ChunkId {foundResult.ChunkId}, SliceId {foundResult.SliceId}. {Convert.ToInt32(foundResult.Elapsed.TotalSeconds)}s[/]");
-            }
-            else
-            {
-                AnsiConsole.MarkupLine($"[red]Person is not found![/]");
+                var (left, right) = ranges.Dequeue();
+
+                if (left > right)
+                    continue;
+
+                int middle = left + (right - left) / 2;
+
+                yield return chunks[middle];
+
+                ranges.Enqueue((left, middle - 1));
+                ranges.Enqueue((middle + 1, right));
             }
         }
 
@@ -257,7 +381,6 @@ namespace RunValidation
             int maxDegreeOfParallelism = Math.Max(1, Environment.ProcessorCount - 1);
             if (singleThreadedMode)
                 maxDegreeOfParallelism = 1;
-
 
             using var semaphore = new SemaphoreSlim(maxDegreeOfParallelism);
 
@@ -276,7 +399,6 @@ namespace RunValidation
                     }
                 }))
                 .ToList();
-
 
             foreach (var chunkTask in chunkTasks)
             {

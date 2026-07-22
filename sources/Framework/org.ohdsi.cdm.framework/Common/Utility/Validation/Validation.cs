@@ -19,7 +19,6 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
 
         private const int MaxReadAttempts = 3;
 
-
         private readonly string _awsAccessKeyId;
         private readonly string _awsSecretAccessKey;
         private readonly string _bucket;
@@ -47,7 +46,6 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
             _buildingId = buildingId;
         }
 
-
         public void GetS3InfoForValidation()
         {
             _chunkFiles = new Dictionary<int, ChunkFile>();
@@ -67,9 +65,6 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
             Chunks = _chunkFiles.Select(s => s.Key).Distinct().OrderBy(s => s).ToImmutableList();
             ChunkSize = _chunkFiles.First(s => s.Key == _chunkFiles.Values.Min(a => a.ChunkId)).Value.ReadChunkFile().Count();
 
-
-
-
             _personFiles = new Dictionary<int, List<PersonFile>>();
             var personFilesRaw = GetPersonFiles();
             foreach (var v in personFilesRaw)
@@ -82,7 +77,7 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
                 {
                     var list = new List<PersonFile>() { v };
                     _personFiles.Add(v.ChunkId, list);
-                }                
+                }
             }
 
             Slices = _personFiles
@@ -274,15 +269,13 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
             };
         }
 
-        public PersonIdValidationResult ValidatePersonId(
+        public PersonIdValidationResult CheckPersonIdInChunkFile(
             int chunkId,
             long personId,
             CancellationToken cancellationToken = default)
         {
             var timer = Stopwatch.StartNew();
             var issues = new List<ValidationIssue>();
-
-            int? foundSliceId = null;
 
             try
             {
@@ -316,18 +309,10 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
 
                 var person = chunkObject.CheckChunkFileForPersonId(personId, cancellationToken);
 
+                timer.Stop();
+
                 if (person == null)
                 {
-                    issues.Add(new ValidationIssue(
-                        ValidationIssueType.MissingPersonId,
-                        _buildingId,
-                        chunkId,
-                        null,
-                        personId,
-                        $"PersonId={personId} was not found in _chunks file for ChunkId={chunkId}."));
-
-                    timer.Stop();
-
                     return new PersonIdValidationResult(
                         _vendor.Name,
                         _buildingId,
@@ -339,7 +324,134 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
                         timer.Elapsed);
                 }
 
+                return new PersonIdValidationResult(
+                    _vendor.Name,
+                    _buildingId,
+                    chunkId,
+                    person.PersonId,
+                    true,
+                    person.SliceId,
+                    issues,
+                    timer.Elapsed);
+            }
+            catch (OperationCanceledException)
+            {
+                throw;
+            }
+            catch (Exception exception)
+            {
+                issues.Add(new ValidationIssue(
+                    ValidationIssueType.Exception,
+                    _buildingId,
+                    chunkId,
+                    null,
+                    personId,
+                    exception.Message));
+
+                timer.Stop();
+
+                return new PersonIdValidationResult(
+                    _vendor.Name,
+                    _buildingId,
+                    chunkId,
+                    personId,
+                    false,
+                    null,
+                    issues,
+                    timer.Elapsed);
+            }
+        }
+
+        public int GetPersonFilesCountForChunk(
+            int chunkId,
+            int? sliceIdToSearch = null)
+        {
+            if (!_s3InfoRetrieved)
+                throw new Exception("Lacking information about S3 storage. Run GetS3InfoForValidation first!");
+
+            if (!_personFiles.TryGetValue(chunkId, out var personFiles))
+                return 0;
+
+            return personFiles
+                .Where(s => Slices.Contains(s.SliceId))
+                .Where(s => !sliceIdToSearch.HasValue || s.SliceId == sliceIdToSearch.Value)
+                .Count();
+        }
+
+        public PersonIdValidationResult ValidatePersonId(
+            int chunkId,
+            long personId,
+            CancellationToken cancellationToken = default)
+        {
+            return ValidatePersonId(
+                chunkId,
+                personId,
+                Math.Max(1, Environment.ProcessorCount - 1),
+                cancellationToken);
+        }
+
+        public PersonIdValidationResult ValidatePersonId(
+            int chunkId,
+            long personId,
+            int degreeOfParallelism,
+            CancellationToken cancellationToken = default)
+        {
+            var chunkResult = CheckPersonIdInChunkFile(
+                chunkId,
+                personId,
+                cancellationToken);
+
+            if (!chunkResult.Found)
+            {
+                var issues = chunkResult.Issues.ToList();
+
+                issues.Add(new ValidationIssue(
+                    ValidationIssueType.MissingPersonId,
+                    _buildingId,
+                    chunkId,
+                    null,
+                    personId,
+                    $"PersonId={personId} was not found in _chunks file for ChunkId={chunkId}."));
+
+                return new PersonIdValidationResult(
+                    _vendor.Name,
+                    _buildingId,
+                    chunkId,
+                    personId,
+                    false,
+                    null,
+                    issues,
+                    chunkResult.Elapsed);
+            }
+
+            return ValidatePersonIdInPersonFiles(
+                chunkId: chunkId,
+                personId: personId,
+                degreeOfParallelism: degreeOfParallelism,
+                sliceIdToSearch: chunkResult.SliceId,
+                progress: null,
+                cancellationToken: cancellationToken);
+        }
+
+        public PersonIdValidationResult ValidatePersonIdInPersonFiles(
+            int chunkId,
+            long personId,
+            int degreeOfParallelism,
+            int? sliceIdToSearch = null,
+            Action<int, int>? progress = null,
+            CancellationToken cancellationToken = default)
+        {
+            var timer = Stopwatch.StartNew();
+            var issues = new List<ValidationIssue>();
+
+            int? foundSliceId = null;
+
+            try
+            {
                 cancellationToken.ThrowIfCancellationRequested();
+
+                if (!_s3InfoRetrieved)
+                    throw new Exception("Lacking information about S3 storage. Run GetS3InfoForValidation first!");
 
                 if (!_personFiles.TryGetValue(chunkId, out var personFiles) || personFiles.Count == 0)
                 {
@@ -364,22 +476,42 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
                         timer.Elapsed);
                 }
 
-                foreach (var personFile in personFiles)
+                var filesToSearch = personFiles
+                    .Where(s => Slices.Contains(s.SliceId))
+                    .Where(s => !sliceIdToSearch.HasValue || s.SliceId == sliceIdToSearch.Value)
+                    .ToList();
+
+                if (filesToSearch.Count == 0)
                 {
-                    cancellationToken.ThrowIfCancellationRequested();
+                    issues.Add(new ValidationIssue(
+                        ValidationIssueType.SliceObjectsMissing,
+                        _buildingId,
+                        chunkId,
+                        sliceIdToSearch,
+                        personId,
+                        sliceIdToSearch.HasValue
+                            ? $"No PERSON or METADATA_TMP objects found for Vendor={_vendor.Name}, BuildingId={_buildingId}, ChunkId={chunkId}, SliceId={sliceIdToSearch.Value}."
+                            : $"No PERSON or METADATA_TMP objects found for Vendor={_vendor.Name}, BuildingId={_buildingId}, ChunkId={chunkId}."));
 
-                    if (!Slices.Contains(personFile.SliceId))
-                        continue;
+                    timer.Stop();
 
-                    var foundInPersonFile = personFile.CheckPersonFileForPersonId(personId, cancellationToken);
-
-                    if (foundInPersonFile == null)
-                        continue;
-
-                    foundSliceId = personFile.SliceId;
-
-                    break;
+                    return new PersonIdValidationResult(
+                        _vendor.Name,
+                        _buildingId,
+                        chunkId,
+                        personId,
+                        false,
+                        null,
+                        issues,
+                        timer.Elapsed);
                 }
+
+                foundSliceId = FindPersonIdInPersonFilesParallel(
+                    filesToSearch,
+                    personId,
+                    degreeOfParallelism,
+                    progress,
+                    cancellationToken);
 
                 if (!foundSliceId.HasValue)
                 {
@@ -387,7 +519,7 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
                         ValidationIssueType.MissingPersonId,
                         _buildingId,
                         chunkId,
-                        null,
+                        sliceIdToSearch,
                         personId,
                         $"PersonId={personId} exists in _chunks file for ChunkId={chunkId}, but was not found in PERSON/METADATA_TMP files."));
                 }
@@ -402,7 +534,7 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
                     ValidationIssueType.Exception,
                     _buildingId,
                     chunkId,
-                    null,
+                    sliceIdToSearch,
                     personId,
                     exception.Message));
             }
@@ -418,6 +550,79 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
                 foundSliceId,
                 issues,
                 timer.Elapsed);
+        }
+
+        private static int? FindPersonIdInPersonFilesParallel(
+            List<PersonFile> personFiles,
+            long personId,
+            int degreeOfParallelism,
+            Action<int, int>? progress = null,
+            CancellationToken cancellationToken = default)
+        {
+            if (personFiles.Count == 0)
+                return null;
+
+            int? foundSliceId = null;
+            int processedFiles = 0;
+
+            var sync = new object();
+
+            bool HasFoundSliceId()
+            {
+                lock (sync)
+                {
+                    return foundSliceId.HasValue;
+                }
+            }
+
+            using var fileSearchCts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+
+            var parallelOptions = new ParallelOptions
+            {
+                MaxDegreeOfParallelism = Math.Max(1, degreeOfParallelism),
+                CancellationToken = fileSearchCts.Token
+            };
+
+            try
+            {
+                Parallel.ForEach(personFiles, parallelOptions, (personFile, state) =>
+                {
+                    if (fileSearchCts.IsCancellationRequested)
+                    {
+                        state.Stop();
+                        return;
+                    }
+
+                    var foundPerson = personFile.CheckPersonFileForPersonId(
+                        personId,
+                        fileSearchCts.Token);
+
+                    var currentProcessedFiles = Interlocked.Increment(ref processedFiles);
+                    progress?.Invoke(currentProcessedFiles, personFiles.Count);
+
+                    if (foundPerson == null)
+                        return;
+
+                    lock (sync)
+                    {
+                        if (foundSliceId.HasValue)
+                            return;
+
+                        foundSliceId = personFile.SliceId;
+                        fileSearchCts.Cancel();
+                        state.Stop();
+                    }
+                });
+            }
+            catch (OperationCanceledException) when (HasFoundSliceId() && !cancellationToken.IsCancellationRequested)
+            {
+                // one worker found personId and cancelled the remaining file scans.
+            }
+
+            lock (sync)
+            {
+                return foundSliceId;
+            }
         }
 
         private ChunkValidationResult? ValidateChunkObject(
@@ -438,7 +643,6 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
             }
             catch (Exception exception)
             {
-
                 issues.Add(new ValidationIssue(
                     ValidationIssueType.Exception,
                     _buildingId,
@@ -613,7 +817,7 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
                             {
                                 throw new NotImplementedException("Unsupported object key: " + s3Object.S3Object.Key);
                             }
-                        }                        
+                        }
                     }
 
                     complete = true;
@@ -684,7 +888,7 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
             bool tryAnotherChunksPath = false;
 
             do
-            {                
+            {
                 response = client.ListObjectsV2Async(request).GetAwaiter().GetResult();
                 var s3objects = response?.S3Objects ?? new List<S3Object>();
 
@@ -751,6 +955,7 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
                 BucketName = _bucket,
                 Prefix = prefix
             };
+
             do
             {
                 response = client.ListObjectsV2Async(request).GetAwaiter().GetResult();
@@ -774,18 +979,15 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
         {
             issue = null;
 
-
-            foreach (var chunkObject in _chunkFiles)
+            if (_chunkFiles.TryGetValue(chunkId, out var chunkObject))
             {
-                var persons = chunkObject.Value
+                var persons = chunkObject
                     .ReadChunkFile()
                     .Select(s => KeyValuePair.Create(s.PersonId, s))
                     .ToDictionary();
 
                 if (persons.Count > 0)
-                {
                     return persons;
-                }
             }
 
             issue = new ValidationIssue(
@@ -804,7 +1006,7 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
             var materialized = persons.ToList();
 
             var correct = materialized.Count(s =>
-                s.InPersonFilesCount + s.InMetadataFilesCount == 1 
+                s.InPersonFilesCount + s.InMetadataFilesCount == 1
                 && s.SliceId != null);
 
             var duplicated = materialized.Count(s =>
@@ -828,7 +1030,7 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
         {
             foreach (var person in persons)
             {
-                if (person.SliceId == null 
+                if (person.SliceId == null
                     //avoid single personId display for 2 error categories
                     && !(person.InPersonFilesCount + person.InMetadataFilesCount == 0))
                 {
