@@ -284,7 +284,6 @@
     <None Remove="Transformation\Truven\Lookups\Condition.sql" />
     <None Remove="Transformation\Truven\Lookups\Condition_icd10.sql" />
     <None Remove="Transformation\Truven\Lookups\DischargeTo.sql" />
-    <None Remove="Transformation\Truven\Lookups\Drg.sql" />
     <None Remove="Transformation\Truven\Lookups\Drug.sql" />
     <None Remove="Transformation\Truven\Lookups\HRA.sql" />
     <None Remove="Transformation\Truven\Lookups\Lab.sql" />
