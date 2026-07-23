@@ -150,7 +150,6 @@
     <None Remove="Transformation\OptumExtended\Lookups\ConditionICD10.sql" />
     <None Remove="Transformation\OptumExtended\Lookups\ConditionICD9.sql" />
     <None Remove="Transformation\OptumExtended\Lookups\DischargeTo.sql" />
-    <None Remove="Transformation\OptumExtended\Lookups\DRG.sql" />
     <None Remove="Transformation\OptumExtended\Lookups\DrgDeathCodes.sql" />
     <None Remove="Transformation\OptumExtended\Lookups\DrugRx.sql" />
     <None Remove="Transformation\OptumExtended\Lookups\Lab.sql" />
@@ -723,7 +722,7 @@
     <EmbeddedResource Include="Transformation\OptumExtended\Lookups\DischargeTo.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\OptumExtended\Lookups\DRG.sql">
+    <EmbeddedResource Include="Transformation\OptumExtended\Lookups\Drg.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Transformation\OptumExtended\Lookups\DrgDeathCodes.sql">

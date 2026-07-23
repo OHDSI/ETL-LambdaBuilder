@@ -47,7 +47,7 @@
 		END as DIED,
 		conf_id,
 		1 as fake,
-		drg,
+		TRIM(LEADING '0' FROM drg) as drg,
 		rvnu_cd,
 		{ses},
 		ch.PartitionId
@@ -229,6 +229,29 @@
 					</ConceptIdMappers>
 					<Fields>
 						<Field key="rvnu_cd" defaultTypeId="32810"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ObservationDefinition>
+		<ObservationDefinition>
+			<PersonId>PERSON_ID</PersonId>
+			<StartDate>START_DATE</StartDate>
+			<EndDate>END_DATE</EndDate>
+			<ProviderId>PROVIDER_ID</ProviderId>
+			<AdditionalFields>
+				<string>pat_planid</string>
+				<string>clmid</string>
+				<string>loc_cd</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>Drg</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="drg" defaultTypeId="32810"/>
 					</Fields>
 				</Concept>
 			</Concepts>
