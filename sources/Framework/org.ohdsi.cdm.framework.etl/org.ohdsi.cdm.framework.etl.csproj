@@ -584,6 +584,9 @@
     <EmbeddedResource Include="Transformation\HealthVerity\Lookups\cvx.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\HealthVerity\Lookups\Drg.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Transformation\HealthVerity\Lookups\icd10.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
