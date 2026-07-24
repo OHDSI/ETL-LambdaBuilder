@@ -549,18 +549,6 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
         public PersonIdValidationResult ValidatePersonId(
             int chunkId,
             long personId,
-            CancellationToken cancellationToken = default)
-        {
-            return ValidatePersonId(
-                chunkId,
-                personId,
-                Math.Max(1, Environment.ProcessorCount - 1),
-                cancellationToken);
-        }
-
-        public PersonIdValidationResult ValidatePersonId(
-            int chunkId,
-            long personId,
             int degreeOfParallelism,
             CancellationToken cancellationToken = default)
         {
