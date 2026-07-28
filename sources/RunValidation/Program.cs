@@ -439,7 +439,7 @@ namespace RunValidation
             if (errorChunks > 0)
                 AnsiConsole.MarkupLine($"[red]\r\n{errorChunks} chunks with errors![/]");
             else
-                AnsiConsole.WriteLine($"[green]\r\n{errorChunks} chunks with errors![/]");
+                AnsiConsole.MarkupLine($"[green]\r\n{errorChunks} chunks with errors![/]");
         }
 
         static string BuildFinishedChunkTaskDescription(ChunkValidationResult result)
