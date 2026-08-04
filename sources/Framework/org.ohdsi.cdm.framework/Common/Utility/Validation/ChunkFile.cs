@@ -30,7 +30,7 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
         private string _bucket;
 
 
-        public IEnumerable<Person> ReadChunkFile(CancellationToken cancellationToken = default)
+        public IEnumerable<PersonValidationInfo> ReadChunkFile(CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -52,12 +52,12 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
 
                 var person = splits.Length switch
                 {
-                    3 => new Person(
+                    3 => new PersonValidationInfo(
                         ChunkId: int.Parse(splits[0]),
                         PersonId: long.Parse(splits[1]),
                         PersonSourceValue: splits[2]),
 
-                    4 => new Person(
+                    4 => new PersonValidationInfo(
                         ChunkId: int.Parse(splits[0]),
                         //PartitionId: int.Parse(splits[1]),
                         PersonId: long.Parse(splits[2]),
@@ -72,7 +72,7 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
             }
         }
 
-        public Person? CheckChunkFileForPersonId(long personId, CancellationToken cancellationToken = default)
+        public PersonValidationInfo? CheckChunkFileForPersonId(long personId, CancellationToken cancellationToken = default)
         {
             foreach (var person in ReadChunkFile(cancellationToken))
             {
