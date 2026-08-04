@@ -87,9 +87,11 @@ namespace org.ohdsi.cdm.presentation.etl.Monitor
                 var validation = new Validation(Settings.Current.CloudStorageKey,
                     Settings.Current.CloudStorageSecret,
                     Settings.Current.CloudStorageName,
-                    Settings.Current.CDMFolder);
+                    Settings.Current.CDMFolder,
+                    Settings.Current.Building.Vendor, 
+                    Settings.Current.Building.Id.Value);
 
-                var result = validation.ValidateBuildingId(Settings.Current.Building.Vendor, Settings.Current.Building.Id.Value, [_chunkId]);
+                var result = validation.ValidateBuildingId([_chunkId]);
 
                 if (result.ChunkResults[0].IsValid)
                 {

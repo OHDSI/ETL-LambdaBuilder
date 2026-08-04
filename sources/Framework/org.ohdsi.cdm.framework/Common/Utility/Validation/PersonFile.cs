@@ -33,7 +33,7 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
         private string _bucket;
 
 
-        public IEnumerable<Person> ReadPersonIds(CancellationToken cancellationToken = default)
+        public IEnumerable<PersonValidationInfo> ReadPersonIds(CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -54,7 +54,7 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
 
                     var personId = (long)csv.GetField(typeof(long), 0);
 
-                    var person = new Person(ChunkId, personId, null, null);
+                    var person = new PersonValidationInfo(ChunkId, personId, null, null);
                     person.SliceId = SliceId;
                     person.InPersonFilesCount++;
 
@@ -70,7 +70,7 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
                     var personId = (long)csv.GetField(typeof(long), 0);
                     var attritionReason = csv.GetField(typeof(string), 1) as string;
 
-                    var person = new Person(ChunkId, personId, null, attritionReason);
+                    var person = new PersonValidationInfo(ChunkId, personId, null, attritionReason);
                     person.SliceId = SliceId;
                     if (person.AttritionReason != "Discarded drug count")
                         person.InMetadataFilesCount++;
@@ -84,7 +84,7 @@ namespace org.ohdsi.cdm.framework.Common.Utility.Validation
             }
         }
 
-        public Person? CheckPersonFileForPersonId(long personIdToFind, CancellationToken cancellationToken = default)
+        public PersonValidationInfo? CheckPersonFileForPersonId(long personIdToFind, CancellationToken cancellationToken = default)
         {
             foreach (var person in ReadPersonIds(cancellationToken))
             {
