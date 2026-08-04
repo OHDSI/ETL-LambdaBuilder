@@ -150,7 +150,6 @@
     <None Remove="Transformation\OptumExtended\Lookups\ConditionICD10.sql" />
     <None Remove="Transformation\OptumExtended\Lookups\ConditionICD9.sql" />
     <None Remove="Transformation\OptumExtended\Lookups\DischargeTo.sql" />
-    <None Remove="Transformation\OptumExtended\Lookups\DRG.sql" />
     <None Remove="Transformation\OptumExtended\Lookups\DrgDeathCodes.sql" />
     <None Remove="Transformation\OptumExtended\Lookups\DrugRx.sql" />
     <None Remove="Transformation\OptumExtended\Lookups\Lab.sql" />
@@ -284,7 +283,6 @@
     <None Remove="Transformation\Truven\Lookups\Condition.sql" />
     <None Remove="Transformation\Truven\Lookups\Condition_icd10.sql" />
     <None Remove="Transformation\Truven\Lookups\DischargeTo.sql" />
-    <None Remove="Transformation\Truven\Lookups\Drg.sql" />
     <None Remove="Transformation\Truven\Lookups\Drug.sql" />
     <None Remove="Transformation\Truven\Lookups\HRA.sql" />
     <None Remove="Transformation\Truven\Lookups\Lab.sql" />
@@ -586,6 +584,9 @@
     <EmbeddedResource Include="Transformation\HealthVerity\Lookups\cvx.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Transformation\HealthVerity\Lookups\Drg.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Transformation\HealthVerity\Lookups\icd10.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
@@ -724,7 +725,7 @@
     <EmbeddedResource Include="Transformation\OptumExtended\Lookups\DischargeTo.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\OptumExtended\Lookups\DRG.sql">
+    <EmbeddedResource Include="Transformation\OptumExtended\Lookups\Drg.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Transformation\OptumExtended\Lookups\DrgDeathCodes.sql">

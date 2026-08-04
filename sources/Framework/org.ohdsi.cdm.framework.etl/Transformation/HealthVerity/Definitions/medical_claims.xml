@@ -39,6 +39,7 @@
 		hv_enc_id,
 		procedure_modifier_1,
 		1 as fake,
+		TRIM(LEADING '0' FROM inst_drg_std_id) as drg,
 		ch.PartitionId
 		FROM {sc}.medical_claims
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND hvid = ch.PERSON_SOURCE_VALUE
@@ -226,4 +227,26 @@
 			</Concepts>
 		</VisitOccurrenceDefinition>
 	</VisitOccurrence>
+	<Observation>
+		<ObservationDefinition>
+			<PersonId>PersonId</PersonId>
+			<StartDate>date_service</StartDate>
+			<EndDate>date_service</EndDate>
+			<AdditionalFields>
+				<string>data_vendor</string>
+			</AdditionalFields>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>Drg</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="drg" defaultTypeId="32810"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ObservationDefinition>
+	</Observation>
 </QueryDefinition>
