@@ -959,7 +959,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerity
             {
                 var min = dates.Min(e => e.StartDate);
                 if (min >= _minDate.Date)
-                    result.Add(dates.Min(e => e.StartDate));
+                    result.Add(min);
             }
         }
 
