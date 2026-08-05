@@ -815,6 +815,9 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerity
                 if (i.StartDate.Year < _personYoB)
                     continue;
 
+                if (i.StartDate.Date < _minDate.Date)
+                    continue;
+
                 yield return i;
             }
         }
@@ -824,6 +827,9 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerity
             foreach (var i in base.BuildObservations(observations, visitOccurrences, observationPeriods))
             {
                 if (i.StartDate.Year < _personYoB)
+                    continue;
+
+                if (i.StartDate.Date < _minDate.Date)
                     continue;
 
                 yield return i;
@@ -837,6 +843,9 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerity
                 if (i.StartDate.Year < _personYoB)
                     continue;
 
+                if (i.StartDate.Date < _minDate.Date)
+                    continue;
+
                 yield return i;
             }
         }
@@ -846,6 +855,9 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerity
             foreach (var i in base.BuildDeviceExposure(devExposure, visitOccurrences, observationPeriods))
             {
                 if (i.StartDate.Year < _personYoB)
+                    continue;
+
+                if (i.StartDate.Date < _minDate.Date)
                     continue;
 
                 yield return i;
