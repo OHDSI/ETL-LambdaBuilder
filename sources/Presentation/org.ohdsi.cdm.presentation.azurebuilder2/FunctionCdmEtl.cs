@@ -32,26 +32,16 @@ public class FunctionCdmEtl
     {
         _logger = logger;
     }
-
+    
     [Function(nameof(FunctionCdmEtl))]
-    public void Run([QueueTrigger("cdm-test", Connection = "")] QueueMessage message)
+    public void Run([QueueTrigger("cdm-test", Connection = "")] QueueMessage message) 
     {
         var started = DateTime.Now;
         var name = message.MessageText;
         _logger.LogInformation("START - " + name);
+        _logger.LogInformation($"======> Instance ID: {Environment.MachineName}");
 
-        string instanceId = Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID");
-        _logger.LogInformation($"Azure Function Instance ID: {instanceId}");
-
-        //string hostName = Environment.GetEnvironmentVariable("WEBSITE_HOSTNAME");
-        //_logger.LogInformation($"Function app hostname: {hostName}");
-
-        //string machineName = Environment.MachineName;
-        //_logger.LogInformation($"The machine name is: {machineName}");
-
-        //return;
-
-        EtlLibraryPath = Path.Combine(Environment.CurrentDirectory, "EtlLibrary");
+        EtlLibraryPath = Path.Combine(AppContext.BaseDirectory, "EtlLibrary");
 
         _logger.LogInformation(EtlLibraryPath);
 
@@ -110,20 +100,7 @@ public class FunctionCdmEtl
             {
                 return;
             }
-
-            //_logger.LogInformation($"**********************************************************************************************************");
-            //_logger.LogInformation($"tenantId={tenantId}");
-            //_logger.LogInformation($"clientId={clientId}");
-            //_logger.LogInformation($"clientSecret={clientSecret}");
-            //_logger.LogInformation($"blobURI={blobURI}");
-            //_logger.LogInformation($"blobContainerName={blobContainerName}");
-            //_logger.LogInformation($"**********************************************************************************************************");
-            //_logger.LogInformation($"vendor={vendor};buildingId={buildingId};chunkId={_chunkId};prefix={_prefix};attempt={attempt}");
-            //_logger.LogInformation($"Bucket={Settings.Current.BlobContainerName};CDMFolder={Settings.Current.CDMFolder};");
-            //_logger.LogInformation($"TimeoutValue={Settings.Current.TimeoutValue}s;WatchdogValue={Settings.Current.WatchdogValue}ms;MinPersonToBuild={Settings.Current.MinPersonToBuild}; MinPersonToSave={Settings.Current.MinPersonToSave}");
-
-            //return;
-
+      
             AzureHelper.UploadStream($"{AzureHelper.Path}/running/{_chunkId}.{_prefix}.txt", new MemoryStream());
 
             Initialize();                     
@@ -160,6 +137,7 @@ public class FunctionCdmEtl
         _logger.LogInformation("DONE");
         AzureHelper.DeleteFile($"{AzureHelper.Path}/running/{_chunkId}.{_prefix}.txt");
     }
+    
     private static PersonBuilder CreatePersonBuilder()
     {
         if (_personBuilderConstructor == null)

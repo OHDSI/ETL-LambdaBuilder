@@ -34,7 +34,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
 
         internal static void UploadStream(string fileName, Stream stream)
         {
-            AzureHelper.GetBlobContainer().UploadBlob(fileName, stream);
+            AzureHelper.GetBlobContainer().GetBlobClient(fileName).Upload(stream, overwrite: true);
         }
 
         internal static void DeleteFile(string fileName)
