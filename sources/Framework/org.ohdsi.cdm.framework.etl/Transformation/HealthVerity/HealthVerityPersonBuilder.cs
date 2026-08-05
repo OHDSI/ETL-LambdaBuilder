@@ -40,7 +40,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerity
         private readonly Dictionary<long, List<VisitDetail>> _visitDetails = [];
         private readonly Dictionary<string, List<VisitDetail>> _visitDetailsByHvEncId = [];
         
-        //private readonly DateTime _minDate = new(2009, 1, 1);
+        private readonly DateTime _minDate = new(2015, 1, 1);
         private readonly HashSet<string> _races = [];
         private readonly HashSet<long> _racesConceptId = [];
         private int _discardedDrugCount = 0;
@@ -445,13 +445,16 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerity
 
                         foreach (var overlap in EraHelper.GetEras(overlaps, 1, 0))
                         {
-                            yield return new ObservationPeriod
+                            if (overlap.EndDate.Value.Date >= _minDate.Date)
                             {
-                                StartDate = overlap.StartDate,
-                                EndDate = overlap.EndDate,
-                                TypeConceptId = 32813,
-                                PersonId = observationPeriods[0].PersonId
-                            };
+                                yield return new ObservationPeriod
+                                {
+                                    StartDate = overlap.StartDate,
+                                    EndDate = overlap.EndDate,
+                                    TypeConceptId = 32813,
+                                    PersonId = observationPeriods[0].PersonId
+                                };
+                            }
                         }
                     }
                 }
@@ -462,8 +465,14 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerity
         {
             foreach (var i in input)
             {
-                if (_mins.Count > 0)
+                if (_mins.Count > 0 && i.StartDate.Date < _minDate.Date)
                     i.StartDate = _mins.Min();
+
+                if (i.StartDate.Date < _minDate.Date)
+                    i.StartDate = _minDate.Date;
+
+                if (i.EndDate.Value.Date < _minDate.Date)
+                    i.EndDate = _minDate.Date;
 
                 if (i.EndDate.Value.Date > Vendor.SourceReleaseDate)
                     i.EndDate = Vendor.SourceReleaseDate;
@@ -792,6 +801,9 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerity
                 if (i.StartDate.Year < _personYoB)
                     continue;
 
+                if (i.StartDate.Date < _minDate.Date)
+                    continue;
+
                 yield return i;
             }
         }
@@ -845,6 +857,9 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerity
             foreach (var de in base.BuildDrugExposures(drugExposures, visitOccurrences, observationPeriods))
             {
                 if (de.StartDate.Year < _personYoB)
+                    continue;
+
+                if (de.StartDate.Date < _minDate.Date)
                     continue;
 
                 if (de.AdditionalFields != null && de.AdditionalFields.ContainsKey("medctn_days_supply_cnt"))
@@ -922,14 +937,18 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerity
             }
         }
 
-        protected static void GetMinDate<T>(IEnumerable<T> inputRecords, List<DateTime> result) where T : class, IEntity
+        protected void GetMinDate<T>(IEnumerable<T> inputRecords, List<DateTime> result) where T : class, IEntity
         {
             if (inputRecords == null || !inputRecords.Any())
                 return;
             
             var dates = inputRecords.Where(e => e.StartDate != DateTime.MinValue);
             if (dates != null && dates.Any())
-                result.Add(dates.Min(e => e.StartDate));
+            {
+                var min = dates.Min(e => e.StartDate);
+                if (min >= _minDate.Date)
+                    result.Add(dates.Min(e => e.StartDate));
+            }
         }
 
         private void SetUnitConceptId(IEntity e)
