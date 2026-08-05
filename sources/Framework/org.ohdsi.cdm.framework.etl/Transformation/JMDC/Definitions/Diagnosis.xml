@@ -4,10 +4,10 @@
 		CAST(RIGHT(d.Claim_ID, LEN(d.Claim_ID) - 1) AS BIGINT) AS visit_occurrence_id,
 		0 AS condition_concept_id,
 		CASE
-		WHEN c.admission_date is null THEN CAST(CAST(c.Month_and_year_of_medical_care AS VARCHAR(6)) + '15' AS DATE)
-		WHEN DATEPART(year, CAST(CAST(c.Month_and_year_of_medical_care AS VARCHAR(6)) + '01' AS DATE)) = DATEPART(year, to_date(c.admission_date, 'YYYYMMDD', TRUE)) AND
-		DATEPART(month, CAST(CAST(c.Month_and_year_of_medical_care AS VARCHAR(6)) + '01' AS DATE)) = DATEPART(month, to_date(c.admission_date, 'YYYYMMDD', TRUE)) THEN to_date(c.admission_date, 'YYYYMMDD', TRUE)
-		ELSE CAST(CAST(c.Month_and_year_of_medical_care AS VARCHAR(6)) + '01' AS DATE)
+		WHEN c.admission_date is null THEN to_date(CAST(c.Month_and_year_of_medical_care AS VARCHAR(6)) || '15', 'yyyyMMdd')
+		WHEN extract(year from to_date(CAST(c.Month_and_year_of_medical_care AS VARCHAR(6)) || '01', 'yyyyMMdd')) = extract(year from to_date(c.admission_date, 'yyyyMMdd')) AND
+		extract(month from to_date(CAST(c.Month_and_year_of_medical_care AS VARCHAR(6)) || '01', 'yyyyMMdd')) = extract(month from to_date(c.admission_date, 'yyyyMMdd')) THEN to_date(c.admission_date, 'yyyyMMdd')
+		ELSE to_date(CAST(c.Month_and_year_of_medical_care AS VARCHAR(6)) || '01', 'yyyyMMdd')
 		END AS condition_start_date,
 		CASE
 		WHEN d.Type_of_claim = 'Outpatient'
