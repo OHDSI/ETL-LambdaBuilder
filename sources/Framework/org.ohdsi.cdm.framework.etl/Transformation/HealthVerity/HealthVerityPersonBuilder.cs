@@ -412,10 +412,10 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerity
                     FixStartEndDates(pharmacy, Table.Pharmacy);
 
                     var medicalPeriods = EraHelper.GetEras(medical.Where(i => i.StartDate <= i.EndDate
-                    && i.EndDate.Value.Year <= DateTime.Now.Year), 30, 0);
+                    && i.StartDate.Date >= _minDate.Date && i.EndDate.Value.Year <= DateTime.Now.Year), 30, 0);
 
                     var pharmacyPeriods = EraHelper.GetEras(pharmacy.Where(i => i.StartDate <= i.EndDate
-                     && i.EndDate.Value.Year <= DateTime.Now.Year), 30, 0);
+                     && i.StartDate.Date >= _minDate.Date && i.EndDate.Value.Year <= DateTime.Now.Year), 30, 0);
 
                     foreach (var mp in medicalPeriods)
                     {
