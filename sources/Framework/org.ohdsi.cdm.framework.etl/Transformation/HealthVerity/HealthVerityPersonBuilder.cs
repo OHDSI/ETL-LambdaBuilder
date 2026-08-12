@@ -162,6 +162,9 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerity
                 if (visitOccurrence.StartDate.Year < _personYoB)
                     continue;
 
+                if (visitOccurrence.StartDate.Date < _minDate.Date)
+                    continue;
+
                 if (!visitOccurrence.EndDate.HasValue)
                     visitOccurrence.EndDate = visitOccurrence.StartDate;
 
@@ -352,6 +355,9 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerity
             foreach (var visitOccurrence in visitOccurrences)
             {
                 if (visitOccurrence.StartDate.Year < _personYoB)
+                    continue;
+
+                if (visitOccurrence.StartDate.Date < _minDate.Date)
                     continue;
 
                 var visitDetail =
