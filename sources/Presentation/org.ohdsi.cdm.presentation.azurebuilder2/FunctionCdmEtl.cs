@@ -34,12 +34,26 @@ public class FunctionCdmEtl
     }
     
     [Function(nameof(FunctionCdmEtl))]
-    public void Run([QueueTrigger("cdm-test", Connection = "")] QueueMessage message) 
+    //public void Run([QueueTrigger("cdm-test", Connection = "")] QueueMessage message) 
+    public async Task Run(
+    [QueueTrigger("cdm-test", Connection = "")] QueueMessage message, CancellationToken cancellationToken)
     {
-        var started = DateTime.Now;
         var name = message.MessageText;
         _logger.LogInformation("START - " + name);
         _logger.LogInformation($"======> Instance ID: {Environment.MachineName}");
+
+        await Process(name, cancellationToken);
+        
+
+        _logger.LogInformation("DONE");
+        AzureHelper.DeleteFile($"{AzureHelper.Path}/running/{_chunkId}.{_prefix}.txt");
+    }
+
+    private async Task Process(string name, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        var started = DateTime.Now;
 
         EtlLibraryPath = Path.Combine(AppContext.BaseDirectory, "EtlLibrary");
 
@@ -100,10 +114,10 @@ public class FunctionCdmEtl
             {
                 return;
             }
-      
+
             AzureHelper.UploadStream($"{AzureHelper.Path}/running/{_chunkId}.{_prefix}.txt", new MemoryStream());
 
-            Initialize();                     
+            Initialize();
 
             var chunkBuilder = new AzureChunkBuilder(CreatePersonBuilder);
             var attempt1 = attempt;
@@ -133,11 +147,8 @@ public class FunctionCdmEtl
             using var streamErrorDetails = new MemoryStream(Encoding.UTF8.GetBytes(CreateExceptionString(e)));
             AzureHelper.UploadStream($"{AzureHelper.Path}/error/{_chunkId}.{_prefix}.txt", streamErrorDetails);
         }
-
-        _logger.LogInformation("DONE");
-        AzureHelper.DeleteFile($"{AzureHelper.Path}/running/{_chunkId}.{_prefix}.txt");
     }
-    
+
     private static PersonBuilder CreatePersonBuilder()
     {
         if (_personBuilderConstructor == null)

@@ -3,7 +3,8 @@ using Amazon.S3.Model;
 using Amazon.S3.Transfer;
 using Azure.Identity;
 using Azure.Storage.Blobs;
-using Azure.Storage.Blobs.Models;
+using Azure.Storage.Queues;
+using Azure.Storage.Queues.Models;
 using System.Data;
 
 namespace org.ohdsi.cdm.framework.desktop.Helpers
@@ -59,10 +60,10 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
         }
 
 
-        public static IEnumerable<Tuple<string, DateTime>> GetTriggerFilesInfo(string storageName, string prefix)
+        public static Tuple<int, DateTime> GetRunningFunctionInfo(string storageName, string prefix)
         {
-            IAmazonS3 awsClient = GetAwsTriggerStorageClient();
-            BlobContainerClient azureClient = GetTriggerBlobContainerClient();
+            AmazonS3Client awsClient = GetAwsTriggerClient();
+            var azureClient = GetAzureTriggerClient();
 
             if (awsClient != null)
             {
@@ -70,6 +71,8 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
                 {
                     var request = new ListObjectsV2Request { BucketName = storageName, Prefix = prefix };
                     Task<ListObjectsV2Response> task;
+                    int count = 0;
+                    var lastModified = DateTime.MinValue;
 
                     do
                     {
@@ -81,28 +84,30 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
                             foreach (var o in task.Result.S3Objects)
                             {
                                 if (o.LastModified.HasValue)
-                                    yield return new Tuple<string, DateTime>(o.Key, o.LastModified.Value);
+                                {
+                                    if(o.LastModified.Value > lastModified)
+                                        lastModified = o.LastModified.Value;
+
+                                    count++;
+                                }
                             }
                         }
 
                         request.ContinuationToken = task.Result.NextContinuationToken;
                         
                     } while (task.Result.IsTruncated ?? false);
+
+                    return new Tuple<int, DateTime>(count, lastModified);
                 }
             }
             else if (azureClient != null)
             {
-                foreach (var blob in azureClient.GetBlobs(new GetBlobsOptions
-                {
-                    Prefix = prefix,
-                    Traits = BlobTraits.None,
-                    States = BlobStates.None
-                }))
-                {
-                    if (blob.Properties.LastModified.HasValue)
-                        yield return new Tuple<string, DateTime>(blob.Name, blob.Properties.LastModified.Value.DateTime);
-                }
+                QueueProperties properties = azureClient.GetProperties();
+
+                return new Tuple<int, DateTime>(properties.ApproximateMessagesCount, DateTime.Now);
             }
+
+            throw new Exception("TriggerClient == NULL");
         }
 
         private static BlobContainerClient GetBlobContainerClient()
@@ -125,21 +130,27 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
             return null;
         }
 
-        public static BlobContainerClient GetTriggerBlobContainerClient()
+        public static QueueClient GetAzureTriggerClient()
         {
-            if (!string.IsNullOrEmpty(Settings.Settings.Current.CloudTriggerStorageHolder))
+            // if (!string.IsNullOrEmpty(Settings.Settings.Current.CloudTriggerStorageHolder))
+            // {
+            //     var credential = new ClientSecretCredential(
+            //       Settings.Settings.Current.CloudTriggerStorageHolder,
+            //       Settings.Settings.Current.CloudTriggerStorageKey,
+            //       Settings.Settings.Current.CloudTriggerStorageSecret);
+            //     var client = new BlobServiceClient(new Uri(Settings.Settings.Current.CloudTriggerStorageUri), credential, null);
+            //     return client.GetBlobContainerClient(Settings.Settings.Current.CloudTriggerStorageName);
+            // }
+            // else 
+            if (!string.IsNullOrEmpty(Settings.Settings.Current.CloudTriggerStorageConnectionString))
             {
-                var credential = new ClientSecretCredential(
-                  Settings.Settings.Current.CloudTriggerStorageHolder,
-                  Settings.Settings.Current.CloudTriggerStorageKey,
-                  Settings.Settings.Current.CloudTriggerStorageSecret);
-                var client = new BlobServiceClient(new Uri(Settings.Settings.Current.CloudTriggerStorageUri), credential, null);
-                return client.GetBlobContainerClient(Settings.Settings.Current.CloudTriggerStorageName);
-            }
-            else if (!string.IsNullOrEmpty(Settings.Settings.Current.CloudTriggerStorageConnectionString))
-            {
-                var client = new BlobServiceClient(Settings.Settings.Current.CloudTriggerStorageConnectionString);
-                return client.GetBlobContainerClient(Settings.Settings.Current.CloudTriggerStorageName);
+                QueueClient client = new(Settings.Settings.Current.CloudTriggerStorageConnectionString, Settings.Settings.Current.CloudTriggerStorageName, 
+                new QueueClientOptions 
+                {
+                    MessageEncoding = QueueMessageEncoding.Base64
+                });
+                
+                return client;
             }
 
             return null;
@@ -161,7 +172,7 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
                     });
         }
 
-        public static AmazonS3Client GetAwsTriggerStorageClient()
+        public static AmazonS3Client GetAwsTriggerClient()
         {
             if (!string.IsNullOrEmpty(Settings.Settings.Current.CloudTriggerStorageHolder) || !string.IsNullOrEmpty(Settings.Settings.Current.CloudTriggerStorageConnectionString))
                 return null;
@@ -175,6 +186,44 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
                         RegionEndpoint = Amazon.RegionEndpoint.USEast1,
                         MaxErrorRetry = 20,
                     });
+        }
+
+        public static void TriggerFunctions(string[] messages)
+        {
+            var tasks = new List<Task>();
+
+            AmazonS3Client awsClient = GetAwsTriggerClient();
+            var azureClient = GetAzureTriggerClient();
+
+            if (awsClient != null)
+            {
+                using (awsClient)
+                using (var tu = new TransferUtility(awsClient))
+                {
+                    foreach(var msg in messages)
+                    {
+                        var t = tu.UploadAsync(new TransferUtilityUploadRequest
+                        {
+                            InputStream = new MemoryStream(),
+                            BucketName = Settings.Settings.Current.CloudTriggerStorageName,
+                            Key = msg,
+                            ServerSideEncryptionMethod = ServerSideEncryptionMethod.AES256,
+                            StorageClass = S3StorageClass.Standard,
+                        });
+                        tasks.Add(t);
+                    }
+                }
+            }
+            else if (azureClient != null)
+            {
+                foreach(var msg in messages)
+                {
+                    var t = azureClient.SendMessageAsync(msg);
+                    tasks.Add(t);
+                }
+            }
+
+            Task.WaitAll([.. tasks]);
         }
 
         public static IEnumerable<int> GetSlices(int chunkId)

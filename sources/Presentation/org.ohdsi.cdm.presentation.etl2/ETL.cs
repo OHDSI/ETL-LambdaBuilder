@@ -1,6 +1,4 @@
-﻿using Amazon.S3;
-using Amazon.S3.Transfer;
-using org.ohdsi.cdm.framework.common.DataReaders.v5;
+﻿using org.ohdsi.cdm.framework.common.DataReaders.v5;
 using org.ohdsi.cdm.framework.common.DataReaders.v5.v54;
 using org.ohdsi.cdm.framework.common.Definitions;
 using org.ohdsi.cdm.framework.common.Omop;
@@ -36,14 +34,21 @@ namespace org.ohdsi.cdm.presentation.etl
                 CloudStorageHelper.UploadFile(fileName, reader);
             }
 
+            var created = new Dictionary<string, bool>();
             foreach (var ri in vocabulary.GetClinicalDataReaders())
             {
                 using (ri)
                 {
                     var fileName = $"{Settings.Current.BuildingPrefix}/Lookups/{ri.Name}.txt.gz";
+
+                    if(created.ContainsKey(fileName))
+                        continue;
+
                     Console.WriteLine(ri.Name + " - store to CloudStorage | " + fileName);
 
                     CloudStorageHelper.UploadFile(fileName, ri.DataReader);
+
+                    created.Add(fileName, false);
                 }
             }
 
@@ -152,12 +157,12 @@ namespace org.ohdsi.cdm.presentation.etl
 
         public static void Build()
         {
-            //            //var tasks = utility.TriggerBuildFunction(Settings.Current.Building.Vendor, Settings.Current.Building.Id.Value, null, false);
-            //            //Task.WaitAll([.. tasks]);
-            //            //Console.WriteLine("CDM Build lambda functions were triggered");
+            //var tasks = utility.TriggerBuildFunction(Settings.Current.Building.Vendor, Settings.Current.Building.Id.Value, null, false);
+            //Task.WaitAll([.. tasks]);
+            //Console.WriteLine("CDM Build lambda functions were triggered");
 
-            //            //checkCreation = Task.Run(() => utility.AllChunksWereDone(Settings.Current.Building.Vendor,
-            //            //    Settings.Current.Building.Id.Value, utility.BuildMessageBucket));
+            //checkCreation = Task.Run(() => utility.AllChunksWereDone(Settings.Current.Building.Vendor,
+            //    Settings.Current.Building.Id.Value, utility.BuildMessageBucket));
         }
 
         public static void SaveMetadata(string sourceVersionId)
@@ -182,6 +187,23 @@ namespace org.ohdsi.cdm.presentation.etl
             var file = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}/cdm_source/cdm_source.txt.gz";
 
             CloudStorageHelper.UploadFile(file, new CdmSourceDataReader(sourceReleaseDate, vocabularyVersion));
+        }
+
+        private static IEnumerable<string> GetTriggerMessages(string chunksSchema, int chunkId)
+        {
+            var numberOfPartitions = GetNumberOfPartitions(chunksSchema, chunkId);
+
+            for (int i = 0; i <= numberOfPartitions; i++)
+            {
+                var slice = i.ToString("D4");
+
+                if (Settings.Current.Building.SourceEngine.Database == framework.desktop.Enums.Database.Databricks)
+                {
+                    slice = $"PartitionId={i}";
+                }
+
+                yield return $"{Settings.Current.GetCDMBuildingPrefix}.{chunkId}.{slice}.txt";
+            }
         }
 
         public static void MoveRawDataCloudStorage(string chunksSchema, string sourceSchema)
@@ -222,17 +244,14 @@ namespace org.ohdsi.cdm.presentation.etl
             Console.WriteLine($"PersonIdFieldName:{Settings.Current.Building.PersonIdFieldName}");
             Console.WriteLine($"PersonIdFieldIndex:{Settings.Current.Building.PersonIdFieldIndex}");
 
-            var oneChunk = new List<int>();
-            oneChunk.Add(chunkIds.First());
             using (var chunkManager = new ChunkManager())
             {
-                //Parallel.ForEach(chunkIds, new ParallelOptions { MaxDegreeOfParallelism = Settings.Current.ParallelChunks }, cId =>
-                Parallel.ForEach(oneChunk, new ParallelOptions { MaxDegreeOfParallelism = Settings.Current.ParallelChunks }, cId =>
+                Parallel.ForEach(chunkIds, new ParallelOptions { MaxDegreeOfParallelism = Settings.Current.ParallelChunks }, cId =>
                 {
                     var chunkId = cId;
-
                     var attempt = 0;
                     var complete = false;
+                    
                     while (!complete)
                     {
                         attempt++;
@@ -252,67 +271,13 @@ namespace org.ohdsi.cdm.presentation.etl
                     }
 
                     chunkController.ChunkCreated(chunkId, Settings.Current.Building.Id.Value);
+
                     Console.WriteLine("[Moving raw data] Raw data for chunkId=" + chunkId + " is available on cloud storage");
-
-                    var numberOfPartitions = GetNumberOfPartitions(chunksSchema, chunkId);
-                    var tasks = new List<Task>();
-
-                    using (var client = CloudStorageHelper.GetAwsTriggerStorageClient())
-                    using (var tu = new TransferUtility(client))
-                    {
-                        for (int i = 0; i <= numberOfPartitions; i++)
-                        {
-                            var slice = i.ToString("D4");
-
-                            if (Settings.Current.Building.SourceEngine.Database == framework.desktop.Enums.Database.Databricks)
-                            {
-                                slice = $"PartitionId={i}";
-                            }
-
-                            var key = $"{Settings.Current.GetCDMBuildingPrefix}.{chunkId}.{slice}.txt";
-                            using var empty = new MemoryStream();
-
-                            //CloudStorageHelper.GetAwsTriggerStorageClient().UploadBlob(key, empty);
-
-                            var t = tu.UploadAsync(new TransferUtilityUploadRequest
-                            {
-                                InputStream = new MemoryStream(),
-                                BucketName = Settings.Current.CloudTriggerStorageName,
-                                Key = key,
-                                ServerSideEncryptionMethod = ServerSideEncryptionMethod.AES256,
-                                StorageClass = S3StorageClass.Standard,
-                            });
-                            tasks.Add(t);
-                        }
-                    }
-
-                    Task.WaitAll([.. tasks]);
-
-                    Console.WriteLine($"[Moving raw data] functions for chunkId={chunkId} were triggered | {numberOfPartitions} functions");
+                    CloudStorageHelper.TriggerFunctions([.. GetTriggerMessages(chunksSchema, chunkId)]);
+                    Console.WriteLine($"[Moving raw data] functions for chunkId={chunkId} were triggered");
 
                     chunkManager.AddChunk(chunkId);
-
-                    var unprocessed = 0;
-                    do
-                    {
-                        try
-                        {
-                            unprocessed = CloudStorageHelper.GetTriggerFilesInfo(Settings.Current.CloudTriggerStorageName, $"{Settings.Current.GetCDMBuildingPrefix}").Count();
-
-                            Console.WriteLine($"[Moving raw data] Unprocessed functions={unprocessed}");
-
-                            if (unprocessed > 700)
-                            {
-                                Console.WriteLine($"[Moving raw data] unprocessed > 700, waiting 3 minutes...");
-                                Thread.Sleep(TimeSpan.FromMinutes(3));
-                            }
-                        }
-                        catch (Exception ex) // TMP
-                        {
-
-                        }
-                    }
-                    while (unprocessed > 700);
+                    WaitUntilProcessed();
                 });
 
                 chunkManager.CompleteAdding();
@@ -323,6 +288,31 @@ namespace org.ohdsi.cdm.presentation.etl
             }
 
             Console.WriteLine("Moving raw data to cloud storage - complete");
+        }
+
+        private static void WaitUntilProcessed()
+        {
+            var unprocessed = 0;
+            do
+            {
+                try
+                {
+                    unprocessed = CloudStorageHelper.GetRunningFunctionInfo(Settings.Current.CloudTriggerStorageName, $"{Settings.Current.GetCDMBuildingPrefix}").Item1;
+
+                    Console.WriteLine($"[Moving raw data] Unprocessed functions={unprocessed}");
+
+                    if (unprocessed > 700)
+                    {
+                        Console.WriteLine($"[Moving raw data] unprocessed > 700, waiting 3 minutes...");
+                        Thread.Sleep(TimeSpan.FromMinutes(3));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[WaitUntilProcessed] {ex.Message}");
+                }
+            }
+            while (unprocessed > 700);
         }
 
         private static void StoreMetadataToCloudStorage(QueryDefinition queryDefinition, string query)
@@ -475,7 +465,8 @@ namespace org.ohdsi.cdm.presentation.etl
                         tableName = $"{chunksSchema}.{sourceSchema.Split('.')[1]}_{qd.FileName}_{chunkId}";
 
                         unloadQuery =
-                            $@"CREATE EXTERNAL TABLE {tableName} " +
+                            //$@"CREATE OR REPLACE TABLE {tableName} " +
+                            $@"CREATE TABLE {tableName} " +
                             $@"USING csv " +
                             $@"PARTITIONED BY(PartitionId) " +
                             $@"LOCATION '{Settings.Current.GetDatabricksStorage}/{folder}' " +
@@ -497,9 +488,29 @@ namespace org.ohdsi.cdm.presentation.etl
                     }
 
                     using var connection = SqlConnectionHelper.OpenOdbcConnection(Settings.Current.Building.SourceConnectionString);
-                    using var c = new OdbcCommand(unloadQuery, connection);
-                    c.CommandTimeout = 60 * 60;
-                    c.ExecuteNonQuery();
+                    try
+                    {
+                        using var create = new OdbcCommand(unloadQuery, connection);
+                        create.CommandTimeout = 60 * 60;
+                        create.ExecuteNonQuery();
+                    }
+                    catch(Exception e)
+                    {
+                        if (Settings.Current.Building.SourceEngine.Database == framework.desktop.Enums.Database.Databricks)
+                        {
+                            Console.WriteLine($"[MoveTableDataToCloudStorage] {e.Message}");
+                            var drop = new OdbcCommand($"drop table {tableName}", connection);
+                            drop.ExecuteNonQuery();
+
+                            using var create = new OdbcCommand(unloadQuery, connection);
+                            create.CommandTimeout = 60 * 60;
+                            create.ExecuteNonQuery();
+                        }
+                        else
+                        {
+                            throw e;
+                        }
+                    }
 
                     if (Settings.Current.Building.SourceEngine.Database == framework.desktop.Enums.Database.Databricks)
                     {

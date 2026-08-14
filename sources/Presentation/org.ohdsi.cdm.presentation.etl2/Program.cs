@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Data.Odbc;
 using System.Data.SQLite;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -318,7 +317,7 @@ namespace org.ohdsi.cdm.presentation.etl
 
                     var tasks = new List<Task>();
 
-                    using (var client = CloudStorageHelper.GetAwsTriggerStorageClient())
+                    using (var client = CloudStorageHelper.GetAwsTriggerClient())
                     using (var tu = new TransferUtility(client))
                     {
                         foreach (var table in tables)
@@ -340,7 +339,7 @@ namespace org.ohdsi.cdm.presentation.etl
                     var unprocessed = 0;
                     do
                     {
-                        unprocessed = CloudStorageHelper.GetTriggerFilesInfo(Settings.Current.CloudTriggerStorageName, $"{Settings.Current.GetMergeBuildingPrefix}").Count();
+                        unprocessed = CloudStorageHelper.GetRunningFunctionInfo(Settings.Current.CloudTriggerStorageName, $"{Settings.Current.GetMergeBuildingPrefix}").Item1;
 
                         Console.WriteLine($"[Merge] Unprocessed functions={unprocessed}");
 
