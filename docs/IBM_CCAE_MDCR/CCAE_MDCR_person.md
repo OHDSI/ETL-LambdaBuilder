@@ -19,8 +19,9 @@ description: "**PERSON** mapping from IBM MarketScan® Commercial Database (CCAE
   * Individuals whose DOBYR &lt; 1900 or &gt; the current year.
   * Individuals born &gt; 1 year after their first enrollment period.
 
-* MONTH_OF_BIRTH and DAY_OF_BIRTH is assigned as follows:
+* **MONTH_OF_BIRTH** and **DAY_OF_BIRTH** are assigned as follows:
 
+```text
 Start with the person’s enrollment records
 │
 ├─ Birth year
@@ -43,7 +44,7 @@ Start with the person’s enrollment records
    │            Birth date = June 1 of YEAR_OF_BIRTH.
    │
    └─ Store BIRTH_DATETIME using the resulting year, month, and day.
-
+```
 
 ### Reading from **ENROLLMENT_DETAIL**
 
@@ -69,4 +70,3 @@ Start with the person’s enrollment records
 | RACE_SOURCE_CONCEPT_ID | - | 0 | - |
 | ETHNICITY_SOURCE_VALUE | - | NULL | - |
 | ETHNICITY_SOURCE_CONCEPT_ID | - | 0 | - |
-
