@@ -24,7 +24,7 @@ The information in the PERSON table is sourced from the  **Member_Continuous_Enr
     - YEAR_OF_BIRTH > Min(Year(ELIGEFF)) +1
     - **Member_Continuous_Enrollment** GDR_CD is not M or F (not Male or Female).
 - How to determine MONTH_OF_BIRTH and DAY_OF_BIRTH. 
-    - if person has enrollment in the year of birth, then MONTH_OF_BIRTH = MONTH(MIN(ELIGEFF)) and DAY_OF_BIRTH = 1st day of the month. 
+    - if person has enrollment in the year of birth, then MONTH_OF_BIRTH = MONTH(MIN(ELIGEFF)) and DAY_OF_BIRTH = DAY(MIN(ELIGEFF)). 
     - For datetime values, when time is not available, default to UTC timezone mid-night 00:00:00
  
 ### **Mapping of source field values to OMOP Vocabulary concept id**
@@ -99,6 +99,9 @@ Race is also now split into two variables such that patients can denote both the
 <br>CDM Version = 5.4
 
 ## Change log
+
+### 20-Aug-2026
+- Updated birth date logic to reflect that day_of_birth comes from the observation_period_start_date if the year_of_bith = year(observation_period_start_date)
 
 ### 2-Aug-2024
 - Race and ethnicity now self-reported as two separate columns
