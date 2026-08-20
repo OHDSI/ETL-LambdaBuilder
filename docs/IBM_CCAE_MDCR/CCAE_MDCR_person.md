@@ -19,7 +19,30 @@ description: "**PERSON** mapping from IBM MarketScan® Commercial Database (CCAE
   * Individuals whose DOBYR &lt; 1900 or &gt; the current year.
   * Individuals born &gt; 1 year after their first enrollment period.
 
-* For MONTH_OF_BIRTH, the **OBSERVATION_PERIOD** table will need to be generated first. Then, the value can be derived from using YEAR_OF_BIRTH and OBSERVATION_PERIOD_START_DATE only if the year of birth is equal to the year of the first OBSERVATION_PERIOD_START_DATE.
+* MONTH_OF_BIRTH and DAY_OF_BIRTH is assigned as follows:
+
+Start with the person’s enrollment records
+│
+├─ Birth year
+│  └─ Set YEAR_OF_BIRTH from DOBYR.
+│     If multiple DOBYR values exist, validation and limited reconciliation
+│     rules determine whether the person is retained.
+│
+└─ Birth month and day
+   │
+   ├─ Find the earliest retained date across:
+   │  observation periods, claims, visits, procedures, conditions,
+   │  drugs, measurements, observations, and devices.
+   │
+   ├─ Does that earliest date fall in YEAR_OF_BIRTH?
+   │  │
+   │  ├─ Yes → Set MONTH_OF_BIRTH and DAY_OF_BIRTH from that date.
+   │  │         Birth date = earliest retained date.
+   │  │
+   │  └─ No  → Set MONTH_OF_BIRTH = 6 and DAY_OF_BIRTH = 1.
+   │            Birth date = June 1 of YEAR_OF_BIRTH.
+   │
+   └─ Store BIRTH_DATETIME using the resulting year, month, and day.
 
 
 ### Reading from **ENROLLMENT_DETAIL**
