@@ -12,11 +12,10 @@ using System.Text;
 
 namespace org.ohdsi.cdm.presentation.azurebuilder
 {
-    public class Vocabulary(Vendor vendor) : IVocabulary
+    public class Vocabulary2(Vendor vendor) : IVocabulary
     {
-        private readonly Dictionary<string, Lookup> _lookups = [];
+        private readonly Dictionary<string, Lookup2> _lookups = [];
         private GenderLookup _genderConcepts;
-        private PregnancyConcepts _pregnancyConcepts;
         private Dictionary<long, Tuple<string, string>> _conceptIdToSourceVocabularyId = [];
 
         public Vendor Vendor { get; } = vendor;
@@ -37,11 +36,12 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
             {
                 if (!_lookups.ContainsKey(conceptIdMapper.Lookup))
                 {
-                    var lookup = new Lookup();
+                    var lookup = new Lookup2();
 
                     var fileName = $"{AzureHelper.Path}/Lookups/{conceptIdMapper.Lookup}.txt.gz";
 
                     Settings.Current.Logger.LogInformation(fileName);
+                    Console.WriteLine("Lookup name: " + conceptIdMapper.Lookup);
 
                     try
                     {
@@ -50,8 +50,11 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
 
                         var bcc = client.GetBlobContainerClient(Settings.Current.BlobContainerName);
                         var bc = bcc.GetBlobClient(fileName);
-                                                
-                        lookup.Fill(bc.OpenRead());
+
+                        using (var stream = bc.OpenRead())
+                        {
+                            lookup.Fill(stream);
+                        }
 
                         Settings.Current.Logger.LogInformation(lookup.KeysCount.ToString());
                         _lookups.Add(conceptIdMapper.Lookup, lookup);
@@ -67,7 +70,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
             }
         }
          
-        private static void Attach(IEnumerable<EntityDefinition> definitions, Vocabulary vocabulary)
+        private static void Attach(IEnumerable<EntityDefinition> definitions, Vocabulary2 vocabulary)
         {
             if (definitions == null) return;
 
@@ -109,45 +112,34 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
         {
             _genderConcepts = new GenderLookup();
             _genderConcepts.Load();
-
-            _pregnancyConcepts = new PregnancyConcepts(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location));
             
             foreach (var qd in Settings.Current.Building.SourceQueryDefinitions)
-                try
-                {
-                    if (!QueryDefinition.IsSuitable(qd.Query.Database, Settings.Current.Building.Vendor))
-                        continue;
+            {
+                if (!QueryDefinition.IsSuitable(qd.Query.Database, Settings.Current.Building.Vendor))
+                    continue;
 
-                    Load(qd.ConditionOccurrence);
-                    Load(qd.DrugExposure);
-                    Load(qd.ProcedureOccurrence);
-                    Load(qd.Observation);
-                    Load(qd.VisitOccurrence);
-                    Load(qd.VisitDetail);
+                Load(qd.ConditionOccurrence);
+                Load(qd.DrugExposure);
+                Load(qd.ProcedureOccurrence);
+                Load(qd.Observation);
+                Load(qd.VisitOccurrence);
+                Load(qd.VisitDetail);
 
-                    Load(qd.Death);
-                    Load(qd.Measurement);
-                    Load(qd.DeviceExposure);
-                    Load(qd.Note);
-                    Load(qd.Episodes);
+                Load(qd.Death);
+                Load(qd.Measurement);
+                Load(qd.DeviceExposure);
+                Load(qd.Note);
+                Load(qd.Episodes);
 
-                    Load(qd.VisitCost);
-                    Load(qd.ProcedureCost);
-                    Load(qd.DeviceCost);
-                    Load(qd.ObservationCost);
-                    Load(qd.MeasurementCost);
-                    Load(qd.DrugCost);
-                }
-                catch (Exception e)
-                {
-                    
-                }
-
-            var lookup = new Lookup();
-            lookup.Fill(AzureHelper.OpenStream($"{AzureHelper.Path}/Lookups/PregnancyDrug.txt.gz"));
-            _lookups.Add("PregnancyDrug", lookup);
-                       
-            lookup = new Lookup();
+                Load(qd.VisitCost);
+                Load(qd.ProcedureCost);
+                Load(qd.DeviceCost);
+                Load(qd.ObservationCost);
+                Load(qd.MeasurementCost);
+                Load(qd.DrugCost);
+            }
+           
+            
             foreach (var blob in AzureHelper.GetBlobContainer().GetBlobs(new GetBlobsOptions
             {
                 Prefix = $"{AzureHelper.Path}/CombinedLookups",
@@ -157,9 +149,20 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
             {
                 Settings.Current.Logger.LogInformation(blob.Name);
 
+                var lookup = new Lookup2();
                 lookup.Fill(AzureHelper.OpenStream(blob.Name));
-                _lookups.Add(blob.Name.Split('/')[3].Replace(".txt.gz", ""), lookup);
+                var parts = blob.Name.Split('/');
+                var name = parts.Last().Replace(".txt.gz", "");
+                try
+                {
+                    _lookups.Add(name, lookup);
+                }
+                catch(Exception ex)
+                {
+                    throw new Exception(blob.Name + " | " + name + " | " + AzureHelper.Path);
+                }
             }
+            
 
             if (Vendor.Name == "CDM")
             {
@@ -183,6 +186,11 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                 _conceptIdToSourceVocabularyId.TrimExcess();
                 Settings.Current.Logger.LogInformation("_conceptIdToSourceVocabularyId: " + _conceptIdToSourceVocabularyId.Keys.Count);
             }
+
+            _lookups.TrimExcess();
+
+            GC.Collect(2, GCCollectionMode.Forced, blocking: true);
+            GC.WaitForPendingFinalizers();
         }
 
         public string GetSourceVocabularyId(long conceptId)
@@ -220,7 +228,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
 
         public IEnumerable<PregnancyConcept> LookupPregnancyConcept(long conceptId)
         {
-            return _pregnancyConcepts.GetConcepts(conceptId);
+            throw new NotImplementedException();
         }
     }
 }

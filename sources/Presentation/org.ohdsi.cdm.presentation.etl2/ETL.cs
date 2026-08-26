@@ -1,4 +1,6 @@
-﻿using org.ohdsi.cdm.framework.common.DataReaders.v5;
+﻿using Azure.Identity;
+using Azure.Storage.Blobs;
+using org.ohdsi.cdm.framework.common.DataReaders.v5;
 using org.ohdsi.cdm.framework.common.DataReaders.v5.v54;
 using org.ohdsi.cdm.framework.common.Definitions;
 using org.ohdsi.cdm.framework.common.Omop;
@@ -11,8 +13,10 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Odbc;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -320,12 +324,44 @@ namespace org.ohdsi.cdm.presentation.etl
             Console.WriteLine("[Moving raw data] StoreMetadataToCloudStorage start - " + queryDefinition.FileName);
             var fileName = $"{Settings.Current.BuildingPrefix}/raw/metadata/{queryDefinition.FileName + ".txt"}";
 
+            /*
             using (var conn = SqlConnectionHelper.OpenOdbcConnection(Settings.Current.Building.SourceConnectionString))
             using (var c = Settings.Current.Building.SourceEngine.GetCommand(query, conn))
             {
-                c.CommandTimeout = 600;
+                c.CommandTimeout = 3600;
                 using var reader = c.ExecuteReader(CommandBehavior.SchemaOnly);
                 CloudStorageHelper.UploadFile(fileName, reader, false, true);
+            }
+            */
+
+            string describeQuery = $"DESCRIBE QUERY {query}";
+
+            using (var conn = SqlConnectionHelper.OpenOdbcConnection(Settings.Current.Building.SourceConnectionString))
+            using (var c = Settings.Current.Building.SourceEngine.GetCommand(describeQuery, conn))
+            {
+                c.CommandTimeout = 600;
+                using(var reader = c.ExecuteReader())
+                using(var source = new MemoryStream())
+                using(StreamWriter writer = new(source, new UTF8Encoding(false, true))) 
+                using(var csv = framework.common.Helpers.CsvHelper.CreateCsvWriter(writer))
+                {
+                    while (reader.Read())
+                    {
+                        var fieldName = reader.GetValue(0);
+                        csv.WriteField(fieldName);
+                    }
+
+                    csv.NextRecord();
+                    writer.Flush();
+
+                    var credential = new ClientSecretCredential(Settings.Current.CloudStorageHolder, Settings.Current.CloudStorageKey, Settings.Current.CloudStorageSecret);
+                    var client = new BlobServiceClient(new Uri(Settings.Current.CloudStorageUri), credential, null);
+                    var azureClient = client.GetBlobContainerClient(Settings.Current.CloudStorageName);
+
+                    source.Position = 0;
+
+                    azureClient.GetBlobClient(fileName).Upload(source, overwrite: true);
+                }
             }
             
             Console.WriteLine("[Moving raw data] StoreMetadataToCloudStorage end - " + queryDefinition.FileName);
@@ -439,6 +475,9 @@ namespace org.ohdsi.cdm.presentation.etl
 
         private static void MoveTableDataToCloudStorage(string chunksSchema, int chunkId, string sourceSchema)
         {
+            var timer = new Stopwatch();
+            timer.Start();
+            
             Parallel.ForEach(Settings.Current.Building.SourceQueryDefinitions,
                 new ParallelOptions { MaxDegreeOfParallelism = Settings.Current.ParallelQueries }, qd =>
                 {
@@ -518,6 +557,10 @@ namespace org.ohdsi.cdm.presentation.etl
                         drop.ExecuteNonQuery();
                     }
                 });
+
+                timer.Stop();
+
+                Console.WriteLine($"chunkId={chunkId} | {timer.Elapsed.TotalSeconds}s");
         }
 
         private static int GetNumberOfPartitions(string chunksSchema, int chunkId)

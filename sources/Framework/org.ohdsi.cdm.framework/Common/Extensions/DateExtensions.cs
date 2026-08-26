@@ -6,5 +6,10 @@
         {
             return (input >= date1 && input <= date2);
         }
+
+        public static uint ToUint(this DateTime input)
+        {
+            return (uint)(input.Year * 10000 + input.Month * 100 + input.Day);
+        }
     }
 }

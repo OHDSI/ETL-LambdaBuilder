@@ -17,7 +17,7 @@ public class FunctionCdmEtl
 {
     private readonly ILogger<FunctionCdmEtl> _logger;
 
-    private Vocabulary _vocabulary;
+    private Vocabulary2 _vocabulary;
     private bool _attemptFileRemoved;
     private long? _lastSavedPersonIdOutput;
     private Dictionary<string, long> _restorePoint = [];
@@ -108,8 +108,6 @@ public class FunctionCdmEtl
 
             Settings.Current.CDMFolder = Environment.GetEnvironmentVariable("cdmFolder");
 
-            ServicePointManager.DefaultConnectionLimit = Int32.MaxValue;
-
             if (attempt > 15) // TMP was 10
             {
                 return;
@@ -122,8 +120,15 @@ public class FunctionCdmEtl
             var chunkBuilder = new AzureChunkBuilder(CreatePersonBuilder);
             var attempt1 = attempt;
 
-            _lastSavedPersonIdOutput = chunkBuilder.Process(_chunkId, _prefix, _restorePoint, attempt);
+            Dictionary<string, long> rowsSaved = new Dictionary<string, long>();
+            _lastSavedPersonIdOutput = chunkBuilder.Process(_chunkId, _prefix, _restorePoint, attempt, rowsSaved);
             var totalPersonConverted = chunkBuilder.TotalPersonConverted;
+
+            using Process currentProcess = System.Diagnostics.Process.GetCurrentProcess();
+            currentProcess.Refresh();
+            
+            var workingSet = currentProcess.WorkingSet64 / (1024.0 * 1024.0);
+            rowsSaved.Add("WorkingSet64", (long)workingSet);  
 
             if (_lastSavedPersonIdOutput.HasValue && totalPersonConverted > 0)
             {
@@ -134,9 +139,16 @@ public class FunctionCdmEtl
             {
                 _logger.LogInformation($"chunkId={_chunkId};prefix={_prefix} - FINISHED, {name} - removed");
             }
-
+            
+            StringBuilder sb = new();
+            foreach (var key in rowsSaved.Keys.Order())
+            {
+                sb.AppendLine($"{key}={rowsSaved[key]};");
+            }
             var completed = DateTime.Now;
-            using var streamCompleteDetails = new MemoryStream(Encoding.UTF8.GetBytes($"Started={started.ToShortDateString} {started.ToShortTimeString}; Completed={completed.ToShortDateString} {completed.ToShortTimeString}; totalPersonConverted={totalPersonConverted}; Duration={(completed - started).TotalSeconds}s"));
+            sb.AppendLine($"Started={started.ToShortDateString()} {started.ToShortTimeString()}; Completed={completed.ToShortDateString()} {completed.ToShortTimeString()}; totalPersonConverted={totalPersonConverted}; Duration={(completed - started).TotalSeconds}s");
+            
+            using var streamCompleteDetails = new MemoryStream(Encoding.UTF8.GetBytes(sb.ToString()));
             AzureHelper.UploadStream($"{AzureHelper.Path}/complete/{_chunkId}.{_prefix}.txt", streamCompleteDetails);
         }
         catch (Exception e)
@@ -175,7 +187,7 @@ public class FunctionCdmEtl
         {
             var timer = new Stopwatch();
             timer.Start();
-            _vocabulary = new Vocabulary(Settings.Current.Building.Vendor);
+            _vocabulary = new Vocabulary2(Settings.Current.Building.Vendor);
             _vocabulary.Fill(false);
             _vocabulary.Attach();
             timer.Stop();
