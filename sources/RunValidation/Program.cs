@@ -19,6 +19,9 @@ namespace RunValidation
             [Option('b', "buildingId", Required = true, HelpText = "Building ID.")]
             public required int BuildingId { get; set; }
 
+            [Option('w', "warehouse", Default = "aws", HelpText = "(Optional) Which warehouse to check? AWS or Azure")]
+            public string Warehouse { get; set; } = "";
+
             [Option('e', "etlLibraryPath", Default = "", HelpText = "(Optional) Path to a folder containing an external ETL .dll")]
             public string EtlLibraryPath { get; set; } = "";
 
@@ -67,10 +70,15 @@ namespace RunValidation
             }
         }
 
-        private static string _awsAccessKeyId => ConfigurationManager.AppSettings["awsAccessKeyId"] ?? throw new NullReferenceException("awsAccessKeyId");
-        private static string _awsSecretAccessKey => ConfigurationManager.AppSettings["awsSecretAccessKey"] ?? throw new NullReferenceException("awsSecretAccessKey");
-        private static string _bucket => ConfigurationManager.AppSettings["bucket"] ?? throw new NullReferenceException("bucket");
-        private static string _cdmFolder => ConfigurationManager.AppSettings["cdmFolder"] ?? "cdmCSV";
+        private static string _awsAccessKeyId => GetRequiredSetting("awsAccessKeyId");
+        private static string _awsSecretAccessKey => GetRequiredSetting("awsSecretAccessKey");
+        private static string _bucket => GetRequiredSetting("awsBucket");
+
+        private static string _azureTenantId => GetRequiredSetting("azureTenantId");
+        private static string _azureClientId => GetRequiredSetting("azureClientId");
+        private static string _azureClientSecret => GetRequiredSetting("azureClientSecret");
+        private static string _azureServiceId => GetRequiredSetting("azureServiceId");
+        private static string _azureBlobContainerName => GetRequiredSetting("azureBlobContainerName");
 
         static void Main(string[] args)
         {
@@ -87,14 +95,19 @@ namespace RunValidation
         {
             var chunks = opts.Chunks.ToList();
             var singleThreadedMode = opts.SingleTreadedMode == 1;
+            var warehouse = string.IsNullOrWhiteSpace(opts.Warehouse)
+                ? "aws"
+                : opts.Warehouse.Trim().ToLowerInvariant();
 
             AnsiConsole.WriteLine("Options:");
-            AnsiConsole.WriteLine($"Bucket - folder: {_bucket} - {_cdmFolder}");
             AnsiConsole.WriteLine($"Vendor: {opts.Vendor}");
+            AnsiConsole.WriteLine($"Warehouse: {warehouse}");
             AnsiConsole.WriteLine($"Building ID: {opts.BuildingId}");
             AnsiConsole.WriteLine($"Chunks: {string.Join(", ", chunks)}");
             AnsiConsole.WriteLine($"PersonId: {opts.PersonId?.ToString() ?? ""}");
             AnsiConsole.WriteLine($"SingleTreadedMode: {opts.SingleTreadedMode?.ToString() ?? ""}");
+
+            AnsiConsole.WriteLine();
             AnsiConsole.WriteLine($"EtlLibraryPath: {opts.EtlLibraryPath}");
             AnsiConsole.WriteLine($"Current directory: {Directory.GetCurrentDirectory()}");
             AnsiConsole.WriteLine();
@@ -103,20 +116,19 @@ namespace RunValidation
 
             try
             {
+                LogStorageConfiguration(warehouse);
+
                 var sw = new Stopwatch();
                 sw.Start();
 
-                var validation = new Validation(
-                    _awsAccessKeyId,
-                    _awsSecretAccessKey,
-                    _bucket,
-                    _cdmFolder,
+                using var validation = CreateValidation(
+                    warehouse,
                     vendor,
                     opts.BuildingId);
 
-                #region GetS3InfoForValidation
+                #region GetStorageInfoForValidation
                 AnsiConsole.WriteLine($"Getting actual chunks and slices...");
-                validation.GetS3InfoForValidation();
+                validation.GetStorageInfoForValidation();
 
                 if (chunks is not { Count: > 0 })
                     chunks = validation.Chunks.ToList();
@@ -142,6 +154,85 @@ namespace RunValidation
                 AnsiConsole.MarkupLine("[red]Validation failed.[/]");
                 AnsiConsole.WriteException(exception);
             }
+        }
+
+        private static Validation CreateValidation(
+            string warehouse,
+            Vendor vendor,
+            int buildingId)
+        {
+            IValidationStorage storage = warehouse switch
+            {
+                "aws" => new AwsValidationStorage(
+                    _awsAccessKeyId,
+                    _awsSecretAccessKey,
+                    _bucket),
+
+                "azure" => new AzureValidationStorage(
+                    _azureTenantId,
+                    _azureClientId,
+                    _azureClientSecret,
+                    _azureServiceId,
+                    _azureBlobContainerName),
+
+                _ => throw new ArgumentException(
+                    $"Unsupported warehouse '{warehouse}'. Expected 'aws' or 'azure'.",
+                    nameof(warehouse))
+            };
+
+            return new Validation(
+                storage,
+                GetCdmFolder(warehouse),
+                vendor,
+                buildingId);
+        }
+
+        private static void LogStorageConfiguration(string warehouse)
+        {
+            switch (warehouse)
+            {
+                case "aws":
+                    AnsiConsole.WriteLine(
+                        $"AWS S3: Bucket={_bucket}, Folder={GetCdmFolder(warehouse)}");
+                    break;
+
+                case "azure":
+                    AnsiConsole.WriteLine(
+                        $"Azure Blob Storage: " +
+                        $"TenantId={_azureTenantId}, " +
+                        $"ClientId={_azureClientId}, " +
+                        $"ClientSecretConfigured={!string.IsNullOrWhiteSpace(_azureClientSecret)}, " +
+                        $"ServiceId={_azureServiceId}, " +
+                        $"Container={_azureBlobContainerName}, " +
+                        $"Folder={GetCdmFolder(warehouse)}");
+                    break;
+
+                default:
+                    throw new ArgumentException(
+                        $"Unsupported warehouse '{warehouse}'. Expected 'aws' or 'azure'.",
+                        nameof(warehouse));
+            }
+        }
+
+        private static string GetRequiredSetting(string key)
+        {
+            var value = ConfigurationManager.AppSettings[key];
+
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                throw new ConfigurationErrorsException(
+                    $"Required configuration parameter '{key}' is missing or empty.");
+            }
+
+            return value;
+        }
+
+        private static string GetCdmFolder(string warehouse)
+        {
+            return ConfigurationManager.AppSettings["cdmFolder"]
+                ?? ConfigurationManager.AppSettings[$"{warehouse}CdmFolder"]
+                ?? ConfigurationManager.AppSettings["awsCdmFolder"]
+                ?? "cdmCSV";
         }
 
         static async Task ValidatePersonId(Validation validation, List<int> chunks, long personId, bool singleThreadedMode)

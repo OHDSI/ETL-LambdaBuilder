@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+	<appSettings>
+		<add key="awsAccessKeyId" value="" />
+		<add key="awsSecretAccessKey" value="" />
+		<add key="awsBucket" value="" />
+		<add key="awsCdmFolder" value="" />
+
+		<add key="azureTenantId" value="" />
+		<add key="azureClientId" value="" />
+		<add key="azureClientSecret" value="" />
+		<add key="azureServiceId" value="" />
+		<add key="azureBlobContainerName" value="" />
+	</appSettings>
+</configuration>
