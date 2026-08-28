@@ -68,14 +68,14 @@ namespace org.ohdsi.cdm.presentation.azurebuilder.Base
             }
         }
 
-        public long? Process(int chunkId, string prefix, Dictionary<string, long> restorePoint, int attempt)
+        public long? Process(int chunkId, string prefix, Dictionary<string, long> restorePoint, int attempt, Dictionary<string, long> rowsSaved)
         {
             var folder = string.Format("{0}/raw", AzureHelper.Path);
 
             Parallel.ForEach(Settings.Current.Building.SourceQueryDefinitions, qd => { ReadMetadata(qd, folder); });
 
             long? result;
-            using (var part = new AzureChunkPart(chunkId, _createPersonBuilder, prefix, attempt))
+            using (var part = new AzureChunkPart(chunkId, _createPersonBuilder, prefix, attempt, rowsSaved))
             {
                 result = part.Process(restorePoint);
                 TotalPersonConverted = part.TotalPersonConverted;

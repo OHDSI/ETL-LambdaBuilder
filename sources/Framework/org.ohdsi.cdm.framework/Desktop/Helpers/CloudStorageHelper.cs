@@ -48,7 +48,8 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
                         }
                         else if (azureClient != null)
                         {
-                            azureClient.UploadBlob(name, stream);
+                            //azureClient.UploadBlob(name, stream);
+                            azureClient.GetBlobClient(name).Upload(stream, overwrite: true);
                         }
 
                         Console.WriteLine("BucketName=" + storageName);

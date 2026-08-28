@@ -6,9 +6,10 @@ using System.Diagnostics;
 
 namespace org.ohdsi.cdm.presentation.azurebuilder
 {
-    public class Saver(KeyMasterOffsetManager offsetManager)
+    public class Saver(KeyMasterOffsetManager offsetManager, Dictionary<string, long> rowsSaved)
     {
         private readonly KeyMasterOffsetManager _offsetManager = offsetManager;
+        private readonly  Dictionary<string, long> _rowsSaved = rowsSaved;
 
         protected Tuple<IDataReader, int>? CreateDataReader(ChunkData chunk, string table)
         {
@@ -201,8 +202,141 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
             throw new Exception("CreateDataReader, unsupported table name: " + table);
         }
 
+        private static void Cleanup(ChunkData chunk, string table)
+        {
+            switch (table)
+            {
+                case "person":
+                    {
+                        chunk.Persons.Clear();
+                        break;
+                    }
+
+                case "observation_period":
+                    {
+                        chunk.ObservationPeriods.Clear();
+                        break;
+                    }
+
+                case "payer_plan_period":
+                    {
+                        chunk.PayerPlanPeriods.Clear();
+                        break;
+                    }
+
+                case "death":
+                    {
+                        chunk.Deaths.Clear();
+                        break;
+                    }
+
+                case "drug_exposure":
+                    {
+                        chunk.DrugExposures.Clear();
+                        break;
+                    }
+
+                case "observation":
+                    {
+                        chunk.Observations.Clear();
+                        break;
+                    }
+
+                case "visit_occurrence":
+                    {
+                        chunk.VisitOccurrences.Clear();
+                        break;
+                    }
+
+                case "visit_detail":
+                    {
+                        chunk.VisitDetails.Clear();
+                        break;
+                    }
+
+                case "procedure_occurrence":
+                    {
+                        chunk.ProcedureOccurrences.Clear();
+                        break;
+                    }
+
+                case "drug_era":
+                    {
+                        chunk.DrugEra.Clear();
+                        break;
+                    }
+
+                case "condition_era":
+                    {
+                        chunk.ConditionEra.Clear();
+                        break;
+                    }
+
+                case "device_exposure":
+                    {
+                        chunk.DeviceExposure.Clear();
+                        break;
+                    }
+
+                case "measurement":
+                    {
+                        chunk.Measurements.Clear();
+                        break;
+                    }
+
+                case "cohort":
+                    {
+                        chunk.Cohort.Clear();
+                        break;
+                    }
+
+                case "condition_occurrence":
+                    {
+                        chunk.ConditionOccurrences.Clear();
+                        break;
+                    }
+
+                case "cost":
+                    {
+                        chunk.Cost.Clear();
+                        break;
+                    }
+
+                case "note":
+                    {
+                        chunk.Note.Clear();
+                        break;
+                    }
+
+                case "metadata_tmp":
+                    {
+                        chunk.Metadata.Clear();
+                        break;
+                    }
+
+                case "fact_relationship":
+                    {
+                        chunk.FactRelationships.Clear();
+                        break;
+                    }
+
+                case "episode":
+                    {
+                        chunk.Episode.Clear();
+                        break;
+                    }
+
+                case "episode_event":
+                    {
+                        chunk.EpisodeEvent.Clear();
+                        break;
+                    }
+            }
+        }
+
         public void Write(ChunkData chunk, int chunkId, string subChunkId, string table)
         {
+            int rowCount = 0;
             try
             {
                 var prefix = subChunkId.Split('.')[0];
@@ -210,19 +344,31 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
 
                 var tuple = CreateDataReader(chunk, table);
 
-                if (tuple == null) return;
+                if (tuple == null) 
+                    return;
 
                 var reader = tuple.Item1;
-                var rowCount = tuple.Item2;
+                rowCount = tuple.Item2;
 
-                var fileName = $"{AzureHelper.Path}/{Settings.Current.CDMFolder}/{table}/{table}.{chunkId}.{prefix}.{personIds}.{rowCount}.txt.gz";
+                if(!_rowsSaved.ContainsKey(table))
+                    _rowsSaved.Add(table, 0);
 
-                using var ms = framework.common.Helpers.CsvHelper.GetStreamCsv(reader).First();
-                AzureHelper.UploadStream(fileName, ms);
+                _rowsSaved[table]+=rowCount;
+
+                int num = 0;
+                foreach (var stream in framework.common.Helpers.CsvHelper.GetStreamCsv(reader, 10_000, true, false))
+                {
+                    using(stream)
+                    {
+                        var fileName = $"{AzureHelper.Path}/{Settings.Current.CDMFolder}/{table}/{table}.{chunkId}.{prefix}.{personIds}.{rowCount}.{num}.txt.gz";
+                        AzureHelper.UploadStream(fileName, stream);
+                    }
+                    num++;
+                }
             }
             catch (Exception e)
             {
-                Console.WriteLine("WARN_EXC - Write2 - throw");
+                Console.WriteLine($"WARN_EXC - Write2 - throw | {table};rows={rowCount}" );
                 Console.WriteLine(e.Message);
                 Console.WriteLine(e.StackTrace);
                 throw;
@@ -238,30 +384,35 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
             {
                 var tables = new[]
                 {
+                    "note",
+                    "measurement",
+                    "observation",
+                    "visit_detail",
+                    "visit_occurrence",
+                    "condition_occurrence",
+                    "drug_exposure",
+                    "procedure_occurrence",
+                    "device_exposure",
+                    "cost",
+                    "drug_era",
+                    "condition_era",
                     "person",
                     "observation_period",
                     "payer_plan_period",
                     "death",
-                    "drug_exposure",
-                    "observation",
-                    "visit_occurrence",
-                    "visit_detail",
-                    "procedure_occurrence",
-                    "drug_era",
-                    "condition_era",
-                    "device_exposure",
-                    "measurement",
                     "cohort",
-                    "condition_occurrence",
-                    "cost",
-                    "note",
                     "metadata_tmp",
                     "fact_relationship",
                     "episode_event",
                     "episode"
                 };
 
-                Parallel.ForEach(tables, t => { Write(chunk, chunkId, subChunkId, t); });
+                //Parallel.ForEach(tables, t => { Write(chunk, chunkId, subChunkId, t); });
+                foreach(var t in tables)
+                {
+                    Write(chunk, chunkId, subChunkId, t);
+                    Cleanup(chunk, t);
+                } 
             }
             catch (Exception e)
             {
