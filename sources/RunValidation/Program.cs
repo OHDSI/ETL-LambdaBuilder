@@ -127,7 +127,7 @@ namespace RunValidation
                     opts.BuildingId);
 
                 #region GetStorageInfoForValidation
-                AnsiConsole.WriteLine($"Getting actual chunks and slices...");
+                AnsiConsole.WriteLine($"\r\nGetting actual chunks and slices...");
                 validation.GetStorageInfoForValidation();
 
                 if (chunks is not { Count: > 0 })
