@@ -190,7 +190,7 @@ namespace org.ohdsi.cdm.presentation.etl
         {
             var file = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}/cdm_source/cdm_source.txt.gz";
 
-            CloudStorageHelper.UploadFile(file, new CdmSourceDataReader(sourceReleaseDate, vocabularyVersion));
+            CloudStorageHelper.UploadFile(file, new framework.common.DataReaders.v5.v55.CdmSourceDataReader(sourceReleaseDate, vocabularyVersion));
         }
 
         private static IEnumerable<string> GetTriggerMessages(string chunksSchema, int chunkId)
@@ -276,12 +276,13 @@ namespace org.ohdsi.cdm.presentation.etl
 
                     chunkController.ChunkCreated(chunkId, Settings.Current.Building.Id.Value);
 
+                    WaitUntilProcessed(0);
+
                     Console.WriteLine("[Moving raw data] Raw data for chunkId=" + chunkId + " is available on cloud storage");
                     CloudStorageHelper.TriggerFunctions([.. GetTriggerMessages(chunksSchema, chunkId)]);
                     Console.WriteLine($"[Moving raw data] functions for chunkId={chunkId} were triggered");
-
+                    
                     chunkManager.AddChunk(chunkId);
-                    WaitUntilProcessed();
                 });
 
                 chunkManager.CompleteAdding();
@@ -294,7 +295,7 @@ namespace org.ohdsi.cdm.presentation.etl
             Console.WriteLine("Moving raw data to cloud storage - complete");
         }
 
-        private static void WaitUntilProcessed()
+        private static void WaitUntilProcessed(int maxRunning)
         {
             var unprocessed = 0;
             do
@@ -305,9 +306,9 @@ namespace org.ohdsi.cdm.presentation.etl
 
                     Console.WriteLine($"[Moving raw data] Unprocessed functions={unprocessed}");
 
-                    if (unprocessed > 700)
+                    if (unprocessed > maxRunning)
                     {
-                        Console.WriteLine($"[Moving raw data] unprocessed > 700, waiting 3 minutes...");
+                        Console.WriteLine($"[Moving raw data] unprocessed > {maxRunning}, waiting 3 minutes...");
                         Thread.Sleep(TimeSpan.FromMinutes(3));
                     }
                 }
@@ -316,7 +317,7 @@ namespace org.ohdsi.cdm.presentation.etl
                     Console.WriteLine($"[WaitUntilProcessed] {ex.Message}");
                 }
             }
-            while (unprocessed > 700);
+            while (unprocessed > maxRunning);
         }
 
         private static void StoreMetadataToCloudStorage(QueryDefinition queryDefinition, string query)
