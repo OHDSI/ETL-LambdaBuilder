@@ -7,7 +7,6 @@
 		p.quantity_of_dose,
 		p.route,
 		p.ndc,
-		SUBSTRING(p.ndc,1,9) ndc_9,
 		1 as itNdc,
 		ch.PartitionId
 		from {sc}.patient_reported_medications as p
@@ -34,8 +33,7 @@
 						</Mapper>
 					</ConceptIdMappers>
 					<Fields>
-						<Field key="ndc" defaultTypeId="32865" />
-						<Field key="ndc_9" sourceKey="ndc"  defaultTypeId="32865" />
+						<Field key="ndc" defaultTypeId="32865" eventDate="reported_date" />
 					</Fields>
 				</Concept>
 				<Concept>

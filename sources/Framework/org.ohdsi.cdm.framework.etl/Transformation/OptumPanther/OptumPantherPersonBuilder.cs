@@ -1,4 +1,6 @@
-﻿using org.ohdsi.cdm.framework.common.Base;
+﻿using Force.DeepCloner;
+using MySqlConnector;
+using org.ohdsi.cdm.framework.common.Base;
 using org.ohdsi.cdm.framework.common.Builder;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Extensions;
@@ -86,8 +88,6 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
 
         private IEnumerable<DrugExposure> PrepareDrugExposures(IEnumerable<DrugExposure> drugExposures)
         {
-            var ndcDrugs = new Dictionary<Guid, List<DrugExposure>>();
-            var vaxDrugs = new List<DrugExposure>();
             foreach (var de in drugExposures)
             {
                 if (!de.DaysSupply.HasValue || de.DaysSupply.Value == 0)
@@ -104,54 +104,99 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
 
                 if (de.AdditionalFields != null && de.AdditionalFields.ContainsKey("itndc"))
                 {
-                    if (!ndcDrugs.ContainsKey(de.SourceRecordGuid))
-                        ndcDrugs.Add(de.SourceRecordGuid, []);
+                    if(de.ConceptId > 0)
+                    {
+                        yield return UpdateSourceValueForVax(de);
+                        continue;
+                    }
 
-                    if (!de.AdditionalFields.ContainsKey("orig_source"))
-                        de.AdditionalFields.Add("orig_source", de.SourceValue);
-                    ndcDrugs[de.SourceRecordGuid].Add(de);
-                    continue;
+                    if (de.AdditionalFields.ContainsKey("immunization_desc"))
+                    {
+                        var vaxKey = de.AdditionalFields["immunization_desc"];
+                        var vaxSource = de.AdditionalFields["immunization_source"];
+                        
+                        if(!string.IsNullOrEmpty(vaxKey))
+                        {
+                            var vaxDrugs = TryToCreateDrugs(de, "EhrVax", vaxKey, vaxSource, DateTime.MinValue).ToList();
+                            
+                            if(vaxDrugs.Count > 0)
+                            {
+                                foreach(var vax in vaxDrugs)
+                                {
+                                    yield return vax;
+                                }
+                                continue; 
+                            }
+                        }
+                    }
+
+                    var ndc9Drugs = TryToCreateDrugs(de, "Drug", de.SourceValue.Substring(0, 9), de.SourceValue, de.StartDate).ToList();
+                    if(ndc9Drugs.Count > 0)
+                    {
+                        foreach (var ndc9 in ndc9Drugs)
+                        {
+                            yield return UpdateSourceValueForVax(ndc9);
+                        }      
+                        continue;
+                    }
                 }
+            
+                yield return UpdateSourceValueForVax(de);
+            }
+        }
 
-                if (de.AdditionalFields != null && de.AdditionalFields.ContainsKey("vax"))
-                {
-                    //de.TypeConceptId = 32818;
-                    if (!de.AdditionalFields.ContainsKey("orig_source"))
-                        de.AdditionalFields.Add("orig_source", de.SourceValue.Replace(de.ConceptIdKey, "").TrimEnd('-'));
-                    vaxDrugs.Add(de);
-                    continue;
-                }
-
-                yield return de;
+        private static DrugExposure UpdateSourceValueForVax(DrugExposure de)
+        {
+            if (de.AdditionalFields != null && de.AdditionalFields.ContainsKey("immunization_source"))
+            {
+                var vaxSource = de.AdditionalFields["immunization_source"];
+                if (!string.IsNullOrEmpty(vaxSource))
+                    de.SourceValue = vaxSource;
             }
 
-            foreach (var de in vaxDrugs)
+            return de;
+        }
+
+        private IEnumerable<DrugExposure> TryToCreateDrugs(DrugExposure ndc, string lookup, string key, string sourceCode, DateTime eventDate)
+        {
+            var result = Vocabulary.Lookup(key, lookup, eventDate);
+            if (result.Count != 0)
             {
-                if (!ndcDrugs.ContainsKey(de.SourceRecordGuid))
-                    ndcDrugs.Add(de.SourceRecordGuid, []);
-
-                ndcDrugs[de.SourceRecordGuid].Add(de);
-            }
-
-            foreach (var similarDrugs in ndcDrugs.SelectMany(drugs => drugs.Value.GroupBy(d => d.AdditionalFields["orig_source"])))
-            {
-                var drugs = similarDrugs.Where(d => d.ConceptId > 0).ToArray();
-                if (drugs.Length > 0)
+                foreach (var v in result)
                 {
-                    yield return drugs.OrderByDescending(d => d.ConceptIdKey.Length).First();
-                    continue;
-                }
+                    if (v.ConceptId.HasValue && v.ConceptId > 0)
+                    {
+                        var newEntity = ndc.DeepClone();
+                        newEntity.Id = Offset.GetKeyOffset(ndc.PersonId).DrugExposureId;
+                        newEntity.ConceptId = v.ConceptId.Value;
+                        newEntity.SourceValue = sourceCode;
 
-                var drugs1 = similarDrugs.Where(d => d.SourceConceptId > 0)
-                    .ToArray();
-                if (drugs1.Length > 0)
-                {
-                    yield return drugs1.OrderByDescending(d => d.ConceptIdKey.Length)
-                        .First();
-                    continue;
-                }
+                        if (v.Ingredients != null)
+                        {
+                            newEntity.Ingredients = [.. v.Ingredients];
+                        }
 
-                yield return similarDrugs.OrderByDescending(d => d.ConceptIdKey.Length).First();
+                        if (v.SourceConcepts != null)
+                        {
+                            newEntity.SourceConcepts = [.. v.SourceConcepts];
+                        }
+
+                        if (v.ValueAsConceptIds == null || v.ValueAsConceptIds.Count == 0)
+                        {
+                            yield return newEntity;
+                        }
+                        else
+                        {
+                            foreach (var valueAsConceptId in v.ValueAsConceptIds)
+                            {
+                                var ent = newEntity.DeepClone();
+                                newEntity.Id = Offset.GetKeyOffset(ndc.PersonId).DrugExposureId;
+                                ent.ValueAsConceptId = valueAsConceptId;
+                                yield return ent;
+                            }
+                        }
+                    }
+                }
             }
         }
 

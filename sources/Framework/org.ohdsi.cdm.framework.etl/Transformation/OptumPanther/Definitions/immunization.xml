@@ -4,13 +4,12 @@
 		ch.person_id as PersonId,
 		i.immunization_date,
 		i.ndc,
-		SUBSTRING(i.ndc,1,9) ndc_9,
 		i.immunization_desc,
 		case
 		when i.ndc is null then i.immunization_desc
 		else i.ndc || '-' || i.immunization_desc
 		end as immunization_source,
-		1 as vax,
+		1 as fake,
 		1 as itNdc,
 		ch.PartitionId
 		from {sc}.immunizations as i
@@ -25,6 +24,8 @@
 			<EndDate>immunization_date</EndDate>
 			<AdditionalFields>
 				<string>itNdc</string>
+				<string>immunization_desc</string>
+				<string>immunization_source</string>
 			</AdditionalFields>
 			<Concepts>
 				<Concept>
@@ -34,19 +35,15 @@
 						</Mapper>
 					</ConceptIdMappers>
 					<Fields>
-						<Field key="ndc" defaultTypeId="32818" />
-						<Field key="ndc_9" sourceKey="ndc"  defaultTypeId="32818" />
+						<Field key="ndc" defaultTypeId="32818" eventDate="immunization_date" />
 					</Fields>
 				</Concept>
 			</Concepts>
 		</DrugExposureDefinition>
+		<!-- fake definition, only to load lookups  -->
 		<DrugExposureDefinition>
+			<Condition>{fake} = 0</Condition>
 			<PersonId>PersonId</PersonId>
-			<StartDate>immunization_date</StartDate>
-			<EndDate>immunization_date</EndDate>
-			<AdditionalFields>
-				<string>vax</string>
-			</AdditionalFields>
 			<Concepts>
 				<Concept>
 					<ConceptIdMappers>
@@ -55,7 +52,7 @@
 						</Mapper>
 					</ConceptIdMappers>
 					<Fields>
-						<Field key="immunization_desc" sourceKey="immunization_source"  defaultTypeId="32818" />
+						<Field key="fake" typeId="1" sourceKey="fake"/>
 					</Fields>
 				</Concept>
 			</Concepts>
