@@ -43,6 +43,7 @@ namespace org.ohdsi.cdm.framework.common.Base
         protected List<NoteNlp> NoteNlpRecords = [];
         protected List<Episode> EpisodeRecords = [];
 
+        protected Dictionary<Guid, List<Episode>> DomainEpisodes = [];
 
         #endregion
 
@@ -1001,17 +1002,7 @@ namespace org.ohdsi.cdm.framework.common.Base
 
             Complete = true;
 
-            var pg = new PregnancyAlgorithm.PregnancyAlgorithm();
-            foreach (var r in pg.GetPregnancyEpisodes(Vocabulary, person, observationPeriods,
-                ChunkData.ConditionOccurrences.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.ProcedureOccurrences.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.Observations.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.Measurements.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.DrugExposures.Where(e => e.PersonId == person.PersonId).ToArray()))
-            {
-                r.Id = Offset.GetKeyOffset(r.PersonId).ConditionEraId;
-                ChunkData.ConditionEra.Add(r);
-            }
+            AddEpisodeEvents();
 
             return Attrition.None;
         }
@@ -1177,6 +1168,7 @@ namespace org.ohdsi.cdm.framework.common.Base
                 case "Procedure":
                 case "Device":
                 case "Drug":
+                case "Episode":
                     return conceptDomain;
 
                 default:
@@ -1200,6 +1192,16 @@ namespace org.ohdsi.cdm.framework.common.Base
 
                 switch (entityDomain)
                 {
+                    case "Episode":
+                        if(!DomainEpisodes.ContainsKey(entity.SourceRecordGuid))
+                            DomainEpisodes.Add(entity.SourceRecordGuid, []);
+
+                        var episode = new Episode(entity);
+                        episode.Id = Offset.GetKeyOffset(episode.PersonId).EpisodeId;
+                        DomainEpisodes[entity.SourceRecordGuid].Add(new Episode(entity));
+                        AddEpisode(episode);
+                        break;
+
                     case "Condition":
                         var cond = entity as ConditionOccurrence ??
                                    new ConditionOccurrence(entity)
@@ -1293,6 +1295,57 @@ namespace org.ohdsi.cdm.framework.common.Base
         public void JoinToVocabulary(IVocabulary vocabulary)
         {
             Vocabulary ??= vocabulary;
+        }
+
+        protected void AddEpisodeEvents()
+        {
+            if(DomainEpisodes.Keys.Count > 0)
+            {
+                foreach (var sourceRecordGuid in DomainEpisodes.Keys)
+                {
+                    foreach (var episode in DomainEpisodes[sourceRecordGuid])
+                    {
+                        switch (episode.Domain)
+                        {
+                            case "Condition":
+                                AddEpisodeEvents(ChunkData.ConditionOccurrences, episode);
+                                break;
+                            case "Measurement":
+                                AddEpisodeEvents(ChunkData.Measurements, episode);
+                                break;
+                            case "Observation":
+                                AddEpisodeEvents(ChunkData.Observations, episode);
+                                break;
+                            case "Procedure":
+                                AddEpisodeEvents(ChunkData.ProcedureOccurrences, episode);
+                                break;
+                            case "Device":
+                                AddEpisodeEvents(ChunkData.DeviceExposure, episode);
+                                break;
+                            case "Drug":
+                                AddEpisodeEvents(ChunkData.DrugExposures, episode);
+                                break;
+                            default:
+                                throw new NotImplementedException("AddEpisodeEvents unknown domain:" + episode.Domain);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void AddEpisodeEvents(IEnumerable<IEntity> records, Episode episode)
+        {
+            foreach (var item in records.Where(r => r.SourceRecordGuid == episode.SourceRecordGuid && r.SourceConceptId == episode.SourceConceptId))
+            {
+                EpisodeEvent ev = new()
+                {
+                    EpisodeEventFieldConceptId = GetEventFieldConceptId(item.Domain),
+                    EventId = item.Id,
+                    PersonId = item.PersonId,
+                    EpisodeId = episode.Id
+                };
+                ChunkData.EpisodeEvent.Add(ev);
+            }
         }
 
         //protected static void AddEntity<T>(T entity, List<T> list) where T : IEntity

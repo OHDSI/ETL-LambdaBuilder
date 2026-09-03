@@ -1264,21 +1264,12 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                 [.. UpdateRSourceConcept(deviceExposure)],
                 [.. notes], 
                 episodes);
-
-            //var pg = new PregnancyAlgorithm();
-            //foreach (var r in pg.GetPregnancyEpisodes(Vocabulary, person, [.. observationPeriodsFinal],
-            //    [.. ChunkData.ConditionOccurrences.Where(e => e.PersonId == person.PersonId)],
-            //    [.. ChunkData.ProcedureOccurrences.Where(e => e.PersonId == person.PersonId)],
-            //    [.. ChunkData.Observations.Where(e => e.PersonId == person.PersonId)],
-            //    [.. ChunkData.Measurements.Where(e => e.PersonId == person.PersonId)],
-            //    [.. ChunkData.DrugExposures.Where(e => e.PersonId == person.PersonId)]))
-            //{
-            //    r.Id = Offset.GetKeyOffset(r.PersonId).ConditionEraId;
-            //    ChunkData.ConditionEra.Add(r);
-            //}
+            
+            AddEpisodeEvents();
 
             return Attrition.None;
         }
+
         protected void FixDates<T>(IEnumerable<T> inputRecords) where T : class, IEntity
         {
             if (inputRecords == null || !inputRecords.Any() || !Vendor.SourceReleaseDate.HasValue)
@@ -1352,6 +1343,17 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
 
                 switch (entityDomain)
                 {
+                    case "Episode":
+                        if(!DomainEpisodes.ContainsKey(entity.SourceRecordGuid))
+                            DomainEpisodes.Add(entity.SourceRecordGuid, []);
+
+                        var episode = new Episode(entity);
+                        episode.Id = Offset.GetKeyOffset(episode.PersonId).EpisodeId;
+                        episode.Domain = domain;
+                        DomainEpisodes[entity.SourceRecordGuid].Add(new Episode(entity));
+                        AddEpisode(episode);
+                        break;
+
                     case "Condition":
                         var cond = entity as ConditionOccurrence ??
                                    new ConditionOccurrence(entity)
