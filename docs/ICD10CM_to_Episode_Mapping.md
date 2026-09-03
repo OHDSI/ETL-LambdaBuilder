@@ -107,7 +107,7 @@ INSERT INTO EPISODE_EVENT (episode_id, event_id, episode_event_field_concept_id)
 VALUES (
   <episode_id>,                           -- From EPISODE table
   <condition_occurrence_id>,              -- From CONDITION_OCCURRENCE
-  4203600                                 -- concept_id for 'Condition Occurrence ID'
+  1147127                                 -- concept_id for 'Condition Occurrence ID'
 );
 
 -- Example: Linking from MEASUREMENT (e.g., biomarker trigger)
@@ -115,7 +115,7 @@ INSERT INTO EPISODE_EVENT (episode_id, event_id, episode_event_field_concept_id)
 VALUES (
   <episode_id>,                           -- From EPISODE table
   <measurement_id>,                       -- From MEASUREMENT
-  4203601                                 -- concept_id for 'Measurement ID'
+  1147138                                 -- concept_id for 'Measurement ID'
 );
 ```
 
@@ -152,7 +152,7 @@ VALUES (
 3. **EPISODE_EVENT:**
    - `episode_id`: [from EPISODE table]
    - `event_id`: [primary key of the standard domain record created in step 1]
-   - `episode_event_field_concept_id`: [concept_id indicating the source table type, e.g., 4203600 for Condition Occurrence ID]
+   - `episode_event_field_concept_id`: [concept_id indicating the source table type, e.g., 1147127 for Condition Occurrence ID]
 
 ---
 
@@ -176,7 +176,7 @@ VALUES (
 3. **EPISODE_EVENT:**
    - `episode_id`: [from EPISODE table]
    - `event_id`: [primary key of the standard domain record created in step 1]
-   - `episode_event_field_concept_id`: [concept_id indicating the source table type, e.g., 4203600 for Condition Occurrence ID]
+   - `episode_event_field_concept_id`: [concept_id indicating the source table type, e.g., 1147127 for Condition Occurrence ID]
 
 ---
 
