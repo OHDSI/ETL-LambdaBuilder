@@ -61,7 +61,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                     {
                         return chunk.Observations.Count == 0
                             ? null
-                            : new Tuple<IDataReader, int>(new ObservationDataReader([.. chunk.Observations], _offsetManager),
+                            : new Tuple<IDataReader, int>(new framework.common.DataReaders.v5.v55.ObservationDataReader([.. chunk.Observations], _offsetManager),
                             chunk.Observations.Count);
                     }
 
@@ -123,7 +123,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                         return chunk.Measurements.Count == 0
                         ? null
                         : new Tuple<IDataReader, int>(
-                            new MeasurementDataReader([.. chunk.Measurements], _offsetManager),
+                            new framework.common.DataReaders.v5.v55.MeasurementDataReader([.. chunk.Measurements], _offsetManager),
                             chunk.Measurements.Count);
                     }
 
