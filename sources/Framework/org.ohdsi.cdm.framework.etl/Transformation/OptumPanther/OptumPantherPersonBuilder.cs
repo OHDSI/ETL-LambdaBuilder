@@ -1350,8 +1350,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                         var episode = new Episode(entity);
                         episode.Id = Offset.GetKeyOffset(episode.PersonId).EpisodeId;
                         episode.Domain = domain;
-                        DomainEpisodes[entity.SourceRecordGuid].Add(new Episode(entity));
-                        AddEpisode(episode);
+                        DomainEpisodes[entity.SourceRecordGuid].Add(episode);
+                        ChunkData.AddData(episode);
                         break;
 
                     case "Condition":
