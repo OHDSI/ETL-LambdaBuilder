@@ -27,7 +27,6 @@
 		NULL AS VISIT_OCCURRENCE_ID,
 		NULL AS RELEVANT_CONDITION_CONCEPT_ID,
 		NDCNUM AS DRUG_SOURCE_VALUE,
-		SUBSTRING(NDCNUM,1,9) DRUG_SOURCE_VALUE_9,
 		{field},
 		{field2},
 		44818668 CurrencyConceptId,
@@ -57,11 +56,11 @@
 		VISIT_OCCURRENCE_ID,
 		RELEVANT_CONDITION_CONCEPT_ID,
 		DRUG_SOURCE_VALUE,
-		DRUG_SOURCE_VALUE_9,
 		hlthplan,
 		CurrencyConceptId,
 		TOTAL_PAID,
 		vendor,
+		1 as itNdc,
 		PartitionId
 		FROM dc
 		ORDER BY PartitionId, PERSON_ID
@@ -77,6 +76,7 @@
 			<AdditionalFields>
 				<string>hlthplan</string>
 				<string>vendor</string>
+				<string>itNdc</string>
 			</AdditionalFields>
 			<Concepts>
 				<Concept>
@@ -88,7 +88,6 @@
 					</ConceptIdMappers>
 					<Fields>
 						<Field key="DRUG_SOURCE_VALUE" typeId="TYPE_CONCEPT_ID" eventDate="DRUG_EXPOSURE_START_DATE"/>
-						<Field key="DRUG_SOURCE_VALUE_9" sourceKey="DRUG_SOURCE_VALUE" typeId="TYPE_CONCEPT_ID" eventDate="DRUG_EXPOSURE_START_DATE"/>
 					</Fields>
 				</Concept>
 			</Concepts>

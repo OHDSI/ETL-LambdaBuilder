@@ -581,36 +581,19 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
             }
         }
 
-        private static IEnumerable<DrugExposure> FilteroutDrugClaims(IEnumerable<DrugExposure> rawDrugs)
+        private IEnumerable<DrugExposure> FilteroutDrugClaims(IEnumerable<DrugExposure> rawDrugs)
         {
-            var drugClaims = new Dictionary<Guid, List<DrugExposure>>();
             foreach (var de in rawDrugs)
             {
-                if (!drugClaims.ContainsKey(de.SourceRecordGuid))
-                    drugClaims.Add(de.SourceRecordGuid, []);
-
-                drugClaims[de.SourceRecordGuid].Add(de);
-            }
-
-            foreach (var similarDrugs in drugClaims.SelectMany(drugs => drugs.Value.GroupBy(d => d.SourceValue)))
-            {
-                var drugs = similarDrugs.Where(d => d.ConceptId > 0).ToArray();
-                if (drugs.Length > 0)
+                foreach (var item in TryToMapNdc11toNdc9(() => 
                 {
-                    yield return drugs.OrderBy(d => d.ConceptIdKey.Length).Last();
-                    continue;
-                }
-
-                var drugs1 = similarDrugs.Where(d => d.SourceConceptId > 0)
-                    .ToArray();
-                if (drugs1.Length > 0)
+                    return de.AdditionalFields != null && de.AdditionalFields.ContainsKey("itndc");
+                }, 
+                de, 
+                "DrugRx"))
                 {
-                    yield return drugs1.OrderBy(d => d.ConceptIdKey.Length)
-                        .Last();
-                    continue;
+                    yield return item;                    
                 }
-
-                yield return similarDrugs.OrderBy(d => d.ConceptIdKey.Length).Last();
             }
         }
 

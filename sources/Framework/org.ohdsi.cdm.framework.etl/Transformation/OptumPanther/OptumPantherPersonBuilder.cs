@@ -117,7 +117,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                         
                         if(!string.IsNullOrEmpty(vaxKey))
                         {
-                            var vaxDrugs = TryToCreateDrugs(de, "EhrVax", vaxKey, vaxSource, DateTime.MinValue).ToList();
+                            var vaxDrugs = TryToCreateDrugsNdc9(de, "EhrVax", vaxKey, vaxSource, DateTime.MinValue).ToList();
                             
                             if(vaxDrugs.Count > 0)
                             {
@@ -130,7 +130,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                         }
                     }
 
-                    var ndc9Drugs = TryToCreateDrugs(de, "Drug", de.SourceValue.Substring(0, 9), de.SourceValue, de.StartDate).ToList();
+                    var ndc9Drugs = TryToCreateDrugsNdc9(de, "Drug", de.SourceValue.Substring(0, 9), de.SourceValue, de.StartDate).ToList();
                     if(ndc9Drugs.Count > 0)
                     {
                         foreach (var ndc9 in ndc9Drugs)
@@ -155,49 +155,6 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
             }
 
             return de;
-        }
-
-        private IEnumerable<DrugExposure> TryToCreateDrugs(DrugExposure ndc, string lookup, string key, string sourceCode, DateTime eventDate)
-        {
-            var result = Vocabulary.Lookup(key, lookup, eventDate);
-            if (result.Count != 0)
-            {
-                foreach (var v in result)
-                {
-                    if (v.ConceptId.HasValue && v.ConceptId > 0)
-                    {
-                        var newEntity = ndc.DeepClone();
-                        newEntity.Id = Offset.GetKeyOffset(ndc.PersonId).DrugExposureId;
-                        newEntity.ConceptId = v.ConceptId.Value;
-                        newEntity.SourceValue = sourceCode;
-
-                        if (v.Ingredients != null)
-                        {
-                            newEntity.Ingredients = [.. v.Ingredients];
-                        }
-
-                        if (v.SourceConcepts != null)
-                        {
-                            newEntity.SourceConcepts = [.. v.SourceConcepts];
-                        }
-
-                        if (v.ValueAsConceptIds == null || v.ValueAsConceptIds.Count == 0)
-                        {
-                            yield return newEntity;
-                        }
-                        else
-                        {
-                            foreach (var valueAsConceptId in v.ValueAsConceptIds)
-                            {
-                                var ent = newEntity.DeepClone();
-                                newEntity.Id = Offset.GetKeyOffset(ndc.PersonId).DrugExposureId;
-                                ent.ValueAsConceptId = valueAsConceptId;
-                                yield return ent;
-                            }
-                        }
-                    }
-                }
-            }
         }
 
         public static void UpdateVisitOccurrenceId(IEntity entity,

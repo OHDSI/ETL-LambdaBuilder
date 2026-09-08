@@ -1215,16 +1215,13 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Truven
             ObservationPeriod[] observationPeriods)
         {
             var drugs = new Dictionary<Guid, List<DrugExposure>>();
-            var drugClaims = new Dictionary<Guid, List<DrugExposure>>();
+            var drugClaims = new List<DrugExposure>();
 
             foreach (var de in drugExposure)
             {
                 if (de.TypeConceptId == 32857 || de.TypeConceptId == 32869)
                 {
-                    if (!drugClaims.ContainsKey(de.SourceRecordGuid))
-                        drugClaims.Add(de.SourceRecordGuid, []);
-
-                    drugClaims[de.SourceRecordGuid].Add(de);
+                    drugClaims.Add(de);
                     continue;
                 }
 
@@ -1263,32 +1260,19 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Truven
         }
 
 
-        /// <summary>
-        /// Remove duplicate drug claim records as well as eliminate drug claims that have been administratively backed out with negative values
-        /// </summary>
-        /// <param name="drugClaims">set of drug exposure entities</param>
-        /// <returns>Enumeration of filtired drug exposure entities</returns>
-        private static IEnumerable<DrugExposure> FilteroutDrugClaims(Dictionary<Guid, List<DrugExposure>> drugClaims)
+        private IEnumerable<DrugExposure> FilteroutDrugClaims(List<DrugExposure> drugClaims)
         {
-            foreach (var similarDrugs in drugClaims.SelectMany(drugs => drugs.Value.GroupBy(d => d.SourceValue)))
+            foreach (var de in drugClaims)
             {
-                var drugs = similarDrugs.Where(d => d.ConceptId > 0).ToArray();
-                if (drugs.Length > 0)
+                foreach (var item in TryToMapNdc11toNdc9(() => 
+                    {
+                        return de.AdditionalFields != null && de.AdditionalFields.ContainsKey("itndc");
+                    }, 
+                    de, 
+                    "Drug"))
                 {
-                    yield return drugs.OrderBy(d => d.ConceptIdKey.Length).Last();
-                    continue;
+                    yield return item;                    
                 }
-
-                var drugs1 = similarDrugs.Where(d => d.SourceConceptId > 0)
-                    .ToArray();
-                if (drugs1.Length > 0)
-                {
-                    yield return drugs1.OrderBy(d => d.ConceptIdKey.Length)
-                        .Last();
-                    continue;
-                }
-
-                yield return similarDrugs.OrderBy(d => d.ConceptIdKey.Length).Last();
             }
         }
 

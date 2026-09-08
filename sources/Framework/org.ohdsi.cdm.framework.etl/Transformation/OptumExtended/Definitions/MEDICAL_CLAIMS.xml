@@ -32,7 +32,6 @@
 		dstatus,
 		proc_cd,
 		ndc,
-		SUBSTRING(ndc,1,9) NDC_SOURCE_VALUE_9,
 		ndc_uom,
 		procmod,
 		units,
@@ -50,6 +49,7 @@
 		drg,
 		rvnu_cd,
 		{ses},
+		1 as itNdc,
 		ch.PartitionId
 		FROM {sc}.medical_claims mc
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND mc.patid = ch.PERSON_ID
@@ -68,6 +68,7 @@
 				<string>pat_planid</string>
 				<string>clmid</string>
 				<string>loc_cd</string>
+				<string>itNdc</string>
 			</AdditionalFields>
 			<Concepts>
 				<Concept>
@@ -79,7 +80,6 @@
 					</ConceptIdMappers>
 					<Fields>
 						<Field key="NDC" defaultTypeId="32810" eventDate="START_DATE"/>
-						<Field key="NDC_SOURCE_VALUE_9" sourceKey="NDC" defaultTypeId="32810" eventDate="START_DATE"/>
 					</Fields>
 				</Concept>
 			</Concepts>
