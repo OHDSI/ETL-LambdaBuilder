@@ -45,10 +45,32 @@ All native diagnosis codes (ICD9CM, ICD10CM, Read codes, etc.) continue to be ma
 Source Code (ICD9/ICD10/Read/Native) → Maps to → Standard Concept (various OMOP domains)
 ```
 
-**Examples:**
-- Source code representing a cancer diagnosis → standard concept in Condition domain
-- Source code representing a different clinical finding → standard concept in appropriate domain
-- Source code representing a treatment or biomarker → standard concept in Measurement or Procedure domain
+**Cancer-Specific Mapping Scenarios:**
+
+The following scenarios describe how different types of cancer-related source codes map to standard domains:
+
+1. **Topology + Morphology → Condition Domain**
+   - Source codes with topography (tumor site) and morphology (cancer type) information
+   - Maps to: Standard cancer diagnosis concepts in Condition domain
+   - Example: ICD10CM codes indicating specific cancer types and locations
+
+2. **Biomarkers → Measurement Domain with Value**
+   - Source codes or clinical notes indicating cancer biomarkers
+   - Maps to: Standard biomarker concepts in Measurement domain
+   - Includes measurement_value for quantitative biomarker results
+   - Example: [PD-L1 expression level](https://athena.ohdsi.org/search-terms/terms/45605318)
+
+3. **Modifiers (Stage, Grade, Node, Metastasis) → Measurement Domain with Value**
+   - Source codes indicating TNM staging elements: tumor size, node involvement, metastasis status, grade, stage
+   - Maps to: Standard modifier concepts in Measurement domain
+   - For mTS (metastasis status): Only 3 permissible values in Measurement.value_as_concept_id: positive, negative, equivocal
+   - Example: [mTS (metastasis status)](https://athena.ohdsi.org/search-terms/terms/44828764)
+
+4. **Drug Treatment → Episode Domain and Drug_Exposure Domain**
+   - Source codes or treatment records indicating cancer treatment regimens
+   - Maps to: 
+     - Hemonc-coded regimens in Episode domain (for episode-level treatment tracking)
+     - RxNorm drug concepts in Drug_Exposure domain (for individual drug administration)
 
 This mapping:
 - Is populated into the appropriate domain table (e.g., `CONDITION_OCCURRENCE.condition_concept_id`, `MEASUREMENT.measurement_concept_id`, `OBSERVATION.observation_concept_id`, etc.)
