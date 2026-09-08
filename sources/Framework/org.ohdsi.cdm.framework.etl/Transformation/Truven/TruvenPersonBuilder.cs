@@ -885,46 +885,6 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Truven
 
             Complete = true;
 
-            var pg = new PregnancyAlgorithm();
-            foreach (var episode in pg.GetPregnancyEpisodes(Vocabulary, person, observationPeriods,
-                [.. ChunkData.ConditionOccurrences.Where(e => e.PersonId == person.PersonId)],
-                [.. ChunkData.ProcedureOccurrences.Where(e => e.PersonId == person.PersonId)],
-                [.. ChunkData.Observations.Where(e => e.PersonId == person.PersonId)],
-                [.. ChunkData.Measurements.Where(e => e.PersonId == person.PersonId)],
-                [.. ChunkData.DrugExposures.Where(e => e.PersonId == person.PersonId)]))
-            {
-                episode.Id = Offset.GetKeyOffset(episode.PersonId).ConditionEraId;
-                //ChunkData.ConditionEra.Add(episode);
-
-                if (episode.ConceptId == 433260 && _potentialChilds.Count > 0)
-                {
-                    foreach (var child in _potentialChilds)
-                    {
-                        var childId = child.Key;
-
-                        foreach (var birthdate in child.Value)
-                        {
-                            if (episode.EndDate.Value.Between(birthdate.AddDays(-60), birthdate.AddDays(60)))
-                            {
-                                //40485452    Child of subject
-                                //40478925    Mother of subject
-
-                                ChunkData.FactRelationships.Add(new FactRelationship
-                                {
-                                    DomainConceptId1 = 56,
-                                    DomainConceptId2 = 56,
-                                    FactId1 = episode.PersonId,
-                                    FactId2 = childId,
-                                    RelationshipConceptId = 40478925
-                                });
-                                break;
-                            }
-                        }
-
-                    }
-                }
-            }
-
             if (_discardedDrugCount > 0)
                 ChunkData.AddAttrition(person.PersonId, Attrition.DiscardedDrugCount, _discardedDrugCount);
 

@@ -865,67 +865,6 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
                 [],
                 []);
 
-            var pregnancyEpisodes = new List<ConditionEra>();
-            var pg = new PregnancyAlgorithm();
-
-
-            foreach (var episode in pg.GetPregnancyEpisodes(Vocabulary, person, observationPeriods,
-                [.. ChunkData.ConditionOccurrences.Where(e => e.PersonId == person.PersonId)],
-                [.. ChunkData.ProcedureOccurrences.Where(e => e.PersonId == person.PersonId)],
-                [.. ChunkData.Observations.Where(e => e.PersonId == person.PersonId)],
-                [.. ChunkData.Measurements.Where(e => e.PersonId == person.PersonId)],
-                [.. ChunkData.DrugExposures.Where(e => e.PersonId == person.PersonId)]))
-            {
-                episode.Id = Offset.GetKeyOffset(episode.PersonId).ConditionEraId;
-                //episode.OccurrenceCount = episode.OccurrenceCount * -1; //TMP
-                episode.OccurrenceCount = 0;
-                //ChunkData.ConditionEra.Add(episode);
-                pregnancyEpisodes.Add(episode);
-
-                if (episode.ConceptId == 433260 && _potentialChilds.Count > 0)
-                {
-                    // check for mother
-                    // and ce.condition_era_end_date >= ppp.payer_plan_period_start_date
-                    // and ce.condition_era_end_date <= ppp.payer_plan_period_end_date
-
-                    if (!payerPlanPeriods.Any(pp => episode.EndDate.Value.Between(pp.StartDate, pp.EndDate.Value)))
-                        continue;
-
-                    foreach (var child in _potentialChilds)
-                    {
-                        var childId = child.Key;
-
-                        foreach (var birthdate in child.Value)
-                        {
-                            // check child dob
-                            // and ci.date_of_birth >= op.observation_period_start_date
-                            // and ci.date_of_birth <= op.observation_period_end_date
-
-                            if (!observationPeriods.Any(op => birthdate.Between(op.StartDate, op.EndDate.Value)))
-                                continue;
-
-                            if (episode.EndDate.Value.Between(birthdate.AddDays(-60), birthdate.AddDays(60)))
-                            {
-                                //40485452    Child of subject
-                                //40478925    Mother of subject
-
-                                ChunkData.FactRelationships.Add(new FactRelationship
-                                {
-                                    DomainConceptId1 = 56,
-                                    DomainConceptId2 = 56,
-                                    FactId1 = episode.PersonId,
-                                    FactId2 = childId,
-                                    RelationshipConceptId = 40478925
-                                });
-
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-
-
             if(_discardedDrugCount > 0)
                 ChunkData.AddAttrition(person.PersonId, Attrition.DiscardedDrugCount, _discardedDrugCount);
 
