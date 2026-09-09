@@ -1307,6 +1307,10 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                         var episode = new Episode(entity);
                         episode.Id = Offset.GetKeyOffset(episode.PersonId).EpisodeId;
                         episode.Domain = domain;
+
+                        if(!episode.EndDate.HasValue)
+                            episode.EndDate = episode.StartDate;
+                            
                         DomainEpisodes[entity.SourceRecordGuid].Add(episode);
                         ChunkData.AddData(episode);
                         break;

@@ -1,4 +1,5 @@
 ﻿using Force.DeepCloner;
+using Microsoft.Identity.Client.Extensibility;
 using org.ohdsi.cdm.framework.common.Builder;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Extensions;
@@ -6,6 +7,7 @@ using org.ohdsi.cdm.framework.common.Helpers;
 using org.ohdsi.cdm.framework.common.Lookups;
 using org.ohdsi.cdm.framework.common.Omop;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 
 namespace org.ohdsi.cdm.framework.common.Base
 {
@@ -1199,6 +1201,11 @@ namespace org.ohdsi.cdm.framework.common.Base
 
                         var episode = new Episode(entity);
                         episode.Id = Offset.GetKeyOffset(episode.PersonId).EpisodeId;
+                        episode.Domain = domain;
+                        
+                        if(!episode.EndDate.HasValue)
+                            episode.EndDate = episode.StartDate;
+
                         DomainEpisodes[entity.SourceRecordGuid].Add(episode);
                         ChunkData.AddData(episode);
                         break;
@@ -1306,36 +1313,21 @@ namespace org.ohdsi.cdm.framework.common.Base
                 {
                     foreach (var episode in DomainEpisodes[sourceRecordGuid])
                     {
-                        switch (episode.Domain)
-                        {
-                            case "Condition":
-                                AddEpisodeEvents(ChunkData.ConditionOccurrences, episode);
-                                break;
-                            case "Measurement":
-                                AddEpisodeEvents(ChunkData.Measurements, episode);
-                                break;
-                            case "Observation":
-                                AddEpisodeEvents(ChunkData.Observations, episode);
-                                break;
-                            case "Procedure":
-                                AddEpisodeEvents(ChunkData.ProcedureOccurrences, episode);
-                                break;
-                            case "Device":
-                                AddEpisodeEvents(ChunkData.DeviceExposure, episode);
-                                break;
-                            case "Drug":
-                                AddEpisodeEvents(ChunkData.DrugExposures, episode);
-                                break;
-                            default:
-                                throw new NotImplementedException("AddEpisodeEvents unknown domain:" + episode.Domain);
-                        }
+                        int cnt = 0;
+                        cnt+= AddEpisodeEvents(ChunkData.ConditionOccurrences, episode);
+                        cnt+= AddEpisodeEvents(ChunkData.Measurements, episode);
+                        cnt+= AddEpisodeEvents(ChunkData.Observations, episode);
+                        cnt+= AddEpisodeEvents(ChunkData.ProcedureOccurrences, episode);
+                        cnt+= AddEpisodeEvents(ChunkData.DeviceExposure, episode);
+                        cnt+= AddEpisodeEvents(ChunkData.DrugExposures, episode);
                     }
                 }
             }
         }
 
-        private void AddEpisodeEvents(IEnumerable<IEntity> records, Episode episode)
+        private int AddEpisodeEvents(IEnumerable<IEntity> records, Episode episode)
         {
+            int cnt = 0;
             foreach (var item in records.Where(r => r.SourceRecordGuid == episode.SourceRecordGuid && r.SourceConceptId == episode.SourceConceptId))
             {
                 EpisodeEvent ev = new()
@@ -1346,7 +1338,9 @@ namespace org.ohdsi.cdm.framework.common.Base
                     EpisodeId = episode.Id
                 };
                 ChunkData.EpisodeEvent.Add(ev);
+                cnt++;
             }
+            return cnt;
         }
 
         //protected static void AddEntity<T>(T entity, List<T> list) where T : IEntity
