@@ -171,7 +171,7 @@ namespace org.ohdsi.cdm.presentation.etl
 
         public static void SaveMetadata(string sourceVersionId)
         {
-            var file = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}/METADATA/METADATA.0.gz";
+            var file = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}/metadata/metadata.0.gz";
 
             List<MetadataOMOP> metadata = [];
             metadata.Add(new MetadataOMOP { Id = 0, MetadataConceptId = 0, Name = "NativeLoadId", ValueAsString = sourceVersionId, MetadataDate = DateTime.Now.Date });
