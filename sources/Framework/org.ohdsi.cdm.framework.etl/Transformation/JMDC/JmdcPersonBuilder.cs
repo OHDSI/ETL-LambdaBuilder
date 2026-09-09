@@ -598,6 +598,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.JMDC
             foreach (var c in CostRaw)
                 ChunkData.AddCostData(c);
 
+            AddEpisodeEvents();
+
             Complete = true;
 
             return Attrition.None;
@@ -680,6 +682,21 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.JMDC
 
                 switch (entityDomain)
                 {
+                    case "Episode":
+                        if(!DomainEpisodes.ContainsKey(entity.SourceRecordGuid))
+                            DomainEpisodes.Add(entity.SourceRecordGuid, []);
+
+                        var episode = new Episode(entity);
+                        episode.Id = Offset.GetKeyOffset(episode.PersonId).EpisodeId;
+                        episode.Domain = domain;
+
+                        if(!episode.EndDate.HasValue)
+                            episode.EndDate = episode.StartDate;
+                            
+                        DomainEpisodes[entity.SourceRecordGuid].Add(episode);
+                        ChunkData.AddData(episode);
+                        break;
+
                     case "Condition":
                         var cond = entity as ConditionOccurrence ??
                                    new ConditionOccurrence(entity)
