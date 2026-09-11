@@ -19,9 +19,9 @@ Admitting and discharge information is captured in Premier as the place of servi
 |VISIT_OCCURRENCE_ID||System generated.|
 |PERSON_ID|PAT.MEDREC_KEY|
 |VISIT_CONCEPT_ID||When POINT_OF_ORIGIN=7 and I_O_IND ='O' then concept_id=9203 <br> When POINT_OF_ORIGIN=7 and I_O_IND ='I' then concept_id=262 <br> When I_O_IND ='I' then concept_id=9201 <br> When I_O_IND ='O' then concept_id=9202||
-|VISIT_START_DATE|PAT.ADM_DATE <br>PATBILL.SERV_DATE|||
+|VISIT_START_DATE|PAT.ADMIT_DATE <br>PATBILL.SERV_DATE|||
 |VISIT_START_DATETIME||||
-|VISIT_END_DATE|PAT.DISC_DATE<br>PATBILL.SERV_DATE|||
+|VISIT_END_DATE|PAT.DISCHARGE_DATE<br>PATBILL.SERV_DATE|||
 |VISIT_END_DATETIME||||
 |VISIT_TYPE_CONCEPT_ID| - | All records within the visit_occurence table should have a visit_type_concept_id = 32875 (Provider financial system) | |
 |PROVIDER_ID|PAT.ADM_PHY|||
