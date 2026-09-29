@@ -4,10 +4,10 @@
 		<Variable name="providField" database="mdcd">PROV_ID</Variable>
 
 		<Variable name="procmod" database="ccae, mdcr">procmod</Variable>
-		<Variable name="procmod" database="mdcd">NULL AS procmod</Variable>
+		<Variable name="procmod" database="mdcd">cast(null as string) AS procmod</Variable>
 
 		<Variable name="diagnosisField" database="ccae, mdcr">DX1, DX2, DX3, DX4, DX5</Variable>
-		<Variable name="diagnosisField" database="mdcd">DX1, DX2, DX3, DX4, null DX5</Variable>
+		<Variable name="diagnosisField" database="mdcd">DX1, DX2, DX3, DX4, cast(null as string) DX5</Variable>
 
 		<Variable name="vendor" database="ccae">'ccae' as vendor</Variable>
 		<Variable name="vendor" database="mdcr">'mdcr' as vendor</Variable>
