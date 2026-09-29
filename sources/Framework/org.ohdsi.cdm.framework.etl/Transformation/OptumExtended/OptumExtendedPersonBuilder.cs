@@ -123,7 +123,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
 
                 var maxStartDate = death.Max(d => d.StartDate);
                 var result = death.Where(d => d.StartDate == maxStartDate).OrderByDescending(d => d.Primary).First();
-
+                
+                result.StartDate = new DateTime(maxStartDate.Year, maxStartDate.Month, DateTime.DaysInMonth(maxStartDate.Year, maxStartDate.Month));
                 result.CauseConceptId = null;
                 result.SourceCauseConceptId = null;
                 result.CauseSource = null;
@@ -851,6 +852,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
             if(_discardedDrugCount > 0)
                 ChunkData.AddAttrition(person.PersonId, Attrition.DiscardedDrugCount, _discardedDrugCount);
 
+            AddEpisodeEvents();
+
             return Attrition.None;
         }
         public static IEnumerable<T> Clean<T>(IEnumerable<T> entities, Person person) where T : class, IEntity
@@ -889,6 +892,21 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
 
                 switch (entityDomain)
                 {
+                    case "Episode":
+                        if(!DomainEpisodes.ContainsKey(entity.SourceRecordGuid))
+                            DomainEpisodes.Add(entity.SourceRecordGuid, []);
+
+                        var episode = new Episode(entity);
+                        episode.Id = Offset.GetKeyOffset(episode.PersonId).EpisodeId;
+                        episode.Domain = domain;
+
+                        if(!episode.EndDate.HasValue)
+                            episode.EndDate = episode.StartDate;
+                            
+                        DomainEpisodes[entity.SourceRecordGuid].Add(episode);
+                        ChunkData.AddData(episode);
+                        break;
+
                     case "Condition":
 
                         var cond = entity as ConditionOccurrence ??

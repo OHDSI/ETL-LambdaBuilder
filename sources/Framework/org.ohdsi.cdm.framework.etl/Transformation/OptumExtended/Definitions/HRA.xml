@@ -1,7 +1,7 @@
 ﻿<QueryDefinition>
 	<Variables>
 		<Variable name="marital_status" database="ses">ISA20061 as ISA20061</Variable>
-		<Variable name="marital_status" database="dod">null as ISA20061</Variable>
+		<Variable name="marital_status" database="dod">cast(null as string) as ISA20061</Variable>
 	</Variables>
 	<Query>
 		SELECT patid,
