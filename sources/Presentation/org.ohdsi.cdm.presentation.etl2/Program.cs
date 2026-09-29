@@ -224,7 +224,7 @@ namespace org.ohdsi.cdm.presentation.etl
                     Console.WriteLine("VocabularyVersion:" + vocabularyVersion);
 
                     ETL.SaveCdmSource(DateTime.Parse(sourceReleaseDate), vocabularyVersion);
-                    ETL.SaveMetadata(sourceVersionId);
+                    ETL.SaveMetadata(sourceVersionId, versionId.ToString());
                     ETL.SaveVersion(versionId);
 
                     Console.WriteLine($"****************************************************************");
@@ -236,8 +236,6 @@ namespace org.ohdsi.cdm.presentation.etl
                 }
                 else
                 {
-                    ETL.SaveEtlLookupsToCloudStorage();
-
                     if (skipChunkCreation)
                     {
                         Console.WriteLine("Chunk creation skipped");
@@ -246,6 +244,8 @@ namespace org.ohdsi.cdm.presentation.etl
                     {
                         if (!resumeChunkCreation)
                         {
+                            //TMP
+                            ETL.SaveEtlLookupsToCloudStorage();
                             ETL.CreateChunks(chunkSchema, functionChunkSize);
                         }
                         else
@@ -274,6 +274,7 @@ namespace org.ohdsi.cdm.presentation.etl
                         ETL.CreateLookupTables();
                     }
 
+                    /*
                     if (skipBuild)
                     {
                         ETL.Build();
@@ -281,7 +282,7 @@ namespace org.ohdsi.cdm.presentation.etl
                     else
                     {
                         Console.WriteLine("Build step was skipped");
-                    }
+                    }*/
                 }
 
                 if (skipValidation)
