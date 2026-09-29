@@ -1431,6 +1431,8 @@ namespace org.ohdsi.cdm.framework.common.Base
 
         protected IEnumerable<DrugExposure> TryToMapNdc11toNdc9(Func<bool> ndcFlag, DrugExposure de, string ndcLookupName)
         {
+            yield return de;
+            /*
             if (ndcFlag())
             {
                 if(de.ConceptId > 0)
@@ -1451,6 +1453,7 @@ namespace org.ohdsi.cdm.framework.common.Base
             }
             else
                 yield return de;
+                */
         }
 
         protected IEnumerable<DrugExposure> TryToCreateDrugsNdc9(DrugExposure ndc, string lookup, string key, string sourceCode, DateTime eventDate)
