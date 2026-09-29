@@ -22,6 +22,19 @@ using System.Threading.Tasks;
 
 namespace org.ohdsi.cdm.presentation.etl
 {
+    public static class QueueExtensions
+    {
+        public static List<T> Dequeue<T>(this Queue<T> queue, int count)
+        {
+            var result = new List<T>();
+            while (queue.Count > 0 && result.Count < count)
+            {
+                result.Add(queue.Dequeue());
+            }
+            return result;
+        }
+    }
+
     class ETL
     {
         public static void SaveEtlLookupsToCloudStorage()
@@ -169,12 +182,15 @@ namespace org.ohdsi.cdm.presentation.etl
             //    Settings.Current.Building.Id.Value, utility.BuildMessageBucket));
         }
 
-        public static void SaveMetadata(string sourceVersionId)
+        public static void SaveMetadata(string sourceVersionId, string cdmVersionId)
         {
             var file = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}/metadata/metadata.0.gz";
 
             List<MetadataOMOP> metadata = [];
             metadata.Add(new MetadataOMOP { Id = 0, MetadataConceptId = 0, Name = "NativeLoadId", ValueAsString = sourceVersionId, MetadataDate = DateTime.Now.Date });
+            metadata.Add(new MetadataOMOP { Id = 1, MetadataConceptId = 0, Name = "CDMLoadId", ValueAsString = cdmVersionId.ToString(), MetadataDate = DateTime.Now.Date });
+            metadata.Add(new MetadataOMOP { Id = 2, MetadataConceptId = 37116952, Name = "Source data citation", ValueAsString = Settings.Current.Building.Vendor.Citation, MetadataDate = DateTime.Now.Date });
+            metadata.Add(new MetadataOMOP { Id = 3, MetadataConceptId = 4123211, Name = "Publication review requirements", ValueAsString = Settings.Current.Building.Vendor.Publication, MetadataDate = DateTime.Now.Date });
 
             CloudStorageHelper.UploadFile(file, new MetadataOMOPDataReader(metadata));
         }
@@ -276,11 +292,29 @@ namespace org.ohdsi.cdm.presentation.etl
 
                     chunkController.ChunkCreated(chunkId, Settings.Current.Building.Id.Value);
 
-                    WaitUntilProcessed(0);
+                    //WaitUntilProcessed(5);
 
                     Console.WriteLine("[Moving raw data] Raw data for chunkId=" + chunkId + " is available on cloud storage");
-                    CloudStorageHelper.TriggerFunctions([.. GetTriggerMessages(chunksSchema, chunkId)]);
-                    Console.WriteLine($"[Moving raw data] functions for chunkId={chunkId} were triggered");
+                    //int max = 125;
+                    int max = 250;
+                    Queue<string> queue = new Queue<string>(GetTriggerMessages(chunksSchema, chunkId));
+
+                    while(queue.Count > 0)
+                    {
+                        var unprocessed = CloudStorageHelper.GetRunningFunctionInfo(Settings.Current.CloudTriggerStorageName, $"{Settings.Current.GetCDMBuildingPrefix}").Item1;
+                        var canBeLaunched = max - unprocessed;
+                        
+                        if(canBeLaunched > 0)
+                        {
+                            var toLaunch = queue.Dequeue(canBeLaunched);
+
+                            CloudStorageHelper.TriggerFunctions([.. toLaunch]);
+                            //CloudStorageHelper.TriggerFunctions([.. GetTriggerMessages(chunksSchema, chunkId)]);
+                            Console.WriteLine($"[Moving raw data] functions for chunkId={chunkId} were triggered");
+                        }
+                        else
+                            Thread.Sleep(TimeSpan.FromMinutes(1));
+                    }
                     
                     chunkManager.AddChunk(chunkId);
                 });
@@ -309,7 +343,7 @@ namespace org.ohdsi.cdm.presentation.etl
                     if (unprocessed > maxRunning)
                     {
                         Console.WriteLine($"[Moving raw data] unprocessed > {maxRunning}, waiting 3 minutes...");
-                        Thread.Sleep(TimeSpan.FromMinutes(3));
+                        Thread.Sleep(TimeSpan.FromMinutes(1));
                     }
                 }
                 catch (Exception ex)
