@@ -1,10 +1,10 @@
 ﻿<QueryDefinition>
 	<Query>
 		SELECT
-		cast(pat.medrec_key as bigint) as medrec_key,
+		ch.person_id as medrec_key,
 		l.pat_key,
 		observation as value_source_value,
-		test,
+		LAB_TEST_DESC as test,
 		case
 		when lower(observation) = 'negative' then 45878583
 		when lower(observation) = 'positive' then 46237248

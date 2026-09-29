@@ -1,7 +1,7 @@
 ﻿<QueryDefinition>
 	<Query>
-		SELECT DISTINCT cast(pat.medrec_key as bigint) as medrec_key,
-		pat.disc_date AS procedure_date,
+		SELECT DISTINCT ch.person_id as medrec_key,
+		pat.DISCHARGE_DATE AS procedure_date,
 		CASE
 		WHEN pat.i_o_ind = 'I' THEN 38000249
 		WHEN pat.i_o_ind = 'O' THEN 38000267

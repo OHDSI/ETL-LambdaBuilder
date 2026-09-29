@@ -1,6 +1,6 @@
 ﻿<QueryDefinition>
 	<Query>
-		select distinct cast(pat.medrec_key as bigint) as medrec_key, 
+		select distinct ch.person_id as medrec_key, 
 		pat.pat_key, 
 		payor.std_payor_desc,
 		ch.PartitionId

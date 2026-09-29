@@ -1,10 +1,10 @@
 ﻿<QueryDefinition>
 	<Query>
 		select
-		cast(pat.medrec_key as bigint) as medrec_key,
+		ch.person_id as medrec_key,
 		pat.pat_key,
-		adm_date,
-		disc_date,
+		ADMIT_DATE as adm_date,
+		DISCHARGE_DATE as disc_date,
 		case lower(pat.gender)
 		when 'u' then NULL
 		else pat.gender
@@ -41,7 +41,7 @@
 		END as died,
 		ds.disc_status_desc,
 		po.point_of_origin_desc,
-		pat.mart_status,
+		cast(null as string) as mart_status,
 		pat.adm_phy,
 		pat.prov_id,
 		pat.age,

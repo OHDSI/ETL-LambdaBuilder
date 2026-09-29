@@ -1,9 +1,9 @@
 ﻿<QueryDefinition>
 	<Query>
 		select
-		cast(pat.medrec_key as bigint) as medrec_key,
-		null as condition_end_date,
-		pat.disc_date,
+		ch.person_id as medrec_key,
+		cast(null as date) as condition_end_date,
+		pat.DISCHARGE_DATE as disc_date,
 		case
 		when pat.i_o_ind = 'I' and icd.icd_pri_sec = 'P' then 38000183
 		when pat.i_o_ind = 'I' and icd.icd_pri_sec = 'S' then 38000185
