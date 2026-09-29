@@ -8,18 +8,18 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
 
     public class Lookup2
     {
-        private Dictionary<string, LookupValue2[]> _lookup = [];
-        private Dictionary<string, List<LookupValue2>> _lookupTmp = [];
+        private Dictionary<string, LookupValue2[]> _lookup = new(StringComparer.OrdinalIgnoreCase);
+        private Dictionary<string, List<LookupValue2>> _lookupTmp = new(StringComparer.OrdinalIgnoreCase);
 
-        private Dictionary<string, SourceConcepts2[]> _sourceConcepts = [];
-        private Dictionary<string, List<SourceConcepts2>> _sourceConceptsTmp = [];
+        private Dictionary<string, SourceConcepts2[]> _sourceConcepts = new(StringComparer.OrdinalIgnoreCase);
+        private Dictionary<string, List<SourceConcepts2>> _sourceConceptsTmp = new(StringComparer.OrdinalIgnoreCase);
 
-        private Dictionary<string, List<long>> _ingredientsTmp = [];
+        private Dictionary<string, List<long>> _ingredientsTmp = new(StringComparer.OrdinalIgnoreCase);
 
-        private readonly Dictionary<string, long[]> _ingredients = [];
+        private readonly Dictionary<string, long[]> _ingredients = new(StringComparer.OrdinalIgnoreCase);
 
-        private Dictionary<string, List<long>> _valueAsConceptIdsTmp = [];
-        private readonly Dictionary<string, long[]> _valueAsConceptIds = [];
+        private Dictionary<string, List<long>> _valueAsConceptIdsTmp = new(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, long[]> _valueAsConceptIds = new(StringComparer.OrdinalIgnoreCase);
 
         public int KeysCount
         {
@@ -190,7 +190,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
             _ingredients.TrimExcess();
             _valueAsConceptIds.TrimExcess();
 
-            _lookup = new Dictionary<string, LookupValue2[]>();
+            _lookup = new Dictionary<string, LookupValue2[]>(StringComparer.OrdinalIgnoreCase);
             foreach (var key in _lookupTmp.Keys)
             {
                 _lookup.Add(key, _lookupTmp[key].Distinct().ToArray());
@@ -201,7 +201,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
             _lookupTmp.TrimExcess();
             _lookupTmp = null;
 
-            _sourceConcepts = new Dictionary<string, SourceConcepts2[]>();
+            _sourceConcepts = new Dictionary<string, SourceConcepts2[]>(StringComparer.OrdinalIgnoreCase);
             foreach (var key in _sourceConceptsTmp.Keys)
             {
                 _sourceConcepts.Add(key, _sourceConceptsTmp[key].Distinct().ToArray());
