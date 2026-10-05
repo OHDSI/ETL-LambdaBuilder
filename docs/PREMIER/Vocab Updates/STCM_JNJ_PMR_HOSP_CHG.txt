@@ -1,11 +1,11 @@
 source_code	source_concept_id	source_vocabulary_id	source_code_description	target_concept_id	target_vocabulary_id	valid_start_date	valid_end_date	invalid_reason
 0 Echaelon Endopath Staple Line reinforc	0	JNJ_PMR_HOSP_CHG	0 Echaelon Endopath Staple Line reinforc	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 0 Echelon Endopath 60mm Staple Line rein	0	JNJ_PMR_HOSP_CHG	0 Echelon Endopath 60mm Staple Line rein	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
-0 echelon endopath staple line reinforce	0	JNJ_PMR_HOSP_CHG	0 echelon endopath staple line reinforce	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
-0 Echelon endopath staple line reinforce	0	JNJ_PMR_HOSP_CHG	0 Echelon endopath staple line reinforce	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
-0 Echelon Endopath staple line reinforce	0	JNJ_PMR_HOSP_CHG	0 Echelon Endopath staple line reinforce	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
-0 Echelon Endopath Staple Line Reinforce	0	JNJ_PMR_HOSP_CHG	0 Echelon Endopath Staple Line Reinforce	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 0 ECHELON ENDOPATH STAPLE LINE REINFORCE	0	JNJ_PMR_HOSP_CHG	0 ECHELON ENDOPATH STAPLE LINE REINFORCE	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
+0 Echelon Endopath Staple Line Reinforce	0	JNJ_PMR_HOSP_CHG	0 Echelon Endopath Staple Line Reinforce	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
+0 Echelon Endopath staple line reinforce	0	JNJ_PMR_HOSP_CHG	0 Echelon Endopath staple line reinforce	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
+0 Echelon endopath staple line reinforce	0	JNJ_PMR_HOSP_CHG	0 Echelon endopath staple line reinforce	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
+0 echelon endopath staple line reinforce	0	JNJ_PMR_HOSP_CHG	0 echelon endopath staple line reinforce	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 0 Echelon Enopath Staple Line Reinforcem	0	JNJ_PMR_HOSP_CHG	0 Echelon Enopath Staple Line Reinforcem	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 0 echelon staple line reinforcement	0	JNJ_PMR_HOSP_CHG	0 echelon staple line reinforcement	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 0 echelon staple reinforcement	0	JNJ_PMR_HOSP_CHG	0 echelon staple reinforcement	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
@@ -14,9 +14,9 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 60mm echelon endopath staple line reinfo	0	JNJ_PMR_HOSP_CHG	60mm echelon endopath staple line reinfo	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 60mm Echelon Endopath Staple Line Reinfo	0	JNJ_PMR_HOSP_CHG	60mm Echelon Endopath Staple Line Reinfo	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 BUTTRESS STAPLE LINE REINFORCEMENT ECH60	0	JNJ_PMR_HOSP_CHG	BUTTRESS STAPLE LINE REINFORCEMENT ECH60	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
+ech60r	0	JNJ_PMR_HOSP_CHG	ech60r	2100000002	JNJ_GENERATED	2023-11-15	2099-12-31	
 ECH60R	0	JNJ_PMR_HOSP_CHG	ECH60R	2100000002	JNJ_GENERATED	2023-11-15	2099-12-31	
 ech60R	0	JNJ_PMR_HOSP_CHG	ech60R	2100000002	JNJ_GENERATED	2023-11-15	2099-12-31	
-ech60r	0	JNJ_PMR_HOSP_CHG	ech60r	2100000002	JNJ_GENERATED	2023-11-15	2099-12-31	
 ECH60R ETHICON 60MM ECHELON REINFORCEME	0	JNJ_PMR_HOSP_CHG	ECH60R ETHICON 60MM ECHELON REINFORCEME	2100000002	JNJ_GENERATED	2023-11-15	2099-12-31	
 ECHE;ON ENDOPATH STAPLE LINE REINFORCEME	0	JNJ_PMR_HOSP_CHG	ECHE;ON ENDOPATH STAPLE LINE REINFORCEME	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 ECHELEON STAPLELINE REINFOECEMENT	0	JNJ_PMR_HOSP_CHG	ECHELEON STAPLELINE REINFOECEMENT	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
@@ -37,28 +37,28 @@ Echelon Endopath Reinforcement ECH60R	0	JNJ_PMR_HOSP_CHG	Echelon Endopath Reinfo
 ECHELON ENDOPATH REINFORCEMENT STAPLE LI	0	JNJ_PMR_HOSP_CHG	ECHELON ENDOPATH REINFORCEMENT STAPLE LI	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 ECHELON ENDOPATH STAPLE LINBE REINFORCEM	0	JNJ_PMR_HOSP_CHG	ECHELON ENDOPATH STAPLE LINBE REINFORCEM	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 Echelon Endopath staple line reinforccement	0	JNJ_PMR_HOSP_CHG	Echelon Endopath staple line reinforccement	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
+ECHELON ENDOPATH STAPLE LINE REINFORCE	0	JNJ_PMR_HOSP_CHG	ECHELON ENDOPATH STAPLE LINE REINFORCE	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 Echelon Endopath Staple Line Reinforce	0	JNJ_PMR_HOSP_CHG	Echelon Endopath Staple Line Reinforce	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 ECHELON ENDOPATH Staple Line Reinforce	0	JNJ_PMR_HOSP_CHG	ECHELON ENDOPATH Staple Line Reinforce	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
-ECHELON ENDOPATH STAPLE LINE REINFORCE	0	JNJ_PMR_HOSP_CHG	ECHELON ENDOPATH STAPLE LINE REINFORCE	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
+ECHELON ENDOPATH Staple Line Reinforceme	0	JNJ_PMR_HOSP_CHG	ECHELON ENDOPATH Staple Line Reinforceme	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 ECHELON ENDOPATH STAPLE LINE REINFORCEME	0	JNJ_PMR_HOSP_CHG	ECHELON ENDOPATH STAPLE LINE REINFORCEME	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
+echelon endopath staple line reinforceme	0	JNJ_PMR_HOSP_CHG	echelon endopath staple line reinforceme	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
+Echelon endopath staple line reinforceme	0	JNJ_PMR_HOSP_CHG	Echelon endopath staple line reinforceme	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
+Echelon Endopath staple Line reinforceme	0	JNJ_PMR_HOSP_CHG	Echelon Endopath staple Line reinforceme	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
+Echelon Endopath staple Line Reinforceme	0	JNJ_PMR_HOSP_CHG	Echelon Endopath staple Line Reinforceme	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
+Echelon Endopath Staple line reinforceme	0	JNJ_PMR_HOSP_CHG	Echelon Endopath Staple line reinforceme	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
+Echelon Endopath Staple line Reinforceme	0	JNJ_PMR_HOSP_CHG	Echelon Endopath Staple line Reinforceme	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
+Echelon Endopath Staple Line reinforceme	0	JNJ_PMR_HOSP_CHG	Echelon Endopath Staple Line reinforceme	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 Echelon Endopath Staple Line Reinforceme	0	JNJ_PMR_HOSP_CHG	Echelon Endopath Staple Line Reinforceme	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 Echelon EndoPath Staple Line Reinforceme	0	JNJ_PMR_HOSP_CHG	Echelon EndoPath Staple Line Reinforceme	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
-Echelon Endopath Staple Line reinforceme	0	JNJ_PMR_HOSP_CHG	Echelon Endopath Staple Line reinforceme	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
-Echelon Endopath Staple line Reinforceme	0	JNJ_PMR_HOSP_CHG	Echelon Endopath Staple line Reinforceme	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
-Echelon Endopath Staple line reinforceme	0	JNJ_PMR_HOSP_CHG	Echelon Endopath Staple line reinforceme	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
-Echelon Endopath staple Line reinforceme	0	JNJ_PMR_HOSP_CHG	Echelon Endopath staple Line reinforceme	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 Echelon Endopath staple line reinforceme	0	JNJ_PMR_HOSP_CHG	Echelon Endopath staple line reinforceme	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
-Echelon endopath staple line reinforceme	0	JNJ_PMR_HOSP_CHG	Echelon endopath staple line reinforceme	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
-echelon endopath staple line reinforceme	0	JNJ_PMR_HOSP_CHG	echelon endopath staple line reinforceme	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
-ECHELON ENDOPATH Staple Line Reinforceme	0	JNJ_PMR_HOSP_CHG	ECHELON ENDOPATH Staple Line Reinforceme	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
-Echelon Endopath staple Line Reinforceme	0	JNJ_PMR_HOSP_CHG	Echelon Endopath staple Line Reinforceme	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
-Echelon Endopath Staple line Reinforcement	0	JNJ_PMR_HOSP_CHG	Echelon Endopath Staple line Reinforcement	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
-ECHELON ENDOPATH STAPLE LINE REINFORCEMENT	0	JNJ_PMR_HOSP_CHG	ECHELON ENDOPATH STAPLE LINE REINFORCEMENT	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
-echelon endopath staple line reinforcement	0	JNJ_PMR_HOSP_CHG	echelon endopath staple line reinforcement	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 Echelon endopath staple line reinforcement	0	JNJ_PMR_HOSP_CHG	Echelon endopath staple line reinforcement	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 Echelon Endopath Staple Line Reinforcement	0	JNJ_PMR_HOSP_CHG	Echelon Endopath Staple Line Reinforcement	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
-Echelon Endopath Staple Line Reinforcement 60mm	0	JNJ_PMR_HOSP_CHG	Echelon Endopath Staple Line Reinforcement 60mm	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
+echelon endopath staple line reinforcement	0	JNJ_PMR_HOSP_CHG	echelon endopath staple line reinforcement	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
+ECHELON ENDOPATH STAPLE LINE REINFORCEMENT	0	JNJ_PMR_HOSP_CHG	ECHELON ENDOPATH STAPLE LINE REINFORCEMENT	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
+Echelon Endopath Staple line Reinforcement	0	JNJ_PMR_HOSP_CHG	Echelon Endopath Staple line Reinforcement	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 ECHELON ENDOPATH STAPLE LINE REINFORCEMENT 60MM	0	JNJ_PMR_HOSP_CHG	ECHELON ENDOPATH STAPLE LINE REINFORCEMENT 60MM	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
+Echelon Endopath Staple Line Reinforcement 60mm	0	JNJ_PMR_HOSP_CHG	Echelon Endopath Staple Line Reinforcement 60mm	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 Echelon endopath staple line reinforcement 60mm	0	JNJ_PMR_HOSP_CHG	Echelon endopath staple line reinforcement 60mm	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 ECHELON ENDOPATH STAPLE LINE REINFORCENT	0	JNJ_PMR_HOSP_CHG	ECHELON ENDOPATH STAPLE LINE REINFORCENT	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 echelon endopath staple line reinforcmen	0	JNJ_PMR_HOSP_CHG	echelon endopath staple line reinforcmen	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
@@ -67,17 +67,17 @@ echelon endopath staple line reinforecem	0	JNJ_PMR_HOSP_CHG	echelon endopath sta
 ECHELON ENDOPATH STAPLE LINE REINFORECEM	0	JNJ_PMR_HOSP_CHG	ECHELON ENDOPATH STAPLE LINE REINFORECEM	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 echelon endopath staple line reinforemen	0	JNJ_PMR_HOSP_CHG	echelon endopath staple line reinforemen	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 echelon endopath staple line reinfrcement	0	JNJ_PMR_HOSP_CHG	echelon endopath staple line reinfrcement	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
-Echelon Endopath Staple Line Reinorcemen	0	JNJ_PMR_HOSP_CHG	Echelon Endopath Staple Line Reinorcemen	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 Echelon endopath staple line reinorcemen	0	JNJ_PMR_HOSP_CHG	Echelon endopath staple line reinorcemen	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
+Echelon Endopath Staple Line Reinorcemen	0	JNJ_PMR_HOSP_CHG	Echelon Endopath Staple Line Reinorcemen	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 Echelon Endopath Staple Line RReinformen	0	JNJ_PMR_HOSP_CHG	Echelon Endopath Staple Line RReinformen	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 ECHELON ENDOPATH STAPLE LINR REINFORCEME	0	JNJ_PMR_HOSP_CHG	ECHELON ENDOPATH STAPLE LINR REINFORCEME	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
-Echelon Endopath Staple Reinforcement	0	JNJ_PMR_HOSP_CHG	Echelon Endopath Staple Reinforcement	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 Echelon Endopath staple reinforcement	0	JNJ_PMR_HOSP_CHG	Echelon Endopath staple reinforcement	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
-echelon endopath staple reinforcement	0	JNJ_PMR_HOSP_CHG	echelon endopath staple reinforcement	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
+Echelon Endopath Staple Reinforcement	0	JNJ_PMR_HOSP_CHG	Echelon Endopath Staple Reinforcement	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 ECHELON ENDOPATH STAPLE REINFORCEMENT	0	JNJ_PMR_HOSP_CHG	ECHELON ENDOPATH STAPLE REINFORCEMENT	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
-echelon endopath stapleline reinforcemen	0	JNJ_PMR_HOSP_CHG	echelon endopath stapleline reinforcemen	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
-Echelon Endopath stapleline reinforcemen	0	JNJ_PMR_HOSP_CHG	Echelon Endopath stapleline reinforcemen	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
+echelon endopath staple reinforcement	0	JNJ_PMR_HOSP_CHG	echelon endopath staple reinforcement	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 ECHELON ENDOPATH STAPLELINE REINFORCEMEN	0	JNJ_PMR_HOSP_CHG	ECHELON ENDOPATH STAPLELINE REINFORCEMEN	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
+Echelon Endopath stapleline reinforcemen	0	JNJ_PMR_HOSP_CHG	Echelon Endopath stapleline reinforcemen	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
+echelon endopath stapleline reinforcemen	0	JNJ_PMR_HOSP_CHG	echelon endopath stapleline reinforcemen	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 echelon endopath stapler reinforcement	0	JNJ_PMR_HOSP_CHG	echelon endopath stapler reinforcement	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 ECHELON ENDOPATHSTAPLE LINE REINFORCEMEN	0	JNJ_PMR_HOSP_CHG	ECHELON ENDOPATHSTAPLE LINE REINFORCEMEN	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 echelon enopath staple line reinforcemen	0	JNJ_PMR_HOSP_CHG	echelon enopath staple line reinforcemen	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
@@ -85,11 +85,11 @@ Echelon Enopath staple line reinforcemen	0	JNJ_PMR_HOSP_CHG	Echelon Enopath stap
 ECHELON STAPLE LINE REINFORCE  ECH60R	0	JNJ_PMR_HOSP_CHG	ECHELON STAPLE LINE REINFORCE  ECH60R	2100000002	JNJ_GENERATED	2023-11-15	2099-12-31	
 Echelon Staple Line Reinforcement	0	JNJ_PMR_HOSP_CHG	Echelon Staple Line Reinforcement	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 ECHELON STAPLE LINE REINFORCEMENT	0	JNJ_PMR_HOSP_CHG	ECHELON STAPLE LINE REINFORCEMENT	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
-Echelon staple line reinforcement	0	JNJ_PMR_HOSP_CHG	Echelon staple line reinforcement	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 echelon staple line reinforcement	0	JNJ_PMR_HOSP_CHG	echelon staple line reinforcement	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
+Echelon staple line reinforcement	0	JNJ_PMR_HOSP_CHG	Echelon staple line reinforcement	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 ECHELON STAPLE LINE REINFORCEMENT ECH60R	0	JNJ_PMR_HOSP_CHG	ECHELON STAPLE LINE REINFORCEMENT ECH60R	2100000002	JNJ_GENERATED	2023-11-15	2099-12-31	
-ECHELON STAPLE LINE REINFORCEMENTS	0	JNJ_PMR_HOSP_CHG	ECHELON STAPLE LINE REINFORCEMENTS	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 Echelon Staple Line Reinforcements	0	JNJ_PMR_HOSP_CHG	Echelon Staple Line Reinforcements	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
+ECHELON STAPLE LINE REINFORCEMENTS	0	JNJ_PMR_HOSP_CHG	ECHELON STAPLE LINE REINFORCEMENTS	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 Echelon Staple Line Reinforsements	0	JNJ_PMR_HOSP_CHG	Echelon Staple Line Reinforsements	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 echelonendopath staple line reinforcement	0	JNJ_PMR_HOSP_CHG	echelonendopath staple line reinforcement	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 Echilon Endopath Staple Line Reinforceme	0	JNJ_PMR_HOSP_CHG	Echilon Endopath Staple Line Reinforceme	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
@@ -98,10 +98,10 @@ ECHLON ENDOPATH STAPLE LINE REINFORCEMEN	0	JNJ_PMR_HOSP_CHG	ECHLON ENDOPATH STAP
 Endopath Echelon staple line reinforceme	0	JNJ_PMR_HOSP_CHG	Endopath Echelon staple line reinforceme	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 endopath staple line reinforcement ECH60	0	JNJ_PMR_HOSP_CHG	endopath staple line reinforcement ECH60	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 Ethicon Echelon Endopath 60mm: ECH60R	0	JNJ_PMR_HOSP_CHG	Ethicon Echelon Endopath 60mm: ECH60R	2100000002	JNJ_GENERATED	2023-11-15	2099-12-31	
-ethicon echelon endopath staple line reinforcement	0	JNJ_PMR_HOSP_CHG	ethicon echelon endopath staple line reinforcement	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 ETHICON ECHELON ENDOPATH STAPLE LINE REINFORCEMENT	0	JNJ_PMR_HOSP_CHG	ETHICON ECHELON ENDOPATH STAPLE LINE REINFORCEMENT	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
-ETHICON ECHELON ENDOPATH STAPLE LINE REINFORCEMENT 60MM	0	JNJ_PMR_HOSP_CHG	ETHICON ECHELON ENDOPATH STAPLE LINE REINFORCEMENT 60MM	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
+ethicon echelon endopath staple line reinforcement	0	JNJ_PMR_HOSP_CHG	ethicon echelon endopath staple line reinforcement	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 Ethicon Echelon Endopath Staple Line Reinforcement 60mm	0	JNJ_PMR_HOSP_CHG	Ethicon Echelon Endopath Staple Line Reinforcement 60mm	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
+ETHICON ECHELON ENDOPATH STAPLE LINE REINFORCEMENT 60MM	0	JNJ_PMR_HOSP_CHG	ETHICON ECHELON ENDOPATH STAPLE LINE REINFORCEMENT 60MM	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 Ethicon Echelon Endopath Staple Line Reinforcement; 60 mm; E	0	JNJ_PMR_HOSP_CHG	Ethicon Echelon Endopath Staple Line Reinforcement; 60 mm; E	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 Ethicon Echelon Endopath Staple lIne Reinforcement; 60mm; EC	0	JNJ_PMR_HOSP_CHG	Ethicon Echelon Endopath Staple lIne Reinforcement; 60mm; EC	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	
 ETHICON ECHELON ENDOPATH STAPLE SLINE REINFORCEMENT	0	JNJ_PMR_HOSP_CHG	ETHICON ECHELON ENDOPATH STAPLE SLINE REINFORCEMENT	2100000001	JNJ_GENERATED	2023-11-15	2099-12-31	

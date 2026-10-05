@@ -310,7 +310,8 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 439-Serum paracetamol	0	JNJ_CPRD_TEST_ENT	Serum paracetamol	0	None	1970-01-01	2099-12-31	
 440-Serum cyclosporin	0	JNJ_CPRD_TEST_ENT	Serum cyclosporin	0	None	1970-01-01	2099-12-31	
 441-Schilling test - b12 absorption	0	JNJ_CPRD_TEST_ENT	Schilling test - b12 absorption	0	None	1970-01-01	2099-12-31	
-442-Sickle cell disease screen	0	JNJ_CPRD_TEST_ENT	Sickle cell disease screen	4199173	SNOMED	1970-01-01	2099-12-31	
+442-Sickle cell disease screen	0	JNJ_CPRD_TEST_ENT	Sickle cell disease screen	4199173	SNOMED	1970-01-01	2026-09-03	D
+442-Sickle cell disease screen	0	JNJ_CPRD_TEST_ENT	Sickle cell disease screen	40482271	SNOMED	2026-09-03	2099-12-31	
 443-Thrombin time	0	JNJ_CPRD_TEST_ENT	Thrombin time	4208541	SNOMED	1970-01-01	2024-03-13	D
 443-Thrombin time	0	JNJ_CPRD_TEST_ENT	Thrombin time	3036489	LOINC	2024-03-13	2099-12-31	
 444-Tomography	0	JNJ_CPRD_TEST_ENT	Tomography	0	None	1970-01-01	2099-12-31	
@@ -342,7 +343,8 @@ source_code	source_concept_id	source_vocabulary_id	source_code_description	targe
 480-Other Lab Result Information	0	JNJ_CPRD_TEST_ENT	Other Lab Result Information	0	None	1970-01-01	2099-12-31	
 481-Biochemical screening tests	0	JNJ_CPRD_TEST_ENT	Biochemical screening tests	4195510	SNOMED	1970-01-01	2099-12-31	
 482-Genetic observations	0	JNJ_CPRD_TEST_ENT	Genetic observations	0	None	1970-01-01	2099-12-31	
-483-Haematology screening tests	0	JNJ_CPRD_TEST_ENT	Haematology screening tests	4198132	SNOMED	1970-01-01	2099-12-31	
+483-Haematology screening tests	0	JNJ_CPRD_TEST_ENT	Haematology screening tests	4198132	SNOMED	1970-01-01	2026-09-03	D
+483-Haematology screening tests	0	JNJ_CPRD_TEST_ENT	Haematology screening tests	42538682	SNOMED	2026-09-03	2099-12-31	
 484-Urine Leucocytes	0	JNJ_CPRD_TEST_ENT	Urine Leucocytes	4190448	SNOMED	1970-01-01	2099-12-31	
 486-Lung function pre-steroids	0	JNJ_CPRD_TEST_ENT	Lung function pre-steroids	0	None	1970-01-01	2099-12-31	
 487-Ante-natal blood tests	0	JNJ_CPRD_TEST_ENT	Ante-natal blood tests	4207466	SNOMED	1970-01-01	2099-12-31	
