@@ -5,30 +5,41 @@ namespace org.ohdsi.cdm.Tests.UnitTests.PersonBuilderTests.JmdcTests;
 public sealed class ProcedureOccurrenceTests
 {
     [Fact]
-    public void Build_Jmdc_ProcedureOccurrence_R901_MapsPersonId()
+    public void Build_Jmdc_ProcedureOccurrence_R901_ProcedureOccurrencePersonId()
     {
-        var source = BasicScenario("M000000901", "C000000000901");
+        const string memberId = "M000000901";
+        var source = new JmdcInMemoryScenario();
+        source.AddEnrollment(memberId);
+        source.AddClaim(memberId, "C000000000901");
+        source.AddProcedure(memberId, "C000000000901");
 
-        Assert.Equal(901L, VisitProcedure(source, "M000000901", 901).PersonId);
+        Assert.Equal(901L, VisitProcedure(source, memberId, 901).PersonId);
     }
 
     [Fact]
-    public void Build_Jmdc_ProcedureOccurrence_R902_MapsVisitOccurrenceId()
+    public void Build_Jmdc_ProcedureOccurrence_R902_ProcedureOccurrenceVisitOccurrenceId()
     {
-        var source = BasicScenario("M000000902", "C000000000902");
+        const string memberId = "M000000902";
+        var source = new JmdcInMemoryScenario();
+        source.AddEnrollment(memberId);
+        source.AddClaim(memberId, "C000000000902");
+        source.AddProcedure(memberId, "C000000000902");
 
-        Assert.Equal(902L, VisitProcedure(source, "M000000902", 902).VisitOccurrenceId);
+        Assert.Equal(902L, VisitProcedure(source, memberId, 902).VisitOccurrenceId);
     }
 
     [Fact]
-    public void Build_Jmdc_ProcedureOccurrence_R903_MapsProcedureTypeByProcedureClaimType()
+    public void Build_Jmdc_ProcedureOccurrence_R903_ProcedureOccurrenceTypeConceptId()
     {
         const string memberId = "M000000903";
         var source = new JmdcInMemoryScenario();
         source.AddEnrollment(memberId);
-        AddClaimAndProcedure(source, memberId, "C000000000903", "Outpatient");
-        AddClaimAndProcedure(source, memberId, "C000000000904", "Inpatient");
-        AddClaimAndProcedure(source, memberId, "C000000000905", "DPC");
+        source.AddClaim(memberId, "C000000000903");
+        source.AddProcedure(memberId, "C000000000903", typeOfClaim: "Outpatient");
+        source.AddClaim(memberId, "C000000000904");
+        source.AddProcedure(memberId, "C000000000904", typeOfClaim: "Inpatient");
+        source.AddClaim(memberId, "C000000000905");
+        source.AddProcedure(memberId, "C000000000905", typeOfClaim: "DPC");
 
         var procedures = source.Build(memberId).ProcedureOccurrences;
 
@@ -38,7 +49,7 @@ public sealed class ProcedureOccurrenceTests
     }
 
     [Fact]
-    public void Build_Jmdc_ProcedureOccurrence_R904_MapsProviderFromMedicalFacility()
+    public void Build_Jmdc_ProcedureOccurrence_R904_ProcedureProvider()
     {
         const string memberId = "M000000904";
         var source = new JmdcInMemoryScenario();
@@ -50,7 +61,7 @@ public sealed class ProcedureOccurrenceTests
     }
 
     [Fact]
-    public void Build_Jmdc_ProcedureOccurrence_R906_UsesProcedureDate()
+    public void Build_Jmdc_ProcedureOccurrence_R906_ProcedureDateFromProcedureDate()
     {
         const string memberId = "M000000906";
         var source = new JmdcInMemoryScenario();
@@ -62,7 +73,7 @@ public sealed class ProcedureOccurrenceTests
     }
 
     [Fact]
-    public void Build_Jmdc_ProcedureOccurrence_R907_UsesVisitDateWhenProcedureDateIsNull()
+    public void Build_Jmdc_ProcedureOccurrence_R907_ProcedureDateFromVisitDate()
     {
         const string memberId = "M000000907";
         var source = new JmdcInMemoryScenario();
@@ -74,7 +85,7 @@ public sealed class ProcedureOccurrenceTests
     }
 
     [Fact]
-    public void Build_Jmdc_ProcedureOccurrence_R908_MapsProcedureThroughProcedureMaster()
+    public void Build_Jmdc_ProcedureOccurrence_R908_ProcedureConceptId()
     {
         const string memberId = "M000000908";
         var source = new JmdcInMemoryScenario();
@@ -92,7 +103,7 @@ public sealed class ProcedureOccurrenceTests
     }
 
     [Fact]
-    public void Build_Jmdc_ProcedureOccurrence_R909_RoutesMappedDiagnosisToProcedureDomain()
+    public void Build_Jmdc_ProcedureOccurrence_R909_ProcedureFromDiagnosis()
     {
         const string memberId = "M000000909";
         var source = new JmdcInMemoryScenario();
@@ -106,25 +117,6 @@ public sealed class ProcedureOccurrenceTests
 
         Assert.Equal(4085923L, procedure.ConceptId);
         Assert.Equal(32859L, procedure.TypeConceptId);
-    }
-
-    private static JmdcInMemoryScenario BasicScenario(string memberId, string claimId)
-    {
-        var source = new JmdcInMemoryScenario();
-        source.AddEnrollment(memberId);
-        source.AddClaim(memberId, claimId);
-        source.AddProcedure(memberId, claimId);
-        return source;
-    }
-
-    private static void AddClaimAndProcedure(
-        JmdcInMemoryScenario source,
-        string memberId,
-        string claimId,
-        string typeOfClaim)
-    {
-        source.AddClaim(memberId, claimId);
-        source.AddProcedure(memberId, claimId, typeOfClaim: typeOfClaim);
     }
 
     private static ProcedureOccurrence VisitProcedure(

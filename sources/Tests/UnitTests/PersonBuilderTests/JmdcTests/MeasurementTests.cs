@@ -5,7 +5,7 @@ namespace org.ohdsi.cdm.Tests.UnitTests.PersonBuilderTests.JmdcTests;
 public sealed class MeasurementTests
 {
     [Fact]
-    public void Build_Jmdc_Measurement_R1001_CreatesMeasurementsForPerson()
+    public void Build_Jmdc_Measurement_R1001_MeasurementPersonId()
     {
         var source = new JmdcInMemoryScenario();
         source.AddEnrollment("M000001001");
@@ -18,7 +18,7 @@ public sealed class MeasurementTests
     }
 
     [Fact]
-    public void Build_Jmdc_Measurement_R1002_MapsBmiAndAbnormalEcg()
+    public void Build_Jmdc_Measurement_R1002_MeasurementConceptIdAndTypeConceptId()
     {
         const string memberId = "M000001002";
         var source = new JmdcInMemoryScenario();
@@ -34,7 +34,7 @@ public sealed class MeasurementTests
     }
 
     [Fact]
-    public void Build_Jmdc_Measurement_R1003_MapsHealthCheckupDate()
+    public void Build_Jmdc_Measurement_R1003_MeasurementDate()
     {
         const string memberId = "M000001003";
         var source = new JmdcInMemoryScenario();
@@ -46,7 +46,7 @@ public sealed class MeasurementTests
     }
 
     [Fact]
-    public void Build_Jmdc_Measurement_R1004_MapsMeasurementValuesAndUnits()
+    public void Build_Jmdc_Measurement_R1004_MeasurementValue()
     {
         const string memberId = "M000001004";
         var source = new JmdcInMemoryScenario();
@@ -65,7 +65,7 @@ public sealed class MeasurementTests
     }
 
     [Fact]
-    public void Build_Jmdc_Measurement_R1005_MapsNormalRanges()
+    public void Build_Jmdc_Measurement_R1005_MeasurementNormalRanges()
     {
         const string memberId = "M000001005";
         var source = new JmdcInMemoryScenario();
@@ -83,7 +83,7 @@ public sealed class MeasurementTests
     }
 
     [Fact]
-    public void Build_Jmdc_Measurement_R1006_RoutesMappedDiagnosisToMeasurementDomain()
+    public void Build_Jmdc_Measurement_R1006_MeasurementFromDiagnosis()
     {
         const string memberId = "M000001006";
         var source = new JmdcInMemoryScenario();

@@ -5,31 +5,43 @@ namespace org.ohdsi.cdm.Tests.UnitTests.PersonBuilderTests.JmdcTests;
 public sealed class DrugExposureTests
 {
     [Fact]
-    public void Build_Jmdc_DrugExposure_R801_MapsPersonId()
+    public void Build_Jmdc_DrugExposure_R801_DrugExposurePersonId()
     {
-        var source = BasicScenario("M000000801", "C000000000801");
+        const string memberId = "M000000801";
+        var source = new JmdcInMemoryScenario();
+        source.AddEnrollment(memberId);
+        source.AddClaim(memberId, "C000000000801");
+        source.AddDrug(memberId, "C000000000801");
 
-        Assert.Equal(801L, VisitDrug(source, "M000000801", 801).PersonId);
+        Assert.Equal(801L, VisitDrug(source, memberId, 801).PersonId);
     }
 
     [Fact]
-    public void Build_Jmdc_DrugExposure_R802_MapsVisitOccurrenceId()
+    public void Build_Jmdc_DrugExposure_R802_DrugExposureVisitOccurrenceId()
     {
-        var source = BasicScenario("M000000802", "C000000000802");
+        const string memberId = "M000000802";
+        var source = new JmdcInMemoryScenario();
+        source.AddEnrollment(memberId);
+        source.AddClaim(memberId, "C000000000802");
+        source.AddDrug(memberId, "C000000000802");
 
-        Assert.Equal(802L, VisitDrug(source, "M000000802", 802).VisitOccurrenceId);
+        Assert.Equal(802L, VisitDrug(source, memberId, 802).VisitOccurrenceId);
     }
 
     [Fact]
-    public void Build_Jmdc_DrugExposure_R803_MapsDrugTypeByDrugClaimType()
+    public void Build_Jmdc_DrugExposure_R803_DrugExposureTypeConceptId()
     {
         const string memberId = "M000000803";
         var source = new JmdcInMemoryScenario();
         source.AddEnrollment(memberId);
-        AddClaimAndDrug(source, memberId, "C000000000803", "Outpatient");
-        AddClaimAndDrug(source, memberId, "C000000000804", "Inpatient");
-        AddClaimAndDrug(source, memberId, "C000000000805", "DPC");
-        AddClaimAndDrug(source, memberId, "C000000000806", "Pharmacy");
+        source.AddClaim(memberId, "C000000000803");
+        source.AddDrug(memberId, "C000000000803", typeOfClaim: "Outpatient");
+        source.AddClaim(memberId, "C000000000804");
+        source.AddDrug(memberId, "C000000000804", typeOfClaim: "Inpatient");
+        source.AddClaim(memberId, "C000000000805");
+        source.AddDrug(memberId, "C000000000805", typeOfClaim: "DPC");
+        source.AddClaim(memberId, "C000000000806");
+        source.AddDrug(memberId, "C000000000806", typeOfClaim: "Pharmacy");
 
         var drugs = source.Build(memberId).DrugExposures;
 
@@ -40,7 +52,7 @@ public sealed class DrugExposureTests
     }
 
     [Fact]
-    public void Build_Jmdc_DrugExposure_R804_MapsProviderFromMedicalFacility()
+    public void Build_Jmdc_DrugExposure_R804_DrugProviderFromInstitutionId()
     {
         const string memberId = "M000000804";
         var source = new JmdcInMemoryScenario();
@@ -52,7 +64,7 @@ public sealed class DrugExposureTests
     }
 
     [Fact]
-    public void Build_Jmdc_DrugExposure_R806_UsesPrescriptionDate()
+    public void Build_Jmdc_DrugExposure_R806_DrugStartDateFromPrescriptionDate()
     {
         const string memberId = "M000000806";
         var source = new JmdcInMemoryScenario();
@@ -64,7 +76,7 @@ public sealed class DrugExposureTests
     }
 
     [Fact]
-    public void Build_Jmdc_DrugExposure_R807_UsesPharmacyVisitDateAndClearsVisitId()
+    public void Build_Jmdc_DrugExposure_R807_DrugStartDateFromVisitDate()
     {
         const string memberId = "M000000807";
         var source = new JmdcInMemoryScenario();
@@ -80,7 +92,7 @@ public sealed class DrugExposureTests
     }
 
     [Fact]
-    public void Build_Jmdc_DrugExposure_R808_CapsDaysAndComputesEndDate()
+    public void Build_Jmdc_DrugExposure_R808_DrugEndDate()
     {
         const string memberId = "M000000808";
         var source = new JmdcInMemoryScenario();
@@ -101,7 +113,7 @@ public sealed class DrugExposureTests
     }
 
     [Fact]
-    public void Build_Jmdc_DrugExposure_R809_MapsAndCapsDaysSupply()
+    public void Build_Jmdc_DrugExposure_R809_DrugDaysSupply()
     {
         const string memberId = "M000000809";
         var source = new JmdcInMemoryScenario();
@@ -118,7 +130,7 @@ public sealed class DrugExposureTests
     }
 
     [Fact]
-    public void Build_Jmdc_DrugExposure_R810_MapsDrugConceptAndSourceValue()
+    public void Build_Jmdc_DrugExposure_R810_DrugConceptId()
     {
         const string memberId = "M000000810";
         var source = new JmdcInMemoryScenario();
@@ -133,7 +145,7 @@ public sealed class DrugExposureTests
     }
 
     [Fact]
-    public void Build_Jmdc_DrugExposure_R811_MapsSig()
+    public void Build_Jmdc_DrugExposure_R811_DrugSig()
     {
         const string memberId = "M000000811";
         var source = new JmdcInMemoryScenario();
@@ -146,25 +158,6 @@ public sealed class DrugExposureTests
             unitOfAdministeredAmount: "g");
 
         Assert.Equal("1 g per day as needed, 20 g total", VisitDrug(source, memberId, 816).Sig);
-    }
-
-    private static JmdcInMemoryScenario BasicScenario(string memberId, string claimId)
-    {
-        var source = new JmdcInMemoryScenario();
-        source.AddEnrollment(memberId);
-        source.AddClaim(memberId, claimId);
-        source.AddDrug(memberId, claimId);
-        return source;
-    }
-
-    private static void AddClaimAndDrug(
-        JmdcInMemoryScenario source,
-        string memberId,
-        string claimId,
-        string typeOfClaim)
-    {
-        source.AddClaim(memberId, claimId);
-        source.AddDrug(memberId, claimId, typeOfClaim: typeOfClaim);
     }
 
     private static DrugExposure VisitDrug(

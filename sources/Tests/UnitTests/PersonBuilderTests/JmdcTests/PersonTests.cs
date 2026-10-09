@@ -3,7 +3,7 @@
 public sealed class PersonTests
 {
     [Fact]
-    public void Build_Jmdc_Person_R101_MapsPersonIdAndSourceValue()
+    public void Build_Jmdc_Person_R101_PersonId()
     {
         var source = new JmdcInMemoryScenario();
         source.AddEnrollment("M000000101");
@@ -14,22 +14,24 @@ public sealed class PersonTests
         Assert.Equal("M000000101", person.PersonSourceValue);
     }
 
-    [Theory]
-    [InlineData("M000000102", "male", 8507L)]
-    [InlineData("M000000103", "female", 8532L)]
-    public void Build_Jmdc_Person_R102_MapsGender(string memberId, string sourceGender, long expectedConceptId)
+    [Fact]
+    public void Build_Jmdc_Person_R102_PersonGenderMappings()
     {
         var source = new JmdcInMemoryScenario();
-        source.AddEnrollment(memberId, genderOfMember: sourceGender);
+        source.AddEnrollment("M000000102", genderOfMember: "male");
+        source.AddEnrollment("M000000103", genderOfMember: "female");
 
-        var person = Assert.Single(source.Build(memberId).Persons);
+        var male = Assert.Single(source.Build("M000000102").Persons);
+        var female = Assert.Single(source.Build("M000000103").Persons);
 
-        Assert.Equal(expectedConceptId, person.GenderConceptId);
-        Assert.Equal(sourceGender, person.GenderSourceValue);
+        Assert.Equal(8507L, male.GenderConceptId);
+        Assert.Equal("male", male.GenderSourceValue);
+        Assert.Equal(8532L, female.GenderConceptId);
+        Assert.Equal("female", female.GenderSourceValue);
     }
 
     [Fact]
-    public void Build_Jmdc_Person_R103_MapsYearAndMonthOfBirth()
+    public void Build_Jmdc_Person_R103_PersonYearAndMonthOfBirth()
     {
         var source = new JmdcInMemoryScenario();
         source.AddEnrollment("M000000104", monthAndYearOfBirth: "197508");

@@ -9,13 +9,13 @@ namespace org.ohdsi.cdm.Tests.UnitTests.PersonBuilderTests.JmdcTests;
 
 /// <summary>
 /// In-memory equivalent of the source tables populated by the JMDC R tests.
-/// Add* methods store source rows. Build performs the source-to-entity projection
-/// and then invokes the real JmdcPersonBuilder.
 /// </summary>
 internal sealed class JmdcInMemoryScenario
 {
     private const long BaselineVisitIdOffset = 9_000_000_000_000_000;
     private const long BaselineVisitDetailIdOffset = 8_000_000_000_000_000;
+
+    private readonly JmdcTestVocabulary _vocabulary = new();
 
     private readonly List<EnrollmentRow> _enrollments = [];
     private readonly List<ClaimRow> _claims = [];
@@ -32,6 +32,8 @@ internal sealed class JmdcInMemoryScenario
     {
         [(123, "201404")] = "9394"
     };
+
+    internal JmdcTestVocabulary Vocabulary => _vocabulary;
 
     internal void AddEnrollment(
         string memberId,
@@ -107,10 +109,10 @@ internal sealed class JmdcInMemoryScenario
         string? dateOfPrescription = null,
         int? administeredDays = 1,
         string medicalFacilityId = "F0231947",
-        string prescribedAmountPerDay = "1",
+        string prescribedAmountPerDay = "1.0",
         string unitOfAdministeredAmount = "T",
         string? asNeededMedicationFlag = null,
-        string administeredAmount = "1",
+        string administeredAmount = "1.0",
         decimal drugPrice = 10.1m,
         decimal actualPoint = 0m)
     {
@@ -158,7 +160,7 @@ internal sealed class JmdcInMemoryScenario
     internal void AddProcedureMaster(
         long standardizedProcedureCode,
         string standardizedProcedureVersion,
-        string icd9cmLevel1 = "9394")
+        string icd9cmLevel1 = "")
     {
         _procedureMaster[(standardizedProcedureCode, standardizedProcedureVersion)] = icd9cmLevel1;
     }
@@ -201,8 +203,7 @@ internal sealed class JmdcInMemoryScenario
     {
         var personId = ParseMemberId(memberId);
         var builder = new JmdcPersonBuilder(new JmdcPersonBuilder.JmdcVendor());
-        var vocabulary = new JmdcTestVocabulary();
-        builder.JoinToVocabulary(vocabulary);
+        builder.JoinToVocabulary(_vocabulary);
 
         var enrollments = _enrollments
             .Where(row => row.MemberId == memberId)
@@ -250,7 +251,7 @@ internal sealed class JmdcInMemoryScenario
             if (!claims.TryGetValue(diagnosis.ClaimId, out var claim))
                 throw new InvalidOperationException($"Claim {diagnosis.ClaimId} was not added.");
 
-            foreach (var entity in ToDiagnosisEntities(personId, diagnosis, claim, vocabulary))
+            foreach (var entity in ToDiagnosisEntities(personId, diagnosis, claim, _vocabulary))
                 builder.AddData(entity);
         }
 
@@ -260,7 +261,7 @@ internal sealed class JmdcInMemoryScenario
             if (!claims.TryGetValue(drug.ClaimId, out var claim))
                 throw new InvalidOperationException($"Claim {drug.ClaimId} was not added.");
 
-            builder.AddData(ToDrug(personId, drug, claim, ++drugEventId));
+            builder.AddData(ToDrug(personId, drug, claim, ++drugEventId, _vocabulary));
         }
 
         long procedureEventId = 0;
@@ -269,7 +270,12 @@ internal sealed class JmdcInMemoryScenario
             if (!claims.TryGetValue(procedure.ClaimId, out var claim))
                 throw new InvalidOperationException($"Claim {procedure.ClaimId} was not added.");
 
-            foreach (var entity in ToProcedureEntities(personId, procedure, claim, ++procedureEventId))
+            foreach (var entity in ToProcedureEntities(
+                         personId,
+                         procedure,
+                         claim,
+                         ++procedureEventId,
+                         _vocabulary))
                 builder.AddData(entity);
         }
 
@@ -307,6 +313,9 @@ internal sealed class JmdcInMemoryScenario
         foreach (var facility in _facilities)
         {
             var id = ParseFacilityId(facility.MedicalFacilityId);
+            var specialty = _vocabulary
+                .Lookup(facility.MediumClassificationOfDepartment, "JMDC_SPECIALTY", DateTime.MinValue)
+                .FirstOrDefault();
             careSites.Add(new CareSite
             {
                 Id = id,
@@ -320,8 +329,8 @@ internal sealed class JmdcInMemoryScenario
                 CareSiteId = id,
                 ProviderSourceValue = facility.MedicalFacilityId,
                 SourceValue = facility.MediumClassificationOfDepartment,
-                ConceptId = facility.MediumClassificationOfDepartment == "Cardiology" ? 38004451 : 0,
-                SpecialtySourceConceptId = 0,
+                ConceptId = specialty?.ConceptId ?? 0,
+                SpecialtySourceConceptId = specialty is null ? 0 : GetSourceConceptId(specialty),
                 AdditionalFields = []
             });
         }
@@ -436,37 +445,56 @@ internal sealed class JmdcInMemoryScenario
     {
         _diagnosisMaster.TryGetValue(row.StandardDiseaseCode, out var icd10);
         icd10 ??= string.Empty;
-        var mapping = DiagnosisMapping.For(icd10);
         var sourceValue = $"{row.StandardDiseaseCode}|{row.StandardDiseaseName}";
         var typeConceptId = row.TypeOfClaim == "Outpatient" ? 32859 : 32853;
         var normalizedStart = ParseDate(row.DateOfMedicalCareStart).ToString("yyyyMMdd", CultureInfo.InvariantCulture);
-        var entity = new Entity
+        var sourceRecordGuid = Guid.NewGuid();
+
+        foreach (var mapping in vocabulary.Lookup(icd10, "JMDC-ICD10-SNOMED", ClaimStart(claim)))
         {
-            PersonId = personId,
-            ConceptId = mapping.ConceptId,
-            Domain = mapping.Domain,
-            StartDate = ClaimStart(claim),
-            TypeConceptId = typeConceptId,
-            VisitOccurrenceId = ParseClaimId(row.ClaimId),
-            ProviderId = ParseFacilityId(row.MedicalFacilityId),
-            SourceValue = sourceValue,
-            SourceConceptId = mapping.SourceConceptId,
-            SourceRecordGuid = Guid.NewGuid(),
-            AdditionalFields = new Dictionary<string, string>
+            if (mapping.ValueAsConceptIds is not null)
             {
-                ["month_and_year_of_start"] = normalizedStart,
-                ["start_m_and_y_date"] = normalizedStart,
-                ["month_and_year"] = claim.MonthAndYearOfMedicalCare,
-                ["suspicion_flag"] = row.SuspicionFlag?.ToString(CultureInfo.InvariantCulture) ?? string.Empty
+                foreach (var valueConceptId in mapping.ValueAsConceptIds)
+                {
+                    vocabulary.WithMapping(
+                        "JMDC-ICD10-MapsToValue",
+                        sourceValue,
+                        valueConceptId,
+                        mapping.Domain);
+                }
             }
-        };
 
-        if (mapping.ValueConceptId.HasValue)
-            vocabulary.WithValue(sourceValue, mapping.ValueConceptId.Value);
+            var entity = new Entity
+            {
+                PersonId = personId,
+                ConceptId = mapping.ConceptId ?? 0,
+                Domain = mapping.Domain,
+                StartDate = DiagnosisStart(claim),
+                TypeConceptId = typeConceptId,
+                VisitOccurrenceId = ParseClaimId(row.ClaimId),
+                ProviderId = ParseFacilityId(row.MedicalFacilityId),
+                SourceValue = sourceValue,
+                SourceConceptId = GetSourceConceptId(mapping),
+                SourceRecordGuid = sourceRecordGuid,
+                VocabularySourceValue = mapping.SourceCode,
+                ValidStartDate = mapping.ValidStartDate,
+                ValidEndDate = mapping.ValidEndDate,
+                Ingredients = mapping.Ingredients is null ? null : [.. mapping.Ingredients],
+                SourceConcepts = [.. mapping.SourceConcepts],
+                ValueAsConceptId = mapping.ValueAsConceptIds?.FirstOrDefault(),
+                AdditionalFields = new Dictionary<string, string>
+                {
+                    ["month_and_year_of_start"] = normalizedStart,
+                    ["start_m_and_y_date"] = normalizedStart,
+                    ["month_and_year"] = claim.MonthAndYearOfMedicalCare,
+                    ["suspicion_flag"] = row.SuspicionFlag?.ToString(CultureInfo.InvariantCulture) ?? string.Empty
+                }
+            };
 
-        // Diagnosis.xml always loads a ConditionOccurrence. Its mapped concept domain
-        // is used later by AddToChunk to route the built record to the target CDM table.
-        yield return new ConditionOccurrence(entity);
+            // Diagnosis.xml first loads a ConditionOccurrence. JmdcPersonBuilder later
+            // routes it by the domain returned from JMDC-ICD10-SNOMED.
+            yield return new ConditionOccurrence(entity);
+        }
 
         var isDpcDeath = row.TypeOfClaim == "DPC" && row.Outcome is 6 or 7;
         var isOtherDeath = row.TypeOfClaim != "DPC" && row.Outcome == 3;
@@ -491,7 +519,8 @@ internal sealed class JmdcInMemoryScenario
         long personId,
         DrugRow row,
         ClaimRow claim,
-        long eventId)
+        long eventId,
+        JmdcTestVocabulary vocabulary)
     {
         int? daysSupply = row.AdministeredDays switch
         {
@@ -506,15 +535,28 @@ internal sealed class JmdcInMemoryScenario
         if (!string.IsNullOrEmpty(row.AdministeredAmount))
             sig += $", {row.AdministeredAmount} {row.UnitOfAdministeredAmount} total";
 
+        var sourceValue = row.JmdcDrugCode.ToString(CultureInfo.InvariantCulture);
+        var mapping = RequiredMapping(
+            vocabulary,
+            sourceValue,
+            "JMDC_DRUGCODE_RXNORM",
+            row.DateOfPrescription is null ? ClaimStart(claim) : ParseDate(row.DateOfPrescription));
         var drug = new DrugExposure(new Entity
         {
             PersonId = personId,
-            ConceptId = row.JmdcDrugCode == 100000008105 ? 35152527 : 0,
+            ConceptId = mapping.ConceptId ?? 0,
+            Domain = mapping.Domain,
             StartDate = row.DateOfPrescription is null ? DateTime.MinValue : ParseDate(row.DateOfPrescription),
             TypeConceptId = row.TypeOfClaim is "Outpatient" or "Pharmacy" ? 32869 : 32818,
             VisitOccurrenceId = ParseClaimId(row.ClaimId),
             ProviderId = ParseFacilityId(row.MedicalFacilityId),
-            SourceValue = row.JmdcDrugCode.ToString(CultureInfo.InvariantCulture),
+            SourceValue = sourceValue,
+            SourceConceptId = GetSourceConceptId(mapping),
+            VocabularySourceValue = mapping.SourceCode,
+            ValidStartDate = mapping.ValidStartDate,
+            ValidEndDate = mapping.ValidEndDate,
+            Ingredients = mapping.Ingredients is null ? null : [.. mapping.Ingredients],
+            SourceConcepts = [.. mapping.SourceConcepts],
             SourceRecordGuid = Guid.NewGuid(),
             AdditionalFields = []
         })
@@ -538,65 +580,92 @@ internal sealed class JmdcInMemoryScenario
         long personId,
         ProcedureRow row,
         ClaimRow claim,
-        long eventId)
+        long eventId,
+        JmdcTestVocabulary vocabulary)
     {
         _procedureMaster.TryGetValue(
             (row.StandardizedProcedureCode, row.StandardizedProcedureVersion),
             out var icd9);
         icd9 ??= row.StandardizedProcedureCode.ToString(CultureInfo.InvariantCulture);
-        var mapped = icd9 == "9394";
         var typeConceptId = row.TypeOfClaim == "Outpatient" ? 32859 : 32853;
         var sourceRecordGuid = Guid.NewGuid();
-        var common = new Entity
-        {
-            PersonId = personId,
-            StartDate = row.DateOfProcedure is null ? DateTime.MinValue : ParseDate(row.DateOfProcedure),
-            VisitOccurrenceId = ParseClaimId(row.ClaimId),
-            ProviderId = ParseFacilityId(row.MedicalFacilityId),
-            SourceValue = icd9,
-            SourceRecordGuid = sourceRecordGuid,
-            AdditionalFields = new Dictionary<string, string>
-            {
-                ["procedure_type_concept_id"] = typeConceptId.ToString(CultureInfo.InvariantCulture)
-            }
-        };
+        var eventDate = row.DateOfProcedure is null ? ClaimStart(claim) : ParseDate(row.DateOfProcedure);
+        var mappings = vocabulary.Lookup(icd9, "JMDC-ICDProcedure", eventDate)
+            .Select(value => (Value: value, DefinitionType: 0L))
+            .Concat(vocabulary
+                .Lookup(
+                    row.StandardizedProcedureCode.ToString(CultureInfo.InvariantCulture),
+                    "JMDC-JNJProcedure",
+                    eventDate)
+                .Select(value => (Value: value, DefinitionType: 1L)))
+            .ToArray();
 
-        var icd9Procedure = new ProcedureOccurrence(common)
+        if (mappings.Length == 0)
         {
-            Id = eventId,
-            ConceptId = mapped ? 4206920 : 0,
-            SourceConceptId = mapped ? 2007683 : 0,
-            TypeConceptId = 0
-        };
-        icd9Procedure.ProcedureCosts =
-        [
-            new ProcedureCost(icd9Procedure)
-            {
-                TotalPaid = row.ActualPoint * 10m,
-                PaidByCoordinationBenefits = row.NumberOfTimes * 10m * row.ProcedureStandardPoint,
-                CurrencyConceptId = 44818592
-            }
-        ];
+            throw new InvalidOperationException(
+                $"No JMDC procedure vocabulary mapping for ICD procedure '{icd9}' " +
+                $"or standardized procedure '{row.StandardizedProcedureCode}'.");
+        }
 
-        var jnjProcedure = new ProcedureOccurrence(common)
+        foreach (var (mapping, definitionType) in mappings)
         {
-            Id = eventId,
-            ConceptId = 0,
-            TypeConceptId = 1
-        };
-        jnjProcedure.ProcedureCosts =
-        [
-            new ProcedureCost(jnjProcedure)
+            var procedure = new ProcedureOccurrence(new Entity
             {
-                TotalPaid = row.ActualPoint * 10m,
-                PaidByCoordinationBenefits = row.NumberOfTimes * 10m * row.ProcedureStandardPoint,
-                CurrencyConceptId = 44818592
-            }
-        ];
+                PersonId = personId,
+                ConceptId = mapping.ConceptId ?? 0,
+                Domain = mapping.Domain,
+                StartDate = row.DateOfProcedure is null ? DateTime.MinValue : ParseDate(row.DateOfProcedure),
+                VisitOccurrenceId = ParseClaimId(row.ClaimId),
+                ProviderId = ParseFacilityId(row.MedicalFacilityId),
+                SourceValue = icd9,
+                SourceConceptId = GetSourceConceptId(mapping),
+                VocabularySourceValue = mapping.SourceCode,
+                ValidStartDate = mapping.ValidStartDate,
+                ValidEndDate = mapping.ValidEndDate,
+                Ingredients = mapping.Ingredients is null ? null : [.. mapping.Ingredients],
+                SourceConcepts = [.. mapping.SourceConcepts],
+                SourceRecordGuid = sourceRecordGuid,
+                AdditionalFields = new Dictionary<string, string>
+                {
+                    ["procedure_type_concept_id"] = typeConceptId.ToString(CultureInfo.InvariantCulture)
+                }
+            })
+            {
+                Id = eventId,
+                TypeConceptId = definitionType
+            };
+            procedure.ProcedureCosts =
+            [
+                new ProcedureCost(procedure)
+                {
+                    TotalPaid = row.ActualPoint * 10m,
+                    PaidByCoordinationBenefits = row.NumberOfTimes * 10m * row.ProcedureStandardPoint,
+                    CurrencyConceptId = 44818592
+                }
+            ];
 
-        yield return icd9Procedure;
-        yield return jnjProcedure;
+            yield return procedure;
+        }
     }
+
+    private static LookupValue RequiredMapping(
+        JmdcTestVocabulary vocabulary,
+        string sourceValue,
+        string lookup,
+        DateTime eventDate)
+    {
+        var values = vocabulary.Lookup(sourceValue, lookup, eventDate);
+        if (values.Count == 0)
+        {
+            throw new InvalidOperationException(
+                $"No test vocabulary mapping for lookup '{lookup}' and source value '{sourceValue}'.");
+        }
+
+        return values[0];
+    }
+
+    private static long GetSourceConceptId(LookupValue mapping) =>
+        mapping.SourceConcepts.FirstOrDefault()?.ConceptId ?? 0;
 
     private static IEnumerable<IEntity> ToCheckupEntities(long personId, AnnualHealthCheckupRow row)
     {
@@ -684,6 +753,11 @@ internal sealed class JmdcInMemoryScenario
             ? admission
             : month;
     }
+
+    private static DateTime DiagnosisStart(ClaimRow row) =>
+        row.AdmissionDate is null
+            ? FirstDayOfMonth(row.MonthAndYearOfMedicalCare).AddDays(14)
+            : ParseDate(row.AdmissionDate);
 
     private static DateTime FirstDayOfMonth(string value) =>
         DateTime.ParseExact(value + "01", "yyyyMMdd", CultureInfo.InvariantCulture);
@@ -778,21 +852,6 @@ internal sealed class JmdcInMemoryScenario
         string MedicalFacilityId,
         string MediumClassificationOfDepartment);
 
-    private sealed record DiagnosisMapping(
-        string Domain,
-        long ConceptId,
-        long SourceConceptId,
-        long? ValueConceptId)
-    {
-        internal static DiagnosisMapping For(string icd10) => icd10 switch
-        {
-            "I10" => new("Condition", 320128, 45591453, null),
-            "Z043" => new("Procedure", 4085923, 0, null),
-            "R824" => new("Measurement", 4042243, 0, 4181412),
-            "Z914" => new("Observation", 1340204, 45590771, 439990),
-            _ => new("Condition", 0, 0, null)
-        };
-    }
 }
 
 internal sealed record StaticDataResult(
@@ -801,11 +860,111 @@ internal sealed record StaticDataResult(
 
 internal sealed class JmdcTestVocabulary : IVocabulary
 {
-    private readonly Dictionary<string, long> _values = [];
+    private static readonly DateTime DefaultValidStart = new(1900, 1, 1);
+    private static readonly DateTime DefaultValidEnd = new(2099, 12, 31);
 
-    internal JmdcTestVocabulary WithValue(string sourceValue, long conceptId)
+    private readonly Dictionary<string, List<LookupValue>> _mappings =
+        new(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<long, string> _conceptDomains = [];
+    private readonly Dictionary<long, string> _conceptVocabularies = [];
+
+    internal JmdcTestVocabulary()
     {
-        _values[sourceValue] = conceptId;
+        // Diagnosis.xml: condition_lookup_key -> standard concept/domain.
+        WithMapping("JMDC-ICD10-SNOMED", "J309", 0, "Condition");
+        WithMapping("JMDC-ICD10-SNOMED", "I10", 320128, "Condition", 45591453, "SNOMED");
+        WithMapping("JMDC-ICD10-SNOMED", "Z043", 4085923, "Procedure", vocabularyId: "SNOMED");
+        WithMapping(
+            "JMDC-ICD10-SNOMED",
+            "R824",
+            4042243,
+            "Measurement",
+            vocabularyId: "SNOMED",
+            valueAsConceptIds: [4181412]);
+        WithMapping(
+            "JMDC-ICD10-SNOMED",
+            "Z914",
+            1340204,
+            "Observation",
+            45590771,
+            "SNOMED",
+            [439990]);
+
+        // JmdcPersonBuilder asks this lookup by the final source_value.
+        WithMapping("JMDC-ICD10-MapsToValue", "3|allergic rhinitis", 4181412, "Measurement");
+        WithMapping("JMDC-ICD10-MapsToValue", "4|allergic rhinitis", 439990, "Observation");
+
+        // Drug.xml: known source codes used by the JMDC R cases.
+        WithMapping("JMDC_DRUGCODE_RXNORM", "100000067351", 0, "Drug");
+        WithMapping("JMDC_DRUGCODE_RXNORM", "100000008105", 35152527, "Drug", vocabularyId: "RxNorm");
+        WithMapping("JMDC_DRUGCODE_RXNORM", "1", 0, "Drug");
+
+        // Procedure.xml has two independent source vocabularies for one source row.
+        WithMapping("JMDC-ICDProcedure", "9394", 4206920, "Procedure", 2007683, "SNOMED");
+        WithMapping("JMDC-JNJProcedure", "123", 0, "Procedure");
+        WithMapping("JMDC-JNJProcedure", "1", 0, "Procedure");
+        WithMapping("JMDC-JNJProcedure", "2", 0, "Procedure");
+
+        // L_PROVIDER.xml.
+        WithMapping("JMDC_SPECIALTY", "General Internal Medicine", 0, "Provider");
+        WithMapping("JMDC_SPECIALTY", "Cardiology", 38004451, "Provider");
+    }
+
+    internal int MappingCount => _mappings.Values.Sum(values => values.Count);
+
+    internal JmdcTestVocabulary WithMapping(
+        string lookup,
+        string sourceValue,
+        long conceptId,
+        string domain,
+        long sourceConceptId = 0,
+        string? vocabularyId = null,
+        long[]? valueAsConceptIds = null)
+    {
+        var key = MappingKey(lookup, sourceValue);
+        if (!_mappings.TryGetValue(key, out var values))
+        {
+            values = [];
+            _mappings.Add(key, values);
+        }
+
+        if (values.Any(value =>
+                value.ConceptId == conceptId &&
+                string.Equals(value.Domain, domain, StringComparison.Ordinal) &&
+                string.Equals(value.SourceCode, sourceValue, StringComparison.OrdinalIgnoreCase)))
+        {
+            return this;
+        }
+
+        var sourceConcepts = new HashSet<SourceConcepts>();
+        if (sourceConceptId > 0)
+        {
+            sourceConcepts.Add(new SourceConcepts
+            {
+                ConceptId = sourceConceptId,
+                ValidStartDate = DefaultValidStart,
+                ValidEndDate = DefaultValidEnd
+            });
+        }
+
+        values.Add(new LookupValue
+        {
+            ConceptId = conceptId,
+            Domain = domain,
+            SourceCode = sourceValue,
+            ValidStartDate = DefaultValidStart,
+            ValidEndDate = DefaultValidEnd,
+            SourceConcepts = sourceConcepts,
+            ValueAsConceptIds = valueAsConceptIds is null ? null : [.. valueAsConceptIds]
+        });
+
+        if (conceptId > 0)
+        {
+            _conceptDomains[conceptId] = domain;
+            if (!string.IsNullOrWhiteSpace(vocabularyId))
+                _conceptVocabularies[conceptId] = vocabularyId;
+        }
+
         return this;
     }
 
@@ -815,21 +974,36 @@ internal sealed class JmdcTestVocabulary : IVocabulary
 
     public List<LookupValue> Lookup(string sourceValue, string key, DateTime eventDate)
     {
-        if (key == "JMDC-ICD10-MapsToValue" &&
-            sourceValue is not null &&
-            _values.TryGetValue(sourceValue, out var conceptId))
-        {
-            return [new LookupValue { ConceptId = conceptId }];
-        }
+        if (string.IsNullOrWhiteSpace(sourceValue) || string.IsNullOrWhiteSpace(key))
+            return [];
 
-        return [];
+        if (!_mappings.TryGetValue(MappingKey(key, sourceValue), out var values))
+            return [];
+
+        if (eventDate == DateTime.MinValue)
+            return [.. values];
+
+        return values
+            .Where(value => eventDate.Date >= value.ValidStartDate.Date &&
+                            eventDate.Date <= value.ValidEndDate.Date)
+            .ToList();
     }
 
-    public int? LookupGender(string genderSourceValue) => null;
+    public int? LookupGender(string genderSourceValue) => genderSourceValue?.Trim().ToLowerInvariant() switch
+    {
+        "male" or "m" => 8507,
+        "female" or "f" => 8532,
+        _ => 8551
+    };
 
     public IEnumerable<PregnancyConcept> LookupPregnancyConcept(long conceptId) => [];
 
-    public string? GetSourceVocabularyId(long conceptId) => null;
+    public string? GetSourceVocabularyId(long conceptId) =>
+        _conceptVocabularies.GetValueOrDefault(conceptId);
 
-    public string? GetSourceDomain(long conceptId) => null;
+    public string? GetSourceDomain(long conceptId) =>
+        _conceptDomains.GetValueOrDefault(conceptId);
+
+    private static string MappingKey(string lookup, string sourceValue) =>
+        $"{lookup.Trim()}\u001f{sourceValue.Trim()}";
 }

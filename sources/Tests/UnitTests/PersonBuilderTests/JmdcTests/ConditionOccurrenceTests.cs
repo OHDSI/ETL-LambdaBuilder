@@ -5,30 +5,41 @@ namespace org.ohdsi.cdm.Tests.UnitTests.PersonBuilderTests.JmdcTests;
 public sealed class ConditionOccurrenceTests
 {
     [Fact]
-    public void Build_Jmdc_ConditionOccurrence_R701_MapsPersonId()
+    public void Build_Jmdc_ConditionOccurrence_R701_ConditionOccurrencePersonId()
     {
-        var source = BasicScenario("M000000701", "C000000000701");
+        const string memberId = "M000000701";
+        var source = new JmdcInMemoryScenario();
+        source.AddEnrollment(memberId);
+        source.AddClaim(memberId, "C000000000701");
+        source.AddDiagnosis(memberId, "C000000000701");
 
-        Assert.Equal(701L, VisitCondition(source, "M000000701", 701).PersonId);
+        Assert.Equal(701L, VisitCondition(source, memberId, 701).PersonId);
     }
 
     [Fact]
-    public void Build_Jmdc_ConditionOccurrence_R702_MapsVisitOccurrenceId()
+    public void Build_Jmdc_ConditionOccurrence_R702_ConditionOccurrenceVisitOccurrenceId()
     {
-        var source = BasicScenario("M000000702", "C000000000702");
+        const string memberId = "M000000702";
+        var source = new JmdcInMemoryScenario();
+        source.AddEnrollment(memberId);
+        source.AddClaim(memberId, "C000000000702");
+        source.AddDiagnosis(memberId, "C000000000702");
 
-        Assert.Equal(702L, VisitCondition(source, "M000000702", 702).VisitOccurrenceId);
+        Assert.Equal(702L, VisitCondition(source, memberId, 702).VisitOccurrenceId);
     }
 
     [Fact]
-    public void Build_Jmdc_ConditionOccurrence_R703_MapsConditionTypeByDiagnosisClaimType()
+    public void Build_Jmdc_ConditionOccurrence_R703_ConditionTypeConceptId()
     {
         const string memberId = "M000000703";
         var source = new JmdcInMemoryScenario();
         source.AddEnrollment(memberId);
-        AddClaimAndDiagnosis(source, memberId, "C000000000703", "Outpatient");
-        AddClaimAndDiagnosis(source, memberId, "C000000000704", "Inpatient");
-        AddClaimAndDiagnosis(source, memberId, "C000000000705", "DPC");
+        source.AddClaim(memberId, "C000000000703");
+        source.AddDiagnosis(memberId, "C000000000703", typeOfClaim: "Outpatient");
+        source.AddClaim(memberId, "C000000000704");
+        source.AddDiagnosis(memberId, "C000000000704", typeOfClaim: "Inpatient");
+        source.AddClaim(memberId, "C000000000705");
+        source.AddDiagnosis(memberId, "C000000000705", typeOfClaim: "DPC");
 
         var conditions = source.Build(memberId).ConditionOccurrences;
 
@@ -38,7 +49,7 @@ public sealed class ConditionOccurrenceTests
     }
 
     [Fact]
-    public void Build_Jmdc_ConditionOccurrence_R704_UsesAdmissionDateAsConditionStart()
+    public void Build_Jmdc_ConditionOccurrence_R704_ConditionStartDateFromAdmissionDate()
     {
         const string memberId = "M000000704";
         var source = new JmdcInMemoryScenario();
@@ -51,7 +62,7 @@ public sealed class ConditionOccurrenceTests
     }
 
     [Fact]
-    public void Build_Jmdc_ConditionOccurrence_R705_UsesClaimDateAsConditionStart()
+    public void Build_Jmdc_ConditionOccurrence_R705_ConditionStartDateFromClaimDate()
     {
         const string memberId = "M000000705";
         var source = new JmdcInMemoryScenario();
@@ -63,7 +74,7 @@ public sealed class ConditionOccurrenceTests
     }
 
     [Fact]
-    public void Build_Jmdc_ConditionOccurrence_R706_MapsProviderFromMedicalFacility()
+    public void Build_Jmdc_ConditionOccurrence_R706_ConditionProviderId()
     {
         const string memberId = "M000000706";
         var source = new JmdcInMemoryScenario();
@@ -75,7 +86,7 @@ public sealed class ConditionOccurrenceTests
     }
 
     [Fact]
-    public void Build_Jmdc_ConditionOccurrence_R707_MapsConditionConceptAndSourceFieldsThroughDiagnosisMaster()
+    public void Build_Jmdc_ConditionOccurrence_R707_ConditionConceptIdAndSourceValues()
     {
         const string memberId = "M000000707";
         var source = new JmdcInMemoryScenario();
@@ -94,7 +105,7 @@ public sealed class ConditionOccurrenceTests
     }
 
     [Fact]
-    public void Build_Jmdc_ConditionOccurrence_R710_RemovesDiagnosisWithSuspicionFlag()
+    public void Build_Jmdc_ConditionOccurrence_R710_ConditionWithSuspicionFlag()
     {
         const string memberId = "M000000710";
         var source = new JmdcInMemoryScenario();
@@ -104,25 +115,6 @@ public sealed class ConditionOccurrenceTests
             standardDiseaseCode: 1, suspicionFlag: 1);
 
         Assert.Empty(source.Build(memberId).ConditionOccurrences);
-    }
-
-    private static JmdcInMemoryScenario BasicScenario(string memberId, string claimId)
-    {
-        var source = new JmdcInMemoryScenario();
-        source.AddEnrollment(memberId);
-        source.AddClaim(memberId, claimId);
-        source.AddDiagnosis(memberId, claimId);
-        return source;
-    }
-
-    private static void AddClaimAndDiagnosis(
-        JmdcInMemoryScenario source,
-        string memberId,
-        string claimId,
-        string typeOfClaim)
-    {
-        source.AddClaim(memberId, claimId);
-        source.AddDiagnosis(memberId, claimId, typeOfClaim: typeOfClaim);
     }
 
     private static ConditionOccurrence VisitCondition(

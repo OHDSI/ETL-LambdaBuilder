@@ -5,18 +5,21 @@ namespace org.ohdsi.cdm.Tests.UnitTests.PersonBuilderTests.JmdcTests;
 public sealed class VisitOccurrenceTests
 {
     [Fact]
-    public void Build_Jmdc_VisitOccurrence_R401_MapsVisitAndPersonIds()
+    public void Build_Jmdc_VisitOccurrence_R401_VisitOccurrenceAndPersonId()
     {
-        var source = ClaimScenario("M000000401", "C000000000401");
+        const string memberId = "M000000401";
+        var source = new JmdcInMemoryScenario();
+        source.AddEnrollment(memberId);
+        source.AddClaim(memberId, "C000000000401");
 
-        var visit = Visit(source, "M000000401", 401);
+        var visit = Visit(source, memberId, 401);
 
         Assert.Equal(401L, visit.Id);
         Assert.Equal(401L, visit.PersonId);
     }
 
     [Fact]
-    public void Build_Jmdc_VisitOccurrence_R402_MapsVisitConceptByClaimType()
+    public void Build_Jmdc_VisitOccurrence_R402_VisitConceptId()
     {
         const string memberId = "M000000402";
         var source = new JmdcInMemoryScenario();
@@ -33,15 +36,18 @@ public sealed class VisitOccurrenceTests
     }
 
     [Fact]
-    public void Build_Jmdc_VisitOccurrence_R403_UsesMiddleOfClaimMonthWithoutOtherDates()
+    public void Build_Jmdc_VisitOccurrence_R403_VisitStartDateWithoutOtherInfo()
     {
-        var source = ClaimScenario("M000000403", "C000000000406", "201002");
+        const string memberId = "M000000403";
+        var source = new JmdcInMemoryScenario();
+        source.AddEnrollment(memberId);
+        source.AddClaim(memberId, "C000000000406", monthAndYearOfMedicalCare: "201002");
 
-        Assert.Equal(new DateTime(2010, 2, 15), Visit(source, "M000000403", 406).StartDate);
+        Assert.Equal(new DateTime(2010, 2, 15), Visit(source, memberId, 406).StartDate);
     }
 
     [Fact]
-    public void Build_Jmdc_VisitOccurrence_R404_UsesAdmissionDateWithinClaimMonth()
+    public void Build_Jmdc_VisitOccurrence_R404_VisitStartDateWithAdmissionDateInMonthOfCare()
     {
         const string memberId = "M000000404";
         var source = new JmdcInMemoryScenario();
@@ -53,7 +59,7 @@ public sealed class VisitOccurrenceTests
     }
 
     [Fact]
-    public void Build_Jmdc_VisitOccurrence_R405_UsesFirstOfClaimMonthWhenAdmissionIsOutsideMonth()
+    public void Build_Jmdc_VisitOccurrence_R405_VisitStartDateWithAdmissionDateBeforeMonthOfCare()
     {
         const string memberId = "M000000405";
         var source = new JmdcInMemoryScenario();
@@ -65,47 +71,55 @@ public sealed class VisitOccurrenceTests
     }
 
     [Fact]
-    public void Build_Jmdc_VisitOccurrence_R406_UsesPrescriptionDate()
+    public void Build_Jmdc_VisitOccurrence_R406_VisitStartDateWithPrescriptionDate()
     {
         const string memberId = "M000000406";
-        var source = ClaimScenario(memberId, "C000000000409", "201002");
+        var source = new JmdcInMemoryScenario();
+        source.AddEnrollment(memberId);
+        source.AddClaim(memberId, "C000000000409", monthAndYearOfMedicalCare: "201002");
         source.AddDrug(memberId, "C000000000409", dateOfPrescription: "2010-02-05");
 
         Assert.Equal(new DateTime(2010, 2, 5), Visit(source, memberId, 409).StartDate);
     }
 
     [Fact]
-    public void Build_Jmdc_VisitOccurrence_R407_UsesProcedureDate()
+    public void Build_Jmdc_VisitOccurrence_R407_VisitStartDateWithProcedureDate()
     {
         const string memberId = "M000000407";
-        var source = ClaimScenario(memberId, "C000000000410", "201002");
+        var source = new JmdcInMemoryScenario();
+        source.AddEnrollment(memberId);
+        source.AddClaim(memberId, "C000000000410", monthAndYearOfMedicalCare: "201002");
         source.AddProcedure(memberId, "C000000000410", dateOfProcedure: "2010-02-05");
 
         Assert.Equal(new DateTime(2010, 2, 5), Visit(source, memberId, 410).StartDate);
     }
 
     [Fact]
-    public void Build_Jmdc_VisitOccurrence_R408_UsesUniqueDiagnosisStartWithinClaimMonth()
+    public void Build_Jmdc_VisitOccurrence_R408_VisitStartDateFromStartOfMedicalCare()
     {
         const string memberId = "M000000408";
-        var source = ClaimScenario(memberId, "C000000000411", "201002");
+        var source = new JmdcInMemoryScenario();
+        source.AddEnrollment(memberId);
+        source.AddClaim(memberId, "C000000000411", monthAndYearOfMedicalCare: "201002");
         source.AddDiagnosis(memberId, "C000000000411", dateOfMedicalCareStart: "2010-02-08");
 
         Assert.Equal(new DateTime(2010, 2, 8), Visit(source, memberId, 411).StartDate);
     }
 
     [Fact]
-    public void Build_Jmdc_VisitOccurrence_R409_IgnoresDiagnosisStartOutsideClaimMonth()
+    public void Build_Jmdc_VisitOccurrence_R409_VisitStartDateWhenStartOfMedicalCareBeforeMonthOfCare()
     {
         const string memberId = "M000000409";
-        var source = ClaimScenario(memberId, "C000000000412", "201002");
+        var source = new JmdcInMemoryScenario();
+        source.AddEnrollment(memberId);
+        source.AddClaim(memberId, "C000000000412", monthAndYearOfMedicalCare: "201002");
         source.AddDiagnosis(memberId, "C000000000412", dateOfMedicalCareStart: "2010-01-01");
 
         Assert.Equal(new DateTime(2010, 2, 15), Visit(source, memberId, 412).StartDate);
     }
 
     [Fact]
-    public void Build_Jmdc_VisitOccurrence_R410_ComputesEndFromFinalStartAndDays()
+    public void Build_Jmdc_VisitOccurrence_R410_VisitEndDate()
     {
         const string memberId = "M000000410";
         var source = new JmdcInMemoryScenario();
@@ -134,15 +148,18 @@ public sealed class VisitOccurrenceTests
     }
 
     [Fact]
-    public void Build_Jmdc_VisitOccurrence_R411_MapsVisitTypeConcept()
+    public void Build_Jmdc_VisitOccurrence_R411_VisitTypeConceptId()
     {
-        var source = ClaimScenario("M000000411", "C000000000420");
+        const string memberId = "M000000411";
+        var source = new JmdcInMemoryScenario();
+        source.AddEnrollment(memberId);
+        source.AddClaim(memberId, "C000000000420");
 
-        Assert.Equal(32810L, Visit(source, "M000000411", 420).TypeConceptId);
+        Assert.Equal(32810L, Visit(source, memberId, 420).TypeConceptId);
     }
 
     [Fact]
-    public void Build_Jmdc_VisitOccurrence_R412_MapsCareSiteFromMedicalFacility()
+    public void Build_Jmdc_VisitOccurrence_R412_VisitCareSiteId()
     {
         const string memberId = "M000000412";
         var source = new JmdcInMemoryScenario();
@@ -153,7 +170,7 @@ public sealed class VisitOccurrenceTests
     }
 
     [Fact]
-    public void Build_Jmdc_VisitOccurrence_R413_MapsClaimTypeAsVisitSourceValue()
+    public void Build_Jmdc_VisitOccurrence_R413_VisitSourceValue()
     {
         const string memberId = "M000000413";
         var source = new JmdcInMemoryScenario();
@@ -164,7 +181,7 @@ public sealed class VisitOccurrenceTests
     }
 
     [Fact]
-    public void Build_Jmdc_VisitOccurrence_R414_UsesOnlyDiagnosisDatesUniqueByCodeProviderAndStart()
+    public void Build_Jmdc_VisitOccurrence_R414_VisitStartDateFromMultipleStartOfMedicalCareRecords()
     {
         const string memberId = "M000000414";
         var source = new JmdcInMemoryScenario();
@@ -190,7 +207,7 @@ public sealed class VisitOccurrenceTests
     }
 
     [Fact]
-    public void Build_Jmdc_VisitOccurrence_R415_DropsPharmacyVisit()
+    public void Build_Jmdc_VisitOccurrence_R415_NoVisitOccurrenceWhenClaimTypeIsPharmacy()
     {
         const string memberId = "M000000415";
         var source = new JmdcInMemoryScenario();
@@ -202,17 +219,6 @@ public sealed class VisitOccurrenceTests
         Assert.Single(data.VisitOccurrences);
         Assert.Single(data.VisitDetails);
         Assert.DoesNotContain(data.VisitOccurrences, item => item.Id == 426);
-    }
-
-    private static JmdcInMemoryScenario ClaimScenario(
-        string memberId,
-        string claimId,
-        string monthAndYear = "202312")
-    {
-        var source = new JmdcInMemoryScenario();
-        source.AddEnrollment(memberId);
-        source.AddClaim(memberId, claimId, monthAndYearOfMedicalCare: monthAndYear);
-        return source;
     }
 
     private static VisitOccurrence Visit(

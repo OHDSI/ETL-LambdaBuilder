@@ -3,7 +3,7 @@ namespace org.ohdsi.cdm.Tests.UnitTests.PersonBuilderTests.JmdcTests;
 public sealed class ObservationPeriodTests
 {
     [Fact]
-    public void Build_Jmdc_ObservationPeriod_R201_MapsPersonId()
+    public void Build_Jmdc_ObservationPeriod_R201_ObservationPeriodPersonId()
     {
         var source = new JmdcInMemoryScenario();
         source.AddEnrollment("M000000201");
@@ -12,7 +12,7 @@ public sealed class ObservationPeriodTests
     }
 
     [Fact]
-    public void Build_Jmdc_ObservationPeriod_R202_MapsStartDate()
+    public void Build_Jmdc_ObservationPeriod_R202_ObservationPeriodStartDate()
     {
         var source = new JmdcInMemoryScenario();
         source.AddEnrollment("M000000202", observationStart: "201001", observationEnd: "201212");
@@ -22,7 +22,7 @@ public sealed class ObservationPeriodTests
     }
 
     [Fact]
-    public void Build_Jmdc_ObservationPeriod_R203_MapsEndDate()
+    public void Build_Jmdc_ObservationPeriod_R203_ObservationPeriodEndDate()
     {
         var source = new JmdcInMemoryScenario();
         source.AddEnrollment("M000000203", observationStart: "201001", observationEnd: "201412");
@@ -32,7 +32,7 @@ public sealed class ObservationPeriodTests
     }
 
     [Fact]
-    public void Build_Jmdc_ObservationPeriod_R204_MapsPeriodTypeConceptId()
+    public void Build_Jmdc_ObservationPeriod_R204_ObservationPeriodType()
     {
         var source = new JmdcInMemoryScenario();
         source.AddEnrollment("M000000204", observationStart: "201001", observationEnd: "201412");

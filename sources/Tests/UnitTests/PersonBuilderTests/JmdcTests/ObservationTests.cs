@@ -5,34 +5,51 @@ namespace org.ohdsi.cdm.Tests.UnitTests.PersonBuilderTests.JmdcTests;
 public sealed class ObservationTests
 {
     [Fact]
-    public void Build_Jmdc_Observation_R1101_CreatesObservationFromDiagnosis()
+    public void Build_Jmdc_Observation_R1101_ObservationPersonIdFromDiagnosis()
     {
-        var source = DiagnosisObservationScenario("M000001101", "C000000001101");
+        const string memberId = "M000001101";
+        var source = new JmdcInMemoryScenario();
+        source.AddEnrollment(memberId);
+        source.AddClaim(memberId, "C000000001101");
+        source.AddDiagnosis(memberId, "C000000001101", standardDiseaseCode: 4);
+        source.AddDiagnosisMaster(4, "Z914");
 
-        Assert.Equal(1101L, VisitObservation(source, "M000001101", 1101).PersonId);
+        Assert.Equal(1101L, VisitObservation(source, memberId, 1101).PersonId);
     }
 
     [Fact]
-    public void Build_Jmdc_Observation_R1102_MapsObservationConceptAndSourceConcept()
+    public void Build_Jmdc_Observation_R1102_ObservationConceptIdFromDiagnosis()
     {
-        var source = DiagnosisObservationScenario("M000001102", "C000000001102");
+        const string memberId = "M000001102";
+        var source = new JmdcInMemoryScenario();
+        source.AddEnrollment(memberId);
+        source.AddClaim(memberId, "C000000001102");
+        source.AddDiagnosis(memberId, "C000000001102", standardDiseaseCode: 4);
+        // R1101 inserts this master row into the shared R source schema before R1102 runs.
+        source.AddDiagnosisMaster(4, "Z914");
 
-        var observation = VisitObservation(source, "M000001102", 1102);
+        var observation = VisitObservation(source, memberId, 1102);
 
         Assert.Equal(1340204L, observation.ConceptId);
         Assert.Equal(45590771L, observation.SourceConceptId);
     }
 
     [Fact]
-    public void Build_Jmdc_Observation_R1103_MapsObservationValueConcept()
+    public void Build_Jmdc_Observation_R1103_ObservationValueAsConceptIdFromDiagnosis()
     {
-        var source = DiagnosisObservationScenario("M000001103", "C000000001103");
+        const string memberId = "M000001103";
+        var source = new JmdcInMemoryScenario();
+        source.AddEnrollment(memberId);
+        source.AddClaim(memberId, "C000000001103");
+        source.AddDiagnosis(memberId, "C000000001103", standardDiseaseCode: 4);
+        // R1101 inserts this master row into the shared R source schema before R1103 runs.
+        source.AddDiagnosisMaster(4, "Z914");
 
-        Assert.Equal(439990L, VisitObservation(source, "M000001103", 1103).ValueAsConceptId);
+        Assert.Equal(439990L, VisitObservation(source, memberId, 1103).ValueAsConceptId);
     }
 
     [Fact]
-    public void Build_Jmdc_Observation_R1104_MapsVisitProviderAndTypeFromDiagnosis()
+    public void Build_Jmdc_Observation_R1104_ObservationVisitOccurrenceIdProviderIdAndTypeConceptIdFromDiagnosis()
     {
         const string memberId = "M000001104";
         var source = new JmdcInMemoryScenario();
@@ -42,6 +59,7 @@ public sealed class ObservationTests
             standardDiseaseCode: 4,
             medicalFacilityId: "F0000009",
             typeOfClaim: "Outpatient");
+        // R1101 inserts this master row into the shared R source schema before R1104 runs.
         source.AddDiagnosisMaster(4, "Z914");
 
         var observation = VisitObservation(source, memberId, 1104);
@@ -51,7 +69,7 @@ public sealed class ObservationTests
     }
 
     [Fact]
-    public void Build_Jmdc_Observation_R1105_UsesAdmissionDate()
+    public void Build_Jmdc_Observation_R1105_ObservationDateFromDiagnosisWithAdmissionDate()
     {
         const string memberId = "M000001105";
         var source = new JmdcInMemoryScenario();
@@ -59,13 +77,14 @@ public sealed class ObservationTests
         source.AddClaim(memberId, "C000000001105",
             monthAndYearOfMedicalCare: "201001", admissionDate: "2010-01-01");
         source.AddDiagnosis(memberId, "C000000001105", standardDiseaseCode: 4);
+        // R1101 inserts this master row into the shared R source schema before R1105 runs.
         source.AddDiagnosisMaster(4, "Z914");
 
         Assert.Equal(new DateTime(2010, 1, 1), VisitObservation(source, memberId, 1105).StartDate);
     }
 
     [Fact]
-    public void Build_Jmdc_Observation_R1106_UsesClaimDateWithoutAdmissionDate()
+    public void Build_Jmdc_Observation_R1106_ObservationDateFromDiagnosisWithoutAdmissionDate()
     {
         const string memberId = "M000001106";
         var source = new JmdcInMemoryScenario();
@@ -73,13 +92,14 @@ public sealed class ObservationTests
         source.AddClaim(memberId, "C000000001106",
             monthAndYearOfMedicalCare: "201001", admissionDate: null);
         source.AddDiagnosis(memberId, "C000000001106", standardDiseaseCode: 4);
+        // R1101 inserts this master row into the shared R source schema before R1106 runs.
         source.AddDiagnosisMaster(4, "Z914");
 
         Assert.Equal(new DateTime(2010, 1, 15), VisitObservation(source, memberId, 1106).StartDate);
     }
 
     [Fact]
-    public void Build_Jmdc_Observation_R1107_CreatesSleepObservationFromCheckup()
+    public void Build_Jmdc_Observation_R1107_ObservationFromCheckup()
     {
         const string memberId = "M000001107";
         var source = new JmdcInMemoryScenario();
@@ -92,20 +112,6 @@ public sealed class ObservationTests
 
         Assert.Equal(new DateTime(2010, 1, 13), observation.StartDate);
         Assert.Equal(4188540L, observation.ValueAsConceptId);
-    }
-
-    private static JmdcInMemoryScenario DiagnosisObservationScenario(
-        string memberId,
-        string claimId)
-    {
-        var source = new JmdcInMemoryScenario();
-        source.AddEnrollment(memberId);
-        source.AddClaim(memberId, claimId);
-        source.AddDiagnosis(memberId, claimId, standardDiseaseCode: 4);
-        // The R suite reuses the master row inserted by R1101. Each xUnit test is isolated,
-        // so the prerequisite master row is made explicit in every equivalent scenario.
-        source.AddDiagnosisMaster(4, "Z914");
-        return source;
     }
 
     private static Observation VisitObservation(

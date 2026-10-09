@@ -3,7 +3,7 @@ namespace org.ohdsi.cdm.Tests.UnitTests.PersonBuilderTests.JmdcTests;
 public sealed class DeathTests
 {
     [Fact]
-    public void Build_Jmdc_Death_R601_CreatesDeathFromDiagnosis()
+    public void Build_Jmdc_Death_R601_DeathPersonIdFromDiagnosis()
     {
         var source = new JmdcInMemoryScenario();
         source.AddEnrollment("M000000601");
@@ -14,7 +14,7 @@ public sealed class DeathTests
     }
 
     [Fact]
-    public void Build_Jmdc_Death_R602_CreatesDeathFromEnrollment()
+    public void Build_Jmdc_Death_R602_DeathPersonIdFromEnrollment()
     {
         var source = new JmdcInMemoryScenario();
         source.AddEnrollment("M000000602", withdrawalDeath: true);
@@ -23,7 +23,7 @@ public sealed class DeathTests
     }
 
     [Fact]
-    public void Build_Jmdc_Death_R603_UsesVisitEndAsDiagnosisDeathDate()
+    public void Build_Jmdc_Death_R603_DeathDateFromDiagnosis()
     {
         var source = new JmdcInMemoryScenario();
         source.AddEnrollment("M000000603");
@@ -36,7 +36,7 @@ public sealed class DeathTests
     }
 
     [Fact]
-    public void Build_Jmdc_Death_R604_UsesObservationEndAsEnrollmentDeathDate()
+    public void Build_Jmdc_Death_R604_DeathDateFromEnrollment()
     {
         var source = new JmdcInMemoryScenario();
         source.AddEnrollment("M000000604",
@@ -47,7 +47,7 @@ public sealed class DeathTests
     }
 
     [Fact]
-    public void Build_Jmdc_Death_R605_SelectsLatestDiagnosisDeath()
+    public void Build_Jmdc_Death_R605_DeathDateFromMultipleDiagnoses()
     {
         var source = new JmdcInMemoryScenario();
         source.AddEnrollment("M000000605");
@@ -63,7 +63,7 @@ public sealed class DeathTests
     }
 
     [Fact]
-    public void Build_Jmdc_Death_R606_PrefersDiagnosisDeathToEnrollmentDeath()
+    public void Build_Jmdc_Death_R606_DeathDateFromDiagnosisAndEnrollment()
     {
         var source = new JmdcInMemoryScenario();
         source.AddEnrollment("M000000606",
@@ -77,19 +77,17 @@ public sealed class DeathTests
     }
 
     [Fact]
-    public void Build_Jmdc_Death_R607_MapsDeathTypeConceptIds()
+    public void Build_Jmdc_Death_R607_DeathTypeConceptId()
     {
-        var enrollmentSource = new JmdcInMemoryScenario();
-        enrollmentSource.AddEnrollment("M000000607", withdrawalDeath: true);
-
-        var diagnosisSource = new JmdcInMemoryScenario();
-        diagnosisSource.AddEnrollment("M000000608");
-        diagnosisSource.AddClaim("M000000608", "C000000000605");
-        diagnosisSource.AddDiagnosis("M000000608", "C000000000605", outcome: 3);
+        var source = new JmdcInMemoryScenario();
+        source.AddEnrollment("M000000607", withdrawalDeath: true);
+        source.AddEnrollment("M000000608");
+        source.AddClaim("M000000608", "C000000000605");
+        source.AddDiagnosis("M000000608", "C000000000605", outcome: 3);
 
         Assert.Equal(32815L,
-            Assert.Single(enrollmentSource.Build("M000000607").Deaths).TypeConceptId);
+            Assert.Single(source.Build("M000000607").Deaths).TypeConceptId);
         Assert.Equal(32812L,
-            Assert.Single(diagnosisSource.Build("M000000608").Deaths).TypeConceptId);
+            Assert.Single(source.Build("M000000608").Deaths).TypeConceptId);
     }
 }
