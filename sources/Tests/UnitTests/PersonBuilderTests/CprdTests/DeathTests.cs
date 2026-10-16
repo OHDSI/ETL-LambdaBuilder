@@ -7,8 +7,9 @@ public class DeathTests
     {
         const long id = 9888;
         var s = new CprdInMemoryScenario();
-        s.AddPatient(id, yob: 169, pracid: 888, crd: "2009-01-01", deathDate: "2010-01-01");
-        var death = Assert.Single(s.Build(id).Data.Deaths);
+        s.AddPatient(id, yob: 169, pracid: 888, crd: "2009-01-01", deathDate: "2010-01-01", toreason: 1);
+        var b = s.Build(id).Data;
+        var death = Assert.Single(b.Deaths);
         Assert.Equal(CprdRAssert.Date("2010-01-01"), death.StartDate);
     }
 

@@ -78,8 +78,6 @@ internal sealed class CprdInMemoryScenario
             }
         });
 
-        // Patient.xml emits a Death only when DIED=1. The CPRD R defaults use
-        // toreason=0; tests expecting a death therefore correctly expose drift.
         if (deathDate is not null && toreason == 1)
         {
             var deathEntity = BaseEntity(personId, Date(deathDate), 1, 32817, "0", "Death");

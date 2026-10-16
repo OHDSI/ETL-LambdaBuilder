@@ -7,7 +7,9 @@ public class CostTests
     {
         var s = Scenario(41);
         s.AddDrugClaims(41, "00378510501", "2012-02-09", copay: 20, ingcost: 50, dispfee: 25, awp: 20);
-        var cost = Assert.Single(s.Build(41).Data.Cost.Where(x => x.Domain == "Drug"));
+        var b = s.Build(41).Data;
+        var d = b.Cost.Where(x => x.Domain == "Drug");
+        var cost = Assert.Single(d);
         Assert.Equal(20, cost.PaidPatientCopay);
         Assert.Equal(50, cost.PaidIngredientCost);
         Assert.Equal(25, cost.PaidDispensingFee);

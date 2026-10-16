@@ -129,7 +129,11 @@ public sealed class DrugExposureTests
     { var s = Person(175); s.AddImmunization(175, null, "66521011802", patientReported: "N"); Assert.Empty(Build(s, 175).Data.DrugExposures); }
 
     [Fact] public void Build_OptumPanther_DrugExposure_R176_MapsImmunizationNdc()
-    { var s = Person(176); s.AddImmunization(176, "2011-10-12", "66521011802", patientReported: "N"); AssertDrugMapping(Drug(s, 176), 46275888, 46364505, "66521011802"); }
+    { 
+        var s = Person(176); 
+        s.AddImmunization(176, "2011-10-12", "66521011802", patientReported: "N"); 
+        AssertDrugMapping(Drug(s, 176), 46275888, 46364505, "66521011802"); 
+    }
 
     [Fact] public void Build_OptumPanther_DrugExposure_R177_MapsAdministeredImmunizationType()
     { var s = Person(177); s.AddImmunization(177, "2011-10-12", "66521011802", patientReported: "N"); Assert.Equal(32818, Drug(s, 177).TypeConceptId); }

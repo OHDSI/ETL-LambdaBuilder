@@ -65,7 +65,8 @@ public class ProcedureOccurrenceTests
         var s = Scenario(198);
         s.AddOutpatientServices(198, "2012-02-15", "2012-02-15", 199, proc1: "54861");
         s.AddFacilityHeader(198, "2012-02-15", "2012-02-15", 199, proc1: "54861");
-        Assert.Equal(2, s.Build(198).Data.ProcedureOccurrences.Count(x =>
+        var res = s.Build(198).Data;
+        Assert.Equal(2, res.ProcedureOccurrences.Count(x =>
             x.ConceptId == 4200063 && x.StartDate == new DateTime(2012, 2, 15) && x.TypeConceptId == 32846));
     }
 

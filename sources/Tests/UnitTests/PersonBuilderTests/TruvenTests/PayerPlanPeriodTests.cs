@@ -53,7 +53,7 @@ public class PayerPlanPeriodTests
     public void Build_Truven_PayerPlanPeriod_R165_MapsDataTypeOnePlanTypeOne()
     {
         var s = new TruvenInMemoryScenario();
-        s.AddEnrollmentDetail(165, "2013-01-01", "2013-01-31", plantyp: "1", rx: "0");
+        s.AddEnrollmentDetail(165, "2013-01-01", "2013-01-31", plantyp: "1", rx: "1");
         var plans = s.Build(165).Data.PayerPlanPeriods;
         Assert.DoesNotContain(plans, x => x.PayerSourceValue == "");
         Assert.Contains(plans, x => x.PayerSourceValue == "N Commercial Basic/Major Medical");
@@ -63,7 +63,7 @@ public class PayerPlanPeriodTests
     public void Build_Truven_PayerPlanPeriod_R166_MapsDataTypeTwoPlanTypeTwo()
     {
         var s = new TruvenInMemoryScenario();
-        s.AddEnrollmentDetail(166, "2013-01-01", "2013-01-31", datatyp: "2", plantyp: "2", rx: "0");
+        s.AddEnrollmentDetail(166, "2013-01-01", "2013-01-31", datatyp: "2", plantyp: "2", rx: "1");
         var plans = s.Build(166).Data.PayerPlanPeriods;
         Assert.DoesNotContain(plans, x => x.PayerSourceValue == "");
         Assert.Contains(plans, x => x.PayerSourceValue == "C Commercial Comprehensive");

@@ -800,7 +800,7 @@ internal sealed class OptumPantherInMemoryScenario
             : OptionalMapping(ndc, "Drug", date);
         var source = row.Ndc is null
             ? row.Description
-            : $"{row.Ndc}-{row.Description}";
+            : $"{row.Ndc}";
         var additional = new Dictionary<string, string>
         {
             ["encid"] = string.Empty,
