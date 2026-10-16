@@ -10,6 +10,7 @@ using org.ohdsi.cdm.framework.desktop.Helpers;
 using org.ohdsi.cdm.framework.desktop.Settings;
 using org.ohdsi.cdm.presentation.etl.Monitor;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Odbc;
@@ -37,6 +38,7 @@ namespace org.ohdsi.cdm.presentation.etl
 
     class ETL
     {
+        //private static Queue<string> _saveQueue = new Queue<string>();
         public static void SaveEtlLookupsToCloudStorage()
         {
             var vocabulary = new Vocabulary();
@@ -263,6 +265,27 @@ namespace org.ohdsi.cdm.presentation.etl
             Console.WriteLine($"PersonFileName:{Settings.Current.Building.PersonFileName}");
             Console.WriteLine($"PersonIdFieldName:{Settings.Current.Building.PersonIdFieldName}");
             Console.WriteLine($"PersonIdFieldIndex:{Settings.Current.Building.PersonIdFieldIndex}");
+            using var queue = new BlockingCollection<string>();
+            var max = 250;
+            Task save = Task.Run(() =>
+            {
+                foreach (var item in queue.GetConsumingEnumerable())
+                {
+                    while(true)
+                    {
+                        var unprocessed = CloudStorageHelper.GetRunningFunctionInfo(Settings.Current.CloudTriggerStorageName, $"{Settings.Current.GetCDMBuildingPrefix}").Item1;
+                        var canBeLaunched = max - unprocessed;
+
+                        if(canBeLaunched > 0)
+                        {
+                            CloudStorageHelper.TriggerFunctions(item);
+                            break;
+                        }
+                        else
+                            Thread.Sleep(TimeSpan.FromMinutes(1));
+                    }
+                }
+            });
 
             using (var chunkManager = new ChunkManager())
             {
@@ -296,17 +319,17 @@ namespace org.ohdsi.cdm.presentation.etl
 
                     Console.WriteLine("[Moving raw data] Raw data for chunkId=" + chunkId + " is available on cloud storage");
                     //int max = 125;
-                    int max = 250;
-                    Queue<string> queue = new Queue<string>(GetTriggerMessages(chunksSchema, chunkId));
-
-                    while(queue.Count > 0)
+                    //int max = 250;
+                    //Queue<string> queue = new Queue<string>(GetTriggerMessages(chunksSchema, chunkId));
+                    /*
+                    while(_saveQueue.Count > 0)
                     {
                         var unprocessed = CloudStorageHelper.GetRunningFunctionInfo(Settings.Current.CloudTriggerStorageName, $"{Settings.Current.GetCDMBuildingPrefix}").Item1;
                         var canBeLaunched = max - unprocessed;
                         
                         if(canBeLaunched > 0)
                         {
-                            var toLaunch = queue.Dequeue(canBeLaunched);
+                            var toLaunch = _saveQueue.Dequeue(canBeLaunched);
 
                             CloudStorageHelper.TriggerFunctions([.. toLaunch]);
                             //CloudStorageHelper.TriggerFunctions([.. GetTriggerMessages(chunksSchema, chunkId)]);
@@ -315,10 +338,18 @@ namespace org.ohdsi.cdm.presentation.etl
                         else
                             Thread.Sleep(TimeSpan.FromMinutes(1));
                     }
+                    */
+
+                    foreach (var item in GetTriggerMessages(chunksSchema, chunkId))
+                    {
+                        queue.Add(item);
+                    }
                     
                     chunkManager.AddChunk(chunkId);
                 });
 
+                queue.CompleteAdding();
+                Task.WaitAll(save);
                 chunkManager.CompleteAdding();
                 chunkManager.AwaitingCompletion();
 
@@ -573,8 +604,15 @@ namespace org.ohdsi.cdm.presentation.etl
                         if (Settings.Current.Building.SourceEngine.Database == framework.desktop.Enums.Database.Databricks)
                         {
                             Console.WriteLine($"[MoveTableDataToCloudStorage] {e.Message}");
-                            var drop = new OdbcCommand($"drop table {tableName}", connection);
-                            drop.ExecuteNonQuery();
+                            try
+                            {
+                                var drop = new OdbcCommand($"drop table {tableName}", connection);
+                                drop.ExecuteNonQuery();
+                            }
+                            catch(Exception ex)
+                            {
+                                Console.WriteLine($"drop table {tableName} | {e.Message}");
+                            }
 
                             using var create = new OdbcCommand(unloadQuery, connection);
                             create.CommandTimeout = 60 * 60;
