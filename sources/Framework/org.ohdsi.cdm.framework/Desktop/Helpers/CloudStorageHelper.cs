@@ -189,6 +189,8 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
                     });
         }
 
+        // TMP
+        /*
         public static void TriggerFunctions(string[] messages)
         {
             var tasks = new List<Task>();
@@ -221,7 +223,42 @@ namespace org.ohdsi.cdm.framework.desktop.Helpers
                 {
                     var t = azureClient.SendMessageAsync(msg);
                     tasks.Add(t);
+                    Thread.Sleep(TimeSpan.FromMilliseconds(250));
                 }
+            }
+
+            Task.WaitAll([.. tasks]);
+        }*/
+
+
+        public static void TriggerFunctions(string msg)
+        {
+            var tasks = new List<Task>();
+
+            AmazonS3Client awsClient = GetAwsTriggerClient();
+            var azureClient = GetAzureTriggerClient();
+
+            if (awsClient != null)
+            {
+                using (awsClient)
+                using (var tu = new TransferUtility(awsClient))
+                {
+                    var t = tu.UploadAsync(new TransferUtilityUploadRequest
+                    {
+                        InputStream = new MemoryStream(),
+                        BucketName = Settings.Settings.Current.CloudTriggerStorageName,
+                        Key = msg,
+                        ServerSideEncryptionMethod = ServerSideEncryptionMethod.AES256,
+                        StorageClass = S3StorageClass.Standard,
+                    });
+                    tasks.Add(t);
+                }
+            }
+            else if (azureClient != null)
+            {
+                var t = azureClient.SendMessageAsync(msg);
+                tasks.Add(t);
+                Thread.Sleep(TimeSpan.FromMilliseconds(250));
             }
 
             Task.WaitAll([.. tasks]);
