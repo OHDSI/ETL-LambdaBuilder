@@ -38,8 +38,8 @@ public class VisitOccurrenceTests
         s.AddInpatientServices(228, "2012-08-08", "2012-08-12");
         s.AddInpatientServices(228, "2012-10-01", "2012-10-05");
         var visits = s.Build(228).Data.VisitOccurrences;
-        Assert.Contains(visits, x => x.StartDate == new DateTime(2012, 8, 8) && x.EndDate == new DateTime(2012, 8, 8));
-        Assert.Contains(visits, x => x.StartDate == new DateTime(2012, 10, 1) && x.EndDate == new DateTime(2012, 10, 1));
+        Assert.Contains(visits, x => x.StartDate == new DateTime(2012, 8, 8) && x.EndDate == new DateTime(2012, 8, 12));
+        Assert.Contains(visits, x => x.StartDate == new DateTime(2012, 10, 1) && x.EndDate == new DateTime(2012, 10, 05));
     }
 
     [Fact]
@@ -49,7 +49,7 @@ public class VisitOccurrenceTests
         s.AddInpatientServices(230, "2012-09-03", "2012-09-03", stdplac: "23");
         s.AddInpatientServices(230, "2012-09-03", "2012-09-10", revcode: "0100");
         Assert.Contains(s.Build(230).Data.VisitOccurrences,
-            x => x.StartDate == new DateTime(2012, 9, 3) && x.EndDate == new DateTime(2012, 9, 3) && x.ConceptId == 262);
+            x => x.StartDate == new DateTime(2012, 9, 3) && x.EndDate == new DateTime(2012, 9, 10) && x.ConceptId == 262);
     }
 
     [Fact]
