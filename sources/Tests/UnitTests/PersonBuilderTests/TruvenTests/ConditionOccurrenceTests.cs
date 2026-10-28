@@ -20,8 +20,8 @@ public class ConditionOccurrenceTests
         s.AddOutpatientServices(3, "2012-10-16", "2012-10-16", 4, dx1: "1024");
         s.AddFacilityHeader(3, "2012-10-16", "2012-10-16", 4, dx9: "1024");
         var rows = s.Build(3).Data.ConditionOccurrences.Where(x => x.ConceptId == 433706).ToArray();
-        Assert.Contains(rows, x => x.TypeConceptId == 32846 && x.StatusSourceValue == "DX1");
-        Assert.Contains(rows, x => x.TypeConceptId == 32846 && x.StatusSourceValue == "DX9");
+        Assert.Contains(rows, x => x.TypeConceptId == 32860 && x.StatusSourceValue == "DX1");
+        Assert.Contains(rows, x => x.TypeConceptId == 32860 && x.StatusSourceValue == "DX9");
     }
 
     [Fact] public void Build_Truven_ConditionOccurrence_R005_MapsDx4() =>

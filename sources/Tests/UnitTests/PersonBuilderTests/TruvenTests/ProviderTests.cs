@@ -26,7 +26,7 @@ public class ProviderTests
         var provider = Assert.Single(s.BuildStaticData().Providers);
         Assert.Equal(0, provider.CareSiteId);
         Assert.Equal(0, provider.GenderConceptId);
-        Assert.Equal(0, provider.ConceptId);
+        Assert.Equal(0, provider.SpecialtySourceConceptId);
         Assert.Equal(0, provider.GenderSourceConceptId);
     }
 

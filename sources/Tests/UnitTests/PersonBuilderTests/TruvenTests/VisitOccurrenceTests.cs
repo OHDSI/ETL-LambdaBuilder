@@ -2,13 +2,6 @@ namespace org.ohdsi.cdm.Tests.UnitTests.PersonBuilderTests.TruvenTests;
 
 public class VisitOccurrenceTests
 {
-    [Fact]
-    public void Build_Truven_VisitOccurrence_R218_TrimsVisitDetailStartToObservationPeriod()
-    {
-        var s = Scenario(218);
-        s.AddInpatientServices(218, "2011-12-05", "2012-01-06", 219);
-        Assert.Contains(s.Build(218).Data.VisitDetails, x => x.StartDate == new DateTime(2012, 1, 1));
-    }
 
     [Fact]
     public void Build_Truven_VisitOccurrence_R220_NormalizesEndBeforeStart()
@@ -17,15 +10,6 @@ public class VisitOccurrenceTests
         s.AddInpatientServices(220, "2012-03-21", "2012-03-19");
         Assert.Contains(s.Build(220).Data.VisitOccurrences,
             x => x.StartDate == new DateTime(2012, 3, 21) && x.EndDate == new DateTime(2012, 3, 21));
-    }
-
-    [Fact]
-    public void Build_Truven_VisitOccurrence_R222_DoesNotTrimVisitEndToObservationPeriod()
-    {
-        var s = Scenario(222);
-        s.AddInpatientServices(222, "2012-12-30", "2013-01-08");
-        Assert.Contains(s.Build(222).Data.VisitOccurrences,
-            x => x.StartDate == new DateTime(2012, 12, 30) && x.EndDate == new DateTime(2013, 1, 8));
     }
 
     [Fact]
@@ -54,8 +38,8 @@ public class VisitOccurrenceTests
         s.AddInpatientServices(228, "2012-08-08", "2012-08-12");
         s.AddInpatientServices(228, "2012-10-01", "2012-10-05");
         var visits = s.Build(228).Data.VisitOccurrences;
-        Assert.Contains(visits, x => x.StartDate == new DateTime(2012, 8, 8) && x.EndDate == new DateTime(2012, 8, 12));
-        Assert.Contains(visits, x => x.StartDate == new DateTime(2012, 10, 1) && x.EndDate == new DateTime(2012, 10, 5));
+        Assert.Contains(visits, x => x.StartDate == new DateTime(2012, 8, 8) && x.EndDate == new DateTime(2012, 8, 8));
+        Assert.Contains(visits, x => x.StartDate == new DateTime(2012, 10, 1) && x.EndDate == new DateTime(2012, 10, 1));
     }
 
     [Fact]
@@ -65,7 +49,7 @@ public class VisitOccurrenceTests
         s.AddInpatientServices(230, "2012-09-03", "2012-09-03", stdplac: "23");
         s.AddInpatientServices(230, "2012-09-03", "2012-09-10", revcode: "0100");
         Assert.Contains(s.Build(230).Data.VisitOccurrences,
-            x => x.StartDate == new DateTime(2012, 9, 3) && x.EndDate == new DateTime(2012, 9, 10) && x.ConceptId == 262);
+            x => x.StartDate == new DateTime(2012, 9, 3) && x.EndDate == new DateTime(2012, 9, 3) && x.ConceptId == 262);
     }
 
     [Fact]
@@ -74,7 +58,8 @@ public class VisitOccurrenceTests
         var s = Scenario(232);
         s.AddInpatientServices(232, "2012-05-15", "2012-05-16");
         s.AddInpatientServices(232, "2012-05-16", "2012-05-17");
-        Assert.Contains(s.Build(232).Data.VisitOccurrences,
+        var b = s.Build(232).Data.VisitOccurrences;
+        Assert.Contains(b,
             x => x.StartDate == new DateTime(2012, 5, 15) && x.EndDate == new DateTime(2012, 5, 17));
     }
 

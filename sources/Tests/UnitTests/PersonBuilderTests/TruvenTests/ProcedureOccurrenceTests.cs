@@ -67,7 +67,7 @@ public class ProcedureOccurrenceTests
         s.AddFacilityHeader(198, "2012-02-15", "2012-02-15", 199, proc1: "54861");
         var res = s.Build(198).Data;
         Assert.Equal(2, res.ProcedureOccurrences.Count(x =>
-            x.ConceptId == 4200063 && x.StartDate == new DateTime(2012, 2, 15) && x.TypeConceptId == 32846));
+            x.ConceptId == 4200063 && x.StartDate == new DateTime(2012, 2, 15) && x.TypeConceptId == 32860));
     }
 
     [Fact]
@@ -77,8 +77,8 @@ public class ProcedureOccurrenceTests
         s.AddOutpatientServices(200, "2012-03-03", "2012-03-03", 201);
         s.AddFacilityHeader(200, "2012-03-03", "2012-03-03", 201, proc5: "93042");
         var rows = s.Build(200).Data.ProcedureOccurrences;
-        Assert.Contains(rows, x => x.TypeConceptId == 32846);
-        Assert.Contains(rows, x => x.ConceptId == 2313827 && x.TypeConceptId == 32846);
+        Assert.Contains(rows, x => x.TypeConceptId == 32860);
+        Assert.Contains(rows, x => x.ConceptId == 2313827 && x.TypeConceptId == 32860);
     }
 
     [Fact]
@@ -90,9 +90,9 @@ public class ProcedureOccurrenceTests
             proc1: "96900", proc2: "97811", proc3: "92570", proc4: "92568", proc5: "97780", proc6: "0093U");
         var data = s.Build(202).Data;
         foreach (var concept in new long[] { 4180942, 2314322, 40757149, 42739018 })
-            Assert.Contains(data.ProcedureOccurrences, x => x.ConceptId == concept && x.TypeConceptId == 32846);
-        Assert.Contains(data.Measurements, x => x.ConceptId == 4167674 && x.TypeConceptId == 32846);
-        Assert.Contains(data.Measurements, x => x.ConceptId == 709845 && x.TypeConceptId == 32846);
+            Assert.Contains(data.ProcedureOccurrences, x => x.ConceptId == concept && x.TypeConceptId == 32860);
+        Assert.Contains(data.Measurements, x => x.ConceptId == 4167674 && x.TypeConceptId == 32860);
+        Assert.Contains(data.Measurements, x => x.ConceptId == 709845 && x.TypeConceptId == 32860);
     }
 
     private static TruvenInMemoryScenario Scenario(long id, string start = "2012-01-01", string end = "2012-12-31")

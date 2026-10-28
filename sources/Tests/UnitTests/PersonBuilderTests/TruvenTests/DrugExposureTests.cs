@@ -93,6 +93,10 @@ public class DrugExposureTests
         s.AddInpatientServices(87, "2014-11-11", "2014-11-11", 88, proc1: "J9350");
         s.AddInpatientServices(87, "2023-07-01", "2023-07-01", 88, proc1: "J9350");
         var rows = s.Build(87).Data.DrugExposures;
+
+        var endDate = rows.First().EndDate;
+        var validEndDate = rows.First().ValidEndDate;
+
         Assert.Contains(rows, x => x.ConceptId == 19124326 && x.SourceConceptId == 2718911 && x.StartDate == new DateTime(1970, 1, 1) && x.EndDate == new DateTime(2014, 11, 10));
         Assert.Contains(rows, x => x.ConceptId == 0 && x.SourceConceptId == 0 && x.StartDate == new DateTime(2014, 11, 11) && x.EndDate == new DateTime(2023, 6, 30));
         Assert.Contains(rows, x => x.ConceptId == 1302318 && x.SourceConceptId == 2100003123 && x.StartDate == new DateTime(2023, 7, 1) && x.EndDate == new DateTime(2099, 12, 31));

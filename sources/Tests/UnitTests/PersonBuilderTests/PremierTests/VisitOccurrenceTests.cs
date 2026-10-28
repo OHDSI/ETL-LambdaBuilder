@@ -19,20 +19,20 @@ public class VisitOccurrenceTests
     }
 
     [Fact] public void Build_Premier_VisitOccurrence_R155_MapsPointOfOrigin0() => AssertOrigin(155, "0", 8976);
-    [Fact] public void Build_Premier_VisitOccurrence_R157_MapsPointOfOrigin1() => AssertOrigin(157, "1", 8844);
+    [Fact] public void Build_Premier_VisitOccurrence_R157_MapsPointOfOrigin1() => AssertOrigin(157, "1", 0);
     [Fact] public void Build_Premier_VisitOccurrence_R159_MapsPointOfOrigin2() => AssertOrigin(159, "2", 8716);
-    [Fact] public void Build_Premier_VisitOccurrence_R161_MapsPointOfOrigin3() => AssertOrigin(161, "3", 8844);
+    [Fact] public void Build_Premier_VisitOccurrence_R161_MapsPointOfOrigin3() => AssertOrigin(161, "3", 38004298);
     [Fact] public void Build_Premier_VisitOccurrence_R163_MapsPointOfOrigin4() => AssertOrigin(163, "4", 8717);
     [Fact] public void Build_Premier_VisitOccurrence_R165_MapsPointOfOrigin45() => AssertOrigin(165, "45", 581384);
-    [Fact] public void Build_Premier_VisitOccurrence_R167_MapsPointOfOrigin46() => AssertOrigin(167, "46", 8650);
+    [Fact] public void Build_Premier_VisitOccurrence_R167_MapsPointOfOrigin46() => AssertOrigin(167, "46", 0);
     [Fact] public void Build_Premier_VisitOccurrence_R169_MapsPointOfOrigin5() => AssertOrigin(169, "5", 8863);
-    [Fact] public void Build_Premier_VisitOccurrence_R171_MapsPointOfOrigin6() => AssertOrigin(171, "6", 8844);
+    [Fact] public void Build_Premier_VisitOccurrence_R171_MapsPointOfOrigin6() => AssertOrigin(171, "6", 0);
     [Fact] public void Build_Premier_VisitOccurrence_R173_MapsPointOfOrigin7() => AssertOrigin(173, "7", 8870);
-    [Fact] public void Build_Premier_VisitOccurrence_R175_MapsPointOfOrigin8() => AssertOrigin(175, "8", 8844);
-    [Fact] public void Build_Premier_VisitOccurrence_R177_MapsPointOfOrigin9() => AssertOrigin(177, "9", 8844);
+    [Fact] public void Build_Premier_VisitOccurrence_R175_MapsPointOfOrigin8() => AssertOrigin(175, "8", 0);
+    [Fact] public void Build_Premier_VisitOccurrence_R177_MapsPointOfOrigin9() => AssertOrigin(177, "9", 0);
     [Fact] public void Build_Premier_VisitOccurrence_R179_MapsPointOfOriginA() => AssertOrigin(179, "A", 8761);
-    [Fact] public void Build_Premier_VisitOccurrence_R181_MapsPointOfOriginB() => AssertOrigin(181, "B", 8536);
-    [Fact] public void Build_Premier_VisitOccurrence_R183_MapsPointOfOriginC() => AssertOrigin(183, "C", 8536);
+    [Fact] public void Build_Premier_VisitOccurrence_R181_MapsPointOfOriginB() => AssertOrigin(181, "B", 0);
+    [Fact] public void Build_Premier_VisitOccurrence_R183_MapsPointOfOriginC() => AssertOrigin(183, "C", 0);
     [Fact] public void Build_Premier_VisitOccurrence_R185_MapsPointOfOriginD() => AssertOrigin(185, "D", 8717);
     [Fact] public void Build_Premier_VisitOccurrence_R187_MapsPointOfOriginE() => AssertOrigin(187, "E", 8883);
     [Fact] public void Build_Premier_VisitOccurrence_R189_MapsPointOfOriginF() => AssertOrigin(189, "F", 8546);

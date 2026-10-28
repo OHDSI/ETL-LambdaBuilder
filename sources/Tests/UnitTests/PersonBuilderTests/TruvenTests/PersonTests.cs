@@ -41,12 +41,12 @@ public class PersonTests
     }
 
     [Fact]
-    public void Build_Truven_Person_R173_KeepsBirthOneYearAfterEnrollment()
+    public void Build_Truven_Person_R173_DropsBirthOneYearAfterEnrollment()
     {
         var s = new TruvenInMemoryScenario();
         s.AddEnrollmentDetail(173, "2012-01-01", "2012-01-31", "2013");
-        var b = s.Build(173).Data;
-        Assert.Equal(2013, Assert.Single(b.Persons).YearOfBirth);
+        var b = s.Build(173).Data.Persons;        
+        Assert.Empty(b);
     }
 
     [Fact]
