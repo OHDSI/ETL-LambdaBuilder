@@ -397,42 +397,45 @@ internal sealed class TruvenInMemoryScenario
                 entity.AdditionalFields["provid"] = row.Provid ?? "";
                 entity.AdditionalFields["stdprov"] = row.Stdprov;
                 entity.AdditionalFields["procmod"] = row.Procmod;
+
+                var isDrug = string.Equals(
+                    mapping.Domain,
+                    "Drug",
+                    StringComparison.OrdinalIgnoreCase);
+
                 var procedure = new ProcedureOccurrence(entity)
                 {
+                    EndDate = isDrug ? null : entity.EndDate,
                     Quantity = row.Qty,
                     ModifierConceptId = row.Procmod == "P1" ? 4320556 : 0,
                     ProviderKey = ProviderKey(row.Provid, row.Stdprov)
                 };
+
                 if (HasCost(row))
                 {
-                    procedure.ProcedureCosts = [new ProcedureCost(procedure)
-                    {
-                        PaidCopay = row.Copay,
-                        PaidTowardDeductible = row.Deduct,
-                        PaidCoinsurance = row.Coins,
-                        PaidByPayer = row.Netpay,
-                        PaidByCoordinationBenefits = row.Cob,
-                        CurrencyConceptId = 44818668,
-                        RevenueCodeConceptId = row.Revcode == "0000" || string.IsNullOrEmpty(row.Revcode) ? 0 : 38003210,
-                        RevenueCodeSourceValue = row.Revcode
-                    }];
+                    procedure.ProcedureCosts =
+                    [
+                        new ProcedureCost(procedure)
+                        {
+                            PaidCopay = row.Copay,
+                            PaidTowardDeductible = row.Deduct,
+                            PaidCoinsurance = row.Coins,
+                            PaidByPayer = row.Netpay,
+                            PaidByCoordinationBenefits = row.Cob,
+                            CurrencyConceptId = 44818668,
+                            RevenueCodeConceptId =
+                                row.Revcode == "0000" || string.IsNullOrEmpty(row.Revcode)
+                                    ? 0
+                                    : 38003210,
+                            RevenueCodeSourceValue = row.Revcode
+                        }
+                    ];
                 }
+                
                 yield return procedure;
             }
         }
-
-        if (HasCost(row) && !Procedures(row).Any())
-        {
-            var entity = BaseEntity(row, 0, row.Type, row.Revcode, "Procedure");
-            entity.AdditionalFields["priority"] = ClaimPriority(row.Table);
-            entity.AdditionalFields["vendor"] = "ccae";
-            entity.AdditionalFields["dx1"] = "";
-            entity.AdditionalFields["provid"] = row.Provid ?? "";
-            entity.AdditionalFields["stdprov"] = row.Stdprov;
-            entity.AdditionalFields["procmod"] = row.Procmod;
-            yield return new ProcedureOccurrence(entity) { Quantity = row.Qty };
-        }
-    }
+    }  
 
     private DrugExposure ProjectDrug(DrugRow row)
     {
