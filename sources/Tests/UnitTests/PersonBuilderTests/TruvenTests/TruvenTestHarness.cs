@@ -418,16 +418,6 @@ internal sealed class TruvenInMemoryScenario
                     }];
                 }
                 yield return procedure;
-
-                if (mapping.Domain == "Drug")
-                {
-                    yield return new DrugExposure(entity)
-                    {
-                        EndDate = null,
-                        Quantity = row.Qty,
-                        Ingredients = mapping.Ingredients is null ? [] : [.. mapping.Ingredients]
-                    };
-                }
             }
         }
 
