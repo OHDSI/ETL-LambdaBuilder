@@ -1,6 +1,5 @@
 ﻿using org.ohdsi.cdm.framework.common.Builder;
 using org.ohdsi.cdm.framework.common.DataReaders.v5.v54;
-using org.ohdsi.cdm.framework.common.Enums;
 using System;
 using System.Data;
 using System.Diagnostics;
@@ -27,8 +26,6 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
         }
         protected Tuple<IDataReader, int> CreateDataReader(ChunkData chunk, string table)
         {
-            var cdm = Settings.Current.Building.Vendor.CdmVersion;
-
             switch (table)
             {
                 case "PERSON":
@@ -77,7 +74,7 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                     {
                         return chunk.Observations.Count == 0
                             ? null
-                            : new Tuple<IDataReader, int>(new ObservationDataReader([.. chunk.Observations], _offsetManager),
+                            : new Tuple<IDataReader, int>(new framework.common.DataReaders.v5.v55.ObservationDataReader([.. chunk.Observations], _offsetManager),
                             chunk.Observations.Count);
                     }
 
@@ -92,40 +89,19 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
 
                 case "VISIT_DETAIL":
                     {
-                        if (cdm == CdmVersions.V54)
-                        {
-                            return chunk.VisitDetails.Count == 0
-                            ? null
-                            : new Tuple<IDataReader, int>(new VisitDetailDataReader([.. chunk.VisitDetails], _offsetManager),
-                                chunk.VisitDetails.Count);
-                        }
-                        else
-                        {
-                            return chunk.VisitDetails.Count == 0
-                            ? null
-                            : new Tuple<IDataReader, int>(new VisitDetailDataReader([.. chunk.VisitDetails], _offsetManager),
-                                chunk.VisitDetails.Count);
-                        }
+                        return chunk.VisitDetails.Count == 0
+                        ? null
+                        : new Tuple<IDataReader, int>(new VisitDetailDataReader([.. chunk.VisitDetails], _offsetManager),
+                            chunk.VisitDetails.Count);
                     }
 
                 case "PROCEDURE_OCCURRENCE":
                     {
-                        if (cdm == CdmVersions.V54)
-                        {
-                            return chunk.ProcedureOccurrences.Count == 0
-                            ? null
-                            : new Tuple<IDataReader, int>(
-                                new ProcedureOccurrenceDataReader([.. chunk.ProcedureOccurrences], _offsetManager),
-                                chunk.ProcedureOccurrences.Count);
-                        }
-                        else
-                        {
-                            return chunk.ProcedureOccurrences.Count == 0
-                            ? null
-                            : new Tuple<IDataReader, int>(
-                                new ProcedureOccurrenceDataReader([.. chunk.ProcedureOccurrences], _offsetManager),
-                                chunk.ProcedureOccurrences.Count);
-                        }
+                        return chunk.ProcedureOccurrences.Count == 0
+                        ? null
+                        : new Tuple<IDataReader, int>(
+                            new ProcedureOccurrenceDataReader([.. chunk.ProcedureOccurrences], _offsetManager),
+                            chunk.ProcedureOccurrences.Count);
                     }
 
                 case "DRUG_ERA":
@@ -148,42 +124,22 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
 
                 case "DEVICE_EXPOSURE":
                     {
-                        if (cdm == CdmVersions.V54)
-                        {
-                            return chunk.DeviceExposure.Count == 0
-                              ? null
-                              : new Tuple<IDataReader, int>(
-                                  new DeviceExposureDataReader([.. chunk.DeviceExposure], _offsetManager),
-                                  chunk.DeviceExposure.Count);
-                        }
-                        else
-                        {
-                            return chunk.DeviceExposure.Count == 0
-                            ? null
-                            : new Tuple<IDataReader, int>(
-                                new DeviceExposureDataReader([.. chunk.DeviceExposure], _offsetManager),
-                                chunk.DeviceExposure.Count);
-                        }
+                        return chunk.DeviceExposure.Count == 0
+                          ? null
+                          : new Tuple<IDataReader, int>(
+                              new DeviceExposureDataReader([.. chunk.DeviceExposure], _offsetManager),
+                              chunk.DeviceExposure.Count);
+
                     }
 
                 case "MEASUREMENT":
                     {
-                        if (cdm == CdmVersions.V54)
-                        {
-                            return chunk.Measurements.Count == 0
-                            ? null
-                            : new Tuple<IDataReader, int>(
-                                new MeasurementDataReader([.. chunk.Measurements], _offsetManager),
-                                chunk.Measurements.Count);
-                        }
-                        else
-                        {
-                            return chunk.Measurements.Count == 0
-                            ? null
-                            : new Tuple<IDataReader, int>(
-                                new MeasurementDataReader([.. chunk.Measurements], _offsetManager),
-                                chunk.Measurements.Count);
-                        }
+                        return chunk.Measurements.Count == 0
+                        ? null
+                        : new Tuple<IDataReader, int>(
+                            new framework.common.DataReaders.v5.v55.MeasurementDataReader([.. chunk.Measurements], _offsetManager),
+                            chunk.Measurements.Count);
+
                     }
 
                 case "COHORT":

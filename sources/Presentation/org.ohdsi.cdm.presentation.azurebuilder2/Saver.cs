@@ -1,6 +1,5 @@
 ﻿using org.ohdsi.cdm.framework.common.Builder;
 using org.ohdsi.cdm.framework.common.DataReaders.v5.v54;
-using org.ohdsi.cdm.framework.common.Omop;
 using System.Data;
 using System.Diagnostics;
 

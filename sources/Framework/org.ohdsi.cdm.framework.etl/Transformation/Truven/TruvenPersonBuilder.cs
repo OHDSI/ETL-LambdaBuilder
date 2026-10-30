@@ -63,7 +63,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Truven
             public override string Folder => "Truven";
             public override string Description => "Truven CCAE v5.4";
             public override string CdmSource => "CdmSourceCCAE.sql";
-            public override CdmVersions CdmVersion => CdmVersions.V54;
+            public override CdmVersions CdmVersion => CdmVersions.V55;
             public override int PersonIdIndex => 0;
             public override string PersonTableName => "ENROLLMENT_DETAIL";
             public override string Citation => "";
@@ -78,7 +78,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Truven
             public override string Folder => "Truven";
             public override string Description => "Truven MDCD v5.4";
             public override string CdmSource => "CdmSourceMDCD.sql";
-            public override CdmVersions CdmVersion => CdmVersions.V54;
+            public override CdmVersions CdmVersion => CdmVersions.V55;
             public override int PersonIdIndex => 0;
             public override string PersonTableName => "ENROLLMENT_DETAIL";
             public override string Citation => "Follow the proper use of trademarks as detailed by IBM. The document with the information on how to do so can be found on the rwe catalog.";
@@ -93,7 +93,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Truven
             public override string Folder => "Truven";
             public override string Description => "Truven MDCR v5.4";
             public override string CdmSource => "CdmSourceMDCR.sql";
-            public override CdmVersions CdmVersion => CdmVersions.V54;
+            public override CdmVersions CdmVersion => CdmVersions.V55;
             public override int PersonIdIndex => 0;
             public override string PersonTableName => "ENROLLMENT_DETAIL";
             public override string Citation => "";

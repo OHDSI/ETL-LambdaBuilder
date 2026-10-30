@@ -21,7 +21,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Premier
             public override string Folder => "Premier";
             public override string Description => "Premier v5.4";
             public override string CdmSource => "";
-            public override CdmVersions CdmVersion => CdmVersions.V54;
+            public override CdmVersions CdmVersion => CdmVersions.V55;
             public override int PersonIdIndex => 0;
             public override string PersonTableName => "pat";
             public override string Citation => "";

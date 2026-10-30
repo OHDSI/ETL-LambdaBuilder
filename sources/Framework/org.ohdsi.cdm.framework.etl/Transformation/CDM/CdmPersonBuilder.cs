@@ -1,13 +1,11 @@
-﻿using Amazon.S3.Model;
-using Force.DeepCloner;
+﻿using Force.DeepCloner;
 using org.ohdsi.cdm.framework.common.Base;
 using org.ohdsi.cdm.framework.common.Builder;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Lookups;
 using org.ohdsi.cdm.framework.common.Omop;
-using org.ohdsi.cdm.framework.common.PregnancyAlgorithm;
-using System.Linq;
+
 
 namespace org.ohdsi.cdm.framework.etl.Transformation.CDM
 {
@@ -24,9 +22,9 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CDM
 
             public override string Name => "CDM";
             public override string Folder => "CDM";
-            public override string Description => "CDM v5.4";
+            public override string Description => "CDM v5.5";
             public override string CdmSource => "CdmSource.sql";
-            public override CdmVersions CdmVersion => CdmVersions.V54;
+            public override CdmVersions CdmVersion => CdmVersions.V55;
             public override int PersonIdIndex => 0;
             public override string PersonTableName => "Person";
             public override string Citation => "";

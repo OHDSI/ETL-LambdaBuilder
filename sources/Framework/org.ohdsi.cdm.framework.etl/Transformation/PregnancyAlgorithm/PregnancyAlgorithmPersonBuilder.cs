@@ -18,7 +18,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.PA
             public override string Folder => "PregnancyAlgorithm";
             public override string Description => "PregnancyAlgorithm v5.4";
             public override string CdmSource => "CdmSource.sql";
-            public override CdmVersions CdmVersion => CdmVersions.V54;
+            public override CdmVersions CdmVersion => CdmVersions.V55;
             public override int PersonIdIndex => 0;
             public override string PersonTableName => "Person";
             public override string Citation => "";

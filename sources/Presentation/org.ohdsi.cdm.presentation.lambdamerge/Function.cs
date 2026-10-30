@@ -178,20 +178,9 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
 
         private void SaveCdmSource()
         {
-            var cdm = _settings.Vendor.CdmVersion;
-
-            if (cdm == CdmVersions.V54)
-            {
-                var reader = new CdmSourceDataReader();
-                using var stream = framework.common.Helpers.CsvHelper.GetStreamCsv(reader).First();
-                SaveToS3(stream, 0, _settings.CdmFolder, _table, "gz");
-            }
-            else
-            {
-                var reader = new CdmSourceDataReader();
-                using var stream = framework.common.Helpers.CsvHelper.GetStreamCsv(reader).First();
-                SaveToS3(stream, 0, _settings.CdmFolder, _table, "gz");
-            }
+            var reader = new CdmSourceDataReader();
+            using var stream = framework.common.Helpers.CsvHelper.GetStreamCsv(reader).First();
+            SaveToS3(stream, 0, _settings.CdmFolder, _table, "gz");
         }
 
         private void SaveMetadata()

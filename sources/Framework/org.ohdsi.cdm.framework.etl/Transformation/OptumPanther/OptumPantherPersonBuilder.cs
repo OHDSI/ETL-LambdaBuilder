@@ -26,7 +26,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
             public override string Folder => "OptumPanther";
             public override string Description => "Optum Panther v5.4";
             public override string CdmSource => "";
-            public override CdmVersions CdmVersion => CdmVersions.V54;
+            public override CdmVersions CdmVersion => CdmVersions.V55;
             public override int PersonIdIndex => 1;
             public override string PersonTableName => "patient";
             public override string Citation => "";

@@ -177,7 +177,7 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
         {
             return Building.Cdm switch
             {
-                CdmVersions.V54 => "v5.4",
+                CdmVersions.V55 => "v5.5",
             };
         }
         #endregion

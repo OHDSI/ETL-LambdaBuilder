@@ -23,7 +23,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CPRD
             public override string Folder => "CPRD";
             public override string Description => "Cprd v5.4";
             public override string CdmSource => "";
-            public override CdmVersions CdmVersion => CdmVersions.V54;
+            public override CdmVersions CdmVersion => CdmVersions.V55;
             public override int PersonIdIndex => 0;
             public override string PersonTableName => "Patient";
             public override string Citation => "";

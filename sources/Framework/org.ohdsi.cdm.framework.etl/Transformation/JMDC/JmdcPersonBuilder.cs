@@ -19,7 +19,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.JMDC
             public override string Folder => "JMDC";
             public override string Description => "JMDC v5.4";
             public override string CdmSource => "";
-            public override CdmVersions CdmVersion => CdmVersions.V54;
+            public override CdmVersions CdmVersion => CdmVersions.V55;
             public override int PersonIdIndex => 0;
             public override string PersonTableName => "Enrollment";
             public override string Citation => "";
