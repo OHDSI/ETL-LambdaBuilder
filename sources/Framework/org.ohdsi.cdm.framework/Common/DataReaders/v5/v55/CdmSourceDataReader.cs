@@ -22,7 +22,7 @@ namespace org.ohdsi.cdm.framework.common.DataReaders.v5.v55
                     SourceReleaseDate = sourceReleaseDate, 
                     VocabularyVersion = vocabularyVersion,
                     CdmSourceName = "",
-                    CdmVersionConceptId = 756265  //OMOP CDM Version 5.4.0
+                    CdmVersionConceptId = 902984  //OMOP CDM Version 5.5.0
                 }
                 
             }.GetEnumerator();

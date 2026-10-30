@@ -137,7 +137,7 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
         public string CDMFolder { get; set; }
                 
         public bool UseS3forDatabricks { get; set; }
-
+        public int MaxFunctions { get; set; }
 
         public string GetDatabricksStorage
         {

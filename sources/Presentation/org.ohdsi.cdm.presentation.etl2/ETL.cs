@@ -1,6 +1,4 @@
-﻿using Azure.Identity;
-using Azure.Storage.Blobs;
-using org.ohdsi.cdm.framework.common.DataReaders.v5;
+﻿using org.ohdsi.cdm.framework.common.DataReaders.v5;
 using org.ohdsi.cdm.framework.common.DataReaders.v5.v54;
 using org.ohdsi.cdm.framework.common.Definitions;
 using org.ohdsi.cdm.framework.common.Omop;
@@ -8,37 +6,42 @@ using org.ohdsi.cdm.framework.desktop;
 using org.ohdsi.cdm.framework.desktop.Controllers;
 using org.ohdsi.cdm.framework.desktop.Helpers;
 using org.ohdsi.cdm.framework.desktop.Settings;
+using org.ohdsi.cdm.presentation.etl.ETLController;
 using org.ohdsi.cdm.presentation.etl.Monitor;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Odbc;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace org.ohdsi.cdm.presentation.etl
 {
-    public static class QueueExtensions
-    {
-        public static List<T> Dequeue<T>(this Queue<T> queue, int count)
-        {
-            var result = new List<T>();
-            while (queue.Count > 0 && result.Count < count)
-            {
-                result.Add(queue.Dequeue());
-            }
-            return result;
-        }
-    }
-
     class ETL
     {
-        //private static Queue<string> _saveQueue = new Queue<string>();
+        private static IETLController _etlController;
+
+        private static IETLController EtlController
+        {
+            get
+            {
+                if(_etlController == null)
+                {
+                    if (Settings.Current.Building.SourceEngine.Database == framework.desktop.Enums.Database.Databricks)
+                    {
+                        _etlController = new DatabricksETLController();
+                    }
+                    else
+                        _etlController = new RedshiftETLController();
+                }
+                return _etlController;
+            }
+        }
+
+        #region ETL
         public static void SaveEtlLookupsToCloudStorage()
         {
             var vocabulary = new Vocabulary();
@@ -68,17 +71,6 @@ namespace org.ohdsi.cdm.presentation.etl
                     CloudStorageHelper.UploadFile(fileName, ri.DataReader);
 
                     created.Add(fileName, false);
-                }
-            }
-
-            using (var ri = vocabulary.GetPregnancyDrug())
-            {
-                using (ri)
-                {
-                    var fileName = $"{Settings.Current.BuildingPrefix}/Lookups/PregnancyDrug.txt.gz";
-                    Console.WriteLine("PregnancyDrug - store to CloudStorage | " + fileName);
-                    
-                    CloudStorageHelper.UploadFile(fileName, ri.DataReader);
                 }
             }
 
@@ -150,7 +142,7 @@ namespace org.ohdsi.cdm.presentation.etl
             }
         }
 
-        public static void CreateLookupTables()
+        public static void CreateSystemDataTables()
         {
             try
             {
@@ -171,60 +163,6 @@ namespace org.ohdsi.cdm.presentation.etl
             {
                 Console.WriteLine("[Creating lookup] Tables Location, Provider, Care site were not created due error " + e.Message);
                 Console.WriteLine(e.StackTrace);
-            }
-        }
-
-        public static void Build()
-        {
-            //var tasks = utility.TriggerBuildFunction(Settings.Current.Building.Vendor, Settings.Current.Building.Id.Value, null, false);
-            //Task.WaitAll([.. tasks]);
-            //Console.WriteLine("CDM Build lambda functions were triggered");
-
-            //checkCreation = Task.Run(() => utility.AllChunksWereDone(Settings.Current.Building.Vendor,
-            //    Settings.Current.Building.Id.Value, utility.BuildMessageBucket));
-        }
-
-        public static void SaveMetadata(string sourceVersionId, string cdmVersionId)
-        {
-            var file = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}/metadata/metadata.0.gz";
-
-            List<MetadataOMOP> metadata = [];
-            metadata.Add(new MetadataOMOP { Id = 0, MetadataConceptId = 0, Name = "NativeLoadId", ValueAsString = sourceVersionId, MetadataDate = DateTime.Now.Date });
-            metadata.Add(new MetadataOMOP { Id = 1, MetadataConceptId = 0, Name = "CDMLoadId", ValueAsString = cdmVersionId.ToString(), MetadataDate = DateTime.Now.Date });
-            metadata.Add(new MetadataOMOP { Id = 2, MetadataConceptId = 37116952, Name = "Source data citation", ValueAsString = Settings.Current.Building.Vendor.Citation, MetadataDate = DateTime.Now.Date });
-            metadata.Add(new MetadataOMOP { Id = 3, MetadataConceptId = 4123211, Name = "Publication review requirements", ValueAsString = Settings.Current.Building.Vendor.Publication, MetadataDate = DateTime.Now.Date });
-
-            CloudStorageHelper.UploadFile(file, new MetadataOMOPDataReader(metadata));
-        }
-
-        public static void SaveVersion(int versionId)
-        {
-            var file = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}/_version/version.txt.gz";
-
-            CloudStorageHelper.UploadFile(file, new VersionDataReader(versionId));
-        }
-
-        public static void SaveCdmSource(DateTime sourceReleaseDate, string vocabularyVersion)
-        {
-            var file = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}/cdm_source/cdm_source.txt.gz";
-
-            CloudStorageHelper.UploadFile(file, new framework.common.DataReaders.v5.v55.CdmSourceDataReader(sourceReleaseDate, vocabularyVersion));
-        }
-
-        private static IEnumerable<string> GetTriggerMessages(string chunksSchema, int chunkId)
-        {
-            var numberOfPartitions = GetNumberOfPartitions(chunksSchema, chunkId);
-
-            for (int i = 0; i <= numberOfPartitions; i++)
-            {
-                var slice = i.ToString("D4");
-
-                if (Settings.Current.Building.SourceEngine.Database == framework.desktop.Enums.Database.Databricks)
-                {
-                    slice = $"PartitionId={i}";
-                }
-
-                yield return $"{Settings.Current.GetCDMBuildingPrefix}.{chunkId}.{slice}.txt";
             }
         }
 
@@ -258,7 +196,7 @@ namespace org.ohdsi.cdm.presentation.etl
                         Settings.Current.Building.PersonFileName = queryDefinition.FileName;
                     }
 
-                    StoreMetadataToCloudStorage(queryDefinition, sql);
+                    EtlController.StoreMetadataToCloudStorage(queryDefinition, sql);
                 }
             });
 
@@ -266,7 +204,7 @@ namespace org.ohdsi.cdm.presentation.etl
             Console.WriteLine($"PersonIdFieldName:{Settings.Current.Building.PersonIdFieldName}");
             Console.WriteLine($"PersonIdFieldIndex:{Settings.Current.Building.PersonIdFieldIndex}");
             using var queue = new BlockingCollection<string>();
-            var max = 250;
+            
             Task save = Task.Run(() =>
             {
                 foreach (var item in queue.GetConsumingEnumerable())
@@ -274,7 +212,7 @@ namespace org.ohdsi.cdm.presentation.etl
                     while(true)
                     {
                         var unprocessed = CloudStorageHelper.GetRunningFunctionInfo(Settings.Current.CloudTriggerStorageName, $"{Settings.Current.GetCDMBuildingPrefix}").Item1;
-                        var canBeLaunched = max - unprocessed;
+                        var canBeLaunched = Settings.Current.MaxFunctions - unprocessed;
 
                         if(canBeLaunched > 0)
                         {
@@ -315,32 +253,8 @@ namespace org.ohdsi.cdm.presentation.etl
 
                     chunkController.ChunkCreated(chunkId, Settings.Current.Building.Id.Value);
 
-                    //WaitUntilProcessed(5);
-
                     Console.WriteLine("[Moving raw data] Raw data for chunkId=" + chunkId + " is available on cloud storage");
-                    //int max = 125;
-                    //int max = 250;
-                    //Queue<string> queue = new Queue<string>(GetTriggerMessages(chunksSchema, chunkId));
-                    /*
-                    while(_saveQueue.Count > 0)
-                    {
-                        var unprocessed = CloudStorageHelper.GetRunningFunctionInfo(Settings.Current.CloudTriggerStorageName, $"{Settings.Current.GetCDMBuildingPrefix}").Item1;
-                        var canBeLaunched = max - unprocessed;
-                        
-                        if(canBeLaunched > 0)
-                        {
-                            var toLaunch = _saveQueue.Dequeue(canBeLaunched);
-
-                            CloudStorageHelper.TriggerFunctions([.. toLaunch]);
-                            //CloudStorageHelper.TriggerFunctions([.. GetTriggerMessages(chunksSchema, chunkId)]);
-                            Console.WriteLine($"[Moving raw data] functions for chunkId={chunkId} were triggered");
-                        }
-                        else
-                            Thread.Sleep(TimeSpan.FromMinutes(1));
-                    }
-                    */
-
-                    foreach (var item in GetTriggerMessages(chunksSchema, chunkId))
+                    foreach (var item in EtlController.GetTriggerMessages(chunksSchema, chunkId))
                     {
                         queue.Add(item);
                     }
@@ -360,79 +274,27 @@ namespace org.ohdsi.cdm.presentation.etl
             Console.WriteLine("Moving raw data to cloud storage - complete");
         }
 
-        private static void WaitUntilProcessed(int maxRunning)
+        private static void MoveTableDataToCloudStorage(string chunksSchema, int chunkId, string sourceSchema)
         {
-            var unprocessed = 0;
-            do
-            {
-                try
-                {
-                    unprocessed = CloudStorageHelper.GetRunningFunctionInfo(Settings.Current.CloudTriggerStorageName, $"{Settings.Current.GetCDMBuildingPrefix}").Item1;
+            var timer = new Stopwatch();
+            timer.Start();
 
-                    Console.WriteLine($"[Moving raw data] Unprocessed functions={unprocessed}");
-
-                    if (unprocessed > maxRunning)
-                    {
-                        Console.WriteLine($"[Moving raw data] unprocessed > {maxRunning}, waiting 3 minutes...");
-                        Thread.Sleep(TimeSpan.FromMinutes(1));
-                    }
-                }
-                catch (Exception ex)
+            Parallel.ForEach(Settings.Current.Building.SourceQueryDefinitions,
+                new ParallelOptions { MaxDegreeOfParallelism = Settings.Current.ParallelQueries }, qd =>
                 {
-                    Console.WriteLine($"[WaitUntilProcessed] {ex.Message}");
-                }
-            }
-            while (unprocessed > maxRunning);
+                    if (qd.Providers != null) return;
+                    if (qd.Locations != null) return;
+                    if (qd.CareSites != null) return;
+
+                    EtlController.UnloadNative(chunksSchema, chunkId, sourceSchema, qd);
+                });
+
+            timer.Stop();
+            Console.WriteLine($"chunkId={chunkId} | {timer.Elapsed.TotalSeconds}s");
         }
+        #endregion
 
-        private static void StoreMetadataToCloudStorage(QueryDefinition queryDefinition, string query)
-        {
-            Console.WriteLine("[Moving raw data] StoreMetadataToCloudStorage start - " + queryDefinition.FileName);
-            var fileName = $"{Settings.Current.BuildingPrefix}/raw/metadata/{queryDefinition.FileName + ".txt"}";
-
-            /*
-            using (var conn = SqlConnectionHelper.OpenOdbcConnection(Settings.Current.Building.SourceConnectionString))
-            using (var c = Settings.Current.Building.SourceEngine.GetCommand(query, conn))
-            {
-                c.CommandTimeout = 3600;
-                using var reader = c.ExecuteReader(CommandBehavior.SchemaOnly);
-                CloudStorageHelper.UploadFile(fileName, reader, false, true);
-            }
-            */
-
-            string describeQuery = $"DESCRIBE QUERY {query}";
-
-            using (var conn = SqlConnectionHelper.OpenOdbcConnection(Settings.Current.Building.SourceConnectionString))
-            using (var c = Settings.Current.Building.SourceEngine.GetCommand(describeQuery, conn))
-            {
-                c.CommandTimeout = 600;
-                using(var reader = c.ExecuteReader())
-                using(var source = new MemoryStream())
-                using(StreamWriter writer = new(source, new UTF8Encoding(false, true))) 
-                using(var csv = framework.common.Helpers.CsvHelper.CreateCsvWriter(writer))
-                {
-                    while (reader.Read())
-                    {
-                        var fieldName = reader.GetValue(0);
-                        csv.WriteField(fieldName);
-                    }
-
-                    csv.NextRecord();
-                    writer.Flush();
-
-                    var credential = new ClientSecretCredential(Settings.Current.CloudStorageHolder, Settings.Current.CloudStorageKey, Settings.Current.CloudStorageSecret);
-                    var client = new BlobServiceClient(new Uri(Settings.Current.CloudStorageUri), credential, null);
-                    var azureClient = client.GetBlobContainerClient(Settings.Current.CloudStorageName);
-
-                    source.Position = 0;
-
-                    azureClient.GetBlobClient(fileName).Upload(source, overwrite: true);
-                }
-            }
-            
-            Console.WriteLine("[Moving raw data] StoreMetadataToCloudStorage end - " + queryDefinition.FileName);
-        }
- 
+        #region Save System Data
 
         private static void SaveProvider()
         {
@@ -447,7 +309,7 @@ namespace org.ohdsi.cdm.presentation.etl
 
             var index = 0;
             var providers = new List<Provider>();
-            foreach (var entity in GetEntities<Provider>(provider, provider.Providers[0]))
+            foreach (var entity in Helper.GetEntities<Provider>(provider, provider.Providers[0]))
             {
                 providers.Add(entity);
 
@@ -479,7 +341,7 @@ namespace org.ohdsi.cdm.presentation.etl
 
             var index = 0;
             var careSites = new List<CareSite>();
-            foreach (var entity in GetEntities<CareSite>(careSite, careSite.CareSites[0]))
+            foreach (var entity in Helper.GetEntities<CareSite>(careSite, careSite.CareSites[0]))
             {
                 careSites.Add(entity);
 
@@ -521,7 +383,7 @@ namespace org.ohdsi.cdm.presentation.etl
 
             var index = 0;
             var locations = new List<Location>();
-            foreach (var entity in GetEntities<Location>(location, location.Locations[0]))
+            foreach (var entity in Helper.GetEntities<Location>(location, location.Locations[0]))
             {
                 locations.Add(entity);
 
@@ -538,152 +400,36 @@ namespace org.ohdsi.cdm.presentation.etl
 
             Console.WriteLine("[Creating lookup] Locations was loaded " + Settings.Current.Building.Cdm);
         }
+        #endregion
 
-        private static void MoveTableDataToCloudStorage(string chunksSchema, int chunkId, string sourceSchema)
+        #region Save Metadata
+
+        public static void SaveMetadata(string sourceVersionId, string cdmVersionId)
         {
-            var timer = new Stopwatch();
-            timer.Start();
-            
-            Parallel.ForEach(Settings.Current.Building.SourceQueryDefinitions,
-                new ParallelOptions { MaxDegreeOfParallelism = Settings.Current.ParallelQueries }, qd =>
-                {
-                    if (qd.Providers != null) return;
-                    if (qd.Locations != null) return;
-                    if (qd.CareSites != null) return;
+            var file = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}/metadata/metadata.0.gz";
 
-                    var sql = GetSqlHelper.GetSql(Settings.Current.Building.SourceEngine.Database,
-                               qd.GetSql(Settings.Current.Building.Vendor, Settings.Current.Building.SourceSchemaName,
-                                   chunksSchema), Settings.Current.Building.SourceSchemaName);
+            List<MetadataOMOP> metadata = [];
+            metadata.Add(new MetadataOMOP { Id = 0, MetadataConceptId = 0, Name = "NativeLoadId", ValueAsString = sourceVersionId, MetadataDate = DateTime.Now.Date });
+            metadata.Add(new MetadataOMOP { Id = 1, MetadataConceptId = 0, Name = "CDMLoadId", ValueAsString = cdmVersionId.ToString(), MetadataDate = DateTime.Now.Date });
+            metadata.Add(new MetadataOMOP { Id = 2, MetadataConceptId = 37116952, Name = "Source data citation", ValueAsString = Settings.Current.Building.Vendor.Citation, MetadataDate = DateTime.Now.Date });
+            metadata.Add(new MetadataOMOP { Id = 3, MetadataConceptId = 4123211, Name = "Publication review requirements", ValueAsString = Settings.Current.Building.Vendor.Publication, MetadataDate = DateTime.Now.Date });
 
-                    if (string.IsNullOrEmpty(sql))
-                        return;
-
-                    sql = string.Format(sql, chunkId);
-                    string unloadQuery = null;
-
-                    var personIdField = qd.GetPersonIdFieldName();
-                    var tableName = "#" + qd.FileName + "_" + chunkId;
-                    var folder = $"{Settings.Current.BuildingPrefix}/raw/{chunkId}/{qd.FileName}/";
-                    // Azure
-                    if (Settings.Current.Building.SourceEngine.Database == framework.desktop.Enums.Database.Databricks)
-                    {
-                        tableName = $"{chunksSchema}.{sourceSchema.Split('.')[1]}_{qd.FileName}_{chunkId}";
-
-                        unloadQuery =
-                            //$@"CREATE OR REPLACE TABLE {tableName} " +
-                            $@"CREATE TABLE {tableName} " +
-                            $@"USING csv " +
-                            $@"PARTITIONED BY(PartitionId) " +
-                            $@"LOCATION '{Settings.Current.GetDatabricksStorage}/{folder}' " +
-                            $@"OPTIONS(delimiter = '\t', nullValue = '\\N',  compression = 'gzip') " +
-                            $@"AS({sql});";
-                    }
-                    // AWS
-                    else
-                    {
-                        tableName = "#" + qd.FileName + "_" + chunkId;
-
-                        unloadQuery =
-                        $"create table {tableName} sortkey ({personIdField}) distkey ({personIdField}) as {sql}; " +
-                        $@"UNLOAD ('select * from {tableName} order by {personIdField}') to 's3://{Settings.Current.CloudStorageName}/{folder}{qd.FileName}' " +
-                        $@"DELIMITER AS '\t' " +
-                        $@"NULL AS '\\N' " +
-                        $@"credentials 'aws_access_key_id={Settings.Current.CloudStorageKey};aws_secret_access_key={Settings.Current.CloudStorageSecret}' " +
-                        $@"ZSTD ALLOWOVERWRITE PARALLEL ON";
-                    }
-
-                    using var connection = SqlConnectionHelper.OpenOdbcConnection(Settings.Current.Building.SourceConnectionString);
-                    try
-                    {
-                        using var create = new OdbcCommand(unloadQuery, connection);
-                        create.CommandTimeout = 60 * 60;
-                        create.ExecuteNonQuery();
-                    }
-                    catch(Exception e)
-                    {
-                        if (Settings.Current.Building.SourceEngine.Database == framework.desktop.Enums.Database.Databricks)
-                        {
-                            Console.WriteLine($"[MoveTableDataToCloudStorage] {e.Message}");
-                            try
-                            {
-                                var drop = new OdbcCommand($"drop table {tableName}", connection);
-                                drop.ExecuteNonQuery();
-                            }
-                            catch(Exception ex)
-                            {
-                                Console.WriteLine($"drop table {tableName} | {e.Message}");
-                            }
-
-                            using var create = new OdbcCommand(unloadQuery, connection);
-                            create.CommandTimeout = 60 * 60;
-                            create.ExecuteNonQuery();
-                        }
-                        else
-                        {
-                            throw e;
-                        }
-                    }
-
-                    if (Settings.Current.Building.SourceEngine.Database == framework.desktop.Enums.Database.Databricks)
-                    {
-                        var drop = new OdbcCommand($"drop table {tableName}", connection);
-                        drop.ExecuteNonQuery();
-                    }
-                });
-
-                timer.Stop();
-
-                Console.WriteLine($"chunkId={chunkId} | {timer.Elapsed.TotalSeconds}s");
+            CloudStorageHelper.UploadFile(file, new MetadataOMOPDataReader(metadata));
         }
 
-        private static int GetNumberOfPartitions(string chunksSchema, int chunkId)
+        public static void SaveVersion(int versionId)
         {
-            // Azure
-            if (Settings.Current.Building.SourceEngine.Database == framework.desktop.Enums.Database.Databricks)
-            {
-                using var connection = SqlConnectionHelper.OpenOdbcConnection(Settings.Current.Building.SourceConnectionString);
-                using var c = new OdbcCommand($"select max(PartitionId) from {chunksSchema}._chunks where chunkid={chunkId};", connection);
-                c.CommandTimeout = 900;
-                return Convert.ToInt32(c.ExecuteScalar());
-            }
-            // AWS
-            else
-            {
-                return CloudStorageHelper.GetSlices(chunkId).Max();
-            }
+            var file = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}/_version/version.txt.gz";
+
+            CloudStorageHelper.UploadFile(file, new VersionDataReader(versionId));
         }
 
-        private static IEnumerable<T> GetEntities<T>(QueryDefinition qd, EntityDefinition ed) where T : IEntity
+        public static void SaveCdmSource(DateTime sourceReleaseDate, string vocabularyVersion)
         {
-            var sql = GetSqlHelper.GetSql(Settings.Current.Building.SourceEngine.Database,
-                qd.GetSql(Settings.Current.Building.Vendor, Settings.Current.Building.SourceSchemaName, Settings.Current.Building.SourceSchemaName), Settings.Current.Building.SourceSchemaName);
-            var keys = new Dictionary<string, bool>();
-            if (!string.IsNullOrEmpty(sql))
-            {
-                using var connection = new OdbcConnection(Settings.Current.Building.SourceConnectionString);
-                connection.Open();
-                using var c = new OdbcCommand(sql, connection);
-                c.CommandTimeout = 30000;
-                using var reader = c.ExecuteReader();
-                while (reader.Read())
-                {
-                    Concept conceptDef = null;
-                    if (ed.Concepts != null && ed.Concepts.Length != 0)
-                        conceptDef = ed.Concepts[0];
+            var file = $"{Settings.Current.BuildingPrefix}/{Settings.Current.CDMFolder}/cdm_source/cdm_source.txt.gz";
 
-                    var concept = (T)ed.GetConcepts(conceptDef, reader, null).ToList()[0];
-
-                    var key = concept.GetKey();
-                    if (key == null) continue;
-
-                    if (keys.ContainsKey(key))
-                        continue;
-
-                    keys.Add(key, false);
-
-                    yield return concept;
-                }
-            }
+            CloudStorageHelper.UploadFile(file, new framework.common.DataReaders.v5.v55.CdmSourceDataReader(sourceReleaseDate, vocabularyVersion));
         }
+        #endregion
     }
 }

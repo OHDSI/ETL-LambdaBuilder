@@ -51,6 +51,7 @@ namespace org.ohdsi.cdm.presentation.etl
             string chunkSchema = null;
 
             int functionChunkSize = 0;
+            int maxFunctions = 0;
 
             var r = Parser.Default.ParseArguments<Options>(arguments)
                   .WithParsed<Options>(o =>
@@ -74,6 +75,7 @@ namespace org.ohdsi.cdm.presentation.etl
                       resumeChunkCreation = o.ResumeChunk.Value;
                       chunkSchema = o.ChunkSchema;
                       functionChunkSize = o.FunctionChunkSize;
+                      maxFunctions = o.MaxFunctions;
                   });
 
             if (r.Tag.ToString() != "Parsed")
@@ -134,6 +136,10 @@ namespace org.ohdsi.cdm.presentation.etl
                 Settings.Current.UseS3forDatabricks = bool.Parse(configuration.GetSection("AppSettings")["useS3forDatabricks"]);
 
                 Console.WriteLine($"ParallelQueries {Settings.Current.ParallelQueries}; ParallelChunks {Settings.Current.ParallelChunks}");
+
+                Settings.Current.MaxFunctions = maxFunctions;
+
+                Console.WriteLine($"MaxFunctions: {Settings.Current.MaxFunctions}");
 
                 Console.WriteLine();
                 Console.WriteLine("initializing building settings...");
@@ -271,7 +277,7 @@ namespace org.ohdsi.cdm.presentation.etl
                     }
                     else
                     {
-                        ETL.CreateLookupTables();
+                        ETL.CreateSystemDataTables();
                     }
 
                     /*

@@ -1,5 +1,4 @@
 ﻿using CommandLine;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace org.ohdsi.cdm.presentation.etl
 {
@@ -61,5 +60,8 @@ namespace org.ohdsi.cdm.presentation.etl
 
         [Option("new", Required = true)]
         public bool? CreateNewBuildingId { get; set; }
+
+        [Option("max_functions", Required = true)]
+        public int MaxFunctions { get; set; }
     }
 }
