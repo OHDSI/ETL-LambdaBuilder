@@ -800,13 +800,6 @@ namespace org.ohdsi.cdm.framework.common.Base
             return cohort;
         }
 
-        public IEnumerable<EraEntity> BuildPregnancyEpisodes(ConditionOccurrence[] conditionOccurrences,
-            ProcedureOccurrence[] procedureOccurrences, Observation[] observations, Measurement[] measurements, DrugExposure[] drugExposures)
-        {
-
-            return null;
-        }
-
         public virtual IEnumerable<DeviceExposure> BuildDeviceExposure(DeviceExposure[] devExposure,
             Dictionary<long, VisitOccurrence> visitOccurrences,
             ObservationPeriod[] observationPeriods)

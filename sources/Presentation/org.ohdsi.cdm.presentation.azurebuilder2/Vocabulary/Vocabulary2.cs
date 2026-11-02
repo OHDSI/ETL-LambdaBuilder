@@ -225,10 +225,5 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
 
             return res;
         }
-
-        public IEnumerable<PregnancyConcept> LookupPregnancyConcept(long conceptId)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

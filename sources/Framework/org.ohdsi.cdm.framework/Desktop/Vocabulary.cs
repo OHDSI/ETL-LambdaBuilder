@@ -1,5 +1,4 @@
-﻿using Amazon.Runtime.Internal.Transform;
-using org.ohdsi.cdm.framework.common.Definitions;
+﻿using org.ohdsi.cdm.framework.common.Definitions;
 using org.ohdsi.cdm.framework.common.Lookups;
 using org.ohdsi.cdm.framework.desktop.Helpers;
 using org.ohdsi.cdm.framework.Desktop.DataReaders;
@@ -12,7 +11,6 @@ namespace org.ohdsi.cdm.framework.desktop
     {
         private readonly Dictionary<string, Lookup> _lookups = [];
         private GenderLookup _genderConcepts;
-        private PregnancyConcepts _pregnancyConcepts;
 
         private static LookupValue CreateLookupValue(IDataRecord reader)
         {
@@ -441,8 +439,6 @@ namespace org.ohdsi.cdm.framework.desktop
             }
             else
             {
-                _pregnancyConcepts = new PregnancyConcepts(Settings.Settings.Current.Folder);
-
                 FillCombinedLookups();
                 Fill(GetClinicalDataReaders());
             }
@@ -463,11 +459,6 @@ namespace org.ohdsi.cdm.framework.desktop
                 return 8551; // UNKNOWN
 
             return res;
-        }
-
-        public IEnumerable<PregnancyConcept> LookupPregnancyConcept(long conceptId)
-        {
-            return _pregnancyConcepts.GetConcepts(conceptId);
         }
 
         public string GetSourceVocabularyId(long conceptId)

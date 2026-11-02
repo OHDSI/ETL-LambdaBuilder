@@ -17,7 +17,6 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
     {
         private readonly Dictionary<string, Lookup> _lookups = [];
         private GenderLookup _genderConcepts;
-        private PregnancyConcepts _pregnancyConcepts;
         private Dictionary<long, Tuple<string, string>> _conceptIdToSourceVocabularyId = [];
 
         public Vendor Vendor { get; } = vendor;
@@ -101,8 +100,6 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
         {
             _genderConcepts = new GenderLookup();
             _genderConcepts.Load();
-
-            _pregnancyConcepts = new PregnancyConcepts(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location));
 
             Console.WriteLine(Settings.Current.S3AwsAccessKeyId);
             Console.WriteLine(Settings.Current.S3AwsSecretAccessKey);
@@ -221,11 +218,6 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
                 return 8551; // UNKNOWN
 
             return res;
-        }
-
-        public IEnumerable<PregnancyConcept> LookupPregnancyConcept(long conceptId)
-        {
-            return _pregnancyConcepts.GetConcepts(conceptId);
         }
     }
 }
