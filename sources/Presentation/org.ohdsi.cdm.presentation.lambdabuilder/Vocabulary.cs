@@ -136,15 +136,9 @@ namespace org.ohdsi.cdm.presentation.lambdabuilder
             }
 
             var lookup = new Lookup();
-            var prefix =
-                $"{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id}/Lookups/PregnancyDrug.txt";
-            Console.WriteLine(Settings.Current.Bucket + "/" + prefix);
-            lookup.Fill(client, Settings.Current.Bucket, prefix);
-            _lookups.Add("PregnancyDrug", lookup);
-
 
             lookup = new Lookup();
-            prefix =
+            var prefix =
                 $"{Settings.Current.Building.Vendor}/{Settings.Current.Building.Id}/CombinedLookups";
             Console.WriteLine(Settings.Current.Bucket + "/" + prefix);
 

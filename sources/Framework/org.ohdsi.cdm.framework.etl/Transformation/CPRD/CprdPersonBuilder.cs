@@ -4,7 +4,6 @@ using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Helpers;
 using org.ohdsi.cdm.framework.common.Lookups;
 using org.ohdsi.cdm.framework.common.Omop;
-using org.ohdsi.cdm.framework.common.PregnancyAlgorithm;
 
 namespace org.ohdsi.cdm.framework.etl.Transformation.CPRD
 {

@@ -4,8 +4,6 @@ using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Helpers;
 using org.ohdsi.cdm.framework.common.Omop;
-using org.ohdsi.cdm.framework.common.PregnancyAlgorithm;
-using System.Diagnostics.Metrics;
 
 namespace org.ohdsi.cdm.framework.etl.Transformation.HealthVerity
 {

@@ -216,40 +216,6 @@ namespace org.ohdsi.cdm.framework.desktop
             }
         }
 
-        public DataReaderInfo GetPregnancyDrug()
-        {
-            var sql = File.ReadAllText(Path.Combine(Settings.Settings.Current.Folder,
-                    @"Core\Lookups\PregnancyDrug.sql"));
-
-            sql = sql.Replace("{sc}", Settings.Settings.Current.Building.VocabularySchemaName);
-
-            Console.WriteLine("PregnancyDrug - Loading...");
-            var connection = SqlConnectionHelper.OpenOdbcConnection(Settings.Settings.Current.Building.VocabularyConnectionString);
-            var command = new OdbcCommand(sql, connection) { CommandTimeout = 0 };
-            var reader = command.ExecuteReader();
-
-            return new DataReaderInfo(connection, command, reader, "PregnancyDrug");
-        }
-
-        private void FillPregnancyDrug()
-        {
-            using (var ri = GetPregnancyDrug())
-            {
-                Console.WriteLine("PregnancyDrug - filling");
-                var lookup = new Lookup();
-                while (ri.DataReader.Read())
-                {
-                    lookup.Add(new LookupValue
-                    {
-                        ConceptId = int.Parse(ri.DataReader[0].ToString()),
-                        SourceCode = ri.DataReader[0].ToString()
-                    });
-                }
-                _lookups.Add("PregnancyDrug", lookup);
-            }
-            Console.WriteLine("PregnancyDrug - Done");
-        }
-
         private IEnumerable<DataReaderInfo> GetDataReaders(IEnumerable<EntityDefinition> definitions)
         {
             if (definitions != null)
@@ -479,8 +445,6 @@ namespace org.ohdsi.cdm.framework.desktop
 
                 FillCombinedLookups();
                 Fill(GetClinicalDataReaders());
-
-                FillPregnancyDrug();
             }
         }
 
