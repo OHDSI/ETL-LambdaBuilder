@@ -11,7 +11,6 @@
 		p.quantity_per_fill,
 		COALESCE(p.strength, '') || ';' || COALESCE(p.strength_unit, '') || ';' || COALESCE(p.dosage_form, '') || ';' || COALESCE(p.dose_frequency, '') as dose_unit_source_value,
 		p.ndc,
-		SUBSTRING(p.ndc,1,9) ndc_9,
 		1 as itNdc,
 		ch.PartitionId
 		from {sc}.prescriptions_written as p
@@ -42,8 +41,7 @@
 						</Mapper>
 					</ConceptIdMappers>
 					<Fields>
-						<Field key="ndc" defaultTypeId="32838"/>
-						<Field key="ndc_9" sourceKey="ndc" defaultTypeId="32838" />
+						<Field key="ndc" defaultTypeId="32838" eventDate="rxdate"/>
 					</Fields>
 				</Concept>
 				<Concept>

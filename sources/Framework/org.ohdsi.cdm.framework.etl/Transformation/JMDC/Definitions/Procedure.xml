@@ -2,7 +2,7 @@
 	<Query>
 		SELECT CAST(RIGHT(Member_ID, LEN(Member_ID) - 1) AS BIGINT) AS person_id,
 		CAST(RIGHT(Claim_ID, LEN(Claim_ID) - 1) AS BIGINT) AS visit_occurrence_id,
-		to_date(date_of_procedure, 'YYYYMMDD', TRUE) AS procedure_date,
+		to_date(date_of_procedure, 'yyyyMMdd') AS procedure_date,
 		CASE
 		WHEN Type_of_claim = 'Outpatient'
 		THEN 32859
@@ -15,7 +15,7 @@
 		number_of_times * 10 * procedure_standard_point as total_charge,
 		44818592 as CurrencyConceptId,
 		ch.PartitionId
-		FROM {sc}."procedure" p
+		FROM {sc}.procedure p
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND p.Member_ID = ch.PERSON_SOURCE_VALUE
 		JOIN {sc}.procedure_master pm on p.standardized_procedure_code = pm.standardized_procedure_code and p.standardized_procedure_version = pm.standardized_procedure_version
 		order by ch.PartitionId, CAST(RIGHT(Member_ID, LEN(Member_ID) - 1) AS BIGINT)

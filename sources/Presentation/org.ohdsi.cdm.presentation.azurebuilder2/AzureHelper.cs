@@ -13,8 +13,8 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
 
         private static string GetVendorName(Vendor v)
         {
-            if (v.Name.Contains("Truven_"))
-                return v.Name.Replace("Truven_", "");
+            //if (v.Name.Contains("Truven_"))
+            //    return v.Name.Replace("Truven_", "");
 
             return v.Name;
         }
@@ -32,9 +32,34 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
             return GetBlobContainer().GetBlobClient(fileName).OpenRead();
         }
 
-        internal static void UploadStream(string fileName, Stream stream)
+        //internal static void UploadStream(string fileName, Stream stream)
+        //{
+        //    AzureHelper.GetBlobContainer().GetBlobClient(fileName).Upload(stream, overwrite: true);
+        //}
+
+        internal static void  UploadStream(string fileName, Stream stream, int maxAttempts = 3)
         {
-            AzureHelper.GetBlobContainer().UploadBlob(fileName, stream);
+            var delay = TimeSpan.FromMilliseconds(500);
+            for (int attempt = 1; attempt <= maxAttempts; attempt++)
+            {
+                try
+                {
+                    stream.Position = 0;
+                    AzureHelper.GetBlobContainer().GetBlobClient(fileName).Upload(stream, overwrite: true);
+                    return;
+                }
+                catch (Exception ex) when (attempt < maxAttempts)
+                {
+                    Console.WriteLine($"UploadStream failed attempt {attempt}: {ex.Message}. Retrying in {delay.TotalMilliseconds}ms");
+                }
+
+                Task.Delay(delay);
+                delay = TimeSpan.FromMilliseconds(delay.TotalMilliseconds * 2); // exponential backoff
+            }
+
+            // Final attempt
+            stream.Position = 0;
+            AzureHelper.GetBlobContainer().GetBlobClient(fileName).Upload(stream, overwrite: true);
         }
 
         internal static void DeleteFile(string fileName)

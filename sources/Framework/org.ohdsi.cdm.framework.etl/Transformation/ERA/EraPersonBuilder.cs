@@ -21,7 +21,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Era
             public override string Folder => "Era";
             public override string Description => "Era v5.4";
             public override string CdmSource => "CdmSource.sql";
-            public override CdmVersions CdmVersion => CdmVersions.V54;
+            public override CdmVersions CdmVersion => CdmVersions.V55;
             public override int PersonIdIndex => 0;
             public override string PersonTableName => "Person";
             public override string Citation => "";

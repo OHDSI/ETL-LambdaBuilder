@@ -3,7 +3,6 @@ using org.ohdsi.cdm.framework.common.Builder;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Omop;
-using org.ohdsi.cdm.framework.common.PregnancyAlgorithm;
 using org.ohdsi.cdm.framework.common.Validators;
 using System.Data;
 
@@ -63,7 +62,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Truven
             public override string Folder => "Truven";
             public override string Description => "Truven CCAE v5.4";
             public override string CdmSource => "CdmSourceCCAE.sql";
-            public override CdmVersions CdmVersion => CdmVersions.V54;
+            public override CdmVersions CdmVersion => CdmVersions.V55;
             public override int PersonIdIndex => 0;
             public override string PersonTableName => "ENROLLMENT_DETAIL";
             public override string Citation => "";
@@ -78,7 +77,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Truven
             public override string Folder => "Truven";
             public override string Description => "Truven MDCD v5.4";
             public override string CdmSource => "CdmSourceMDCD.sql";
-            public override CdmVersions CdmVersion => CdmVersions.V54;
+            public override CdmVersions CdmVersion => CdmVersions.V55;
             public override int PersonIdIndex => 0;
             public override string PersonTableName => "ENROLLMENT_DETAIL";
             public override string Citation => "Follow the proper use of trademarks as detailed by IBM. The document with the information on how to do so can be found on the rwe catalog.";
@@ -93,7 +92,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Truven
             public override string Folder => "Truven";
             public override string Description => "Truven MDCR v5.4";
             public override string CdmSource => "CdmSourceMDCR.sql";
-            public override CdmVersions CdmVersion => CdmVersions.V54;
+            public override CdmVersions CdmVersion => CdmVersions.V55;
             public override int PersonIdIndex => 0;
             public override string PersonTableName => "ENROLLMENT_DETAIL";
             public override string Citation => "";
@@ -490,6 +489,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Truven
                                                 string.IsNullOrEmpty(e.AdditionalFields["stdprov"])
                                                     ? 0
                                                     : int.Parse(e.AdditionalFields["stdprov"])).First();
+
                                 }
                                 else
                                 {
@@ -885,48 +885,10 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Truven
 
             Complete = true;
 
-            var pg = new PregnancyAlgorithm();
-            foreach (var episode in pg.GetPregnancyEpisodes(Vocabulary, person, observationPeriods,
-                [.. ChunkData.ConditionOccurrences.Where(e => e.PersonId == person.PersonId)],
-                [.. ChunkData.ProcedureOccurrences.Where(e => e.PersonId == person.PersonId)],
-                [.. ChunkData.Observations.Where(e => e.PersonId == person.PersonId)],
-                [.. ChunkData.Measurements.Where(e => e.PersonId == person.PersonId)],
-                [.. ChunkData.DrugExposures.Where(e => e.PersonId == person.PersonId)]))
-            {
-                episode.Id = Offset.GetKeyOffset(episode.PersonId).ConditionEraId;
-                //ChunkData.ConditionEra.Add(episode);
-
-                if (episode.ConceptId == 433260 && _potentialChilds.Count > 0)
-                {
-                    foreach (var child in _potentialChilds)
-                    {
-                        var childId = child.Key;
-
-                        foreach (var birthdate in child.Value)
-                        {
-                            if (episode.EndDate.Value.Between(birthdate.AddDays(-60), birthdate.AddDays(60)))
-                            {
-                                //40485452    Child of subject
-                                //40478925    Mother of subject
-
-                                ChunkData.FactRelationships.Add(new FactRelationship
-                                {
-                                    DomainConceptId1 = 56,
-                                    DomainConceptId2 = 56,
-                                    FactId1 = episode.PersonId,
-                                    FactId2 = childId,
-                                    RelationshipConceptId = 40478925
-                                });
-                                break;
-                            }
-                        }
-
-                    }
-                }
-            }
-
             if (_discardedDrugCount > 0)
                 ChunkData.AddAttrition(person.PersonId, Attrition.DiscardedDrugCount, _discardedDrugCount);
+
+            AddEpisodeEvents();
 
             return Attrition.None;
         }
@@ -1039,6 +1001,21 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Truven
 
                 switch (entityDomain)
                 {
+                    case "Episode":
+                        if(!DomainEpisodes.ContainsKey(entity.SourceRecordGuid))
+                            DomainEpisodes.Add(entity.SourceRecordGuid, []);
+
+                        var episode = new Episode(entity);
+                        episode.Id = Offset.GetKeyOffset(episode.PersonId).EpisodeId;
+                        episode.Domain = domain;
+
+                        if(!episode.EndDate.HasValue)
+                            episode.EndDate = episode.StartDate;
+                            
+                        DomainEpisodes[entity.SourceRecordGuid].Add(episode);
+                        ChunkData.AddData(episode);
+                        break;
+                        
                     case "Condition":
                         var cond = entity as ConditionOccurrence ??
                                    new ConditionOccurrence(entity)
@@ -1255,16 +1232,13 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Truven
             ObservationPeriod[] observationPeriods)
         {
             var drugs = new Dictionary<Guid, List<DrugExposure>>();
-            var drugClaims = new Dictionary<Guid, List<DrugExposure>>();
+            var drugClaims = new List<DrugExposure>();
 
             foreach (var de in drugExposure)
             {
                 if (de.TypeConceptId == 32857 || de.TypeConceptId == 32869)
                 {
-                    if (!drugClaims.ContainsKey(de.SourceRecordGuid))
-                        drugClaims.Add(de.SourceRecordGuid, []);
-
-                    drugClaims[de.SourceRecordGuid].Add(de);
+                    drugClaims.Add(de);
                     continue;
                 }
 
@@ -1303,32 +1277,20 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Truven
         }
 
 
-        /// <summary>
-        /// Remove duplicate drug claim records as well as eliminate drug claims that have been administratively backed out with negative values
-        /// </summary>
-        /// <param name="drugClaims">set of drug exposure entities</param>
-        /// <returns>Enumeration of filtired drug exposure entities</returns>
-        private static IEnumerable<DrugExposure> FilteroutDrugClaims(Dictionary<Guid, List<DrugExposure>> drugClaims)
+        private IEnumerable<DrugExposure> FilteroutDrugClaims(List<DrugExposure> drugClaims)
         {
-            foreach (var similarDrugs in drugClaims.SelectMany(drugs => drugs.Value.GroupBy(d => d.SourceValue)))
+            
+            foreach (var de in drugClaims)
             {
-                var drugs = similarDrugs.Where(d => d.ConceptId > 0).ToArray();
-                if (drugs.Length > 0)
+                foreach (var item in TryToMapNdc11toNdc9(() => 
+                    {
+                        return de.AdditionalFields != null && de.AdditionalFields.ContainsKey("itndc");
+                    }, 
+                    de, 
+                    "Drug"))
                 {
-                    yield return drugs.OrderBy(d => d.ConceptIdKey.Length).Last();
-                    continue;
+                    yield return item;                    
                 }
-
-                var drugs1 = similarDrugs.Where(d => d.SourceConceptId > 0)
-                    .ToArray();
-                if (drugs1.Length > 0)
-                {
-                    yield return drugs1.OrderBy(d => d.ConceptIdKey.Length)
-                        .Last();
-                    continue;
-                }
-
-                yield return similarDrugs.OrderBy(d => d.ConceptIdKey.Length).Last();
             }
         }
 

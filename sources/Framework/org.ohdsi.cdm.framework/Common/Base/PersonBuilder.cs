@@ -1,10 +1,13 @@
-﻿using org.ohdsi.cdm.framework.common.Builder;
+﻿using Force.DeepCloner;
+using Microsoft.Identity.Client.Extensibility;
+using org.ohdsi.cdm.framework.common.Builder;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Helpers;
 using org.ohdsi.cdm.framework.common.Lookups;
 using org.ohdsi.cdm.framework.common.Omop;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 
 namespace org.ohdsi.cdm.framework.common.Base
 {
@@ -43,6 +46,7 @@ namespace org.ohdsi.cdm.framework.common.Base
         protected List<NoteNlp> NoteNlpRecords = [];
         protected List<Episode> EpisodeRecords = [];
 
+        protected Dictionary<Guid, List<Episode>> DomainEpisodes = [];
 
         #endregion
 
@@ -796,13 +800,6 @@ namespace org.ohdsi.cdm.framework.common.Base
             return cohort;
         }
 
-        public IEnumerable<EraEntity> BuildPregnancyEpisodes(ConditionOccurrence[] conditionOccurrences,
-            ProcedureOccurrence[] procedureOccurrences, Observation[] observations, Measurement[] measurements, DrugExposure[] drugExposures)
-        {
-
-            return null;
-        }
-
         public virtual IEnumerable<DeviceExposure> BuildDeviceExposure(DeviceExposure[] devExposure,
             Dictionary<long, VisitOccurrence> visitOccurrences,
             ObservationPeriod[] observationPeriods)
@@ -1001,17 +998,7 @@ namespace org.ohdsi.cdm.framework.common.Base
 
             Complete = true;
 
-            var pg = new PregnancyAlgorithm.PregnancyAlgorithm();
-            foreach (var r in pg.GetPregnancyEpisodes(Vocabulary, person, observationPeriods,
-                ChunkData.ConditionOccurrences.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.ProcedureOccurrences.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.Observations.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.Measurements.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.DrugExposures.Where(e => e.PersonId == person.PersonId).ToArray()))
-            {
-                r.Id = Offset.GetKeyOffset(r.PersonId).ConditionEraId;
-                ChunkData.ConditionEra.Add(r);
-            }
+            AddEpisodeEvents();
 
             return Attrition.None;
         }
@@ -1177,6 +1164,7 @@ namespace org.ohdsi.cdm.framework.common.Base
                 case "Procedure":
                 case "Device":
                 case "Drug":
+                case "Episode":
                     return conceptDomain;
 
                 default:
@@ -1200,6 +1188,21 @@ namespace org.ohdsi.cdm.framework.common.Base
 
                 switch (entityDomain)
                 {
+                    case "Episode":
+                        if(!DomainEpisodes.ContainsKey(entity.SourceRecordGuid))
+                            DomainEpisodes.Add(entity.SourceRecordGuid, []);
+
+                        var episode = new Episode(entity);
+                        episode.Id = Offset.GetKeyOffset(episode.PersonId).EpisodeId;
+                        episode.Domain = domain;
+                        
+                        if(!episode.EndDate.HasValue)
+                            episode.EndDate = episode.StartDate;
+
+                        DomainEpisodes[entity.SourceRecordGuid].Add(episode);
+                        ChunkData.AddData(episode);
+                        break;
+
                     case "Condition":
                         var cond = entity as ConditionOccurrence ??
                                    new ConditionOccurrence(entity)
@@ -1295,6 +1298,44 @@ namespace org.ohdsi.cdm.framework.common.Base
             Vocabulary ??= vocabulary;
         }
 
+        protected void AddEpisodeEvents()
+        {
+            if(DomainEpisodes.Keys.Count > 0)
+            {
+                foreach (var sourceRecordGuid in DomainEpisodes.Keys)
+                {
+                    foreach (var episode in DomainEpisodes[sourceRecordGuid])
+                    {
+                        int cnt = 0;
+                        cnt+= AddEpisodeEvents(ChunkData.ConditionOccurrences, episode);
+                        cnt+= AddEpisodeEvents(ChunkData.Measurements, episode);
+                        cnt+= AddEpisodeEvents(ChunkData.Observations, episode);
+                        cnt+= AddEpisodeEvents(ChunkData.ProcedureOccurrences, episode);
+                        cnt+= AddEpisodeEvents(ChunkData.DeviceExposure, episode);
+                        cnt+= AddEpisodeEvents(ChunkData.DrugExposures, episode);
+                    }
+                }
+            }
+        }
+
+        private int AddEpisodeEvents(IEnumerable<IEntity> records, Episode episode)
+        {
+            int cnt = 0;
+            foreach (var item in records.Where(r => r.SourceRecordGuid == episode.SourceRecordGuid && r.SourceConceptId == episode.SourceConceptId))
+            {
+                EpisodeEvent ev = new()
+                {
+                    EpisodeEventFieldConceptId = GetEventFieldConceptId(item.Domain),
+                    EventId = item.Id,
+                    PersonId = item.PersonId,
+                    EpisodeId = episode.Id
+                };
+                ChunkData.EpisodeEvent.Add(ev);
+                cnt++;
+            }
+            return cnt;
+        }
+
         //protected static void AddEntity<T>(T entity, List<T> list) where T : IEntity
         public static IEnumerable<T> UpdateRSourceConcept<T>(IEnumerable<T> records) where T : IEntity
         {
@@ -1379,6 +1420,76 @@ namespace org.ohdsi.cdm.framework.common.Base
                 return null;
 
             return death;
+        }
+
+        protected IEnumerable<DrugExposure> TryToMapNdc11toNdc9(Func<bool> ndcFlag, DrugExposure de, string ndcLookupName)
+        {
+            yield return de;
+            /*
+            if (ndcFlag())
+            {
+                if(de.ConceptId > 0)
+                {
+                    yield return de;
+                }
+                else
+                {
+                    var ndc9Drugs = TryToCreateDrugsNdc9(de, ndcLookupName, de.SourceValue.Substring(0, 9), de.SourceValue, de.StartDate).ToList();
+                    if(ndc9Drugs.Count > 0)
+                    {
+                        foreach (var ndc9 in ndc9Drugs)
+                        {
+                            yield return ndc9;
+                        }      
+                    }
+                }
+            }
+            else
+                yield return de;
+                */
+        }
+
+        protected IEnumerable<DrugExposure> TryToCreateDrugsNdc9(DrugExposure ndc, string lookup, string key, string sourceCode, DateTime eventDate)
+        {
+            var result = Vocabulary.Lookup(key, lookup, eventDate);
+            if (result.Count != 0)
+            {
+                foreach (var v in result)
+                {
+                    if (v.ConceptId.HasValue && v.ConceptId > 0)
+                    {
+                        var newEntity = ndc.DeepClone();
+                        newEntity.Id = Offset.GetKeyOffset(ndc.PersonId).DrugExposureId;
+                        newEntity.ConceptId = v.ConceptId.Value;
+                        newEntity.SourceValue = sourceCode;
+
+                        if (v.Ingredients != null)
+                        {
+                            newEntity.Ingredients = [.. v.Ingredients];
+                        }
+
+                        if (v.SourceConcepts != null)
+                        {
+                            newEntity.SourceConcepts = [.. v.SourceConcepts];
+                        }
+
+                        if (v.ValueAsConceptIds == null || v.ValueAsConceptIds.Count == 0)
+                        {
+                            yield return newEntity;
+                        }
+                        else
+                        {
+                            foreach (var valueAsConceptId in v.ValueAsConceptIds)
+                            {
+                                var ent = newEntity.DeepClone();
+                                newEntity.Id = Offset.GetKeyOffset(ndc.PersonId).DrugExposureId;
+                                ent.ValueAsConceptId = valueAsConceptId;
+                                yield return ent;
+                            }
+                        }
+                    }
+                }
+            }
         }
         #endregion
     }

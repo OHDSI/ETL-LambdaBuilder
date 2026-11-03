@@ -1,0 +1,1 @@
+﻿select * from {sc}.concept_relationship_metadata

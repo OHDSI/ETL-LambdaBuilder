@@ -2,7 +2,6 @@
 using org.ohdsi.cdm.framework.common.Builder;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Omop;
-using org.ohdsi.cdm.framework.common.PregnancyAlgorithm;
 
 namespace org.ohdsi.cdm.framework.etl.Transformation.Premier
 {
@@ -21,7 +20,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Premier
             public override string Folder => "Premier";
             public override string Description => "Premier v5.4";
             public override string CdmSource => "";
-            public override CdmVersions CdmVersion => CdmVersions.V54;
+            public override CdmVersions CdmVersion => CdmVersions.V55;
             public override int PersonIdIndex => 0;
             public override string PersonTableName => "pat";
             public override string Citation => "";
@@ -282,18 +281,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Premier
                 [.. UpdateRSourceConcept(deviceExposure)],
                 [], 
                 []);
-
-            //var pg = new PregnancyAlgorithm();
-            //foreach (var r in pg.GetPregnancyEpisodes(Vocabulary, person, observationPeriods,
-            //    [.. ChunkData.ConditionOccurrences.Where(e => e.PersonId == person.PersonId)],
-            //    [.. ChunkData.ProcedureOccurrences.Where(e => e.PersonId == person.PersonId)],
-            //    [.. ChunkData.Observations.Where(e => e.PersonId == person.PersonId)],
-            //    [.. ChunkData.Measurements.Where(e => e.PersonId == person.PersonId)],
-            //    [.. ChunkData.DrugExposures.Where(e => e.PersonId == person.PersonId)]))
-            //{
-            //    r.Id = Offset.GetKeyOffset(r.PersonId).ConditionEraId;
-            //    ChunkData.ConditionEra.Add(r);
-            //}
+            
+            AddEpisodeEvents();
 
             return Attrition.None;
         }
@@ -330,6 +319,21 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.Premier
 
                 switch (entityDomain)
                 {
+                    case "Episode":
+                        if(!DomainEpisodes.ContainsKey(entity.SourceRecordGuid))
+                            DomainEpisodes.Add(entity.SourceRecordGuid, []);
+
+                        var episode = new Episode(entity);
+                        episode.Id = Offset.GetKeyOffset(episode.PersonId).EpisodeId;
+                        episode.Domain = domain;
+
+                        if(!episode.EndDate.HasValue)
+                            episode.EndDate = episode.StartDate;
+                            
+                        DomainEpisodes[entity.SourceRecordGuid].Add(episode);
+                        ChunkData.AddData(episode);
+                        break;
+                        
                     case "Condition":
                         var cond = entity as ConditionOccurrence ??
                                    new ConditionOccurrence(entity)

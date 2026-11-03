@@ -4,8 +4,6 @@ using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Helpers;
 using org.ohdsi.cdm.framework.common.Omop;
-using org.ohdsi.cdm.framework.common.PregnancyAlgorithm;
-using System.Diagnostics.Metrics;
 
 namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
 {
@@ -24,7 +22,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
             public override string Folder => "OptumPanther";
             public override string Description => "Optum Panther v5.4";
             public override string CdmSource => "";
-            public override CdmVersions CdmVersion => CdmVersions.V54;
+            public override CdmVersions CdmVersion => CdmVersions.V55;
             public override int PersonIdIndex => 1;
             public override string PersonTableName => "patient";
             public override string Citation => "";
@@ -86,8 +84,6 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
 
         private IEnumerable<DrugExposure> PrepareDrugExposures(IEnumerable<DrugExposure> drugExposures)
         {
-            var ndcDrugs = new Dictionary<Guid, List<DrugExposure>>();
-            var vaxDrugs = new List<DrugExposure>();
             foreach (var de in drugExposures)
             {
                 if (!de.DaysSupply.HasValue || de.DaysSupply.Value == 0)
@@ -104,55 +100,57 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
 
                 if (de.AdditionalFields != null && de.AdditionalFields.ContainsKey("itndc"))
                 {
-                    if (!ndcDrugs.ContainsKey(de.SourceRecordGuid))
-                        ndcDrugs.Add(de.SourceRecordGuid, []);
+                    if(de.ConceptId > 0)
+                    {
+                        yield return UpdateSourceValueForVax(de);
+                        continue;
+                    }
 
-                    if (!de.AdditionalFields.ContainsKey("orig_source"))
-                        de.AdditionalFields.Add("orig_source", de.SourceValue);
-                    ndcDrugs[de.SourceRecordGuid].Add(de);
-                    continue;
+                    if (de.AdditionalFields.ContainsKey("immunization_desc"))
+                    {
+                        var vaxKey = de.AdditionalFields["immunization_desc"];
+                        var vaxSource = de.AdditionalFields["immunization_source"];
+                        
+                        if(!string.IsNullOrEmpty(vaxKey))
+                        {
+                            var vaxDrugs = TryToCreateDrugsNdc9(de, "EhrVax", vaxKey, vaxSource, DateTime.MinValue).ToList();
+                            
+                            if(vaxDrugs.Count > 0)
+                            {
+                                foreach(var vax in vaxDrugs)
+                                {
+                                    yield return vax;
+                                }
+                                continue; 
+                            }
+                        }
+                    }
+
+                    var ndc9Drugs = TryToCreateDrugsNdc9(de, "Drug", de.SourceValue.Substring(0, 9), de.SourceValue, de.StartDate).ToList();
+                    if(ndc9Drugs.Count > 0)
+                    {
+                        foreach (var ndc9 in ndc9Drugs)
+                        {
+                            yield return UpdateSourceValueForVax(ndc9);
+                        }      
+                        continue;
+                    }
                 }
-
-                if (de.AdditionalFields != null && de.AdditionalFields.ContainsKey("vax"))
-                {
-                    //de.TypeConceptId = 32818;
-                    if (!de.AdditionalFields.ContainsKey("orig_source"))
-                        de.AdditionalFields.Add("orig_source", de.SourceValue.Replace(de.ConceptIdKey, "").TrimEnd('-'));
-                    vaxDrugs.Add(de);
-                    continue;
-                }
-
-                yield return de;
+            
+                yield return UpdateSourceValueForVax(de);
             }
+        }
 
-            foreach (var de in vaxDrugs)
+        private static DrugExposure UpdateSourceValueForVax(DrugExposure de)
+        {
+            if (de.AdditionalFields != null && de.AdditionalFields.ContainsKey("immunization_source"))
             {
-                if (!ndcDrugs.ContainsKey(de.SourceRecordGuid))
-                    ndcDrugs.Add(de.SourceRecordGuid, []);
-
-                ndcDrugs[de.SourceRecordGuid].Add(de);
+                var vaxSource = de.AdditionalFields["immunization_source"];
+                if (!string.IsNullOrEmpty(vaxSource))
+                    de.SourceValue = vaxSource;
             }
 
-            foreach (var similarDrugs in ndcDrugs.SelectMany(drugs => drugs.Value.GroupBy(d => d.AdditionalFields["orig_source"])))
-            {
-                var drugs = similarDrugs.Where(d => d.ConceptId > 0).ToArray();
-                if (drugs.Length > 0)
-                {
-                    yield return drugs.OrderByDescending(d => d.ConceptIdKey.Length).First();
-                    continue;
-                }
-
-                var drugs1 = similarDrugs.Where(d => d.SourceConceptId > 0)
-                    .ToArray();
-                if (drugs1.Length > 0)
-                {
-                    yield return drugs1.OrderByDescending(d => d.ConceptIdKey.Length)
-                        .First();
-                    continue;
-                }
-
-                yield return similarDrugs.OrderByDescending(d => d.ConceptIdKey.Length).First();
-            }
+            return de;
         }
 
         public static void UpdateVisitOccurrenceId(IEntity entity,
@@ -1219,21 +1217,12 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
                 [.. UpdateRSourceConcept(deviceExposure)],
                 [.. notes], 
                 episodes);
-
-            //var pg = new PregnancyAlgorithm();
-            //foreach (var r in pg.GetPregnancyEpisodes(Vocabulary, person, [.. observationPeriodsFinal],
-            //    [.. ChunkData.ConditionOccurrences.Where(e => e.PersonId == person.PersonId)],
-            //    [.. ChunkData.ProcedureOccurrences.Where(e => e.PersonId == person.PersonId)],
-            //    [.. ChunkData.Observations.Where(e => e.PersonId == person.PersonId)],
-            //    [.. ChunkData.Measurements.Where(e => e.PersonId == person.PersonId)],
-            //    [.. ChunkData.DrugExposures.Where(e => e.PersonId == person.PersonId)]))
-            //{
-            //    r.Id = Offset.GetKeyOffset(r.PersonId).ConditionEraId;
-            //    ChunkData.ConditionEra.Add(r);
-            //}
+            
+            AddEpisodeEvents();
 
             return Attrition.None;
         }
+
         protected void FixDates<T>(IEnumerable<T> inputRecords) where T : class, IEntity
         {
             if (inputRecords == null || !inputRecords.Any() || !Vendor.SourceReleaseDate.HasValue)
@@ -1307,6 +1296,21 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
 
                 switch (entityDomain)
                 {
+                    case "Episode":
+                        if(!DomainEpisodes.ContainsKey(entity.SourceRecordGuid))
+                            DomainEpisodes.Add(entity.SourceRecordGuid, []);
+
+                        var episode = new Episode(entity);
+                        episode.Id = Offset.GetKeyOffset(episode.PersonId).EpisodeId;
+                        episode.Domain = domain;
+
+                        if(!episode.EndDate.HasValue)
+                            episode.EndDate = episode.StartDate;
+                            
+                        DomainEpisodes[entity.SourceRecordGuid].Add(episode);
+                        ChunkData.AddData(episode);
+                        break;
+
                     case "Condition":
                         var cond = entity as ConditionOccurrence ??
                                    new ConditionOccurrence(entity)

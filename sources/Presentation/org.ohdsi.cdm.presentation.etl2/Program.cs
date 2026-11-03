@@ -1,14 +1,21 @@
-﻿using CommandLine;
+﻿using Amazon.S3;
+using Amazon.S3.Transfer;
+using CommandLine;
 using Microsoft.Extensions.Configuration;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Utility;
+using org.ohdsi.cdm.framework.Common.Utility.Validation;
 using org.ohdsi.cdm.framework.desktop.DbLayer;
+using org.ohdsi.cdm.framework.desktop.Helpers;
 using org.ohdsi.cdm.framework.desktop.Settings;
 using System;
+using System.Collections.Generic;
 using System.Data.Odbc;
 using System.Data.SQLite;
 using System.IO;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace org.ohdsi.cdm.presentation.etl
 {
@@ -44,6 +51,7 @@ namespace org.ohdsi.cdm.presentation.etl
             string chunkSchema = null;
 
             int functionChunkSize = 0;
+            int maxFunctions = 0;
 
             var r = Parser.Default.ParseArguments<Options>(arguments)
                   .WithParsed<Options>(o =>
@@ -67,6 +75,7 @@ namespace org.ohdsi.cdm.presentation.etl
                       resumeChunkCreation = o.ResumeChunk.Value;
                       chunkSchema = o.ChunkSchema;
                       functionChunkSize = o.FunctionChunkSize;
+                      maxFunctions = o.MaxFunctions;
                   });
 
             if (r.Tag.ToString() != "Parsed")
@@ -127,6 +136,10 @@ namespace org.ohdsi.cdm.presentation.etl
                 Settings.Current.UseS3forDatabricks = bool.Parse(configuration.GetSection("AppSettings")["useS3forDatabricks"]);
 
                 Console.WriteLine($"ParallelQueries {Settings.Current.ParallelQueries}; ParallelChunks {Settings.Current.ParallelChunks}");
+
+                Settings.Current.MaxFunctions = maxFunctions;
+
+                Console.WriteLine($"MaxFunctions: {Settings.Current.MaxFunctions}");
 
                 Console.WriteLine();
                 Console.WriteLine("initializing building settings...");
@@ -217,7 +230,7 @@ namespace org.ohdsi.cdm.presentation.etl
                     Console.WriteLine("VocabularyVersion:" + vocabularyVersion);
 
                     ETL.SaveCdmSource(DateTime.Parse(sourceReleaseDate), vocabularyVersion);
-                    ETL.SaveMetadata(sourceVersionId);
+                    ETL.SaveMetadata(sourceVersionId, versionId.ToString());
                     ETL.SaveVersion(versionId);
 
                     Console.WriteLine($"****************************************************************");
@@ -229,8 +242,6 @@ namespace org.ohdsi.cdm.presentation.etl
                 }
                 else
                 {
-                    ETL.SaveEtlLookupsToCloudStorage();
-
                     if (skipChunkCreation)
                     {
                         Console.WriteLine("Chunk creation skipped");
@@ -239,6 +250,8 @@ namespace org.ohdsi.cdm.presentation.etl
                     {
                         if (!resumeChunkCreation)
                         {
+                            //TMP
+                            ETL.SaveEtlLookupsToCloudStorage();
                             ETL.CreateChunks(chunkSchema, functionChunkSize);
                         }
                         else
@@ -264,9 +277,10 @@ namespace org.ohdsi.cdm.presentation.etl
                     }
                     else
                     {
-                        ETL.CreateLookupTables();
+                        ETL.CreateSystemDataTables();
                     }
 
+                    /*
                     if (skipBuild)
                     {
                         ETL.Build();
@@ -274,7 +288,7 @@ namespace org.ohdsi.cdm.presentation.etl
                     else
                     {
                         Console.WriteLine("Build step was skipped");
-                    }
+                    }*/
                 }
 
                 if (skipValidation)
@@ -283,8 +297,17 @@ namespace org.ohdsi.cdm.presentation.etl
                 }
                 else
                 {
-                    //var validation = new Validation();
-                    //validation.Start(lambdaUtility, cdmFolder);
+                    var validation = new Validation(Settings.Current.CloudStorageKey, 
+                        Settings.Current.CloudStorageSecret,
+                        Settings.Current.CloudStorageName,
+                        Settings.Current.CDMFolder);
+
+                    var result = validation.ValidateBuildingId(Settings.Current.Building.Vendor, Settings.Current.Building.Id.Value);
+
+                    Console.WriteLine($"IsValid: {result.IsValid}");
+                    Console.WriteLine($"Chunks validated: {result.ChunkFilesValidated}");
+                    Console.WriteLine($"Chunks with errors: {result.ChunksWithErrors}");
+                    Console.WriteLine($"Person count: {result.TotalPersons}");
                 }
 
                 if (skipMerge)
@@ -293,18 +316,53 @@ namespace org.ohdsi.cdm.presentation.etl
                 }
                 else
                 {
-                    //lambdaUtility.TriggerMergeFunction(Settings.Current.Building.Vendor,
-                    //    Settings.Current.Building.Id.Value, versionId, cdmFolderCsv,
-                    //    false);
+                    var tables = new[]
+                    {
+                        "METADATA",
+                        "FACT_RELATIONSHIP"
+                    };
 
-                    //var checkMerging = Task.Run(() => lambdaUtility.AllChunksWereDone(Settings.Current.Building.Vendor,
-                    //  Settings.Current.Building.Id.Value, lambdaUtility.MergeMessageBucket));
-                    //checkMerging.Wait();
+                    var tasks = new List<Task>();
+
+                    using (var client = CloudStorageHelper.GetAwsTriggerClient())
+                    using (var tu = new TransferUtility(client))
+                    {
+                        foreach (var table in tables)
+                        {
+                            var t = tu.UploadAsync(new TransferUtilityUploadRequest
+                            {
+                                InputStream = new MemoryStream(),
+                                BucketName = Settings.Current.CloudTriggerStorageName,
+                                Key = $"{Settings.Current.GetMergeBuildingPrefix}.{table}.0.{versionId}.txt",
+                                ServerSideEncryptionMethod = ServerSideEncryptionMethod.AES256,
+                                StorageClass = S3StorageClass.Standard,
+                            });
+                            tasks.Add(t);
+                        }
+                    }
+
+                    Task.WaitAll([.. tasks]);
+
+                    var unprocessed = 0;
+                    do
+                    {
+                        unprocessed = CloudStorageHelper.GetRunningFunctionInfo(Settings.Current.CloudTriggerStorageName, $"{Settings.Current.GetMergeBuildingPrefix}").Item1;
+
+                        Console.WriteLine($"[Merge] Unprocessed functions={unprocessed}");
+
+                        if (unprocessed > 0)
+                        {
+                            Console.WriteLine($"[Merge] unprocessed > 0, waiting 1 minutes...");
+                            Thread.Sleep(TimeSpan.FromMinutes(1));
+                        }
+                    }
+                    while (unprocessed > 0);
                 }
 
                 Console.WriteLine("DONE.");
                 return Settings.Current.Building.Id.Value;
             }
+            
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);

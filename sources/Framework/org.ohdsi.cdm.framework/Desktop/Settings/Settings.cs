@@ -137,7 +137,7 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
         public string CDMFolder { get; set; }
                 
         public bool UseS3forDatabricks { get; set; }
-
+        public int MaxFunctions { get; set; }
 
         public string GetDatabricksStorage
         {
@@ -150,6 +150,21 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
             }
         }
 
+        public string GetCDMBuildingPrefix
+        {
+            get
+            {
+                return $"cdm/{Current.Building.Vendor}.{Current.Building.Id}";
+            }
+        }
+
+        public string GetMergeBuildingPrefix
+        {
+            get
+            {
+                return $"merge/{Current.Building.Vendor}.{Current.Building.Id}";
+            }
+        }
         #endregion
 
         #region Methods
@@ -162,7 +177,7 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
         {
             return Building.Cdm switch
             {
-                CdmVersions.V54 => "v5.4",
+                CdmVersions.V55 => "v5.5",
             };
         }
         #endregion

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFramework>net10.0-windows7.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Platforms>AnyCPU;x64</Platforms>
@@ -38,31 +38,6 @@
     <None Remove="Transformation\CDM\Lookups\loinc.sql" />
     <None Remove="Transformation\CDM\Lookups\ndc.sql" />
     <None Remove="Transformation\CDM\Lookups\revenue_code.sql" />
-    <None Remove="Transformation\CprdAurum\Batch.sql" />
-    <None Remove="Transformation\CprdAurum\Definitions\consultation.xml" />
-    <None Remove="Transformation\CprdAurum\Definitions\drug.xml" />
-    <None Remove="Transformation\CprdAurum\Definitions\L_CARE_SITE.xml" />
-    <None Remove="Transformation\CprdAurum\Definitions\L_LOCATION.xml" />
-    <None Remove="Transformation\CprdAurum\Definitions\L_PROVIDER.xml" />
-    <None Remove="Transformation\CprdAurum\Definitions\observation.xml" />
-    <None Remove="Transformation\CprdAurum\Definitions\patient.xml" />
-    <None Remove="Transformation\CprdAurum\Definitions\referral.xml" />
-    <None Remove="Transformation\CprdAurum\Lookups\Drug.sql" />
-    <None Remove="Transformation\CprdAurum\Lookups\Read_Snomed.sql" />
-    <None Remove="Transformation\CprdAurum\Lookups\Units.sql" />
-    <None Remove="Transformation\CprdHES\Batch.sql" />
-    <None Remove="Transformation\CprdHES\Definitions\augmented_care_periods.xml" />
-    <None Remove="Transformation\CprdHES\Definitions\critical_care.xml" />
-    <None Remove="Transformation\CprdHES\Definitions\diagnoses_episode.xml" />
-    <None Remove="Transformation\CprdHES\Definitions\diagnoses_hospitalisation.xml" />
-    <None Remove="Transformation\CprdHES\Definitions\diagnoses_primary_hospitalisation.xml" />
-    <None Remove="Transformation\CprdHES\Definitions\episodes.xml" />
-    <None Remove="Transformation\CprdHES\Definitions\hospital.xml" />
-    <None Remove="Transformation\CprdHES\Definitions\L_PROVIDER.xml" />
-    <None Remove="Transformation\CprdHES\Definitions\patient.xml" />
-    <None Remove="Transformation\CprdHES\Definitions\procedures.xml" />
-    <None Remove="Transformation\CprdHES\Lookups\icd10.sql" />
-    <None Remove="Transformation\CprdHES\Lookups\opcs.sql" />
     <None Remove="Transformation\CPRD\Batch.sql" />
     <None Remove="Transformation\CPRD\Definitions\Additional.xml" />
     <None Remove="Transformation\CPRD\Definitions\Clinical.xml" />
@@ -227,13 +202,6 @@
     <None Remove="Transformation\OptumPanther\Lookups\Route.sql" />
     <None Remove="Transformation\OptumPanther\Lookups\Specialty.sql" />
     <None Remove="Transformation\OptumPanther\Lookups\Visits.sql" />
-    <None Remove="Transformation\PregnancyAlgorithm\Batch.sql" />
-    <None Remove="Transformation\PregnancyAlgorithm\Definitions\ConditionOccurrence.xml" />
-    <None Remove="Transformation\PregnancyAlgorithm\Definitions\DrugExposures.xml" />
-    <None Remove="Transformation\PregnancyAlgorithm\Definitions\Measurements.xml" />
-    <None Remove="Transformation\PregnancyAlgorithm\Definitions\Observations.xml" />
-    <None Remove="Transformation\PregnancyAlgorithm\Definitions\Person.xml" />
-    <None Remove="Transformation\PregnancyAlgorithm\Definitions\ProcedureOccurrences.xml" />
     <None Remove="Transformation\Premier\Batch.sql" />
     <None Remove="Transformation\Premier\Definitions\genlab.xml" />
     <None Remove="Transformation\Premier\Definitions\lab_result.xml" />
@@ -378,81 +346,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Transformation\CDM\Lookups\revenue_code.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\CprdAurum\Batch.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\CprdAurum\Definitions\consultation.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\CprdAurum\Definitions\drug.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\CprdAurum\Definitions\L_CARE_SITE.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\CprdAurum\Definitions\L_LOCATION.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\CprdAurum\Definitions\L_PROVIDER.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\CprdAurum\Definitions\observation.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\CprdAurum\Definitions\patient.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\CprdAurum\Definitions\referral.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\CprdAurum\Lookups\Drug.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\CprdAurum\Lookups\Read_Snomed.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\CprdAurum\Lookups\Units.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\CprdHES\Batch.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\CprdHES\Definitions\augmented_care_periods.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\CprdHES\Definitions\critical_care.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\CprdHES\Definitions\diagnoses_episode.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\CprdHES\Definitions\diagnoses_hospitalisation.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\CprdHES\Definitions\diagnoses_primary_hospitalisation.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\CprdHES\Definitions\episodes.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\CprdHES\Definitions\hospital.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\CprdHES\Definitions\L_PROVIDER.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\CprdHES\Definitions\patient.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\CprdHES\Definitions\procedures.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\CprdHES\Lookups\icd10.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\CprdHES\Lookups\opcs.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Transformation\CPRD\Batch.sql">
@@ -978,27 +871,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Transformation\OptumPanther\Lookups\Visits.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\PregnancyAlgorithm\Batch.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\PregnancyAlgorithm\Definitions\ConditionOccurrence.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\PregnancyAlgorithm\Definitions\DrugExposures.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\PregnancyAlgorithm\Definitions\Measurements.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\PregnancyAlgorithm\Definitions\Observations.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\PregnancyAlgorithm\Definitions\Person.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Transformation\PregnancyAlgorithm\Definitions\ProcedureOccurrences.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Transformation\Premier\Batch.sql">

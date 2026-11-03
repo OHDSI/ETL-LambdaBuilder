@@ -1,8 +1,8 @@
 ﻿<QueryDefinition>
 	<Query>
 		SELECT
-		cast(pat.medrec_key as bigint) as medrec_key,
-		pat.adm_date,
+		ch.person_id as medrec_key,
+		pat.ADMIT_DATE as adm_date,
 		ROUND(bill.std_qty, 0) as quantity,
 		pat.pat_key,
 		bill.std_chg_code,
@@ -26,9 +26,9 @@
 		44818668 CurrencyConceptId,
 		sum_dept_desc || ' / ' || std_dept_desc AS revenue_code_source_value,
 		CASE
-		WHEN len(CAST(pat.ms_drg as varchar(5))) = 1 THEN '00' || CAST(pat.ms_drg as varchar(5))
-		WHEN len(CAST(pat.ms_drg as varchar(5))) = 2 THEN '0' || CAST(pat.ms_drg as varchar(5))
-		ELSE CAST(pat.ms_drg as varchar)
+		WHEN len(CAST(pat.ms_drg as string)) = 1 THEN '00' || CAST(pat.ms_drg as string)
+		WHEN len(CAST(pat.ms_drg as string)) = 2 THEN '0' || CAST(pat.ms_drg as string)
+		ELSE CAST(pat.ms_drg as string)
 		END AS ms_drg,
 		'patbill' as source,
 		bill.hosp_chg_id,

@@ -2,7 +2,6 @@
 using org.ohdsi.cdm.framework.desktop.Helpers;
 using org.ohdsi.cdm.framework.desktop.Settings;
 using System;
-using System.Linq;
 using System.Timers;
 
 namespace org.ohdsi.cdm.presentation.etl.Monitor
@@ -42,10 +41,13 @@ namespace org.ohdsi.cdm.presentation.etl.Monitor
                 Console.WriteLine($"> {DateTime.Now:t} | Checking ChunkId={_chunkId}... (Attempt {_ckeckCount})");
                 var lastModified = DateTime.MinValue;
 
-                var prefix = $"{Settings.Current.Building.Vendor}.{Settings.Current.Building.Id.Value}.{_chunkId}.";
+                var prefix = $"{Settings.Current.GetCDMBuildingPrefix}.{_chunkId}.";
                 
-                var info = CloudStorageHelper.GetTriggerFilesInfo(prefix);
-                if (info == null || !info.Any())
+                var info = CloudStorageHelper.GetRunningFunctionInfo(Settings.Current.CloudTriggerStorageName, prefix);
+                var count = info.Item1;
+                lastModified = info.Item2;
+
+                if (info.Item1 == 0)
                 {
                     _timer.Enabled = false;
                     
@@ -53,13 +55,10 @@ namespace org.ohdsi.cdm.presentation.etl.Monitor
                     return;
                 }
 
-                Console.WriteLine($"> {DateTime.Now:t} | {_chunkId} - not processed slices {info.Count()} | {prefix}");
+                Console.WriteLine($"> {DateTime.Now:t} | {_chunkId} - not processed slices {count} | {prefix}");
+                Console.WriteLine($"> {DateTime.Now:t} | ChunkId={_chunkId} - {count} slices were not processed | PreviouLastModified={_previousLastModified:t} LastModified={lastModified:t} | {_previousCount} {info.Item1}");
 
-                lastModified = info.Select(i => i.Item2).Max();
-
-                Console.WriteLine($"> {DateTime.Now:t} | ChunkId={_chunkId} - {info.Count()} slices were not processed | PreviouLastModified={_previousLastModified:t} LastModified={lastModified:t} | {_previousCount} {info.Count()}");
-
-                if (_ckeckCount >= 10 || _previousCount == info.Count() && _previousLastModified == lastModified)
+                if (_ckeckCount >= 10 || _previousCount == count && _previousLastModified == lastModified)
                 {
                     if (_ckeckCount >= 6)
                     {
@@ -71,7 +70,7 @@ namespace org.ohdsi.cdm.presentation.etl.Monitor
                 }
 
                 _previousLastModified = lastModified;
-                _previousCount = info.Count();
+                _previousCount = count;
             }
             catch (Exception ex)
             {
@@ -95,11 +94,11 @@ namespace org.ohdsi.cdm.presentation.etl.Monitor
 
                 if (result.ChunkResults[0].IsValid)
                 {
-                    State = ChunkState.Invalid;
+                    State = ChunkState.Valid;
                 }
                 else
                 {
-                    State = ChunkState.Valid;
+                    State = ChunkState.Invalid;
                 }
             }
             catch (Exception ex)

@@ -64,16 +64,18 @@ namespace org.ohdsi.cdm.presentation.lambdamerge
                     task = client.ListObjectsV2Async(request);
                     task.Wait();
 
-                    Parallel.ForEach(task.Result.S3Objects, o =>
+                    if (task.Result.S3Objects != null)
                     {
-                        var fileMetadata = ReadMetadata(o);
-                        metadatas.Enqueue(fileMetadata);
+                        Parallel.ForEach(task.Result.S3Objects, o =>
+                        {
+                            var fileMetadata = ReadMetadata(o);
+                            metadatas.Enqueue(fileMetadata);
 
-                        Interlocked.Increment(ref count);
-                        if (count % 1000 == 0)
-                            Console.WriteLine(o.Key + " | " + count);
-                    });
-
+                            Interlocked.Increment(ref count);
+                            if (count % 1000 == 0)
+                                Console.WriteLine(o.Key + " | " + count);
+                        });
+                    }
 
                     request.ContinuationToken = task.Result.NextContinuationToken;
 

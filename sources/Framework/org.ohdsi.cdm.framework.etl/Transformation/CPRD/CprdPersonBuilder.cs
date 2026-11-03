@@ -4,7 +4,6 @@ using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Helpers;
 using org.ohdsi.cdm.framework.common.Lookups;
 using org.ohdsi.cdm.framework.common.Omop;
-using org.ohdsi.cdm.framework.common.PregnancyAlgorithm;
 
 namespace org.ohdsi.cdm.framework.etl.Transformation.CPRD
 {
@@ -23,7 +22,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CPRD
             public override string Folder => "CPRD";
             public override string Description => "Cprd v5.4";
             public override string CdmSource => "";
-            public override CdmVersions CdmVersion => CdmVersions.V54;
+            public override CdmVersions CdmVersion => CdmVersions.V55;
             public override int PersonIdIndex => 0;
             public override string PersonTableName => "Patient";
             public override string Citation => "";
@@ -210,18 +209,6 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.CPRD
                 [.. FilterByDeathDate(Clean(deviceExposure, person), death, 60)], 
                 null, 
                 null);
-
-            //var pg = new PregnancyAlgorithm();
-            //foreach (var r in pg.GetPregnancyEpisodes(Vocabulary, person, observationPeriods,
-            //    [.. ChunkData.ConditionOccurrences.Where(e => e.PersonId == person.PersonId)],
-            //    [.. ChunkData.ProcedureOccurrences.Where(e => e.PersonId == person.PersonId)],
-            //    [.. ChunkData.Observations.Where(e => e.PersonId == person.PersonId)],
-            //    [.. ChunkData.Measurements.Where(e => e.PersonId == person.PersonId)],
-            //    [.. ChunkData.DrugExposures.Where(e => e.PersonId == person.PersonId)]))
-            //{
-            //    r.Id = Offset.GetKeyOffset(r.PersonId).ConditionEraId;
-            //    ChunkData.ConditionEra.Add(r);
-            //}
 
 
             return Attrition.None;

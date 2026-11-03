@@ -28,18 +28,28 @@ namespace org.ohdsi.cdm.presentation.azurebuilder.Base
         private readonly System.Timers.Timer _watchdog;
         private readonly Dictionary<string, AzureBlobReaderGzip> _readers = [];
         private Dictionary<string, long> _restorePoint = [];
+
+        private Dictionary<string, long> _rowsSaved;
         
         private bool _readRestarted;
         private string _currentReaderName;
 
         public int TotalPersonConverted { get; private set; }
+        public Dictionary<string, long> RowsSaved 
+        { 
+            get
+            {
+                return _rowsSaved;
+            }
+        }
 
-        public AzureChunkPart(int chunkId, Func<IPersonBuilder> createPersonBuilder, string prefix, int attempt)
+        public AzureChunkPart(int chunkId, Func<IPersonBuilder> createPersonBuilder, string prefix, int attempt, Dictionary<string, long> rowsSaved)
         {
             _chunkId = chunkId;
             _createPersonBuilder = createPersonBuilder;
             _prefix = prefix;
             _attempt = attempt;
+            _rowsSaved = rowsSaved;
 
             _personBuilders = [];
             _offsetManager = new KeyMasterOffsetManager(_chunkId, int.Parse(_prefix.Replace("PartitionId=", "")), attempt);
@@ -52,12 +62,15 @@ namespace org.ohdsi.cdm.presentation.azurebuilder.Base
         {
             if (!string.IsNullOrEmpty(_currentReaderName) && _readers != null && _readers.Count > 0 && _readers.TryGetValue(_currentReaderName, out AzureBlobReaderGzip value))
             {
+                // TMP
+                /*
                 if (value.IdleTime != TimeSpan.Zero && value.IdleTime.TotalSeconds > 10)
                 {
                     throw new Exception("Watchdog");
                     //value.Restart();
                     //_readRestarted = true;
                 }
+                */
             }
         }
 
@@ -256,7 +269,7 @@ namespace org.ohdsi.cdm.presentation.azurebuilder.Base
         private void Save(Dictionary<string, long> localRestorePoint, Stopwatch totalTime)
         {
             var key = string.Empty;
-            var saver = new Saver(_offsetManager);
+            var saver = new Saver(_offsetManager, _rowsSaved);
 
             var personCount = 0;
             _readyToSave.ChunkId = _chunkId;
@@ -271,8 +284,8 @@ namespace org.ohdsi.cdm.presentation.azurebuilder.Base
                 key = _prefix + "." + _attempt + "." + _readyToSave.Persons.Min(p => p.PersonId) + "_" +
                       _readyToSave.Persons.Max(p => p.PersonId) + "." + _readyToSave.Persons.Count;
 
-                saver.Save(_readyToSave, _chunkId, key);
                 _lastSavedPersonId = _readyToSave.Persons.Max(p => p.PersonId);
+                saver.Save(_readyToSave, _chunkId, key);
             }
             else if (_readyToSave.Metadata.Count > 0)
             {
@@ -280,8 +293,8 @@ namespace org.ohdsi.cdm.presentation.azurebuilder.Base
                 key = _prefix + "." + _attempt + "." + _readyToSave.Metadata.Keys.Min() + "_" +
                       _readyToSave.Metadata.Keys.Max() + "." + _readyToSave.Metadata.Count;
 
-                saver.Write(_readyToSave, _chunkId, key, "metadata_tmp");
                 _lastSavedPersonId = _readyToSave.Metadata.Keys.Max();
+                saver.Write(_readyToSave, _chunkId, key, "metadata_tmp");
             }
 
             UpdateRestorePoint(localRestorePoint);
@@ -295,6 +308,19 @@ namespace org.ohdsi.cdm.presentation.azurebuilder.Base
             _readyToSave.Clean();
             _readyToSave = null;
             _readyToSave = new ChunkData();
+            
+            double usedRamMb = 0;
+            using (Process currentProcess = System.Diagnostics.Process.GetCurrentProcess())
+            {
+                currentProcess.Refresh();
+                usedRamMb = currentProcess.WorkingSet64 / (1024.0 * 1024.0);
+
+                if(!_rowsSaved.ContainsKey("MaxUsedRamMb"))
+                    _rowsSaved.Add("MaxUsedRamMb", 0);
+
+                if(_rowsSaved["MaxUsedRamMb"] < usedRamMb)
+                    _rowsSaved["MaxUsedRamMb"] = (long)usedRamMb;
+            }
 
             totalTime.Stop();
 
@@ -352,6 +378,8 @@ namespace org.ohdsi.cdm.presentation.azurebuilder.Base
                     qd.ProcessedPersonIds.Remove(personId);
                 }
             }
+
+            _personBuilders.TrimExcess();
 
             timer.Stop();
 

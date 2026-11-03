@@ -55,7 +55,7 @@
 		ELSE days_sup
 		END	AS DAYS_SUPPLY,
 		ndc DRUG_SOURCE_VALUE,
-		SUBSTRING(ndc,1,9) DRUG_SOURCE_VALUE_9,
+		1 as itNdc,
 		ch.PartitionId
 		FROM {sc}.rx_claims rx
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND rx.patid = ch.PERSON_ID
@@ -79,6 +79,7 @@
 			<AdditionalFields>
 				<string>pat_planid</string>
 				<string>clmid</string>
+				<string>itNdc</string>
 			</AdditionalFields>
 			<Concepts>
 				<Concept>
@@ -89,7 +90,6 @@
 					</ConceptIdMappers>
 					<Fields>
 						<Field key="DRUG_SOURCE_VALUE" typeId="TYPE_CONCEPT_ID" eventDate="START_DATE"/>
-						<Field key="DRUG_SOURCE_VALUE_9" sourceKey="DRUG_SOURCE_VALUE" typeId="TYPE_CONCEPT_ID" eventDate="START_DATE"/>
 					</Fields>
 				</Concept>
 			</Concepts>

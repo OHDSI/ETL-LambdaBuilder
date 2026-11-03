@@ -1,9 +1,7 @@
 ﻿using org.ohdsi.cdm.framework.common.Base;
 using org.ohdsi.cdm.framework.common.Builder;
 using org.ohdsi.cdm.framework.common.Enums;
-using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Omop;
-using org.ohdsi.cdm.framework.common.PregnancyAlgorithm;
 
 namespace org.ohdsi.cdm.framework.etl.Transformation.JMDC
 {
@@ -19,7 +17,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.JMDC
             public override string Folder => "JMDC";
             public override string Description => "JMDC v5.4";
             public override string CdmSource => "";
-            public override CdmVersions CdmVersion => CdmVersions.V54;
+            public override CdmVersions CdmVersion => CdmVersions.V55;
             public override int PersonIdIndex => 0;
             public override string PersonTableName => "Enrollment";
             public override string Citation => "";
@@ -598,47 +596,9 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.JMDC
             foreach (var c in CostRaw)
                 ChunkData.AddCostData(c);
 
+            AddEpisodeEvents();
+
             Complete = true;
-
-            var pg = new PregnancyAlgorithm();
-            foreach (var r in pg.GetPregnancyEpisodes(Vocabulary, person, observationPeriods,
-                ChunkData.ConditionOccurrences.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.ProcedureOccurrences.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.Observations.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.Measurements.Where(e => e.PersonId == person.PersonId).ToArray(),
-                ChunkData.DrugExposures.Where(e => e.PersonId == person.PersonId).ToArray()))
-            {
-                r.Id = Offset.GetKeyOffset(r.PersonId).ConditionEraId;
-                //ChunkData.ConditionEra.Add(r);
-
-                if (r.ConceptId == 433260 && _potentialChilds.Count > 0)
-                {
-                    foreach (var child in _potentialChilds)
-                    {
-                        var childId = child.Key;
-
-                        foreach (var birthdate in child.Value)
-                        {
-                            if (r.EndDate.Value.Between(birthdate.AddDays(-60), birthdate.AddDays(60)))
-                            {
-                                //40485452    Child of subject
-                                //40478925    Mother of subject
-
-                                ChunkData.FactRelationships.Add(new FactRelationship
-                                {
-                                    DomainConceptId1 = 56,
-                                    DomainConceptId2 = 56,
-                                    FactId1 = r.PersonId,
-                                    FactId2 = childId,
-                                    RelationshipConceptId = 40478925
-                                });
-                                break;
-                            }
-                        }
-
-                    }
-                }
-            }
 
             return Attrition.None;
         }
@@ -720,6 +680,21 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.JMDC
 
                 switch (entityDomain)
                 {
+                    case "Episode":
+                        if(!DomainEpisodes.ContainsKey(entity.SourceRecordGuid))
+                            DomainEpisodes.Add(entity.SourceRecordGuid, []);
+
+                        var episode = new Episode(entity);
+                        episode.Id = Offset.GetKeyOffset(episode.PersonId).EpisodeId;
+                        episode.Domain = domain;
+
+                        if(!episode.EndDate.HasValue)
+                            episode.EndDate = episode.StartDate;
+                            
+                        DomainEpisodes[entity.SourceRecordGuid].Add(episode);
+                        ChunkData.AddData(episode);
+                        break;
+
                     case "Condition":
                         var cond = entity as ConditionOccurrence ??
                                    new ConditionOccurrence(entity)

@@ -15,10 +15,12 @@
         public string CdmVersion { get; set; }
         public string VocabularyVersion { get; set; }
 
+        public string CdmReleaseIdentifier { get; set; }
+
         public CdmSource()
         {
             CdmReleaseDate = DateTime.Now;
-            CdmVersion = "v5.4";
+            CdmVersion = "v5.5";
         }
     }
 }

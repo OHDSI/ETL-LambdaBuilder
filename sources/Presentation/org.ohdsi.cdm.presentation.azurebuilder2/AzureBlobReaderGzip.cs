@@ -80,8 +80,11 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
             try
             {
                 _files = [];
+                var allFiles = new List<string>();
                 var bcc = AzureHelper.GetBlobContainer();
                 //"temp/tmp_aivanov3/CDM/28/raw/17/Condition_occurrence/PartitionId=10"
+                string tid = null;
+                DateTime committedDate = DateTime.MinValue;
                 foreach (var b in bcc.GetBlobs(new GetBlobsOptions
                 {
                     Prefix = _prefix,
@@ -89,11 +92,32 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
                     States = BlobStates.None
                 }))
                 {
-                    if (!b.Name.EndsWith("csv.gz"))
+                    allFiles.Add(b.Name);
+
+                    //_started_8108786078607471922
+                    var name = b.Name.Replace(_prefix, "");
+                    if(name.StartsWith("_started_") && b.Properties.LastModified.Value.DateTime > committedDate)
+                    {
+                        tid = name.Replace("_started_", ""); 
+                        committedDate = b.Properties.LastModified.Value.DateTime;
+                    }
+                }
+
+                foreach (var file in allFiles)
+                {
+                    if (!file.EndsWith("csv.gz"))
                         continue;
 
-                    // part-00004-tid-3957083962449067901-cd3d81c9-b752-4836-b5b2-2f35fc986ab7-38842-3.c000.csv.gz
-                    _files.Add(int.Parse(b.Name.Split('-')[1]), b.Name);
+                    if(string.IsNullOrEmpty(tid))
+                        throw new Exception("empty tid " + _prefix);
+
+                    var parts = file.Split('-');
+
+                    if(parts[3] == tid)
+                    {
+                        // part-00004-tid-3957083962449067901-cd3d81c9-b752-4836-b5b2-2f35fc986ab7-38842-3.c000.csv.gz
+                        _files.Add(int.Parse(parts[1]), file);
+                    }
                 }
             }
             catch (Exception e)

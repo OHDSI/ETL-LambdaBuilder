@@ -55,11 +55,34 @@
 		e2.ENROLID as baby_person_id,
 		to_date((CAST(e2.DOBYR AS VARCHAR(4)) || '-' || EXTRACT(MONTH from e2.DTSTART) || '-01'), 'yyyy-M-dd') as baby_dob
 		from a
-		left join {sc}.ENROLLMENT_DETAIL e2 on a.ENROLID != e2.ENROLID and a.SEX = '2' and a.RX = '1' and e2.RX = '1' and a.Family = SUBSTRING(RIGHT('00000000000' || cast(e2.ENROLID as VARCHAR(20)), 11), 1,9) and e2.DOBYR - a.DOBYR >= 12 and e2.DOBYR - DATEPART(YEAR, e2.DTSTART) = 0
+		left join {sc}.ENROLLMENT_DETAIL e2 on a.ENROLID != e2.ENROLID and a.SEX = '2' and a.RX = '1' and e2.RX = '1' and a.Family = SUBSTRING(RIGHT('00000000000' || cast(e2.ENROLID as VARCHAR(20)), 11), 1,9) and e2.DOBYR - a.DOBYR >= 12 and e2.DOBYR - YEAR(e2.DTSTART) = 0
 		)
 
-		select enrolid, sex, dobyr, dtstart, dtend, family, ps, datatyp, egeoloc, periodtypeconceptid, value_as_number, missinginsurance, rx, payersource, observation_concept_id, observation_source_value, vendor, plankey, race_source_value, ethnicity_source_value, race_concept_id, ethnicity_concept_id, baby_person_id,
-		min(baby_dob) as baby_dob
+		select enrolid, 
+		sex, 
+		dobyr, 
+		dtstart, 
+		dtend, 
+		family, 
+		ps, 
+		datatyp, 
+		egeoloc, 
+		periodtypeconceptid, 
+		value_as_number, 
+		missinginsurance, 
+		rx, 
+		payersource, 
+		observation_concept_id, 
+		observation_source_value, 
+		vendor, 
+		plankey, 
+		race_source_value, 
+		ethnicity_source_value, 
+		race_concept_id, 
+		ethnicity_concept_id, 
+		baby_person_id,
+		min(baby_dob) as baby_dob,
+		PartitionId
 		from b
 		group by PartitionId, enrolid, sex, dobyr, dtstart, dtend, family, ps, datatyp, egeoloc, periodtypeconceptid, value_as_number, missinginsurance, rx, payersource, observation_concept_id, observation_source_value, vendor, plankey, race_source_value, race_concept_id, ethnicity_source_value, ethnicity_concept_id, baby_person_id, baby_dob
 		ORDER BY PartitionId, ENROLID

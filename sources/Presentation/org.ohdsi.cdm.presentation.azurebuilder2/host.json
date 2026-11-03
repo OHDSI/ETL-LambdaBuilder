@@ -1,19 +1,28 @@
 {
   "version": "2.0",
+  "retry": {
+    "strategy": "fixedDelay",
+    "maxRetryCount": 0,
+    "delayInterval": "00:00:01"
+  },
+  "functionTimeout": "00:55:00",
   "extensions": {
     "queues": {
-      "maxPollingInterval": "00:00:01",
       "batchSize": 1,
-      "newBatchThreshold": 0
+      "newBatchThreshold": 0,
+      "maxDequeueCount": 1,
+      "maxPollingInterval": "00:00:01",
+      "visibilityTimeout": "00:59:00"
     }
   },
+  "telemetryMode": "OpenTelemetry",
+  "concurrency": {
+    "dynamicConcurrencyEnabled": false
+  },
   "logging": {
-    "applicationInsights": {
-      "samplingSettings": {
-        "isEnabled": true,
-        "excludedTypes": "Request"
-      },
-      "enableLiveMetricsFilters": true
+    "logLevel": {
+      "default": "Information",
+      "Function": "Information"
     }
   }
 }

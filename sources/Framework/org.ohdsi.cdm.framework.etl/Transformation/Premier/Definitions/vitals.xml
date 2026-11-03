@@ -1,7 +1,7 @@
 ﻿<QueryDefinition>
 	<Query>
 		SELECT
-		cast(pat.medrec_key as bigint) as medrec_key,
+		ch.person_id as medrec_key,
 		v.pat_key,
 		replace(replace(replace(lab_test_result, chr(9), ' '), chr(10), ' '), chr(13), ' ') as value_source_value,
 		case
@@ -12,14 +12,14 @@
 		when numeric_value_operator is null or numeric_value_operator = '' or numeric_value_operator = ' ' then null
 		else 0
 		end as operator_concept_id,
-		lab_test_loinc_code,
-		regexp_replace(lab_test, '\\(.*\\)', '') snomed,
+		LAB_TEST_CODE as lab_test_loinc_code,
+		regexp_replace(LAB_TEST_DESC, '\\(.*\\)', '') snomed,
 		observation_datetime,
 		lab_test_result_unit,
-		test_result_numeric_value,
+		NUMERIC_VALUE as test_result_numeric_value,
 		pat.adm_phy,
 		case
-		when lab_test_loinc_code is null or lab_test_loinc_code = '' then 0
+		when LAB_TEST_CODE is null or LAB_TEST_CODE = '' then 0
 		else 1
 		end as isloinc,
 		ch.PartitionId

@@ -1,5 +1,4 @@
-﻿using Amazon.Runtime.Internal.Transform;
-using org.ohdsi.cdm.framework.common.Definitions;
+﻿using org.ohdsi.cdm.framework.common.Definitions;
 using org.ohdsi.cdm.framework.common.Lookups;
 using org.ohdsi.cdm.framework.desktop.Helpers;
 using org.ohdsi.cdm.framework.Desktop.DataReaders;
@@ -12,7 +11,6 @@ namespace org.ohdsi.cdm.framework.desktop
     {
         private readonly Dictionary<string, Lookup> _lookups = [];
         private GenderLookup _genderConcepts;
-        private PregnancyConcepts _pregnancyConcepts;
 
         private static LookupValue CreateLookupValue(IDataRecord reader)
         {
@@ -214,40 +212,6 @@ namespace org.ohdsi.cdm.framework.desktop
                 _lookups.Add(name, lookup);
                 Console.WriteLine(name + " - Done (" + _lookups[name].KeysCount + ")");
             }
-        }
-
-        public DataReaderInfo GetPregnancyDrug()
-        {
-            var sql = File.ReadAllText(Path.Combine(Settings.Settings.Current.Folder,
-                    @"Core\Lookups\PregnancyDrug.sql"));
-
-            sql = sql.Replace("{sc}", Settings.Settings.Current.Building.VocabularySchemaName);
-
-            Console.WriteLine("PregnancyDrug - Loading...");
-            var connection = SqlConnectionHelper.OpenOdbcConnection(Settings.Settings.Current.Building.VocabularyConnectionString);
-            var command = new OdbcCommand(sql, connection) { CommandTimeout = 0 };
-            var reader = command.ExecuteReader();
-
-            return new DataReaderInfo(connection, command, reader, "PregnancyDrug");
-        }
-
-        private void FillPregnancyDrug()
-        {
-            using (var ri = GetPregnancyDrug())
-            {
-                Console.WriteLine("PregnancyDrug - filling");
-                var lookup = new Lookup();
-                while (ri.DataReader.Read())
-                {
-                    lookup.Add(new LookupValue
-                    {
-                        ConceptId = int.Parse(ri.DataReader[0].ToString()),
-                        SourceCode = ri.DataReader[0].ToString()
-                    });
-                }
-                _lookups.Add("PregnancyDrug", lookup);
-            }
-            Console.WriteLine("PregnancyDrug - Done");
         }
 
         private IEnumerable<DataReaderInfo> GetDataReaders(IEnumerable<EntityDefinition> definitions)
@@ -475,12 +439,8 @@ namespace org.ohdsi.cdm.framework.desktop
             }
             else
             {
-                _pregnancyConcepts = new PregnancyConcepts(Settings.Settings.Current.Folder);
-
                 FillCombinedLookups();
                 Fill(GetClinicalDataReaders());
-
-                FillPregnancyDrug();
             }
         }
 
@@ -499,11 +459,6 @@ namespace org.ohdsi.cdm.framework.desktop
                 return 8551; // UNKNOWN
 
             return res;
-        }
-
-        public IEnumerable<PregnancyConcept> LookupPregnancyConcept(long conceptId)
-        {
-            return _pregnancyConcepts.GetConcepts(conceptId);
         }
 
         public string GetSourceVocabularyId(long conceptId)

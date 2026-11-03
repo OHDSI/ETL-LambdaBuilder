@@ -3,7 +3,6 @@ using org.ohdsi.cdm.framework.common.Builder;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Omop;
-using org.ohdsi.cdm.framework.common.PregnancyAlgorithm;
 
 namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
 {
@@ -47,7 +46,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
             public override string Folder => "OptumExtended";
             public override string Description => "OptumExtended SES v5.4";
             public override string CdmSource => "CdmSourceSES.sql";
-            public override CdmVersions CdmVersion => CdmVersions.V54;
+            public override CdmVersions CdmVersion => CdmVersions.V55;
             public override int PersonIdIndex => 0;
             public override string PersonTableName => "MEMBER_CONTINUOUS_ENROLLMENT";
             public override string Citation => "";
@@ -61,7 +60,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
             public override string Folder => "OptumExtended";
             public override string Description => "OptumExtended DOD v5.4";
             public override string CdmSource => "CdmSourceDOD.sql";
-            public override CdmVersions CdmVersion => CdmVersions.V54;
+            public override CdmVersions CdmVersion => CdmVersions.V55;
             public override int PersonIdIndex => 0;
             public override string PersonTableName => "MEMBER_CONTINUOUS_ENROLLMENT";
             public override string Citation => "";
@@ -123,7 +122,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
 
                 var maxStartDate = death.Max(d => d.StartDate);
                 var result = death.Where(d => d.StartDate == maxStartDate).OrderByDescending(d => d.Primary).First();
-
+                
+                result.StartDate = new DateTime(maxStartDate.Year, maxStartDate.Month, DateTime.DaysInMonth(maxStartDate.Year, maxStartDate.Month));
                 result.CauseConceptId = null;
                 result.SourceCauseConceptId = null;
                 result.CauseSource = null;
@@ -581,36 +581,19 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
             }
         }
 
-        private static IEnumerable<DrugExposure> FilteroutDrugClaims(IEnumerable<DrugExposure> rawDrugs)
+        private IEnumerable<DrugExposure> FilteroutDrugClaims(IEnumerable<DrugExposure> rawDrugs)
         {
-            var drugClaims = new Dictionary<Guid, List<DrugExposure>>();
             foreach (var de in rawDrugs)
             {
-                if (!drugClaims.ContainsKey(de.SourceRecordGuid))
-                    drugClaims.Add(de.SourceRecordGuid, []);
-
-                drugClaims[de.SourceRecordGuid].Add(de);
-            }
-
-            foreach (var similarDrugs in drugClaims.SelectMany(drugs => drugs.Value.GroupBy(d => d.SourceValue)))
-            {
-                var drugs = similarDrugs.Where(d => d.ConceptId > 0).ToArray();
-                if (drugs.Length > 0)
+                foreach (var item in TryToMapNdc11toNdc9(() => 
                 {
-                    yield return drugs.OrderBy(d => d.ConceptIdKey.Length).Last();
-                    continue;
-                }
-
-                var drugs1 = similarDrugs.Where(d => d.SourceConceptId > 0)
-                    .ToArray();
-                if (drugs1.Length > 0)
+                    return de.AdditionalFields != null && de.AdditionalFields.ContainsKey("itndc");
+                }, 
+                de, 
+                "DrugRx"))
                 {
-                    yield return drugs1.OrderBy(d => d.ConceptIdKey.Length)
-                        .Last();
-                    continue;
+                    yield return item;                    
                 }
-
-                yield return similarDrugs.OrderBy(d => d.ConceptIdKey.Length).Last();
             }
         }
 
@@ -865,69 +848,10 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
                 [],
                 []);
 
-            var pregnancyEpisodes = new List<ConditionEra>();
-            var pg = new PregnancyAlgorithm();
-
-
-            foreach (var episode in pg.GetPregnancyEpisodes(Vocabulary, person, observationPeriods,
-                [.. ChunkData.ConditionOccurrences.Where(e => e.PersonId == person.PersonId)],
-                [.. ChunkData.ProcedureOccurrences.Where(e => e.PersonId == person.PersonId)],
-                [.. ChunkData.Observations.Where(e => e.PersonId == person.PersonId)],
-                [.. ChunkData.Measurements.Where(e => e.PersonId == person.PersonId)],
-                [.. ChunkData.DrugExposures.Where(e => e.PersonId == person.PersonId)]))
-            {
-                episode.Id = Offset.GetKeyOffset(episode.PersonId).ConditionEraId;
-                //episode.OccurrenceCount = episode.OccurrenceCount * -1; //TMP
-                episode.OccurrenceCount = 0;
-                //ChunkData.ConditionEra.Add(episode);
-                pregnancyEpisodes.Add(episode);
-
-                if (episode.ConceptId == 433260 && _potentialChilds.Count > 0)
-                {
-                    // check for mother
-                    // and ce.condition_era_end_date >= ppp.payer_plan_period_start_date
-                    // and ce.condition_era_end_date <= ppp.payer_plan_period_end_date
-
-                    if (!payerPlanPeriods.Any(pp => episode.EndDate.Value.Between(pp.StartDate, pp.EndDate.Value)))
-                        continue;
-
-                    foreach (var child in _potentialChilds)
-                    {
-                        var childId = child.Key;
-
-                        foreach (var birthdate in child.Value)
-                        {
-                            // check child dob
-                            // and ci.date_of_birth >= op.observation_period_start_date
-                            // and ci.date_of_birth <= op.observation_period_end_date
-
-                            if (!observationPeriods.Any(op => birthdate.Between(op.StartDate, op.EndDate.Value)))
-                                continue;
-
-                            if (episode.EndDate.Value.Between(birthdate.AddDays(-60), birthdate.AddDays(60)))
-                            {
-                                //40485452    Child of subject
-                                //40478925    Mother of subject
-
-                                ChunkData.FactRelationships.Add(new FactRelationship
-                                {
-                                    DomainConceptId1 = 56,
-                                    DomainConceptId2 = 56,
-                                    FactId1 = episode.PersonId,
-                                    FactId2 = childId,
-                                    RelationshipConceptId = 40478925
-                                });
-
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-
-
             if(_discardedDrugCount > 0)
                 ChunkData.AddAttrition(person.PersonId, Attrition.DiscardedDrugCount, _discardedDrugCount);
+
+            AddEpisodeEvents();
 
             return Attrition.None;
         }
@@ -967,6 +891,21 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
 
                 switch (entityDomain)
                 {
+                    case "Episode":
+                        if(!DomainEpisodes.ContainsKey(entity.SourceRecordGuid))
+                            DomainEpisodes.Add(entity.SourceRecordGuid, []);
+
+                        var episode = new Episode(entity);
+                        episode.Id = Offset.GetKeyOffset(episode.PersonId).EpisodeId;
+                        episode.Domain = domain;
+
+                        if(!episode.EndDate.HasValue)
+                            episode.EndDate = episode.StartDate;
+                            
+                        DomainEpisodes[entity.SourceRecordGuid].Add(episode);
+                        ChunkData.AddData(episode);
+                        break;
+
                     case "Condition":
 
                         var cond = entity as ConditionOccurrence ??
