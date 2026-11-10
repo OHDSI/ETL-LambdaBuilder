@@ -32,9 +32,9 @@ The STEM table is a staging area where source codes like ICD9 codes will first b
 | visit_occurrence_id |**VISIT_DETAIL**<br>VISIT_OCCURRENCE_ID|Use the linking to **VISIT_DETAIL** to look up VISIT_OCCURRENCE_ID||
 | provider_id |**VISIT_DETAIL**<br>PROVIDER_ID |||
 | start_datetime |**VISIT_DETAIL** VISIT_DETAIL_START_DATETIME |||
-| concept_id | **INPATIENT_CONFINEMENT** DIAG1-DIAG5 and PROC1-PROC5|Use the SOURCE_TO_STANDARD query with the filterS<br/><br/>**DIAG Filters** WHERE TARGET_STANDARD_CONCEPT = 'S' AND TARGET_INVALID_REASON IS NULL AND SOURCE_VOCABULARY_ID IN *ICD9CM* OR *ICD10CM* <br/><br/> **PROC Filters**  WHERE SOURCE_VOCABULARY_ID IN (*'ICD9Proc'* OR *'ICD10PCS'*, 'HCPCS','CPT4') AND TARGET_STANDARD_CONCEPT ='S' AND TARGET_INVALID_REASON IS NULL AND TARGET_CONCEPT_CLASS_ID NOT IN ('HCPCS Modifier','CPT4 Modifier')| **DIAG Filters** If ICD_FLAG = 9 then use 'ICD9CM', else if ICD_FLAG = 10 then use 'ICD10CM'<br><br>**Proc Filters** If ICD_FLAG = 9 then use 'ICD9Proc', else if ICD_FLAG = 10 then use 'ICD10PCS'<br> If a DIAG or PROC does not have a mapping set the concept_id to 0||
-| source_value |**INPATIENT_CONFINEMENT** DIAG1-DIAG5 and PROC1-PROC5|||
-| source_concept_id |**INPATIENT_CONFINEMENT** DIAG1-DIAG5 and PROC1-PROC5|Use the SOURCE_TO_SOURCE query with the filter<br/><br/> **DIAG Filters** WHERE SOURCE_VOCABULARY_ID IN *ICD9CM* OR *ICD10CM* <br/><br/> **PROC Filters**  WHERE SOURCE_VOCABULARY_ID IN (*'ICD9Proc'* OR *'ICD10PCS'*, 'HCPCS','CPT4') | **DIAG Filters** If ICD_FLAG = 9 then use 'ICD9CM', else if ICD_FLAG = 10 then use 'ICD10CM'<br><br>**Proc Filters** If ICD_FLAG = 9 then use 'ICD9Proc', else if ICD_FLAG = 10 then use 'ICD10PCS'|
+| concept_id | **INPATIENT_CONFINEMENT** DIAG1-DIAG5 <br> PROC1-PROC5 <br> DRG|Use the SOURCE_TO_STANDARD query with the filterS<br/><br/>**DIAG Filters** <br> `WHERE TARGET_STANDARD_CONCEPT = 'S' AND TARGET_INVALID_REASON IS NULL AND SOURCE_VOCABULARY_ID ('ICD9CM', 'ICD10CM')` <br/><br/> **PROC Filters**  <br> `WHERE SOURCE_VOCABULARY_ID IN ('ICD9Proc','ICD10PCS','HCPCS','CPT4') AND TARGET_STANDARD_CONCEPT ='S' AND TARGET_INVALID_REASON IS NULL AND TARGET_CONCEPT_CLASS_ID NOT IN ('HCPCS Modifier','CPT4 Modifier')` <br><br> **DRG** <br>`WHERE TARGET_STANDARD_CONCEPT = 'S' AND TARGET_INVALID_REASON IS NULL AND SOURCE_VOCABULARY_ID ('DRG')`| **DIAG Filters** If ICD_FLAG = 9 then use 'ICD9CM', else if ICD_FLAG = 10 then use 'ICD10CM'<br><br>**Proc Filters** If ICD_FLAG = 9 then use 'ICD9Proc', else if ICD_FLAG = 10 then use 'ICD10PCS'<br> <br> If a DIAG or PROC does not have a mapping set the concept_id to 0||
+| source_value |**INPATIENT_CONFINEMENT** DIAG1-DIAG5 <br> PROC1-PROC5 <br> DRG|||
+| source_concept_id |**INPATIENT_CONFINEMENT** DIAG1-DIAG5 <br> PROC1-PROC5 <br> DRG|Use the SOURCE_TO_SOURCE query with the filter<br/><br/> **DIAG Filters** <br> `WHERE SOURCE_VOCABULARY_ID IN ('ICD9CM','ICD10CM')` <br/><br/> **PROC Filters**  <br> `WHERE SOURCE_VOCABULARY_ID IN ('ICD9Proc','ICD10PCS', 'HCPCS','CPT4')` <br><br>**DRG Filters**<br>`WHERE SOURCE_VOCABULARY_ID IN ('DRG')`| **DIAG Filters** If ICD_FLAG = 9 then use 'ICD9CM', else if ICD_FLAG = 10 then use 'ICD10CM'<br><br>**Proc Filters** If ICD_FLAG = 9 then use 'ICD9Proc', else if ICD_FLAG = 10 then use 'ICD10PCS'|
 | type_concept_id |32855 (Inpatient claim header) |||  
 | operator_concept_id | |||
 | unit_concept_id |  |||
@@ -68,3 +68,8 @@ The STEM table is a staging area where source codes like ICD9 codes will first b
 | disease_status_source_value | |||
 | condition_status_concept_id | DIAG1-DIAG5 | If the record is generated based on DIAG1 set to `32902` else if the record is based on DIAG2-DIAG5 set to `32908`||
 | condition_status_source_value | Use the name of the DIAG field. For example, if the record is generated based on DX1 put 'DX1' here |||
+
+## Change Log
+
+### August 10, 2026
+* Adding DRG to concept_id mapping

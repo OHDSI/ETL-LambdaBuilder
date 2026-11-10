@@ -165,11 +165,16 @@ namespace org.ohdsi.cdm.presentation.azurebuilder
 
                 case "metadata_tmp":
                     {
-                        return chunk.Metadata.Count == 0
-                            ? null
-                            : new Tuple<IDataReader, int>(
+                        if(chunk.Metadata.Count == 0)
+                            return null;
+                        else
+                        {
+                            //TMP
+                            var cnt = chunk.Metadata.Values.Count(m => m.Name != "Discarded drug count");
+                            return new Tuple<IDataReader, int>(
                                 new MetadataDataReader([.. chunk.Metadata.Values]),
-                                chunk.Metadata.Values.Count);
+                                cnt);
+                        }
                     }
 
                 case "fact_relationship":

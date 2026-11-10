@@ -90,7 +90,7 @@ namespace org.ohdsi.cdm.presentation.etl.Monitor
                         InvalidCount = invalidCnt;
                         TotalCount = _chunks.Values.Count;
 
-                        if (_completeAdding && error + validCnt + invalidCnt == _chunks.Values.Count)
+                        if (_completeAdding && error + timeout + validCnt + invalidCnt == _chunks.Values.Count)
                         {
                             Console.WriteLine($"*** {DateTime.Now:t} | ChunksMonitor - DONE");
                             return;

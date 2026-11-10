@@ -3,7 +3,6 @@ using org.ohdsi.cdm.framework.common.Builder;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Omop;
-using org.ohdsi.cdm.framework.common.PregnancyAlgorithm;
 
 namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
 {
@@ -47,7 +46,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
             public override string Folder => "OptumExtended";
             public override string Description => "OptumExtended SES v5.4";
             public override string CdmSource => "CdmSourceSES.sql";
-            public override CdmVersions CdmVersion => CdmVersions.V54;
+            public override CdmVersions CdmVersion => CdmVersions.V55;
             public override int PersonIdIndex => 0;
             public override string PersonTableName => "MEMBER_CONTINUOUS_ENROLLMENT";
             public override string Citation => "";
@@ -61,7 +60,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
             public override string Folder => "OptumExtended";
             public override string Description => "OptumExtended DOD v5.4";
             public override string CdmSource => "CdmSourceDOD.sql";
-            public override CdmVersions CdmVersion => CdmVersions.V54;
+            public override CdmVersions CdmVersion => CdmVersions.V55;
             public override int PersonIdIndex => 0;
             public override string PersonTableName => "MEMBER_CONTINUOUS_ENROLLMENT";
             public override string Citation => "";
@@ -123,7 +122,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
 
                 var maxStartDate = death.Max(d => d.StartDate);
                 var result = death.Where(d => d.StartDate == maxStartDate).OrderByDescending(d => d.Primary).First();
-
+                
+                result.StartDate = new DateTime(maxStartDate.Year, maxStartDate.Month, DateTime.DaysInMonth(maxStartDate.Year, maxStartDate.Month));
                 result.CauseConceptId = null;
                 result.SourceCauseConceptId = null;
                 result.CauseSource = null;
@@ -851,6 +851,8 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
             if(_discardedDrugCount > 0)
                 ChunkData.AddAttrition(person.PersonId, Attrition.DiscardedDrugCount, _discardedDrugCount);
 
+            AddEpisodeEvents();
+
             return Attrition.None;
         }
         public static IEnumerable<T> Clean<T>(IEnumerable<T> entities, Person person) where T : class, IEntity
@@ -889,6 +891,21 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumExtended
 
                 switch (entityDomain)
                 {
+                    case "Episode":
+                        if(!DomainEpisodes.ContainsKey(entity.SourceRecordGuid))
+                            DomainEpisodes.Add(entity.SourceRecordGuid, []);
+
+                        var episode = new Episode(entity);
+                        episode.Id = Offset.GetKeyOffset(episode.PersonId).EpisodeId;
+                        episode.Domain = domain;
+
+                        if(!episode.EndDate.HasValue)
+                            episode.EndDate = episode.StartDate;
+                            
+                        DomainEpisodes[entity.SourceRecordGuid].Add(episode);
+                        ChunkData.AddData(episode);
+                        break;
+
                     case "Condition":
 
                         var cond = entity as ConditionOccurrence ??

@@ -21,6 +21,10 @@ namespace org.ohdsi.cdm.framework.common.Extensions
                 if (value is null)
                     return null;
 
+                //TMP
+                if(value == "\"\"")
+                    return string.Empty;
+
                 //return value;
                 return string.Intern(value);
             }

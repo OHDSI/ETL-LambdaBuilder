@@ -4,10 +4,10 @@
 		<Variable name="providField" database="mdcd">PROV_ID</Variable>
 
 		<Variable name="procmod" database="ccae, mdcr">procmod</Variable>
-		<Variable name="procmod" database="mdcd">NULL AS procmod</Variable>
+		<Variable name="procmod" database="mdcd">cast(null as string) AS procmod</Variable>
 
 		<Variable name="diagnosisField" database="ccae, mdcr">PDX, DX1, DX2, DX3, DX4, DX5</Variable>
-		<Variable name="diagnosisField" database="mdcd">PDX, DX1, DX2, DX3, DX4, null DX5</Variable>
+		<Variable name="diagnosisField" database="mdcd">PDX, DX1, DX2, DX3, DX4, cast(null as string) DX5</Variable>
 
 		<Variable name="vendor" database="ccae">'ccae' as vendor</Variable>
 		<Variable name="vendor" database="mdcr">'mdcr' as vendor</Variable>
@@ -86,6 +86,7 @@
 		qty,
 		1 as fake,
 		{procmod},
+		cast(drg as int) as drg,
 		ch.PartitionId
 		from {sc}.INPATIENT_SERVICES
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND ENROLID = ch.PERSON_ID)
@@ -120,6 +121,7 @@
 		1 as fake,
 		PROCMOD,
 		DXVER,
+		drg,
 
 		to_date((CAST(UPDATED_YEAR AS VARCHAR(4)) || '-01' || '-01'), 'yyyy-MM-dd') as UPDATED_DATE,
 		{vendor},
@@ -360,6 +362,24 @@
 					</ConceptIdMappers>
 					<Fields>
 						<Field key="REVCODE" defaultTypeId="32854"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ObservationDefinition>
+		<ObservationDefinition>
+			<PersonId>ENROLID</PersonId>
+			<StartDate>SVCDATE</StartDate>
+			<EndDate>TSVCDAT</EndDate>
+			<ProviderIdKey>ProviderIdKey</ProviderIdKey>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>Drg</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="drg" defaultTypeId="32854"/>
 					</Fields>
 				</Concept>
 			</Concepts>

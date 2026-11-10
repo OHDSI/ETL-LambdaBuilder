@@ -62,12 +62,15 @@ namespace org.ohdsi.cdm.presentation.azurebuilder.Base
         {
             if (!string.IsNullOrEmpty(_currentReaderName) && _readers != null && _readers.Count > 0 && _readers.TryGetValue(_currentReaderName, out AzureBlobReaderGzip value))
             {
+                // TMP
+                /*
                 if (value.IdleTime != TimeSpan.Zero && value.IdleTime.TotalSeconds > 10)
                 {
                     throw new Exception("Watchdog");
                     //value.Restart();
                     //_readRestarted = true;
                 }
+                */
             }
         }
 

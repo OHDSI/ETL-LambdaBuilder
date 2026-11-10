@@ -38,9 +38,9 @@ If a record is written to STEM from the **PROC_CD** field in the **MEDICAL_CLAIM
 | visit_occurrence_id |**VISIT_DETAIL**<br>VISIT_OCCURRENCE_ID|Use the linking to **VISIT_DETAIL** to look up VISIT_OCCURRENCE_ID|||
 | provider_id |**VISIT_DETAIL**<br>PROVIDER_ID |||
 | start_datetime |**VISIT_DETAIL** VISIT_DETAIL_START_DATETIME |||
-| concept_id | **MEDICAL_CLAIMS** PROC_CD<br><br>**MEDICAL_CLAIMS** NDC<br><br>**MEDICAL_CLAIMS** RVNU_CD|Use the SOURCE_TO_STANDARD query with the filter<br><br>**PROC_CD**<br> WHERE SOURCE_VOCABULARY_ID IN (*'ICD9Proc'* OR *'ICD10PCS'*, 'HCPCS','CPT4') AND TARGET_STANDARD_CONCEPT ='S' AND TARGET_INVALID_REASON IS NULL AND TARGET_CONCEPT_CLASS_ID NOT IN ('HCPCS Modifier','CPT4 Modifier')<br/><br/>**NDC**<br> WHERE SOURCE_VOCABULARY_ID IN ('NDC') AND TARGET_STANDARD_CONCEPT ='S' AND TARGET_INVALID_REASON IS NULL AND VISIT_DETAIL_START_DATE BETWEEN SOURCE_VALID_START_DATE AND SOURCE_VALID_END_DATE<br><br>**RVNU_CD**<br> WHERE SOURCE_VOCABULARY_ID IN (*'Revenue Code'*) AND TARGET_STANDARD_CONCEPT ='S' AND TARGET_INVALID_REASON IS NULL| **PROC_CD** <br>If ICD_FLAG = 9 then use 'ICD9Proc', else if ICD_FLAG = 10 then use 'ICD10PCS'<br>If a PROC or NDC does not have a mapping, set the concept_id to 0<br><br> **RVNU_CD**<br>The concepts in the **Revenue Code** vocabulary all have the domain "Revenue Code". These should go to the **OBSERVATION** table.||
-| source_value |**MEDICAL_CLAIMS** PROC_CD<br><br>**MEDICAL_CLAIMS** NDC<br><br>**MEDICAL_CLAIMS** RVNU_CD|||
-| source_concept_id |**MEDICAL_CLAIMS** PROC_CD<br><br>**MEDICAL_CLAIMS** NDC<br><br>**MEDICAL_CLAIMS** RVNU_CD|Use the SOURCE_TO_SOURCE query with the filter<br/><br/>**PROC_CD** WHERE SOURCE_VOCABULARY_ID IN (*'ICD9Proc'* OR *'ICD10PCS'*)<br/><br/>**NDC**<br> WHERE SOURCE_VOCABULARY_ID IN ('NDC') AND VISIT_DETAIL_START_DATE BETWEEN SOURCE_VALID_START_DATE AND SOURCE_VALID_END_DATE<br><br>**RVNU_CD**<br> WHERE SOURCE_VOCABULARY_ID IN ('Revenue Code') |**PROC_CD** If ICD_FLAG = 9 then use 'ICD9Proc', else if ICD_FLAG = 10 then use 'ICD10PCS'|
+| concept_id | PROC_CD<br>NDC<br>RVNU_CD<br>DRG|Use the SOURCE_TO_STANDARD query with the filter<br><br>**PROC_CD**<br> `WHERE SOURCE_VOCABULARY_ID IN ('ICD9Proc','ICD10PCS', 'HCPCS','CPT4') AND TARGET_STANDARD_CONCEPT ='S' AND TARGET_INVALID_REASON IS NULL AND TARGET_CONCEPT_CLASS_ID NOT IN ('HCPCS Modifier','CPT4 Modifier')`<br/><br/>**NDC**<br> `WHERE SOURCE_VOCABULARY_ID IN ('NDC') AND TARGET_STANDARD_CONCEPT ='S' AND TARGET_INVALID_REASON IS NULL AND VISIT_DETAIL_START_DATE BETWEEN SOURCE_VALID_START_DATE AND SOURCE_VALID_END_DATE`<br><br>**RVNU_CD**<br> `WHERE SOURCE_VOCABULARY_ID IN ('Revenue Code') AND TARGET_STANDARD_CONCEPT ='S' AND TARGET_INVALID_REASON IS NULL`<br><br>**DRG**<br>`WHERE SOURCE_VOCABULARY_ID IN ('DRG') AND TARGET_STANDARD_CONCEPT ='S' AND TARGET_INVALID_REASON IS NULL`| **PROC_CD** <br>If ICD_FLAG = 9 then use 'ICD9Proc', else if ICD_FLAG = 10 then use 'ICD10PCS'<br>If a PROC or NDC does not have a mapping, set the concept_id to 0<br><br> **RVNU_CD**<br>The concepts in the **Revenue Code** vocabulary all have the domain "Revenue Code". These should go to the **OBSERVATION** table.||
+| source_value |PROC_CD<br>NDC<br>RVNU_CD<br>DRG|||
+| source_concept_id |PROC_CD<br>NDC<br>RVNU_CD<br>DRG|Use the SOURCE_TO_SOURCE query with the filter<br/><br/>**PROC_CD** <br>`WHERE SOURCE_VOCABULARY_ID IN ('ICD9Proc','ICD10PCS')`<br/><br/>**NDC**<br> `WHERE SOURCE_VOCABULARY_ID IN ('NDC') AND VISIT_DETAIL_START_DATE BETWEEN SOURCE_VALID_START_DATE AND SOURCE_VALID_END_DATE`<br><br>**RVNU_CD**<br> `WHERE SOURCE_VOCABULARY_ID IN ('Revenue Code')`<br><br>**DRG**<br>`WHERE SOURCE_VOCABULARY_ID IN ('DRG')` |**PROC_CD** If ICD_FLAG = 9 then use 'ICD9Proc', else if ICD_FLAG = 10 then use 'ICD10PCS'|
 | type_concept_id |32810 (Claim)|||  
 | operator_concept_id | |||
 | unit_concept_id | |||
@@ -77,8 +77,11 @@ If a record is written to STEM from the **PROC_CD** field in the **MEDICAL_CLAIM
 
 ## Change log
 
-### 13-Nov-2023
-Set drug start and end dates as fst_dt - dates are extracted from the med_claims table itself
+### August 10, 2026
+* Update logic to map DRG to concept_id
+
+### November 13, 2023
+* Set drug start and end dates as fst_dt - dates are extracted from the med_claims table itself
 
 ### October 23, 2025
-Added logic about remove records where procmod = 'JW'
+* Added logic about remove records where procmod = 'JW'

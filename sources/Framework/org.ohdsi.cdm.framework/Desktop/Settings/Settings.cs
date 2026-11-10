@@ -137,7 +137,7 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
         public string CDMFolder { get; set; }
                 
         public bool UseS3forDatabricks { get; set; }
-
+        public int MaxFunctions { get; set; }
 
         public string GetDatabricksStorage
         {
@@ -177,7 +177,7 @@ namespace org.ohdsi.cdm.framework.desktop.Settings
         {
             return Building.Cdm switch
             {
-                CdmVersions.V54 => "v5.4",
+                CdmVersions.V55 => "v5.5",
             };
         }
         #endregion

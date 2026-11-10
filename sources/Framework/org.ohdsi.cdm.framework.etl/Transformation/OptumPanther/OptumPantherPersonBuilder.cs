@@ -1,13 +1,9 @@
-﻿using Force.DeepCloner;
-using MySqlConnector;
-using org.ohdsi.cdm.framework.common.Base;
+﻿using org.ohdsi.cdm.framework.common.Base;
 using org.ohdsi.cdm.framework.common.Builder;
 using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Extensions;
 using org.ohdsi.cdm.framework.common.Helpers;
 using org.ohdsi.cdm.framework.common.Omop;
-using org.ohdsi.cdm.framework.common.PregnancyAlgorithm;
-using System.Diagnostics.Metrics;
 
 namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
 {
@@ -26,7 +22,7 @@ namespace org.ohdsi.cdm.framework.etl.Transformation.OptumPanther
             public override string Folder => "OptumPanther";
             public override string Description => "Optum Panther v5.4";
             public override string CdmSource => "";
-            public override CdmVersions CdmVersion => CdmVersions.V54;
+            public override CdmVersions CdmVersion => CdmVersions.V55;
             public override int PersonIdIndex => 1;
             public override string PersonTableName => "patient";
             public override string Citation => "";

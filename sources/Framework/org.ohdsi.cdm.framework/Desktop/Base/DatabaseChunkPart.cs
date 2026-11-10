@@ -167,8 +167,7 @@ namespace org.ohdsi.cdm.framework.desktop.Base
             Console.WriteLine($"Saving chunkId={ChunkId} ...");
             Console.WriteLine("DestinationConnectionString=" + Settings.Settings.Current.Building.DestinationConnectionString);
 
-            if (Settings.Settings.Current.Building.Vendor.Name != "PregnancyAlgorithm" &&
-                Settings.Settings.Current.Building.Vendor.Name != "Era" &&
+            if (Settings.Settings.Current.Building.Vendor.Name != "Era" &&
                 ChunkData.Persons.Count == 0)
             {
                 ChunkData.Clean();

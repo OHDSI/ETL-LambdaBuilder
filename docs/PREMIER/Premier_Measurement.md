@@ -81,9 +81,9 @@ The field mapping is performed as follows:
   <tr>
    <td>measurement_concept_id
    </td>
-   <td>lab_test_loinc_code
+   <td>LAB_TEST_CODE
    </td>
-   <td><code>when lab_test_loinc_code !=’’, map to LOINC using lab_test_loinc_code = concept.concept_code and vocabulary_id =’LOINC’</code> :
+   <td><code>when LAB_TEST_CODE !=’’, map to LOINC using LAB_TEST_CODE = concept.concept_code and vocabulary_id =’LOINC’</code> :
 <p>
 Use the Source-to-Standard Query.
 </p><p>
@@ -93,7 +93,7 @@ AND TARGET_STANDARD_CONCEPT = 'S'
 AND TARGET_INVALID_REASON IS NULL
 </code>
 </p><p>
-when lab_test_loinc_code = ‘’, then map to SNOMED using <strong><code>regexp_replace(lab_test, '\\(.*\\)', '') = c.concept_name and c. standard_concept ='S' and c.vocabulary_id ='SNOMED'</code></strong>
+when LAB_TEST_CODE = ‘’, then map to SNOMED using <strong><code>regexp_replace(lab_test, '\\(.*\\)', '') = c.concept_name and c. standard_concept ='S' and c.vocabulary_id ='SNOMED'</code></strong>
 </p><p>
 if there’s still no standard concept, set to 0
    </p></td>
@@ -113,14 +113,14 @@ if there’s still no standard concept, set to 0
   <tr>
    <td>measurement_source_value
    </td>
-   <td>lab_test, lab_test_loinc_code
+   <td>LAB_TEST_DESC, LAB_TEST_CODE
    </td>
-   <td>When <code>lab_test_loinc_code!=''</code>
+   <td>When <code>LAB_TEST_CODE!=''</code>
 <p>
-<code>Then lab_test_loinc_code</code>
+<code>Then LAB_TEST_CODE</code>
 </p><p>
-<code>When lab_test_loinc_code =''</code>
-<code>Then lab_test</code>
+<code>When LAB_TEST_CODE =''</code>
+<code>Then LAB_TEST_DESC</code>
 </p><p>
    </p></td>
    <td> 
@@ -129,7 +129,7 @@ if there’s still no standard concept, set to 0
   <tr>
    <td>value_as_number
    </td>
-   <td>test_result_numeric_value
+   <td>NUMERIC_VALUE
    </td>
    <td> 
    </td>
@@ -179,15 +179,15 @@ if there’s still no standard concept, set to 0
   <tr>
    <td>measurement_source_concept_id
    </td>
-   <td>lab_test, lab_test_loinc_code
+   <td>LAB_TEST_DESC, LAB_TEST_CODE
    </td>
-   <td>when lab_test_loinc_code !=’’, map to LOINC using lab_test_loinc_code = concept.concept_code and vocabulary_id =’LOINC’:
+   <td>when LAB_TEST_CODE !=’’, map to LOINC using LAB_TEST_CODE = concept.concept_code and vocabulary_id =’LOINC’:
 <p>
 <strong><code>select concept_id from VITALS</code></strong>
-<code> <strong>join</strong> concept c <strong>on</strong> lab_test_loinc_code = c.concept_code <strong>and</strong> c.vocabulary_id ='LOINC'</code>
-<code> <strong>where</strong> lab_test_loinc_code !=''</code>
+<code> <strong>join</strong> concept c <strong>on</strong> LAB_TEST_CODE = c.concept_code <strong>and</strong> c.vocabulary_id ='LOINC'</code>
+<code> <strong>where</strong> LAB_TEST_CODE !=''</code>
 </p><p>
-when lab_test_loinc_code = ‘’, then map to SNOMED using <strong><code>regexp_replace(lab_test, '\\(.*\\)', '') = c.concept_name and c.vocabulary_id ='SNOMED'</code></strong>
+when LAB_TEST_CODE = ‘’, then map to SNOMED using <strong><code>regexp_replace(LAB_TEST_DESC, '\\(.*\\)', '') = c.concept_name and c.vocabulary_id ='SNOMED'</code></strong>
    </p></td>
    <td> 
    </td>
@@ -362,9 +362,9 @@ when lab_test_loinc_code = ‘’, then map to SNOMED using <strong><code>regexp
   <tr>
    <td>measurement_concept_id
    </td>
-   <td>lab_test_loinc_code
+   <td>LAB_TEST_CODE
    </td>
-   <td>when lab_test_loinc_code !=’’, map to LOINC using lab_test_loinc_code = concept.concept_code and vocabulary_id =’LOINC’:
+   <td>when LAB_TEST_CODE !=’’, map to LOINC using LAB_TEST_CODE = concept.concept_code and vocabulary_id =’LOINC’:
 <p>
 Use the Source-to-Standard Query.
 </p><p>
@@ -375,12 +375,12 @@ AND TARGET_STANDARD_CONCEPT = 'S'
 AND TARGET_INVALID_REASON IS NULL
 </p><p>
 </p><p>
-when lab_test_loinc_code = ‘’, then map to SNOMED using <strong><code>regexp_replace(lab_test, '\\(.*\\)', '') = c.concept_name and c. standard_concept ='S' and c.vocabulary_id ='SNOMED'</code></strong>
+when LAB_TEST_CODE = ‘’, then map to SNOMED using <strong><code>regexp_replace(LAB_TEST_DESC, '\\(.*\\)', '') = c.concept_name and c. standard_concept ='S' and c.vocabulary_id ='SNOMED'</code></strong>
 </p><p>
 </br>
-if lab_test_loinc_code = 'LP17803-5-15' map to 4179840 (Rh blood group typing)
+if LAB_TEST_CODE = 'LP17803-5-15' map to 4179840 (Rh blood group typing)
 </br>
-if lab_test_loinc_code = 'LP30736-0-3' map to 3045688 (Homocysteine cysteine disulfide [Moles/volume] in Serum or Plasma)
+if LAB_TEST_CODE = 'LP30736-0-3' map to 3045688 (Homocysteine cysteine disulfide [Moles/volume] in Serum or Plasma)
 </br>
 if there’s still no standard concept, set to 0
    </p></td>
@@ -400,15 +400,15 @@ if there’s still no standard concept, set to 0
   <tr>
    <td>measurement_source_value
    </td>
-   <td>lab_test, lab_test_loinc_code
+   <td>LAB_TEST_DESC, LAB_TEST_CODE
    </td>
-   <td>When <code>lab_test_loinc_code!=''</code>
+   <td>When <code>LAB_TEST_CODE!=''</code>
 <p>
-<code>Then lab_test_loinc_code</code>
+<code>Then LAB_TEST_CODE</code>
 </p><p>
-<code>When lab_test_loinc_code =''</code>
+<code>When LAB_TEST_CODE =''</code>
 </p><p>
-<code>Then lab_test</code>
+<code>Then LAB_TEST_DESC</code>
 </p><p>
    </p></td>
    <td> 
@@ -417,7 +417,7 @@ if there’s still no standard concept, set to 0
   <tr>
    <td>value_as_number
    </td>
-   <td>test_result_numeric_value
+   <td>NUMERIC_VALUE
    </td>
    <td> 
    </td>
@@ -467,15 +467,15 @@ if there’s still no standard concept, set to 0
   <tr>
    <td>measurement_source_concept_id
    </td>
-   <td>lab_test, lab_test_loinc_code
+   <td>LAB_TEST_DESC, LAB_TEST_CODE
    </td>
-   <td>when lab_test_loinc_code !=’’, map to LOINC using lab_test_loinc_code = concept.concept_code and vocabulary_id =’LOINC’:
+   <td>when LAB_TEST_CODE !=’’, map to LOINC using LAB_TEST_CODE = concept.concept_code and vocabulary_id =’LOINC’:
 <p>
 <strong><code>select concept_id from VITALS</code></strong>
-<code> <strong>join</strong> concept c <strong>on</strong> lab_test_loinc_code = c.concept_code <strong>and</strong> c.vocabulary_id ='LOINC'</code>
-<code> <strong>where</strong> lab_test_loinc_code !=''</code>
+<code> <strong>join</strong> concept c <strong>on</strong> LAB_TEST_CODE = c.concept_code <strong>and</strong> c.vocabulary_id ='LOINC'</code>
+<code> <strong>where</strong> LAB_TEST_CODE !=''</code>
 </p><p>
-when lab_test_loinc_code = ‘’, then map to SNOMED using <strong><code>regexp_replace(lab_test, '\\(.*\\)', '') = c.concept_name and c.vocabulary_id ='SNOMED'</code></strong>
+when LAB_TEST_CODE = ‘’, then map to SNOMED using <strong><code>regexp_replace(LAB_TEST_DESC, '\\(.*\\)', '') = c.concept_name and c.vocabulary_id ='SNOMED'</code></strong>
    </p></td>
    <td> 
    </td>
@@ -637,7 +637,7 @@ when lab_test_loinc_code = ‘’, then map to SNOMED using <strong><code>regexp
    </td>
    <td>pat_key
 <p>
-specimen_id
+SPECIMEN_KEY
 </p><p>
 observation
    </p></td>
@@ -680,7 +680,7 @@ WHERE PAT.PAT_KEY = LAB_RES.PAT_KEY
   <tr>
    <td>measurement_concept_id
    </td>
-   <td>test
+   <td>LAB_TEST_DESC
    </td>
    <td> 
    </td>
@@ -727,7 +727,7 @@ Leverage source to concept mappings (+80% mapped).
    </td>
    <td>LAB_RESULT Transformation:
 <p>
-This hold the source codes inferred by Usagi for the LAB_RESULT.TEST attribute which Premier identifies as LOINC for source data with a DATA_SOURCE_IND of '4'.
+This hold the source codes inferred by Usagi for the LAB_RESULT.LAB_TEST_DESC attribute which Premier identifies as LOINC for source data with a DATA_SOURCE_IND of '4'.
    </p></td>
   </tr>
   <tr>
@@ -870,7 +870,7 @@ WHERE PAT.PAT_KEY = GEN_LAB.PAT_KEY
  Update VISIT_OCCURRENCE_ID from pat_key (no longer fits to bigint) to system generated.
 
 ### 2024.03.21: 
- Added mapping for genlab.lab_test_loinc_code ('LP17803-5-15' and 'LP30736-0-3')
+ Added mapping for genlab.LAB_TEST_CODE ('LP17803-5-15' and 'LP30736-0-3')
 ### 2024.03.12: 
  Moved Surgery (concept_id=3016562) to the Observation table
 ### 2021.08.11: 

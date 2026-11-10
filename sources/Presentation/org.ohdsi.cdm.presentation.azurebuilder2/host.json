@@ -5,14 +5,14 @@
     "maxRetryCount": 0,
     "delayInterval": "00:00:01"
   },
-  "functionTimeout": "00:30:00",
+  "functionTimeout": "00:55:00",
   "extensions": {
     "queues": {
       "batchSize": 1,
       "newBatchThreshold": 0,
       "maxDequeueCount": 1,
       "maxPollingInterval": "00:00:01",
-      "visibilityTimeout": "00:25:00"
+      "visibilityTimeout": "00:59:00"
     }
   },
   "telemetryMode": "OpenTelemetry",

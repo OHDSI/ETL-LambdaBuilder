@@ -10,8 +10,8 @@
 		WHEN DTSTART > DTEND THEN DTSTART
 		ELSE DTEND
 		END as END_DATE,
-		null PLANKEY,
-		null Family,
+		cast(null as string) PLANKEY,
+		cast(null as string) Family,
 		CAP,
 		MEDICARE,
 		STDRACE RACE_SOURCE_VALUE,
@@ -38,7 +38,7 @@
 		WHEN 9 THEN 'Medicaid HDHP'
 		ELSE 'Medicaid Other'
 		END as ps,
-		null EGEOLOC,
+		cast(null as string) EGEOLOC,
 		32813 PeriodTypeConceptId,
 		CASE WHEN MHSACOVG IS NULL THEN '0' ELSE MHSACOVG END AS VALUE_AS_NUMBER,
 		case when DRUGCOVG = '1' then 0 else 1  end as missinginsurance,

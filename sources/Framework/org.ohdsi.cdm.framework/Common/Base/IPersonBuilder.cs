@@ -72,9 +72,6 @@ namespace org.ohdsi.cdm.framework.common.Base
         IEnumerable<EraEntity> BuildDrugEra(DrugExposure[] drugExposures, ObservationPeriod[] observationPeriods);
         IEnumerable<Cohort> BuildCohort(Cohort[] cohortRecords, ObservationPeriod[] observationPeriods);
 
-        IEnumerable<EraEntity> BuildPregnancyEpisodes(ConditionOccurrence[] conditionOccurrences,
-            ProcedureOccurrence[] procedureOccurrences, Observation[] observations, Measurement[] measurements, DrugExposure[] drugExposures);
-
 
         IEnumerable<DeviceExposure> BuildDeviceExposure(DeviceExposure[] devExposure,
             Dictionary<long, VisitOccurrence> visitOccurrences, ObservationPeriod[] observationPeriods);

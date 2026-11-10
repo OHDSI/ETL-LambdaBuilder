@@ -63,6 +63,7 @@
 		44818668 CurrencyConceptId,
 		TOTPAY as TOTAL_PAID,
 		{field2},
+		cast(drg as int) as drg,
 		ch.PartitionId
 		FROM {sc}.inpatient_admissions
 		JOIN {ch_sc}._chunks ch ON ch.ChunkId = {0} AND ENROLID = ch.person_source_value
@@ -87,6 +88,7 @@
 		CurrencyConceptId,
 		TOTAL_PAID,
 		hlthplan,
+		drg,
 
 		{vendor},
 		{ccae_mdcr},
@@ -336,4 +338,23 @@
 			<CurrencyConceptId>CurrencyConceptId</CurrencyConceptId>
 		</VisitCostDefinition>
 	</VisitCost>
+	<Observation>
+		<ObservationDefinition>
+			<PersonId>ENROLID</PersonId>
+			<StartDate>ADMDATE</StartDate>
+			<EndDate>ADMDATE</EndDate>
+			<Concepts>
+				<Concept>
+					<ConceptIdMappers>
+						<Mapper>
+							<Lookup>Drg</Lookup>
+						</Mapper>
+					</ConceptIdMappers>
+					<Fields>
+						<Field key="drg" defaultTypeId="32854"/>
+					</Fields>
+				</Concept>
+			</Concepts>
+		</ObservationDefinition>
+	</Observation>
 </QueryDefinition>

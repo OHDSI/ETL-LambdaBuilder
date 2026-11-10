@@ -1,9 +1,14 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
+using org.ohdsi.cdm.framework.common.Definitions;
+using org.ohdsi.cdm.framework.common.Omop;
+using org.ohdsi.cdm.framework.desktop.Helpers;
 using org.ohdsi.cdm.framework.desktop.Settings;
 using System;
 using System.Collections.Generic;
+using System.Data.Odbc;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace org.ohdsi.cdm.presentation.etl
@@ -86,6 +91,39 @@ namespace org.ohdsi.cdm.presentation.etl
 
                 throw;
             }
-        }        
+        }
+
+        public static IEnumerable<T> GetEntities<T>(QueryDefinition qd, EntityDefinition ed) where T : IEntity
+        {
+            var sql = GetSqlHelper.GetSql(Settings.Current.Building.SourceEngine.Database,
+                qd.GetSql(Settings.Current.Building.Vendor, Settings.Current.Building.SourceSchemaName, Settings.Current.Building.SourceSchemaName), Settings.Current.Building.SourceSchemaName);
+            var keys = new Dictionary<string, bool>();
+            if (!string.IsNullOrEmpty(sql))
+            {
+                using var connection = new OdbcConnection(Settings.Current.Building.SourceConnectionString);
+                connection.Open();
+                using var c = new OdbcCommand(sql, connection);
+                c.CommandTimeout = 30000;
+                using var reader = c.ExecuteReader();
+                while (reader.Read())
+                {
+                    Concept conceptDef = null;
+                    if (ed.Concepts != null && ed.Concepts.Length != 0)
+                        conceptDef = ed.Concepts[0];
+
+                    var concept = (T)ed.GetConcepts(conceptDef, reader, null).ToList()[0];
+
+                    var key = concept.GetKey();
+                    if (key == null) continue;
+
+                    if (keys.ContainsKey(key))
+                        continue;
+
+                    keys.Add(key, false);
+
+                    yield return concept;
+                }
+            }
+        }
     }
 }

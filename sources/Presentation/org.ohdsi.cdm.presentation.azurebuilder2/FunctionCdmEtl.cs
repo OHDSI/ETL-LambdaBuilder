@@ -42,6 +42,23 @@ public class FunctionCdmEtl
         _logger.LogInformation("START - " + name);
         _logger.LogInformation($"======> Instance ID: {Environment.MachineName}");
 
+        var tenantId = Environment.GetEnvironmentVariable("tenantId");
+        var clientId = Environment.GetEnvironmentVariable("clientId");
+        var clientSecret = Environment.GetEnvironmentVariable("clientSecret");
+
+        var blobURI = Environment.GetEnvironmentVariable("blobURI");
+        var blobContainerName = Environment.GetEnvironmentVariable("containerName");
+        var prefix = Environment.GetEnvironmentVariable("prefix");
+
+        Settings.Current.TenantId = tenantId;
+        Settings.Current.ClientId = clientId;
+        Settings.Current.ClientSecret = clientSecret;
+        Settings.Current.ServiceUri = blobURI;
+        Settings.Current.BlobContainerName = blobContainerName;
+        Settings.Current.Prefix = prefix;
+
+        Settings.Current.CDMFolder = Environment.GetEnvironmentVariable("cdmFolder");
+
         await Process(name, cancellationToken);
         
 
@@ -49,7 +66,7 @@ public class FunctionCdmEtl
         AzureHelper.DeleteFile($"{AzureHelper.Path}/running/{_chunkId}.{_prefix}.txt");
     }
 
-    private async Task Process(string name, CancellationToken cancellationToken)
+    public async Task Process(string name, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
 
@@ -68,15 +85,6 @@ public class FunctionCdmEtl
 
         try
         {
-            var tenantId = Environment.GetEnvironmentVariable("tenantId");
-            var clientId = Environment.GetEnvironmentVariable("clientId");
-            var clientSecret = Environment.GetEnvironmentVariable("clientSecret");
-
-            var blobURI = Environment.GetEnvironmentVariable("blobURI");
-            var blobContainerName = Environment.GetEnvironmentVariable("containerName");
-            var prefix = Environment.GetEnvironmentVariable("prefix");
-
-
             // 0         1        2       3      4      5
             //vendor.buildingId.chunkId.prefix.attempt.txt
             var vendorName = name.Split('.')[0].Split('/').Last();
@@ -93,25 +101,16 @@ public class FunctionCdmEtl
 
             Settings.Initialize(buildingId, vendor, EtlLibraryPath, _logger);
 
-            Settings.Current.TimeoutValue = 6000; // TMP
+            Settings.Current.TimeoutValue = 9000; // TMP
+            Console.WriteLine("TimeoutValue:" + Settings.Current.TimeoutValue);
 
             Settings.Current.WatchdogValue = 30 * 1000;
-            Settings.Current.MinPersonToBuild = 100;
-            Settings.Current.MinPersonToSave = 100;
+            
+            //Settings.Current.MinPersonToBuild = 100;
+            //Settings.Current.MinPersonToSave = 100;
 
-            Settings.Current.TenantId = tenantId;
-            Settings.Current.ClientId = clientId;
-            Settings.Current.ClientSecret = clientSecret;
-            Settings.Current.ServiceUri = blobURI;
-            Settings.Current.BlobContainerName = blobContainerName;
-            Settings.Current.Prefix = prefix;
-
-            Settings.Current.CDMFolder = Environment.GetEnvironmentVariable("cdmFolder");
-
-            if (attempt > 15) // TMP was 10
-            {
-                return;
-            }
+            Settings.Current.MinPersonToBuild = 30;
+            Settings.Current.MinPersonToSave = 30;
 
             AzureHelper.UploadStream($"{AzureHelper.Path}/running/{_chunkId}.{_prefix}.txt", new MemoryStream());
 
@@ -120,7 +119,7 @@ public class FunctionCdmEtl
             var chunkBuilder = new AzureChunkBuilder(CreatePersonBuilder);
             var attempt1 = attempt;
 
-            Dictionary<string, long> rowsSaved = new Dictionary<string, long>();
+            Dictionary<string, long> rowsSaved = [];
             _lastSavedPersonIdOutput = chunkBuilder.Process(_chunkId, _prefix, _restorePoint, attempt, rowsSaved);
             var totalPersonConverted = chunkBuilder.TotalPersonConverted;
 
@@ -146,10 +145,11 @@ public class FunctionCdmEtl
                 sb.AppendLine($"{key}={rowsSaved[key]};");
             }
             var completed = DateTime.Now;
-            sb.AppendLine($"Started={started.ToShortDateString()} {started.ToShortTimeString()}; Completed={completed.ToShortDateString()} {completed.ToShortTimeString()}; totalPersonConverted={totalPersonConverted}; Duration={(completed - started).TotalSeconds}s");
+            var duration = ((int)(completed - started).TotalSeconds).ToString();
+            sb.AppendLine($"Started={started.ToShortDateString()} {started.ToShortTimeString()}; Completed={completed.ToShortDateString()} {completed.ToShortTimeString()}; totalPersonConverted={totalPersonConverted}; Duration={duration}s");
             
             using var streamCompleteDetails = new MemoryStream(Encoding.UTF8.GetBytes(sb.ToString()));
-            AzureHelper.UploadStream($"{AzureHelper.Path}/complete/{_chunkId}.{_prefix}.txt", streamCompleteDetails);
+            AzureHelper.UploadStream($"{AzureHelper.Path}/complete/{_chunkId}.{_prefix}.{rowsSaved["WorkingSet64"]}.{duration}.txt", streamCompleteDetails);
         }
         catch (Exception e)
         {

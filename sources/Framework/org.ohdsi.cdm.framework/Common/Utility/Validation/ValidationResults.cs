@@ -109,11 +109,6 @@
         public bool IsValid => Found && Issues.Count == 0;
     }
 
-    internal sealed record SliceObjects(
-        int SliceId,
-        IReadOnlyList<Amazon.S3.Model.S3Object> PersonObjects,
-        IReadOnlyList<Amazon.S3.Model.S3Object> MetadataObjects);
-
     internal sealed class PersonSliceCounters
     {
         public int InPersonFilesCount { get; set; }
