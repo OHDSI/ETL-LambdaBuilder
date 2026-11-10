@@ -1398,7 +1398,6 @@ internal sealed class OptumPantherTestVocabulary : IVocabulary
         _ => 8551
     };
 
-    public IEnumerable<PregnancyConcept> LookupPregnancyConcept(long conceptId) => [];
 
     public string? GetSourceVocabularyId(long conceptId) => _vocabularies.GetValueOrDefault(conceptId);
 

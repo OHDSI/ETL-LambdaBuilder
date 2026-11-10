@@ -1,8 +1,6 @@
 using org.ohdsi.cdm.framework.common.Builder;
-using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Lookups;
 using org.ohdsi.cdm.framework.common.Omop;
-using org.ohdsi.cdm.framework.common.PregnancyAlgorithm;
 using org.ohdsi.cdm.framework.etl.Transformation.CPRD;
 
 namespace org.ohdsi.cdm.Tests.UnitTests.PersonBuilderTests.CprdTests;
@@ -455,7 +453,6 @@ internal sealed class CprdTestVocabulary : IVocabulary
         _ => 8551
     };
 
-    public IEnumerable<PregnancyConcept> LookupPregnancyConcept(long conceptId) => [];
     public string? GetSourceVocabularyId(long conceptId) => _vocabularies.GetValueOrDefault(conceptId);
     public string? GetSourceDomain(long conceptId) => _domains.GetValueOrDefault(conceptId);
 

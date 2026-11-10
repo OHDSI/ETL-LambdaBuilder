@@ -996,7 +996,6 @@ internal sealed class JmdcTestVocabulary : IVocabulary
         _ => 8551
     };
 
-    public IEnumerable<PregnancyConcept> LookupPregnancyConcept(long conceptId) => [];
 
     public string? GetSourceVocabularyId(long conceptId) =>
         _conceptVocabularies.GetValueOrDefault(conceptId);

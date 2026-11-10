@@ -34,7 +34,7 @@ public class DrugExposureTests
     }
 
     [Fact]
-    public void Build_Truven_DrugExposure_R075_FallsBackFromNdc11ToNdc9()
+    public void Build_Truven_DrugExposure_R075_FallsBackFromNdc11ToNdc9() 
     {
         var s = Scenario(75);
         s.AddDrugClaims(75, "13533063670", "2012-01-17");

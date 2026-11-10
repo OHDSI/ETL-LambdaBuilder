@@ -1,10 +1,8 @@
-using System.Globalization;
 using org.ohdsi.cdm.framework.common.Builder;
-using org.ohdsi.cdm.framework.common.Enums;
 using org.ohdsi.cdm.framework.common.Lookups;
 using org.ohdsi.cdm.framework.common.Omop;
-using org.ohdsi.cdm.framework.common.PregnancyAlgorithm;
 using org.ohdsi.cdm.framework.etl.Transformation.Premier;
+using System.Globalization;
 
 namespace org.ohdsi.cdm.Tests.UnitTests.PersonBuilderTests.PremierTests;
 
@@ -682,7 +680,6 @@ internal sealed class PremierTestVocabulary : IVocabulary
         _ => 8551
     };
 
-    public IEnumerable<PregnancyConcept> LookupPregnancyConcept(long conceptId) => [];
     public string? GetSourceVocabularyId(long conceptId) => _vocabularies.GetValueOrDefault(conceptId);
     public string? GetSourceDomain(long conceptId) => _domains.GetValueOrDefault(conceptId);
 

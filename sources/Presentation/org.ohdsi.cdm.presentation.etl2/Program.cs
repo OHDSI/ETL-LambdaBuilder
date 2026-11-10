@@ -300,9 +300,11 @@ namespace org.ohdsi.cdm.presentation.etl
                     var validation = new Validation(Settings.Current.CloudStorageKey, 
                         Settings.Current.CloudStorageSecret,
                         Settings.Current.CloudStorageName,
-                        Settings.Current.CDMFolder);
+                        Settings.Current.CDMFolder,
+                        Settings.Current.Building.Vendor, 
+                        Settings.Current.Building.Id.Value);
 
-                    var result = validation.ValidateBuildingId(Settings.Current.Building.Vendor, Settings.Current.Building.Id.Value);
+                    var result = validation.ValidateBuildingId();
 
                     Console.WriteLine($"IsValid: {result.IsValid}");
                     Console.WriteLine($"Chunks validated: {result.ChunkFilesValidated}");
