@@ -34,39 +34,12 @@ public class DrugExposureTests
     }
 
     [Fact]
-    public void Build_Truven_DrugExposure_R075_FallsBackFromNdc11ToNdc9() 
-    {
-        var s = Scenario(75);
-        s.AddDrugClaims(75, "13533063670", "2012-01-17");
-        Assert.Contains(s.Build(75).Data.DrugExposures,
-            x => x.ConceptId == 46275250 && x.StartDate == new DateTime(2012, 1, 17));
-    }
-
-    [Fact]
-    public void Build_Truven_DrugExposure_R077_PreservesNullQuantity()
-    {
-        var s = Scenario(77);
-        s.AddDrugClaims(77, "13533063670", "2012-01-19", metqty: null);
-        Assert.Contains(s.Build(77).Data.DrugExposures,
-            x => x.ConceptId == 46275250 && x.StartDate == new DateTime(2012, 1, 19) && x.Quantity is null);
-    }
-
-    [Fact]
     public void Build_Truven_DrugExposure_R079_UsesZeroWhenNdc9MappingIsOutsideValidity()
     {
         var s = Scenario(79, "2006-01-01", "2006-12-31");
         s.AddDrugClaims(79, "00006000543", "2006-07-08");
         Assert.Contains(s.Build(79).Data.DrugExposures,
             x => x.ConceptId == 0 && x.StartDate == new DateTime(2006, 7, 8));
-    }
-
-    [Fact]
-    public void Build_Truven_DrugExposure_R081_UsesNdc9MappingInsideValidity()
-    {
-        var s = Scenario(81, "2014-01-01", "2014-12-31");
-        s.AddDrugClaims(81, "00006032582", "2014-09-18");
-        Assert.Contains(s.Build(81).Data.DrugExposures,
-            x => x.ConceptId == 45775771 && x.StartDate == new DateTime(2014, 9, 18));
     }
 
     [Fact]

@@ -456,10 +456,12 @@ internal sealed class TruvenInMemoryScenario
             SourceConcepts = mapping?.SourceConcepts is null ? [] : [.. mapping.SourceConcepts],
             ValidStartDate = mapping?.ValidStartDate ?? TruvenTestVocabulary.ValidStart,
             ValidEndDate = mapping?.ValidEndDate ?? TruvenTestVocabulary.ValidEnd,
-            AdditionalFields = new() { ["hlthplan"] = "1" }
+            AdditionalFields = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                ["hlthplan"] = "1",
+                ["itNdc"] = "1"
+            }
         };
-        if (concept == 0 && row.Ndcnum is "13533063670" or "00006032582")
-            entity.AdditionalFields["itndc"] = "1";
 
         var drug = new DrugExposure(entity)
         {
