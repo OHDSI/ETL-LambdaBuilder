@@ -78,7 +78,7 @@ For every record in STEM there should be 1 row record in VISIT_DETAIL (n:1 join)
 ## Change Log
 
 ### November 17, 2026
-* Update DX1-DX9 changed DX1-DX15
+* Changed range from DX1-DX9 to DX1-DX15
 
 
 ### August 10, 2026
