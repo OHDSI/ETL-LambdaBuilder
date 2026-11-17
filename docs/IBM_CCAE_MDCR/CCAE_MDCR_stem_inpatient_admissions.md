@@ -67,7 +67,7 @@ For every record in STEM there should be 1 row record in VISIT_DETAIL (n:1 join)
 | SPECIMEN_SOURCE_ID | - | NULL | - |
 | ANATOMIC_SITE_SOURCE_VALUE | - | NULL | - |
 | DISEASE_STATUS_SOURCE_VALUE | - | NULL | - |
-| CONDITION_STATUS_CONCEPT_ID | PDX, DX1-DX15 | If the record is generated based on PDX `32902` else if the record is based on DX1-DX9 set to `32908` | - | - |
+| CONDITION_STATUS_CONCEPT_ID | PDX, DX1-DX15 | If the record is generated based on PDX `32902` else if the record is based on DX1-DX15 set to `32908` | - | - |
 | CONDITION_STATUS_SOURCE_VALUE | Use the name of the DX field. For example, if the record is generated based on DX1 put 'DX1' here | NULL | - |
 | EVENT_ID | - | NULL | - |
 | EVENT_FIELD_CONCEPT_ID | - | 0 | - |
@@ -76,6 +76,10 @@ For every record in STEM there should be 1 row record in VISIT_DETAIL (n:1 join)
 | QUALIFIER_SOURCE_VALUE | - | NULL | - |
 
 ## Change Log
+
+### November 17, 2026
+* Update DX1-DX9 changed DX1-DX15
+
 
 ### August 10, 2026
 * Added DRG to the list of columns mapped to concept_ids
